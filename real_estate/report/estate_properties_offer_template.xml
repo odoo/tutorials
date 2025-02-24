@@ -3,7 +3,7 @@
     <template id="report_estate_properties_offer">
         <div class="page">
             <t t-if="properties.offer_ids">
-                <t t-set="offers" t-value="properties.mapped('offer_ids')"/>
+                <t t-set="docs" t-value="properties.offer_ids"/>
                 <table class="table">
                     <thead>
                         <tr>
@@ -15,7 +15,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr t-foreach="offers" t-as="offer">
+                        <tr t-foreach="docs" t-as="offer">
                             <td>
                                 <span t-field="offer.price"/>
                             </td>

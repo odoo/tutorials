@@ -16,15 +16,19 @@ class EstatePropertiesWizard(models.TransientModel):
     def action_select_offer(self):
         properties = self.env['estate.properties'].browse(
             self._context.get('active_ids'))
+        property_arr = []
         for property_data in properties:
             if (property_data.state not in ['new', 'offer_recieved']):
                 raise UserError(
                     _('One or more property is either sold or in accepted state.'))
-            self.env["estate.properties.offer"].create(
-                {
-                    "price": self.price,
-                    "property_id": property_data.id,
-                    "partner_id": self.partner_id.id,
-                }
-            )
-            property_data.write({'state': 'offer_recieved'})
+            data = {
+                "price": self.price,
+                "property_id": property_data.id,
+                "partner_id": self.partner_id.id,
+            }
+            property_arr.append(data)
+
+        self.env["estate.properties.offer"].create(
+            property_arr
+        )
+        properties.write({'state': 'offer_recieved'})

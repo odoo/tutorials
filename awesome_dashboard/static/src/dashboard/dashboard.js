@@ -1,32 +1,34 @@
 /** @odoo-module **/
 
 import { Component, onWillStart, useState } from "@odoo/owl";
-import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItems } from "./dashboard_items/dashboard_item";
-import { PieChart } from "./pie_chart/pie_chart";
+import { DashboardDialog } from "./dashboard_dialog/dialog";
 
-class AwesomeDashboard extends Component {
+export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItems ,PieChart}
+    static components = { Layout, DashboardItems, DashboardDialog }
 
     setup() {
         this.state = useState([])
-        const obj = { "total_amount": "Total amount of new orders this month", "nb_new_orders": "Number of new orders this month", "average_quantity": "Average amount of t-shirt by order this month", "nb_cancelled_orders": "Number of cancelled orders this month", "average_time": "Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’" ,"orders_by_size":"Shirts order by Size"}
         this.action = useService('action')
         this.service = useService('loadStatistics')
+
         onWillStart(async () => {
             const response = await this.service.getData()
             this.state = Object.keys(response)
-                .map((key, index) => ({
-                    id: index + 1,
-                    title: obj[key],
-                    name: key,
-                    value: response[key],
-                    size: index == 1 ? 2 : 1
+                .map((key) => ({
+                    id: key,
+                    Component: this.service.itemData.find((o) => o[key])?.component,
+                    size: this.service.itemData.find((o) => o[key])?.size || 1,
+                    props: {
+                        title: this.service.itemData.find((o) => o[key])?.[key] || key,
+                        value: response[key],
+                    },
                 }));
         })
+
     }
 
     navigateJournal() {
@@ -40,6 +42,12 @@ class AwesomeDashboard extends Component {
     navigateCustomer() {
         this.action.doAction("base.action_partner_form");
     }
-}
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+    openDashboardDialog() {
+        this.dialog.add(DashboardDialog, {
+            items: this.items,
+            inactiveItems: this.inactiveItems.items,
+            onChange: this.onInactiveItemsChange.bind(this)
+        })
+    }
+}

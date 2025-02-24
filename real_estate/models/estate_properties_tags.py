@@ -9,8 +9,8 @@ class EstatePropertiesTags(models.Model):
     _description = 'Estate Properties Tags'
     _order = 'name'
     _sql_constraints = [
-        ('name', 'UNIQUE(name)',
-         'Tag Name should be unique')
+        ('name_uniq', 'UNIQUE(name)',
+         'Tag name should be unique')
     ]
 
     name = fields.Char(required=True)

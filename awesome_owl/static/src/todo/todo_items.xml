@@ -7,7 +7,7 @@
                     <input type="checkbox" t-on-click="()=>props.toggle_task(i.id)"/>
                     <t t-esc='i.id'/>
                     <t t-esc="i.description"/>
-                    <span class="fa fa-remove" style="color: red; margin-left; cursor:pointer;" t-on-click="()=>props.delete_task(i.id)"/>
+                    <span class="fa fa-remove" style="color: red; cursor:pointer;" t-on-click="()=>props.delete_task(i.id)"/>
                 </div>
             </t>
         </t>

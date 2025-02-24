@@ -12,9 +12,9 @@ class EstateProperties(models.Model):
     _inherit = ['mail.thread']
     _order = 'id desc'
     _sql_constraints = [
-        ('expected_price', 'CHECK(expected_price > 0)',
+        ('expected_price_constraints', 'CHECK(expected_price > 0)',
          'Expected Price should be greater than 0'),
-        ('selling_price', 'CHECK(selling_price >= 0)',
+        ('selling_price_constraints', 'CHECK(selling_price >= 0)',
          'Selling Price should be greater than 0'),
     ]
 
@@ -84,7 +84,7 @@ class EstateProperties(models.Model):
 
     def action_property_sold(self):
         for record in self:
-            if len(record.offer_ids) == 0 or record.state != 'offer_accepted':
+            if not record.offer_ids or record.state != 'offer_accepted':
                 raise ValidationError(
                     _('Need at least one offer to be accepted.'))
             elif record.state == 'cancelled':

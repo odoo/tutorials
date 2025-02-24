@@ -10,18 +10,18 @@
         Dashboard
                 </p>
             </div>
+                <t t-set-slot="control-panel-additional-actions">
+                    <button class="btn" t-on-click="openDashboardDialog">
+                        <i class="fa fa-gear"/>
+                    </button>
+                </t>
             <div class="container">
                 <t t-foreach="this.state" t-as="i" t-key="i.id">
-                    <DashboardItems title="i.title" size="i.size">
-                        <p>
-                            <t t-esc="i.value"/>
-                        </p>
+                    <DashboardItems size="i.size">
+                        <t t-component="i.Component" t-props="i.props"/>
                     </DashboardItems>
                 </t>
             </div>
-            <!-- <DashboardItems title="pie chart"> -->
-            <!-- </DashboardItems> -->
-                <PieChart/>
         </Layout>
     </t>
 

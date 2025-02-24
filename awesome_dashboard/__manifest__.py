@@ -1,23 +1,21 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details
+
 {
-    'name': "Awesome Dashboard",
-
+    'name': 'Awesome Dashboard',
     'summary': """
-        Starting module for "Discover the JS framework, chapter 2: Build a dashboard"
+        Starting module for 'Discover the JS framework, chapter 2: Build a dashboard'
     """,
-
     'description': """
-        Starting module for "Discover the JS framework, chapter 2: Build a dashboard"
+        Starting module for 'Discover the JS framework, chapter 2: Build a dashboard'
     """,
-
-    'author': "Odoo",
-    'website': "https://www.odoo.com/",
+    'author': 'Odoo',
+    'website': 'https://www.odoo.com/',
     'category': 'Tutorials/AwesomeDashboard',
     'version': '0.1',
     'application': True,
     'installable': True,
     'depends': ['base', 'web', 'mail', 'crm'],
-
     'data': [
         'views/views.xml',
     ],

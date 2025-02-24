@@ -11,7 +11,7 @@ class EstatePropertiesOffer(models.Model):
     _description = 'Estate Properties Offer'
     _order = 'price desc'
     _sql_constraints = [
-        ('price', 'CHECK(price > 0)',
+        ('off_price_constraint', 'CHECK(price > 0)',
          'Offer Price should be greater than 0'),
     ]
 
@@ -56,10 +56,9 @@ class EstatePropertiesOffer(models.Model):
         for record in self:
             if record.property_id.selling_price > 0 or record.status == 'accepted':
                 raise UserError(_('Offer already accepted'))
-            record.status = 'accepted'
-            record.property_id.state = 'offer_accepted'
-            record.property_id.partner_id = record.partner_id
-            record.property_id.selling_price = record.price
+            record.write({'status': 'accepted'})
+            record.property_id.write(
+                {'state': 'offer_accepted', 'partner_id': record.partner_id, 'selling_price': record.price})
 
     def refuse_offer(self):
         for record in self:

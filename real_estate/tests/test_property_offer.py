@@ -7,11 +7,15 @@ from odoo.exceptions import ValidationError
 
 class TestPropertyOffer(TransactionCase):
     def test_property_offer_sold(self):
+        user = self.env['res.partner'].create({
+            'name': 'partner',
+            'company_id': False,
+        })
         property = self.env['estate.properties'].create(
             {'name': 'Test', 'state': 'sold', 'expected_price': 10000.00})
         with self.assertRaises(ValidationError):
             self.env['estate.properties.offer'].create({
                 'property_id': property.id,
                 'price': 1000000.00,
-                'partner_id': 25,
+                'partner_id': user.id,
             })
