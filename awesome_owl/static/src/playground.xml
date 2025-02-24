@@ -2,8 +2,27 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div>
+            <div class="m-2 border p-2 align-items-center d-inline-block">
+                <span class="m-0">Hello World</span>
+                <Counter callback.bind="do_sum"/>
+                <Counter callback.bind="do_sum"/>
+                <span class="m-auto">The sum is : <t t-esc="state.sum"/></span>
+            </div>
+        </div>
+        <div>
+            <div class="m-2 border p-2 d-inline-block">
+                <Card title="'Card 1'" content="content1"/>
+                <Card title="'Card 2'" content="content2"/>
+                <Card title="'Card 3'">
+                    <Counter/>
+                </Card>
+            </div>
+        </div>
+        <div>
+            <div class="m-2 border p-2 d-inline-block">
+                <TodoList/>    
+            </div>
         </div>
     </t>
 

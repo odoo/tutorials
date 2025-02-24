@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <div class="o_action">
+            <Layout className="'o_dashboard h-100'">
+                <div class="o_dashboard_content d-flex flex-wrap align-items-center m-2 p-2 gap-2 bg-white">
+                    <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                    <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                    <h1>Dashboard</h1>
+                </div>
+                <div class="d-flex flex-wrap gap-3 p-3 bg-secondary">
+                    <DashboardItem t-props="{'title': 'Average amount of t-shirt by order this month'}">
+                        <h5 t-esc="statistics.data.average_quantity"/>
+                    </DashboardItem>
+                    <DashboardItem t-props="{'title': 'Average time for an order to go from new to sent or cancelled', 'size': 2}">
+                        <h5 t-esc="statistics.data.average_time"/>
+                    </DashboardItem>
+                    <DashboardItem t-props="{'title': 'Number of new orders this month'}">
+                        <h5 t-esc="statistics.data.nb_new_orders"/>
+                    </DashboardItem>
+                    <DashboardItem t-props="{'title': 'Number of cancelled orders this month'}">
+                        <h5 t-esc="statistics.data.nb_cancelled_orders"/>
+                    </DashboardItem>
+                    <DashboardItem t-props="{'title': 'Total amount of new orders this month'}">
+                        <h5 t-esc="statistics.data.total_amount"/>
+                    </DashboardItem>
+                    <DashboardItem t-props="{'title': 'Shirt orders by size', 'size': 2}">
+                        <PieChart label="Shirt"/>
+                    </DashboardItem>
+                </div>
+            </Layout>
+        </div>
+    </t>
+
+</templates>
