@@ -1,9 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
     'name' : "estate",
-    'category' : 'Real Estate/Brokerage',
+    'category' : "Real Estate/Brokerage",
     'version' : '1.0',
     'description' : """
         Real Estate Management
@@ -21,7 +20,7 @@
         'views/estate_menus.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
-        'data/estate.property.type.csv'
+        'data/estate_property_type.xml'
     ],
     'demo' : [
         'demo/demo_estate_property.xml',

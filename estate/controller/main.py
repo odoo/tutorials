@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import http
@@ -6,7 +5,7 @@ from odoo.http import request
 
 class EstateController(http.Controller):
     
-    @http.route(['/estate/properties','/estate/properties/page/<int:page>'], type='http', auth='public', methods=['GET'], csrf=False, website=True)
+    @http.route(route=['/estate/properties','/estate/properties/page/<int:page>'], type='http', auth='public', methods=['GET'], csrf=False, website=True)
     def get_properties(self,page=0):
         properties = request.env['estate.property'].sudo().search([])
         total = len(properties)
@@ -19,4 +18,4 @@ class EstateController(http.Controller):
         )
         offset = pager['offset']
         properties = properties[offset: offset + properties_per_page]
-        return request.render('estate.properties_template', qcontext={'properties': properties, 'pager': pager})
+        return request.render(template='estate.properties_template', qcontext={'properties': properties, 'pager': pager})

@@ -1,29 +1,25 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests.common import TransactionCase
-from odoo.tests import Form, tagged
-from odoo.exceptions import UserError
 from odoo import Command
+from odoo.exceptions import UserError
+from odoo.tests import Form, tagged
+from odoo.tests.common import TransactionCase
 
 @tagged('post_install', '-at_install')
 class TestEstate(TransactionCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-
         cls.partner = cls.env['res.partner'].create({
-            'name': 'Test Partner'
+            'name': "Test Partner"
         })
-
         cls.properties = cls.env['estate.property'].create([
             {
-            'name': 'Test Property 1',
+            'name': "Test Property 1",
             'expected_price': 10000,
             },
             {
-                'name': 'Test Property 2',
+                'name': "Test Property 2",
                 'expected_price': 20000,
                 'offer_ids': [
                     Command.create({
@@ -39,13 +35,11 @@ class TestEstate(TransactionCase):
     def test_action_sold(self):
         self.properties[1].action_sold()
         self.assertEqual(self.properties[1].state, 'sold')
-
         with self.assertRaises(UserError):
             self.properties[0].action_sold()
 
     def test_create_offer(self):
         self.properties[1].action_sold()
-
         with self.assertRaises(UserError):
             self.env['estate.property.offer'].create({
                 'property_id': self.properties[1].id,
@@ -60,7 +54,7 @@ class TestEstate(TransactionCase):
             property.garden_orientation = 'south'
 
             property.garden = False
+
             property.garden = True
-            
             self.assertEqual(property.garden_area, 10)
             self.assertEqual(property.garden_orientation, 'north')

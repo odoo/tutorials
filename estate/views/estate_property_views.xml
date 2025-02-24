@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
@@ -14,15 +13,15 @@
         <field name="arch" type="xml">
             <list string="Estate Property List View" decoration-success="offer_ids"
                 decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
-                <field name="name" />
-                <field name="property_type_id" />
-                <field name="tag_ids" widget="many2many_tags" />
-                <field name="postcode" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="date_availability" optional="hide" />
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -34,56 +33,56 @@
             <form string="Estate Property Form View">
                 <header>
                     <group invisible="state in ['sold','cancelled']">
-                        <button string="SOLD" name="action_sold" type="object" class="oe_highlight" />
-                        <button string="CANCEL" name="action_cancel" type="object" />
-                        <button string="Offer" name="action_open_offer_wizard" type="object" class="btn-primary" />
+                        <button string="SOLD" name="action_sold" type="object" class="oe_highlight"/>
+                        <button string="CANCEL" name="action_cancel" type="object"/>
+                        <button string="Offer" name="action_open_offer_wizard" type="object" class="btn-primary"/>
                     </group>
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new, offer_received, offer_accepted, sold" />
+                        statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
                     <group>
                         <h1>
-                            <field name="name" placeholder="My new house" />
+                            <field name="name" placeholder="My new house"/>
                         </h1>
-                        <field name="image" />
+                        <field name="image"/>
                         <field name="tag_ids" widget="many2many_tags"
-                            options="{'color_field': 'color'}" />
+                            options="{'color_field': 'color'}"/>
                     </group>
                     <group>
                         <group>
-                            <field name="postcode" />
-                            <field name="date_availability" string="Available From" />
+                            <field name="postcode"/>
+                            <field name="date_availability" string="Available From"/>
                         </group>
                         <group>
-                            <field name="expected_price" />
-                            <field name="best_price" />
-                            <field name="selling_price" />
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
                         <page name="description" string="Description">
                             <group>
-                                <field name="property_type_id" options="{'no_create': true}" />
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" invisible="not garden" />
-                                <field name="garden_orientation" invisible="not garden" />
-                                <field name="total_area" />
+                                <field name="property_type_id" options="{'no_create': true}"/>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page name="offers" string="Offers">
                             <field name="offer_ids"
-                                readonly="state in ['offer_accepted', 'sold', 'cancelled']" />
+                                readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page name="other_info" string="Other Info">
                             <group>
-                                <field name="user_id" />
-                                <field name="partner_id" />
+                                <field name="user_id"/>
+                                <field name="partner_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -97,16 +96,16 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Property Search View">
-                <field name="name" />
-                <field name="property_type_id" />
-                <field name="postcode" />
-                <field name="expected_price" />
-                <field name="bedrooms" />
-                <field name="living_area" filter_domain="[('living_area','>=',self)]" />
-                <field name="facades" />
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
+                <field name="facades"/>
                 <filter name="available_properties" string="Available Properties"
-                    domain="['|', ('state', '=', 'new'), ('state','=','offer_received')]" />
-                <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
+                    domain="['|', ('state', '=', 'new'), ('state','=','offer_received')]"/>
+                <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
     </record>
@@ -116,23 +115,23 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="False">
-                <field name="state" />
+                <field name="state"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div>
                             <div class="fw-bold fs-4">
-                                <field name="name" />
+                                <field name="name"/>
                             </div>
                             <field name="tag_ids" widget="many2many_tags"
-                                options="{'color_field': 'color'}" />
+                                options="{'color_field': 'color'}"/>
 
-                            <div> Expected Price: <field name="expected_price" />
+                            <div> Expected Price: <field name="expected_price"/>
                             </div>
                             <div t-if="record.state.raw_value == 'offer_received'"> Best Offer: <field
-                                    name="best_price" />
+                                    name="best_price"/>
                             </div>
                             <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
-                                    name="selling_price" />
+                                    name="selling_price"/>
                             </div>
                         </div>
                     </t>
@@ -152,27 +151,26 @@
                                     t-att-src="image_data_uri(property.image)"
                                     class="card-img-top img-fluid rounded"
                                     style="height: 200px; object-fit: cover;"
-                                    alt="Property Image" />
+                                    alt="Property Image"/>
                                 <div class="card-body">
                                     <h5 class="card-title" t-out="property.name"></h5>
                                     <p class="card-text">
-                                        <strong>Price:</strong> $<t t-out="property.selling_price" />
+                                        <strong>Price:</strong> $<t t-out="property.selling_price"/>
                                     </p>
                                     <p class="card-text">
                                         <strong>Expected Price:</strong> $<t
-                                            t-out="property.expected_price" />
+                                            t-out="property.expected_price"/>
                                     </p>
                                     <p class="card-text">
-                                        <strong>Living Area:</strong> <t t-out="property.living_area" />
+                                        <strong>Living Area:</strong> <t t-out="property.living_area"/>
                                         sqft </p>
                                 </div>
                             </div>
                         </div>
                     </t>
-                    <t t-call="website.pager" />
+                    <t t-call="website.pager"/>
                 </div>
             </div>
         </t>
     </template>
-
 </odoo>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo noupdate="1">
-
     <record id="demo_property_1" model="estate.property">
         <field name="name">Big Villa</field>
-        <field name="property_type_id" ref="property_type_1" />
+        <field name="property_type_id" ref="property_type_1"/>
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
@@ -17,10 +16,9 @@
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
     </record>
-
     <record id="demo_property_2" model="estate.property">
         <field name="name">Trailer home</field>
-        <field name="property_type_id" ref="property_type_1" />
+        <field name="property_type_id" ref="property_type_1"/>
         <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
@@ -32,7 +30,6 @@
         <field name="facades">4</field>
         <field name="garage">False</field>
     </record>
-
     <record id="demo_property_3" model="estate.property">
         <field name="name">Houzon</field>
         <field name="expected_price">500000</field>
@@ -45,7 +42,6 @@
                 'price': 777777,
                 'partner_id': ref('base.res_partner_2')
             })
-        ]" />
+        ]"/>
     </record>
-
 </odoo>
