@@ -86,7 +86,7 @@ class EstateTestCase(TransactionCase):
         """Test that selling a property with an accepted offer correctly marks it as sold."""
         self.property.action_mark_as_sold()
         self.assertRecordValues(self.property, [
-            {'name': 'Test Property', 'status': 'sold'},
+            {'name': 'Test Property', 'status': 'sold'}
         ])
 
     def test_garden_area_reset_on_uncheck(self):
@@ -98,5 +98,5 @@ class EstateTestCase(TransactionCase):
         self.property_2.garden = False
         self.property_2._onchange_garden()
 
-        self.assertEqual(self.property_2.garden_area,0)
+        self.assertEqual(self.property_2.garden_area, 0)
         self.assertEqual(self.property_2.garden_orientation, False)

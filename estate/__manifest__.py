@@ -1,7 +1,7 @@
 {
     "name": "Real estate",
     "summary": "Create Real Estate leads and close opportunities",
-    "depends": ["base","mail","website"],
+    "depends": ["base", "mail", "website"],
     'author': "Priykant Sharma (pssh)",
     "data": [
         "security/security.xml",
@@ -19,7 +19,7 @@
         "views/res_users_view.xml",
         "views/estate_menus.xml",
     ],
-    "demo" : [
+    "demo": [
         "demo/estate_property_type_demo.xml",
         "demo/estate_property_tag_demo.xml",
         "demo/estate_property_demo.xml",

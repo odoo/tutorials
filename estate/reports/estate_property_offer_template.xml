@@ -61,5 +61,4 @@
         </table>
         <strong t-else="">No offers have been made yet :</strong>
     </template>
-
 </odoo>
