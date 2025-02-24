@@ -1,17 +1,19 @@
 <templates xml:space="preserve">
-   <t t-name="awesome_owl.playground" >
-      <div class="p-3">Hello world!!</div>
-      <div class="m-2 p-2 border d-inline-block">
-         <span class="me-2">Counter: <t t-esc="state.value"/></span>
-         <button class="btn btn-primary" t-on-click="increment">Increment</button>
-      </div>
-      <div class="card d-inline-block m-2" style="width: 18rem;">
-         <div class="card-body">
-            <h5 class="card-title">my title</h5>
-            <p class="card-text">
-               some content
+    <t t-name="awesome_owl.playground">
+        <div class="p-3">
+            <Counter onChange.bind="incrementSum" />
+            <Counter onChange.bind="incrementSum" />
+            <p class="m-1 p-2"> This sum is: <t t-out="sum.value" />
             </p>
-         </div>
-      </div>
-   </t>
+        </div>
+        <div>
+            <Card title="'Card 1'">
+                content of card 1
+            </Card>
+            <Card title="'Card 2'">
+                <Counter />
+            </Card>
+        </div>
+        <TodoList />
+    </t>
 </templates>

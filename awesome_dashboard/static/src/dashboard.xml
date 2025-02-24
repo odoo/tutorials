@@ -2,7 +2,8 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <!-- hello dashboard -->
+        <Dashboard />
     </t>
 
 </templates>
