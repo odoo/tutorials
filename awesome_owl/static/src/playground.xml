@@ -6,8 +6,14 @@
         <Counter onChange.bind="incrementSum"/>
         <p>Total Sum: <t t-esc="state.sum"></t></p>
     </div>
-        <Card title="Title" content="safeContent"/>
-        <Card title="Title" content="markupContent"/>
+        <div>
+            <Card title="Title">
+                <span>some content</span>
+            </Card>
+            <Card title="Title">
+                <Counter onChange.bind="incrementSum"/>
+            </Card>
+        </div>
         <TodoList/>
     </t>
 </templates>

@@ -7,6 +7,8 @@ export class TodoList extends Component{
 
     setup(){
         this.todos=useState([]);
+        this.toggleState=this.toggleState.bind(this);
+        this.removeTodo=this.removeTodo.bind(this)
         this.todoId = 1;
         this.myRef=useRef('input_bar')
         onMounted(() => {
@@ -19,10 +21,8 @@ export class TodoList extends Component{
     addTodo(ev) {
         if (ev.keyCode === 13) {
             const input = ev.target;
-            const description = input.value.trim();
-
+            const description = input.value.trim();            
             if (description) {
-                // Create a new todo item
                 this.todos.push({
                     id: this.todoId++,
                     description: description,
@@ -32,5 +32,15 @@ export class TodoList extends Component{
                 input.value = "";
             }
         }
+    }
+    toggleState(todoId) {
+        const todo = this.todos.find(todo => todo.id === todoId);
+        if (todo) {
+            todo.isCompleted = !todo.isCompleted;
+        }
+    }
+    removeTodo(todoId){
+        const todo=this.todos.find(todo => todo.id === todoId); 
+        this.todos.splice(todo, 1);
     }
 }
