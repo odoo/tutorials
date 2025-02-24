@@ -5,8 +5,11 @@
             hello world
         </div>
         <div>
-            <Counter />
-            <Counter /> 
+            <div class="p-3 m-3 border">
+                <Counter onChange="increaseSum" />
+                <Counter onChange="increaseSum" /> 
+                <p>Counters Sum: <t t-esc="countersSum.value" /></p>
+            </div>
             <br />
             <Card title="'another title'" content="escapedValue" />
             <Card title="'yet another title'" content="notEscapedValue" />
