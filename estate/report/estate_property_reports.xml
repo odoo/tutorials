@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="action_report_property_offers" model="ir.actions.report">
         <field name="name">Print property offers</field>
@@ -5,7 +6,7 @@
         <field name="report_type">qweb-html</field>
         <field name="report_name">estate.template_report_property_offers</field>
         <field name="report_file">estate.template_report_property_offers</field>
-        <field name="binding_model_id" ref="model_estate_property"/> <!-- module.model_<name> -->
+        <field name="binding_model_id" ref="model_estate_property"/>
         <field name="binding_type">report</field>
     </record>
 

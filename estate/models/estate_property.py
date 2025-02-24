@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import math
-from dateutil.relativedelta import relativedelta
-from datetime import datetime
 from odoo import api, fields, models
-from odoo.exceptions import UserError,ValidationError
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
+    _name = 'estate.property'
     _description = "Real Estate Property"
     _sql_constraints = [
         ('check_positive_values_expected_price', 'CHECK(expected_price>0)',
@@ -19,12 +18,12 @@ class EstateProperty(models.Model):
 
     name = fields.Char(string="Property Name", required=True, default="Unknown name")
     image = fields.Binary(string="Image")
-    property_tag_ids = fields.Many2many("estate.property.tag", string="Property Condition") # all many2many fields have suffix _ids.
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type" ) # all many2one field have suffix _id, and it display by default name of estate.property.type
-    salesmen_id = fields.Many2one("res.users", string="Salesmen", default=lambda self: self.env.user) # many2one field by default display name field of other model, self.env.user return current user's name
-    buyer_id = fields.Many2one("res.partner", string="Buyer")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    company_id = fields.Many2one("res.company",string="Company", required=True, default=lambda self: self.env.company)
+    property_tag_ids = fields.Many2many('estate.property.tag', string="Property Condition")
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    salesmen_id = fields.Many2one('res.users', string="Salesmen", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string="Buyer")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+    company_id = fields.Many2one('res.company',string="Company", required=True, default=lambda self: self.env.company)
     active=fields.Boolean(default=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -37,8 +36,8 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Has Garage?")
     garden = fields.Boolean(string="Has Garden?")
     garden_area = fields.Integer(string="Garden Area (sqm)")
-    best_offer = fields.Float(compute="_compute_best_price", string="Best Offer")
-    total_area = fields.Float(compute="_compute_total_area", string="Total Area (sqm)")
+    best_offer = fields.Float(string="Best Offer", compute='_compute_best_price')
+    total_area = fields.Float(string="Total Area (sqm)", compute='_compute_total_area')
     garden_orientation = fields.Selection(
         selection=[
             ('north', 'North'),
@@ -56,57 +55,56 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled','Cancelled')
         ],
-        string="state", default="new",
+        string="state", default='new',
         copy=False, required=True
     )
- 
 
-    @api.depends("living_area", "garden_area")  # this method call when living_area or garden_area change.
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
 
-    @api.depends("offer_ids.price")
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
         maxprice = 0
-        for record in self:
-            record.best_offer = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
+        for property in self:
+            property.best_offer = max(property.offer_ids.mapped('price')) if property.offer_ids else 0.0
 
-    @api.onchange("garden")
+    @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = "north"
+            self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = ""
+            self.garden_orientation = ''
 
-    def action_sold_property(self): # method for sold button
-        for record in self:
-            if record.state == "cancelled":
+    def action_sold_property(self):
+        for property in self:
+            if property.state == 'cancelled':
                   raise UserError("Cancelled Property cannot be sold")
-            elif not ("accepted" in record.offer_ids.mapped("status")):
+            elif not ('accepted' in property.offer_ids.mapped('status')):
                   raise UserError("Accept Offer before sold")
             else:
-                record.state = "sold"
+                property.state = 'sold'
         return True
 
-    def action_cancel_property(self): # method for cancel button
-        for record in self:
-            if record.state == "sold":
+    def action_cancel_property(self):
+        for property in self:
+            if property.state == 'sold':
                 raise UserError("Sold Property cannot be cancel")
             else:
-                record.state = "cancelled"
+                property.state = 'cancelled'
         return True
 
     @api.constrains('selling_price', 'expected_price')
     def _check_minimum_selling_price(self):
-        for record in self:
-            if record.selling_price < record.expected_price * 0.9:
+        for property in self:
+            if property.selling_price < property.expected_price * 0.9:
                 raise ValidationError("Selling price should be greater than 90% of expected price")
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_is_new_or_cancelled(self):
-        for record in self:
-            if record.state!='new' and record.state!='cancelled':
+        for property in self:
+            if property.state!='new' and property.state!='cancelled':
                 raise UserError('You cannot delete a property which is not new or cancelled.')

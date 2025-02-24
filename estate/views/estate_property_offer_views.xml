@@ -1,15 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_property_type_offer_action" model="ir.actions.act_window">
         <field name="name">Property Offer</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
-        <field name="domain">[('property_type_id', '=', active_id)]</field> <!--show record according to this domain, active_id (= the current record)-->
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
     <record id="estate_property_offer_list_view" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Property Offer List" create="True" edit="True" editable="bottom" default_order="price desc" decoration-success="status=='accepted'" decoration-danger="status=='refused'" decoration-bf="status=='accepted'"> <!--bf for bold-->
+            <list string="Property Offer List" create="True" edit="True" editable="bottom" default_order="price desc" decoration-success="status=='accepted'" decoration-danger="status=='refused'" decoration-bf="status=='accepted'">
                 <field name="price" string="Price"/>
                 <field name="partner_id" string="Partner"/>
                 <field name="validity" string="Validity (days)"/>

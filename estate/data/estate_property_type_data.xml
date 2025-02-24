@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="type_Residential" model="estate.property.type">
+        <field name="name">Residential</field>
+    </record>
+    <record id="type_Commerical" model="estate.property.type">
+        <field name="name">Commerical</field>
+    </record>
+    <record id="type_Industrial" model="estate.property.type">
+        <field name="name">Industrial</field>
+    </record>
+    <record id="type_Land" model="estate.property.type">
+        <field name="name">Land</field>
+    </record>
+</odoo>
+
