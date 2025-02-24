@@ -2,24 +2,24 @@
 
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-    <div class='bg-primary text-white text-center py-4 rounded shadow-sm'>
-        <h1 class='display-4'>Owl Framework Components</h1>
-    </div>
+        <div class='bg-primary text-white text-center py-4 rounded shadow-sm'>
+            <h1 class='display-4'>Owl Framework Components</h1>
+        </div>
         <div class="p-3 d-flex flex-column gap-4 align-items-center">
         <div class="d-flex gap-4 flex-wrap justify-content-center">
-                <Card title="'Counter 1'">
-                    <Counter incrementSum.bind="incrementSum"/>
-                </Card>
-                <Card title="'Counter 2'">
-                    <Counter incrementSum.bind="incrementSum"/>
-                </Card>
+            <Card title="'Counter 1'" content="'Counter component inside Card 1'">
+                <Counter incrementSum.bind="incrementSum"/>
+            </Card>
+            <Card title="'Counter 2'" content="'Counter component inside Card 2'">
+                <Counter incrementSum.bind="incrementSum"/>
+            </Card>
             </div>
-        <div class="p-4 border rounded bg-primary text-white text-center shadow w-50">
+            <div class="p-4 border rounded bg-primary text-white text-center shadow w-50">
                 <h4 class="fw-bold mb-0">Sum is: <t t-esc="sum.value"/></h4>
             </div>
         </div>
-        <div>
-             <TodoList />
+        <div style="display: flex; justify-content: center; align-items: center; width: 100%;">
+            <TodoList />
         </div>
     </t>
 </templates>
