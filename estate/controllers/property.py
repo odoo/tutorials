@@ -1,5 +1,7 @@
 from odoo import http
 from odoo.http import request
+
+
 class PropertyWebsite(http.Controller):
     @http.route(['/properties', '/properties/page/<int:page>'], auth='public', website=True)
     def list_properties(self, page=1, **kwargs):
@@ -18,6 +20,7 @@ class PropertyWebsite(http.Controller):
             'properties': properties,
             'pager': pager
         })
+
     @http.route(['/property/<model("estate.property"):property>'], type='http', auth="public", website=True)
     def property_details(self, property, **kwargs):
         return request.render('estate.property_details_template', {

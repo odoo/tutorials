@@ -2,7 +2,8 @@
     "name": "Estate Account",
     "summary": "Create Invoices for the Real Estate application",
     "depends": [
-        "estate","account"
+        "estate",
+        "account"
     ],
     "data": [
         "report/estate_account_report.xml"
