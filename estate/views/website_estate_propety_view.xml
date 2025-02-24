@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+    
+        <record id="menu_propety_webview" model="website.menu">
+            <field name="name">Property List</field>
+            <field name="url">/view_property</field>
+            <field name="parent_id" ref="website.main_menu"/>
+        </record>        
+    
+        <template id="view_property_list" name="properties">
+            <t t-call="website.layout">
+                 <div class="d-flex justify-content-center">
+                    <div class="container row">
+                        <div class="o_wevent_index_topbar_filters d-flex d-print-none align-items-center justify-content-end flex-wrap gap-2 w-100 mt-4 mb-3">
+                            <h3 class="my-0 me-auto pe-sm-4">Properties Details</h3>
+                            <div class="col-3 d-sm-none d-md-flex flex-row align-items-center justify-content-end">
+                                <t t-call="website.website_search_box_input">
+                                    <t t-set="search_type" t-valuef="property"/>
+                                    <t t-set="action" t-valuef="/view_property/search"/>
+                                    <t t-set="placeholder">Search properties</t>
+                                    <t t-set="search" t-value="search_term"/>
+                                </t>
+                            </div>
+                            <form action="/view_property/search" class="d-flex gap-2 align-items-center">
+                                <input type="date" id="date-picker" name="selected_date" class="form-control"/>
+                                <button type="submit" class="btn btn-primary w-100">Listed After</button>
+                            </form>
+                        </div>
+                        <t t-if="not properties">
+                            <div class="alert alert-info" role="alert">
+                                <p>No properties are available.</p>
+                            </div>
+                            <div class="container my-3">
+                                <a href="/view_property">
+                                    <i class="fa fa-chevron-left me-2"/>
+                                    <span>Back to Properties</span> 
+                                </a>
+                            </div>
+                        </t>
+                        <t t-foreach="properties" t-as="property">
+                            <a t-attf-href="/view_property/#{property.id}" class="col-md-3 mb-3 text-decoration-none">
+                                <div>
+                                    <div class="card">
+                                        <div t-if="property.state == 'sold'" class="o_widget o_widget_web_ribbon">
+                                            <div class="ribbon ribbon-top-right">
+                                                <span class="text-bg-warning position-absolute rotate-45" style="width: 135px; text-align: center; padding: 8px 0px; top: 8px; transform: rotate(45deg); right:-38px" title="Won">
+                                                    Sold
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div t-if="property.state == 'canceled'" class="o_widget o_widget_web_ribbon">
+                                            <div class="ribbon ribbon-top-right">
+                                                <span class="text-bg-danger position-absolute rotate-45" style="width: 135px; text-align: center; padding: 8px 0px; top: 8px; transform: rotate(45deg); right:-38px" title="Won">
+                                                    Cancel
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <t t-if="property.property_image">
+                                            <img t-att-src="image_data_uri(property.property_image)" style="height: 200px"/>
+                                        </t>
+                                        <div class="card-body">
+                                            <div class="tags">
+                                                <t t-foreach="property.property_tag_ids" t-as="tag">
+                                                    <span class="tag" t-attf-class="o_tag mx-2 rounded p-1 o_tag_color_#{tag.color}">
+                                                        <t t-out="tag.name"/>
+                                                    </span>
+                                                </t>
+                                            </div>
+                                            <h5 class="card-title mt-1"><t t-out="property.name"/></h5>
+                                            <p class="card-text">postcode: <t t-out="property.postcode"/></p>
+                                            <p class="card-text">Expected Price: <t t-out="property.expected_price"/></p>
+                                            <p class="card-text">Selling Price: <t t-out="property.selling_price"/></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </t>
+                        <t t-if="pager">
+                            <div class="o_portal_pager d-flex justify-content-center mb-3">
+                                <t t-call="website.pager"/>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+        <template id="view_property_form" name="Property Details">
+            <t t-call="website.layout">
+                <div class="container">
+                    <div class="container my-3">
+                        <a href="/view_property">
+                            <i class="fa fa-chevron-left me-2"/>
+                            <span>Back to Properties</span> 
+                        </a>
+                    </div>
+                    <div class="page d-flex justify-content-between">
+                        <div> 
+                            <h2>
+                                <span t-field="property.name"/>
+                            </h2>
+                            <strong>Salesman: </strong>
+                                <span t-field="property.user_id"/>
+                            <div>
+                                <strong>Expected Price: </strong>
+                                <span t-field="property.expected_price"/>
+                            </div>
+                            <div>
+                                <strong>State: </strong>
+                                <span t-field="property.state"/>
+                            </div>
+                        </div>
+                        <div>
+                            <t t-if="property.property_image">
+                                <img t-att-src="image_data_uri(property.property_image)" style="height: 200px"/>
+                            </t>
+                        </div>
+                    </div>
+                    <t t-call="estate.report_property_offers_table"/>
+                    <div class="mt-5">
+                        <h2>Property Details</h2>
+                    </div>
+                    <table class="table mt-2">
+                        <thead>
+                            <tr>
+                                <th t-if="property.name">Name</th>
+                                <th t-if="property.description">Description</th>
+                                <th t-if="property.postcode">Postcode</th>
+                                <th t-if="property.date_availability">Date Availability</th>
+                                <th t-if="property.selling_price">Selling Price</th>
+                                <th t-if="property.bedrooms">Bedrooms</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td t-if="property.name">
+                                <t t-out="property.name"/>
+                            </td>
+                            <td t-if="property.description">
+                                <t t-out="property.description"/>
+                            </td>
+                            <td  t-if="property.postcode">
+                                <t t-out="property.postcode"/>
+                            </td>
+                            <td t-if="property.date_availability">
+                                <t t-out="property.date_availability"/>
+                            </td>
+                            <td t-if="property.selling_price">    
+                                <t t-out="property.selling_price"/>
+                            </td>
+                            <td t-if="property.bedrooms">
+                                <t t-out="property.bedrooms"/>
+                            </td>
+                        </tbody>
+                    </table>
+
+                    <table class="table mt-2">
+                        <thead>
+                            <tr>
+                                <th>Garden</th>
+                                <t t-if="property.garden">
+                                    <th t-if="property.graden">Garden Area</th>
+                                    <th t-if="property.graden">Garden Orientation</th>
+                                </t>
+                                <th t-if="property.partner_id">Buyer</th>
+                                <th t-if="property.living_area">Living Area</th>
+                                <th t-if="property.facades">Facades</th>
+                                <th>Garage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <t t-if="property.garden and property.garden == True">Yes</t>
+                                    <t t-else="">No</t>
+                                </td>
+                                <t t-if="property.garden">
+                                    <td>
+                                        <t t-if="property.garden and property.garden_area" t-out="property.garden_area"/>
+                                    </td>
+                                    <td>
+                                        <t t-if="property.garden and property.garden_orientation" t-out="property.garden_orientation"/>
+                                    </td>
+                                </t>
+                                <td t-if="property.partner_id">
+                                    <t t-out="property.partner_id.name"/>
+                                </td>
+                                <td t-if="property.living_area">
+                                    <t t-out="property.living_area"/>
+                                </td>
+                                <td t-if="property.facades">
+                                    <t t-out="property.facades"/>
+                                </td>
+                                <td>    
+                                    <t t-if="property.garage and property.garage == True">Yes</t>
+                                    <t t-else="">No</t>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+    </data>
+    
+
+</odoo>
