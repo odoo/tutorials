@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Action for offer wizard -->
+    <record id="estate_property_offer_wizard_action" model="ir.actions.act_window">
+        <field name="name">Add Offer</field>
+        <field name="res_model">estate.offer.multi.property.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Form view for multi property offer -->
+    <record id="estate_offer_multi_property_view_list" model="ir.ui.view">
+        <field name="name">estate.offer.multi.property.view.form</field>
+        <field name="model">estate.offer.multi.property.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Offer">
+                <group>
+                    <field name="price" string="Price"/>
+                    <field name="validity" string="Validity"/>
+                    <field name="buyer_id" string="Buyer"/>
+                </group>
+                <footer>
+                   <button name="action_make_offer" string="make Offer" type="object" class="oe_highlight"/>
+                   <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
