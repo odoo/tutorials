@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="display" className="'o_dashboard h-100'">
@@ -7,17 +5,30 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap p-3 rounded justify-content-around">
                 <DashboardItem>
-                    <h3>Some Content </h3>
-                    <p>Some more Content</p>
-                </DashboardItem>
-                <DashboardItem size="2">
-                    <h3>Awesome Dashboard</h3>
-                    <p>Components</p>
+                    <h3>Average Quantity per Order</h3>
+                    <p class="display-3 text-success fw-bold" t-esc="statistics.averageQuantity"></p>
                 </DashboardItem>
                 <DashboardItem>
-                    <h3>Content</h3>
+                    <h3>Average Processing Time (hrs)</h3>
+                    <p class="display-3 text-info fw-bold" t-esc="statistics.averageTime"></p>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>Cancelled Orders This Month</h3>
+                    <p class="display-3 text-danger fw-bold" t-esc="statistics.nbCancelledOrders"></p>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>New Orders This Month</h3>
+                    <p class="display-3 text-success fw-bold" t-esc="statistics.nbNewOrders"></p>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>Total Order Amount (This Month)</h3>
+                    <p class="display-3 text-primary fw-bold" t-esc="statistics.totalAmount"></p>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>Orders by Size</h3>
+                    <p class="display-5 text-secondary">M: <t t-esc="statistics.ordersBySize.m"/> | S: <t t-esc="statistics.ordersBySize.s"/> | XL: <t t-esc="statistics.ordersBySize.xl"/></p>
                 </DashboardItem>
             </div>
         </Layout>
