@@ -6,7 +6,16 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            some content
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    <h3>Sales Summary</h3>
+                    <p>Total Revenue: $500,000</p>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <h3>Website Traffic</h3>
+                    <p>Visitors Today: 12,000</p>
+                </DashboardItem>
+            </div>
         </Layout>
     </t>
 </templates>
