@@ -170,7 +170,7 @@
                 <field name="postcode" string="Postcode"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area','>=',self)]"/>
+                <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area', '>=', self)]"/>
                 <!-- Filters Options -->
                 <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
                 <filter name="filter_inactive" string="Not Active" domain="[('active', '=', False)]"/>

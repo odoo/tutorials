@@ -17,7 +17,6 @@ export class Card extends Component {
     }
 
     onToggleContent() {
-        console.log("visible => ", this.state.visible)
         this.state.visible = !this.state.visible;
     }
 }
