@@ -1,0 +1,7 @@
+from odoo import fields, models
+
+
+class EventTicket(models.Model):
+    _inherit = "event.event.ticket"
+
+    tickets_per_registration = fields.Integer(string="Tickets per Registration")

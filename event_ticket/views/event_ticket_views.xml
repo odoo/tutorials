@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_event_event_ticket_tree_inherit_event_ticket" model="ir.ui.view">
+        <field name="name">event.event.ticket.list.inherit.event.ticket</field>
+        <field name="model">event.event.ticket</field>
+        <field name="inherit_id" ref="event.event_event_ticket_view_tree_from_event"/>
+        <field name="arch" type="xml">
+            <field name="description" position="after">
+                <field name="tickets_per_registration" width="180px"/>
+            </field>
+        </field>
+    </record>
+</odoo>
