@@ -1,6 +1,16 @@
 <t t-name="awesome_owl.card_template">
-    <div class="card-body">
-        <h5 class="card-title"><t t-esc="props.title"/></h5>
-         <p class="card-text"><t t-out="safeContent"/></p>
+    <div class="card">
+        <div class="card-header d-flex justify-between items-center">
+            <h5 class="card-title"><t t-esc="props.title" /></h5>
+            <button t-on-click="toggleContent" class="btn btn-sm btn-primary">
+                <t t-esc="isOpen.value ? 'Hide' : 'Show'" />
+            </button>
+        </div>
+        <t t-if="isOpen.value">
+            <div class="card-body">
+                <p class="card-text"><t t-out="props.content" /></p>
+                <t t-slot="default"/>
+            </div>
+        </t>
     </div>
 </t>
