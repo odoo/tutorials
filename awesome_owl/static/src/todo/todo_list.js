@@ -11,9 +11,15 @@ export class TodoList extends Component {
     }
 
     setup() {
-        this.todos = useState([
-            { id: 2, description: "Learn Odoo", isCompleted: true },
-            { id: 3, description: "Build an app", isCompleted: false },
-        ])
+        this.todos = useState([]);
+        this.nextId = 0;
     }
+
+    addTodo(event) {
+        if (event.key == "Enter" && event.target.value!="") {
+            this.todos.push({ id: this.nextId++, description: event.target.value, isCompleted: false });
+            event.target.value = "";
+        }
+    }
+    
 }
