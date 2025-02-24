@@ -26,4 +26,9 @@ export class TodoList extends Component {
             ev.target.value = "";
         }
     }
+
+    onItemChange(id) {
+        let item = this.todos.find((item) => item.id === id);
+        item.isCompleted = !item.isCompleted;
+    }
 }

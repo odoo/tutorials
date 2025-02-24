@@ -2,7 +2,8 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_item">
         <div>
-            <p t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}"><t t-esc="props.id"/>. <t t-esc="props.description"/></p>
+            <input type="checkbox" t-on-change="onStateChange"/>
+            <span t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}"><t t-esc="props.id"/>. <t t-esc="props.description"/></span>
         </div>
     </t>
 </templates>
