@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_item">
-        <div class="ms-2 fs-4 d-flex align-items-center gap-3" t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
+        <div class="ms-2 mb-3 fs-4 d-flex align-items-center justify-content-between" t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
             <div>
-                <input type="checkbox" class="form-check-input" t-att-id="props.todo.id" t-att-checked="props.todo.isCompleted" t-on-change="onChange"/>
-            </div>
-            <div>
+                <input type="checkbox" class="form-check-input me-3" t-att-id="props.todo.id" t-att-checked="props.todo.isCompleted" t-on-change="onChange"/>
                 <t t-esc="props.todo.id"/>.
                 <t t-esc="props.todo.description"/>
+            </div>
+            <div>
+                <button class="btn bg-danger me-3" t-on-click="onRemove">Delete</button>
             </div>
         </div>
     </t>
