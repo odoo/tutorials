@@ -5,7 +5,7 @@
             <div class="mb-4 text-center fw-bold fs-2">Todo List</div>
             <input type="text" t-ref="todo_input" placeholder="Enter a New Task" class="w-100 p-3 border-1 rounded mb-3 focus-ring" t-on-keyup ="addTask"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo"/>
+                <TodoItem todo="todo" toggleState.bind="toggleTodo"/>
             </t>
         </div>
     </t>
