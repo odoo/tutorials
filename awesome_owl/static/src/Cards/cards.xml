@@ -2,11 +2,17 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.Card">
         <div class="card p-3 shadow-sm" style="width: 200px;">
-            <h5 class="fw-bold text-center" style="color: #9873AC;">
-                <t t-out="props.title"/>
-            </h5>
-            <p class="fw-bold text-center text-black">
-                <t t-out="props.content"/>
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold" style="color: #9873AC;">
+                    <t t-out="props.title"/>
+                </h5>
+                <button t-on-click="toggleContent" class="btn btn-sm btn-light">
+                    <t t-if="state.isOpen">🔽</t>
+                    <t t-else="true">▶</t>
+                </button>
+            </div>
+            <p class="fw-bold text-center text-black" t-if="state.isOpen">
+                <t t-slot="default"/>
             </p>
         </div>
     </t>

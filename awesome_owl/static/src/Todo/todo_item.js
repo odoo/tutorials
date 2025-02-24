@@ -13,9 +13,17 @@ export class TodoItem extends Component {
                 isCompleted: Boolean,
             },
         },
+        removeTodo: { type: Function },
     };
 
     get todoClasses() {
         return this.props.todo.isCompleted ? 'text-muted text-decoration-line-through' : '';
+    }
+
+    toggleTodo() {
+        this.props.todo.isCompleted = !this.props.todo.isCompleted
+    }
+    deleteTodo() {
+        this.props.removeTodo(this.props.todo.id);
     }
 }

@@ -5,8 +5,7 @@
             <div class="card-body d-flex flex-column justify-content-between">
                 <h6 class="fw-bold">Counter Example</h6>
                 <p class="fs-5">Count: <t t-out="state.count"/></p>
-                <button t-on-click="increment" class="btn btn-primary btn-lg mt-auto" 
-                        style="background-color: #9873AC; color: white; font-weight: bold; border: none;">
+                 <button t-on-click="increment" class="btn btn-sm mt-auto fw-bold" style="background-color: #9873AC; color: white; border: none; width: 100px;">
                     Increment
                 </button>
             </div>
