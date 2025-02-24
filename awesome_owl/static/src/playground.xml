@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <p> hello world </p>
+            <div>
+                <p> Counter: <t t-esc="state.value"/> </p>
+                <button class="btn btn-primary" t-on-click="decrement">-</button>
+                <button class="btn btn-primary" t-on-click="increment">+</button>
+                <button class="btn btn-primary" t-on-click="reset">Reset</button>
+            </div>
         </div>
     </t>
-
 </templates>
