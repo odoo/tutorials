@@ -21,23 +21,20 @@ class SupplierPortal(http.Controller):
             "company_id": company_id,
         })
 
-        attachments = [
-            {
+        # List of files with their corresponding names and MIME types
+        files = [
+            ("invoice.pdf", pdf_file, "application/pdf"),
+            ("invoice.xml", xml_file, "application/xml"),
+        ]
+
+        attachments = [{
                 "res_id": bill.id,
                 "res_model": "account.move",
-                "name": "invoice.pdf",
-                "datas": base64.b64encode(pdf_file.read()),
+                "name": file_name,
+                "datas": base64.b64encode(file_obj.read()),
                 "type": "binary",
-                "mimetype": "application/pdf",
-            },
-            {
-                "res_id": bill.id,
-                "res_model": "account.move",
-                "name": "invoice.xml",
-                "datas": base64.b64encode(xml_file.read()),
-                "type": "binary",
-                "mimetype": "application/xml",
-            }
+                "mimetype": mime_type,
+            } for file_name, file_obj, mime_type in files
         ]
 
         request.env["ir.attachment"].sudo().create(attachments)
