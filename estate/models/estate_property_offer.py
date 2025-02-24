@@ -5,6 +5,7 @@ from odoo.exceptions import ValidationError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate_property_offer_model"
+    _inherit = "mail.thread"
     _description = "hiiii"
     _order = "price desc"
 
@@ -13,7 +14,7 @@ class EstatePropertyOffer(models.Model):
         ("check_offer_price", "CHECK(price > 0)", "Offer price must be strictly positive")
     ]
     
-    ###### fiels #########
+    ###### fields #########
     price = fields.Float()
     status = fields.Selection(
         copy=False,
@@ -22,7 +23,7 @@ class EstatePropertyOffer(models.Model):
             ('refused', 'Refused')
         ]
     )
-    partner_id = fields.Many2one('res.partner', required=True)
+    partner_id = fields.Many2one('res.partner', required=True,  tracking=True)
     property_id = fields.Many2one('estate_model', required=True)
     property_type_id = fields.Many2one("estate_property_type_model", name="Property Type", related='property_id.property_type_id')
     create_date = fields.Datetime(default=fields.Date.today(), readonly=True)

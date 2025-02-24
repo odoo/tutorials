@@ -2,7 +2,7 @@
     "version": "1.2",
     "category": "Real Estate/Brokerage",
     "description": "",
-    "depends" : [ "base" ],
+    "depends" : [ "base", "mail" ],
     "data" : [ 
         "security/security.xml",
         "security/ir.model.access.csv",

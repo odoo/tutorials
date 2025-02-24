@@ -5,7 +5,8 @@ from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
-    _name = "estate_model"  
+    _name = "estate_model"
+    _inherit = ['mail.thread']
     _description = "This is the description for esatet properties model:"
     _order = "id desc"
 
@@ -16,7 +17,7 @@ class EstateProperty(models.Model):
     ]
 
     ##### fields #######
-    name = fields.Char(required=True, string="Title")
+    name = fields.Char(required=True, string="Title", tracking=True)
     description = fields.Text()
     postcode = fields.Integer()
     date_availability = fields.Date(copy=False,default=fields.Date.today(), required=False)
@@ -39,6 +40,7 @@ class EstateProperty(models.Model):
     state = fields.Selection(copy=False,
                             required=True, 
                             default='new',
+                            tracking=True,
                             selection = [
                                 ("new", "New"), 
                                 ("offer_received", "Offer_Received"), 
@@ -49,7 +51,7 @@ class EstateProperty(models.Model):
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     property_type_id = fields.Many2one("estate_property_type_model", name="Property Type")
     salesman_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner', string='Buyer')
+    buyer_id = fields.Many2one('res.partner', string='Buyer', tracking=True)
     tag_ids = fields.Many2many("estate_property_tag_model", "name", string="Tag")
     offer_ids= fields.One2many("estate_property_offer_model", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area", readonly=False)
