@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="event_event_ticket_view_form" model="ir.ui.view">
+        <field name="name">event.event.ticket.view.form.inherit.event.ticket.limiter</field>
+        <field name="model">event.event.ticket</field>
+        <field name="inherit_id" ref="event.event_event_ticket_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_expired']" position="after">
+                <field name="max_tickets_per_registration" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="event_event_ticket_from_event_view_list" model="ir.ui.view">
+        <field name="name">event.event.ticket.from.event.view.list.inherit.event.ticket.limiter</field>
+        <field name="model">event.event.ticket</field>
+        <field name="inherit_id" ref="event.event_event_ticket_view_tree_from_event"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='seats_max']" position="after">
+                <field name="max_tickets_per_registration" optional="show" width="135px" string="Max per registration" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
