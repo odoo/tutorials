@@ -11,6 +11,7 @@
         <field name="print_report_name">'Property Offers - %s' % (object.name or 'Attendee').replace('/','')</field>
         <field name="binding_model_id" ref="model_estate_property"/>
         <field name="binding_type">report</field>
+        <field name="domain">[('state', 'not in', ['sold', 'new'])]</field>
     </record>
 
     <!-- Users properties report action -->

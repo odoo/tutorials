@@ -5,7 +5,7 @@ from odoo.http import request
 
 class EstateWebsite(http.Controller):
     @http.route("/properties", type="http", auth="user", website=True)
-    def list_properties(self, page=1, listed_after=None, **kwargs):
+    def list_properties(self, page=1, listed_after=None):
         """
         Fetch and display estate properties with pagination and filtering.
 
@@ -58,7 +58,7 @@ class EstateWebsite(http.Controller):
         auth="user",
         website=True,
     )
-    def show_property_details(self, property, **kwargs):
+    def show_property_details(self, property):
         return request.render(
             "estate.property_detail_page_template", {"property": property}
         )
