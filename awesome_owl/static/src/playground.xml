@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
+
         <div class="d-flex gap-3 p-3">
             <Counter onChange.bind="onChange"/>
             <Counter onChange.bind="onChange"/>
@@ -15,8 +16,6 @@
             </Card>
             <Card title="'Ashutosh'" html="html2"/>
         </div>
-        <div>
-            <TodoList/>
-        </div>
+        <TodoList/>
     </t>
 </templates>
