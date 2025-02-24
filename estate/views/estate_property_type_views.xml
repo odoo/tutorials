@@ -22,11 +22,17 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Types">
-                <field name="sequence" widget="handle" />
                 <sheet>
                     <h1>
-                        <field name="name"></field>
+                        <field name="name" />
                     </h1>
+                    <group>
+                        <button name="%(estate_offer_view_action)d"
+                            type="action"
+                            string="Offers"
+                            class="oe_stat_button"
+                            icon="fa-file-text-o" />
+                    </group>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
