@@ -6,6 +6,15 @@
                 <div class="container mt-4">
                     <h2 class="text-center">Available properties</h2>
                 </div>
+                <form action="/properties" method="GET" class="row mb-4">
+                    <div class="col-md-4">
+                        <input type="date" name="listed_after" class="form-control"
+                            t-att-value="listed_after" />
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary">Listed After</button>
+                    </div>
+                </form>
                 <div class="row">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-md-4 mb-4">

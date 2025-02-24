@@ -39,6 +39,9 @@ class EstatePropertyOffer(models.Model):
         for val in vals:
             property_id = self.env['estate.property'].browse(val['property_id'])
 
+            if property_id.state == 'sold':
+                raise ValidationError(_("You can't create a offer for a sold property."))
+
             if property_id:
                 property_id.write({'state': 'offer_received'})
 

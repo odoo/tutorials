@@ -8,7 +8,7 @@
     'description' : """
 This module provides a real estate services
 """,
-    'depends' : ['mail', 'website'],
+    'depends': ['base', 'rating', 'mail', 'website'],
     'data' : [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -16,6 +16,7 @@ This module provides a real estate services
         'data/estate_account_sequence.xml',
         'data/mail_message_subtype_data.xml',
         'data/estate_property_website_templates.xml',
+        'data/estate_rating_data_template.xml',
         'report/estate_property_report_template.xml',
         'report/estate_property_reports.xml',
         'views/estate_property_views.xml',
@@ -24,6 +25,7 @@ This module provides a real estate services
         'views/estate_property_type_views.xml',
         'views/res_users_views.xml',
         'views/estate_property_templates.xml',
+        'views/rating_rating_views.xml',
         'views/estate_property_menu.xml',
     ],
     'demo' : [

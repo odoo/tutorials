@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}" class="m-2 p-2 border d-inline-block">
+            <div><t t-esc="props.todo.id" />. <t t-esc="props.todo.description" /></div>
+        </div>
+    </t>
+</templates>

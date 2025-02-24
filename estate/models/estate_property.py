@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['rating.mixin', 'mail.thread', 'mail.activity.mixin']
     _sql_constraints = [
         ('expected_price_positive', 'CHECK(expected_price >= 1)', 'The expected price must be strictly positive.'),
         ('selling_price_positive', 'CHECK(selling_price >= 1)', 'The selling price must be strictly positive.')
@@ -94,8 +94,14 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled': 
                 raise UserError(_("Cancelled properties cannot be sold"))
+            elif record.state != 'offer_accepted':
+                raise UserError(_("You can't sold a property without any accepted offer."))
             else: 
                 record.state = 'sold'
+            
+            template_id = self.env.ref("estate.estate_rating_template")
+            if template_id:
+                template_id.send_mail(record.id, force_send=True)
 
     def action_cancelled(self):
         for record in self:
@@ -109,3 +115,11 @@ class EstateProperty(models.Model):
         if 'state' in init_values and self.state == 'offer_accepted':
             return self.env.ref('estate.mt_state_change')
         return super()._track_subtype(init_values)
+
+    def rating_get_partner_id(self):
+        """Override to link the rating to the customer (rater)."""
+        return self.buyer_id
+
+    def rating_get_rated_partner_id(self):
+        """Override to link the rating to the agent (rated)."""
+        return self.seller_id
