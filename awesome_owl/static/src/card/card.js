@@ -1,10 +1,14 @@
+/** @odoo-module */
+
 import { Component, useState } from "@odoo/owl";
 
 export class Card extends Component {
+  static template = "awesome_owl.card";
   static props = {
     title: { type: String, optional: false },
     slots: { type: Object, optional: true },
   };
+
   setup() {
     this.state = useState({ visibility: true });
   }
@@ -13,5 +17,3 @@ export class Card extends Component {
     this.state.visibility = !this.state.visibility;
   }
 }
-
-Card.template = "awesome_owl.card";
