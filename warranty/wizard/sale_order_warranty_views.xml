@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sale_order_warranty_wizard_form" model="ir.ui.view">
+        <field name="name">sale.order.warranty.wizard.form</field>
+        <field name="model">sale.order.warranty</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <label for="product_id" string="Product" />
+                    <field name="product_id" />
+                    <label for="year" string="Year" />
+                    <field name="year" />
+                    <label for="end_date" string="End Date" />
+                    <field name="end_date" />
+                </sheet>
+                <footer>
+                    <button name="action_apply_warranty" type="object" string="Apply" class="btn btn-primary" data-hotkey="a" />
+                    <button special="cancel" string="Discard" class="btn btn-secondary" data-hotkey="x" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
