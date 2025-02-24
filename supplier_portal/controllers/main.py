@@ -2,6 +2,7 @@ import base64
 from odoo import http
 from odoo.http import request
 
+
 class SupplierPortal(http.Controller):
 
     @http.route('/supplier_portal', type='http', auth='user', website=True)
@@ -20,7 +21,7 @@ class SupplierPortal(http.Controller):
             "company_id": company_id,
         })
 
-        request.env["ir.attachment"].sudo().create(
+        attachments = [
             {
                 "res_id": bill.id,
                 "res_model": "account.move",
@@ -28,10 +29,7 @@ class SupplierPortal(http.Controller):
                 "datas": base64.b64encode(pdf_file.read()),
                 "type": "binary",
                 "mimetype": "application/pdf",
-            }
-        )
-
-        request.env["ir.attachment"].sudo().create(
+            },
             {
                 "res_id": bill.id,
                 "res_model": "account.move",
@@ -40,6 +38,8 @@ class SupplierPortal(http.Controller):
                 "type": "binary",
                 "mimetype": "application/xml",
             }
-        )
+        ]
 
-        return request.render('supplier_portal.generic_message',{"message": "Document uplaoded successfully"})
+        request.env["ir.attachment"].sudo().create(attachments)
+
+        return request.render('supplier_portal.generic_message', {"message": "Document uplaoded successfully"})
