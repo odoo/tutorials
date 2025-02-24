@@ -5,6 +5,7 @@
     'depends': ['base'],
     'data': [
         # Model data
+        'data/ir_cron_data.xml',
         'data/res_partner_data.xml',
         'data/real_estate_property_type_data.xml',
         # Depends on `res_partner_data.xml`, `real_estate_property_type_data.xml`

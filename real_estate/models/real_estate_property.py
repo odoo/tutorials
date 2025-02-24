@@ -1,5 +1,6 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.fields import Command
 from odoo.tools import date_utils
 
 
@@ -201,3 +202,19 @@ class RealEstateProperty(models.Model):
     def action_assign_user_as_salesperson(self):
         self.salesperson_id = self.env.user.id
         return True
+
+    @api.model
+    def _discount_inactive_properties(self):
+        two_months_ago = fields.Date.today() - date_utils.relativedelta(months=2)
+        price_reduced_tag = self.env.ref('real_estate.tag_price_reduced')
+        inactive_properties = self.search([
+            ('create_date', '<', two_months_ago),
+            ('active', '=', True),
+            ('state', '=', 'new'),
+            ('tag_ids', 'not in', price_reduced_tag.ids),  # Only discount once.
+        ])
+        for property in inactive_properties:
+            property.write({
+                'selling_price': property.selling_price * 0.9,
+                'tag_ids': [Command.link(price_reduced_tag.id)],
+            })

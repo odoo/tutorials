@@ -91,3 +91,8 @@ class RealEstateOffer(models.Model):
     def action_refuse(self):
         self.state = 'refused'
         return True
+
+    @api.model
+    def _refuse_expired_offers(self):
+        expired_offers = self.search([('expiry_date', '<', fields.Date.today())])
+        expired_offers.action_refuse()
