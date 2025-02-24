@@ -77,11 +77,8 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property_id = vals.get('property_id')
-            offer_amount = vals.get('price')
-
-            if property_id and offer_amount:
-                property = self.env['estate.property'].browse(property_id)
+            if (property_id := vals.get('property_id')) and (offer_amount := vals.get('price')):
+                property_ids.append(property_id)
                 existing_offers = property.offer_ids.mapped('price')
 
                 if existing_offers and offer_amount < max(existing_offers):
@@ -89,21 +86,21 @@ class EstatePropertyOffer(models.Model):
                         "You cannot create an offer lower than an existing one."
                     )
 
-                property.write({'state': 'received'})
-        return super().create(vals_list)    
+        properties = self.env['estate.property'].browse(property_ids)
+        properties.state = 'received'
+        return super().create(vals_list)
 
     # Individual cannot buy commercial properties.
     @api.constrains('partner_id', 'property_id')
     def _check_property_buyer(self):
         if any(
             offer.partner_id 
-            and offer.property_id.property_type_id 
-            and offer.property_id.property_type_id.id == offer.env.ref(
-                'estate.property_type_commercial', raise_if_not_found=False).id
+            and offer.property_id.property_type_id == self.env.ref(
+                'estate.property_type_commercial', raise_if_not_found=False)
             and not offer.partner_id.is_company
             for offer in self
         ):
-            raise UserError("Individuals cannot buy Commercial properties. "
+            raise UserError("Individuals cannot buy Commercial properties."
                 "Only companies are allowed.")
 
     # auto accept best offer using cron action
