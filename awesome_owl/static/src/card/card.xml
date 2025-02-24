@@ -4,7 +4,7 @@
         <div class="card border p-3" t-on-click="onClick">
             <div class="card-body">
                 <h5 class="card-title"><t t-esc="title"/> </h5>
-                <p class="card-text"><t t-esc="content"/> </p>
+                <p class="card-text"><t t-out="content"/> </p>
             </div>
         </div>
     </t>

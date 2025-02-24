@@ -12,5 +12,9 @@ export class Playground extends Component {
         // Counter: Counter,
         Card: Card,
     }
-    
+
+    setup() {
+        this.html1 = `<h3>some content</h3>`
+        this.html2 = markup`<h3>some more content</h3>`
+    }
 }
