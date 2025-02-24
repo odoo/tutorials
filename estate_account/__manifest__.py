@@ -1,0 +1,14 @@
+{
+    "name": "estate_account",
+    "version": "1.0",
+    "sequence": 1,
+    "depends": ["estate" , "account"],
+    "description": "estate_account module is used to manage real estate properties accounting.",
+    "installable": True,
+    "application": True, 
+    "license": "LGPL-3",
+
+    'data' : [
+        'report/estate_property_inherit.xml'
+    ]
+}
