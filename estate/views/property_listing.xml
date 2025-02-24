@@ -6,6 +6,15 @@
                 <h1 class="text-center">
                     Available Properties
                 </h1>
+                <div class="row d-flex justify-content-end mb-4">
+                    <div class="col-md-4">
+                        <input type="date" id="filter_date" class="form-control" />
+                    </div>
+                    <div class="col-md-2">
+                        <button id="filter_button" class="btn btn-primary">
+                            Available After</button>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-md-12 text-center mb-4">
                         <a href="/properties" class="btn btn-primary">View All Properties</a>
@@ -41,6 +50,14 @@
                 </div>
                 <t t-call="website.pager" t-set="pager" />
             </div>
+            <script>
+                document.getElementById("filter_button").addEventListener("click", function() {
+                let selectedDate = document.getElementById("filter_date").value;
+                if (selectedDate) {
+                window.location.href = "/properties?listed_after=" + selectedDate;
+                }
+                });
+            </script>
         </t>
     </template>
 </odoo>

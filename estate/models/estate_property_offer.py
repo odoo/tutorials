@@ -53,16 +53,13 @@ class estatePropertyOffer(models.Model):
     def accept_offer(self):
         for offer in self:
             # Check if the property is already sold
-            if offer.property_id.state == "sold":
-                raise UserError("This property has already been sold.")            
-            # Check if an offer is already accepted
-            if any(offer.property_id.offer_ids.filtered(lambda x: x.status == "accepted")):
-                raise UserError("This property already has an accepted offer.")
+            if offer.property_id.state in ["sold","offer_accepted"]:
+                raise UserError("This property has already been sold or accepted offer.")
             # Set the offer status to accepted and the property state to sold
             offer.status = "accepted"
+            offer.property_id.state = "offer_accepted"
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
-            offer.property_id.state = "offer_accepted"
 
     def refuse_offer(self):
         for offer in self:

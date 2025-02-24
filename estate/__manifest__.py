@@ -16,6 +16,7 @@
         "data/estate.property.demo.xml",
         "data/estate.property.offer.demo.xml",
         "data/website_menu.xml",
+        "data/estate_property_email_template.xml",
 
         "wizard/estate_offer_views.xml",
 

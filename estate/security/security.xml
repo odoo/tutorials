@@ -12,6 +12,7 @@
             <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
             <!-- Implied groups: Managers inherit Agent group rights -->
             <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/> 
         </record>
 
         <!-- Rule for Agents: Access to properties where they are the salesperson or none is assigned -->

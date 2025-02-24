@@ -125,6 +125,9 @@ class estateProperty(models.Model):
             if property.state == "cancelled":
                 raise UserError("A cancelled property cannot be set as sold.")
             property.state = "sold"
+            if self.buyer_id.email:
+                template=self.env.ref('email_template_property_sold')
+                template.send_mail(self.id,)
             message = "Property {} has been sold to ' {}'".format(property.name,property.buyer_id.name)
             property.message_post(body=message)
 
