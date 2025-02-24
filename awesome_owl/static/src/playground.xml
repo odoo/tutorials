@@ -2,8 +2,13 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <Card title="'card 1'" content="content_1" />
-        <Card title="'card 2'" content="content_2" />
+        <!-- <Card title="'card 1'" content="content_1" />
+        <Card title="'card 2'" content="content_2" /> -->
+        <div class="m-3">
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <p>The sum is:<t t-esc="sum.value"/></p>
+        </div>
     </t>
 
 </templates>
