@@ -4,10 +4,11 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-esc="props.title"></t>
+                    <button class="btn btn-primary" t-on-click="toggleState">Toggle</button>
                 </h5>
-                <p class="card-content">
-                    <t t-out="props.content"></t>
-                </p>
+                <div class="card-body" t-if="state.visibility">
+                    <t t-slot="default"/>
+                </div>
             </div>
         </div>
     </t>

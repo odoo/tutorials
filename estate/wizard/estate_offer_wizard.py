@@ -14,9 +14,8 @@ class EstateOfferWizard(models.Model):
         'estate.property', string="Properties", domain=[("state", "in", ["new", "offer_received"])])
 
     def action_make_offer(self):
-        offer = self.env['estate.property.offer']
         for property in self.property_ids:
-            offer.create({
+            self.env['estate.property.offer'].create({
                 'price': self.price,
                 'partner_id': self.partner_id.id,
                 'property_id': property.id

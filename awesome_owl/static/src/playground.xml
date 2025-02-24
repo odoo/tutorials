@@ -9,9 +9,12 @@
             </h4>
         </div>
         <div>
-            <Card title="'First Card'" content="this.htmlContent"></Card>
-            <Card title="'Second Card'" content="this.plainText"></Card>
-            <Card title="'Third Card'" content="'Third card content'"></Card>
+            <Card title="'Simple Card'">
+                <p>This is basic card.</p>
+            </Card>
+            <Card title="'Counter Card'">
+                <Counter/>
+            </Card>
         </div>
         <div>
             <TodoList />

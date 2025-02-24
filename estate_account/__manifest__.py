@@ -13,11 +13,6 @@
     'license': 'LGPL-3',
 
     'description': '''
-    Description text
-    ''',
-    'data': [
-
-    ],
-    'demo': [
-    ],
+    Estate Account
+    '''
 }

@@ -24,5 +24,4 @@ export class Playground extends Component {
     return this.state.counter1 + this.state.counter2;
   }
 }
-
 Playground.template = "awesome_owl.playground";

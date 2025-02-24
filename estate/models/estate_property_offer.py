@@ -82,6 +82,11 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     'Only one offer can be accepted for a given property.')
             offer.status = 'accepted'
+            offer.property_id.write({
+                'selling_price': offer.price,
+                'buyer_id': offer.partner_id,
+                'state': 'offer_accepted',
+            })
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.state = 'offer_accepted'
@@ -89,7 +94,7 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for offer in self:
             offer.status = 'refused'
-            offer.property_id.selling_price = 0.00
-            offer.property_id.buyer_id = False
-            if offer.property_id.state == 'offer_received':
-                offer.property_id.state = 'new'
+            offer.property_id.write({
+                'selling_price': 0.00,
+                'buyer_id': False,
+            })

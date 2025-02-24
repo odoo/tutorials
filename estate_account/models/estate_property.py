@@ -27,7 +27,7 @@ class EstateProperty(models.Model):
                     Command.create({
                         'name': 'Administrative Fees',
                         'quantity': 1,
-                        'price_unit': '100.00'
+                        'price_unit': 100.00
                     })
                 ]
             })
