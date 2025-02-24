@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
         <div class="p-3 text-center">
             <h2>Playground with Two Counters</h2>
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
-            <h3>Total Sum: <t t-esc="state.sum"/></h3>
+            <h3>Total Sum: <t t-out="state.sum"/></h3>
         </div>
         <div class="p-3 text-center">
             <h2>Playground with Cards</h2>

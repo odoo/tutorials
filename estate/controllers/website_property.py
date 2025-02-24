@@ -19,7 +19,6 @@ class EstateWebsiteController(http.Controller):
         )
 
         properties = Property.search([], limit=items_per_page, offset=(page - 1) * items_per_page)
-
         return request.render('estate.property_listing_template', {
             'properties': properties,
             'pager': pager

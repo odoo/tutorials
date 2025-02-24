@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="dashboard-content d-flex flex-wrap gap-3">
+                <DashboardItem size="2">
+                    <t t-set-slot="default">
+                        <div class="text-center">
+                            <strong>Number of new orders this month</strong>
+                            <div class="stat-number"><t t-out="statistics.nb_new_orders"/></div>
+                        </div>
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <t t-set-slot="default">
+                        <div class="text-center">
+                            <strong>Total amount of new orders this month</strong>
+                            <div class="stat-number"><t t-out="statistics.total_amount"/></div>
+                        </div>
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <t t-set-slot="default">
+                        <div class="text-center">
+                            <strong>Average amount of t-shirt by order this month</strong>
+                            <div class="stat-number"><t t-out="statistics.average_quantity"/></div>
+                        </div>
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <t t-set-slot="default">
+                        <div class="text-center">
+                            <strong>Number of cancelled orders this month</strong>
+                            <div class="stat-number"><t t-out="statistics.nb_cancelled_orders"/></div>
+                        </div>
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="3">
+                    <t t-set-slot="default">
+                        <div class="text-center">
+                            <strong>Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’</strong>
+                            <div class="stat-number"><t t-out="statistics.average_time"/></div>
+                        </div>
+                    </t>
+                </DashboardItem>
+            </div>
+        </Layout>
+    </t>
+</templates>

@@ -1,0 +1,31 @@
+.o_dashboard {
+    background-color: gray;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+.card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.dashboard-content {
+    .dashboard-item {
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 150px;
+    }
+    .stat-number {
+        font-size: 3rem;
+        font-weight: bold;
+        color: #28a745;
+        margin-top: 10px;
+    }
+    strong {
+        font-size: 1.2rem;
+        display: block;
+    }
+}

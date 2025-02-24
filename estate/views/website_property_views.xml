@@ -22,16 +22,16 @@
                                     </t>
                                     <div class="position-absolute top-0 start-0 m-2 d-flex flex-wrap">
                                         <t t-foreach="property.tag_ids" t-as="tag">
-                                            <span class="badge bg-success me-1 mb-1"> <t t-esc="tag.name"/> </span>
+                                            <span class="badge bg-success me-1 mb-1"> <t t-out="tag.name"/> </span>
                                         </t>
                                     </div>
                                 </div>
                                 <div class="card-body d-flex flex-column">
-                                    <h5 class="card-title text-dark fw-bold"><t t-esc="property.name"/></h5>
-                                    <p class="text-muted mb-2"><i class="fa fa-map-marker-alt "></i><t t-esc="property.postcode"/></p>
-                                    <p class="mb-3">Expected Price: <strong class="text-primary">$<t t-esc="property.expected_price"/></strong></p>
-                                    <p class="mb-3">Available From: <t t-esc="property.date_availability"/></p>
-                                    <p class="mb-4 flex-grow-1">Type: <span class="badge bg-info text-dark"><t t-esc="property.property_type_id.name"/></span></p>
+                                    <h5 class="card-title text-dark fw-bold"><t t-out="property.name"/></h5>
+                                    <p class="text-muted mb-2"><i class="fa fa-map-marker-alt "></i><t t-out="property.postcode"/></p>
+                                    <p class="mb-3">Expected Price: <strong class="text-primary">$<t t-out="property.expected_price"/></strong></p>
+                                    <p class="mb-3">Available From: <t t-out="property.date_availability"/></p>
+                                    <p class="mb-4 flex-grow-1">Type: <span class="badge bg-info text-dark"><t t-out="property.property_type_id.name"/></span></p>
                                     <a t-att-href="'/property/' + str(property.id)"
                                         class="btn btn-outline-primary w-100 mt-auto">View Details</a>
                                 </div>

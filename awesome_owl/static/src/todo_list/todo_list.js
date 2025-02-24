@@ -9,9 +9,9 @@ export class TodoList extends Component {
     static components = { TodoItem };
 
     setup() {
+        this.myRefInput = useAutofocus("todoInput");
         this.todos = useState([]);
         this.nextId = 1;
-        this.myRefInput = useAutofocus("todoInput");
     }
 
     addTodo(ev) {

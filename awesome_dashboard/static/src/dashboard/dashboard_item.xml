@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<templates xml:space="preserve">
+    <t t-name ="awesome_dashboard.DashboardItem">
+        <div class="'dashboard-item card p-4 shadow-sm d-flex flex-column justify-content-center align-items-center'" t-attf-style="width: {{18*props.size}}rem;">
+            <div class="card-body">
+                <t t-slot="default" />
+            </div>
+        </div>
+    </t>
+</templates>
