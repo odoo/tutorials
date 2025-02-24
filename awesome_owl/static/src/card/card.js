@@ -9,8 +9,8 @@ export class Card extends Component {
         title: {
             type: String
         },
-        content: {
-            type: String
+        slots: {
+            type: Object
         }
     }
 }
