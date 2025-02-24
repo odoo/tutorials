@@ -2,7 +2,25 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <header>
+            <button t-on-click="openCustomers" class="btn btn-primary">Customers</button>
+            <button t-on-click="openLeads" class="btn btn-primary">Leads</button>
+        </header>
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <!--<Card>
+                some content
+            </Card>
+            <Card size="2">
+                I love milk
+            </Card>
+            <Card>
+                some other content
+            </Card>-->
+            <Card t-foreach="state.statistics" t-as="stat" t-key="stat" t-if="typeof state.statistics[stat] === 'number'">
+                <t t-esc="stat"/>
+                <h3 class="green" style="width: 100%;text-align:center;"><t t-esc="state.statistics[stat]"/></h3>
+            </Card>
+        </Layout>
     </t>
 
 </templates>
