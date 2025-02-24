@@ -59,11 +59,11 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self,vals_list):
-        offers = super().create(vals_list)
         for vals in vals_list:
-            if vals.get('property_id'):
-                property = self.env['estate.property'].browse(vals['property_id'])
-                property.state = "offer_received"
-            if any(offer.price < property.best_price for offer in offers):
-                raise UserError(_("Enter offer Price greater than the existing ones"))
-        return offers
+            property_rec = self.env['estate.property'].browse(vals.get('property_id', False))
+            if(property_rec.state == 'sold'):
+                raise UserError(_("Can't add offer for sold property"))
+            property_rec.state = 'offer_received'
+            if vals.get('price', 0) < property_rec.best_price:
+                raise UserError(_("The new offer price must be higher than the current best offer %.2f." % property_rec.best_price))
+        return super().create(vals_list)

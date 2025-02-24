@@ -15,7 +15,7 @@ class EstateWebsite(http.Controller):
 
         if filter_date:
             domain.append(('create_date', '>', filter_date))
-        
+
         per_page = 6
         offset = (page - 1) * per_page
         properties = Property.search(domain, limit=per_page, offset=offset)

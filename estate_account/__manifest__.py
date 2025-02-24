@@ -7,7 +7,9 @@
     'description': """
 Real Estate Properties account handling and invoicing
 """,
-    'data': [],
+    'data': [
+        'views/report_invoice_extended.xml'
+    ],
     'license': 'LGPL-3',
     'application': True,
 }
