@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.TodoList">
         <div class="todo-list">
             <h2>Todo List</h2>
             <input type="text" placeholder="Enter a New Task !" t-ref="myInput" t-on-keyup="addTask"></input>
             <div t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo"></TodoItem>
+                <TodoItem todo="todo" changed_checkbox="changed_checkbox" removeTodo="removeTodo"></TodoItem>
             </div>
         </div>
     </t>
-
 </templates>

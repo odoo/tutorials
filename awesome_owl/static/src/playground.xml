@@ -5,8 +5,17 @@
         <Counter t-props="{onChange: incrementSum}"/>
         <Counter t-props="{onChange: incrementSum}"/>
         <p>Sum : <t t-esc="state.sum"/></p>
-        <Card title="cardTitle" content="cardContent"/>
-        <Card title="cardTitle" content="safeContent"/>
+        <!-- <Card title="cardTitle" content="cardContent"/>
+        <Card title="cardTitle" content="safeContent"/>-->
+
+        <Card t-props="{ title: 'My First Card' }">
+            This is <strong>bold</strong> text!
+        </Card>
+
+        <Card t-props="{ title: 'My Second Card' }">
+            <Counter/>
+        </Card>
+
         <TodoList/>
     </t>
 

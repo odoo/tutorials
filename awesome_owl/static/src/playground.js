@@ -15,7 +15,7 @@ export class Playground extends Component {
         this.incrementSum = this.incrementSum.bind(this); 
         this.cardTitle = "My First Card";
         this.cardContent = "This is <strong>bold</strong> text!";
-        this.safeContent = markup("This is <strong>bold</strong> text!");
+        //this.safeContent = markup("This is <strong>bold</strong> text!");
         
     }
 
