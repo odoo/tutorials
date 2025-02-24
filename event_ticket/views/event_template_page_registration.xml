@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="event_ticket_registration" name="Modal for tickets registration" inherit_id="website_event.modal_ticket_registration">
+        <xpath expr="//t[@t-set='seats_max']" position="before">
+            <t t-set="seats_max_limit" t-value="(ticket.tickets_per_registration > 0 and ticket.tickets_per_registration + 1) or 10"/>
+        </xpath>
+
+        <xpath expr="//t[@t-set='seats_max']" position="attributes">
+            <attribute name="t-value">min(seats_max_ticket, seats_max_event , seats_max_limit) </attribute>
+        </xpath>
+
+        <xpath expr="//select[@class='d-inline w-auto form-select']//t[@t-set='seats_max']" position="before">
+            <t t-set="seats_max_limit" t-value="(tickets.tickets_per_registration > 0 and tickets.tickets_per_registration + 1) or 10"/>
+        </xpath>
+
+        <xpath expr="//select[@class='d-inline w-auto form-select']//t[@t-set='seats_max']" position="attributes">
+            <attribute name="t-value">min(seats_max_ticket, seats_max_event , seats_max_limit) if tickets else seats_max_event </attribute>
+        </xpath>
+    </template>
+</odoo>
