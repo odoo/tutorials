@@ -14,5 +14,10 @@ export class TodoItem extends Component {
                 isCompleted: { type: Boolean },
             },
         },
+        toggleTodo: { type: Function },
+    }
+
+    onChange() {
+        this.props.toggleTodo(this.props.todo.id);
     }
 }
