@@ -7,10 +7,10 @@
                 <div class="row">
                     <div class="col-md-12 text-center">
                         <h1 class="display-4 mb-4">
-                            <t t-esc="property.name" />
+                            <t t-esc="property.name"/>
                         </h1>
                         <p class="lead mb-5">
-                            <t t-esc="property.description" />
+                            <t t-esc="property.description"/>
                         </p>
                     </div>
                 </div>
@@ -33,30 +33,30 @@
                                 <h5 class="card-title">Property Details</h5>
                                 <p class="card-text">
                                     <strong>Price:</strong>
-                                    <t t-esc="property.expected_price" />
+                                    <t t-esc="property.expected_price"/>
                                 </p>
                                 <p class="card-text">
                                     <strong>Bedrooms:</strong>
-                                    <t t-esc="property.bedrooms" />
+                                    <t t-esc="property.bedrooms"/>
                                 </p>
                                 <p class="card-text">
                                     <strong>Living Area:</strong>
-                                    <t t-esc="property.living_area" />
- sqm
+                                    <t t-esc="property.living_area"/>
+                                    sqm
                                 </p>
                                 <p class="card-text">
                                     <strong>Available From:</strong>
-                                    <t t-esc="property.date_availability" />
+                                    <t t-esc="property.date_availability"/>
                                 </p>
                                 <t t-if="property.garden">
                                     <p class="card-text">
                                         <strong>Garden Area:</strong>
-                                        <t t-esc="property.garden_area" />
- sqm
+                                        <t t-esc="property.garden_area"/>
+                                        sqm
                                     </p>
                                     <p class="card-text">
                                         <strong>Garden Orientation:</strong>
-                                        <t t-esc="property.garden_orientation" />
+                                        <t t-esc="property.garden_orientation"/>
                                     </p>
                                 </t>
                             </div>

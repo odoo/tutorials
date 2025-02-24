@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <!-- Root Menu for Estate Management -->
-    <menuitem id="menu_estate_root" name="Estate Management" />
+    <menuitem id="menu_estate_root" name="Estate Management"/>
     <!-- Properties Menu under Estate Management -->
     <menuitem id="menu_estate_property" name="Properties" parent="menu_estate_root" sequence="1"/>
     <!-- Settings Menu under Estate Management -->

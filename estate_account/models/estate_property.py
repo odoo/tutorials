@@ -7,16 +7,19 @@ class EstateProperty(models.Model):
     invoice_id = fields.Many2one('account.move', string="Invoice", readonly=True)
 
     def action_sold(self):
-        """ Override action_sold to create an empty invoice when selling a property. """
+        """ Override action_sold to create an invoice when selling a property. """
         # Call the original method to keep its behavior
-        res = super().action_sold()
+        try:
+            res = super().action_sold()
+        except:
+            raise UserError("An error occurred while marking the property as sold.")
+        # Check if the user has the right to sell the property
+        try:
+            self.check_access('write')
+        except:
+            raise AccessError("You don't have the right to sell this property.")
 
         for property in self:
-            try:
-                property.check_access('write')
-            except:
-                raise AccessError("You don't have the right to sell this property.")
-
             if not property.buyer_id:
                 raise UserError("A buyer must be assigned before marking the property as sold.")
 

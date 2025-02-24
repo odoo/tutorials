@@ -65,4 +65,3 @@ class TestRealEstateProperty(TransactionCase):
             form.garden = False
             self.assertEqual(form.garden_area, 0, "Garden Area should be reset to 0 when Garden checkbox is unchecked!")
             self.assertEqual(form.garden_orientation, False, "Garden Orientation should be reset to False when Garden checkbox is unchecked!")
-

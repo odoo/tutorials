@@ -23,7 +23,7 @@
                     <field name="bedrooms"/>
                     <field name="living_area"/>
                     <field name="expected_price"/>
-                    <field name="selling_price" />
+                    <field name="selling_price"/>
                     <field name="date_availability" invisible="1"/>
                 </list>
             </field>
@@ -60,7 +60,7 @@
                         <button name="print_report" string="Print" type="object" class="oe_highlight"/>
                         <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state not in ['new', 'offer_received']"/>
                         <!-- Statusbar for Property State -->
-                        <field name="state" widget="statusbar" />
+                        <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
                         <div class="oe_title mb-32">
@@ -77,13 +77,13 @@
                                 <field name="state" class="w-50"/>
                                 <field name="image" widget="image" class="w-50"/>
                                 <field name="property_type" class="w-50" options="{'no_create_edit': true, 'no_create': true}"/>
-                                <field name="postcode" class="w-50" />
-                                <field name="date_availability" class="w-50" />
+                                <field name="postcode" class="w-50"/>
+                                <field name="date_availability" class="w-50"/>
                             </group>
                             <group>
-                                <field name="expected_price" class="w-50" />
-                                <field name="best_price" class="w-50" />
-                                <field name="selling_price" class="w-50" />
+                                <field name="expected_price" class="w-50"/>
+                                <field name="best_price" class="w-50"/>
+                                <field name="selling_price" class="w-50"/>
                                 <field name="company_id" class="w-50"></field>
                             </group>
                         </group>
@@ -152,12 +152,12 @@
                     <separator/>
                     <filter string="Garden" name="garden" domain="[('garden', '=', 'True')]"/>
                     <separator/>
-                    <filter string="Garage" name="garage" domain="[('garage', '=', 'True')]" />
-                    <filter string="State" name="state" context="{'group_by':'state'}" />
+                    <filter string="Garage" name="garage" domain="[('garage', '=', 'True')]"/>
+                    <filter string="State" name="state" context="{'group_by':'state'}"/>
                     <separator/>
-                    <filter string="Garden Orientation" name="garden_orientation" context="{'group_by':'garden_orientation'}" />
+                    <filter string="Garden Orientation" name="garden_orientation" context="{'group_by':'garden_orientation'}"/>
                     <separator/>
-                    <filter string="Bedrooms" name="bedrooms" context="{'group_by':'bedrooms'}" />
+                    <filter string="Bedrooms" name="bedrooms" context="{'group_by':'bedrooms'}"/>
                     <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 </search>
             </field>
