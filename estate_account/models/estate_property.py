@@ -13,17 +13,9 @@ class EstateProperty(models.Model):
         if not self.buyer_id:
             raise ValueError("There is no buyer associated with the property")
 
-        journal = self.env['account.journal'].sudo().search([
-            ('type', '=', 'sale'),
-            *self.env['account.journal']._check_company_domain(self.company_id.id),
-        ], limit=1)
-
-        if not journal:
-            raise ValueError("There is no sales journal")
         self.env['account.move'].sudo().create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
-            'journal_id': journal.id,
             'company_id': self.company_id.id,
             'invoice_line_ids': [
                 # First Invoice line (60% of the selling price)

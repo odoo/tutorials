@@ -6,7 +6,7 @@
     'application': True,
     'category': 'Real Estate/Brokerage',
     'installable': True,
-    'depends': ['base','mail'],
+    'depends': ['base', 'mail'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',

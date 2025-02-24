@@ -117,10 +117,9 @@
                                 </field>
                             </group>
                         </page>
-
                         <page string="Other Info">
                             <group>
-                                <field name="buyer_id" domain="[('is_company', '=', is_commercial)]"/>
+                                <field name="buyer_id"/>
                                 <field name="salesperson_id"/>
                             </group>
                         </page>

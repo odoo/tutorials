@@ -76,16 +76,14 @@ class EstatePropertyOffer(models.Model):
                 (offer.date_deadline - offer.create_date).days
                 if offer.date_deadline else 7
             )
-    
+
     def action_confirm(self):
         for offer in self:
             # Check if the property is already sold
             if offer.property_id.state == 'sold':
                 raise UserError("Property is already sold")
-            
             if offer.property_id.offer_ids.filtered(lambda x: x.status == 'accepted'):
                 raise UserError("Only one offer can be accepted")
-
             # Update the offer status using CRUD method
             offer.write({'status': 'accepted'})
             offer.property_id.write({
@@ -93,34 +91,48 @@ class EstatePropertyOffer(models.Model):
                 'buyer_id': offer.partner_id.id,
                 'selling_price': offer.price,
             })
-    
+
     def action_refused(self):
+        # action for rejecting the property
         for property in self:
             if property.status == 'accepted':
-                property.property_id.buyer_id = False
-                property.property_id.selling_price = 0.0
+                property.property_id.write({
+                    'buyer_id': False,
+                    'selling_price': 0.0
+                })
             property.status = 'refused'
 
     @api.model_create_multi
-    def create(self,vals):
+    def create(self, vals):
         for val in vals:
             if (property_id := val.get('property_id')) and (offer_amount := val.get('price')):
-                property = self.env['estate.property'].browse(property_id)
+                property_ids.append(property_id)
                 existing_offer = property.offer_ids.mapped('price')
                 if existing_offer and offer_amount < max(existing_offer):
                     raise ValidationError("Cannot create offer less than current offer")
-                property.write({'state': 'offer_received'})
+            properties = self.env['estate.property'].browse(property_ids)
+            properties.state = 'offer_received'
         return super().create(vals)
+
+    @api.constrains('partner_id', 'property_id')
+    def _check_buyer_commercial(self):
+        # making sure that individual cannot buy commercial property
+        if any(
+            offer.partner_id and
+            offer.property_type_id == offer.env.ref('real_estate.property_type_Commercial') and not 
+            offer.partner_id.is_company
+            for offer in self
+        ):
+            raise UserError("Individual are not allowed to buy commercial property")
 
     def cron_auto_confirm_best_offer(self):
         today = date.today()
-        
         # Find properties that have offers and have exceeded their deadline
         expired_properties = self.env['estate.property'].search([
             ('date_deadline', '<=', today),
-            ('state', '=', 'offer_received')
+            ('state', '=', 'offer_received'),
+            ('offer_ids', '!=', False)
         ])
-
         for property in expired_properties:
             best_offer = property.offer_ids.filtered(lambda o: o.status != 'refused').sorted('price', reverse=True)[:1]
             best_offer.action_confirm()

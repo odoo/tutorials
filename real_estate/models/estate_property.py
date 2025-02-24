@@ -89,11 +89,9 @@ class EstateProperty(models.Model):
         "estate.property.type", string="Property Type",
         help="Type of the Property"
     )
-    is_commercial = fields.Boolean(compute="_compute_is_commercial", store=True)
     buyer_id = fields.Many2one(
         'res.partner', string="Buyer", copy=False,
-        help="Buyer of the Property", 
-        domain="[('is_company', '=', is_commercial)]"
+        help="Buyer of the Property",
     )
     salesperson_id = fields.Many2one(
         'res.users', string="Salesperson",
@@ -127,12 +125,6 @@ class EstateProperty(models.Model):
         help="deadline for the property"
     )
 
-    @api.depends("property_type_id")
-    def _compute_is_commercial(self):
-        commercial_type = self.env.ref("real_estate.property_type_Commercial", raise_if_not_found=False)
-        for property in self:
-            property.is_commercial = property.property_type_id == commercial_type
-    
     # Compute the total area 
     @api.depends("living_area","garden_area")
     def _compute_total_area(self):
@@ -144,7 +136,7 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for property in self:
             property.best_price = max(property.offer_ids.mapped('price'), default=0.00)
-    
+
     # Change garden area and garden orientation on change of garden
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -156,15 +148,19 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
+        # action for selling property
+        self.ensure_one()
         if self.state == 'cancelled':
             raise UserError("Cancelled Properties cannot be sold")
         self.state = 'sold'
 
     def action_cancel(self):
+        # action for cancelling property
+        self.ensure_one()
         if self.state == 'sold':
             raise UserError("Sold Properties cannot be Cancelled")
         self.state = 'cancelled'
-    
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
