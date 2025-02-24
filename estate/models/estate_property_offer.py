@@ -1,5 +1,8 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare, float_is_zero
+
+from ..constants import PROPERTY_PRICE_PRECISION_EPSILON
 
 
 class EstatePropertyOffer(models.Model):
@@ -25,8 +28,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date and record.date_deadline:
                 create_date = fields.Date.from_string(record.create_date)
-                deadline_date = fields.Date.from_string(record.date_deadline)
-                record.validity = (deadline_date - create_date).days
+                record.validity = (record.date_deadline - create_date).days
 
     def action_accept_offer(self):
         self.ensure_one()
@@ -47,14 +49,18 @@ class EstatePropertyOffer(models.Model):
         self.status = 'refused'
         return True
 
-    @api.model
-    def create(self, vals):
-        property_id_number = vals.get('property_id')
-        property_id = self.env['estate.property'].browse(property_id_number)
-        offers = property_id.offer_ids
-        if offers.filtered(lambda offer: offer.price > vals.get('price')):
-            raise UserError('The offer price must be at least %s' % max(offers.mapped('price'), default = 0.0))
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        property_offers = [vals for vals in vals_list if vals.get('property_id')]
+        for offer_vals in property_offers:
+            property_id = self.env['estate.property'].browse(offer_vals.get('property_id'))
+            max_price = max(property_id.offer_ids.mapped('price'), default = 0.0)
+            if float_compare(
+                offer_vals.get('price'), max_price, precision_rounding = PROPERTY_PRICE_PRECISION_EPSILON
+                ) < 0:
+                raise UserError('The offer must be at least %s' % max_price)
+            property_id.state = 'offer_received'
+        return super().create(vals_list)
 
     _sql_constraints = [
         ('price_positive', 'CHECK(price > 0)', 'Price must be positive')

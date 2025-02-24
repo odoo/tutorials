@@ -2,17 +2,13 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
+from ..constants import PROPERTY_PRICE_PRECISION_EPSILON, PROPERTY_SELLING_PRICE_THRESHOLD
+
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'model for the properties in our app'
     _order = 'id desc'
-
-    # selling prices for the properties should be at least 90% of the expected price
-    PROPERTY_SELLING_PRICE_THRESHOLD = 0.9
-
-    # epsilon to define the rounding precision when comparing floats
-    PROPERTY_PRICE_PRECISION_EPSILON = 1e-6
 
     name = fields.Char(required = True)
     description = fields.Text()
@@ -80,13 +76,6 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
             self.garden_area = 10
 
-    @api.onchange('offer_ids')
-    def _onchange_offer_ids(self):
-        if self.offer_ids and self.state == 'new':
-            self.state = 'offer_received'
-        elif not self.offer_ids and self.state == 'offer_received':
-            self.state = 'new'
-
     def action_cancel_property(self):
         if self.filtered(lambda record: record.state == 'sold'):
             raise UserError('Sold properties cannot be cancelled')
@@ -104,11 +93,11 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if float_is_zero(record.selling_price, precision_rounding = self.PROPERTY_PRICE_PRECISION_EPSILON):
+            if float_is_zero(record.selling_price, precision_rounding = PROPERTY_PRICE_PRECISION_EPSILON):
                 continue
             if float_compare(
-                record.selling_price, record.expected_price * self.PROPERTY_SELLING_PRICE_THRESHOLD,
-                precision_rounding = self.PROPERTY_PRICE_PRECISION_EPSILON
+                record.selling_price, record.expected_price * PROPERTY_SELLING_PRICE_THRESHOLD,
+                precision_rounding = PROPERTY_PRICE_PRECISION_EPSILON
             ) < 0:
                 raise UserError('The selling price must be at least 90% of the the expected price')
 
