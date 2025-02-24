@@ -14,8 +14,6 @@ export class Counter extends Component {
 
     increment() {
         this.state.value++;
-        if (this.props.onChange) {
-            this.props.onChange();
-        }
+        this.props.onChange?.();
     }
 }

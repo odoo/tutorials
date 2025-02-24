@@ -35,6 +35,11 @@
                     <h1>
                         <field name="name" />
                     </h1>
+                    <group>
+                        <field name="property_image" widget="image"
+                            style="max-width: 300px; max-height: 300px;"
+                            nolabel = "1" />
+                    </group>
                     <div class="mb16">
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     </div>

@@ -4,7 +4,7 @@
     "category": "Real Estate/Brokerage",
     "summary": "Module to manage real estate advertisements",
     "description": "A module to create and manage real estate advertisements.",
-    "depends": ["base","mail"],
+    "depends": ["base","mail","website"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
@@ -17,6 +17,8 @@
         "views/estate_property_tag_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_menus.xml",
+        "views/property_detail.xml",
+        "views/property_list.xml",
         "views/res_users_views.xml",
         "data/estate_property_type_data.xml",
     ],

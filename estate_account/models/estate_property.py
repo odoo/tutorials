@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sell_property(self):
+        result = super().action_sell_property()
         try:
             self.check_access("write")
         except AccessError:
@@ -24,4 +25,4 @@ class EstateProperty(models.Model):
             ]
         })
 
-        return super().action_sell_property()
+        return result

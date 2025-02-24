@@ -79,6 +79,7 @@ class EstateProperty(models.Model):
         copy=False,
         default='new'
     )
+    property_image = fields.Image(string="Property Image", max_width=1024, max_height=1024, store=True)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

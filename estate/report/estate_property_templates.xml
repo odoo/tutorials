@@ -42,12 +42,6 @@
                             <strong>Salesman: </strong>
                             <span t-field="property.salesperson_id.name"/>
                         </div>
-                        <!-- <div>
-                            <strong>Status: </strong>
-                            <t t-set="property_state_dict" t-value="dict(property._fields['state'].selection)" />
-                            <span t-out="property_state_dict[property.state]" />
-                        </div> -->
-
                         <t t-if="property.offer_ids">
                             <t t-call="estate.offer_table_template"/>
                         </t>
