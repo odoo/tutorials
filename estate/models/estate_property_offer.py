@@ -49,6 +49,15 @@ class EstatePropertyOffer(models.Model):
             self.property_id.state = 'offer-received'
         self.status = 'refused'
 
+    @api.model_create_multi
+    def create(self, val_list):
+        for record in self.env['estate.property'].browse(val_list[0]['property_id']).offer_ids:
+            if record.price > val_list[0]['price']:
+                raise exceptions.UserError("The offer price is too low.")
+        offer = super().create(val_list)
+        if offer.property_id.state == 'new':
+            offer.property_id.state = 'offer-received'
+
 
     _sql_constraints = [
         ('check_price', 'CHECK(price >= 0)',

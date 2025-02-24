@@ -67,11 +67,6 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
-    @api.onchange("offer_ids")
-    def _onchange_offer_ids(self):
-        if self.state == 'new' and len(self.offer_ids) > 0:
-            self.state = 'offer-received'
-
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden is True:
@@ -109,3 +104,11 @@ class EstateProperty(models.Model):
             min_price = record.expected_price * 0.9
             if float_compare(record.selling_price, min_price, precision_digits=1) == -1:
                 raise exceptions.ValidationError("The selling price is too low.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_not_new_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise exceptions.UserError("You can't delete a property unless it is new or cancelled.")
+            else:
+                return super().delete()
