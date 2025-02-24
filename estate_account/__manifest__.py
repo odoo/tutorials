@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
     'name': 'Estate Account',
     'depends': ['estate', 'account'],
-    'version': '1.0',
     'summary': 'Enables invoicing for Estate properties',
+    'version': '1.0',
     'description': """
 This module contains all the feature needed for invoicing estate properties.
     """,

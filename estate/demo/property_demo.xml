@@ -13,9 +13,8 @@
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
-        <field name="property_type_id" ref="estate.type_residential"/>
+        <field name="property_type_id" ref="estate.estate_property_type_residential"/>
     </record>
-
     <record id="property_trailerhome" model="estate.property">
         <field name="name">Trailer home</field>
         <field name="state">cancelled</field>
@@ -27,9 +26,8 @@
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="selling_price">120000</field>
-        <field name="property_type_id" ref="estate.type_residential"/>
+        <field name="property_type_id" ref="estate.estate_property_type_residential"/>
     </record>
-
     <record id="property_checkdemo" model="estate.property">
         <field name="name">Check demo</field>
         <field name="state">offer received</field>
@@ -40,7 +38,7 @@
         <field name="bedrooms">2</field>
         <field name="living_area">250</field>
         <field name="facades">2</field>
-        <field name="property_type_id" ref="estate.type_residential"/>
+        <field name="property_type_id" ref="estate.estate_property_type_residential"/>
         <field name="offer_ids" eval="[
         Command.create({
         'partner_id' :ref('base.res_partner_3'),

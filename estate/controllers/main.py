@@ -17,10 +17,10 @@ class Visitor(Controller):
             step=items_per_page,
         )
         properties = Property.search([], limit=items_per_page, offset=(page - 1) * items_per_page)
-        return request.render('estate.property_template',{'properties': properties,'pager':pager})
+        return request.render('estate.property_template', {'properties':
+    properties, 'pager':pager})
 
     @route('/property/<model("estate.property"):property>', type='http', auth='public', website=True)
     def property_details(self, property):
-        return request.render('estate.property_details_template',{
-            'property':property
-        })
+        return request.render('estate.property_details_template', {'property':
+    property})

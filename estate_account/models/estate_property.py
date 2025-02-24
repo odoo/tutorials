@@ -1,12 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import Command, fields, models
+from odoo import Command
+from odoo import fields
+from odoo import models
 from odoo.exceptions import AccessError
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
-    def set_property_sold(self):
+    def action_sold(self):
         try:
             self.check_access('write')
         except:
@@ -24,4 +26,4 @@ class EstateProperty(models.Model):
                 })
             ],
         })
-        return super().set_property_sold()
+        return super().action_sold()

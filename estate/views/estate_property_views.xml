@@ -2,7 +2,7 @@
     <record id = "estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">kanban,list,form</field>
+        <field name="view_mode">kanban, list, form</field>
     </record>
 
     <record id="estate_property_view_tree" model="ir.ui.view">
@@ -28,9 +28,9 @@
         <field name="arch" type="xml">
             <form string="Estate Properties">
                 <header>
-                    <button name="set_property_sold" type="object" string="Sold" invisible="state=='sold' or state=='cancelled'"/>
-                    <button name="set_property_cancel" type="object" class="btn-secondary" string="Cancel" invisible="state=='sold' or state=='cancelled'"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state=='sold' or state=='cancelled'"/>
+                    <button name="action_cancel" type="object" class="btn-secondary" string="Cancel" invisible="state=='sold' or state=='cancelled'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer received, offer accepted, sold"/>
                 </header>
                 <sheet>
                     <div class="container">
@@ -111,7 +111,7 @@
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <separator/>
-                <filter string="Available" name="state" domain="[('state', 'in', ['new','offer received'])]"/>
+                <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer received'])]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
