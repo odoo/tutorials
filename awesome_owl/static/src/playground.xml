@@ -4,15 +4,19 @@
         <t t-name="awesome_owl.playground">
             <div>
                 <div class="border m-4 p-3 d-inline-block">
-                    <Counter callback="findSum"/>
-                    <Counter callback="findSum"/>
+                    <Counter callback.bind="findSum"/>
+                    <Counter callback.bind="findSum"/>
                     <div>The Sum is :  <t t-esc="this.state.sum "/></div>
                 </div>
             </div>
             <div>
                 <div class="border m-4 p-3 d-inline-block">
-                    <Card title="title1" content="content1"/>
-                    <Card title="title2" content="content2"/>
+                    <Card title="title1">
+                        some content of card
+                    </Card>
+                     <Card title="title1">
+                        <Counter/>
+                    </Card>
                 </div>
             </div>
             <div>

@@ -39,7 +39,7 @@ class EstatepropertyOffer(models.Model):
     @api.depends('date_deadline')
     def _inverse_date_deadline(self):
         for records in self:
-            records.validity = (records.date_deadline - records.create_date).days 
+            records.validity = (records.date_deadline - fields.Date.today()).days
 
     #---------------------------
         #Contrains Methods

@@ -129,8 +129,8 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <graph string="Properties">
-                <field name="property_type_id" />
                 <field name="buyer_id" />
+                <field name="property_type_id" />
             </graph>
         </field>
     </record>

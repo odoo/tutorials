@@ -100,7 +100,7 @@ class RealEstate(models.Model):
         for record in self:
             if record.expected_price <= 0:
                 raise exceptions.ValidationError("Expected Price must be positive")
-            if record.selling_price < record.expected_price * 0.9 :
+            if record.selling_price != 0 and record.selling_price < record.expected_price * 0.9 :
                 raise exceptions.ValidationError("Selling Price must be more then or equal to 90'%' of expected price")
 
     #-----------------------------------

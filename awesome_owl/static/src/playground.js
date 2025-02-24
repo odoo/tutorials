@@ -7,10 +7,10 @@ import { TodoList } from "./TodoList/todolist";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
+    static components = { Card, Counter, TodoList };
 
     setup(){
         this.state = useState({ sum: 0 });
-        this.findSum = this.findSum.bind(this);
     }
 
     findSum(){
@@ -22,5 +22,4 @@ export class Playground extends Component {
     title2 = markup("<div>Card 2</div>")
     content2 = markup("<div class='text-primary' >content of card 2</div>")
 
-    static components = { Card, Counter, TodoList };
 }

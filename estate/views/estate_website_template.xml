@@ -39,7 +39,7 @@
                                         <strong>Price : </strong> ₹ <t
                                             t-esc="property.expected_price" />
                                     </p>
-                                    <a t-att-href="'/property/%s' % property.id"
+                                    <a t-att-href="'/property/%d' % property.id"
                                         class="btn btn-outline-primary">
                                         <i class="fa fa-info-circle"></i> View Details </a>
                                 </div>

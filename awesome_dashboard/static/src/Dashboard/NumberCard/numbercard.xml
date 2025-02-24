@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.NumberCard">
+        <div class="card d-inline-block m-2">
+            <p class="card-text m-2 p-2"><t t-slot="default"/></p>
+        </div>        
+    </t>
+
+</templates>

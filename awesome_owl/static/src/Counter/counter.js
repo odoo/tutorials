@@ -8,11 +8,13 @@ export class Counter extends Component {
     }
 
     static props = {
-        callback : { type : Function }
+        callback : { type : Function, optional : true },
     }
 
     increment() {
         this.state.value++;
-        this.props.callback()
+        if(this.props.callback){
+            this.props.callback()
+        }
     }
 }
