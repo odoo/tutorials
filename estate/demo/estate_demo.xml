@@ -51,16 +51,13 @@
     <field name="validity">14</field>
   </record>
 
-  <record id="property_type1" model="estate.property.type">
-    <field name="name">Residential</field>
-  </record>
 
   <record id="estate_property_big_villa" model="estate.property">
-    <field name="property_type_id" ref="property_type1" />
+    <field name="property_type_id" ref="property_type_residential" />
   </record>
 
   <record id="estate_property_trailer_home" model="estate.property">
-    <field name="property_type_id" ref="property_type1" />
+    <field name="property_type_id" ref="property_type_residential" />
   </record>
 
   <record id="estate_property_new" model="estate.property">
@@ -88,7 +85,7 @@
 
   <record id="cabin" model="estate.property">
     <field name="name">Cozy Cabin</field>
-    <field name="state">sold</field>
+    <field name="state">new</field>
     <field name="description">Small cabin by lake</field>
     <field name="postcode">10000</field>
     <field name="date_availability">2020-01-01</field>
@@ -98,8 +95,8 @@
     <field name="facades">4</field>
     <field name="garage">False</field>
     <field name="garden">True</field>
-    <field name="property_type_id" ref="property_residential" />
-    <field name="user_id" ref="base.user_admin" />
+    <field name="property_type_id" ref="property_type_residential" />
+    <field name="buyer_id" ref="base.user_admin" />
   </record>
 
   <record id="prop1" model="estate.property">
@@ -114,9 +111,11 @@
     <field name="facades">4</field>
     <field name="garage">False</field>
     <field name="garden">True</field>
-    <field name="property_type_id" ref="property_residential" />
-    <field name="user_id" ref="base.user_admin" />
+    <field name="property_type_id" ref="property_type_residential" />
+    <field name="buyer_id" ref="base.user_admin" />
   </record>
+
+
 
   <record id="soldo1" model="estate.property.offer">
     <field name="partner_id" ref="base.res_partner_12" />

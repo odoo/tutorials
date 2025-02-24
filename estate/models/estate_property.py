@@ -102,4 +102,3 @@ class Property_Plan(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError("You can only delete properties in 'New' or 'Cancelled' state.")
- 
