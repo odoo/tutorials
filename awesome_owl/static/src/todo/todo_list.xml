@@ -2,6 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_list">
         <div class="card d-inline-block m-2" style="width: 18rem;">
+            <input type="text" t-on-keyup="addItem"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
                 <div>
                     <TodoItem id="todo.id" description="todo.description" isCompleted="todo.isCompleted"/>
