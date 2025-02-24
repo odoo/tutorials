@@ -2,15 +2,20 @@
 <template>
     <t t-name="awesome_owl.Card">
     <div class="card d-inline-block m-2" style="width: 18rem">
-        <div class="card-body">
-        <h5 class="card-title">
-            <t t-esc="props.title"/>
-        </h5>
-        <p>
+        <div class="card-header">
+            <h5 class="card-title">
+                <t t-esc="props.title"/>
+            </h5>
+            <!-- Button to toggle content visibility -->
+            <button class="btn btn-secondary btn-sm" t-on-click="toggleCard">
+                <span t-if="isOpen.value">Hide</span>
+                <span t-if="!isOpen.value">Show</span>
+            </button>
+        </div>
+        <div class="card-body" t-if="isOpen.value">
             <t t-out="props.content"/>
             <t t-out="value1"/>
             <t t-out="value2"/>
-        </p>
         </div>
     </div>
     </t>

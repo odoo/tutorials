@@ -8,7 +8,15 @@
 
         <!-- List of Todos -->
         <t t-foreach="todos" t-as="todo" t-key="todo.id">
-            <TodoItem todo="todo"/>
+            <TodoItem todo="todo" toggleTodoState.bind="toggleTodoState" removeTodo.bind="removeTodo" >
+                    <!-- Only for t-default check -->
+                    <div class="additional-content">
+                        <small t-esc="todo.description"/>
+                        <!-- <Counter /> -->
+                    </div>
+
+            </TodoItem>
         </t>
+
     </div>
 </t>

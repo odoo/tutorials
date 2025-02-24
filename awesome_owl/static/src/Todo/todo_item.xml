@@ -2,9 +2,29 @@
 
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_item">
-        <div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}" class="todo-item card container" style="width: 18rem">
-            <p>ID: <t t-esc="props.todo.id"/></p>
-            <p>Description: <t t-esc="props.todo.description"/></p>
+        <div class="card mb-3">
+            <div class="card-body d-flex align-items-center">
+                <div class="form-check me-3">
+                <input type="checkbox" 
+                        t-att-checked="props.todo.isCompleted"
+                        t-on-change="toggleTodo"/>
+                </div>
+                <!-- Todo content -->
+                <div>
+                <p class="card-text mb-0"
+                    t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+                    <span><t t-esc="props.todo.id"/>. </span>
+                    <span> <t t-esc="props.todo.description"/></span>
+                    <button class="btn btn-danger" t-on-click="deleteTodo" style="color: red" >
+                        <span class="fa fa-remove" />
+                    </button>
+
+                    <div>
+                        <t t-slot="default"/>
+                    </div>
+                </p>
+                </div>
+            </div>
         </div>
     </t>
 </templates>
