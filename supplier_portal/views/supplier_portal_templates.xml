@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="supplier_portal_template" name="Supplier Portal">
+        <t t-call="website.layout">
+            <div class="d-flex justify-content-center">
+                <div class="">
+                    <h2>Supplier Invoice Upload</h2>
+                    <form action="/supplier_portal/submit" method="POST" enctype="multipart/form-data" class="mt-4">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12">
+                                <div class="mb-3 row align-items-center">
+                                    <label for="company" class="col-sm-3 col-form-label text-end">Organization:</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select" id="company" name="company" required="true">
+                                            <t t-foreach="request.env.user.company_ids" t-as="company">
+                                                <option t-att-value="company.id" t-esc="company.name"></option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label for="pdf_file" class="col-sm-3 col-form-label text-end">Upload PDF:</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="pdf_file" name="pdf_file" accept="application/pdf" required="true" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row align-items-center">
+                                    <label for="xml_file" class="col-sm-3 col-form-label text-end">Upload XML:</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="xml_file" name="xml_file" accept="application/xml" required="true" class="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="generic_message" name="Generic Message">
+        <t t-call="website.layout">
+            <div class="d-flex justify-content-center">
+                <div class="">
+                    <h2>Message</h2>
+                    <p t-esc="message"></p>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                    <a href="/my" class="btn btn-primary">
+                        <i class="fa fa-home"></i> Back to Dashboard
+                    </a>
+            </div>
+        </t>
+    </template>
+</odoo>
