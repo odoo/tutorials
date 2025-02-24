@@ -6,7 +6,6 @@ const statistics = reactive({ isReady: false});
 const fetchData = async () => {
     try {
         const result = await rpc("/awesome_dashboard/statistics");
-        console.log(result)
         Object.assign(statistics, result, {isReady: true});
     } catch (error) {
         console.log(error)

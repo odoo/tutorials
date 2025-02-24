@@ -49,12 +49,11 @@ export class PieChart extends Component{
         const data = Object.values(this.props.data);
         const colors = labels.map((_, index) => getColor(index));
 
-        // Update chart data
         this.chart.data.labels = labels;
         this.chart.data.datasets[0].data = data;
         this.chart.data.datasets[0].backgroundColor = colors;
 
-        this.chart.update(); // Refresh the chart
+        this.chart.update();
     }
 }
 

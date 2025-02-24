@@ -52,6 +52,10 @@
     <template id="estate_web_property_details">
         <t t-call="website.layout">
             <div class="container py-5">
+                <div t-if="message" class="alert alert-info alert-dismissible fade show" role="alert">
+                    <p class="m-0"><t t-esc="message"/></p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <div class="row d-flex align-items-stretch">
                     <div class="col-md-6 d-flex">
                         <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
@@ -75,13 +79,20 @@
                             <p>
                                 Status: <span class="fw-semibold" t-field="property.status"></span>
                             </p>
+                            <p  t-if="property.status == 'offer_received'" >
+                                Best Price: <span class="fw-semibold" t-field="property.best_price"></span>
+                            </p>
+                            <p  t-if="property.status == 'offer_accepted'" >
+                                Selling Price: <span class="fw-semibold" t-field="property.selling_price"></span>
+                            </p>
                             <a t-att-href="'/property/make_offer/' + str(property.id)"
-                                        class="btn border rounded w-100 fw-bold"
-                                        style="color: rgba(113,75, 103, 1);"
-                                        onmouseover="this.style.backgroundColor='rgba(113, 75, 103, 1)'; this.style.color='rgb(255, 255, 255)';"
-                                        onmouseout="this.style.backgroundColor=''; this.style.borderColor=''; this.style.color='rgba(113, 75, 103, 1)';">
-                                        Make an offer
-                                    </a>
+                                class="btn border rounded w-100 fw-bold"
+                                t-if="property.status != 'cancelled' and property.status != 'sold'"
+                                style="color: rgba(113,75, 103, 1);"
+                                onmouseover="this.style.backgroundColor='rgba(113, 75, 103, 1)'; this.style.color='rgb(255, 255, 255)';"
+                                onmouseout="this.style.backgroundColor=''; this.style.borderColor=''; this.style.color='rgba(113, 75, 103, 1)';">
+                                Make an offer
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -105,9 +116,11 @@
                         <div class="card p-4 w-100 h-100 d-flex flex-column justify-content-between">
                             <h5 class="card-title fs-3 fw-bold text-primary mb-3" t-field="property.name"></h5>
                             <h4 class="text-primary border-bottom py-2">Create Offer</h4>
-                            <form method="post" action="/make_offer">
+                            <form method="post" action="/property/create_offer">
                                 <div class="mb-3 ">
+                                    <p>Expected Price : <t t-esc="property.expected_price"></t></p>
                                     <label for="price" class="form-label text-muted fw-bold">Offer Price</label>
+                                    <input id="property_id" name="property_id" type="hidden" t-att-value="property.id"/>
                                     <input id="price" name="price" type="number" class="form-control mb-3" 
                                         placeholder="Enter Price"/>
                                     <label for="price" class="form-label text-muted fw-bold">Validity</label>
