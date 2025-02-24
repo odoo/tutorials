@@ -1,9 +1,17 @@
-import { Component } from '@odoo/owl';
+/** @odoo-module */
 
-export class TodoItem extends Component {
-    static template = 'awesome_owl.TodoItem';
-    static props = ['todo', 'deleteTodo']; 
-    setup(){this.upperCaseOne = this.upperCaseOne.bind(this) }
-    onChange(){this.props.todo.isCompleted = !this.props.todo.isCompleted}
-    upperCaseOne() {this.props.todo.description = this.props.todo.description.toUpperCase()}
+import { Component, useState } from '@odoo/owl';
+import { Counter } from '../counter/counter';
+import { Card } from '../card/card';
+
+export class Playground extends Component {
+    static template = 'awesome_owl.playground';
+    static components = { Counter, Card };
+    setup() {
+        this.state = useState({ count: 0 });
+        this.incrementsum = this.incrementsum.bind(this);
+    }
+    incrementsum() {
+        this.state.count++;
+    }
 }

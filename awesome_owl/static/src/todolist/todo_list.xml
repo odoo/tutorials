@@ -1,22 +1,19 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<templates xml:space='preserve'>
-  <t t-name='awesome_owl.TodoList'>
-     <div>
-       <div>
-        <input t-ref='input' placeholder='Add task' t-model='state.newTodo' ></input>
-        <button t-on-click='addNewTodo'>Add Task</button>
-        <br></br>
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-name="awesome_owl.TodoList">
+    <div>
+      <div>
+        <input t-ref="input" placeholder="Add task" t-model="state.newTodo" />
+        <button t-on-click="addNewTodo">Add Task</button>
+        <br />
         <h4>Task todo</h4>
         <ol>
-         <t t-foreach='state.todos' t-as='todo' t-key='todo.id'>
-          <TodoItem
-              todo='todo'
-              deleteTodo='deleteTodo'
-            />
-         </t> 
+          <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+            <TodoItem todo="todo" deleteTodo="deleteTodo" />
+          </t>
         </ol>
-        <button t-on-click='upperCaseAll'>Upper</button>
-     </div> 
-     </div> 
+        <button t-on-click="upperCaseAll">Upper</button>
+      </div>
+    </div>
   </t>
 </templates>

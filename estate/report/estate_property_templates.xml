@@ -18,12 +18,11 @@
                         </div>
                         <div>
                             <strong>Status:</strong>
-                            <span t-field="property.status"></span>
+                            <span t-field="property.state"></span>
                         </div>
                         <t t-call="estate.offer_table_template" />
                     </div>
                 </t>
-
             </t>
         </t>
     </template>
@@ -33,37 +32,27 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>buyer_name</th>
-                        <th>validity</th>
-                        <th>date_deadline</th>
+                        <th>Buyer Name</th>
+                        <th>Validity</th>
+                        <th>Date Deadline</th>
                         <th>Price</th>
-                        <th>status</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr t-foreach="offers" t-as="offer">
-                        <td>
-                            <span t-field="offer.partner_id"></span>
-                        </td>
-                        <td>
-                            <span t-field="offer.validity"></span>
-                        </td>
-                        <td>
-                            <span t-field="offer.date_deadline"></span>
-                        </td>
-                        <td>
-                            <span t-field="offer.price"></span>
-                        </td>
-                        <td>
-                            <span t-field="offer.status"></span>
-                        </td>
+                        <td><span t-field="offer.partner_id"/></td>
+                        <td><span t-field="offer.validity"/></td>
+                        <td><span t-field="offer.date_deadline"/></td>
+                        <td><span t-field="offer.price"/></td>
+                        <td><span t-field="offer.status"/></td>
                     </tr>
                 </tbody>
             </table>
         </t>
         <t t-else="">
             <center>
-                <h2>there is no offer in this property</h2>
+                <h2>There is no offer for this property</h2>
             </center>
         </t>
     </template>
@@ -72,25 +61,20 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
-                        <h2>
-                            <h1 t-field="user.name"></h1>
-                        </h2>
+                        <h2><h1 t-field="user.name"/></h2>
                         <t t-set="propertys" t-value="user.mapped('property_ids')" />
                         <t t-foreach="propertys" t-as="property">
-                            <h2>
-                                <h1 t-field="property.name" />
-                            </h2>
-
+                            <h2><h1 t-field="property.name" /></h2>
                             <div>
                                 <strong>Expected Price: </strong>
                                 <span t-field="property.expected_price" />
                             </div>
                             <div>
                                 <strong>Status: </strong>
-                                <span t-field="property.status" />
+                                <span t-field="property.state" />
                             </div>
-                            <t t-if="property.status == 'sold'">
-                                <strong>!!!Invoice has already been created !!!</strong>
+                            <t t-if="property.state == 'sold'">
+                                <strong>!!! Invoice has already been created !!!</strong>
                             </t>
                             <t t-call="estate.offer_table_template" />
                         </t>

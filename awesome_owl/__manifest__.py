@@ -1,19 +1,16 @@
-# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 {
     'name': "Awesome Owl",
-    'summary': """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
-    """,
+    'category': 'Tutorials/AwesomeOwl',
+    'version': '0.1',
+    'author': "Odoo",
+    'summary': """Starting module for "Discover the JS framework, chapter 1: Owl components" """,
     'description': """
         Starting module for "Discover the JS framework, chapter 1: Owl components"
     """,
-    'author': "Odoo",
-    'website': "https://www.odoo.com",
-    'category': 'Tutorials/AwesomeOwl',
-    'version': '0.1',
     'depends': ['base', 'web'],
-    'application': True,
-    'installable': True,
+    'website': "https://www.odoo.com",
     'data': [
         'views/templates.xml',
     ],
@@ -29,5 +26,7 @@
             'awesome_owl/static/src/**/*',
         ],
     },
+    'installable': True,
+    'application': True,
     'license': 'AGPL-3'
 }
