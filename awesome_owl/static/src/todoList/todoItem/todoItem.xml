@@ -3,7 +3,9 @@
 
     <t t-name="awesome_owl.todo.item">
         <p t-att-class="{'text-muted': this.state.isCompleted, 'text-decoration-line-through': this.state.isCompleted}">
-                <t t-esc="this.state.id"/>. <t t-esc="this.state.description"/>
+            <input type="checkbox" t-on-click="this.toggleState"/>
+            <t t-esc="this.state.id"/>. <t t-esc="this.state.description"/> 
+            <span class="fa fa-remove" t-on-click="removeMe"/>
         </p>
     </t>
 

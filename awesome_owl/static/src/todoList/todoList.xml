@@ -6,10 +6,10 @@
             <h2>Todo List :</h2>
         </div>
 
-        <input placeholder="Enter a new task" t-model="this.newTodo.newDescription" t-on-keyup="this.addTodo"/>
+        <input placeholder="Enter a new task" t-model="this.newTodo.newDescription" t-on-keyup="this.addTodo" t-ref="autofocus"/>
         
         <t t-foreach="this.todos" t-as="todo" t-key="todo.id">
-            <TodoItem id="todo.id" description="todo.description" isCompleted="todo.isCompleted"/>
+            <TodoItem id="todo.id" description="todo.description" isCompleted="todo.isCompleted" removeTodo.bind="this.removeTodo"/>
         </t>
     </t>
 
