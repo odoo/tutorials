@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_estate_account" inherit_id="estate.report_estate_property_property">
+        <xpath expr="//div[contains(@style, 'margin-bottom: 20px;')]" position="after">
+            <p style="color: red; font-weight: bold; text-align: center; margin-top: 10px;">
+                !!! Invoice has already been created !!!
+            </p>
+        </xpath>
+    </template>
+</odoo>

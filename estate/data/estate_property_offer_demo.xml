@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="offer_azure_interior_10000" model="estate.property.offer">
+            <field name="price">10000</field>
+            <field name="validity">14</field>
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="property_id" ref="property_big_villa"/>
+        </record>
+
+        <record id="offer_azure_interior_1500000" model="estate.property.offer">
+            <field name="price">1500000</field>
+            <field name="validity">14</field>
+            <field name="partner_id" ref="base.res_partner_12"/>
+            <field name="property_id" ref="property_big_villa"/>
+        </record>
+
+        <record id="offer_deco_addict_1500001" model="estate.property.offer">
+            <field name="price">1500001</field>
+            <field name="validity">14</field>
+            <field name="partner_id" ref="base.res_partner_2"/>
+            <field name="property_id" ref="property_big_villa"/>
+        </record>
+
+    </data>
+</odoo>
