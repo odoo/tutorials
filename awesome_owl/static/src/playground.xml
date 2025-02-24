@@ -6,10 +6,26 @@
         <Counter onChange.bind="incrementSum"/>
         <p>Total sum:<t t-esc="state.sum"/></p>
     </div>
-        <Card title="'card1'" text="text1"/>
-        <Card title="'card2'" text="text2"/>
+        <Card title="'card1'">
+        <t t-slot="default">
+        <Counter onChange.bind="incrementSum"/>
+        </t>
+        </Card>
+
+        <Card title="'card3'">
+        <t t-slot="default">
+        <Counter onChange.bind="incrementSum"/>
+        </t>
+        </Card>
+
+        <Card title="'card2'"/>
     <div>
+    <Card title="'LIST'">
+        <t t-slot="default">
         <TodoList/>
+        </t>
+    </Card>
+        
     </div>
         
     </t>

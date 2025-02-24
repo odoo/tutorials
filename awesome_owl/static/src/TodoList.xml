@@ -3,7 +3,7 @@
 <t t-name="awesome_owl.TodoList">
         <div class="p-3">
          <input type="text" name="todo" placeholder="To do" t-on-keyup="addTodo" t-ref="input">To do:</input>
-            <TodoItem todo="state"/>
+            <TodoItem todo="state" onChange.bind="toggleState" removeTodo="removeTodo"/>
         </div>
     </t>
 </templates>

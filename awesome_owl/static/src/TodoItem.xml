@@ -6,9 +6,10 @@
             <t t-foreach="props.todo" t-as="item" t-key="item.id">
             <li>
             <p t-att-class="{'text-muted':item.isCompleted,'text-decoration-line-through':item.isCompleted}">
-                <input type="checkbox" t-att-value="item.isCompleted" onChange.bind="toggleState"/>
+                <input type="checkbox" t-on-click="checked" t-att-id="item.id"/>
                 <t t-esc="item.id"/>
                 <t t-esc="item.description"/>
+                <span class="fa fa-remove" t-on-click="removeTodo" t-att-id="item.id"/>
             </p>
             </li>
             </t>
