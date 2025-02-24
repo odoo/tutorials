@@ -35,6 +35,12 @@ class Property_Plan(models.Model):
     best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store=True)
     state = fields.Selection(string="State", selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')], required=True, copy=False, default="new")
     active = fields.Boolean(string="Active", default=True)
+    company_id = fields.Many2one(
+        "res.company",
+        required=True,
+        default=lambda self: self.env.company,  
+        string="Company"
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

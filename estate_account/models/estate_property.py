@@ -6,13 +6,10 @@ class EstateProperty(models.Model):
     def button_sold_action(self):
         """Override Sold button action to create an invoice with invoice lines."""
         res = super().button_sold_action()  
-        
+        self.check_access("write")
         invoice_vals = {
             "partner_id": self.buyer_id.id,  
-            "move_type": "out_invoice",  
-            "journal_id": self.env["account.journal"].search(
-                [("type", "=", "sale")], limit=1
-            ).id,  
+            "move_type": "out_invoice", 
             "invoice_line_ids": [
                 Command.create({
                     "name": self.name,
@@ -34,7 +31,7 @@ class EstateProperty(models.Model):
             ],
         }
 
-        invoice = self.env["account.move"].create(invoice_vals)
+        invoice = self.env["account.move"].sudo().create(invoice_vals)
 
         print(f"Invoice {invoice.id} created with lines for property {self.id}")  
         return res 

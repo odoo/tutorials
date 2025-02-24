@@ -105,6 +105,7 @@
                         </page>
                         <page string="Other Info">
                             <group>
+                                <field name="company_id"/>
                                 <field name="salesperson_id" />
                                 <field name="buyer_id" />
                             </group>
@@ -129,7 +130,7 @@
                 <field name="property_type_id" />
                 <field name="facades" />
                 <filter name="available" string="Available"
-                    domain="['|',('state', '=', 'new'),('state','=','offer received')]" />
+                    domain="['|',('state', '=', 'new'),('state','=','offer_received')]" />
                 <group string="Group By">
                     <filter string="Postcode" name="postcode"
                         context="{'group_by':'postcode'}" />
