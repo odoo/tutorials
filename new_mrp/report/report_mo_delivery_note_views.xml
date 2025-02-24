@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_document" inherit_id="stock.report_delivery_document" primary="True">
+        <xpath expr="//table[@name='stock_move_table']/tbody/t" position="replace">
+            <t t-set="lines" t-value="o.move_ids.filtered(lambda x: x.product_uom_qty and (not x.bom_line_id or x.bom_line_id.bom_id.type != 'phantom'))" />
+        </xpath>
+    </template>
+    <template id="report_mo_delivery_note">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="new_mrp.report_delivery_document" t-lang="o._get_report_lang()"/>
+        </t>
+    </template>
+</odoo>
