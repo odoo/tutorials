@@ -17,7 +17,12 @@ class EstatePropertyController(http.Controller):
         total_count = request.env['estate.property'].sudo().search_count(domain)
         per_page = 6
         offset = (page_no - 1) * per_page
-        properties = request.env['estate.property'].sudo().search(domain, limit = per_page, offset= offset)
+
+        if date_listed:
+            properties = request.env['estate.property'].sudo().search(domain, limit = per_page, offset= offset, order= 'create_date desc')
+        else:
+            properties = request.env['estate.property'].sudo().search(domain, limit = per_page, offset= offset)
+
         pager = request.website.pager(
             url = "/properties",
             total = total_count,
