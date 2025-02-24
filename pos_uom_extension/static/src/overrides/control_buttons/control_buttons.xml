@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_uom_extension.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//SelectPartnerButton" position="before">
+            <button t-if="!currentOrder?.is_empty() and currentOrder?.uiState.selected_orderline_uuid and secondUomName" t-attf-class="{{buttonClass}}" t-on-click="onAddQuantity">
+                <span>Add Quantity</span>
+            </button>
+        </xpath>
+    </t>
+</templates>
