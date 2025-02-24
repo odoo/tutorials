@@ -36,4 +36,9 @@
         <field name="color">7</field>
     </record>
 
+    <record id="real_estate.tag_price_reduced" model="real.estate.tag">
+        <field name="name">Price Reduced</field>
+        <field name="color">1</field>
+    </record>
+
 </odoo>

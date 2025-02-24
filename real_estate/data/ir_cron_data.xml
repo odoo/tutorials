@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="real_estate.discount_inactive_properties_cron" model="ir.cron">
+        <field name="name">Real Estate: Discount Inactive Properties</field>
+        <field name="model_id" ref="model_real_estate_property"/>
+        <field name="code">model._discount_inactive_properties()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+
+    <record id="real_estate.refuse_expired_offers_cron" model="ir.cron">
+        <field name="name">Real Estate: Refuse Expired Offers</field>
+        <field name="model_id" ref="model_real_estate_offer"/>
+        <field name="code">model._refuse_expired_offers()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+
+</odoo>
