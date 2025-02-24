@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todo_item">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
-            <p><t t-esc="props.id"/></p>
-            <p><t t-esc="props.description"/></p>
-            <p><t t-esc="props.isCompleted"/></p>
+        <div>
+            <p t-att-class="{'text-muted text-decoration-line-through': props.isCompleted}"><t t-esc="props.id"/>. <t t-esc="props.description"/></p>
         </div>
     </t>
 </templates>

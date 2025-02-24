@@ -11,6 +11,6 @@ export class TodoList extends Component {
     static props = {}
 
     setup() {
-        this.todos = useState([{ id: 3, description: "buy milk", isCompleted: false }, { id: 4, description: "buy milk", isCompleted: false }]);
+        this.todos = useState([{ id: 3, description: "buy milk", isCompleted: true }, { id: 4, description: "buy milk", isCompleted: false }]);
     }
 }
