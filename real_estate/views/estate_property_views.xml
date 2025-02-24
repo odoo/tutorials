@@ -35,9 +35,21 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_cancel_button" type="object" string="Cancel" invisible="state in ('sold','cancel')"/>
-                    <button name="action_sold_button" type="object" string="Sold" invisible="state in ('sold','cancel')"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <button
+                        name="action_cancel_button"
+                        type="object" string="Cancel"
+                        invisible="state in ('sold', 'cancel')"
+                    />
+                    <button 
+                        name="action_sold_button"
+                        type="object" string="Sold"
+                        invisible="state in ('sold', 'cancel')"
+                    />
+                    <field 
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="new, offer_received, offer_accepted, sold"
+                    />
                 </header>
                 <sheet>
                     <group>

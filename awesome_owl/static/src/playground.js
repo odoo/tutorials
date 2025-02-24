@@ -1,27 +1,20 @@
-/** @odoo-module **/
-
-import { Component, useState } from "@odoo/owl";
+// import { Component, useState } from "@odoo/owl";
+import { Component, markup, useState } from "@odoo/owl";
+import { Counter } from "./counter/counter";
+import { Card } from "./card/card";
+import { TodoList } from "./todoList/todoList";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
+    static components = { Counter, Card, TodoList };
+    
+    value1 = "<div class='text-primary'>some content</div>";
+    value2 = markup("<div class='text-primary'>some content</div>");
 
-    setup(){
-        this.state = useState({ value: 0 });
+    setup() {
+        this.sum = useState({value: 2});
     }
-
-    increment(){
-        this.state.value++;
-    }
-}
-
-export class Counter extends Component {
-    static template = "awesome_owl.playground";
-
-    setup(){
-        this.state = useState({ value: 0 });
-    }
-
-    increment(){
-        this.state.value++;
+    onchange() {
+        this.sum.value++;
     }
 }

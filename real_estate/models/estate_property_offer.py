@@ -78,10 +78,7 @@ class EstatePropertyOffer(models.Model):
         If the offer has no creation date (e.g., a draft record), the deadline is not set.
         """
         for offer in self:
-            if date.today():  # Ensure today's date is available
-                offer.date_deadline = date.today() + timedelta(days=offer.validity)
-            else:
-                offer.date_deadline = False
+            offer.date_deadline = date.today() + timedelta(days=offer.validity)
 
     def _inverse_date_deadline(self):
         """Update the validity period based on the difference between deadline and creation date.
@@ -104,9 +101,11 @@ class EstatePropertyOffer(models.Model):
             if offer.property_id.offer_ids.filtered(lambda o: o.status == 'accept'):
                 raise UserError("Only one offer can be accepted per property.")
             offer.status = 'accept'
-            offer.property_id.state = 'offer_accepted'
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.selling_price = offer.price
+            offer.property_id.write({
+                'state': 'offer_accepted',
+                'buyer_id': offer.partner_id.id,
+                'selling_price': offer.price,
+            })
 
     def action_reject(self):
         """Reject an offer by setting its status to 'reject'."""
@@ -130,7 +129,7 @@ class EstatePropertyOffer(models.Model):
     def _check_commercial_buyer(self):
         for offer in self:
             if(
-                offer.property_type_id==offer.env.ref('real_estate.property_type_commercial').id
+                offer.property_type_id == offer.env.ref('real_estate.property_type_commercial')
                 and not offer.partner_id._is_company
             ):
                 raise UserError("Individual cannot buy Commercial Property")
@@ -139,7 +138,7 @@ class EstatePropertyOffer(models.Model):
         today = date.today()
 
         properties = self.env['estate.property'].search([
-            ('date_deadline', '=', today),
+            ('date_deadline', '<=', today),
             ('state', '=', 'offer_received')
         ])
         for property in properties:

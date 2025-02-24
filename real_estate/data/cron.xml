@@ -5,7 +5,5 @@
         <field name="state">code</field>
         <field name="code">model.auto_accept_best_offer()</field>
         <field name="interval_type">minutes</field>
-        <field name="interval_number">1</field>
-        <field name="active" eval="True"/>
     </record>
 </odoo>

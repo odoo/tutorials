@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <p>Counter: <t t-esc="state.value"/></p>
-        <button class="btn btn-success" t-on-click="increment">Increment</button>
+        <div class="p-3">
+            hello world
+            <Counter callback.bind="onchange"/>
+            <Counter callback.bind="onchange"/>
+            <Card title="'card 1'">
+                <t t-out = "value1"/>
+            </Card>
+            <Card title="'card 2'">
+                <t t-out = "value2"/>
+            </Card>
+            <Card title="'card 3'">
+                <Counter />
+            </Card>
+        </div>
+        <p>
+            The Sum of Counters is :<t t-esc="sum.value"/>
+        </p>
+        <TodoList />
     </t>
-
 </templates>
