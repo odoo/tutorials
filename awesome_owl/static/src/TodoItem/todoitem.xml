@@ -1,0 +1,18 @@
+<odoo>
+    <t t-name="awesome_owl/TodoItem">
+        <div 
+            t-attf-class="{{props.todo.isCompleted?'text-body-secondary text-decoration-line-through':''}}">
+            <span>
+                <input 
+                    class="mx-2" 
+                    type="checkbox" 
+                    t-attf-checked="{{props.todo.isCompleted?true:false}}" 
+                    t-on-change="toggleCompleted"
+                />
+                <t t-esc="props.todo.id"/>. 
+                <t t-esc="props.todo.description"/>
+                <span class="fa fa-remove ms-2" style="color: red;" t-on-click="removeTodo"></span>
+            </span>
+        </div>
+    </t>
+</odoo>

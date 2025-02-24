@@ -1,12 +1,11 @@
 from odoo import Command, api, models
-from odoo.exceptions import ValidationError, AccessError
+from odoo.exceptions import AccessError, ValidationError
 
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def action_set_sold(self):
-        
         try:
             self.check_access('write')
             self.env['account.move'].check_access_rights('create', raise_exception=True)

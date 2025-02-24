@@ -57,7 +57,7 @@ class EstatePropertyOffer(models.Model):
         related='property_id.property_type_id',
         store=True
     )
-    
+
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for offer in self:
@@ -86,9 +86,11 @@ class EstatePropertyOffer(models.Model):
     def action_accept_offer(self):
         for offer in self:
             offer.status = 'accepted'
-            offer.property_id.state = 'offer_accepted'
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.selling_price = offer.price
+            offer.property_id.write({
+                'state': 'offer_accepted',
+                'buyer_id': offer.partner_id.id,
+                'selling_price': offer.price
+            })
 
     def action_refuse_offer(self):
         self.status = 'refused'
@@ -106,7 +108,4 @@ class EstatePropertyOffer(models.Model):
                     best_offer=offer
                     property.best_price = offer.price
             if best_offer:
-                best_offer.status = 'accepted'
-                property.selling_price = best_offer.price
-                property.buyer_id = best_offer.partner_id
-                property.state = 'offer_accepted'
+                best_offer.action_accept_offer()
