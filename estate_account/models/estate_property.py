@@ -1,4 +1,4 @@
-from odoo import models, Command, fields
+from odoo import Command, models
 
 
 class Property(models.Model):
@@ -29,8 +29,6 @@ class Property(models.Model):
                 )
             ]
         }
-
-        print(" reached ".center(100, '='))
 
         self.env["account.move"].sudo().create(invoice_vals)
         return super().action_sold()

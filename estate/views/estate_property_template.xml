@@ -104,7 +104,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </t>
                 </div>
             </div>
@@ -127,7 +126,6 @@
                 </t>
 
                 <div class="row">
-                    <!-- Property Image Section -->
                     <div class="col-md-6 mb-4">
                         <div class="property-image-container">
                             <img t-if="property.image"
@@ -143,7 +141,6 @@
                         </div>
                     </div>
 
-                    <!-- Property Details Section -->
                     <div class="col-md-6 mb-4">
                         <div class="row">
                             <h2 class="text-primary mb-3 col-10"><t t-esc="property.name"/></h2>
@@ -155,7 +152,6 @@
                             </div>
                         </div>
 
-                        <!-- Tags Below Property Name -->
                         <div class="property-tags mb-3">
                             <t t-foreach="property.tag_ids" t-as="tag">
                                 <span class="badge bg-info mb-2">
@@ -166,9 +162,7 @@
 
                         <p class="text-muted mb-4"><t t-esc="property.description"/></p>
 
-                        <!-- Property Basic Information with Vertical Separator -->
                         <div class="bg-light p-4 rounded shadow-sm d-flex mb-3">
-                            <!-- Left Column (Property Info) -->
                             <div class="left-info flex-fill">
                                 <h5 class="text-secondary mb-3">Property Details</h5>
                                 <p><strong class="text-dark">Postcode:</strong> <t t-esc="property.postcode"/></p>
@@ -177,10 +171,8 @@
                                 <p><strong class="text-dark">Living Area:</strong> <t t-esc="property.living_area"/> m²</p>
                             </div>
 
-                            <!-- Vertical Separator -->
                             <div class="separator"></div>
 
-                            <!-- Right Column (Additional Info) -->
                             <div class="right-info flex-fill">
                                 <h5 class="text-secondary mb-3">More Information</h5>
                                 <p><strong class="text-dark">Available From:</strong> <t t-esc="property.date_availability"/></p>
@@ -244,7 +236,7 @@
                             <div class="mb-4">
                                 <label for="validity">Validity (Days)</label>
                                 <input type="number" name="validity" id="validity" class="form-control"
-                                    t-att-value="validity" required="required"/>
+                                    t-att-value="validity" required="required" min="0"/>
                             </div>
                             <button type="submit" class="btn btn-primary">Submit Offer</button>
                         </form>
@@ -253,5 +245,4 @@
             </div>
         </t>
     </template>
-
 </odoo>

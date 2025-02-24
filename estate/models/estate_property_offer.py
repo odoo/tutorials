@@ -9,6 +9,8 @@ class PropertyOffer(models.Model):
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)',
         'The offer price must be strictly positive.'),
+        ('check_offer_validity', 'CHECK(validity > 0)',
+        'The Days of Validity must be strictly positive.'),
     ]
 
     price = fields.Float(

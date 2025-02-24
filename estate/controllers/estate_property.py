@@ -1,8 +1,8 @@
 from odoo import http
 from odoo.http import request
 
-class EstatePropertyController(http.Controller):
 
+class EstatePropertyController(http.Controller):
     @http.route('/properties', auth='public', website=True)
     def list_properties(self, availability='available', property_type='all'):
 

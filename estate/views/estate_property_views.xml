@@ -96,7 +96,7 @@
                     <button name="action_sold" type="object" string="Sold" class="oe_highlight" invisible="state != 'offer_accepted'" />
                     <button name="action_sold" type="object" string="Sold" invisible="state not in ('new','offer_received') or not active" />
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ('sold','cancelled') or not active" />
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': True}" />
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': False}" />
                 </header>
 
                 <sheet>

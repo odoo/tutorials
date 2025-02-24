@@ -2,6 +2,7 @@ from odoo import http
 from odoo.http import request
 from odoo.exceptions import UserError
 
+
 class EstatePropertyOfferController(http.Controller):
 
     @http.route('/offer/<int:property_id>', auth='user', website=True)
@@ -21,13 +22,11 @@ class EstatePropertyOfferController(http.Controller):
         message_type = 'error'
 
         try:
-            # Extract offer details from the POST request
             property_id = int(post.get('property_id'))
             price = float(post.get('price'))
             partner_id = request.env.user.partner_id.id
             validity = int(post.get('validity'))
 
-            # Create the offer record
             request.env['estate.property.offer'].sudo().create({
                 'property_id': property_id,
                 'price': price,
@@ -50,4 +49,3 @@ class EstatePropertyOfferController(http.Controller):
             'message': message,
             'message_type': message_type
         })
-

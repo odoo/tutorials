@@ -1,6 +1,7 @@
-from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
-from odoo.tests import tagged, Form
+from odoo.tests import Form, tagged
+from odoo.tests.common import TransactionCase
+
 
 @tagged('post_install', '-at_install')
 class TestEstateProperty(TransactionCase):
@@ -18,7 +19,6 @@ class TestEstateProperty(TransactionCase):
         })
 
     def test_action_sell(self):
-
         offer = self.env['estate.property.offer'].create({
             'property_id': self.properties.id,
             'price': 100052,
@@ -45,7 +45,6 @@ class TestEstateProperty(TransactionCase):
         ])
 
     def test_garden_checkbox_behavior(self):
-
         form = Form(self.properties)
 
         form.garden = False
