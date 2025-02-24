@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
         invoice_vals = {
             "partner_id": self.buyer_id.id,
             "move_type" : "out_invoice",
+            "property_id": self.id,
             "line_ids": [
                 Command.create({
                     "name": self.name,

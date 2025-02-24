@@ -24,8 +24,8 @@
             <kanban string="Estate property kanban view" default_group_by="property_type_id" records_draggable="False">
                 <field name="state"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div>
+                    <t t-name="card" class="flex-row">
+                        <main class="pe-2">
                             <div style="font-weight: bold; font-size: 16px;">
                                 <field name="name"/>
                             </div>
@@ -37,7 +37,10 @@
                                 Selling Price: <field name="selling_price"/>
                             </div>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field' : 'color'}"/>
-                        </div>
+                        </main>
+                        <aside>
+                                <field name="image" widget="image" alt="Property" options="{'img_class': 'w-100 object-fit-contain'}" invisible="not image"/>
+                        </aside>
                     </t>
                 </templates>
             </kanban>
