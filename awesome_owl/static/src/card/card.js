@@ -1,8 +1,12 @@
-import { Component } from "@odoo/owl";
+import { Component,useState } from "@odoo/owl";
 
 
 export class Card extends Component{
     static template = "awesome_owl.card";
+
+    setup(){
+        this.state = useState({isVisible: true});
+    }
 
     static props = {
         title: String,
@@ -13,4 +17,8 @@ export class Card extends Component{
             },
         }
     };
+
+    toggleContent(){
+        this.state.isVisible =!this.state.isVisible;
+    }
 }
