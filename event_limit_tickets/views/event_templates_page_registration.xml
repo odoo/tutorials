@@ -1,0 +1,45 @@
+<odoo>
+    <template id="modal_ticket_registration_inherit" inherit_id="website_event.modal_ticket_registration">
+        <xpath expr="//t[@t-set='seats_max_ticket']" position="replace">
+            <t t-if="ticket.max_tickets_allowed_per_registration == 0">
+                <!-- If no registration limit set, use available seats -->
+                <t t-set="seats_max_ticket" t-value="ticket.seats_available + 1" />
+            </t>
+            <t t-elif="not ticket.seats_limited">
+                <!-- If tickets not limited but registration limit exists -->
+                <t t-set="seats_max_ticket" t-value="ticket.max_tickets_allowed_per_registration + 1" />
+            </t>
+            <t t-elif="ticket.seats_available > ticket.max_tickets_allowed_per_registration">
+                <!-- If available seats more than registration limit -->
+                <t t-set="seats_max_ticket" t-value="ticket.max_tickets_allowed_per_registration + 1" />
+            </t>
+            <t t-else="">
+                <!-- If available seats less than registration limit -->
+                <t t-set="seats_max_ticket" t-value="ticket.seats_available + 1" />
+            </t>
+        </xpath>
+
+        <xpath expr="//t[@t-set='seats_max_event']" position="replace">
+            <t t-if="ticket.max_tickets_allowed_per_registration == 0 and event.seats_limited">
+                <!-- If no registration limit set and event seats are limited -->
+                <t t-set="seats_max_event" t-value="event.seats_available + 1" />
+            </t>
+            <t t-elif="ticket.max_tickets_allowed_per_registration == 0 and not event.seats_limited">
+                <!-- If no registration limit set and event seats not limited -->
+                <t t-set="seats_max_event" t-value="ticket.seats_available + 1" />
+            </t>
+            <t t-elif="not event.seats_limited">
+                <!-- If event seats not limited but registration limit exists -->
+                <t t-set="seats_max_event" t-value="ticket.max_tickets_allowed_per_registration + 1" />
+            </t>
+            <t t-elif="event.seats_available > ticket.max_tickets_allowed_per_registration">
+                <!-- If event available seats more than registration limit -->
+                <t t-set="seats_max_event" t-value="ticket.max_tickets_allowed_per_registration + 1" />
+            </t>
+            <t t-else="">
+                <!-- If event available seats less than registration limit -->
+                <t t-set="seats_max_event" t-value="event.seats_available + 1" />
+            </t>
+        </xpath>
+    </template>
+</odoo>
