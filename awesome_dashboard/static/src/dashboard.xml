@@ -7,6 +7,11 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+            <div class="d-flex flex-wrap">
+                <DashboardItem>some content</DashboardItem>
+                <DashboardItem size="2">I love milk</DashboardItem>
+                <DashboardItem>some content</DashboardItem>
+            </div>
         </Layout>
     </t>
 
