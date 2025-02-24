@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="supplier_upload_page" name="Supplier Login Page">
+        <t t-call="website.layout">
+            <div class="container">
+                <section class="bg-primary text-white text-center py-5">
+                    <h1 class="fw-bold display-4">Supplier Login</h1>
+                </section>
+
+                <t t-if="request.params.get('success')">
+                    <p class="alert alert-success">Your invoice has been submitted successfully.</p>
+                </t>
+                <t t-if="request.params.get('error')">
+                    <p class="alert alert-danger">Please upload both PDF and XML files.</p>
+                    <span><t t-out="request.params.get('error')"/></span>
+                </t>
+                
+                <form action="/supplier/submit/" method="post" enctype="multipart/form-data" class="p-4 bg-white shadow rounded-3">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa fa-building"></i> Select Organization
+                        </label>
+                        <select name="company" class="form-select border border-primary" required="1">
+                            <option value="" disabled="true" selected="true">Choose your company</option>
+                            <t t-foreach="companies" t-as="company">
+                                <option t-att-value="company.id">
+                                    <t t-esc="company.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa fa-file-pdf text-danger"></i> Upload PDF Invoice
+                        </label>
+                        <input type="file" name="pdf_invoice" accept="application/pdf" class="form-control border border-danger" required="1" />
+                        <small class="text-muted">Allowed file type: PDF</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">
+                            <i class="fa fa-file-code text-warning"></i> Upload XML Invoice
+                        </label>
+                        <input type="file" name="xml_invoice" accept="text/xml" class="form-control border border-warning" required="1" />
+                        <small class="text-muted">Allowed file type: XML</small>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg shadow-sm">
+                            <i class="fa fa-paper-plane"></i> Submit Invoice
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>
