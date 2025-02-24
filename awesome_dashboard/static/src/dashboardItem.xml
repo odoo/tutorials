@@ -1,0 +1,7 @@
+<t t-name="awesome_dashboard.dashboardItem">
+    <div class="dashboard-item" t-att-style="'width: ' + (18 * props.size) + 'rem;'">
+        <div class="card p-3">
+            <t t-slot="default" />
+        </div>
+    </div>
+</t>

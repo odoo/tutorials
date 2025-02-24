@@ -1,0 +1,29 @@
+.o_dashboard{
+    background-color: #e4eae1;
+}
+
+.dashboard-item {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    height: 120px;
+    width: 230px;
+    margin: 5px;
+}
+
+.dashboard-item-content {
+    text-align: center;
+    padding: 10px;
+}
+
+.dashboard-item-title {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.dashboard-item-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: green;
+}
