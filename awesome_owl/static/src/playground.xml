@@ -2,10 +2,9 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
         <div class="p-3 d-flex align-items-center">
-            <p class="me-3">hello world</p>
             <div class="d-flex">
-                <Counter/>
-                <Counter/>
+                <Card title="'Card 1'" content="'some content'"/>
+                <Card title="'Card 2'" content="'some more content'"/>
             </div>
         </div>
     </t>
