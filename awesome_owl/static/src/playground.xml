@@ -6,7 +6,8 @@
             <Counter onChange.bind="totalsum" />
             <Counter onChange.bind="totalsum" />
             <div class="fw-bold text-center">Total Count --- <t t-esc="sum.value"/> </div>
-        </div> <br/>
+        </div> 
+        <br/>
         <Card title="'Title of Card 1'" content="'Counter component inside Card 1'">
             <Counter onChange.bind="totalsum" />
         </Card>
