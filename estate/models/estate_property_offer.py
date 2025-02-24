@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 
@@ -58,3 +59,19 @@ class EstatePropertyOffer(models.Model):
             "Price must be positive",
         ),
     ]
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get("property_id")
+        if property_id:
+            property_record = self.env["estate.property"].browse(property_id)
+            existing_offers = property_record.offer_ids
+            if existing_offers:
+                max_existing_price = max(existing_offers.mapped("price"))
+                new_price = vals.get("price", 0.0)
+                if new_price < max_existing_price:
+                    raise UserError(
+                        f"Cannot create an offer with price {new_price} for property '{property_record.name}'. "
+                        f"There is an existing offer with a higher price ({max_existing_price})."
+                    )
+        return super(EstatePropertyOffer, self).create(vals)

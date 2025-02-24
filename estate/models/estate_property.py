@@ -116,6 +116,15 @@ class EstateProperty(models.Model):
                         "Selling price can't be less than 90% of expected"
                     )
 
+    @api.ondelete(at_uninstall=False)
+    def prevent_delete(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(
+                    f"Cannot delete property '{record.name}' because its state is '{record.state}'. "
+                    "Only properties in 'New' or 'Cancelled' state can be deleted."
+                )
+
     def action_sold(self):
         if self.state == "cancelled":
             raise UserError("A cancelled property can't be sold")
