@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -15,7 +15,7 @@ class EstatePropertyOffer(models.Model):
         ('accepted', 'Accepted'),
         ('refused', 'Refused'),
         ],string='Status', copy=False)
-    partner_id = fields.Many2one('res.partner', string='Partner', required=True)
+    partner_id = fields.Many2one('res.partner', string='Partner')
     property_id = fields.Many2one('estate.property', string='Property')
     validity = fields.Integer(string='Validity (Days)', default=7)
     deadline_date = fields.Date(string='Deadline', compute='_compute_deadline_date', inverse='_inverse_deadline_date')        
@@ -33,7 +33,7 @@ class EstatePropertyOffer(models.Model):
     def action_order_accepted(self):
         for record in self:
             if record.property_id.state == 'offer_accepted':
-                raise ValidationError("You can't accept more than 1 offer.")
+                raise ValidationError(_("You can't accept more than 1 offer."))
             record.status = 'accepted'
             record.property_id.state = 'offer_accepted'
             record.property_id.selling_price = record.price
@@ -47,6 +47,9 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
+            if property_id.state == 'sold': 
+                raise ValidationError("Cannot create an offer for a sold property.")
+
             if property_id:
                 property_id.write({'state' : 'offer_received'})
                 

@@ -10,10 +10,6 @@ class EstateProperty(models.Model):
 
     def sold_action(self):
         for record in self:
-            has_access = record.check_access_rights('write', raise_exception=False)
-            print(has_access)
-            if not has_access:
-                raise UserError("You do not have permission to modify properties.")
 
             self.env['account.move'].sudo().create({
                 'partner_id' : record.buyer_id.id,

@@ -83,6 +83,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold.")
+            if record.state != 'offer_accepted':
+                raise UserError("Without accepting offer, You can't sold properties.")
             record.state = 'sold'
             # Send email notification when state changes to "sold"
             template_id = record.env.ref('estate.estate_rating_template')

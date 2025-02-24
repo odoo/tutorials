@@ -6,6 +6,7 @@ from datetime import datetime
 from odoo import http
 from odoo.http import request
 
+
 class PropertyController(http.Controller):
 
     @http.route(['/properties','/properties/page/<int:page>'], type='http', auth='public', website=True)
