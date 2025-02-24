@@ -1,8 +1,53 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+   <t t-name="awesome_dashboard.AwesomeDashboard">
+        <div class="o_control_panel d-flex gap-2">
+            <button type="button" class="btn btn-primary" t-on-click="openCustomers">
+                Customers
+            </button>
+            <button type="button" class="btn btn-primary" t-on-click="openLeads">
+                Leads
+            </button>
+        </div>
+        <Layout className="'o_dashboard h-100'" >
+            <div class="d-flex gap-2 mt-3 p-3">
+                <DashboardItem>small card</DashboardItem>
+                <DashboardItem size="2">
+                    <div>Large Card</div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div>i love milk</div>
+                </DashboardItem>
+            </div>
+            <div class="dashboard-container d-flex flex-wrap gap-2 mt-3 p-3">
+                <DashboardItem size="1.5">
+                    <p>Average amount of t-shirt by order this month:</p>
+                     <center style="font-size:30px; color:green"><t t-esc="statistics.average_quantity || 0"/></center>
+                </DashboardItem>
+                <DashboardItem size="3">
+                    <p>Average time for an order to go from 'new' to 'sent' or 'cancelled':</p> 
+                    <center style="font-size:30px; color:green"><t t-esc="statistics.average_time || 0"/></center>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <p>Number of new orders this month: </p>
+                    <center style="font-size:30px; color:green"><t t-esc="statistics.nb_new_orders || 0"/></center>
+                </DashboardItem>
+            </div>
+            <div class="dashboard-container d-flex flex-wrap gap-2 p-3">
+                <DashboardItem size="1">
+                    <p>Number of cancelled orders this month: </p>
+                    <center style="font-size:30px; color:green"><t t-esc="statistics.nb_cancelled_orders || 0"/></center>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <p>Total amount of new orders this month:</p> 
+                    <center style="font-size:30px; color:green"><t t-esc="statistics.total_amount || 0"/></center>
+                </DashboardItem>
+                <DashboardItem>
+                      <PieChart></PieChart>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
