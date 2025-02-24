@@ -3,11 +3,7 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3 d-flex align-items-center">
             <div class="d-flex">
-                <Counter onChange.bind="incrementSum" />
-                <Counter onChange.bind="incrementSum" />
-            </div>
-            <div>
-                Sum: <t t-esc="sum.value"/>
+                <TodoList/>
             </div>
         </div>
     </t>
