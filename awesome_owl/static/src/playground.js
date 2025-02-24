@@ -10,12 +10,15 @@ export class Playground extends Component {
     setup() {
         this.content_1 = "<div class='text-primary'>some content</div>";
         this.content_2 = markup("<div class='text-primary'>some content</div>");
-
-        this.sum = useState({ value:2 });
+        this.counter = useState({ value:[{id:0,value:1},{id:1,value:1}] });
     }
 
-    incrementSum() {
-        this.sum.value++;
+    incrementCounter(index) {
+        this.counter.value[index].value++;
+    }
+
+    get counterSum() {
+        return this.counter.value.reduce((acc, val) => acc + val.value, 0);
     }
 
     static components = { Counter, Card };
