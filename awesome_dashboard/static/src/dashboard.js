@@ -4,8 +4,7 @@ import { Component, useState, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard_item";
-import { rpc } from "@web/core/network/rpc";
-
+import { useService } from "@web/core/utils/hooks";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -13,8 +12,7 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = this.env.services.action;
-        this.rpc = rpc;
-
+        this.statisticsService = useService("awesome_dashboard.statistics");
         this.statistics = useState({
             averageQuantity: 0,
             averageTime: 0,
@@ -30,7 +28,7 @@ class AwesomeDashboard extends Component {
 
         onWillStart(async () => {
             try {
-                const result = await this.rpc("/awesome_dashboard/statistics", {});
+                const result = await this.statisticsService.loadStatistics();
                 this.statistics.averageQuantity = result.average_quantity;
                 this.statistics.averageTime = result.average_time;
                 this.statistics.nbCancelledOrders = result.nb_cancelled_orders;
