@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="add_sub_products_wizard_view_form" model="ir.ui.view">
+        <field name="name">add.sub.products.wizard.form</field>
+        <field name="model">wizard.add.sub.products</field>
+        <field name="arch" type="xml">
+            <form string="Add sub products">
+                <sheet>
+                    <field name="sub_line_ids">
+                        <list create="False" editable="bottom">
+                            <field name="product_id" string="Product" readonly="1"/>
+                            <field name="product_uom_qty" string="Quantity"/>
+                            <field name="price_unit" string="Price"/>
+                        </list>
+                    </field>
+                    <footer>
+                        <button name="action_add_sub_products" string="Confirm" type="object" class="oe_highlight" />
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_add_sub_products" model="ir.actions.act_window">
+        <field name="name">Add sub products</field>
+        <field name="res_model">wizard.add.sub.products</field>
+        <field name="view_id" ref="product_kit.add_sub_products_wizard_view_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_view_types">list,form</field>
+    </record>
+</odoo>

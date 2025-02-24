@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_template_view_form" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.product.kit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
+                <button name="%(product_kit.action_view_add_sub_products)d" type="action" class="btn btn-primary border-dark" invisible="state!='draft' or product_type=='service' or parent_line_id or not is_kit" string="Add Sub Products" />
+            </xpath>
+             <xpath expr="//group[@name='partner_details']/field[@name='partner_shipping_id']" position="after">
+                <field name="print_in_report" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
