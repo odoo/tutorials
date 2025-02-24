@@ -2,7 +2,6 @@
 
 import { Component, onWillStart, useState } from "@odoo/owl";
 
-import { rpc } from "@web/core/network/rpc";
 import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
@@ -16,11 +15,12 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
+        this.statisticsLoader = useService("awesome_dashboard.statistics");
 
         this.statistics = useState({})
 
         onWillStart(async () => {
-            this.statistics = await rpc("/awesome_dashboard/statistics");
+            this.statistics = await this.statisticsLoader.loadStatistics();
         });
     }
 
