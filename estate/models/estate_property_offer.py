@@ -47,6 +47,15 @@ class EstatePropertyOffer(models.Model):
         self.status = 'refused'
         return True
 
+    @api.model
+    def create(self, vals):
+        property_id_number = vals.get('property_id')
+        property_id = self.env['estate.property'].browse(property_id_number)
+        offers = property_id.offer_ids
+        if offers.filtered(lambda offer: offer.price > vals.get('price')):
+            raise UserError('The offer price must be at least %s' % max(offers.mapped('price'), default = 0.0))
+        return super().create(vals)
+
     _sql_constraints = [
         ('price_positive', 'CHECK(price > 0)', 'Price must be positive')
     ]
