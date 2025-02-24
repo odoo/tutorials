@@ -13,6 +13,7 @@ class EstateProperty(Controller):
 
     @route("/property/<int:id>", type="http", auth="public", website=True)
     def estate_property_details(self, id):
-        property_details = request.env["estate.property"].sudo().search([
-            ('id', '=', id)])
-        return request.render("estate.template_property_detail_website_view", {'property': property_details})
+        property_details = request.env["estate.property"].sudo().browse(id)
+        if property_details.exists():
+            return request.render("estate.template_property_detail_website_view", {'property': property_details})
+        return request.render("estate.template_property_detail_website_view")

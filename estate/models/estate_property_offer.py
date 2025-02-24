@@ -49,8 +49,8 @@ class EstatePropertyOffer(models.Model):
                     record.date_deadline - record.create_date.date()
                 ).days
             else:
-                record.valpassidity = (record.date_deadline -
-                                       fields.Datetime.now()).days
+                record.validity = (record.date_deadline -
+                                   fields.Datetime.now()).days
 
     @api.model_create_multi
     def create(self, vals):
@@ -95,9 +95,8 @@ class EstatePropertyOffer(models.Model):
             raise UserError(
                 _("You can't Refuse an offer it's already %s", self.status.capitalize()))
         elif self.status == "accepted":
-            self.property_id.state = "offer_received"
-            self.property_id.selling_price = None
-            self.property_id.property_buyer_id = None
+            self.property_id.write(
+                {'state': "offer_received", 'selling_price': None, 'property_buyer_id': None})
 
         self.status = "refused"
         return True

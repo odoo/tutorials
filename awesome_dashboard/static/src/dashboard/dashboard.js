@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, useState, onWillPatch } from "@odoo/owl";
+import { Component, useState, useEffect } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
@@ -12,17 +12,13 @@ import { DashboardDialog } from "../dialog/dialog";
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { DashboardDialog, DashboardItem, Layout, PieChart }
+    inactiveItems = useState({items:JSON.parse(localStorage.getItem("inactiveItems") ?? "[]")})
 
     setup() {
         this.action = useService("action")
         this.dialog = useService("dialog")
         this.data = useState(useService("loadStatistics"));
         this.items = items;
-        this.inactiveItems = JSON.parse(localStorage.getItem("inactiveItems") ?? "[]")
-
-        onWillPatch(() => {
-            console.log("here")
-        })
     }
 
     openCustomerView() {
@@ -37,10 +33,16 @@ class AwesomeDashboard extends Component {
         })
     }
 
+    onInactiveItemsChange(items){
+        this.inactiveItems.items = items;
+        localStorage.setItem("inactiveItems", JSON.stringify(this.inactiveItems.items))
+    }
+
     openDashboardDialog() {
         this.dialog.add(DashboardDialog, {
             items: this.items,
-            inactiveItems: this.inactiveItems
+            inactiveItems: this.inactiveItems.items,
+            onChange: this.onInactiveItemsChange.bind(this)
         })
     }
 }

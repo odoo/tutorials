@@ -12,4 +12,4 @@ class EstatePropertyTag(models.Model):
         ('check_property_tag', 'UNIQUE(name)', 'Property Tag Must be Unique')]
 
     name = fields.Char(string="Tag", required=True)
-    color = fields.Integer(string="Color")
+    color = fields.Integer(string="Color", default=0)

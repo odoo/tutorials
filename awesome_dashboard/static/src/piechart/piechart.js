@@ -31,6 +31,14 @@ export class PieChart extends Component {
             data: {
                 labels: Object.keys(this.props),
                 datasets: [{ data: Object.values(this.props) }]
+            },
+            options: {
+                onClick: (e,arr) => {
+                    const clickedElement = arr[0];
+                    const datasetIndex = clickedElement.index;
+                    const labelValue = Object.values(this.props)[datasetIndex];
+                    console.log(labelValue)
+                }
             }
         })
     }

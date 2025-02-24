@@ -15,7 +15,7 @@
             <field name="garden">True</field>
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
-            <field name="property_type_id" ref="estate.estate_property_resident"/>
+            <field name="property_type_id" ref="estate.estate_property_type_resident"/>
         </record>
 
         <record id="estate.demo_trailer_home" model="estate.property">
@@ -30,7 +30,7 @@
             <field name="living_area">10</field>
             <field name="fascades">4</field>
             <field name="garage">False</field>
-            <field name="property_type_id" ref="estate.estate_property_resident"/>
+            <field name="property_type_id" ref="estate.estate_property_type_resident"/>
         </record>
 
         <record id="estate.demo_property_apartment" model="estate.property">

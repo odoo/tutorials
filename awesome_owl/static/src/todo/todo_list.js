@@ -9,7 +9,7 @@ export class TodoList extends Component {
     static components = { TodoItem };
     
     todos = useState([]);
-    inputRef = useAutoFocus()
+    inputRef = useAutoFocus("inputElem")
 
     addTodo(e) {
         let todoTitle = e.target.value;

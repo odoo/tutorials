@@ -4,7 +4,7 @@
         <Dialog title.translate="Dashboard items Configuration">
             <h3>Which cards do you wish to see?</h3>
             <ul style="list-style-type: none; padding-left: 0;">
-                <t t-foreach="items" t-as="item" t-key="item.id">
+                <t t-foreach="props.items" t-as="item" t-key="item.id">
                     <li type="unorderd">
                         <input type="checkbox" t-att-checked="item.isVisible" class="form-check-input" t-att-id="item.id" t-on-click="() => changeVisibility(item.id)"/>
                         <label class="form-check-label" t-att-for="item.id">
@@ -15,6 +15,9 @@
                     </li>
                 </t>
             </ul>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="closeDialog">Apply</button>
+            </t>
         </Dialog>
     </t>
 </templates>
