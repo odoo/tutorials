@@ -1,0 +1,11 @@
+<t t-name="awesome_dashboard.dashboardItem">
+<div class="card d-inline-block m-2" t-att-style="'width:'+(18*props.size)+'rem;'">
+    <div class="card-body">
+        <h5 class="card-title"><t t-esc="props.title"/></h5>
+        <p class="card-text">
+            <t t-out="props.text"/>
+        </p>
+    </div>
+</div>
+
+</t>

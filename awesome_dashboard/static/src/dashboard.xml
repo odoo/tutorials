@@ -2,7 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+            <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
+                <t t-set-slot="control-panel-always-buttons">
+                <div class="o_cp_buttons" role="toolbar" aria-label="Control panel buttons">
+                    <div class="d-inline-block">
+                        <button t-on-click="openCustomerView" type="button" class="btn btn-primary" title="Customer">Customer</button>
+                         <button t-on-click="openLeadView" type="button" class="btn btn-primary" title="Customer">Leads</button>
+                    </div>
+                </div>
+                </t>
+                <DashboardItem text="'Hello'"/>
+                <DashboardItem text="'Average Quantity:'+state.average_quantity"/>
+                <DashboardItem text="'Average Time:'+state.average_time"/>
+                <DashboardItem text="'Cancelled Orders:'+state.nb_cancelled_orders"/>
+                <DashboardItem text="'Cancelled Orders:'+state.nb_new_orders"/>
+                <DashboardItem text="'Orders by size: ' +'m: '+state.orders_by_size.m+' '+'s: '+state.orders_by_size.s+' '+'xl: '+state.orders_by_size.xl" size="2"/>
+                hello dashboard
+            </Layout>
     </t>
 
 </templates>
