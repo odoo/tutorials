@@ -3,9 +3,10 @@
     <t t-name="awesome_owl.todoitem">
         <div class="border border-3 border border-black m-3 p-3 text-black" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through':''">
             <div>
-            <input type="checkbox" class="mx-3" t-att-checked="props.todo.isCompleted " t-on-change="change"/>
+            <input type="checkbox" class="mx-3" t-att-checked="props.todo.isCompleted" t-on-change="change"/>
             <t t-esc="props.todo.id"/>.
             <t t-esc="props.todo.description"/>
+            <span role="button" class="fa fa-remove m-2" t-on-click="remove"/>
             </div>
         </div>
     </t>

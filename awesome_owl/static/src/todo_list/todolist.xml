@@ -4,7 +4,7 @@
         <div class="d-inline-block border border-3 border border-black m-3 p-3 text-dark">
             <input type="text" placeholder="Enter a new task" t-on-keyup="addTodo" t-ref="input"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id" >
-             <TodoItem todo="todo" toggleState.bind="toggleTodo"/>
+             <TodoItem todo="todo" toggleState.bind="toggleTodo" removeItem.bind="removeTodo"/>
              </t>
         </div>
     </t>

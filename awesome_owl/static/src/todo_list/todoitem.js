@@ -14,9 +14,14 @@ export class TodoItem extends Component {
       },
     },
     toggleState: Function,
+    removeItem: Function,
   };
 
   change(){
     this.props.toggleState(this.props.todo.id);
+  }
+
+  remove(){
+    this.props.removeItem(this.props.todo.id);
   }
 }
