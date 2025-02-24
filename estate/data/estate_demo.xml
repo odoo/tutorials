@@ -33,6 +33,7 @@
         <field name="postcode">12345</field>
         <field name="date_availability">2025-01-17</field>
         <field name="expected_price">1600000</field>
+        <field name="selling_price">1440000</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
         <field name="facades">4</field>
@@ -63,9 +64,10 @@
         <field name="name">International Space Station</field>
         <field name="state">new</field>
         <field name="description">Aliens sometimes come visit</field>
-        <field name="postcode">----</field>
+        <field name="postcode">1234</field>
         <field name="date_availability">2025-01-17</field>
         <field name="expected_price">45890000</field>
+        <field name="selling_price">41301000</field>
         <field name="property_type_id" ref="property_industrial"/>
     </record>
 
@@ -76,6 +78,7 @@
         <field name="postcode">10000</field>
         <field name="date_availability">2025-01-17</field>
         <field name="expected_price">80000</field>
+         <field name="selling_price">72000</field>
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
