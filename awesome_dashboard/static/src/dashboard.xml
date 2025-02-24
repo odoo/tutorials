@@ -8,7 +8,11 @@
                 <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
             </t>
             <t t-set-slot="default">
-                <DashboardItem size="1">I love milk</DashboardItem>
+                <DashboardItem size="2"><p>Average amount of t-shirt by order this month</p><h3 class="text-success"><t t-esc="statistics.average_quantity"/></h3></DashboardItem>
+                <DashboardItem size="2"><p>Average time for an order to go from 'new' to 'sent' or 'cancelled'</p><h3 class="text-success"><t t-esc="statistics.average_time"/></h3></DashboardItem>
+                <DashboardItem size="1"><p>Number of new orders this month</p><h3 class="text-success"><t t-esc="statistics.nb_new_orders"/></h3></DashboardItem>
+                <DashboardItem size="1"><p>Number of cancelled orders this month</p><h3 class="text-success"><t t-esc="statistics.nb_cancelled_orders"/></h3></DashboardItem>
+                <DashboardItem size="1"><p>Total amount of new orders</p><h3 class="text-success"><t t-esc="statistics.total_amount"/></h3></DashboardItem>
             </t>
         </Layout>
     </t>
