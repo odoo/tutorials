@@ -1,0 +1,11 @@
+<?xml version="1.1" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card" >
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title" t-esc="this.props.title" />
+                <p class="card-text" t-esc="this.props.content" />
+            </div>
+        </div>
+    </t>
+</templates>
