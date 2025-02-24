@@ -1,5 +1,11 @@
+/* Brown background for the dashboard */
 .o_dashboard {
-    background-color: gray; // Change to any color you like
-    height: 100%;
+    background-color: grey; /* Brown */
     padding: 20px;
+}
+
+/* Keep Dashboard Items with white background */
+.dashboard-item {
+    background-color: white;
+    border: 1px solid #ddd;
 }

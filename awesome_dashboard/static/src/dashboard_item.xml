@@ -1,0 +1,9 @@
+<template xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="dashboard-item" t-att-style="'width: ' + (18 * props.size) + 'rem;'">
+            <div class="dashboard-card p-3 shadow rounded">
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+</template>
