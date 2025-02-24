@@ -5,6 +5,9 @@
             <t t-set-slot="layout-buttons">
                 <button class="btn btn-primary" t-on-click="openCustomerForm">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                <button class="btn btn-light" t-on-click="openSettingsDialog">
+                    <i class="fa fa-cog"/>
+                </button>
             </t>
             <t t-set-slot="default">
                 <div class="d-flex flex-wrap justify-content-center">

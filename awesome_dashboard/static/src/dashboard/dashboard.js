@@ -6,6 +6,7 @@ import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboardItem/dashboardItem";
 import { NumberCard } from "./dashboardItem/number_card";
 import { PieChartCard } from "./dashboardItem/pie_chart_card";
+import { SettingsDialog } from "./settings/settings_dialouge";
 import { dashboardRegistry } from "./dashboardItem/dashboard_items";
 
 class AwesomeDashboard extends Component {
@@ -20,7 +21,19 @@ class AwesomeDashboard extends Component {
         };
         this.statisticsService = useService("awesome_dashboard.statistics");
         this.state = useState(this.statisticsService.state);
+        // Load hidden items from localStorage
+        const savedHiddenItems = JSON.parse(localStorage.getItem("hidden_dashboard_items")) || [];
+        this.state.hiddenItems = new Set(savedHiddenItems);
     }
+
+    openSettingsDialog() {
+        this.dialogService.add(SettingsDialog, {
+            onApply: (hiddenItems) => {
+                this.state.hiddenItems = new Set(hiddenItems);
+            },
+        });
+    }
+
     openCustomerForm() {
         this.action.doAction("base.action_partner_form");
     }
@@ -41,7 +54,7 @@ class AwesomeDashboard extends Component {
     };
 
     get visibleItems() {
-        return Object.values(dashboardRegistry.getAll());
+        return Object.values(dashboardRegistry.getAll()).filter(item => !this.state.hiddenItems.has(item.id));
     }
 }
 
