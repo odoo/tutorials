@@ -2,7 +2,56 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="control-panel-always-buttons">
+                <div class="o_control_panel">
+                    <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                    <button class="btn btn-success" t-on-click="openLeads">Leads</button>
+                </div>
+            </t>
+            <t t-slot="content">
+                <div class="dashboard-container">
+                    <h1 class="dashboard-title">Welcome to the Awesome Dashboard!</h1>
+                    <div class="dashboard-grid">
+                        <DashboardItem size="1.5">
+                            <t t-if="stats">
+                                <span class="card-title">Average amount of t-shirt by order this month</span>
+                                <br/>
+                                <div class="card-value"><t t-out="stats.average_quantity"/></div>
+                            </t>
+                        </DashboardItem>
+                        <DashboardItem size="2">
+                            <t t-if="stats">
+                                <span class="card-title">Average time for an order to go from 'new' to 'sent' or 'cancelled'</span>
+                                <br/>
+                                <div class="card-value"><t t-out="stats.average_time"/></div>
+                            </t>
+                        </DashboardItem>
+                        <DashboardItem size="1">
+                            <t t-if="stats">
+                                <span class="card-title">Number of New orders this month</span>
+                                <br/>
+                                <div class="card-value"><t t-out="stats.nb_new_orders"/></div>
+                            </t>
+                        </DashboardItem>
+                        <DashboardItem size="1.2">
+                            <t t-if="stats">
+                                <span class="card-title">Number of cancelled orders this month</span>
+                                <br/>
+                                <div class="card-value"><t t-out="stats.nb_cancelled_orders"/></div>
+                            </t>
+                        </DashboardItem>
+                        <DashboardItem size="1.3">
+                            <t t-if="stats">
+                                <span class="card-title">Total amount of new orders this month</span>
+                                <br/>
+                                <div class="card-value"><t t-out="stats.total_amount"/></div>
+                            </t>
+                        </DashboardItem>
+                    </div>
+                </div>
+            </t>
+        </Layout>
     </t>
 
 </templates>
