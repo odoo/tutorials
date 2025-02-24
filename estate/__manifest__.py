@@ -9,6 +9,7 @@
         'views/estate_action.xml',
         'views/estate_menus.xml',
         'security/estate_security.xml',
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'wizards/estate_property_offer_wizard.xml',
