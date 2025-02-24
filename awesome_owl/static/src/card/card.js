@@ -13,4 +13,8 @@ export class Card extends Component {
             type: Object
         }
     }
+
+    setup() {
+        this.state = useState({ open: true });
+    }
 }
