@@ -15,8 +15,10 @@
         <div class="d-flex flex-column align-items-center border border-3 bg-secondary mb-3 pb-3">
         <h3 class="text-bg-dark p-3 text-center w-100">Cards</h3>
             <div class="gap-3 my-2 d-flex align-items-center justify-content-center">
-                <Card title="'Title1'" content="str1"/>
-                <Card title="'Title2'" content="str2"/>
+                <Card title="'Title1'">Content of card 1</Card>
+                <Card title="'Title2'">
+                    <Counter/>
+                </Card>
             </div>
         </div>
 
