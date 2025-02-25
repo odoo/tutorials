@@ -11,12 +11,14 @@
                 <p>Counters Sum: <t t-esc="countersSum.value" /></p>
             </div>
             <br />
-            <Card title="'another title'">
-                <p>Card content 1</p>
-            </Card>
-            <Card title="'yet another title'">
-                <Counter />
-            </Card>
+            <div class="p-3 m-3 d-flex justify-content-start align-items-start">
+                <Card title="'another title'">
+                    <p>Card content 1</p>
+                </Card>
+                <Card title="'yet another title'">
+                    <Counter />
+                </Card>
+            </div>
             <br />
             <TodoList />
         </div>

@@ -1,4 +1,4 @@
-import { Component } from '@odoo/owl';
+import { Component, useState } from '@odoo/owl';
 
 export class Card extends Component {
     static template = 'awesome_owl.Card';
@@ -11,5 +11,16 @@ export class Card extends Component {
             type: Object,
             optional: true,
         }
+    }
+
+    setup() {
+        this.isBodyOpen = useState({
+            value: true,
+        });    
+        this.toggleBodyOpen = this.toggleBodyOpen.bind(this);
+    }
+
+    toggleBodyOpen() {
+        this.isBodyOpen.value = !this.isBodyOpen.value;
     }
 }
