@@ -3,8 +3,8 @@
     <t t-name="awesome_owl.card" >
         <div class="card">
             <div class="card-body">
-                <h5 class="card-title" t-esc="this.props.title" />
-                <p class="card-text" t-esc="this.props.content" />
+                <h5 class="card-title"><t t-out="props.title"/></h5>
+                <p class="card-text"><t t-out="props.content"/></p>
             </div>
         </div>
     </t>
