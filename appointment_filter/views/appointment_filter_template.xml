@@ -1,0 +1,36 @@
+<odoo>
+    <template id="appointment_page_with_filters" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//h4" position="after">
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="selectType" data-bs-toggle="dropdown" aria-expanded="false">
+                    Type
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="selectType">
+                    <li><a class="dropdown-item" href="/appointment">All</a></li>
+                    <li><a class="dropdown-item" href="/appointment?appointment_type=online">Online</a></li>
+                    <li><a class="dropdown-item" href="/appointment?appointment_type=offline">Offline</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="hasPayment" data-bs-toggle="dropdown" aria-expanded="false">
+                    Payment Step
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="selectType">
+                    <li><a class="dropdown-item" href="/appointment">All</a></li>
+                    <li><a class="dropdown-item" href="/appointment?payment_step=required">Paid</a></li>
+                    <li><a class="dropdown-item" href="/appointment?payment_step=not_required">Unpaid</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="hasPayment" data-bs-toggle="dropdown" aria-expanded="false">
+                    Based On
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="selectType">
+                    <li><a class="dropdown-item" href="/appointment">All</a></li>
+                    <li><a class="dropdown-item" href="/appointment?schedule_based_on=users">Users</a></li>
+                    <li><a class="dropdown-item" href="/appointment?schedule_based_on=resources">Resources</a></li>
+                </ul>
+            </div>
+        </xpath>
+    </template>
+</odoo>
