@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "estate property offer"
+    _description = "Estate Property Offer"
     _inherit = ["mail.thread"]
     _sql_constraints = [
         (
@@ -21,7 +21,7 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float(string="Price")
     status = fields.Selection(
         string="Status",
-        copy="False",
+        copy=False,
         selection=[("accepted", "Accepted"), ("refused", "Refused")],
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)

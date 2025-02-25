@@ -3,15 +3,15 @@
     <t t-name="awesome_owl.TodoItem">
         <div class="d-flex align-items-center gap-3 p-1 border-bottom">
             <div>
-                <input type="checkbox" t-att-id="props.todo.id" t-att-checked="props.todo.isCompleted" t-on-change="() => props.completeTask(props.todo.id)"/>
+                <input type="checkbox" class="cursor-pointer" t-att-checked="props.todo.isCompleted" t-on-change="() => props.completeTask(props.todo.id)"/>
             </div>
             <div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
                 <t t-esc="props.todo.id"/>
                 .
                 <t t-esc="props.todo.description"/>
             </div>
-            <div>
-                <span class="fa fa-remove cursor-pointer" t-on-click="() => props.deleteTask(props.todo.id)"/>
+            <div class="ms-auto">
+                <span class="fa fa-remove cursor-pointer text-danger" t-on-click="() => props.deleteTask(props.todo.id)"/>
             </div>
         </div>
     </t>

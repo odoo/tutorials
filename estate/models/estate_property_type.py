@@ -6,7 +6,7 @@ from odoo import api, fields, models
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
-    _description = "estate property type"
+    _description = "Estate Property Type"
     _order = "name asc"
 
     name = fields.Char(string="Property Type", required=True)
@@ -17,9 +17,7 @@ class EstatePropertyType(models.Model):
     offer_ids = fields.One2many(
         "estate.property.offer", inverse_name="property_type_id"
     )
-    offer_count = fields.Integer(
-        string="Offer Count", default=0, compute="_compute_offer_count"
-    )
+    offer_count = fields.Integer(string="Offer Count", compute="_compute_offer_count")
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):

@@ -6,7 +6,7 @@ from odoo import fields, models
 
 class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
-    _description = "estate property"
+    _description = "Estate Property Tag"
     _order = "name asc"
 
     _sql_constraints = [
