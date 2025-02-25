@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-3" t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo" toggleTodo="this.toggleTodo" />
+                    <TodoItem todo="todo" toggleTodo="this.toggleTodo" removeTodo="this.removeTodo" />
                 </div>
             </div>
         </div>

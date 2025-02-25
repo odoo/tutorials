@@ -15,5 +15,9 @@ export class TodoItem extends Component {
             type: Function,
             optional: false,
         },
+        removeTodo: {
+            type: Function,
+            optional: false,
+        },
     };
 }

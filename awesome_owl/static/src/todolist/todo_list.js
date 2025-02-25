@@ -18,6 +18,7 @@ export class TodoList extends Component {
         this.nextTodoId = this.todos.length + 1;
         useAutoFocus('add_task_input');
         this.toggleTodo = this.toggleTodo.bind(this);
+        this.removeTodo = this.removeTodo.bind(this);
     }
 
     addTask(ev) {
@@ -41,5 +42,10 @@ export class TodoList extends Component {
     toggleTodo(todoId) {
         const toBeToggled = this.todos.find(todo => todo.id === todoId);
         toBeToggled.isCompleted = !toBeToggled.isCompleted;
+    }
+
+    removeTodo(todoId) {
+        const toBeRemovedIndex = this.todos.findIndex(todo => todo.id === todoId);
+        this.todos.splice(toBeRemovedIndex, 1);
     }
 }
