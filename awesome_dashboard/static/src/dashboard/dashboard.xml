@@ -6,8 +6,11 @@
                 <button type="button" class="btn btn-primary me-2" t-on-click="openCustomers">Customers</button>
                 <button type="button" class="btn btn-secondary" t-on-click="openLeads">Leads</button>
                 <button type="button" class="btn btn-secondary" t-on-click="openSetting">Settings</button>
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
             </t>
-            <div class="d-flex flex-wrap">
+             <!-- <div class="d-flex flex-wrap">
                 <DashboardItem size="1.5">
                     <h3 class="dashboard-item-title">Average amount of t-shirt by order this month</h3>
                     <p t-esc="statistics.average_quantity" class="dashboard-item-value"/>
@@ -33,8 +36,38 @@
                     <p t-esc="statistics.total_amount" class="dashboard-item-value"/>
                 </DashboardItem>
 
-                
+                <DashboardItem size="1.6">
+                    <h3 class="dashboard-item-title">Sales Distribution by T-Shirt Size</h3>
+                    <PieChart data="statistics"/>
+                </DashboardItem>
+            </div> -->
+
+            <!-- Generic Dashboard Items -->
+            <div class="d-flex flex-wrap">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1" t-if="!dialog_state.disabledItems.includes(item.id)">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
             </div>
         </Layout>
+    </t>
+
+    <!-- Configuration Dialog -->
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you wish to see?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onDone">
+                    Done
+                </button>
+            </t>
+        </Dialog>
     </t>
 </templates>

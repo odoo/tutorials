@@ -1,0 +1,3 @@
+<t t-name="awesome_dashboard.AwesomeDashboardLoader">
+    <LazyComponent bundle="'web.assets_backend'" Component="'awesome_dashboard.AwesomeDashboard'" />
+</t>
