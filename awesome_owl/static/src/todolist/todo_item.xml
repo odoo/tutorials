@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem">
-        <div class="card border-primary mb-3" style="max-width: 18rem;">
+        <!-- mute the text if the task isCompleted using (text-muted) for bootstrap style -->
+        <div
+            class="card border-primary mb-3"
+            t-att-class="{
+                'text-muted': props.todo.isCompleted,
+                'text-decoration-line-through': props.todo.isCompleted,
+            }"
+            style="max-width: 18rem;"
+        >
             <div class="card-header text-primary">ID: <strong t-esc="props.todo.id"/></div>
             <div class="card-body text-secondary">
                 <h5 class="card-title">Description: <strong t-esc="props.todo.description"/></h5>

@@ -12,13 +12,26 @@ export class TodoList extends Component {
     };
 
     setup() {
-        this.todos = useState([
-            { id: 1, description: 'Learn JavaScript', isCompleted: true },
-            { id: 2, description: 'Learn Odoo', isCompleted: false },
-            { id: 3, description: 'Learn Owl', isCompleted: true },
-            { id: 4, description: 'Learn React', isCompleted: false },
-            { id: 5, description: 'Learn Vue', isCompleted: true },
-            { id: 6, description: 'Learn Python', isCompleted: false },
-        ]);
+        this.todos = useState([]);
+        this.addTask = this.addTask.bind(this);
+        this.nextTodoId = this.todos.length + 1;
+    }
+
+    addTask(ev) {
+        ev.preventDefault();
+        if (ev.key !== 'Enter') {
+            return;
+        }
+        const input = ev.target;
+        const description = input.value.trim();
+        if (!description) {
+            return;
+        }
+        this.todos.push({
+            id: this.nextTodoId++,
+            description,
+            isCompleted: false,
+        });
+        input.value = '';
     }
 }
