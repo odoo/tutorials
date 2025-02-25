@@ -1,0 +1,7 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChart">
+        <div class="pie-chart-container">
+            <canvas t-ref="canvas" width="400" height="400"></canvas> <!-- The canvas where the pie chart will be drawn -->
+        </div>
+    </t>
+</templates>

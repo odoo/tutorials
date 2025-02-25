@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
             <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
                 <t t-set-slot="control-panel-always-buttons">
@@ -11,14 +10,12 @@
                     </div>
                 </div>
                 </t>
-                <DashboardItem text="'Hello'"/>
-                <DashboardItem text="'Average Quantity:'+state.average_quantity"/>
-                <DashboardItem text="'Average Time:'+state.average_time"/>
-                <DashboardItem text="'Cancelled Orders:'+state.nb_cancelled_orders"/>
-                <DashboardItem text="'Cancelled Orders:'+state.nb_new_orders"/>
-                <DashboardItem text="'Orders by size: ' +'m: '+state.orders_by_size.m+' '+'s: '+state.orders_by_size.s+' '+'xl: '+state.orders_by_size.xl" size="2"/>
-                hello dashboard
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(state) : {'data': state}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
+                    </DashboardItem>
+                </t>
             </Layout>
     </t>
-
 </templates>
