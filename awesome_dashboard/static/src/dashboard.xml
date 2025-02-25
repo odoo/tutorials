@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
+    <!-- comment -->
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout classname="'o_dashboard h-100'" t-props="{'controlPanel': {}}">
