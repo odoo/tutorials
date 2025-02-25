@@ -10,8 +10,8 @@
         <field name="model">estate.property.tags</field>
         <field name="arch" type="xml">
             <list string="Property Tags" editable="bottom">
-                <field name="name" />
-                <field name="color" string="Background Color" />
+                <field name="name"/>
+                <field name="color" string="Background Color"/>
             </list>
         </field>
     </record>

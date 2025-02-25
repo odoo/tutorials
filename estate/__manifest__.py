@@ -14,7 +14,7 @@
         "report/estate_report.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_tags_views.xml",
-        "views/res_user.xml",
+        "views/res_users.xml",
         "views/estate_menus.xml",
         "views/property_list_website_template.xml",
         "views/property_details_website_template.xml",
@@ -26,5 +26,4 @@
     ],
     "installable": True,
     "application": True,  # this makes the applications available even in app filter is on
-    "auto-install": False,
 }

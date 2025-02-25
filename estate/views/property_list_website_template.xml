@@ -4,7 +4,7 @@
         <record id="website_property_listing_menu" model="website.menu">
             <field name="name">Properties</field>
             <field name="url">/properties</field>
-            <field name="parent_id" ref="website.main_menu" />
+            <field name="parent_id" ref="website.main_menu"/>
         </record>
 
         <template id="property_list_website_template" name="Estate Properties List Card View">
@@ -28,7 +28,7 @@
                         class="d-flex justify-content-between align-items-center mt-5 mb-4">
                         <t>
                             <div class="pagination mt-4 text-center">
-                                <t t-call="website.pager" t-set="pager" />
+                                <t t-call="website.pager" t-set="pager"/>
                             </div>
                         </t>
                     </div>
@@ -41,23 +41,23 @@
                                     <t t-if="property.property_image">
                                         <img class="card-img-top img-fluid"
                                             t-att-src="'data:image/png;base64,%s' % property.property_image.decode('utf-8')"
-                                            alt="Property Image" />
+                                            alt="Property Image"/>
                                     </t>
                                     <t t-else="">
                                         <img class="card-img-top img-fluid"
                                             src="/your_module/static/src/img/default_property.png"
-                                            alt="Default Image" />
+                                            alt="Default Image"/>
                                     </t>
                                     <div class="card-body">
                                         <h5 class="card-title">
-                                            <t t-esc="property.name" />
+                                            <t t-esc="property.name"/>
                                         </h5>
                                         <p class="card-text">
                                             <strong>Expected Price:</strong>
-                                            <t t-esc="property.expected_price" />
-                                            <br />
+                                            <t t-esc="property.expected_price"/>
+                                            <br/>
                                             <strong>Postcode:</strong>
-                                            <t t-esc="property.postcode" />
+                                            <t t-esc="property.postcode"/>
                                         </p>
                                         <!-- Link to detail page -->
                                         <a t-att-href="'/properties/%s' % property.id"

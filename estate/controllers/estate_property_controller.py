@@ -4,7 +4,7 @@ from odoo.http import Controller, request
 class EstatePropertyController(Controller):
     
     @http.route(["/properties", "/properties/page/<int:page>"], type="http", auth="public", website=True)
-    def show_property_list(self, filter_domain ="all", page=1, **kwargs):
+    def show_property_list(self, filter_domain="all", page=1, **kwargs):
 
         '''
         Tasks : (do when free)
@@ -31,9 +31,7 @@ class EstatePropertyController(Controller):
                 return []
 
         domain = get_filter(filter_key)
-
         properties_count = request.env["estate.property"].sudo().search_count(domain)
-
         page_size = 9
         pager = request.website.pager(
             url='/properties',
@@ -48,5 +46,5 @@ class EstatePropertyController(Controller):
     
     @http.route("/properties/<int:property_id>", type="http", auth="public", website=True)
     def show_property_details(self, property_id):
-        property = request.env["estate.property"].sudo(). browse(property_id)
-        return request.render("estate.property_details_website_template", {"property":property})
+        property = request.env["estate.property"].sudo().browse(property_id)
+        return request.render("estate.property_details_website_template", {"property": property})

@@ -49,12 +49,8 @@ class EstateProperty(models.Model):
         tracking=True,
     )
     property_type_id = fields.Many2one("estate.property.type")
-    buyer_id = fields.Many2one(
-        "res.partner", string="Buyer", copy=False
-    )  # a buyer is a external person - therefore in partner relation
-    salesperson_id = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user, domain=lambda self:[('company_id' ,'=', self.env.company.id)]
-    )  # a salesman is considered a internal entity - therefore in user relation
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)  # a buyer is a external person - therefore in partner relation
+    salesperson_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user, domain=lambda self:[('company_id' ,'=', self.env.company.id)])  # a salesman is considered a internal entity - therefore in user relation
     tag_ids = fields.Many2many("estate.property.tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(
@@ -118,6 +114,7 @@ class EstateProperty(models.Model):
                     raise ValidationError(
                         "The Selling Price cannot be lower than 90% of Expected Price"
                     )
+
     @api.model_create_multi
     def create(self, vals_list):
         created_property = super().create(vals_list)

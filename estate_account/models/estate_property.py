@@ -14,12 +14,12 @@ class EstateProperty(models.Model):
         #         return self.env["account.move"]
         print(" reached ".center(100, '='))
 
-        is_sold = super().action_set_property_status_sold()
+        is_property_sold = super().action_set_property_status_sold()
 
-        print(self.env.user)
-        print(self.env.user.has_group)
-        self.env["account.move"].check_access("write")
-        if (is_sold):
+        # print(self.env.user)
+        # print(self.env.user.has_group)
+        # self.env["account.move"].check_access("write")
+        if (is_property_sold):
             for record in self:
                 # sudo to bypass access and record rules to any user
                 self.env["account.move"].sudo().create(
@@ -45,4 +45,4 @@ class EstateProperty(models.Model):
                     }
                 )
 
-        return is_sold
+        return is_property_sold

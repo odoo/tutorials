@@ -1,8 +1,8 @@
 from odoo import fields, models
 
-class InheritedResUser(models.Model):
+class ResUsers(models.Model):
     # name field is not used in extension inheritance
-    # _name = "inherited.res.users"
+    # _name = "res.users"
     # _description = "inherited class of res users"
     _inherit = "res.users"
 

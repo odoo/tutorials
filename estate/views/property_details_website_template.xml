@@ -6,27 +6,27 @@
             <div class="container mt-4">
                 <div class="row">
                     <div class="col-md-8">
-                        <h1 t-esc="property.name" />
+                        <h1 t-esc="property.name"/>
                         <p class="card-text">
                             <strong>Status:</strong>
-                            <span t-field="property.state" />
+                            <span t-field="property.state"/>
                         </p>
 
                         <!-- Property image -->
                         <t t-if="property.property_image">
                             <img class="img-fluid mb-4"
                                 t-att-src="'data:image/png;base64,%s' % property.property_image.decode('utf-8')"
-                                alt="Property Image" />
+                                alt="Property Image"/>
                         </t>
                         <t t-else="">
                             <img class="img-fluid mb-4"
                                 src="/your_module/static/src/img/default_property.png"
-                                alt="Default Image" />
+                                alt="Default Image"/>
                         </t>
                         <p>
                             <strong>Description:</strong>
                         </p>
-                        <p t-esc="property.description" />
+                        <p t-esc="property.description"/>
                     </div>
                     <div class="col-md-4">
                         <div class="card">
@@ -36,31 +36,31 @@
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
                                     <strong>Postcode:</strong>
-                                    <span t-esc="property.postcode" />
+                                    <span t-esc="property.postcode"/>
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Date Available:</strong>
-                                    <span t-esc="property.date_availability" />
+                                    <span t-esc="property.date_availability"/>
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Expected Price:</strong>
-                                    <span t-esc="property.expected_price" />
+                                    <span t-esc="property.expected_price"/>
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Selling Price:</strong>
-                                    <span t-esc="property.selling_price" />
+                                    <span t-esc="property.selling_price"/>
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Bedrooms:</strong>
-                                    <span t-esc="property.bedrooms" />
+                                    <span t-esc="property.bedrooms"/>
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Living Area (sqm):</strong>
-                                    <span t-esc="property.living_area" />
+                                    <span t-esc="property.living_area"/>
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Facades:</strong>
-                                    <span t-esc="property.facades" />
+                                    <span t-esc="property.facades"/>
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Garage:</strong>
@@ -74,19 +74,19 @@
                                 </li>
                                 <li class="list-group-item" t-if="property.garden">
                                     <strong>Garden Area (sqm):</strong>
-                                    <span t-esc="property.garden_area" />
+                                    <span t-esc="property.garden_area"/>
                                 </li>
                                 <li class="list-group-item" t-if="property.garden">
                                     <strong>Garden Orientation:</strong>
-                                    <span t-esc="property.garden_orientation" />
+                                    <span t-esc="property.garden_orientation"/>
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Total Area (sqm):</strong>
-                                    <span t-esc="property.total_area" />
+                                    <span t-esc="property.total_area"/>
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Best Price:</strong>
-                                    <span t-esc="property.best_price" />
+                                    <span t-esc="property.best_price"/>
                                 </li>
                             </ul>
                         </div>
