@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-    <div>
-        <Counter onChange.bind="incrementSum"/>
-        <Counter onChange.bind="incrementSum"/>
-        <p>Total sum:<t t-esc="state.sum"/></p>
-    </div>
-        <Card title="'card1'">
-        <t t-slot="default">
-        <Counter onChange.bind="incrementSum"/>
-        </t>
-        </Card>
-
-        <Card title="'card3'">
-        <t t-slot="default">
-        <Counter onChange.bind="incrementSum"/>
-        </t>
-        </Card>
-
-        <Card title="'card2'"/>
-    <div>
-    <Card title="'LIST'">
-        <t t-slot="default">
-        <TodoList/>
-        </t>
-    </Card>
-        
-    </div>
-        
+        <div>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <p>Total sum:<t t-esc="state.sum"/></p>
+        </div>
+            <Card title="'card1'">
+                <t t-slot="default">
+                    <Counter onChange.bind="incrementSum"/>
+                </t>
+            </Card>
+            <Card title="'card3'">
+                <t t-slot="default">
+                    <Counter onChange.bind="incrementSum"/>
+                </t>
+            </Card>
+            <Card title="'card2'"/>
+        <div>
+            <Card title="'LIST'">
+                <t t-slot="default">
+                    <TodoList/>
+                </t>
+            </Card>
+        </div>  
     </t>
 </templates>
