@@ -3,7 +3,12 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3 d-flex align-items-center">
             <div class="d-flex">
-                <TodoList/>
+                <Card title="'Card 1'">
+                    <Counter />
+                </Card>
+                <Card title="'Card 2'">
+                    <Counter />
+                </Card>
             </div>
         </div>
     </t>
