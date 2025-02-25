@@ -8,8 +8,8 @@
             <field name="arch" type="xml">
                 <!-- XPath to navigate to the 'Order Lines' page and 'Sales Order Lines' list -->
                 <xpath expr="//form//notebook//page//field[@name='order_line']/list/field[@name='product_uom_qty']" position="before">
-                    <button name="%(action_distribute_cost_wizard)d"
-                            type="action"
+                    <button name="action_distribute_cost"
+                            type="object"
                             icon="fa-share-alt"
                             class="btn btn-icon btn-secondary"
                             title="Distribute Cost"/>

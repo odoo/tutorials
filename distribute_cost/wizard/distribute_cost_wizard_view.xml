@@ -18,7 +18,13 @@
                     <sheet>
                         <group>
                             <field name="order_id" invisible="true"/>
-                            <field name="order_line_ids" create="0" widget="text"/>
+                             <field name="order_line_ids" string="">
+                                <list editable="bottom" create="0">
+                                    <field name="name" string="Product" readonly="True"/>
+                                    <field name="linked_sale_order_line_id" column_invisible="True"/>
+                                    <field name="divided_price" string="Price" widget="monetary" readonly="False"/>
+                                </list>
+                            </field>
                         </group>
                         <footer>
                             <button name="action_divide_cost" type="object" string="Divide" class="btn-primary"/>

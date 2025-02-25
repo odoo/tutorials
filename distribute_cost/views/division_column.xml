@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_order_line_inherit_division" model="ir.ui.view">
+            <field name="name">sale.order.line.division.column</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Add the "Division" column before "Price Subtotal" -->
+                <xpath expr="//form//notebook//page//field[@name='order_line']/list/field[@name='price_subtotal']" position="before">
+                    <field 
+                        name="divided_price" 
+                        string="Division" 
+                        default="0.0" 
+                        editable="bottom" 
+                        readonly="1"
+                    />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
