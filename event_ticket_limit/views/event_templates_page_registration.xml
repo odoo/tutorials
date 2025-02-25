@@ -1,22 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="modal_ticket_registration" name="modal_ticket_registration" inherit_id="website_event.modal_ticket_registration">
+    <template id="modal_ticket_registration" name="Modal Ticket Registration"
+        inherit_id="website_event.modal_ticket_registration">
 
-        <!-- Replace the logic that calculates the maximum number of tickets allowed per registration at the ticket level -->
+        <!-- For Multiple Ticket Types -->
         <xpath expr="//t[@t-set='seats_max_ticket']" position="replace">
-            <t t-set="seats_max_ticket" 
-               t-value="(not ticket.seats_limited or ticket.seats_available &gt; ticket.maximum_tickets_per_registration) 
-                        and ticket.maximum_tickets_per_registration 
-                        or ticket.seats_available + 1"/>
+            <t t-set="seats_max_ticket"
+                t-value="(not ticket.seats_limited or ticket.seats_available > ticket.maximum_tickets_per_registration)
+                        and ticket.maximum_tickets_per_registration + 1
+                        or ticket.seats_available + 1" />
         </xpath>
 
-        <!-- Replace the logic that calculates the maximum number of tickets allowed per registration at the event level -->
         <xpath expr="//t[@t-set='seats_max_event']" position="replace">
-            <t t-set="seats_max_event" 
-               t-value="(not event.seats_limited or event.seats_available &gt; ticket.maximum_tickets_per_registration) 
-                        and ticket.maximum_tickets_per_registration 
-                        or event.seats_available + 1"/>
+            <t t-set="seats_max_event"
+                t-value="(not event.seats_limited or event.seats_available > ticket.maximum_tickets_per_registration)
+                        and ticket.maximum_tickets_per_registration + 1
+                        or event.seats_available + 1" />
         </xpath>
 
+        <!-- For Single Ticket Type -->
+        <xpath expr="//div[contains(@class, 'o_wevent_registration_single_select')]"
+            position="replace">
+            <div class="o_wevent_registration_single_select w-auto ms-auto">
+                <select t-att-name="'nb_register-%s' % (tickets.id if tickets else 0)"
+                    class="d-inline w-auto form-select">
+
+                    <!--
+                        Compute the maximum number of tickets a user can register for a specific ticket type.
+                        - If ticket limits are not set, allow 'maximum_tickets_per_registration' tickets.
+                        - If limited, ensure the maximum does not exceed available seats.
+                    -->
+                    <t t-set="seats_max_ticket"
+                        t-value="(not tickets or not tickets.seats_limited or tickets.seats_available > tickets.maximum_tickets_per_registration)
+                                and tickets.maximum_tickets_per_registration + 1
+                                or tickets.seats_available + 1" />
+
+                    <!--
+                        Compute the maximum number of tickets a user can register for the event as a whole.
+                        - If no seat limits, allow 'maximum_tickets_per_registration' tickets.
+                        - If limited, ensure the max does not exceed event seat availability.
+                    -->
+                    <t t-set="seats_max_event"
+                        t-value="(not event.seats_limited or event.seats_available > tickets.maximum_tickets_per_registration)
+                                and tickets.maximum_tickets_per_registration + 1
+                                or event.seats_available + 1" />
+
+                    <!--
+                        Determine the final max selectable tickets:
+                        - If ticket-specific, take the minimum of 'seats_max_ticket' and 'seats_max_event'.
+                        - Otherwise, use the event-wide default or available seats.
+                    -->
+                    <t t-set="seats_max"
+                        t-value="min(seats_max_ticket, seats_max_event) if tickets
+                                else min(event.default_tickets_per_registration, event.seats_available) + 1" />
+
+                    <t t-foreach="range(0, seats_max)" t-as="nb">
+                        <option t-out="nb" t-att-selected="nb == 1 and 'selected'" />
+                    </t>
+                </select>
+            </div>
+        </xpath>
     </template>
 </odoo>
