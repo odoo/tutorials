@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @odoo-module **/
 
 import { Component, useRef, onMounted } from '@odoo/owl';
 import { TodoItem } from './todo_item.js';

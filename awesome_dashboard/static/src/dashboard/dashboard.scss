@@ -1,0 +1,23 @@
+.o_dashboard {
+    background-color: #343a40; 
+    min-height: 20vh; 
+    padding: 20px;
+}
+.dashboard-item {
+    border: 1px solid #ccc;
+    padding: 1rem;
+    justify-content: start;
+    max-width: 900px;
+    margin-left: 0; 
+}
+.container {
+    max-width: 100%;   
+    text-align: left;
+}
+.d-flex {
+    justify-content: flex-start;
+    gap: 10px;
+}
+.text-success {
+    color: green;
+}

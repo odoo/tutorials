@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @odoo-module **/
 
 import { Component, useState} from '@odoo/owl';
 import { markup } from '@odoo/owl';
