@@ -1,0 +1,28 @@
+{
+    "name": "Estate",
+    "category": "Real Estate/Brokerage",
+    "description": "Real Estate App",
+    "depends": ["base", "mail", "website"],
+    "sequence": 1,
+    "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "report/estate_property_templates.xml",
+        "report/estate_property_reports.xml",
+        "views/properties_template.xml",
+        "views/estate_property_views.xml",
+        "views/property_offers_views.xml",
+        "views/property_type_views.xml",
+        "views/property_tags_views.xml",
+        "views/res_users_views.xml",
+        "views/estate_menus.xml",
+    ],
+    "demo": [
+        "demo/estate_property_type_demo.xml",
+        "demo/estate_property_demo.xml",
+        "demo/estate_property_offer_demo.xml",
+    ],
+    "installable": True,
+    "application": True,
+    "license": "LGPL-3",
+}
