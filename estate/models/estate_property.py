@@ -49,8 +49,8 @@ class EstateProperty(models.Model):
         default="new",
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -64,7 +64,7 @@ class EstateProperty(models.Model):
         ),
         (
             "check_selling",
-            "CHECK(expected_price >= 0)",
+            "CHECK(selling_price >= 0)",
             "Price must be positive",
         ),
     ]
@@ -79,15 +79,15 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
-    @api.onchange("offer_ids", "offer_ids.status")
+    @api.depends("offer_ids", "offer_ids.status")
     def _compute_state(self):
         for record in self:
             if record.state in ("sold", "cancelled"):
                 continue
             if any(offer.status == "accepted" for offer in record.offer_ids):
-                record.state = "offer accepted"
+                record.state = "offer_accepted"
             elif record.offer_ids:
-                record.state = "offer received"
+                record.state = "offer_received"
             else:
                 record.state = "new"
 

@@ -5,6 +5,7 @@ class InheritedPropertyAccount(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
+        res = super().action_sold()
         for estate_property in self:
             move = estate_property.env["account.move"].create(
                 {
@@ -22,10 +23,11 @@ class InheritedPropertyAccount(models.Model):
                             {
                                 "name": "Administrative fees",
                                 "quantity": 1,
-                                "price_unit": 100,
+                                "price_unit": 100.0,
                             }
                         ),
                     ],
                 }
             )
-        return super().action_sold()
+        move.action_post()
+        return res
