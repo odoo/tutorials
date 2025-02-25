@@ -2,13 +2,8 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <!-- <Card title="'card 1'" content="content_1" />
-        <Card title="'card 2'" content="content_2" /> -->
         <div class="m-3">
-            <t t-foreach="counter.value" t-as="v" t-key="v.id">    
-                <Counter value="v.value" onIncrement="()=>this.incrementCounter(v.id)"/>
-            </t>
-            <p>The sum is:<t t-esc="counterSum"/></p>
+            <ToDoList />
         </div>
     </t>
 
