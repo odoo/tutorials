@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo">
+        <Card t-props="{'title':'To Do App'}">
+        <input type="text" placeholder="Enter a new task" t-ref="task_input" style="margin-bottom:8px;"/>
+            <TodoItems t-props="{'todo_lists': this.todos,'delete_task':this.deleteTodo, 'toggle_task':this.handleToggleList,}"/>
+        </Card>
+    </t>
+</templates>

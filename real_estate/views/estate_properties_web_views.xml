@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="web_template_estate_properties" name="Property Listings">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2>Property Listings</h2>
+                <ul>
+                    <t t-foreach="records" t-as="property">
+                        <li>
+                            <strong>
+                                <t t-esc="property.name" />
+                            </strong>
+                            <t t-esc="property.expected_price" />
+                        </li>
+                    </t>
+                </ul>
+            </div>
+        </t>
+    </template>
+</odoo>
