@@ -7,59 +7,38 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Costomers</button>
                 <button class="btn btn-primary" t-on-click="openLeadsView">Leads</button>
             </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
+
             <div class="d-flex flex-wrap">
-                <!-- <t t-foreach="this.state" t-as="dashboarddata" t-key="dashboarddata.title">
-                    <DashboardItem size="dashboarddata.size">
-                        <p><t t-esc="dashboarddata.title" /></p>
-                        <h1 class="d-flex text-success justify-content-center"><t t-esc="dashboarddata.value" /></h1>
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                        <t t-set="itemProps" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProps"/>
                     </DashboardItem>
                 </t>
-                 <DashboardItem>
-                        <p>"Average amount of t-shirt by order this month"</p>
-                        <h1 class="d-flex text-success justify-content-center"><t t-esc="this.statistics.average_quantity"
-                /></h1>
-                    </DashboardItem> -->
-                <DashboardItem>
-                    <p>Average amount of t-shirt by order this month</p>
-                    <h1 class="d-flex text-success justify-content-center">
-                        <t t-esc="this.statistics.average_quantity" />
-                    </h1>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <p>Average time for an order to go from 'new' to 'sent' or 'cancelled'</p>
-                    <h1 class="d-flex text-success justify-content-center">
-                        <t t-esc="this.statistics.average_time" />
-                    </h1>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <p>Number of new orders this month</p>
-                    <h1 class="d-flex text-success justify-content-center">
-                        <t t-esc="this.statistics.nb_new_orders" />
-                    </h1>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <p>Number of cancelled orders this month</p>
-                    <h1 class="d-flex text-success justify-content-center">
-                        <t t-esc="this.statistics.nb_cancelled_orders" />
-                    </h1>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <p>Total amount of new orders this month</p>
-                    <h1 class="d-flex text-success justify-content-center">
-                        <t t-esc="this.statistics.total_amount" />
-                    </h1>
-                </DashboardItem>
-
-                <DashboardItem size="2">
-                    <p>Shirt orders by size</p>
-                    <Piechart data="this.statistics.orders_by_size"/>
-                </DashboardItem>
             </div>
-        </Layout>
+        </Layout>        
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
     </t>
 
 </templates>

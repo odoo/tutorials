@@ -1,4 +1,4 @@
-import { Component, onWillStart, useEffect, useRef, onWillUnmount, onMounted } from "@odoo/owl";
+import { Component, onMounted , onWillStart, onWillUnmount, useEffect, useRef} from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 
 export class Piechart extends Component {
@@ -8,7 +8,6 @@ export class Piechart extends Component {
     }
 
     setup() {
-
         this.canvasRef = useRef("canvas");
         this.chart = null;
 
