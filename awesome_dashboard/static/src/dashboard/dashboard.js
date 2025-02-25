@@ -5,19 +5,35 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { rpc } from '@web/core/network/rpc';
+import { dashboardItems } from "./dashboard_items";
 import { DashboardItem } from "./dashboard_item";
+import { PieChart } from "./pie_chart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, PieChart };
 
     setup(){
         this.action = useService("action");
-        this.stats
+        // this.stats = null;
+        this.statisticsService = useService("statistics");
 
-        onWillStart(async () => {
-            this.stats = await rpc("/awesome_dashboard/statistics");
-        })
+        // onWillStart(async () => {
+        //     this.stats = await rpc("/awesome_dashboard/statistics");
+        // })
+
+        // Fetch statistics only when the component is first mounted
+       /*  onWillStart(async () => {
+            this.stats = await this.statisticsService.loadStatistics();
+            // console.log(this.stats);
+            
+        }); */
+
+
+        this.stats = useState(this.statisticsService.stats);
+
+        this.items= registry.category("awesome_dashboard.items").getAll();
+        
     }
 
     openCustomers() {
@@ -37,4 +53,5 @@ class AwesomeDashboard extends Component {
 
 }
 
+registry.category("lazy_components").add("awesome_dashboard.dashboard", AwesomeDashboard);
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);

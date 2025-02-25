@@ -10,14 +10,8 @@
             <!-- <div class="o_dashboard_content">
                 <t t-slot="default"/>
             </div> -->
-            <div class="d-flex flex-wrap">
-                <!-- <DashboardItem>
-                    <h3>size by defalt</h3>
-                </DashboardItem>
-                <DashboardItem size="2">
-                    <h3>Size set to 2</h3>
-                </DashboardItem> -->
-                <DashboardItem>
+            <div class="d-flex flex-wrap justify-content-center align-items-center">
+<!--                 <DashboardItem>
                         <h3>New Orders</h3>
                         <p><t t-esc="stats.nb_new_orders"/> orders this month</p>
                 </DashboardItem>
@@ -37,6 +31,21 @@
                         <h3>Avg Processing Time</h3>
                         <p><t t-esc="stats.average_time"/> days</p>
                 </DashboardItem>
+ -->
+              
+              <!-- Pie Chart -->
+     <!--            <DashboardItem size="2">
+                    <h3>Shirt orders by size</h3>
+                    <PieChart t-if="stats" data="stats.orders_by_size" />
+                </DashboardItem>
+ -->
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size || 1">
+                    <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
+                    <t t-component="item.Component" t-props="itemProp" />
+                </DashboardItem>
+            </t>
+
             </div>
         </Layout>
     </t>
