@@ -5,12 +5,12 @@ export class TodoItem extends Component {
         todo: {
             type: Object,
             shape: {
-                id: {type: Number},
-                description: {type: String},
-                isCompleted: {type: Boolean}
+                id: { type: Number } ,
+                description: { type: String },
+                isCompleted: { type: Boolean }
             }
         },
-        removeTodo: {type: Function}
+        removeTodo: { type: Function }
     }
 
     toggleState() {

@@ -1,4 +1,4 @@
-import { NumberCard } from "./numberCard/number_card";
+import { NumberCard } from "./number_card/number_card";
 import { PieChartCard } from "./pie_chart_card/pie_chart_card";
 import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";

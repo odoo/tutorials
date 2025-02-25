@@ -8,7 +8,7 @@ export class PieChart extends Component {
         label: { type: String },
         data: { type: Object }
     }
-    setup(){
+    setup() {
         this.chartRef = useRef("chartCanvas");
         this.chart = null;
         this.statistics = useState(useService("awesome_dashboard.statistics"));

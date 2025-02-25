@@ -12,12 +12,12 @@ export class Playground extends Component {
         this.state = useState({ sum: 0 });
     }
 
-    do_sum(value){
+    do_sum(value) {
         this.state.sum += value;
     }
 
     content1 = "<div>some content</div>";
     content2 = markup("<div class='text-primary'>some content</div>");
 
-    static components = {Counter, Card, TodoList};
+    static components = { Counter, Card, TodoList };
 }

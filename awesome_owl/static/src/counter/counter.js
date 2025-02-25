@@ -2,7 +2,7 @@ import { Component, useState } from "@odoo/owl";
 
 export class Counter extends Component {
     static props = {
-        callback: {type: Function, optional: true}
+        callback: { type: Function, optional: true }
     }
 
     static template = "awesome_owl.counter.counter";

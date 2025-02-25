@@ -5,7 +5,7 @@ import { useAutofocus } from "../util";
 export class TodoList extends Component {
     static template = "awesome_owl.todo.list";
 
-    setup(){
+    setup() {
         this.state = useState({
             num: 0,
             todos:[]
@@ -13,7 +13,7 @@ export class TodoList extends Component {
         this.todoInputRef = useAutofocus("todoInput");
     }
 
-    addTodo(ev){
+    addTodo(ev) {
         if (ev.keyCode == 13){
             const newTodo = ev.target.value.trim();
             if(newTodo){
@@ -32,5 +32,5 @@ export class TodoList extends Component {
         this.state.todos = this.state.todos.filter(todo => todo.id !== id);
     }
 
-    static components = {TodoItem};
+    static components = { TodoItem };
 }

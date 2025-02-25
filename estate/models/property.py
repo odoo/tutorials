@@ -114,11 +114,7 @@ class Property(models.Model):
                 raise UserError(_("Cancelled property can not be sold."))
             elif property.state == 'sold':
                 raise UserError(_("Property already sold."))
-            accepted_offer = self.env['estate.property.offer'].search([
-                ('property_id', '=', self.id),
-                ('status', '=', 'accepted')
-            ], limit=1)
-            if not accepted_offer:
+            if not (property.state == 'offer_accepted'):
                 raise UserError(_("You cannot sell a property without an accepted offer."))
             property.state = 'sold'
 
