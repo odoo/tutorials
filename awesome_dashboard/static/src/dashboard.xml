@@ -3,7 +3,27 @@
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">  
-            Some content here
+            <t t-set-slot="control-panel-create-button">
+                <button type="button" class="btn btn-primary" t-on-click="onCustomerButtonClick">Customer</button>
+                <button type="button" class="btn btn-primary" t-on-click="onLeadsButtonClick">Leads</button>
+            </t>
+
+            <DashboardItem title="'Customer'">
+                <div t-attf-class="card-text">
+                    I love customers
+                </div>
+            </DashboardItem>
+            <DashboardItem title="'Leads'">
+                <div t-attf-class="card-text">
+                    I love custodes
+                </div>
+            </DashboardItem>
+            <DashboardItem title="'Opportunities'" size="4">
+                <div t-attf-class="card-text">
+                    Hello guys
+                </div>
+            </DashboardItem>
+
         </Layout>
     </t>
 

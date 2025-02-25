@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.item">
+        <div class="card d-inline-block m-2" style="width: (18*props.size)rem;">
+            <div class="card-body">
+                <button class="card-title" t-on-click="this.toggle" t-out="props.title"/>
+                <t t-slot="default" t-if="!this.state.toggled"/>
+            </div>
+        </div>
+    </t>
+
+</templates>
