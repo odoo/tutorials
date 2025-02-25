@@ -6,7 +6,7 @@
                 <button t-on-click="openCustomerView" class="btn btn-primary">Customers</button>
                 <button t-on-click="openLeadView" class="btn btn-primary">Leads</button>
             </t>
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap" t-if="statistics.isReady">
                 <DashboardItem>
                 Number of new orders this month
                 <div class="fs-1 fw-bold text-success text-center">
