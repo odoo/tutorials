@@ -10,6 +10,7 @@ export async function getStatistics() {
         "nb_cancelled_orders" : result.nb_cancelled_orders,
         "nb_new_orders" : result.nb_new_orders,
         "total_amount" : result.total_amount,
+        "orders_by_size" : result.orders_by_size,
     }
 }
 
