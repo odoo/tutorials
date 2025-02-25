@@ -6,21 +6,21 @@ from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description =" Good real estate"
+    _description ="Good real estate"
     _inherit = ["mail.thread",'website.published.mixin']
     _order= "id desc"
 
     name= fields.Char(required=True, tracking=True)
     description= fields.Text()
     postcode= fields.Char()
-    date_availability = fields.Date(default= datetime.now() + timedelta(days=90))
-    expected_price= fields.Float(required=True)
-    selling_price= fields.Float(readonly=True)
-    image_1920 = fields.Image(store=True, verify_resolution=True)
+    date_availability = fields.Date(default= datetime.now() + timedelta(days=90), copy=False)
+    expected_price= fields.Float(required=True , tracking=True)
+    selling_price= fields.Float(readonly=True,  tracking=True , copy=False)
+    image_1920 = fields.Image(store=True, verify_resolution=True, tracking=True)
     bedrooms= fields.Integer(default=2)
     living_area= fields.Integer()
     garden_area= fields.Integer()
-    total_area= fields.Integer(compute='_compute_total_area')
+    total_area= fields.Integer(compute='_compute_total_area' ,  tracking=True)
     facades= fields.Integer()
     garage= fields.Boolean()
     garden= fields.Boolean()
@@ -49,7 +49,8 @@ class EstateProperty(models.Model):
         ],
         required=True,
         default='new',
-        copy=False
+        copy=False,
+        tracking=True
     )
     offer_ids = fields.One2many("estate.property.offer", "property_id", string='Offers')
     best_price= fields.Float(compute='_compute_best_price')

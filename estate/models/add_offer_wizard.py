@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import _, models, fields, api
+from odoo.exceptions import UserError
 
 
 class AddOfferWizard(models.TransientModel):
@@ -12,6 +13,8 @@ class AddOfferWizard(models.TransientModel):
 
     def action_make_offer(self):
         for property in self.property_ids:
+            if property.state=='cancelled' or property.state=='sold':
+                raise UserError(_(f"Cannot add offer to cancelled or sold property, remove unnecessary property '{property.name}'  to continue."))
             self.env['estate.property.offer'].create({
                 'price': self.price,
                 'validity': self.validity,

@@ -38,7 +38,6 @@
         <field name="name">Cozy Suburban House</field>
         <field name="property_type_id" ref="estate.property_type_land" />
         <field name="state">new</field>
-        <field name="salesperson_id">2</field>
         <field name="description">A comfortable home in a quiet neighborhood</field>
         <field name="postcode">11223</field>
         <field name="date_availability">2024-08-15</field>
