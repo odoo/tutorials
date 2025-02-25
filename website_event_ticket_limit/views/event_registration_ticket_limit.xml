@@ -4,5 +4,9 @@
          <xpath expr="//t[@t-set='seats_max_ticket']" position="replace">
             <t t-set="seats_max_ticket" t-value="(not ticket.seats_limited or ticket.seats_available > ticket.ticket_registration_limit) and ticket.ticket_registration_limit + 1 or ticket.seats_available + 1"/>
         </xpath>
+        <xpath expr="//t[@t-set='seats_max_event']" position="replace">
+            <t t-set="seats_max_event" t-value="event.seats_available + 1"/>
+        </xpath>
     </template>
+
 </odoo>
