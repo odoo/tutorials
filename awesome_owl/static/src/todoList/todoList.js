@@ -1,6 +1,6 @@
 import { Component, useState } from "@odoo/owl";
-import { TodoItem } from "../todoItem/todoItem";
-import { useAutofocus } from "../utils";
+import { TodoItem } from "@awesome_owl/todoItem/todoItem";
+import { useAutofocus } from "@awesome_dashboard/utils";
 
 export class TodoList extends Component {
     static template = "awesome_owl.TodoList";

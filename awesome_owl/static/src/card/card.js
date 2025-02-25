@@ -4,11 +4,11 @@ export class Card extends Component{
     static template = "awesome_owl.Card";
     static props = {
         title:String,
-        slots:{
-            type:Object,
-            shape:{
-                default:true
+        slots: {
+            type: Object,
+            shape: {
+                default: true
             }
         }
-    }
+    };
 }
