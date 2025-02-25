@@ -1,0 +1,9 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div t-att-style="'width: ' + (18 * props.size) + 'rem; margin: 1rem;'" class="card d-inline-block">
+            <div class="card-body">
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+</templates>

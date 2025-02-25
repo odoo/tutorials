@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_property_offers_report" model="ir.actions.report">
+        <field name="name">Property Offers Report</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.estate_property_report</field>
+        <field name="print_report_name">Property Offers</field>
+        <field name="print_report_name">'%s Report' % (object.name).replace('/','')</field>
+        <field name="paperformat_id" ref="base.paperformat_euro" />
+        <field name="binding_model_id" ref="model_estate_property" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="res_users_report" model="ir.actions.report">
+        <field name="name">Estate Properties by User</field>
+        <field name="model">res.users</field>
+        <field name="report_name">estate.res_users_property_report</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="print_report_name">'%s Report' % (object.name).replace('/','')</field>
+        <field name="paperformat_id" ref="base.paperformat_euro" />
+        <field name="binding_type">report</field>
+        <field name="binding_model_id" ref="base.model_res_users" />
+    </record>
+</odoo>

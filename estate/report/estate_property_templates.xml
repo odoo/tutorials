@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate_property_report">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <span t-field="property.name" />
+                        </h2>
+                        <div>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.seller_id" />
+                        </div>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price" />
+                        </div>
+                        <div id="status">
+                            <strong>State: </strong>
+                            <span t-field="property.status" />
+                        </div>
+                        <t t-call="estate.offer_table_template" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="offer_table_template">
+        <t t-if="len(property.offer_ids) > 0">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity(days)</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="offers" t-value="property.mapped('offer_ids')" />
+                    <tr t-foreach="offers" t-as="offer">
+                        <td>
+                            <span t-field="offer.price" />
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id" />
+                        </td>
+                        <td>
+                            <span t-field="offer.validity" />
+                        </td>
+                        <td>
+                            <span t-field="offer.date_deadline" />
+                        </td>
+                        <td>
+                            <span t-field="offer.state" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <p>
+                <strong class="fw-bold">No offers have been received for this
+                    property yet!</strong>
+            </p>
+        </t>
+    </template>
+
+    <template id="res_users_property_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="salesman">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <span class="fw-bold">Salesman: </span>
+                            <span t-out="salesman.name" />
+                        </h1>
+                        <t t-if="len(salesman.property_ids) > 0">
+                            <t t-foreach="salesman.property_ids" t-as="property">
+                                <h1 t-out="property.name" class="mt-3" />
+                                <div>
+                                    <span class="fw-bold">Expected Price: </span>
+                                    <span t-out="property.expected_price" />
+                                </div>
+                                <div>
+                                    <span class="fw-bold">Status: </span>
+                                    <span t-out="property.status" />
+                                </div>
+                                <t t-call="estate.offer_table_template" />
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p>
+                                <strong>No properties assigned to this salesperson.</strong>
+                            </p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
