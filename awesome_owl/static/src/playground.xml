@@ -4,9 +4,9 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             <h2>Things :</h2>
-            <Card title="'Races'" content="'Elfs, dwarfs, humans, goblins'"/>
-            <Card title="'Special event'" content="'It will be cool'"/>
-            <Card title="this.title_test_1" content="this.content_test_1"/>
+            <Card title="'Races'"> <div>Elfs, dwarfs, humans, goblins </div> </Card>
+            <Card title="'Special event'"> <div>It will be cool </div> </Card>
+            <Card title="this.title_test_1"> <div t-esc="this.content_test_1"/> </Card>
             
             <Counter onChange.bind="this.incrementSum"/>
             <Counter onChange.bind="this.incrementSum"/>
