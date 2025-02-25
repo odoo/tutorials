@@ -91,12 +91,6 @@ class Estateproperty(models.Model):
             prices = property.offer_ids.mapped('price')
             property.best_price = max(prices, default=0)
 
-    @api.constrains('selling_price')
-    def _check_selling_price(self):
-        for record in self:
-            if record.selling_price < 0:
-                raise ValidationError('The selling price must be positive.')
-
     @api.constrains('expected_price')
     def _check_expected_price(self):
         for record in self:

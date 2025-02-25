@@ -3,10 +3,12 @@
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title">
-                    <t t-esc="props.title"></t>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">
+                        <t t-esc="props.title"></t>
+                    </h5>
                     <button class="btn btn-primary" t-on-click="toggleState">Toggle</button>
-                </h5>
+                </div>
                 <div class="card-body" t-if="state.visibility">
                     <t t-slot="default"/>
                 </div>
