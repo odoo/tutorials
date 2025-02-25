@@ -14,12 +14,14 @@ class EstateTestCase(TransactionCase):
         cls.property1 = cls.env['estate.property'].create({
             'name': "Classy Villa",
             'state': 'offer_accepted',
-            'expected_price' : 1000000
+            'expected_price' : 1000000,
+            'seller_id' : cls.env['res.users'].browse(2).id
         })
         cls.property2 = cls.env['estate.property'].create({
             'name': "Modern Apartment",
             'state': 'offer_accepted',
-            'expected_price' : 2000000
+            'expected_price' : 2000000,
+            'seller_id' : cls.env['res.users'].browse(2).id
         })
 
         # Create offers
@@ -66,6 +68,5 @@ class EstateTestCase(TransactionCase):
         self.assertRecordValues(self.property2, [
             {'name': "Modern Apartment", 'state': 'sold'}
         ])
-
         with self.assertRaises(UserError):
             self.property2.action_sold()

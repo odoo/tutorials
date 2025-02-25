@@ -3,9 +3,9 @@
     <t t-name="awesome_owl.Card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title" /></h5>
-                <p class="card-text">
-                    <t t-out="props.text" />
+                <h5 class="card-title"><t t-esc="props.title" /></h5> <button t-on-click="toggleText">Toggle</button>
+                <p class="card-text" t-if="state.value == true">
+                    <t t-slot="default"/>
                 </p>
             </div>
         </div>

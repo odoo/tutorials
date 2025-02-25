@@ -115,11 +115,3 @@ class EstateProperty(models.Model):
         if 'state' in init_values and self.state == 'offer_accepted':
             return self.env.ref('estate.mt_state_change')
         return super()._track_subtype(init_values)
-
-    def rating_get_partner_id(self):
-        """Override to link the rating to the customer (rater)."""
-        return self.buyer_id
-
-    def rating_get_rated_partner_id(self):
-        """Override to link the rating to the agent (rated)."""
-        return self.seller_id
