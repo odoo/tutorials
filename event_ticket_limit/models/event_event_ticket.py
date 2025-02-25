@@ -2,7 +2,7 @@ from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
 
-class InheritedEventTicket(models.Model):
+class EventEventTicket(models.Model):
     _inherit = 'event.event.ticket'
 
     ticket_limit = fields.Integer(
