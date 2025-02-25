@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <template id="product_template_inherit" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.product_variant_id.require_deposit">
+                <div class="mt-3 p-2">
+                    <div class="text-danger fw-semibold fs-5">
+                        <strong class="fw-bold text-dark">Deposit Amount:</strong>
+                        <span t-esc="product.currency_id.symbol"/>
+                        <span id="calculated_amount" />
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
