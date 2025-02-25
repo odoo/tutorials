@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <record id="event_event_ticket_view_tree_from_event" model="ir.ui.view">
+    <record id="event_event_ticket_view_tree_from_event_inherit" model="ir.ui.view">
         <field name="name">event.event.ticket.view.form.inherit</field>
         <field name="model">event.event.ticket</field>
         <field name="inherit_id" ref="event.event_event_ticket_view_tree_from_event" />
@@ -11,5 +11,16 @@
             </xpath>
         </field>
     </record>
-    
+
+
+    <record id="event_event_view_tree_from_event_inherit" model="ir.ui.view">
+        <field name="name">event.event.view.form.inherit</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form" />
+         <field name="arch" type="xml">
+            <xpath expr="//field[@name='badge_image']" position="after">
+                <field name="default_registration_limit"/>
+            </xpath>
+        </field>
+    </record>
 </odoo>

@@ -6,10 +6,9 @@
     'summary': 'Publish events, sell tickets, ticket limit',
     'website': 'https://www.odoo.com/app/events',
     'depends': [
+        'base',
         'event',
-        'website',
-        'website_event',
-        'website_partner'
+        'website_event'
     ],
     'data': [
         'views/event_event_view.xml',

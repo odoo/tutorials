@@ -2,11 +2,21 @@
 <odoo>
     <template id="event_registration_ticket_limit" inherit_id="website_event.modal_ticket_registration">
          <xpath expr="//t[@t-set='seats_max_ticket']" position="replace">
-            <t t-set="seats_max_ticket" t-value="(not ticket.seats_limited or ticket.seats_available > ticket.ticket_registration_limit) and ticket.ticket_registration_limit + 1 or ticket.seats_available + 1"/>
+            <t t-set="seats_max_ticket" t-value="(not ticket.seats_limited or ticket.seats_available &gt; ticket.ticket_registration_limit) and ticket.ticket_registration_limit + 1 or ticket.seats_available + 1"/>
         </xpath>
         <xpath expr="//t[@t-set='seats_max_event']" position="replace">
             <t t-set="seats_max_event" t-value="(not event.seats_limited) and  ticket.ticket_registration_limit + 1 or event.seats_available + 1"/>
         </xpath>
-    </template>
+         <xpath expr="//div[contains(@class, 'o_wevent_registration_single_select')]/select" position="replace">
+            <select t-att-name="'nb_register-%s' % (tickets.id if tickets else 0)" class="d-inline w-auto form-select">
+                <t t-set="seats_max_ticket" t-value="(not tickets or not tickets.seats_limited or tickets.seats_available > tickets.ticket_registration_limit) and tickets.ticket_registration_limit + 1 or tickets.seats_available + 1"/>
+                <t t-set="seats_max_event" t-value="(not event.seats_limited or event.seats_available > tickets.ticket_registration_limit) and tickets.ticket_registration_limit + 1 or event.seats_available + 1"/>
+                <t t-set="seats_max" t-value="min(seats_max_ticket, seats_max_event) if tickets else (min(event.default_registration_limit, event.seats_available) + 1 if event.seats_limited else event.default_registration_limit + 1)"/>
+                <t t-foreach="range(0, seats_max)" t-as="nb">
+                    <option t-out="nb" t-att-selected="nb == 1 and 'selected'"/>
+                </t>
+            </select>
+        </xpath>
 
+    </template>
 </odoo>
