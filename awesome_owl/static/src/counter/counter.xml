@@ -7,5 +7,5 @@
             <button class="btn btn-primary" style="background-color: #8F00FF; color: #ffffff;" t-on-click="increment">Increment</button>
         </div>
     </t>
-    
+
 </templates>

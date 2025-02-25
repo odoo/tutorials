@@ -2,7 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
+            <t t-set-slot="control-panel-create-button">
+                <button type="button" class="btn btn-primary" t-on-click="openCustomer" title="Customer">Customer</button>
+                <button type="button" class="btn btn-primary" t-on-click="openLeads" title="Leads">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap">
+                <DashboardItem size="2">
+                    some content
+                </DashboardItem>
+                <DashboardItem>
+                    I love milk
+                </DashboardItem>
+                <DashboardItem size="2">
+                    some content
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
