@@ -11,13 +11,14 @@ export class TodoList extends Component {
     setup() {
         this.todos = useState([]);
         this.newTask = useState({ description: "" });
+        this.nextId = 1;
         useAutofocus("todoInput");
     }
 
     addTodo(ev) {
         if (ev.keyCode === 13 && ev.target.value) {
             this.todos.push({
-                id: Date.now(),
+                id: this.nextId++,
                 description: ev.target.value,
                 isCompleted: false,
             });
