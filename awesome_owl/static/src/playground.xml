@@ -3,11 +3,14 @@
 <t t-name="awesome_owl.playground">
     <Counter/>
     <Counter value="5"/>
-        <!-- cannot be passed empty as static props declaration do not have optional field  -->
+        <!-- cannot be passed empty as static props declaration do not have title as optional field  -->
         <!-- <Card/> -->
     <Card title="'hello'" />
     <Card title="'Hello'" content="'World'"/>
     <Card title="'Without markup'" content="str1"/>
     <Card title="'With markup'" content="str2"/>
+    <Counter value="4" onChange.bind="incrementSum" onLoad.bind="createInitialSum"/>
+    <Counter value="5" onChange.bind="incrementSum" onLoad.bind="createInitialSum"/>
+    <h5>The sum is: <t t-esc="sum.value"/></h5>
 </t>
 </templates>
