@@ -1,0 +1,39 @@
+<odoo>
+    <template id="custom_report_picking_template" inherit_id="stock.report_picking">
+        <xpath expr="//h1[@t-field='o.name']/ancestor::div[hasclass('row')]" position="replace"/>
+        <xpath expr="//div[@id='informations']" position="replace"/>
+        <xpath expr="//th[@name='th_product']/.." position="before">
+            <tr>
+                <th colspan="6">
+                    <div class="row mt-3 mb-3">
+                        <div class="col-auto">
+                            <h1 t-field="o.name">WH/OUT/00001</h1>
+                        </div>
+                        <div class="col-auto">
+                            <div t-field="o.name" t-options="{'widget': 'barcode', 'width': 600, 'height': 100, 'img_style': 'width:300px;height:50px;'}">
+                                <div class="bg-light border rounded d-flex flex-column align-items-center justify-content-center p-3 opacity-75 text-muted text-center">
+                                    (document  barcode)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="oe_structure"></div>
+                    <div id="informations" class="row mb-4">
+                        <div t-if="o.origin" class="col" name="div_origin">
+                            <strong>Order</strong>
+                            <div t-field="o.origin">S0001</div>
+                        </div>
+                        <div class="col" name="div_state">
+                            <strong>Status</strong>
+                            <div t-field="o.state">Draft</div>
+                        </div>
+                        <div t-if="o.scheduled_date" class="col" name="div_sched_date">
+                            <strong>Scheduled Date</strong>
+                            <div t-field="o.scheduled_date">2023-09-24</div>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+        </xpath>
+    </template>
+</odoo>
