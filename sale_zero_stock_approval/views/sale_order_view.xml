@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='payment_term_id']" position="after">
-                <field name="zero_stock_approval" groups="sales_team.group_sale_manager"/>
+                <field name="zero_stock_approval" readonly="not is_manager"/>
             </xpath>
         </field>
     </record>

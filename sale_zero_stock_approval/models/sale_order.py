@@ -4,14 +4,17 @@ from odoo.exceptions import UserError
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    zero_stock_approval = fields.Boolean(string="Zero Stock Approval", help="If True, the sales manager can confirm the sale order even if stock is unavailable.")
+    zero_stock_approval = fields.Boolean(string="Zero Stock Approval", default=False, help="If True, the sales manager can confirm the sale order even if stock is unavailable.")
+    is_manager = fields.Boolean(compute="_compute_is_manager")
+
+    @api.depends()
+    def _compute_is_manager(self):
+        for record in self:
+            record.is_manager = self.env.user.has_group('sales_team.group_sale_manager')
 
     #override the action_confirm method in sale.order model
     def action_confirm(self):
         for order in self:
-            if not order.zero_stock_approval:
-                for line in order.order_line:
-                    available_qty = line.product_id.qty_available
-                    if available_qty <= 0 :
-                        raise UserError("Cannot confirm Sale Order because the product has 0 available quantity")
+            if not order.zero_stock_approval and any(line.product_id.qty_available <= 0 for line in order.order_line):
+                raise UserError("Cannot confirm Sale Order because one or more products have 0 available quantity.")
         return super().action_confirm()
