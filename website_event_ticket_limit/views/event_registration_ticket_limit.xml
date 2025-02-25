@@ -9,8 +9,26 @@
         </xpath>
          <xpath expr="//div[contains(@class, 'o_wevent_registration_single_select')]/select" position="replace">
             <select t-att-name="'nb_register-%s' % (tickets.id if tickets else 0)" class="d-inline w-auto form-select">
+                <!-- 
+                1. If there are no tickets or seat limitation is disabled → set max seats to `ticket_registration_limit + 1`.
+                2. If seat limitation is enabled but available seats are greater than `ticket_registration_limit` → use `ticket_registration_limit + 1`.
+                3. Otherwise, use the available seats (`seats_available + 1`).
+                -->
                 <t t-set="seats_max_ticket" t-value="(not tickets or not tickets.seats_limited or tickets.seats_available > tickets.ticket_registration_limit) and tickets.ticket_registration_limit + 1 or tickets.seats_available + 1"/>
+               
+                <!-- 
+                1. If event seat limitation is disabled → set max seats to `ticket_registration_limit + 1`.
+                2. If event seats are limited but available seats are greater than `ticket_registration_limit` → use `ticket_registration_limit + 1`.
+                3. Otherwise, use the event’s available seats (`seats_available + 1`).
+                -->     
                 <t t-set="seats_max_event" t-value="(not event.seats_limited or event.seats_available > tickets.ticket_registration_limit) and tickets.ticket_registration_limit + 1 or event.seats_available + 1"/>
+                
+                <!-- 
+                1. If tickets exist → take the minimum of `seats_max_ticket` and `seats_max_event` to ensure the lowest valid limit is used.
+                2. If no tickets:
+                - If event seats are limited → take the minimum of `default_registration_limit` and available seats, then add 1.
+                - If event seats are not limited → simply use `default_registration_limit + 1`.
+                -->
                 <t t-set="seats_max" t-value="min(seats_max_ticket, seats_max_event) if tickets else (min(event.default_registration_limit, event.seats_available) + 1 if event.seats_limited else event.default_registration_limit + 1)"/>
                 <t t-foreach="range(0, seats_max)" t-as="nb">
                     <option t-out="nb" t-att-selected="nb == 1 and 'selected'"/>

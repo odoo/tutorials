@@ -1,12 +1,10 @@
 {
-    'name': 'Events Ticket Limit',
-    'version': '1.4',
+    'name': "Events Ticket Limit",
+    'version': "1.0",
     'category': 'Marketing/Events',
     'sequence': 140,
     'summary': 'Publish events, sell tickets, ticket limit',
-    'website': 'https://www.odoo.com/app/events',
     'depends': [
-        'base',
         'event',
         'website_event'
     ],
