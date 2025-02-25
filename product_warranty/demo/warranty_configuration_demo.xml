@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="product_warranty_one_year" model="product.template">
+            <field name="name">Extended 1 Year Warranty</field>
+            <field name="type">service</field>
+        </record>
+
+        <record id="product_warranty_two_year" model="product.template">
+            <field name="name">Extended 2 Year Warranty</field>
+            <field name="type">service</field>
+        </record>
+
+        <record id="warranty_configuration_one_year" model="product.warranty.configuration">
+            <field name="name">One Year Warranty Configuration</field>
+            <field name="product_id" ref="product_warranty_one_year" />
+            <field name="percentage">5.0</field>
+            <field name="duration">1</field>
+        </record>
+
+        <record id="warranty_configuration_two_year" model="product.warranty.configuration">
+            <field name="name">Two Year Warranty Configuration</field>
+            <field name="product_id" ref="product_warranty_two_year" />
+            <field name="percentage">8.0</field>
+            <field name="duration">2</field>
+        </record>
+    </data>
+</odoo>
