@@ -4,8 +4,7 @@ from odoo.http import request
 
 class EstateWebsite(http.Controller):
     @http.route(['/properties', '/properties/page/<int:page>'], type='http',
-        auth='public', website=True,
-    )
+        auth='public', website=True,)
     def list_properties(self, page=1, **kwargs):
         step = 6
         offset = (page - 1) * step
@@ -52,7 +51,6 @@ class EstateWebsite(http.Controller):
         )
 
     @http.route("/property/<model('estate.property'):property>", type='http',
-        auth='public', website=True,
-    )
+        auth='public', website=True,)
     def property_details(self, property, **kwargs):
         return request.render('estate.property_detail_page', {'property': property})

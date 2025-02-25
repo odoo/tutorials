@@ -91,10 +91,8 @@ class EstateProperty(models.Model):
     @api.depends('living_area', 'garden_area', 'garage_area')
     def _compute_area(self):
         for record in self:
-            record.total_area = sum(
-                [record.living_area, record.garden_area, record.garage_area]
-            )
             record.outside_area = record.garden_area + record.garage_area
+            record.total_area = record.living_area + record.outside_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -107,8 +105,7 @@ class EstateProperty(models.Model):
         for record in self:
             if (
                 not float_is_zero(record.selling_price, precision_digits=2) 
-                and float_compare(record.selling_price, 0.9 * record.expected_price,
-                precision_digits=2) < 0
+                and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0
             ):
                 raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
 
