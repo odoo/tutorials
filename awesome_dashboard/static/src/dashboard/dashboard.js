@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component , useState } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
@@ -11,9 +11,9 @@ import { browser } from "@web/core/browser/browser";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout , DashboardItem};
+    static components = { Layout, DashboardItem };
 
-    setup(){
+    setup() {
         this.action = useService("action");
         this.display = {
             controlPanel: {},
@@ -27,11 +27,11 @@ class AwesomeDashboard extends Component {
         });
     }
 
-    openCustomerView(){
+    openCustomerView() {
         this.action.doAction("base.action_partner_form");
     }
 
-    openLeads(){
+    openLeads() {
         this.action.doAction({
             type: 'ir.actions.act_window',
             name: "All leads",
@@ -43,7 +43,7 @@ class AwesomeDashboard extends Component {
         });
     }
 
-    openConfiguration(){
+    openConfiguration() {
         this.dialog.add(ConfigurationDialog, {
             items: this.items,
             disabledItems: this.state.disabledItems,
@@ -51,14 +51,14 @@ class AwesomeDashboard extends Component {
         })
     }
 
-    updateConfiguration(newDisabledItems){
+    updateConfiguration(newDisabledItems) {
         this.state.disabledItems = newDisabledItems;
     }
 }
 
-class ConfigurationDialog extends Component{
+class ConfigurationDialog extends Component {
     static template = "awesome_dashboard.ConfigurationDialog";
-    static components = { Dialog, CheckBox};
+    static components = { Dialog, CheckBox };
     static props = ["close", "items", "disabledItems", "onUpdateConfiguration"];
 
     setup() {
@@ -90,4 +90,4 @@ class ConfigurationDialog extends Component{
 
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("awesome_dashboard.dashboard", AwesomeDashboard);

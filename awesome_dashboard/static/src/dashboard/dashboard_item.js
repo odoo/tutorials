@@ -27,7 +27,7 @@ const items = [
         Component: NumberCard,
         props: (data) => ({
             title: "Number of new orders this month",
-            value: data.nb_new_orders,  
+            value: data.nb_new_orders,
         })
     },
     {
