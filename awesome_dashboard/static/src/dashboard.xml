@@ -1,9 +1,9 @@
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout display="display" className="'o_dashboard h-100'">
+        <Layout display="display" className="'o_dashboard h-100 p-3'">
             <t t-set-slot="layout-buttons">
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
-                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                <button class="btn btn-primary me-2" t-on-click="openLeads">Leads</button>
             </t>
             <div class="d-flex flex-wrap p-3 rounded justify-content-around">
                 <DashboardItem>
@@ -26,9 +26,13 @@
                     <h3>Total Order Amount (This Month)</h3>
                     <p class="display-3 text-primary fw-bold" t-esc="statistics.totalAmount"></p>
                 </DashboardItem>
-                <DashboardItem>
-                    <h3>Orders by Size</h3>
-                    <p class="display-5 text-secondary">M: <t t-esc="statistics.ordersBySize.m"/> | S: <t t-esc="statistics.ordersBySize.s"/> | XL: <t t-esc="statistics.ordersBySize.xl"/></p>
+                <DashboardItem size="2">
+                    <p class="text-muted text-center mb-2">
+                        Shirt orders by size
+                    </p>
+                    <div class="d-flex justify-content-center">
+                        <PieChart t-props='{"data": statistics.ordersBySize, "label": "Shirt orders by size"}'/>
+                    </div>
                 </DashboardItem>
             </div>
         </Layout>
