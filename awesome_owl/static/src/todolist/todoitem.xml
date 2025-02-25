@@ -2,8 +2,11 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.ToDoItem">
-        <div t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
-            <p><t t-esc="props.todo.id"/>. <t t-esc="props.todo.description" /> </p>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="props.toggleState" />
+            <label t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
+                <t t-esc="props.todo.id"/>. <t t-esc="props.todo.description" />
+            </label>
         </div>
     </t>
 
