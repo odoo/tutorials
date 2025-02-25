@@ -10,9 +10,18 @@
             }"
             style="max-width: 18rem;"
         >
-            <div class="card-header text-primary">ID: <strong t-esc="props.todo.id"/></div>
-            <div class="card-body text-secondary">
-                <h5 class="card-title">Description: <strong t-esc="props.todo.description"/></h5>
+            <div class="card-header">
+                <input
+                    type="checkbox"
+                    t-att-checked="props.todo.isCompleted"
+                    t-on-change="() => props.toggleTodo(props.todo.id)"
+                />
+                <div class="d-inline-block m-2">
+                    ID: <strong t-esc="props.todo.id"/>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title"><strong t-esc="props.todo.description"/></h5>
             </div>
         </div>
     </t>

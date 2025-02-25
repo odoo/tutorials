@@ -11,5 +11,9 @@ export class TodoItem extends Component {
             }, 
             optional: false,
         },
+        toggleTodo: {
+            type: Function,
+            optional: false,
+        },
     };
 }
