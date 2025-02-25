@@ -7,4 +7,4 @@ export function useAutofocus(name) {
             inputref.el.focus();
         }
     });
-  }
+}

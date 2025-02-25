@@ -25,7 +25,6 @@ class EstateWebsite(Controller):
             {'properties': properties, 'pager': pager, 'price': price},
         )
 
-    @route("/property/<model('estate.property'):property>", type='http', auth='public', website=True,
-    )
+    @route("/property/<model('estate.property'):property>", type='http', auth='public', website=True)
     def property_details(self, property, **kwargs):
         return request.render('estate.property_detail_page', {'property': property})

@@ -84,15 +84,13 @@ class EstatepropertyOffer(models.Model):
             raise exceptions.UserError("Cancelled Property can not accept any offers")
         elif self.status == 'accepted':
             raise exceptions.UserError("Offer is already accepted")
-        else:
-            self.status = 'accepted'
-            self.property_id.state = 'offer_accepted'
-
-            for offer in self.property_id.offer_ids:
-                if offer.id != self.id:
-                    offer.status = 'refused'
-                else:
-                    offer.property_id.write({'buyer_id' : offer.partner_id, 'selling_price' : offer.price})
+        self.status = 'accepted'
+        self.property_id.state = 'offer_accepted'
+        for offer in self.property_id.offer_ids:
+            if offer.id != self.id:
+                offer.status = 'refused'
+            else:
+                offer.property_id.write({'buyer_id' : offer.partner_id, 'selling_price' : offer.price})
 
     def action_refuse(self):
         if self.property_id.state == 'sold':

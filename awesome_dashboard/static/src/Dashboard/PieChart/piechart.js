@@ -1,4 +1,4 @@
-import { Component, onMounted , onWillStart, onWillUnmount, useEffect, useRef} from "@odoo/owl";
+import { Component, onMounted , onWillStart, onWillUnmount, useEffect, useRef } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 
 export class Piechart extends Component {
