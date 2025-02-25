@@ -1,0 +1,11 @@
+<odoo>
+    <template>
+        <t t-name="awesome_dashboard.PieChartCard">
+            <center>
+                <div class="pie-chart-container" style="width:300px;">
+                    <canvas t-ref="canvas"></canvas>
+                </div>
+            </center>
+        </t>
+    </template>
+</odoo>

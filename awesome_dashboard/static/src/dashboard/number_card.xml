@@ -1,0 +1,10 @@
+<odoo>
+    <template xml:space="preserve">
+        <t t-name="awesome_dashboard.NumberCard">
+            <div class="number-card text-center">
+                <p><t t-esc="props.title"/></p>
+                <h2 style="color: green;"><t t-esc="props.value"/></h2>
+            </div>
+        </t>
+    </template>
+</odoo>
