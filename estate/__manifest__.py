@@ -5,7 +5,7 @@
         of there properties and make experience smoother
         """,
     'sequence': 1,
-    'depends': ["base","website","mail"],
+    'depends': ["base", "website", "mail"],
     'category': "Real Estate/Brokerage",
     'data': [
         "security/security.xml",
@@ -22,8 +22,8 @@
     ],
     'demo': [
         "demo/estate_property_demo.xml",
-    "demo/estate_property_type_demo.xml",
-    "demo/estate_propert_offer_demo.xml"
+        "demo/estate_property_type_demo.xml",
+        "demo/estate_propert_offer_demo.xml"
     ],
     'installable': True,
     'application': True,

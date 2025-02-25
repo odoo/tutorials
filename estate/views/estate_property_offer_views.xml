@@ -14,7 +14,7 @@
         <field name="arch" type="xml">
             <list string="Estate Properties Offers" decoration-danger="status == 'refuse'"
                 decoration-success="status == 'accepted'">
-                <field name="price" string="Price"/>
+                <field name="price" string="Price" sum="Total"/>
                 <field name="partner_id" string="Partner"/>
                 <field name="property_type_id"/>
                 <field name="validity" string="Validity"/>

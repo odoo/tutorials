@@ -50,8 +50,8 @@ class EstateProperty(models.Model):
         default="new",
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -107,24 +107,16 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    # Constaints
-    @api.constrains("offer_ids")
-    def _check_offer_price(self):
-        for record in self:
-            for offer in record.offer_ids:
-                if offer.price < 0:
-                    raise ValidationError("The offer price must be positive")
-
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            # check if selling_price is zero
+            # check if selling_price is zero using float_is_zero for precision handling
             if float_is_zero(record.selling_price, precision_rounding=0.01):
                 continue
             # selling_price is at least 90% of expected_price
             if (
                 float_compare(
-                    record.selling_price, (record.expected_price*0.9), precision_rounding=2
+                    record.selling_price, (record.expected_price * 0.9), precision_rounding=2
                 )
                 < 0
             ):
@@ -144,15 +136,15 @@ class EstateProperty(models.Model):
     def action_set_status_sold(self):
         for record in self:
             if record.state == "cancelled":
-                raise UserError("Cancelled Property cannot be Sold")
+                raise UserError("Cancelled Property cannot be Sold.")
             elif not record.offer_ids.filtered(
                 lambda offer: offer.status == "accepted"
             ):
-                raise UserError("No offer is accepted")
+                raise UserError("No offer is accepted.")
             elif record.state != "cancelled":
                 record.state = "sold"
             else:
-                raise UserError("It is already sold")
+                raise UserError("It is already sold.")
         return True
 
     def action_set_status_cancel(self):
@@ -160,7 +152,7 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 record.state = "cancelled"
             elif record.state == "sold":
-                raise UserError("It cannot be canceled once sold")
+                raise UserError("It cannot be canceled once sold.")
             elif record.state == "cancelled":
-                raise UserError("It is already canceled")
+                raise UserError("It is already canceled.")
         return True

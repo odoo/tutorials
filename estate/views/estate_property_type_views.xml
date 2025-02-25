@@ -11,8 +11,8 @@
         <field name="model">estate.property.types</field>
         <field name="arch" type="xml">
             <list>
-                <field name="sequence" widget="handle" />
-                <field name="name" string="Property Type" />
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Property Type"/>
             </list>
         </field>
     </record>
@@ -33,26 +33,26 @@
                     <div class="oe_button_box" name="button_box">
                         <button type="action" name="%(estate.estate_property_offer_action)d"
                             class="oe_stat_button" icon="fa-rupee" invisible="offer_count == 0">
-                            <field name="offer_count" string="Total Offer" widget="statinfo" />
+                            <field name="offer_count" string="Total Offer" widget="statinfo"/>
                         </button>
                     </div>
                     <group>
                         <h1>
-                            <field name="name" string="Property Type" />
+                            <field name="name" string="Property Type"/>
                         </h1>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" string="Description" />
+                                <field name="description" string="Description"/>
                             </group>
                         </page>
                         <page string="Properties">
                             <field name="property_ids">
                                 <list>
-                                    <field name="name" string="Title" />
-                                    <field name="expected_price" string="Expected Price" />
-                                    <field name="state" string="Status" />
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price" string="Expected Price"/>
+                                    <field name="state" string="Status"/>
                                 </list>
                             </field>
                         </page>
@@ -61,4 +61,4 @@
             </form>
         </field>
     </record>
-</odoo>                                         
+</odoo>                                      

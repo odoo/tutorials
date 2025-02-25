@@ -9,9 +9,8 @@ from odoo.tests.form import Form
 class EstatePropertyTestCase(TransactionCase):
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-
+    def SetUpClass(cls):
+        super().SetUpClass()
         cls.properties = cls.env["estate.property"].create(
             [
                 {
@@ -34,10 +33,8 @@ class EstatePropertyTestCase(TransactionCase):
         """Test that you cannot sell a property without an accepted offer"""
         with self.assertRaises(UserError):
             self.properties.action_set_status_sold()
-
         self.offers[0].action_status_accepted()
         self.properties.action_set_status_sold()
-
         with self.assertRaises(UserError):
             self.properties[0].offer_ids = [
                 Command.create(

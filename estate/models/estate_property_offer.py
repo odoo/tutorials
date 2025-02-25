@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -36,6 +36,12 @@ class EstatePropertyOffer(models.Model):
         )
     ]
 
+    @api.constrains("price")
+    def _check_price(self):
+        for record in self:
+            if record.price <= 0:
+                raise ValidationError("The offer price must be positive.")
+
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -59,15 +65,12 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         for val in vals:
             property = self.env["estate.property"].browse(val["property_id"])
-
             max_offer_price = max(property.offer_ids.mapped("price") or [0])
             if val.get("price", 0) <= max_offer_price:
                 raise UserError(
-                    "New offer should contain price higher than current one"
+                    "New offer should contain price higher than current one."
                 )
-
-            property.state = "offer received"
-
+            property.state = "offer_received"
         return super().create(vals)
 
     @api.model
@@ -91,12 +94,11 @@ class EstatePropertyOffer(models.Model):
                 record.status = "accepted"
                 record.property_id.selling_price = record.price
                 record.property_id.partner_id = record.partner_id
-                record.property_id.state = "offer accepted"
+                record.property_id.state = "offer_accepted"
                 other_offers = record.property_id.offer_ids.filtered(
                     lambda offer: offer.id != record.id
                 )
                 other_offers.write({"status": "refuse"})
-
             else:
                 raise UserError("One offer is already accepted")
         return True

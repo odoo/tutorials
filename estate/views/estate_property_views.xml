@@ -17,10 +17,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties" 
-                decoration-success="state in ('offer received','offer accepted')"
-                decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
+                decoration-success="state in ('offer_received','offer_accepted')"
+                decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" string="Title" readonly="1"/>
-                <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="bedrooms" string="Bedrooms"/>
                 <field name="living_area" string="Living Area"/>
@@ -78,28 +78,15 @@
                                 <field name="garage" string="Garage"/>
                                 <field name="garden" string="Garden" widget="checkbox"/>
                                 <field name="garden_area" string="Garden Area (sqm)"
-                                    invisible="not garden" />
+                                    invisible="not garden"/>
                                 <field name="garden_orientation" string="Garden Orientation"
-                                    invisible="not garden" />
+                                    invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string='Offers'>
                             <field name='offer_ids' 
                                 readonly="state in ['offer accepted', 'sold', 'cancelled']">
-                                <!--<list>
-                                    <field name="price" string='Price' sum="Total" />
-                                    <field name='partner_id' string='Partner' />
-                                    <field name='validity' string='Validity(days)' />
-                                    <button name="action_status_accepted" states="draft"
-                                        type="object" icon="fa-check"
-                                        invisible="status == 'accepted'" />
-                                    <button name="action_status_refused" states="draft"
-                                        type="object" icon="fa-close"
-                                        invisible="status == 'refused'" />
-                                    <field name='date_deadline' string='Deadline' />
-                                    <field name='status' string='Status' />
-                                </list>-->
                             </field>
                         </page>
                         <page string='Other info'>
@@ -120,18 +107,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
-                <field name="name" string="Search Title" />
-                <field name="postcode" string="Search Postcode" />
-                <field name="expected_price" string="Search Expected Price" />
-                <field name="bedrooms" string="Search Bedrooms" />
-                <field name="living_area" string="Search Living Area(sqm)" />
-                <field name="facades" string="Search Facades" />
+                <field name="name" string="Search Title"/>
+                <field name="postcode" string="Search Postcode"/>
+                <field name="expected_price" string="Search Expected Price"/>
+                <field name="bedrooms" string="Search Bedrooms"/>
+                <field name="living_area" string="Search Living Area(sqm)"/>
+                <field name="facades" string="Search Facades"/>
                 <separator />
                 <filter name="state" string="Available"
-                    domain="[('state', 'in', ('new', 'offer received', 'offer accepted', 'sold', 'cancelled'))]" />
+                    domain="[('state', 'in', ('new', 'offer_received', 'offer_accepted', 'sold', 'cancelled'))]"/>
                 <group>
                     <filter string="Postcode" name='groupby_postcode'
-                        context="{'group_by':'postcode', 'residual_visible':True}" />
+                        context="{'group_by':'postcode', 'residual_visible':True}"/>
                 </group>
             </search>
         </field>
@@ -145,16 +132,16 @@
                 <field name="state" />
                 <templates>
                     <t t-name="card">
-                        <field name="name" class="fw-bolder" />
-                        <div> Expected Price : <field name="expected_price" />
+                        <field name="name" class="fw-bolder"/>
+                        <div> Expected Price : <field name="expected_price"/>
                         </div>
-                        <div t-if="record.state.raw_value == 'offer received'"> Best Price : <field
-                                name="best_price" />
+                        <div t-if="record.state.raw_value == 'offer_received'"> Best Price : <field
+                                name="best_price"/>
                         </div>
-                        <div t-if="record.state.raw_value == 'offer accepted'"> Selling Price: <field
-                                name="selling_price" />
+                        <div t-if="record.state.raw_value == 'offer_accepted'"> Selling Price: <field
+                                name="selling_price"/>
                         </div>
-                        <field name="tags_ids" widget="many2many_tags" />
+                        <field name="tags_ids" widget="many2many_tags"/>
                     </t>
                 </templates>
             </kanban>
