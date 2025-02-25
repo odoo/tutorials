@@ -12,9 +12,9 @@ export class Playground extends Component {
 
     setup(){
         this.state = useState({
-         card1: { title: "card 1", content: "content of card 1" },
-         card2: { title: "card 2", content: "content of card 2" },
-         sum: 2
+            card1: { title: "card 1", content: "content of card 1" },
+            card2: { title: "card 2", content: "content of card 2" },
+            sum: 2
         });
 
         this.content_value_escaped = "<div class='text-primary'>some content</div>";

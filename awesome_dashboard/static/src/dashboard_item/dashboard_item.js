@@ -2,8 +2,9 @@
 
 import { Component, useState } from "@odoo/owl";
 
-export class Card extends Component {
-    static template = "awesome_dashboard.card";
+
+export class DashboardItem extends Component {
+    static template = "awesome_dashboard.dashboard_item";
 
     static props = {
         size: {type: Number, optional: true},

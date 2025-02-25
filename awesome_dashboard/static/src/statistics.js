@@ -1,29 +1,26 @@
 import { registry } from "@web/core/registry";
 import { rpc } from "@web/core/network/rpc";
 import { memoize } from "@web/core/utils/functions";
+import { reactive } from "@odoo/owl";
 
-
-export async function loadStatistics(){
-    const statistics = await rpc("/awesome_dashboard/statistics");
-    //console.log(statistics);
-    //return statistics;
-
-    const test = memoize(function loadStatistics(){
-        return statistics;
-    });
-    return test;
-
-    /*const statistics = memoize(async function loadStatistics(){
-        return await rpc("/awesome_dashboard/statistics");
-    });
-
-    return statistics;*/
-
-}
 
 export const statisticsService = {
+    async: ['loadStatistics'],
     start() {
-        return { loadStatistics };
+        /*return {
+            loadStatistics: memoize(() => rpc("/awesome_dashboard/statistics")),
+        }*/
+        let data = { orders_by_size: {} };
+        const callRpc = async function(){
+            data = await memoize(() => rpc("/awesome_dashboard/statistics"))();
+            console.log(data);
+        }
+        callRpc();
+        setInterval(callRpc, 5000);
+
+        return reactive({
+            loadStatistics: (() => data),
+        })
     }
 };
 
