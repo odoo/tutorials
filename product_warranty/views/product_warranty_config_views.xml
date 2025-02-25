@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- View product.warranty.config View Tree -->
+    <record id="product_warranty_config_view_list" model="ir.ui.view">
+        <field name="name">view.product.warranty.config.list</field>
+        <field name="model">product.warranty.config</field>
+        <field name="arch" type="xml">
+            <list string="Warranty Config" sample="1" editable="bottom">
+                <field name="name"/>
+                <field name="product_template_id"/>
+                <field name="percentage"/>
+                <field name="years"/>
+            </list>
+        </field>
+    </record>
+    <!-- Action product.warranty.config -->
+    <record id="product_warranty_config_action" model="ir.actions.act_window">
+        <field name="name">Product Warranty Config</field>
+        <field name="res_model">product.warranty.config</field>
+        <field name="view_mode">list</field>
+    </record>
+</odoo>
