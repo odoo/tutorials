@@ -14,6 +14,7 @@
         <field name="garden">True</field>
         <field name="garden_area">40000</field>
         <field name="garden_orientation">south</field>
+        <field name="image" type="base64" file="estate/static/img/luxury_penthouse.jpg"/>
     </record>
 
     <record id="estate_property_2" model="estate.property">
@@ -28,6 +29,7 @@
         <field name="living_area">80</field>
         <field name="facades">2</field>
         <field name="garage">False</field>
+        <field name="image" type="base64" file="estate/static/img/cozy_cabin.jpg"/>
     </record>
 
 
@@ -42,6 +44,7 @@
         <field name="living_area">500</field>
         <field name="facades">5</field>
         <field name="garage">True</field>
+        <field name="image" type="base64" file="estate/static/img/historic_mansion.jpeg"/>
         <field name="offer_ids"
             eval="[
             Command.create({
@@ -58,7 +61,7 @@
     </record>
 
     <record id="estate_property_4" model="estate.property">
-        <field name="name">Penthouse</field>
+        <field name="name">Burj Khalifa</field>
         <field name="state">cancelled</field>
         <field name="description">A stunning penthouse with sunrise views</field>
         <field name="postcode">67890</field>
@@ -71,5 +74,6 @@
         <field name="garden">True</field>
         <field name="garden_area">40000</field>
         <field name="garden_orientation">south</field>
+        <field name="image" type="base64" file="estate/static/img/Burj_khalifa.png"/>
     </record>
 </odoo>

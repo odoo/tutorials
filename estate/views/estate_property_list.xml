@@ -15,7 +15,7 @@
                             <div class="card h-100 shadow-sm border-0">
                                 <div class="position-relative">
                                     <img t-if="property.image"
-                                        t-att-src="'/web/image/estate.property/%s/image' % property.id"
+                                        t-att-src="'data:image/webp;base64,%s' % property.image.decode('utf-8')"
                                         class="img-fluid rounded-top w-100"
                                         style="object-fit: cover; height: 400px;"
                                         t-att-alt="property.name" />
@@ -109,7 +109,7 @@
                         <div
                             class="card shadow-sm border-0 overflow-hidden rounded-3 position-relative">
                             <img t-if="property.image"
-                                t-att-src="'/web/image/estate.property/%s/image' % property.id"
+                                t-att-src="'data:image/webp;base64,%s' % property.image.decode('utf-8')"
                                 class="img-fluid rounded-top w-100"
                                 style="object-fit: cover; height: 400px;"
                                 t-att-alt="property.name" />

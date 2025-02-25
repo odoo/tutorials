@@ -14,7 +14,6 @@
                 decoration-danger="status == 'reject'">
                 <field name='buyer_id' string='Buyer' />
                 <field name="price" string='Price' />
-                <field name='property_id' string='Partner' />
                 <field name='validity' string='Validity(days)' />
                 <field name='date_deadline' string='Deadline' />
                 <button

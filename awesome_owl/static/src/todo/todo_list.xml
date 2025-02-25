@@ -9,7 +9,7 @@
             </div>
             <div>
                 <t t-foreach="todos" t-as="todo" t-key="todo.id" t-index="index">
-                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" index="todos.indexOf(todo)+1"/>
+                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" index="todo.id"/>
                 </t>
             </div>
         </div>
