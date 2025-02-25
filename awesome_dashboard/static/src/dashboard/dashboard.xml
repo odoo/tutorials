@@ -8,29 +8,37 @@
                     <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                     <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
                     <h1>Dashboard</h1>
+                    <t t-slot="control-panel-additional-actions">
+                        <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                            <i class="fa fa-cog"></i>
+                        </button>
+                    </t>
                 </div>
                 <div class="d-flex flex-wrap gap-3 p-3 bg-secondary">
-                    <DashboardItem t-props="{'title': 'Average amount of t-shirt by order this month'}">
-                        <h5 t-esc="statistics.data.average_quantity"/>
-                    </DashboardItem>
-                    <DashboardItem t-props="{'title': 'Average time for an order to go from new to sent or cancelled', 'size': 2}">
-                        <h5 t-esc="statistics.data.average_time"/>
-                    </DashboardItem>
-                    <DashboardItem t-props="{'title': 'Number of new orders this month'}">
-                        <h5 t-esc="statistics.data.nb_new_orders"/>
-                    </DashboardItem>
-                    <DashboardItem t-props="{'title': 'Number of cancelled orders this month'}">
-                        <h5 t-esc="statistics.data.nb_cancelled_orders"/>
-                    </DashboardItem>
-                    <DashboardItem t-props="{'title': 'Total amount of new orders this month'}">
-                        <h5 t-esc="statistics.data.total_amount"/>
-                    </DashboardItem>
-                    <DashboardItem t-props="{'title': 'Shirt orders by size', 'size': 2}">
-                        <PieChart label="Shirt"/>
-                    </DashboardItem>
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                            <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                            <t t-component="item.Component" t-props="itemProp" />
+                        </DashboardItem>
+                    </t>
                 </div>
             </Layout>
         </div>
     </t>
 
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
+    </t>
 </templates>

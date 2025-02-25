@@ -21,7 +21,7 @@
         </div>
         <div>
             <div class="m-2 border p-2 d-inline-block">
-                <TodoList/>    
+                <TodoList/>
             </div>
         </div>
     </t>

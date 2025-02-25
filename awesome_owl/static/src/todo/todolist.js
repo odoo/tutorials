@@ -4,7 +4,7 @@ import { useAutofocus } from "../util";
 
 export class TodoList extends Component {
     static template = "awesome_owl.todo.list";
-    
+
     setup(){
         this.state = useState({
             num: 0,

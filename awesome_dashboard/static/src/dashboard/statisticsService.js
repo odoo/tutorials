@@ -14,11 +14,11 @@ const StatisticsService = {
                 console.error("Error fetching statistics:", error);
             }
         }
-        
+
         fetchStatistics();
 
-        setInterval(fetchStatistics, 5000);
-        
+        setInterval(fetchStatistics, 600000);
+
         return statistics;
     },
 };

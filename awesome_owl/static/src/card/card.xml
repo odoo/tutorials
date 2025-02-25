@@ -15,7 +15,7 @@
                         <t t-out="props.content"/>
                     </p>
                     <t t-slot="default"/>
-                </t>     
+                </t>
             </div>
         </div>
     </t>
