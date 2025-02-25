@@ -76,16 +76,16 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        property_ids = []
         for vals in vals_list:
             if (property_id := vals.get('property_id')) and (offer_amount := vals.get('price')):
-                property_ids.append(property_id)
+                property = self.env['estate.property'].browse(property_id)
                 existing_offers = property.offer_ids.mapped('price')
-
                 if existing_offers and offer_amount < max(existing_offers):
                     raise ValidationError(
                         "You cannot create an offer lower than an existing one."
                     )
-
+                property_ids.append(property_id)
         properties = self.env['estate.property'].browse(property_ids)
         properties.state = 'received'
         return super().create(vals_list)
