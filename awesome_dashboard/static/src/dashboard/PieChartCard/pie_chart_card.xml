@@ -1,0 +1,7 @@
+<templates>
+    <t t-name="awesome_dashboard.PieChartCard">
+        <div class="o_pie_chart_card">
+            <PieChart data="props.data"/>
+        </div>
+    </t>
+</templates>

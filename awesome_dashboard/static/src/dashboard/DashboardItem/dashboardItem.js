@@ -1,6 +1,7 @@
 import { Component } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 
+
 export class DashboardItem extends Component {
     static template = "awesome_dashboard.DashboardItem";
     static props = {

@@ -1,0 +1,5 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardLoader">
+        <LazyComponent bundle="bundle" Component="'awesome_dashboard.dashboard'" props="props"/>
+    </t>
+</templates>
