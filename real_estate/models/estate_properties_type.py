@@ -13,10 +13,10 @@ class EstatePropertiesType(models.Model):
          'Property type should be unique')
     ]
 
-    name = fields.Char(required=True)
+    name = fields.Char(string='Name', required=True)
     property_ids = fields.One2many(
         'estate.properties', 'property_type_id', string='Properties')
-    sequence = fields.Integer()
+    sequence = fields.Integer(string='Sequence',)
     offer_ids = fields.One2many(
         'estate.properties.offer', 'property_type_id', string='Offer')
     offer_count = fields.Integer(compute='_compute_offer_count', store=True)

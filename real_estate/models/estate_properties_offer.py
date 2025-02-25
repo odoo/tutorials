@@ -15,17 +15,18 @@ class EstatePropertiesOffer(models.Model):
          'Offer Price should be greater than 0'),
     ]
 
-    price = fields.Float()
-    status = fields.Selection(copy=False, selection=[(
+    price = fields.Float(sring='Price')
+    status = fields.Selection(copy=False, string='Status', selection=[(
         'accepted', 'Accepted'), ('refused', 'Refused'), ],)
     partner_id = fields.Many2one(
         'res.partner', string='Partner', index=True, copy=False, required=True)
     property_id = fields.Many2one(
         'estate.properties', string='Property', index=True, copy=False, required=True)
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(
+    date_deadline = fields.Date(string='Deadline',
         compute='_compute_date_deadline', inverse='_inverse_date_deadline', store=True)
     property_type_id = fields.Many2one(
+        string='Property Type',
         related='property_id.property_type_id', store=True)
 
     @api.depends('property_id.date_availability', 'validity')

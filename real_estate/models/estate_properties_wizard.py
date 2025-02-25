@@ -9,7 +9,7 @@ class EstatePropertiesWizard(models.TransientModel):
     _name = 'estate.properties.wizard'
     _description = 'Wizard model for saving multiple offer records.'
 
-    price = fields.Float(required=True)
+    price = fields.Float(string='price', required=True)
     partner_id = fields.Many2one(
         'res.partner', string='Buyer', index=True, copy=False, required=True)
 

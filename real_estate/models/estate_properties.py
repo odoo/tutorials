@@ -9,7 +9,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperties(models.Model):
     _name = 'estate.properties'
     _description = 'Estate Properties'
-    _inherit = ['mail.thread']
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
     _sql_constraints = [
         ('expected_price_constraints', 'CHECK(expected_price > 0)',
@@ -18,26 +18,26 @@ class EstateProperties(models.Model):
          'Selling Price should be greater than 0'),
     ]
 
-    name = fields.Char(required=True)
-    description = fields.Text()
-    active = fields.Boolean(default=True)
-    postcode = fields.Char()
+    name = fields.Char(string='Name', required=True)
+    description = fields.Text(string='Description')
+    active = fields.Boolean(string='Active', default=True)
+    postcode = fields.Char(string='Postcode')
     date_availability = fields.Date(
-        copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3))
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(copy=False)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+        copy=False, string='Availabile Date', default=lambda self: fields.Date.add(fields.Date.today(), months=3))
+    expected_price = fields.Float(string='Expected Price', required=True)
+    selling_price = fields.Float(string='Selling Price', copy=False)
+    bedrooms = fields.Integer(string='Bedroom', default=2)
+    living_area = fields.Integer(string='Living Area')
+    facades = fields.Integer(string='Facades')
+    garage = fields.Boolean(string='Garage')
+    garden = fields.Boolean(string='Garden')
+    garden_area = fields.Integer(string='Garden Area')
     company_id = fields.Many2one(
-        'res.company', required=True, default=lambda self: self.env.company)
+        'res.company', required=True, string='Company Name', default=lambda self: self.env.company)
     garden_orientation = fields.Selection(string='Orientation', selection=[(
         'north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')], default='east')
     state = fields.Selection(string='State', selection=[('new', 'New'), ('offer_recieved', 'Offer Received'), (
-        'offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], default='new', copy=False, required=True)
+        'offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], default='new', copy=False, required=True, tracking=True)
     property_type_id = fields.Many2one(
         comodel_name='estate.properties.type', string='Type')
     partner_id = fields.Many2one(
@@ -47,8 +47,10 @@ class EstateProperties(models.Model):
     tags_id = fields.Many2many('estate.properties.tags', string='Tags')
     offer_ids = fields.One2many(
         'estate.properties.offer', 'property_id', string='Offer')
-    total_area = fields.Float(compute='_compute_total_area', store=True)
-    best_offer = fields.Float(compute='_compute_best_price')
+    total_area = fields.Float(
+        string='Total Area', compute='_compute_total_area', store=True)
+    best_offer = fields.Float(
+        string='Best OFfer', compute='_compute_best_price')
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
@@ -90,6 +92,8 @@ class EstateProperties(models.Model):
             elif record.state == 'cancelled':
                 raise ValidationError(_('Cancelled property cannot be sold.'))
             record.state = 'sold'
+        template = self.env.ref('real_estate.email_template_estate_property')
+        template.send_mail(self.id, force_send=True)
 
     def action_property_rejected(self):
         if self.state == 'sold':

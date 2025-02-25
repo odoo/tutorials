@@ -13,5 +13,5 @@ class EstatePropertiesTags(models.Model):
          'Tag name should be unique')
     ]
 
-    name = fields.Char(required=True)
-    color = fields.Integer('Sequence', default=1)
+    name = fields.Char(string='Name', required=True)
+    color = fields.Integer(string='Sequence', default=1)
