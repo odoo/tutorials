@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.PieChart">
-        <div class="o_pie_chart">
+        <div class="card border-0 shadow-sm rounded p-3 o_pie_chart">
             <canvas t-ref="canvas"></canvas>
         </div>
     </t>
