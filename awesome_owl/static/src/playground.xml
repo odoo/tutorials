@@ -13,6 +13,8 @@
             <br />
             <Card title="'another title'" content="escapedValue" />
             <Card title="'yet another title'" content="notEscapedValue" />
+            <br />
+            <TodoList />
         </div>
     </t>
 </templates>
