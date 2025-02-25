@@ -8,7 +8,8 @@
     'depends': [
         'event',
         'website',
-        'website_partner',
+        'website_event',
+        'website_partner'
     ],
     'data': [
         'views/event_event_view.xml',
