@@ -28,7 +28,6 @@
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
-        <field name="garage">False</field>
     </record>
 
 </odoo>

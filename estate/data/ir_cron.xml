@@ -7,5 +7,4 @@
         <field name="code">model._cron_accept_offer()</field>
         <field name="state">code</field>
     </record>
-
 </odoo>

@@ -48,17 +48,18 @@ class EstatePropertyOffers(models.Model):
     # Chnage the state of property to offer recevied when offer is created 
     @api._model_create_multi
     def create(self, vals_list):
+        property_ids = []
         for val in vals_list:
-            property_id = val.get('property_id')
-            offer_price = val.get('price')
-            if property_id and offer_price:
-                property = self.env['estate.property'].browse(property_id)
+            if (
+                (property_id := val.get('property_id')) 
+                and (offer_price := val.get('price'))
+            ):
+                property_ids.append(property_id)
                 offered_price = property.offer_ids.mapped('price')
-                
                 if offered_price and offer_price < max(offered_price):
                     raise ValidationError("You cannot create an offer lower than an existing one.")
-                
-                property.write({'state' :'received'})
+            properties = self.env['estate.property'].browse(property_ids)
+            properties.state = 'received'
         return super().create(vals_list)
 
     # Sets offer state to accepted when called

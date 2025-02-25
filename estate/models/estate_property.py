@@ -111,7 +111,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = ''
+            self.garden_orientation = False
 
     # checks if selling price is greater then or equal to 90% expected price
     @api.constrains("selling_price")
@@ -128,34 +128,31 @@ class EstateProperty(models.Model):
             'estate.property_type_commercial',
             raise_if_not_found=False
         )
-        for property in self:
-            if (
-                commercial_type
-                and property.property_type_id  == commercial_type
-                and property.partner_id
-                and property.partner_id.company_type != 'company'
-            ):
-                raise UserError(
-                    "When a property is of commercial type,"
-                    "the partner must be a company."
-                )
+        if any(
+            commercial_type
+            and property.property_type_id  == commercial_type
+            and property.partner_id
+            and property.partner_id.company_type != 'company'
+            for property in self
+        ):
+            raise UserError(
+                "When a property is of commercial type,"
+                "the partner must be a company."
+            )
 
     # Prevent delete if property is in new or cancelled state
     @api.ondelete(at_uninstall=False)
     def check_on_delete(self):
-        for property in self:
-            if property.state == 'new' or property.state =='cancelled':
-                raise UserError("Can't perform this operation!!")
+        if any(p.state in ('new', 'cancelled') for p in self):
+            raise UserError("Can't perform this operation!!")
 
     # sets property state to sold
     def action_property_sold(self):
-        for property in self:
-            if property.state == 'cancelled':   
-                raise UserError("Cancelled property can't be sold.")
-            if not property.offer_ids:
-                raise UserError("You can't sell property with no offers!!")
-            else:
-                property.state = 'sold'
+        if self.state == 'cancelled':   
+            raise UserError("Cancelled property can't be sold.")
+        if not self.offer_ids:
+            raise UserError("You can't sell property with no offers!!")
+        self.state = 'sold'
 
     # sets property state to cancelled
     def action_property_cancel(self):
@@ -168,8 +165,6 @@ class EstateProperty(models.Model):
             ('state', '=' , 'received'), 
         ])
         for property in expried_properties:
-            best_offer = (
-                property.offer_ids.filtered(lambda offer : offer.state !='refused')
-                .sorted('price', reverse=True)[:1]
-            )
+            best_offer = property.offer_ids.filtered(lambda o: o.state != 'refused').sorted(
+                'price', reverse=True)[:1]
             best_offer.action_offer_confirm()
