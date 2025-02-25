@@ -1,4 +1,4 @@
-import { Component , onWillStart , useState } from "@odoo/owl";
+import { Component , useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
@@ -35,4 +35,4 @@ class AwesomeDashboard extends Component {
 
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
