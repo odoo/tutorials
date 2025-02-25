@@ -13,7 +13,14 @@
                 <div class="dashboard-container">
                     <h1 class="dashboard-title">Welcome to the Awesome Dashboard!</h1>
                     <div class="dashboard-grid">
-                        <DashboardItem size="1.5">
+
+                        <t t-foreach="items" t-as="item" t-key="item.id">
+                            <DashboardItem size="item.size || 1">
+                                <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data' : stats}"/>
+                                <t t-component="item.Component" t-props="itemProp"/>
+                            </DashboardItem>
+                        </t>
+                        <!-- <DashboardItem size="1.5">
                             <t t-if="stats">
                                 <span class="card-title">Average amount of t-shirt by order this month</span>
                                 <br/>
@@ -47,8 +54,16 @@
                                 <br/>
                                 <div class="card-value"><t t-out="stats.total_amount"/></div>
                             </t>
-                        </DashboardItem>
+                        </DashboardItem> -->
                     </div>
+                    <!-- <div class="dashboard-grid">
+                    <DashboardItem size="4">
+                            <span class="card-title">Shirt Orders by Size</span>
+                            <t t-if="stats and stats.orders_by_size">
+                                 <PieChart t-if="stats" data="stats.orders_by_size"/>
+                            </t>
+                    </DashboardItem>
+                    </div> -->
                 </div>
             </t>
         </Layout>
