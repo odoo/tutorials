@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="modal_ticket_registration" name="modal_ticket_registration" inherit_id="website_event.modal_ticket_registration">
+
+        <!-- Replace the logic that calculates the maximum number of tickets allowed per registration at the ticket level -->
+        <xpath expr="//t[@t-set='seats_max_ticket']" position="replace">
+            <t t-set="seats_max_ticket" 
+               t-value="(not ticket.seats_limited or ticket.seats_available &gt; ticket.maximum_tickets_per_registration) 
+                        and ticket.maximum_tickets_per_registration 
+                        or ticket.seats_available + 1"/>
+        </xpath>
+
+        <!-- Replace the logic that calculates the maximum number of tickets allowed per registration at the event level -->
+        <xpath expr="//t[@t-set='seats_max_event']" position="replace">
+            <t t-set="seats_max_event" 
+               t-value="(not event.seats_limited or event.seats_available &gt; ticket.maximum_tickets_per_registration) 
+                        and ticket.maximum_tickets_per_registration 
+                        or event.seats_available + 1"/>
+        </xpath>
+
+    </template>
+</odoo>
