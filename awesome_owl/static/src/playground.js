@@ -10,11 +10,6 @@ export class Playground extends Component {
     static components = { Counter, Card, TodoList };
 
     setup() {
-        this.cards = [
-            { title: "Safe String", content: "This is a normal string" },
-            { title: "Styled HTML", content: markup("<b style='color: red;'>This is bold and red</b>") },
-            { title: "List Example", content: markup("<ul><li>Item 1</li><li>Item 2</li></ul>") },
-        ];
         this.sum = useState({ value: 0 });
     }
 

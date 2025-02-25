@@ -2,10 +2,14 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.Counter">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
-            <div class="card-body text-center">
-                <p class="card-text">Counter: <t t-esc="state.value"/></p>
-                <button class="btn btn-dark mt-2 shadow-sm border-1" style="background-color:rgb(77, 158, 234);" t-on-click="increment">Increment</button>
+        <div class="card shadow-sm m-3 border-1" style="min-width: 18rem; max-width: 24rem;">
+            <div class="card-body p-4">
+                <p class="card-text fs-5 mb-3">Counter: <t t-esc="state.value"/></p>
+                <button class="btn w-100 py-2 shadow-sm border-1" 
+                        style="background-color:rgb(77, 158, 234);" 
+                        t-on-click="increment">
+                        Increment
+                </button>
             </div>
         </div>
     </t>
