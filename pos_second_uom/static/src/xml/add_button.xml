@@ -3,8 +3,33 @@
     <t t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" owl="1">
         <xpath expr="//button[@class='btn btn-light btn-lg flex-shrink-0 ms-auto']" position="before">
             <button class="btn btn-primary btn-lg" t-on-click="clickCustomButton">
-                <i class="fa fa-plus me-1" /> Custom Action
+                <i class="fa fa-plus me-1" />
+                    Custom Action
             </button>
         </xpath>
     </t>
+
+    <t t-name="pos_second_uom.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            <label>Enter Quantity:</label>
+                <input type="number" t-model="state.quantity" class="form-control"/>
+
+                <!-- ✅ UOM Dropdown -->
+                <label>Select Unit of Measure:</label>
+                <select class="form-control" t-model="state.secUomId">
+                    <t t-foreach="state.secUoms" t-as="uom" t-key="uom.id">
+                        <option t-att-value="uom.id">
+                            <t t-esc="uom.name"/>
+                        </option>
+                    </t>
+                </select>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
 </templates>

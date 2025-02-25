@@ -6,7 +6,9 @@
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
-    
+    'data':[
+        "views/product_template_views_inherit.xml"
+    ],
     'assets': {
         'point_of_sale._assets_pos': [
             "pos_second_uom/static/src/**/*.js",
