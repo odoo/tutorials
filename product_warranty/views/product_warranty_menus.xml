@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Menu Item for Product Warranties under Sales > Configuration -->
+    <menuitem id="product_warranty_menu_action" name="Warranty Configuration" action="action_product_warranty" parent="sale.menu_sale_config" groups="base.group_system" sequence="20" />
+</odoo>
