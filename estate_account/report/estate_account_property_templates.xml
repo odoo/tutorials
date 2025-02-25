@@ -1,0 +1,9 @@
+<odoo>
+    <template id="report_property_offers" inherit_id="estate.property_offers_table">
+        <xpath expr="//table[hasclass('table')]" position="before">
+            <t t-if="property.state == 'invoiced'">
+                <strong>!!!Invoice has already been created!!!</strong>
+            </t>
+        </xpath>
+    </template>
+</odoo>
