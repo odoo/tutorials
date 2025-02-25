@@ -7,16 +7,17 @@ export class DashboardItem extends Component {
         title: { type : String },
         slots: { type : Object },
         size: { type : Number, optional : true },
+        toggle: { type : Boolean, optional : true },
     }
 
     static defaultProps = {
         size: 1,
+        toggle: false,
     };
-    
 
     setup(){
         this.state = useState({
-            toggled : false,
+            toggled : this.props.toggle,
         })
     }
 

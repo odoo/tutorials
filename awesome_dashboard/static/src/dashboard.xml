@@ -4,24 +4,36 @@
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">  
             <t t-set-slot="control-panel-create-button">
-                <button type="button" class="btn btn-primary" t-on-click="onCustomerButtonClick">Customer</button>
-                <button type="button" class="btn btn-primary" t-on-click="onLeadsButtonClick">Leads</button>
+                <button type="button" class="btn btn-primary" t-on-click="customerButtonClick">Customer</button>
+                <button type="button" class="btn btn-primary" t-on-click="leadsButtonClick">Leads</button>
             </t>
 
-            <DashboardItem title="'Customer'">
-                <div t-attf-class="card-text">
-                    I love customers
-                </div>
+            <DashboardItem title="'Number of new orders this month'" toggle="true">
+                <div t-esc="state.nb_new_orders" t-att-class="'stat-data'"/>
             </DashboardItem>
-            <DashboardItem title="'Leads'">
-                <div t-attf-class="card-text">
-                    I love custodes
-                </div>
+
+            <DashboardItem title="'Total amount of new orders this month'" toggle="true">
+                <div t-esc="state.total_amount" t-att-class="'stat-data'"/>
             </DashboardItem>
-            <DashboardItem title="'Opportunities'" size="4">
-                <div t-attf-class="card-text">
-                    Hello guys
-                </div>
+
+            <DashboardItem title="'Average amount of t-shirt by order this month'" toggle="true">
+                <div t-esc="state.average_quantity" t-att-class="'stat-data'"/>
+            </DashboardItem>
+
+            <DashboardItem title="'Number of cancelled orders this month'" toggle="true">
+                <div t-esc="state.nb_cancelled_orders" t-att-class="'stat-data'"/>
+            </DashboardItem>
+
+            <DashboardItem title="'Average time for an order to go from \'new\' to \'sent\' or \'cancelled\''" toggle="true">
+                <div t-esc="state.average_time" t-att-class="'stat-data'"/>
+            </DashboardItem>
+
+            <DashboardItem title="'Normal'" toggle="true">
+                I am normal hey
+            </DashboardItem>
+
+            <DashboardItem title="'Big'" size="4" toggle="true">
+                I am big yay
             </DashboardItem>
 
         </Layout>
