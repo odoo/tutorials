@@ -40,16 +40,16 @@
         <field name="facades">2</field>
         <field name="property_type_id" ref="estate.estate_property_type_residential"/>
         <field name="offer_ids" eval="[
-        Command.create({
-        'partner_id' :ref('base.res_partner_3'),
-        'property_id' :'ref(estate.property_checkdemo)',
-        'price' :50001,
-        'validity' :14,}),
-        Command.create({
-        'partner_id' :ref('base.res_partner_2'),
-        'property_id' :'ref(estate.property_checkdemo)',
-        'price' :49000,
-        'validity' :14,}),
-        ]"/>
+         Command.create({
+         'partner_id' :ref('base.res_partner_3'),
+         'property_id' :'ref(estate.property_checkdemo)',
+         'price' :50001,
+         'validity' :14,}),
+         Command.create({
+         'partner_id' :ref('base.res_partner_2'),
+         'property_id' :'ref(estate.property_checkdemo)',
+         'price' :49000,
+         'validity' :14,}),
+         ]"/>
     </record>
 </odoo>

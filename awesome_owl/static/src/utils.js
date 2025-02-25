@@ -1,3 +1,5 @@
+/** @odoo-module **/
+
 import { onMounted, useRef } from "@odoo/owl";
 
 export function useAutofocus(refName) {

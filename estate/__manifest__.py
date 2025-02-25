@@ -1,10 +1,10 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Real Estate',
+    'name': "Real Estate",
     'depends': ['base', 'website'],
     'category': 'Real Estate/Brokerage',
-    'summary': 'Real estate internal machinery',
+    'summary': "Real estate internal machinery",
     'version': '1.0',
     'description': """
 This module contains all the common features of Estate property management.

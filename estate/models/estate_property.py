@@ -1,11 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _
-from odoo import api
-from odoo import fields
-from odoo import models
-from odoo.exceptions import UserError
-from odoo.exceptions import ValidationError
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_is_zero
 
 class EstateProperty(models.Model):
@@ -62,7 +58,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="offer_id")
     total_area = fields.Integer(compute='_compute_total_area', string="Total Area (sqm)")
     best_offer = fields.Float(compute='_compute_best_offer', string="Best Offer", store=True)
-    company_id = fields.Many2one(comodel_name='res.company',required=True, default=lambda self:self.env.company)
+    company_id = fields.Many2one(comodel_name='res.company', required=True, default=lambda self:self.env.company)
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):

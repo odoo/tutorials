@@ -1,4 +1,6 @@
-import { Component, useState } from "@odoo/owl";
+/** @odoo-module **/
+
+import { Component } from "@odoo/owl";
 
 export class TodoItem extends Component {
     static template = "awesome_owl.todo_item"
@@ -23,7 +25,7 @@ export class TodoItem extends Component {
 
     removeTodoItem() {
         if(this.props.removeTodo) {
-            this.props.removeTodo(this.props.todo.id); 
+            this.props.removeTodo(this.props.todo.id);
         }
     }
 }

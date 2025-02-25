@@ -102,7 +102,7 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Search Estate Peoperties">
+            <search string="Search Estate Properties">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
@@ -132,9 +132,7 @@
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_details" draggable="false">
-                            <strong>
-                                <field name="name"/>
-                            </strong>
+                            <strong><field name="name"/></strong>
                             <div>
                                 Expected Price: <field name="expected_price"/>
                             </div>

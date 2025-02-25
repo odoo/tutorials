@@ -1,11 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from datetime import datetime
-from datetime import timedelta
-from odoo import _
-from odoo import api
-from odoo import fields
-from odoo import models
+from datetime import datetime, timedelta
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):

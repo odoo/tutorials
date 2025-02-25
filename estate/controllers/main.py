@@ -1,8 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.http import Controller
-from odoo.http import request 
-from odoo.http import route 
+from odoo.http import Controller, request, route
 
 class Visitor(Controller):
     @route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
