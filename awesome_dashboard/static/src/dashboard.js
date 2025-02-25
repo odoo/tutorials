@@ -8,10 +8,11 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 
 import { DashboardItem } from "./dashboard_item"
+import { PieChart } from "./pie_chart"
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem }
+    static components = { Layout, DashboardItem, PieChart }
 
     setup() {
         this.action = useService("action");
