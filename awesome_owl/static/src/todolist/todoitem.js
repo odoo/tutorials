@@ -5,5 +5,6 @@ export class ToDoItem extends Component {
     static props = {
         todo : {type: Object, shape: {id: Number, description: String, isCompleted: Boolean}},
         toggleState : Function,
+        removeTodo: Function,
     }
 }
