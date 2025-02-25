@@ -88,17 +88,19 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                            <group class="col-6">
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area" string="Living Area(sqm)"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area" string="Garden Area(sqm)"
-                                    invisible="not garden"/>
-                                <field name="garden_orientation" invisible="not garden"/>
-                                <field name="total_area"/>
+                            <group>
+                                <group class="col-6">
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area" string="Living Area(sqm)"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" string="Garden Area(sqm)"
+                                        invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                    <field name="total_area"/>
+                                </group>
                             </group>
                             <!-- <group>
                                 <field name="tag_ids"/>

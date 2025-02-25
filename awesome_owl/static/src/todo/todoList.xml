@@ -5,7 +5,7 @@
             <div class="flex space-x-2">
                 <input type="text" placeholder="Enter a new task" t-on-keyup="addTodo" t-ref="inputRef"/>
             </div>
-            <div class="todos">
+            <div>
                 <t t-foreach="todos" t-as="todo" t-key="todo.id">
                     <TodoItem todo="todo" toggleState.bind="toggleTodoState" removeTodo.bind="removeTodo"/>
                 </t>

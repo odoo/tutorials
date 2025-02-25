@@ -1,6 +1,7 @@
+import math
+
 from odoo import http
 from odoo.http import request
-import math
 from datetime import datetime
 
 

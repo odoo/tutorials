@@ -1,5 +1,5 @@
 <odoo>
-    <template id="estate.estate_property_view_template">
+    <template id="estate_property_view_template">
     <t t-call="website.layout">
     <div class="container">
         <div class="row mt-4">
@@ -21,7 +21,7 @@
             </div>
         </div>
         <t t-if="properties">
-        <div class="d-flex w-100">
+        <div class="d-flex w-100 action_buttons">
             <form method="GET" action="/properties" class="mb-10 me-auto">
                 <input type="text" name="search_property" t-att-value='search_property' class="form-control d-inline w-auto"/>
                 <button type="submit" class="btn btn-primary">search</button>
@@ -61,7 +61,7 @@
             </div>
         </t>
     </template>
-    <template id="estate.estate_property_detail_template">
+    <template id="estate_property_detail_template">
         <t t-call="website.layout">
             <div class="container mt-5">
                 <div class="row mt-4 mb-4">

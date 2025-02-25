@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-            <div>
-                <Counter onChange.bind="incrementSum"/>
-                <Counter onChange.bind="incrementSum"/>
-            </div>
-            <div>
-                <p>Sum is: <t t-esc="sum.value"/></p>
-            </div>
+
+        <div>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+        </div>
+        <div>
+            <p>Sum is: <t t-esc="sum.value"/></p>
+        </div>
         <hr/>
-        <div class="todos">
+        <div>
             <h4>Todos</h4>
             <TodoList/>
         </div>

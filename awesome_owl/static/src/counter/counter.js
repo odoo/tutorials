@@ -9,7 +9,6 @@ export class Counter extends Component {
     }
     increment(){
         this.state.value++;
-        console.log(this.state.value)
         if (this.props.onChange) {
             this.props.onChange(this.state.value);
         }
