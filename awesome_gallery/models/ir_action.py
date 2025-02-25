@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-from odoo import fields, models
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo import fields, models
 
 class ActWindowView(models.Model):
     _inherit = 'ir.actions.act_window.view'
