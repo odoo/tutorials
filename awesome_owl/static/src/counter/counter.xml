@@ -7,3 +7,13 @@
         </div>
     </t>
 </templates>
+
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.counter">
+        <div class="counter m-3 p-3 border rounded">
+            <p>Counter <t t-esc="props.id"/>: <t t-esc="value"/></p>
+            <button class="btn btn-primary" t-on-click="increment">Increment</button>
+        </div>
+    </t>
+</templates> -->

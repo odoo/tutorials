@@ -26,9 +26,6 @@
     'data': [
         'views/templates.xml',
     ],
-    'web_assets': [
-        'awesome_owl/static/src/utils.js',
-    ],
     'assets': {
         'awesome_owl.assets_playground': [
             ('include', 'web._assets_helpers'),

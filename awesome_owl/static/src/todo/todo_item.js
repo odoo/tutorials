@@ -14,10 +14,15 @@ export class TodoItem extends Component {
                 isCompleted: { type: Boolean },
             },
         },
-        toggleTodo: { type: Function },
+        toggleState: { type: Function },
+        removeTodo: { type: Function },
     }
 
     onChange() {
-        this.props.toggleTodo(this.props.todo.id);
+        this.props.toggleState(this.props.todo.id);
+    }
+
+    onRemove() {
+        this.props.removeTodo(this.props.todo.id);
     }
 }
