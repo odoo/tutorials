@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="menu_supplier_portal" model="website.menu">
+        <field name="name">Upload Document</field>
+        <field name="url">/supplier/upload/</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">10</field>
+        <field name="group_ids" eval="[(6, 0, [ref('base.group_portal')])]"/>
+    </record>
+
+</odoo>
