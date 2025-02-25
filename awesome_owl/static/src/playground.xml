@@ -3,9 +3,11 @@
 
     <t t-name="awesome_owl.playground">
         <div>
-            <Counter/>
-            <Counter/>
-            <Counter/>
+            <Counter />
+            <Counter />
+            <Card title="'Card 1'" content="'Card 1 contenttt'" />
+            <Card title="'Card 2'" content="'Card 2 conoootenttt'" />
+            
         </div>
     </t>
 </templates>
