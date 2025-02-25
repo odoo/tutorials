@@ -1,10 +1,10 @@
 {
-    'name': 'zero_stock_blockage',
+    'name': 'Zero Stock Blockage',
     'author': 'Odoo - utsav',
-    'licence': 'LGPL-3',
+    'license': 'LGPL-3',
     'category': 'sale',
     'summary': 'Allows approval of zaro stock sales order',
-    'depends': ['sale'],
+    'depends': ['sale_management', 'stock'],
     'data': [
         'views/sale_order_view.xml',
     ],
