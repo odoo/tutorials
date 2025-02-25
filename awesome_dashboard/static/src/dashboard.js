@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, useState, onWillStart } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard_item";
@@ -13,33 +13,10 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = this.env.services.action;
-        this.statisticsService = useService("awesome_dashboard.statistics");
-        this.statistics = useState({
-            averageQuantity: 0,
-            averageTime: 0,
-            nbCancelledOrders: 0,
-            nbNewOrders: 0,
-            totalAmount: 0,
-            ordersBySize: { m: 0, s: 0, xl: 0 },
-        });
-
+        this.statistics = useState(useService("awesome_dashboard.statistics"));
         this.display = {
             controlPanel: {},
         };
-
-        onWillStart(async () => {
-            try {
-                const result = await this.statisticsService.loadStatistics();
-                this.statistics.averageQuantity = result.average_quantity;
-                this.statistics.averageTime = result.average_time;
-                this.statistics.nbCancelledOrders = result.nb_cancelled_orders;
-                this.statistics.nbNewOrders = result.nb_new_orders;
-                this.statistics.totalAmount = result.total_amount;
-                this.statistics.ordersBySize = result.orders_by_size;
-            } catch (error) {
-                console.error("Failed to load dashboard statistics:", error);
-            }
-        });
     }
 
     openCustomers() {

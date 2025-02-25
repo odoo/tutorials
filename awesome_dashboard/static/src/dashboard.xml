@@ -5,7 +5,7 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary me-2" t-on-click="openLeads">Leads</button>
             </t>
-            <div class="d-flex flex-wrap p-3 rounded justify-content-around">
+            <div class="d-flex flex-wrap p-3 rounded justify-content-around" t-if="statistics.isReady">
                 <DashboardItem>
                     <h3>Average Quantity per Order</h3>
                     <p class="display-3 text-success fw-bold" t-esc="statistics.averageQuantity"></p>
