@@ -32,7 +32,7 @@ export class PieChart extends Component {
                     {
                         label: this.props.label,
                         data: data,
-                        backgroundColor: color,
+                        backgroundColor: ['lightblue','#019283','#987654'],
                     },
                 ],
             },
