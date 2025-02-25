@@ -192,12 +192,8 @@ class EstateProperty(models.Model):
 
     @api.onchange('property_type_id')
     def _onchange_proprty_type_domain(self):
-        if self.property_type_id:
-            commercial_type_id = self.env.ref('real_estate.property_type_commercial').id
-            if commercial_type_id and commercial_type_id == self.property_type_id.id:
-                return {'domain': {'buyer_id': ['|', ('is_company', '=', True), ('id', '=', False)]}}
-            else:
-                return {'domain': {'buyer_id': []}}
+        # TODO
+        pass
                 
     @api.onchange('garden')
     def _onchange_garden(self):

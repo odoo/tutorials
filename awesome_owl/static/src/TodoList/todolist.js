@@ -1,9 +1,10 @@
 import { Component, onMounted, useRef, useState } from '@odoo/owl'
-import { TodoItem } from '../TodoItem/todoitem';
+import { TodoItem } from '@awesome_owl/TodoItem/todoitem';
+import { useAutofocus } from '@awesome_owl/utils';
 
 
 export class TodoList extends Component {
-    static template = "awesome_owl/TodoList"
+    static template = "awesome_owl/TodoList";
     static components = { TodoItem }
 
     setup() {
@@ -14,24 +15,19 @@ export class TodoList extends Component {
                 { id: 2, description: "Build a project", isCompleted: true },
             ],
         });
-
-        this.inputRef = useRef('todoInput')
-
-        onMounted(() => {
-            this.inputRef.el.focus();
-        })
+        useAutofocus("todoInput");
     }
 
     addTodo(event) {
         if(event.keyCode == 13) {
-            const tododata = event.target.value.trim();
+            const todoData = event.target.value.trim();
             event.target.value = ''
-            console.log(tododata)
-            if(tododata != ''){
+            console.log(todoData)
+            if(todoData != ''){
                 this.state.todos.push(
                     {
-                        id: this.state.todos.length, 
-                        description: tododata, 
+                        id: this.todos.length, 
+                        description: todoData, 
                         isCompleted: false
                     }
                 )
@@ -40,18 +36,17 @@ export class TodoList extends Component {
     }
 
     toggleStart(todo) {
-        todo.isCompleted = !todo.isCompleted
+        todo.isCompleted = !todo.isCompleted;
         console.log(todo.isCompleted)
     }
 
-    deleteTodo(todo) {
-        console.log(todo.id)
-        const index = this.state.todos.findIndex((t) => t.id === todo.id);
+    deleteTodo(todoId) {
+        console.log(todoId)
+        const index = this.state.todos.findIndex((t) => t.id === todoId);
         console.log(index)
         if (index >= 0) {
-            // remove the element at index from list\
-            // console.lo
-            this.todos.splice(index, 1);
+            this.state.todos.splice(index, 1);
+            this.state.todos = [ ...this.state.todos ]
         }
     }
 }

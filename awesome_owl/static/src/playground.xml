@@ -13,6 +13,9 @@
                 <Card title="'Card 1'" content="'Content of Card 1'"/>
                 <Card title="'Card 2'" content="'Content of Card 2'"/>
                 <Card title="value1" content="value2"/>
+                <Card title="'Card 3'">
+                    <Counter />
+                </Card>
             </div>
             <div class="border">
                 <TodoList />

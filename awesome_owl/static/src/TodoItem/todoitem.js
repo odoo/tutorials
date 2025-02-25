@@ -2,30 +2,21 @@ import { Component } from '@odoo/owl'
 
 
 export class TodoItem extends Component {
-    static template = "awesome_owl/TodoItem"
-    static prop = {
-        type: Object,
-        shape : {
-            id : {
-                type: Number
-            },
-            description: {
-                type: String
-            },
-            isCompleted: {
-                type: Boolean
-            }
+    static template = "awesome_owl/TodoItem";
+    static props = {
+        todo:{
+            type: Object, 
+            optional: false
         },
         toggleStart: Function,
         deleteTodo: Function
-
     }
 
     toggleCompleted() {
-        this.props.toggleStart(this.props.todo)
+        this.props.toggleStart(this.props.todo);
     }
     
     removeTodo() {
-        this.props.deleteTodo(this.props.todo)
+        this.props.deleteTodo(this.props.todo.id);
     }
 }

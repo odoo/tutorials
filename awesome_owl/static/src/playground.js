@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
 import { Component, markup, useState } from "@odoo/owl";
-import { Counter } from "./counter/counter";
-import { Card } from "./Card/card";
-import { TodoList } from "./TodoList/todolist";
+import { Counter } from "@awesome_owl/counter/counter";
+import { Card } from "@awesome_owl/Card/card";
+import { TodoList } from "@awesome_owl/TodoList/todolist";
 
 
 export class Playground extends Component {
