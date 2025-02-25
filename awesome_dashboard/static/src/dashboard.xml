@@ -3,7 +3,11 @@
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
-            <p class="o_dashboard_title">Boring World...</p>
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerKanban">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <p className="'o_dashboard_content'">Random stuff...</p>
         </Layout>
     </t>
 
