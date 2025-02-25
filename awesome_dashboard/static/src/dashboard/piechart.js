@@ -9,12 +9,10 @@ export class PieChart extends Component {
     setup() {
         this.statisticsService = useService("awesome_dashboard.statistics");
         this.canvasRef = useRef("canvas");
-        this.chart = null;
         this.statistics = useState(this.statisticsService.data);
 
         onWillStart(async () => {
-            await loadJS("/web/static/lib/Chart/Chart.js"); 
-            this.ChartLibrary = window.Chart; 
+            await loadJS("/web/static/lib/Chart/Chart.js");  
         });
 
         onMounted(() => {
@@ -42,10 +40,8 @@ export class PieChart extends Component {
     }
 
     updateChart() { 
-        if (!this.chart || !this.statistics.orders_by_size) return;
-
         this.chart.data.labels = Object.keys(this.statistics.orders_by_size);
         this.chart.data.datasets[0].data = Object.values(this.statistics.orders_by_size);
-        this.chart.update(); // Update the chart with new data
+        this.chart.update(); 
     }
 }

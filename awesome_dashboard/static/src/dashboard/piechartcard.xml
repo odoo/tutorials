@@ -1,0 +1,5 @@
+<t t-name="awesome_dashboard.PieChartCard">
+    <div class="dashboard-card">
+       <PieChart></PieChart>
+    </div>
+</t>

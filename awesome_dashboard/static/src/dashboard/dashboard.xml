@@ -9,6 +9,11 @@
             <button type="button" class="btn btn-primary" t-on-click="openLeads">
                 Leads
             </button>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
         </div>
         <Layout className="'o_dashboard h-100'" >
             <div class="d-flex gap-2 mt-3 p-3">
@@ -22,32 +27,55 @@
             </div>
             <div class="dashboard-container d-flex flex-wrap gap-2 mt-3 p-3">
                 <DashboardItem size="1.5">
-                    <p>Average amount of t-shirt by order this month:</p>
+                    <h3>Average amount of t-shirt by order this month:</h3>
                      <center style="font-size:30px; color:green"><t t-esc="statistics.average_quantity || 0"/></center>
                 </DashboardItem>
                 <DashboardItem size="3">
-                    <p>Average time for an order to go from 'new' to 'sent' or 'cancelled':</p> 
+                    <h3>Average time for an order to go from 'new' to 'sent' or 'cancelled':</h3> 
                     <center style="font-size:30px; color:green"><t t-esc="statistics.average_time || 0"/></center>
                 </DashboardItem>
-                <DashboardItem size="1">
-                    <p>Number of new orders this month: </p>
+                <DashboardItem size="1.3">
+                    <h3>Number of new orders this month: </h3>
                     <center style="font-size:30px; color:green"><t t-esc="statistics.nb_new_orders || 0"/></center>
                 </DashboardItem>
-            </div>
-            <div class="dashboard-container d-flex flex-wrap gap-2 p-3">
-                <DashboardItem size="1">
-                    <p>Number of cancelled orders this month: </p>
+                <DashboardItem size="1.3">
+                    <h3>Number of cancelled orders this month: </h3>
                     <center style="font-size:30px; color:green"><t t-esc="statistics.nb_cancelled_orders || 0"/></center>
                 </DashboardItem>
-                <DashboardItem size="1">
-                    <p>Total amount of new orders this month:</p> 
+                <DashboardItem size="1.3">
+                    <h3>Total amount of new orders this month:</h3> 
                     <center style="font-size:30px; color:green"><t t-esc="statistics.total_amount || 0"/></center>
                 </DashboardItem>
                 <DashboardItem>
                       <PieChart></PieChart>
                 </DashboardItem>
             </div>
+            <div class="dashboard-container d-flex flex-wrap gap-2 p-3">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
+                    </DashboardItem>
+                </t>
+            </div>
         </Layout>
+    </t>
+
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
     </t>
 
 </templates>
