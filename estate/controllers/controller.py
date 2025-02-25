@@ -1,4 +1,3 @@
-from odoo.addons.mail.controllers.mail import MailController
 from odoo import http
 from odoo.http import request
 

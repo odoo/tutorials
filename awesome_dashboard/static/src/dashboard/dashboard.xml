@@ -2,7 +2,6 @@
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="{controlPanel: {}}" className="'o_dashboard h-100'">
-
             <t t-set-slot="control-panel-create-button">
                 <div class="d-flex align-items-center gap-3 py-3">
                     <button class="btn btn-primary d-flex align-items-center px-4 py-2" t-on-click="openCustomerKanban">
@@ -35,7 +34,6 @@
                     </div>
                 </t>
             </div>
-
         </Layout>
     </t>
 </templates>

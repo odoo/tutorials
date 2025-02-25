@@ -77,7 +77,7 @@ class EstateProperty(models.Model):
         required=True,
         default=lambda self: self.env.company,
     )
-    image = fields.Image(store=True, verify_resolution=True)
+    image = fields.Image()
 
     # Relationships
     property_type_id = fields.Many2one(
