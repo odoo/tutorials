@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
-    <Layout display="display" className="'o_dashboard h-100'">
-          <t t-set-slot="layout-buttons">
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
                 <button t-on-click="openCustomerView" class="btn btn-primary">Customers</button>
                 <button t-on-click="openLeadView" class="btn btn-primary">Leads</button>
             </t>
-    </Layout>
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                Some Content
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                I love milk
+                </DashboardItem>
+
+                <DashboardItem>
+                Some Content
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 </templates>
