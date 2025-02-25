@@ -1,9 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import math
-from odoo import api, fields, models
+
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 class EstateProperty(models.Model):
@@ -11,9 +13,9 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _sql_constraints = [
         ('check_positive_values_expected_price', 'CHECK(expected_price>0)',
-         'Expected price must be positive'),
+         "Expected price must be positive"),
          ('check_positive_values_selling_price', 'CHECK(selling_price>0)',
-         'Selling price must be positive')
+         "Selling price must be positive")
     ]
 
     name = fields.Char(string="Property Name", required=True, default="Unknown name")
@@ -82,9 +84,9 @@ class EstateProperty(models.Model):
     def action_sold_property(self):
         for property in self:
             if property.state == 'cancelled':
-                  raise UserError("Cancelled Property cannot be sold")
+                  raise UserError(_("Cancelled Property cannot be sold"))
             elif not ('accepted' in property.offer_ids.mapped('status')):
-                  raise UserError("Accept Offer before sold")
+                  raise UserError(_("Accept Offer before sold"))
             else:
                 property.state = 'sold'
         return True
@@ -92,7 +94,7 @@ class EstateProperty(models.Model):
     def action_cancel_property(self):
         for property in self:
             if property.state == 'sold':
-                raise UserError("Sold Property cannot be cancel")
+                raise UserError(_("Sold Property cannot be cancel"))
             else:
                 property.state = 'cancelled'
         return True
@@ -101,10 +103,10 @@ class EstateProperty(models.Model):
     def _check_minimum_selling_price(self):
         for property in self:
             if property.selling_price < property.expected_price * 0.9:
-                raise ValidationError("Selling price should be greater than 90% of expected price")
+                raise ValidationError(_("Selling price should be greater than 90% of expected price"))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_is_new_or_cancelled(self):
         for property in self:
             if property.state!='new' and property.state!='cancelled':
-                raise UserError('You cannot delete a property which is not new or cancelled.')
+                raise UserError(_("You cannot delete a property which is not new or cancelled."))

@@ -91,7 +91,6 @@
             <field name="arch" type="xml">
                 <search string="Properties Search">
 
-                    <!-- search using property -->
                     <field name="name" string="Title"/>
                     <field name="postcode" string="Postcode"/>
                     <field name="expected_price" string="Expecte Price"/>
@@ -99,12 +98,10 @@
                     <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area', '>=', self)]"/>
                     <field name="facades" string="Facades" />
 
-                    <!-- filter record -->
                     <filter name="available" string="Available" domain="['|',('state','=','new'), ('state', '=', 'offer received')]"/>
                     <filter string="New" name="new property filter" domain="[('state','=','new')]"/>
                     <filter string="Offer Recieved" name="offer recieved property filter" domain="[('state','=','offer received')]"/>
 
-                    <!-- group record -->
                     <group expand="1" string="group by postcode">
                         <filter string="PostCode" name="filter for group by postcode" context="{'group_by':'postcode'}"/>
                     </group>

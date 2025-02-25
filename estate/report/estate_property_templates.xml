@@ -6,21 +6,11 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>
-                                Price
-                            </th>
-                            <th>
-                                Partner
-                            </th>
-                            <th>
-                                Validity (days)
-                            </th>
-                            <th>
-                                Deadline
-                            </th>
-                            <th>
-                                State
-                            </th>
+                            <th>Price</th>
+                            <th>Partner</th>
+                            <th>Validity (days)</th>
+                            <th>Deadline</th>
+                            <th>State</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,21 +52,15 @@
                             <span t-field="property.name" />
                         </h2>
                         <div>
-                            <strong>
-                                Salesman:
-                            </strong>
+                            <strong>Salesman:</strong>
                             <span t-field="property.salesmen_id" />
                         </div>
                         <div>
-                            <strong>
-                                Expected Price:
-                            </strong>
+                            <strong>Expected Price:</strong>
                             <span t-field="property.expected_price" />
                         </div>
                         <div id="status">
-                            <strong>
-                                Status:
-                            </strong>
+                            <strong>Status:</strong>
                             <span t-field="property.state" />
                         </div>
                     </div>
@@ -92,9 +76,7 @@
                 <t t-call="web.external_layout">
                     <div class="page">
                         <h2>
-                            <strong>
-                                Salesman:
-                            </strong>
+                            <strong>Salesman:</strong>
                             <span t-field="salesmen.name" />
                         </h2>
                         <t t-foreach="salesmen.property_ids" t-as="property">
@@ -113,15 +95,11 @@
                     <span t-field="property.name" />
                 </h2>
                 <div>
-                    <strong>
-                        Expected Price:
-                    </strong>
+                    <strong>Expected Price:</strong>
                     <span t-field="property.expected_price" />
                 </div>
                 <div>
-                    <strong>
-                        Status:
-                    </strong>
+                    <strong>Status:</strong>
                     <span t-field="property.state" />
                 </div>
             </div>
@@ -129,21 +107,11 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>
-                                Price
-                            </th>
-                            <th>
-                                Partner
-                            </th>
-                            <th>
-                                Validity (days)
-                            </th>
-                            <th>
-                                Deadline
-                            </th>
-                            <th>
-                                State
-                            </th>
+                            <th>Price</th>
+                            <th>Partner</th>
+                            <th>Validity (days)</th>
+                            <th>Deadline</th>
+                            <th>State</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -169,9 +137,7 @@
                 </table>
             </t>
             <t t-else="">
-                <strong>
-                    No offer exist for this property!
-                </strong>
+                <strong>No offer exist for this property!</strong>
             </t>
         </t>
     </template>

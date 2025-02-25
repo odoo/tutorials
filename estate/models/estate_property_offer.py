@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
@@ -39,15 +39,15 @@ class EstatePropertyOffer(models.Model):
     def action_offer_accept(self):
         for offer in self:
             if 'accepted' in offer.property_id.offer_ids.mapped('status'):
-                raise UserError("Offer is already accepted for this property")
+                raise UserError(_("Offer is already accepted for this property"))
             else :
                 offer.status = 'accepted'
                 offer.property_id.buyer_id = offer.partner_id
                 offer.property_id.selling_price = offer.price
                 offer.property_id.state = 'offer accepted'
-                for ofr in offer.property_id.offer_ids:
-                    if ofr != offer:
-                        ofr.status = 'refused'
+                for property_offer in offer.property_id.offer_ids:
+                    if property_offer != offer:
+                        property_offer.status = 'refused'
         return True
 
     def action_offer_refuse(self):
@@ -68,7 +68,7 @@ class EstatePropertyOffer(models.Model):
             if property.offer_ids:
                 max_offer = max(property.offer_ids.mapped('price'))
             if max_offer > offer['price']:
-                    raise UserError(f"The new offer must be higher than or equal to the maximum offer of {max_offer:.2f}")
+                    raise UserError(_(f"The new offer must be higher than or equal to the maximum offer of {max_offer:.2f}"))
         return super().create(vals_list)
 
     def action_property_offer_accept(self):

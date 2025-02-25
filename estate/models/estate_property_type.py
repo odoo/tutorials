@@ -5,7 +5,7 @@ from odoo import api, fields, models
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = "Real Estate Property Type"
-    _order = 'sequence asc'
+    _order = 'sequence'
     _sql_constraints = [
         ('check_unique_property_type', 'UNIQUE(name)',
          'Property type is already exists')
