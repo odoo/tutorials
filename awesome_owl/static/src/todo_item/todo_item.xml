@@ -1,8 +1,12 @@
 <?xml version="1.0"?>
 <template>
     <t t-name="awesome_owl.todo_item">
-        <div t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : ''">
-            <p><t t-out="props.todo.id"></t>.<t t-out="props.todo.description"></t></p>
+        <div class="form-check">
+            <input type="checkbox" class="m-2 form-checkbox" t-att-checked="props.todo.isCompleted" t-on-change="() => props.toggleState(props.todo.id)"></input>
+            <label t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : ''">
+                <p><t t-out="props.todo.id"></t>.<t t-out="props.todo.description"></t></p>
+            </label>
+            <span class="m-2 fa fa-trash text-danger" t-on-click="() => props.removeTodo(props.todo.id)"></span>
         </div>
     </t>
 </template>

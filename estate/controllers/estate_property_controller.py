@@ -23,7 +23,7 @@ class EstateProperty(http.Controller):
             step = step,
         )
         properties = request.env['estate.property'].search(domain, limit=step, offset=offset)
-        values = {  
+        values = {
             'pager': pager,
             'properties' : properties,
             'listed_after': listed_after or '',
