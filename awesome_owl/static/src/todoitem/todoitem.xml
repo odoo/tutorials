@@ -5,7 +5,8 @@
         <div class="card m-2" style="width: 18rem;">
             <div class="card-body">
                 <div t-att-class="{'text-muted text-decoration-line-through':props.todo.isComplete}">
-                    <t t-esc="props.todo.id"/>.<t t-esc="props.todo.description"/>
+                    <input class="mx-2" type="checkbox" t-on-click="toggleState"/> <t t-esc="props.todo.id"/>. 
+                    <t t-esc="props.todo.description"/> <span class="fa fa-remove" t-on-click="delTodo"/>
                 </div>
             </div>
         </div>

@@ -9,6 +9,14 @@ export class TodoItem extends Component{
         todo: {
             type:Object,
             shape: {id: Number, description: String, isComplete: Boolean}
-        }
+        },
+         onToggle: Function,
+         onDelete: Function,
+    }
+    toggleState(){
+        this.props.onToggle(this.props.todo)
+    }
+    delTodo(){
+        this.props.onDelete(this.props.todo)
     }
 }
