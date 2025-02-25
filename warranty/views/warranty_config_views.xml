@@ -19,6 +19,7 @@
                 <field name="name" />
                 <field name="product_id" />
                 <field name="percentage" />
+                <field name="year" />
             </list>
         </field>
     </record>
@@ -33,6 +34,7 @@
                         <field name="name" />
                         <field name="product_id" />
                         <field name="percentage" />
+                        <field name="year" />
                     </group>
                 </sheet>
             </form>

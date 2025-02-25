@@ -6,12 +6,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <label for="product_id" string="Product" />
-                    <field name="product_id" />
-                    <label for="year" string="Year" />
-                    <field name="year" />
-                    <label for="end_date" string="End Date" />
-                    <field name="end_date" />
+                    <group>
+                        <field name="product_id" />
+                        <field name="year" />
+                        <field name="end_date" />
+                    </group>
                 </sheet>
                 <footer>
                     <button name="action_apply_warranty" type="object" string="Apply" class="btn btn-primary" data-hotkey="a" />
