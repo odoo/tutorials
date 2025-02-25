@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todoitem">
         <div class="todo-item p-2 m-2 border rounded d-flex align-items-center justify-content-between">

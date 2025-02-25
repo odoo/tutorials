@@ -1,6 +1,7 @@
 import { registry } from "@web/core/registry";
 import { reactive } from "@odoo/owl";
 import { rpc } from "@web/core/network/rpc";
+import { memoize } from "@web/core/utils/functions";
 
 const statisticsService = {
     start() {
@@ -10,6 +11,7 @@ const statisticsService = {
             average_quantity: 0,
             nb_cancelled_orders: 0,
             average_time: 0,
+            orders_by_size: {},
             isReady: false,
         });
 
@@ -22,7 +24,7 @@ const statisticsService = {
             }
         }
 
-        setInterval(loadData, 10 * 60 * 1000);
+        setInterval(loadData, 1000);
         loadData();
 
         return statistics;

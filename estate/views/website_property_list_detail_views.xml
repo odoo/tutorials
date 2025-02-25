@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="property_list_detail_page" name="Property Detail Page">
         <t t-call="website.layout">
