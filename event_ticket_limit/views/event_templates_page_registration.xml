@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="modal_ticket_registration_inherit" inherit_id="website_event.modal_ticket_registration">
+
+             <xpath expr="//t[@t-set='seats_max_ticket']" position="replace">
+                <t t-if="ticket.seats_max_per_buyer" t-set="seats_max_ticket" t-value="(not ticket.seats_limited or ticket.seats_available &gt; ticket.seats_max_per_buyer) and ticket.seats_max_per_buyer + 1 or ticket.seats_available + 1"/>
+                <t t-elif="not ticket.seats_max_per_buyer and not ticket.seats_available" t-set="seats_max_ticket" t-value="11"/>
+                <t t-else="" t-set="seats_max_ticket" t-value="ticket.seats_available + 1"/>
+            </xpath>
+
+            <xpath expr="//t[@t-set='seats_max_event']" position="replace">
+                <t t-if="event.seats_max_per_buyer" t-set="seats_max_event" t-value="(not event.seats_limited or event.seats_available &gt; event.seats_max_per_buyer) and event.seats_max_per_buyer or event.seats_available + 1"/>
+                <t t-elif="not event.seats_max_per_buyer and not event.seats_available" t-set="seats_max_ticket" t-value="11"/>
+                <t t-else="" t-set="seats_max_event" t-value="event.seats_available + 1"/>
+            </xpath>
+
+            <xpath expr="//div[contains(@class, 'o_wevent_registration_single_select')]/select" position="replace">
+                <select t-att-name="'nb_register-%s' % (tickets.id if tickets else 0)" class="d-inline w-auto form-select">
+                    <t t-if="tickets.seats_max_per_buyer" t-set="seats_max_ticket" t-value="(not tickets.seats_limited or tickets.seats_available &gt; tickets.seats_max_per_buyer) and tickets.seats_max_per_buyer + 1 or tickets.seats_available + 1"/>
+                    <t t-elif="not tickets.seats_max_per_buyer or not tickets.seats_available" t-set="seats_max_ticket" t-value="11"/>
+                    <t t-else="" t-set="seats_max_ticket" t-value="tickets.seats_available + 1"/>
+
+                    <t t-if="event.seats_max_per_buyer" t-set="seats_max_event" t-value="(not event.seats_limited or event.seats_available &gt; event.seat_max_per_buyer) and event.seat_max_per_buyer + 1 or event.seats_available + 1"/>
+                    <t t-elif="not event.seats_max_per_buyer or event.seats_available" t-set="seats_max_event" t-value="11"/>
+                    <t t-else="" t-set="seats_max_event" t-value="event.seats_available + 1"/>
+                    
+                    <t t-set="seats_max" t-value="seats_max_ticket if tickets else seats_max_event"/>
+
+                    <t t-foreach="range(0, seats_max)" t-as="nb">
+                        <option t-out="nb" t-att-selected="nb == 1 and 'selected'"/>
+                    </t>
+                </select>
+            </xpath>
+
+    </template>
+</odoo>
