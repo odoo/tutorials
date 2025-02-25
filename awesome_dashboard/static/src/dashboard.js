@@ -18,11 +18,7 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.statisticsLoader = useService("awesome_dashboard.statistics");
 
-        this.statistics = useState({})
-
-        onWillStart(async () => {
-            this.statistics = await this.statisticsLoader.loadStatistics();
-        });
+        this.statistics = useState(this.statisticsLoader);
     }
 
     openCustomers() {
