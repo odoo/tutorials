@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="action_open_product_warranty_view" model="ir.actions.act_window">
+        <field name="name">Warranty Configuration</field>
+        <field name="res_model">product.warranty</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a warranties for products
+            </p>
+        </field>
+    </record>
+
+    <record id="product_warranty_view_list" model="ir.ui.view">
+        <field name="name">product.warranty.list</field>
+        <field name="model">product.warranty</field>
+        <field name="arch" type="xml">
+            <list string="Warranties" editable="bottom">
+                <field name="name" width="25%" />
+                <field name="year" width="15%" />
+                <field name="product_id" width="30%" />
+                <field name="percentage" width="15%" />
+            </list>
+        </field>
+    </record>
+
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales']//group[@name='sale']" position="inside">
+                <group>
+                    <field string="Is warranty available" name="is_warranty" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
