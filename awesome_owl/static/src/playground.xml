@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-    <div class="card d-inline-block m-2" style="width: 18rem;">
-        <Counter onChange.bind="incrementSum"/>
-        <Counter onChange.bind="incrementSum"/>
-        <p>Total Sum: <t t-esc="state.sum"></t></p>
-    </div>
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <p>Total Sum: <t t-esc="state.sum"></t></p>
+        </div>
         <div>
             <Card title="Title">
                 <span>some content</span>
