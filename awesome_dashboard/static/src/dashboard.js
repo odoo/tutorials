@@ -7,7 +7,7 @@ import { rpc } from "@web/core/network/rpc";
 
 import { Component, useState, onWillStart } from "@odoo/owl";
 
-import { DashboardItem } from "./item/dashboardItem";
+import { DashboardItem } from "./dashboardItem";
 
 
 class AwesomeDashboard extends Component {
