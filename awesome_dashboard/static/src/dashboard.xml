@@ -6,7 +6,17 @@
             <button class="btn btn-primary btn-sm" t-on-click="openCustomers"> Customers </button>
             <button class="btn btn-primary btn-sm" t-on-click="openLeads"> Leads </button>
         </t>
-            hello dashboard
+        <div class="d-flex flex-wrap">
+            <DashboardItem>
+                hello dashboard
+            </DashboardItem>
+            <DashboardItem size='2'>
+                hello dashboard
+            </DashboardItem>
+            <DashboardItem>
+                hello dashboard
+            </DashboardItem>
+        </div>
         </Layout>
     </t>
 </templates>
