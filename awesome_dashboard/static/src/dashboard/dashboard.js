@@ -6,11 +6,11 @@ import {Layout} from "@web/search/layout";
 import {useService} from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { loadStatistics } from "./statistics";
-import { PieChart } from "./piechart/piechart";
+import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem };
 
     
     setup() {
@@ -22,7 +22,7 @@ class AwesomeDashboard extends Component {
     async onWillStart() {
         this.orderStats.value = await loadStatistics.start();
         console.log(this.orderStats.value);
-
+        this.items = items;
     }
 
     openCustomerKanban() {
@@ -41,4 +41,4 @@ class AwesomeDashboard extends Component {
     
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

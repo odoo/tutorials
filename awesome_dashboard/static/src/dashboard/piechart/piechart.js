@@ -47,7 +47,7 @@ export class PieChart extends Component {
         if (this.chart) {
             this.chart.data.labels = Object.keys(newData);
             this.chart.data.datasets[0].data = Object.values(newData);
-            this.chart.update(); // Update the chart
+            this.chart.update();
         }
     }
 }
