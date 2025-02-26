@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="event_event_ticket_from_event_view_list" model="ir.ui.view">
         <field name="name">event.event.ticket.list.inherit.event.ticket</field>
         <field name="model">event.event.ticket</field>
@@ -10,4 +11,32 @@
             </field>
         </field>
     </record>
+    
+    <record id="event_event_form_view" model="ir.ui.view">
+        <field name="name">event.event.form.view</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form" />
+        <field name="arch" type="xml">
+           <xpath expr="//group[@name='right_event_details']" position="inside">
+                <field name="default_registration_tickets"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <template id="modal_ticket_registration" name="Modal for tickets registration" inherit_id="website_event.modal_ticket_registration">
+      
+        <xpath expr="//t[@t-set='seats_max']" position="before">
+            <t t-set="seats_max_limit" t-value="(ticket.tickets_per_registration > 0 and ticket.tickets_per_registration + 1) or event.default_registration_tickets + 1"/>
+        </xpath>
+        <xpath expr="//t[@t-set='seats_max']" position="attributes">
+            <attribute name="t-value">min(seats_max_ticket, seats_max_event , seats_max_limit)</attribute>
+        </xpath>
+        <xpath expr="//select[@class='d-inline w-auto form-select']//t[@t-set='seats_max']" position="before">
+            <t t-set="seats_max_limit" t-value="(tickets.tickets_per_registration > 0 and tickets.tickets_per_registration + 1) or event.default_registration_tickets + 1"/>
+        </xpath>
+        <xpath expr="//select[@class='d-inline w-auto form-select']//t[@t-set='seats_max']" position="attributes">
+            <attribute name="t-value">min(seats_max_ticket, seats_max_event , seats_max_limit)</attribute>
+        </xpath>
+ 
+    </template>
 </odoo>

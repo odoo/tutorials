@@ -7,12 +7,10 @@
     """,
     'category': 'Tutorials', 
     'author': 'BHPR',
-    'depends': ['event'], 
+    'depends': ['event','website_event'], 
     'data': [
-        'views/event_views.xml',
+        'views/event_views.xml'
     ],
-    'application': True,  
-    'installable': True,
-    'auto_install': False,
+    'auto_install': True,
     'license': 'LGPL-3',
 }
