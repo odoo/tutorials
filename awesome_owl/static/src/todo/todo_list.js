@@ -33,4 +33,11 @@ export class TodoList extends Component {
             }
         }
     }
+
+    removeTodo = (todo) => {
+        const index = this.state.todos.findIndex(t => t.id === todo.id);
+        if (index !== -1) {
+            this.state.todos.splice(index, 1);
+        }
+    }
 }

@@ -9,5 +9,7 @@
         <span>
             <t t-esc="props.todo.id" />: <t t-esc="props.todo.description" />
         </span>
+        <t> </t>
+        <span class="fa fa-remove" t-on-click="handleRemove" />
     </div>
 </t>

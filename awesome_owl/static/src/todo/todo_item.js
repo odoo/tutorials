@@ -13,12 +13,19 @@ export class TodoItem extends Component {
             },
         },
         onToggle: { type: Function, optional: true },
+        removeTodo: { type: Function, optional: true },
     };
 
     toggleComplete() {
         this.props.todo.isCompleted = !this.props.todo.isCompleted;
         if (this.props.onToggle) {
             this.props.onToggle(this.props.todo);
+        }
+    }
+
+    handleRemove() {
+        if (this.props.removeTodo) {
+            this.props.removeTodo(this.props.todo)
         }
     }
 }

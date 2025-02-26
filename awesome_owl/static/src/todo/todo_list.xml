@@ -11,7 +11,7 @@
         <ul>
             <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
                 <li>
-                    <TodoItem todo="todo" onToggle="onTodoToggle" />
+                    <TodoItem todo="todo" onToggle="onTodoToggle" removeTodo="removeTodo" />
                 </li>
             </t>
         </ul>
