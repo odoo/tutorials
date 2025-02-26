@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<template>
+    <t t-name="awesome_dashboard.pieChart">
+        <canvas t-ref="canvas"></canvas>
+    </t>
+</template>

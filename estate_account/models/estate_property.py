@@ -9,10 +9,21 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            has_access = record.check_access_rights('write', raise_exception=False)
+            # has_access = record.check_access_rights('write', raise_exception=False)
+            # print(has_access)
+            # if not has_access:
+            #     raise UserError(_("You do not have permission to modify properties."))
+
+            try:
+                record.check_access('write')
+                has_access = True
+            except AccessError:
+                has_access = False
+
             print(has_access)
             if not has_access:
                 raise UserError(_("You do not have permission to modify properties."))
+
             invoice_vals = {
                 "partner_id" : record.buyer_id.id,
                 "move_type" : "out_invoice",
