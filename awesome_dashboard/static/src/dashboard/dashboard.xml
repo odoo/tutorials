@@ -1,30 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <t t-set="layoutProps" t-value="{'controlPanel': {}}" />
 
-        <Layout t-props="layoutProps" className="'o_dashboard h-100'">
-            <div class="o_control_panel d-flex justify-content-start gap-2">
-                <button class="btn btn-primary" t-on-click="openCustomers">
-                    View Customers
+        <Layout display="layoutProps" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+             <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog" />
                 </button>
-                <button class="btn btn-secondary" t-on-click="openLeads">
-                    View Leads
-                </button>
-            </div>
-
+            </t>
             <t t-slot="default">
                 <div class="container p-4">
                     <div class="d-flex gap-2 flex-wrap">
-                        <t t-foreach="items" t-as="item" t-key="item.id">
-                            <DashboardItem size="item.size || 1">
-                                <t t-set="itemProp" t-value="item.props ? item.props(state.statistics) : {'data': state.statistics}"/>
-                                <t t-component="item.Component" t-props="itemProp" />
-                            </DashboardItem>
+                        <t t-if="items and items.length">
+                            <t t-foreach="items" t-as="item" t-key="item.id">
+                                <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                                    <t t-set="itemProp" t-value="item.props ? item.props(state.statistics) : {'data': state.statistics}"/>
+                                    <t t-component="item.Component" t-props="itemProp" />
+                                </DashboardItem>
+                            </t>
                         </t>
                     </div>
                 </div>
             </t>
         </Layout>
+    </t>
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you wish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(e)=>this.onChange(e,item)">
+                    <t t-out="item.description"/>
+                </CheckBox>
+            </t>
+        </Dialog>
     </t>
 </templates>
