@@ -11,7 +11,7 @@ export class TodoList extends Component {
         useAutofocus("input");
     }
     addTodo(ev) {
-        if(ev.keyCode == 13 && ev.target.value != "") {
+        if (ev.keyCode == 13 && ev.target.value != "") {
             this.todos.push ({
                 id : this.id++,
                 description : ev.target.value,
