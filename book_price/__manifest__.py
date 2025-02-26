@@ -1,13 +1,12 @@
 {
-    'name': "book_price",
+    'name': "Pricelist Book Price",
     'description': "Add Pricelist Price",
     'author': "MEAR",
-    'depends': ['sale', 'account'],
-    "data": [
-            "views/inherited_account_order.xml",
-            "views/inherited_sales_order.xml"
+    'depends': ['sale_management'],
+    'data' : [
+        'views/account_move_line_views.xml',
+        'views/sale_order_line_views.xml'
     ],
-    "installable": True,
     "auto_install": True,
-    "license": "LGPL-3"
+    "license": "LGPL-3",
 }

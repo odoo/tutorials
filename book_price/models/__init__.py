@@ -1,2 +1,4 @@
-from . import inherited_account_order
-from . import inherited_sales_order
+# -*- coding: utf-8 -*-
+
+from . import account_move_line
+from . import sale_order_line
