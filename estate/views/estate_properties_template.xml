@@ -1,0 +1,59 @@
+<odoo>
+    <template id="property_listing_template" name="Property Listings">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h2 class="text-center text-primary fw-bold mb-4">Available Properties</h2>
+                <div class="d-flex justify-content-center align-items-center mb-4">
+                    <input type="date" id="filter-date" class="form-control w-auto me-2"/>
+                    <button class="btn btn-primary" id="filter-btn">📅 Listed After</button>
+                </div>
+                <div class="row g-4" id="property-list">
+                    <t t-foreach="properties.sorted(key=lambda p: p.create_date, reverse=True)" t-as="property">
+                        <div class="col-md-4 property-item" t-att-data-date="property.create_date">
+                            <div class="card shadow-sm border-0">
+                                <a t-attf-href="/property/{{ property.id }}">
+                                    <img t-att-src="'/web/image/estate.property/%s/image_1920' % property.id"
+                                         class="card-img-top img-fluid rounded-top"/>
+                                </a>
+                                <div class="card-body text-center">
+                                    <h5 class="fw-semibold">
+                                        <a t-attf-href="/property/{{ property.id }}" class="text-decoration-none text-dark">
+                                            <t t-esc="property.name"/>
+                                        </a>
+                                    </h5>
+                                    <p class="text-muted">💰 <t t-esc="property.expected_price"/> INR</p>
+                                    <p class="text-secondary small">📅 Listed on: <t t-esc="property.create_date.strftime('%Y-%m-%d')"/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <t t-call="website.pager">
+                        <t t-set="pager" t-value="pager"/>
+                    </t>
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    let filterBtn = document.getElementById("filter-btn");
+                    let filterDateInput = document.getElementById("filter-date");
+                    let propertyItems = document.querySelectorAll(".property-item");
+                    filterBtn.addEventListener("click", function() {
+                        let selectedDate = filterDateInput.value;
+                        if (!selectedDate) {
+                            alert("Please select a date!");
+                            return;
+                        }
+                        let selectedTimestamp = new Date(selectedDate).getTime();
+                        propertyItems.forEach(function(item) {
+                            let propertyDate = item.getAttribute("data-date");
+                            let propertyTimestamp = new Date(propertyDate).getTime();
+                            item.style.display = propertyTimestamp >= selectedTimestamp ? "block" : "none";
+                        });
+                    });
+                });
+            </script>
+        </t>
+    </template>
+</odoo>
