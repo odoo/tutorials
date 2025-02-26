@@ -45,5 +45,8 @@ class EstateProperty(models.Model):
         return result
 
     def action_set_status_draft(self):
-        self.status = "new"
-        return super().action_set_status_draft()
+        self.ensure_one()
+        if self.state == 'sold':
+            raise UserError("Cannot reset a sold property to draft state")
+        self.state = "new"
+        return True

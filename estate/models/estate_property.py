@@ -137,22 +137,19 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Cancelled Property cannot be Sold.")
-            elif not record.offer_ids.filtered(
-                lambda offer: offer.status == "accepted"
-            ):
-                raise UserError("No offer is accepted.")
-            elif record.state != "cancelled":
-                record.state = "sold"
-            else:
-                raise UserError("It is already sold.")
+            if not record.partner_id:
+                raise UserError("Cannot sell property without an accepted offer.")
+            if record.state == "sold":
+                raise UserError("Property is already sold.")
+            record.state = "sold"
         return True
 
     def action_set_status_cancel(self):
         for record in self:
             if record.state == "sold":
-                record.state = "cancelled"
-            elif record.state == "sold":
-                raise UserError("It cannot be canceled once sold.")
+                raise UserError("Sold Property cannot be Cancelled.")
             elif record.state == "cancelled":
-                raise UserError("It is already canceled.")
+                raise UserError("Property is already Cancelled.")
+            else:
+                record.state = "cancelled"
         return True

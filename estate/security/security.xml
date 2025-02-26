@@ -21,8 +21,7 @@
         <field name="perm_write" eval="True"/>
         <field name="perm_unlink" eval="False"/>
         <field name="domain_force">[
-            '|', ('salesman_id', '=', user.id),
-                 ('salesman_id', '=', False)
+            ('salesman_id', 'in',[user.id, False])
         ]</field>
     </record>   
 

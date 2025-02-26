@@ -10,7 +10,7 @@ export class Playground extends Component {
     static template = "awesome_owl.playground";
     static components = { Counter, Card, TodoList, TodoItem };
 
-    setup(){
+    setup() {
         this.html1 = "<div>some content</div>";
         this.html2 = markup("<div>some content</div>");
         this.sum = useState({ value: 2 });
