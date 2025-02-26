@@ -1,8 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomersKanbanView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeadView">Leads</button>
+            </t>
+            <DashboardItem>
+                <t t-set-slot="content">
+                    this is no size provided card
+                </t>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <t t-set-slot="content">
+                    this is no size provided card
+                </t>
+            </DashboardItem>
+        </Layout>
     </t>
 
 </templates>
