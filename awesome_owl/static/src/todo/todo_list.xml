@@ -1,0 +1,12 @@
+<t t-name="awesome_owl.todo_list">
+    <div>
+        <h2>Todo List</h2>
+        <ul>
+            <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+                <li>
+                    <TodoItem todo="todo" onToggle="onTodoToggle" />
+                </li>
+            </t>
+        </ul>
+    </div>
+</t>
