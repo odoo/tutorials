@@ -55,7 +55,13 @@ class EstateProperty(models.Model):
         string="Best Offer", 
         compute="_compute_best_price"
     )
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    selling_price = fields.Float(
+        string="Selling Price", 
+        readonly=True, 
+        copy=False
+    )
+
+    image = fields.Image(string="Image")
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (feet²)")
     facades = fields.Integer(string="Facades")
@@ -89,6 +95,7 @@ class EstateProperty(models.Model):
         default="new",
         copy=False
     )
+    is_published = fields.Boolean("Publish on Website", default=False)
 
     # compute the total area using garden area + living area
     @api.depends("garden_area", "living_area")
@@ -116,7 +123,10 @@ class EstateProperty(models.Model):
     # checks if selling price is greater then or equal to 90% expected price
     @api.constrains("selling_price")
     def check_selling_price(self):
-        if any(property.selling_price < (property.expected_price * 0.90) for property in self):
+        if any(
+            property.selling_price < 
+            (property.expected_price * 0.90) for property in self
+        ):
             raise ValidationError(
                 "The selling price must be 90'%' of expected price."
                 " You must Lower the expected price to accpect offer."

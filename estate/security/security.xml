@@ -31,7 +31,6 @@
             <field name="domain_force">[('user_id', '=', user.id)]</field>
         </record>
 
-        
     </data>
 
 </odoo>

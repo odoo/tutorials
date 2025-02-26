@@ -44,6 +44,7 @@
                             string="Property Tag"
                             widget="many2many_tags"
                             options="{'color_field': 'color'}" />
+                        <field name="image" string="Property Image"/>
                     </group>
                     <group>
                         <group>
@@ -71,6 +72,7 @@
                                 <field name="garden_area" invisible="not garden" />
                                 <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
+                                <field name="is_published" />
                             </group>
                         </page>
                         <page string="Offers">
@@ -203,7 +205,8 @@
                 <!-- filters -->
                 <filter name="low_price" string="Price &lt; 1000"
                     domain="[('expected_price', '&lt;', 1000)]" />
-                <filter name="new" string="State: New" domain="[('state', '=', 'new')]" />
+                <filter name="new" string="State: New" 
+                    domain="[('state', '=', 'new')]" />
                 <filter name="offered" string="State: received"
                     domain="[('state', '=', 'received')]" />
                 <filter name="avalible" string="Avalible"

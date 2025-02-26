@@ -1,8 +1,8 @@
-import { NumberCard } from "./number_card/number_card";
-import { PieChartCard } from "./pie_chart_card/pie_chart_card";
+import { NumberCard } from "@awesome_dashboard/number_card/number_card";
+import { PieChartCard } from "@awesome_dashboard/pie_chart_card/pie_chart_card";
 import { registry } from "@web/core/registry";
 
-export const items = [
+const items = [
     {
         id: "average_quantity",
         description: "Number of new orders this month",
@@ -18,7 +18,7 @@ export const items = [
         Component: NumberCard,
         props: (data) => ({
             title: "Total amount of new orders this month",
-            value: data.number_new_orders,
+            value: data.nb_new_orders,
         }),
     },
     {
@@ -27,7 +27,7 @@ export const items = [
         Component: NumberCard,
         props: (data) => ({
             title: "Average amount of t-shirt by order this month",
-            value: data.amount_new_orders,
+            value: data.total_amount,
         }),
     },
     {
@@ -36,7 +36,7 @@ export const items = [
         Component: NumberCard,
         props: (data) => ({
             title: "Number of cancelled orders this month",
-            value: data.cancelled_orders,
+            value: data.nb_cancelled_orders,
         }),
     },
     {
@@ -55,7 +55,7 @@ export const items = [
         size: 2,
         props: (data) => ({
             title: "Shirts order by size",
-            value: data.orders_by_size,
+            values: data.orders_by_size,
         }),
     },
 ]

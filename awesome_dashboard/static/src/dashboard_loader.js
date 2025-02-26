@@ -1,8 +1,6 @@
-/** @odoo-module */ 
-
-import {registry} from "@web/core/registry";
-import {LazyComponent} from "@web/core/assets";
-import {Component, xml } from "@odoo/owl"
+import { registry } from "@web/core/registry";
+import { LazyComponent } from "@web/core/assets";
+import { Component, xml } from "@odoo/owl"
 
 class AwesomeDashboardLoader extends Component {
     static components = { LazyComponent }

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.PieChartCard">
         <div class="card">
             <t t-out="props.title"/>
-            <PieChart t-props="{label: props.title, data: props.values}" />
+            <PieChart data="props.values" label="props.title" />
         </div>
     </t>
 </templates>

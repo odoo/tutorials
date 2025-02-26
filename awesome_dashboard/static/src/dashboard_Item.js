@@ -1,13 +1,12 @@
 import { Component } from "@odoo/owl";
 
-
 export class DashboardItem extends Component {
     static template = 'awesome_dashboard.dashboardItem';
     static props = {
         slots: {
             type: Object,
             shape: {
-                default: true
+                default: Object,
             },
         },
         size: {
@@ -17,5 +16,5 @@ export class DashboardItem extends Component {
     };
     static defaultProps = {
         size: 1
-    }
+    };
 }
