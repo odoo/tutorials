@@ -8,6 +8,12 @@
             <xpath expr="//field[@name='payment_term_id']" position="after">
                 <field name="zero_stock_approval" readonly="not is_manager"/>
             </xpath>
+            <xpath expr="//button[@id='action_confirm']" position="attributes">
+                <attribute name="invisible">state != 'sent' or not is_manager and not zero_stock_approval</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm'][last()]" position="attributes">
+                <attribute name="invisible">state != 'draft' or not is_manager and not zero_stock_approval</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>
