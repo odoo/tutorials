@@ -10,11 +10,26 @@ export class Counter extends Component {
 
     increment() {
         this.state.count++;
+        if (this.props.onChange) {
+            this.props.onChange();
+        }
     }
 
     decrement() {
         this.state.count--;
+        if (this.props.onChangeM) {
+            this.props.onChangeM();
+        }
     }
 
-    static props = {};
+    static props = {
+        onChange: {
+            type: Function,
+            optional: true
+        },
+        onChangeM: {
+            type: Function,
+            optional: true
+        },
+    };
 }
