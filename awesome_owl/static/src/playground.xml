@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 <t t-name="awesome_owl.playground">
-    <Counter/>
-    <Counter value="5"/>
+        <!-- <Counter/> -->
+        <!-- <Counter value="5"/> -->
         <!-- cannot be passed empty as static props declaration do not have title as optional field  -->
         <!-- <Card/> -->
-    <Card title="'hello'" />
+        <!-- <Card title="'hello'" />
     <Card title="'Hello'" content="'World'"/>
     <Card title="'Without markup'" content="str1"/>
     <Card title="'With markup'" content="str2"/>
@@ -15,6 +15,13 @@
 
     <hr/>
     
-    <TodoList/>
+    <TodoList/> -->
+
+    <Card title = "'normal card'">
+        This Works as a normal task
+    </Card>
+    <Card title = "'Counter card'">
+        <Counter/>
+    </Card>
 </t>
 </templates>

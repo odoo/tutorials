@@ -3,16 +3,20 @@ import { Component, useState } from "@odoo/owl";
 export class Card extends Component {
   static template = "awesome_owl.card";
   // defaultProps cannot be defined for non optional props
-  static defaultProps = {
-    content: "My card content",
-  };
+  // static defaultProps = {
+  //   content: "My card content",
+  // };
   static props = {
-    title: {
-      type: String,
-    },
-    content: {
-      type: String,
-      optional: true,
+    title: String,
+    // content: {
+    //   type: String,
+    //   optional: true,
+    // },
+    slots: {
+      type: Object,
+      shape: {
+        default: true,
+      },
     },
   };
 
