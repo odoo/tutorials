@@ -6,7 +6,6 @@ import {Layout} from "@web/search/layout";
 import {useService} from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { loadStatistics } from "./statistics";
-import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -22,7 +21,7 @@ class AwesomeDashboard extends Component {
     async onWillStart() {
         this.orderStats.value = await loadStatistics.start();
         console.log(this.orderStats.value);
-        this.items = items;
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     openCustomerKanban() {
