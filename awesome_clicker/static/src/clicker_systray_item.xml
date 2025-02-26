@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClickerSystrayItem">
+        <Dropdown>
+            <t t-set-slot="default">
+                <div>
+                    <ClickValue label="false"/> <i class="fa fa-mouse-pointer" aria-hidden="true"></i>,
+                    <t t-foreach="clicker.resources" t-as="resourceType" t-key="resourceType.name">
+                        <t t-out="clicker.getResourceTypeCount(resourceType)" /> <i t-att-class="resourceType.icon" aria-hidden="true"></i>,
+                    </t>
+                </div>
+            </t>
+            <t t-set-slot="content">
+                <t t-foreach="commands" t-as="command" t-key="command.name">
+                    <DropdownItem>
+                        <button class="btn btn-secondary" t-on-click="command.action"><t t-out="command.name" /></button>
+                    </DropdownItem>
+                </t>
+                <t t-foreach="clicker.trees" t-as="tree" t-key="tree.name">
+                    <DropdownItem><t t-out="tree.count" />x <t t-out="tree.name" /></DropdownItem>
+                </t>
+                <t t-foreach="clicker.trees" t-as="tree" t-key="tree.name">
+                    <DropdownItem><t t-out="tree.fruit.count" />x <t t-out="tree.fruit.name" /></DropdownItem>
+                </t>
+            </t>
+        </Dropdown>
+    </t>
+</templates>
