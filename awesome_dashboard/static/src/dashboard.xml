@@ -2,6 +2,10 @@
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout className="'o_dashboard h-100'" display="display">
+        <t t-set-slot="layout-buttons" >
+            <button class="btn btn-primary btn-sm" t-on-click="openCustomers"> Customers </button>
+            <button class="btn btn-primary btn-sm" t-on-click="openLeads"> Leads </button>
+        </t>
             hello dashboard
         </Layout>
     </t>
