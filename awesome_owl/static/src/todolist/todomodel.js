@@ -1,19 +1,30 @@
+export class Todo {
+    static nextId = 1;
+  
+    constructor(model, description) {
+        this._model = model;
+        this.id = Todo.nextId++;
+        this.description = description;
+        this.isCompleted = false;
+    }
+  
+    toggle() {
+        this.isCompleted = !this.isCompleted;
+    }
+  
+    remove() {
+        this._model.remove(this.id);
+    }
+}
+
 export class ToDoModel {
     constructor() {
-        this.ids = 1;
         this.todos = [];
     }
 
-    getTodo(id){
-        return this.todos.find((t) => t.id === id);
-    }
-
     add(description) {
-        this.todos.push({
-            id: this.ids++,
-            description,
-            isCompleted: false,
-        });
+        const todo = new Todo(this, description);
+        this.todos.push(todo);
     }
 
     remove(id) {
