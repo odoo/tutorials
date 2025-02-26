@@ -7,10 +7,12 @@ export class PieChart extends Component{
     setup(){
         this.chartRef = useRef('canvas')
         this.statisticsService = useService("awesome_dashboard.statistics");
-        this.state = useState(this.statisticsService.stats)
+       this.stats={}
         onWillStart(async ()=>{
            await loadJS("/web/static/lib/Chart/Chart.js")
-           console.log(this.state)
+           this.stats=await this.statisticsService.loadStatistics()
+           console.log(this.stats)
+           console.log("PICHART onWILL START METHOD")
            
         })
 
@@ -27,7 +29,7 @@ export class PieChart extends Component{
                 "data":{"labels":["M size","XL size","S size"],
                 "datasets":[
                 {"label":"My First Dataset",
-                "data":[this.state.orders_by_size.m,this.state.orders_by_size.xl,this.state.orders_by_size.s],
+                "data":[this.stats.orders_by_size.m,this.stats.orders_by_size.xl,this.stats.orders_by_size.s],
                 "backgroundColor":["rgb(255, 99, 132)","rgb(54, 162, 235)","rgb(255, 205, 86)"]}]}})
 
         }

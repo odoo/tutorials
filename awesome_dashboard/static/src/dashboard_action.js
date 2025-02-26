@@ -8,4 +8,5 @@ export class LazyComponentLoader extends Component {
     static components = { LazyComponent };
     static template = "awesome_dashboard.LazyComponentLoader";
 }
+
 registry.category("actions").add("awesome_dashboard.dashboard_action", LazyComponentLoader);

@@ -1,6 +1,6 @@
 import { NumberCard } from "./NumberCard/numberCard";
 import { PieChartCard } from "./PieChartCard/PieChartCard";
-
+import { registry } from "@web/core/registry";
 export const items = [
   {
     id: "average_quantity",
@@ -53,8 +53,11 @@ export const items = [
     size: 1,
     props: (data) => ({
       title: "Shirt Orders by Size",
-      data: data.orders_by_size
+      data: data.orders_by_size,
     })
   }
 
 ];
+items.forEach((item) => {
+  registry.category("awesome_dashboard.dashboard").add(item.id, item);
+});
