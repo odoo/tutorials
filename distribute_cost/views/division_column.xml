@@ -12,7 +12,7 @@
                         name="divided_price" 
                         string="Division" 
                         default="0.0" 
-                        editable="bottom" 
+                        editable="bottom"
                         readonly="1"
                     />
                 </xpath>
