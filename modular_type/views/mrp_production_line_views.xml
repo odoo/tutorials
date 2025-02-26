@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mrp_production_view_form" model="ir.ui.view">
+        <field name="name">modular.types.view.form</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='components']//field[@name='product_uom_qty']" position="before">
+                <field name="modular_type_id" readonly="1"/>
+            </xpath>
+            <xpath expr="//page[@name='components']//field[@name='product_uom_qty']" position="replace">
+                <field name="multiplied_product_uom_qty" string="To Consume"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

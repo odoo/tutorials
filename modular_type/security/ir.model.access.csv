@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+modular_type.access_modular_types,access_modular_types,modular_type.model_modular_types,base.group_user,1,1,1,1
+modular_type.access_modular_type_wizard,access_modular_type_wizard,modular_type.model_modular_type_wizard,base.group_user,1,1,1,1

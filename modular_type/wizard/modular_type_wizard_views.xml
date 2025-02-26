@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_modular_type_wizard" model="ir.actions.act_window">
+        <field name="name">Set Modular Types</field>
+        <field name="res_model">modular.type.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="modular_type_wizard_view" model="ir.ui.view">
+        <field name="name">modular.type.wizard.view</field>
+        <field name="model">modular.type.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Set Modular Types" >
+                <group>
+                    <field name="modular_types" nolabel="1">
+                        <list create="0" editable="bottom">
+                            <field name="name" readonly="1"/>
+                            <field name="quantity_multiplier"/>
+                        </list>
+                    </field>
+                </group>
+                <footer>
+                    <button string="Add" class="btn-primary" special="save"/>
+                    <button string="Cancel" class="btn-default" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
