@@ -25,7 +25,7 @@ export class TodoList extends Component {
         }
     }
 
-    toggleState(id) {   
+    toggleState(id) {
         this.todos.forEach(todo => {
             if(todo.id === id) {
                 todo.isCompleted = !todo.isCompleted

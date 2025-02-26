@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<templates>
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="{controlPanel: {}}">
+            <t t-set-slot="control-panel-create-button">
+                <button class="btn btn-primary" t-on-click="customerKanban">Customers</button>
+                <button class="btn btn-primary" t-on-click="leadAction">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap" t-if="statistics.isReady">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"></t>
+                        <t t-component="item.Component" t-props="itemProp"></t>
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+</templates>
