@@ -1,0 +1,27 @@
+<odoo>
+    <record id="property_1" model="estate.property">
+        <field name="name">House 1</field>
+        <field name="description">A beautiful 3-bedroom house with a spacious garden.</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2025-05-01</field>
+        <field name="expected_price">222000</field>
+        <field name="selling_price">210000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">1500</field>
+        <field name="facades">4</field>
+        <field name="garden_area">500</field>
+        <field name="garden_orientation">south</field>
+    </record>
+    <record id="property_2" model="estate.property">
+        <field name="name">House 2</field>
+        <field name="description">A compact house with a modern design.</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">2025-06-01</field>
+        <field name="expected_price">333000</field>
+        <field name="selling_price">320000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">1200</field>
+        <field name="facades">3</field>
+        <field name="garden_orientation">north</field>
+    </record>
+</odoo>

@@ -1,0 +1,10 @@
+<odoo>
+    <record id="ir_cron_auto_confirm_best_offer" model="ir.cron">
+        <field name="name">Auto Confirm Best Offer (Expired Properties)</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_auto_confirm_best_offer()</field>
+        <field name="interval_type">days</field>
+        <field name="interval_number">1</field>
+    </record>
+</odoo>
