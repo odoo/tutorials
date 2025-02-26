@@ -1,6 +1,5 @@
 import { Component, useState} from "@odoo/owl";
 import { TodoItem } from "./todo_item";
-import { useAutofocus } from "./utils";
 
 export class TodoList extends Component {
     static template = "awesome_owl.TodoList";
@@ -13,7 +12,12 @@ export class TodoList extends Component {
             { id: 2, description: "Walk the dog", isCompleted: false },
             { id: 3, description: "Write code", isCompleted: false },
         ]);
-        this.inputRef = useAutofocus(); 
+        this.myRef=useRef('inputRef')
+        onMounted(() => {
+            if(this.myRef.el){
+                this.myRef.el.focus()
+            }
+         });
     }
 
     addTodo(ev) {

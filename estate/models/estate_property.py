@@ -87,7 +87,6 @@ class EstateProperty(models.Model):
 
     @api.model
     def _group_expand_states(self, states, domain):
-        """Ensures all states appear in grouped views, even if empty."""
         return ["new", "offer_received", "offer_accepted", "sold", "cancelled"]
 
     @api.depends("garden_area", "living_area")
