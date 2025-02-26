@@ -6,7 +6,8 @@
     'category': 'Category',
     'description': """
     Book Price (Pricelist Price) on sales order lines and invoice lines
-    which will be used to compare between Book Price (Pricelist Price) and manually adjusted price on the lines
+    which will be used to compare between Book Price (Pricelist Price) and
+    manually adjusted price on the lines.
     """,
     'license': "LGPL-3",
     'data': [
