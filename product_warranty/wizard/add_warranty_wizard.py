@@ -21,9 +21,8 @@ class AddWarrantyWizard(models.TransientModel):
                     {
                         "sale_order_line": line.id,
                         "warranty_config": False,
-                    } for line in sale_order.order_line.filtered(lambda line: 
+                    })for line in sale_order.order_line.filtered(lambda line: 
                         line.product_template_id and line.product_template_id.is_warranty
-                    )
                 )
             ]
         })
