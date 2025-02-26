@@ -9,6 +9,9 @@
                 <t t-if="props.content">
                     <p class="card-content" t-esc="props.content"/>
                 </t>
+                <t t-if="props.content">
+                    <p class="card-content" t-out="props.content"/>
+                </t>
             </div>
         </div>
     </t>
