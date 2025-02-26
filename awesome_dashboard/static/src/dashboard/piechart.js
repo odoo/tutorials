@@ -1,4 +1,3 @@
-/** @odoo-module **/
 import { Component, onMounted, onWillStart, useEffect, useRef, useState } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";

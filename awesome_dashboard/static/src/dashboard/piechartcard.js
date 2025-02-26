@@ -1,4 +1,3 @@
-/** @odoo-module **/
 import { Component, xml } from "@odoo/owl";
 import { PieChart } from "./piechart";
 

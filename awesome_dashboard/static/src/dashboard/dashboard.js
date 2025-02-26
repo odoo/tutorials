@@ -1,11 +1,10 @@
-/** @odoo-module **/
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, onWillStart } from "@odoo/owl";
 import { browser } from "@web/core/browser/browser";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { Dialog } from "@web/core/dialog/dialog";
-import { Layout } from "@web/search/layout";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboarditem";
 import { dashboardRegistry } from "./dashboard_registry";
 import { PieChart } from "./piechart";
@@ -23,6 +22,8 @@ class AwesomeDashboard extends Component {
         this.state = useState({
             disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || []
         });
+
+        onWillStart(() => this.statisticsService.loadStatistics());
     }
 
     openConfiguration() {
