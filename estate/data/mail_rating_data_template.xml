@@ -2,7 +2,7 @@
 <odoo>
     <record id="estate_rating_template" model="mail.template">
         <field name="name">Estate Property: Rating Request</field>
-        <field name="email_from">{{(object.seller_id.email_formatted or user.email_formatted)}}</field>
+        <field name="email_from">{{(object.seller_id.email_formatted)}}</field> <!-- or is not required as the base method takes the logged users email by default -->
         <field name="email_to">{{(object.buyer_id.email_formatted)}}</field>
         <field name="subject">Please Rate Your Experience</field>
         <field name="model_id" ref="estate.model_estate_property"></field>

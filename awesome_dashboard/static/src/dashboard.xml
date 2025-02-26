@@ -1,8 +1,52 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout t-props="{
+            'display': {controlPanel: {}},
+            'className': 'o_dashboard h-100'
+        }">
+            <t t-set-slot="layout-buttons">
+                <button t-on-click="customersAction" class="btn btn-primary">Customers</button>
+                <button t-on-click="leadsAction" class="btn btn-primary">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap">
+                <DashboardItem size="2">
+                    <div>
+                        <p>Average amount of t-shirt by order this month</p>
+                        <h2 class="text-success fw-bold text-center" t-out="result.average_quantity"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <div>
+                        <p>Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’</p>
+                        <h2 class="text-success fw-bold text-center" t-out="result.average_time"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div>
+                        <p>Number of new orders this month</p>
+                        <h2 class="text-success fw-bold text-center" t-out="result.nb_new_orders" />
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div>
+                        <p>Number of cancelled orders this month</p>
+                        <h2 class="text-success fw-bold text-center" t-out="result.nb_cancelled_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div>
+                        <p>Total amount of new orders this month</p>
+                        <h2 class="text-success fw-bold text-center" t-out="result.total_amount"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <p>Shirt orders by size</p>
+                    <PieChart data="result['orders_by_size']" label="'Shirt orders by size'" />
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
