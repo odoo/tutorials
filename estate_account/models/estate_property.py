@@ -1,0 +1,52 @@
+from odoo import Command, models
+from odoo.exceptions import UserError
+
+
+class EstateProperty(models.Model):
+    _inherit = "estate.property"
+
+    def action_set_status_sold(self):
+        if not self.partner_id.id:
+            raise UserError("Property without buyer cannot be sold.")
+        try:
+            self.env["estate.property"].check_access("write")
+        except UserError:
+            raise UserError(
+                "You do not have the necessary permissions to sell this property."
+            )
+        # Call the super method to set the status to sold
+        result = super().action_set_status_sold()
+        # Create the invoice only if the status was successfully set to sold
+        if self.state == 'sold':
+            self.env["account.move"].sudo().create(
+                {
+                    "partner_id": self.partner_id.id,
+                    "move_type": "out_invoice",
+                    "invoice_line_ids": [
+                        # Invoice for 6% of the selling price
+                        Command.create(
+                            {
+                                "name": "Selling Commission (6%)",
+                                "quantity": 1,
+                                "price_unit": self.selling_price * 0.06,
+                            }
+                        ),
+                        # Invoice for the administrative fees (fixed 100.00)
+                        Command.create(
+                            {
+                                "name": "Administrative Fees",
+                                "quantity": 1,
+                                "price_unit": 100.00,
+                            }
+                        ),
+                    ],
+                }
+            )
+        return result
+
+    def action_set_status_draft(self):
+        self.ensure_one()
+        if self.state == 'sold':
+            raise UserError("Cannot reset a sold property to draft state")
+        self.state = "new"
+        return True

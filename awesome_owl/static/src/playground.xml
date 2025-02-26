@@ -3,7 +3,23 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <!-- Ensure Counter component is correctly imported and registered -->
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <!-- Ensure sum is defined and reactive -->
+            <div>The sum is : <t t-esc="sum.value"/></div>
+        </div>
+        <div>
+            <!-- Ensure Card component is correctly imported and registered -->
+            <Card title="'card 1'">card 1</Card>
+            <Card title="'card 2'">
+                <!-- Ensure Counter component is correctly imported and registered -->
+                <Counter />
+            </Card>
+        </div>
+        <!-- Ensure TodoList component is correctly imported and registered -->
+        <div>
+            <TodoList/>
         </div>
     </t>
 
