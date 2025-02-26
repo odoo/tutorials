@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <template id="modal_ticket_registration" name="Modal for tickets registration" inherit_id="website_event.modal_ticket_registration">
+            <xpath expr="//t[@t-set='seats_max_ticket']" position="replace">
+                <t t-set="seats_max_ticket" t-value="(ticket and ticket.seats_limited and ticket.seats_available) 
+                                                     and min(ticket.seats_available, event.max_tickets_per_registration) 
+                                                     or (event.max_tickets_per_registration if ticket else 0)"/>
+            </xpath>
+            <xpath expr="//t[@t-set='seats_max_event']" position="replace">
+                <t t-set="seats_max_event" t-value="(not event.seats_limited or event.seats_available > event.max_tickets_per_registration) 
+                                                    and event.max_tickets_per_registration 
+                                                    or event.seats_available"/>
+            </xpath>
+            <xpath expr="//div[contains(@class, 'o_wevent_registration_single_select')]" position="replace">
+                <div class="o_wevent_registration_single_select w-auto ms-auto">
+                    <select t-att-name="'nb_register-%s' % (tickets.id if tickets else 0)" class="d-inline w-auto form-select">
+                        <t t-set="ticket_limit" t-value="tickets.maximum_tickets_per_registration if tickets else event.max_tickets_per_registration"/>
+                        <t t-set="seats_max_ticket" t-value="min(tickets.seats_available, ticket_limit) if tickets and tickets.seats_limited else ticket_limit"/>
+                        <t t-set="seats_max_event" t-value="min(event.seats_available, ticket_limit) if event.seats_limited else ticket_limit"/>
+                        <t t-set="seats_max" t-value="min(seats_max_ticket, seats_max_event) if tickets else seats_max_event"/>
+                        <t t-foreach="range(1, seats_max + 1)" t-as="nb">
+                            <option t-out="nb" t-att-selected="nb == 1 and 'selected'"/>
+                        </t>
+                    </select>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>
