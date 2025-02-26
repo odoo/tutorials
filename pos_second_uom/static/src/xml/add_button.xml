@@ -1,40 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" owl="1">
-    
+
         <xpath expr="//button[@class='btn btn-light btn-lg flex-shrink-0 ms-auto']" position="before">
             <button class="btn btn-primary btn-lg" t-att-class="{'d-none': !showCustomButton.value}" t-on-click="clickCustomButton">
                 <i class="fa fa-plus me-1" />
                     Add Quantity
             </button>
         </xpath>
-    
+
     </t>
 
     <t t-name="pos_second_uom.ConfigurationDialog">
         <Dialog title="'Enter Quantity'">
-        <div class="d-flex justify-content-center align-items-center gap-3">
-        <div class="d-flex justify-content-center align-items-center gap-3">
-            <label>Enter Quantity:</label>
+            <div class="d-flex justify-content-center align-items-center gap-3">
+                <label>Enter Quantity:</label>
                 <input type="number" t-model="state.quantity" class="form-control"/>
-        </div>
-                <select class="form-control" t-model="state.secUomId" style="width: 20%">
+
+                <select class="form-control w-25" t-model="state.secUomId">
                     <t t-foreach="state.secUoms" t-as="uom" t-key="uom.id">
                         <option t-att-value="uom.id">
                             <t t-esc="uom.name"/>
                         </option>
                     </t>
                 </select>
+            </div>
 
             <t t-set-slot="footer">
-                <button class="btn btn-primary" t-on-click="done">
-                    Confirm
-                </button>
-                <button class="btn btn-secondary" t-on-click="cancel">
-                    Discard
-                </button>
+                <button class="btn btn-primary" t-on-click="done">Confirm</button>
+                <button class="btn btn-secondary" t-on-click="cancel">Discard</button>
             </t>
-            </div>
         </Dialog>
     </t>
 
