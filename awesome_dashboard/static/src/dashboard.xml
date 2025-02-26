@@ -2,20 +2,31 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
+        <Layout class="'o_dashboard h-100'" display="{controlPanel: {} }">
             <t t-set-slot="layout-buttons">
                 <button class="btn btn-primary" t-on-click="openCustomerKanban">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
             <div class="d-flex flex-wrap">
                 <DashboardItem>
-                    Milk!
-                </DashboardItem>
-                <DashboardItem size="2">
-                    I love milk
+                    <p class="title">Number of new orders</p>
+                    <h3 class="number"><t t-esc="orderStats.value.nb_new_orders"/></h3>
                 </DashboardItem>
                 <DashboardItem>
-                    Milk! Milk! Milk!
+                    <p class="title">Total amount of new orders</p>
+                    <h3 class="number"><t t-esc="orderStats.value.total_amount"/></h3>
+                </DashboardItem>
+                <DashboardItem>
+                    <p class="title">Average amount of t-shirt by orders</p>
+                    <h3 class="number"><t t-esc="orderStats.value.average_quantity"/></h3>
+                </DashboardItem>
+                <DashboardItem>
+                    <p class="title">Number of cancelled orders</p>
+                    <h3 class="number"><t t-esc="orderStats.value.nb_cancelled_orders"/></h3>
+                </DashboardItem>
+                <DashboardItem>
+                    <p class="title">Average time between order creation and sending</p>
+                    <h3 class="number"><t t-esc="orderStats.value.average_time"/></h3>
                 </DashboardItem>
             </div>
         </Layout>
