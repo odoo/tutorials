@@ -7,7 +7,7 @@ const statisticsService = {
     start() {
 
         const statistics = reactive({});
-
+        
         async function loadStatistics () {
             try {
                 const data = await rpc("/awesome_dashboard/statistics");

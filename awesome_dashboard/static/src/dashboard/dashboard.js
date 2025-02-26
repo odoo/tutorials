@@ -11,7 +11,7 @@ class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, DashboardItem };  
 
-    setup(){
+    setup() {
         this.action = useService("action");
         this.statisticsService = useService("awesome_dashboard.statistics");
         this.statistics = useState(this.statisticsService.statistics);
@@ -31,10 +31,10 @@ class AwesomeDashboard extends Component {
     updateConfiguration(newDisabledItems) {
         this.state.disabledItems = newDisabledItems;
     }
-    openCustomers(){
+    openCustomers() {
         this.action.doAction("base.action_partner_form")
     } 
-    openLeads(){
+    openLeads() {
         this.action.doAction({
             name: "Leads",
             type: "ir.actions.act_window",

@@ -5,18 +5,15 @@ import { useAutoFocus } from "../utils";
 export class TodoList extends Component {
 
     static template = "awesome_owl.TodoList" 
-
     static components = { TodoItem };
 
-    setup(){
-        
+    setup() {
         this.nextId = 0;
         this.todos = useState([]);
         useAutoFocus("input")
-
     }
     
-    addTodo(ev){
+    addTodo(ev) {
         if(ev.keyCode==13 && ev.target.value != ""){
             this.todos.push({
                 id:this.nextId++,
@@ -27,7 +24,7 @@ export class TodoList extends Component {
         }
     } 
 
-    togleTodo(todoId){
+    togleTodo(todoId) {
            const todo = this.todos.find((todo) => todo.id === todoId); 
 
            if(todo){
@@ -35,7 +32,7 @@ export class TodoList extends Component {
            }
     }
 
-    removeTodo(todoId){
+    removeTodo(todoId) {
         const todoIndex = this.todos.findIndex((todo)=> todo.id === todoId);
 
         if (todoIndex>=0){

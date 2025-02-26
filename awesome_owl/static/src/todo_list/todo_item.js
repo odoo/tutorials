@@ -14,11 +14,11 @@ export class TodoItem extends Component {
          removeTodo: Function,
 
        };
-      onChange(){
+      onChange() {
           this.props.togleState(this.props.todo.id)
       } 
 
-      onRemove(){
+      onRemove() {
         this.props.removeTodo(this.props.todo.id)
       }
 
