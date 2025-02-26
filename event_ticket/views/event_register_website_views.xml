@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="modal_ticket_registration" inherit_id="website_event.modal_ticket_registration">
+        <xpath expr="//t[@t-set='seats_max_ticket']" position="attributes">
+            <attribute name="t-value">
+                (not ticket.seats_limited or ticket.seats_available &gt; ticket.tickets_per_registration) and (ticket.tickets_per_registration + 1) or (ticket.seats_available + 1)
+            </attribute>
+        </xpath>
+
+        <xpath expr="//t[@t-set='seats_max_event']" position="attributes">
+            <attribute name="t-value">
+                (not event.seats_limited or event.seats_available &gt; ticket.tickets_per_registration) and (ticket.tickets_per_registration + 1) or (event.seats_available + 1)
+            </attribute>
+        </xpath>
+
+        <xpath expr="//div[hasclass('o_wevent_registration_single_select')]//t[@t-set='seats_max_ticket']" position="attributes">
+            <attribute name="t-value">
+                (not tickets or not tickets.seats_limited or tickets.seats_available &gt; tickets.tickets_per_registration) and (tickets.tickets_per_registration + 1) or (tickets.seats_available + 1)
+            </attribute>
+        </xpath>
+
+        <xpath expr="//div[hasclass('o_wevent_registration_single_select')]//t[@t-set='seats_max_event']" position="attributes">
+            <attribute name="t-value">
+                (not event.seats_limited or event.seats_available &gt; tickets.tickets_per_registration) and (tickets.tickets_per_registration + 1) or (event.seats_available + 1)
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
