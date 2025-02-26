@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.item">
+        <div class="card d-inline-block m-2" t-att-style="`width: ${state.size};`">
+            <div class="card-body">                
+                    <t t-slot="default" />
+            </div>
+        </div>
+    </t>
+</templates>

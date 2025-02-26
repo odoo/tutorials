@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+<t t-name="awesome_dashboard.AwesomeDashboard">
+    <Layout className="'o_dashboard h-100'" display="{controlPanel: {}}">
+        <t t-set-slot="control-panel-create-button">
+            <button class="btn btn-primary" t-on-click="openPartners">Customers</button>
+            <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+        </t>
+        <t t-set-slot="control-panel-additional-actions">
+            <button class="btn" t-on-click="openSettings">
+                <i class="fa fa-gear" />
+            </button>
+        </t>
+        <t t-foreach="items"
+            t-as="item" t-key="item.id">
+            <t t-set="itemProps" t-value="item.props(statisticsService)" />
+            <t t-component="item.Component" t-props="itemProps" t-if="item.active" />
+        </t>
+    </Layout>
+</t>
+
+<t t-name="awesome_dashboard.SettingsDialog">
+    <Dialog title="'Select the cards to show'">
+        <t t-foreach="props.items"
+            t-as="item" t-key="item.id">
+            <input type="checkbox" t-att-checked="item.active"
+                t-on-click="() => {item.active=!item.active}" />
+            <t t-out="item.description" />
+            <br />
+        </t>
+        <t t-set-slot="footer">
+            <button class="btn btn-primary" t-on-click="saveSettings">Save</button>
+        </t>
+    </Dialog>
+</t>
+
+</templates>
