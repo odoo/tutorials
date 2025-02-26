@@ -6,14 +6,14 @@
         <!-- For Multiple Ticket Types -->
         <xpath expr="//t[@t-set='seats_max_ticket']" position="replace">
             <t t-set="seats_max_ticket"
-                t-value="(not ticket.seats_limited or ticket.seats_available > ticket.maximum_tickets_per_registration)
+                t-value="(not ticket.seats_limited or ticket.seats_available &gt; ticket.maximum_tickets_per_registration)
                         and ticket.maximum_tickets_per_registration + 1
                         or ticket.seats_available + 1" />
         </xpath>
 
         <xpath expr="//t[@t-set='seats_max_event']" position="replace">
             <t t-set="seats_max_event"
-                t-value="(not event.seats_limited or event.seats_available > ticket.maximum_tickets_per_registration)
+                t-value="(not event.seats_limited or event.seats_available &gt; ticket.maximum_tickets_per_registration)
                         and ticket.maximum_tickets_per_registration + 1
                         or event.seats_available + 1" />
         </xpath>
@@ -25,15 +25,15 @@
                 <select t-att-name="'nb_register-%s' % (tickets.id if tickets else 0)"
                     class="d-inline w-auto form-select">
 
+                    <t t-set="ticket_limit" t-value="(tickets.maximum_tickets_per_registration if tickets else event.default_tickets_per_registration) + 1"/>
+
                     <!--
                         Compute the maximum number of tickets a user can register for a specific ticket type.
                         - If ticket limits are not set, allow 'maximum_tickets_per_registration' tickets.
                         - If limited, ensure the maximum does not exceed available seats.
                     -->
                     <t t-set="seats_max_ticket"
-                        t-value="(not tickets or not tickets.seats_limited or tickets.seats_available > tickets.maximum_tickets_per_registration)
-                                and tickets.maximum_tickets_per_registration + 1
-                                or tickets.seats_available + 1" />
+                        t-value="min(tickets.seats_available + 1, ticket_limit) if tickets and tickets.seats_limited + 1 else ticket_limit" />
 
                     <!--
                         Compute the maximum number of tickets a user can register for the event as a whole.
@@ -41,9 +41,7 @@
                         - If limited, ensure the max does not exceed event seat availability.
                     -->
                     <t t-set="seats_max_event"
-                        t-value="(not event.seats_limited or event.seats_available > tickets.maximum_tickets_per_registration)
-                                and tickets.maximum_tickets_per_registration + 1
-                                or event.seats_available + 1" />
+                        t-value="min(event.seats_available + 1, ticket_limit) if tickets and event.seats_limited + 1 else ticket_limit" />
 
                     <!--
                         Determine the final max selectable tickets:
@@ -52,7 +50,7 @@
                     -->
                     <t t-set="seats_max"
                         t-value="min(seats_max_ticket, seats_max_event) if tickets
-                                else min(event.default_tickets_per_registration, event.seats_available) + 1" />
+                                else min(ticket_limit, event.seats_available + 1) if event.seats_limited else ticket_limit" />
 
                     <t t-foreach="range(0, seats_max)" t-as="nb">
                         <option t-out="nb" t-att-selected="nb == 1 and 'selected'" />
