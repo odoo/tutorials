@@ -38,8 +38,11 @@
                     </div>
                 </DashboardItem>
                 <DashboardItem size="2">
-                    <div class="fs-1 fw-bold text-success text-center">
-                        some more content
+                    <p class="text-muted text-center mb-2">
+                        Shirt orders by size
+                    </p>
+                    <div class="d-flex justify-content-center">
+                        <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
                     </div>
                 </DashboardItem>
             </div>
