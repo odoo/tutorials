@@ -8,7 +8,7 @@ export class Counter extends Component {
             type: Function,
             optional: true
         },
-    }
+    };
 
     setup() {
         this.state = useState({ count: 0 });

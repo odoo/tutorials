@@ -1,4 +1,4 @@
-import { Component } from '@odoo/owl'
+import { Component } from "@odoo/owl";
 
 
 export class TodoItem extends Component {
@@ -10,7 +10,7 @@ export class TodoItem extends Component {
         },
         toggleStart: Function,
         deleteTodo: Function
-    }
+    };
 
     toggleCompleted() {
         this.props.toggleStart(this.props.todo);

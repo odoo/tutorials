@@ -23,7 +23,6 @@ class EstateProperty(models.Model):
         self.env['account.move'].sudo().create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
-            'journal_id': journal.id,
             'company_id': self.company_id.id, 
             'invoice_line_ids': [
                 Command.create({
