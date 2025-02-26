@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+    <record id="zero_stock_blockage_view_form" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.zero.stock.blockage</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="zero_stock_approval" invisible="state in ['cancel', 'sale']"/>
+            </xpath>
+        </field>
+    </record>
+    </data>
+</odoo>
