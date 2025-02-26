@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
@@ -27,9 +28,7 @@ class EstateProperty(models.Model):
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postal Code")
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(
-        string="Selling Price", readonly=True, copy=False, tracking=True
-    )
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False, tracking=True)
     bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Number of Facades")
@@ -58,9 +57,7 @@ class EstateProperty(models.Model):
         store=True,
         tracking=True,
     )
-    date_availability = fields.Date(
-        string="Available From", copy=False, default=_default_date_availability
-    )
+    date_availability = fields.Date(string="Available From", copy=False, default=_default_date_availability)
 
     total_area = fields.Float(compute="_compute_total", string="Total Area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
@@ -119,25 +116,15 @@ class EstateProperty(models.Model):
                 continue
             min_selling_price = record.expected_price * 0.9
 
-            if (
-                float_compare(
-                    record.selling_price, min_selling_price, precision_digits=2
-                )
-                < 0
-            ):
-                raise ValidationError(
-                    "Selling price cannot be lower than 90% of expected price"
-                )
+            if float_compare(record.selling_price, min_selling_price, precision_digits=2) < 0:
+                raise ValidationError("Selling price cannot be lower than 90% of expected price")
 
     @api.ondelete(at_uninstall=False)
     def _unlink_block_offer_deletion(self):
         for record in self:
             if record.state not in ["new", "cancelled"]:
                 state_label = dict(self._fields["state"].selection).get(record.state)
-                raise UserError(
-                    f"This offer is in {state_label} state. You can't delete it."
-                )
-
+                raise UserError(f"This offer is in {state_label} state. You can't delete it.")
 
     def action_sell_property(self):
         for record in self:
@@ -145,9 +132,7 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled property cannot be sold")
 
             # Check if there is at least one accepted offer
-            has_accepted_offer = any(
-                offer.status == "accepted" for offer in record.offer_ids
-            )
+            has_accepted_offer = any(offer.status == "accepted" for offer in record.offer_ids)
             if not has_accepted_offer:
                 raise UserError("You cannot sell a property without an accepted offer")
 

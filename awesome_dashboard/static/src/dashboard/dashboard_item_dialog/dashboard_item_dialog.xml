@@ -5,7 +5,12 @@
             <div class="list-group d-flex flex-column gap-2">
                 <t t-foreach="props.items" t-as="item" t-key="item.id">
                     <div class="form-check d-flex align-items-center gap-2">
-                        <input type="checkbox" class="form-check-input" t-att-id="item.id" t-on-change="()=>toggleItem(item)" t-att-checked="item.isSelected"/>
+                        <input
+                            type="checkbox"
+                            class="form-check-input"
+                            t-att-id="item.id"
+                            t-on-change="()=>toggleItem(item)"
+                            t-att-checked="item.isSelected"/>
                         <label t-att-for="item.id" class="form-check-label">
                             <t t-esc="item.description"/>
                         </label>

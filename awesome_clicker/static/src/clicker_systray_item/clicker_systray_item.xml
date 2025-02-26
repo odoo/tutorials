@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="clicker_systray_item.ClickerSystrayItem">
+        <div class="o_menu_systray d-flex align-items-center justify-content-between gap-2">
+            <span data-tooltip="this.clicker.clicks">
+                <span class="ml-2">
+                    Clicks: <ClickerValue/>
+                </span>
+            </span>
+            <button t-on-click="" class="btn btn-primary" title="Increment Clicker Count" aria-label="Increment Clicker Count">
+                <i class="fa fa-plus"></i>
+            </button>
+            <button t-on-click="()=> this.clicker.openClickerClientAction()" class="btn btn-primary">
+                Open
+            </button>
+        </div>
+    </t>
+</templates>

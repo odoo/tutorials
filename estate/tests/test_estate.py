@@ -1,7 +1,7 @@
 from odoo import Command
-from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import tagged
+from odoo.tests.common import TransactionCase
 from odoo.tests.form import Form
 
 
@@ -11,14 +11,12 @@ class EstateTestCase(TransactionCase):
     def setUpClass(cls):
         super(EstateTestCase, cls).setUpClass()
 
-        cls.properties = cls.env["estate.property"].create(
-            [
-                {
-                    "name": "Sarthi Bunglow",
-                    "expected_price": 10000,
-                }
-            ]
-        )
+        cls.properties = cls.env["estate.property"].create([
+            {
+                "name": "Sarthi Bunglow",
+                "expected_price": 10000,
+            }
+        ])
 
     def test_action_sell_property(self):
         """Test that everything behaves like it should when selling a property."""
@@ -28,13 +26,11 @@ class EstateTestCase(TransactionCase):
         # create an offer
         self.properties[0].offer_ids = [
             {
-                Command.create(
-                    {
-                        "partner_id": self.env.ref(xml_id="base.res_partner_12").id,
-                        "property_id": self.properties[0].id,
-                        "price": 11999,
-                    }
-                )
+                Command.create({
+                    "partner_id": self.env.ref(xml_id="base.res_partner_12").id,
+                    "property_id": self.properties[0].id,
+                    "price": 11999,
+                })
             }
         ]
         # Accept the offer
@@ -49,15 +45,13 @@ class EstateTestCase(TransactionCase):
         )
         # You cannot create an offer for a sold property
         with self.assertRaises(UserError):
-            self.env["estate.property.offer"].create(
-                [
-                    {
-                        "partner_id": self.env.ref(xml_id="base.res_partner_12").id,
-                        "property_id": self.properties[0].id,
-                        "price": 10000,
-                    }
-                ]
-            )
+            self.env["estate.property.offer"].create([
+                {
+                    "partner_id": self.env.ref(xml_id="base.res_partner_12").id,
+                    "property_id": self.properties[0].id,
+                    "price": 10000,
+                }
+            ])
 
     def test_property_form(self):
         """Test the form view of properties."""

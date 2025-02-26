@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.DashboardItem">
-        <div class="card bg-light text-dark shadow-lg border-primary rounded mb-3 p-3 w-100 w-s-auto" 
-             t-att-style="'max-width: ' + (18 * props.size) + 'rem;'">
-            <t t-slot="default" />
+        <div
+            class="card bg-light text-dark shadow-lg border-primary rounded mb-3 p-3 w-100 w-s-auto"
+            t-att-style="'max-width: ' + (18 * props.size) + 'rem;'">
+            <t t-slot="default"/>
         </div>
     </t>
 </templates>

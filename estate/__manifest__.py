@@ -16,7 +16,7 @@
         "views/estate_offer_views.xml",
         "views/estate_type_views.xml",
         "views/estate_menus.xml",
-        "views/properties_website_template.xml"
+        "views/properties_website_template.xml",
     ],
     "demo": [
         "demo/estate_property_type_demo.xml",

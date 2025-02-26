@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <odoo>
     <!--Property Actions -->
     <record id="estate_property_action" model="ir.actions.act_window">
@@ -23,18 +22,17 @@
                 string="Properties"
                 decoration-success="state  in ('received', 'accepted')"
                 decoration-bf="state == 'accepted'"
-                decoration-muted="state == 'sold'"
-            >
-                <field name="name" />
-                <field name="company_id" />
-                <field name="postcode" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="garden_area" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="date_availability" optional="hide" />
-                <field name="total_area" />
+                decoration-muted="state == 'sold'">
+                <field name="name"/>
+                <field name="company_id"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="garden_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" optional="hide"/>
+                <field name="total_area"/>
             </list>
         </field>
     </record>
@@ -50,75 +48,71 @@
                         name="action_sell_property"
                         type="object"
                         string="SOLD"
-                        invisible="state in ('sold','cancelled') " />
+                        invisible="state in ('sold','cancelled') "/>
                     <button
                         name="mark_offer_cancel"
                         type="object"
                         string="CANCEL"
-                        invisible="state in ('sold','cancelled') " />
-                    <field name="state" widget="statusbar" />
+                        invisible="state in ('sold','cancelled') "/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <group>
                         <h1>
                             <field name="name" placeholder="Swagat Bunglows"/>
                         </h1>
-                        <field name="image" widget="image" class="oe_avatar" nolabel="1" />
+                        <field name="image" widget="image" class="oe_avatar" nolabel="1"/>
                     </group>
                     <field
                         name="property_tag_ids"
                         placeholder="Add tags here"
                         widget="many2many_tags"
-                        options="{'color_field': 'color'}" />
+                        options="{'color_field': 'color'}"/>
                     <group>
                         <group>
-                            <field
-                                name="property_type_id"
-                                options="{'no_create': true, 'no_open': true}" />
-                            <field name="postcode" />
-                            <field name="date_availability" />
+                            <field name="property_type_id" options="{'no_create': true, 'no_open': true}"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price" />
-                            <field name="best_price" />
-                            <field name="selling_price" />
-                            <field name="company_id" />
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
+                            <field name="company_id"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
                                 <group>
-                                    <field name="description" />
-                                    <field name="bedrooms" />
-                                    <field name="living_area" />
-                                    <field name="expected_price" />
-                                    <field name="selling_price" />
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="expected_price"/>
+                                    <field name="selling_price"/>
                                 </group>
                                 <group>
-                                    <field name="facades" />
-                                    <field name="garage" />
-                                    <field name="garden" />
-                                    <field name="garden_area" invisible="garden != 1" />
-                                    <field name="garden_orientation" invisible="garden != 1" />
-                                    <field name="total_area" />
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible="garden != 1"/>
+                                    <field name="garden_orientation" invisible="garden != 1"/>
+                                    <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field
-                                name="offer_ids"
-                                readonly="state in ['sold','accepted','cancelled' ]" />
+                            <field name="offer_ids" readonly="state in ['sold','accepted','cancelled' ]"/>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="users_id" />
-                                <field name="partner_id" />
+                                <field name="users_id"/>
+                                <field name="partner_id"/>
                             </group>
                         </page>
                     </notebook>
                 </sheet>
-                <chatter />
+                <chatter/>
             </form>
         </field>
     </record>
@@ -129,22 +123,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Filter">
-                <field name="name" />
-                <field name="postcode" />
-                <field name="expected_price" />
-                <field name="bedrooms" />
-                <field
-                    name="living_area"
-                    filter_domain="[('living_area', '>=', self)]" />
-                <field name="facades" />
-                <filter
-                    name="available"
-                    string="Available"
-                    domain="[('state', 'in', ['new', 'received'])]" />
-                <filter
-                    name="postcode"
-                    string="Postcode"
-                    context="{'group_by':'postcode'}" />
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="facades"/>
+                <filter name="available" string="Available" domain="[('state', 'in', ['new', 'received'])]"/>
+                <filter name="postcode" string="Postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
     </record>
@@ -155,19 +141,17 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="state" records_draggable="false">
-                <field name="state" />
+                <field name="state"/>
                 <templates>
                     <t t-name="card">
-                        <field name="name" class="fw-bolder" />
-                        <div> Expected Price : <field name="expected_price" />
+                        <field name="name" class="fw-bolder"/>
+                        <div> Expected Price : <field name="expected_price"/>
                         </div>
-                        <div t-if="record.state.raw_value == 'received'"> Best Price : <field
-                                name="best_price" />
+                        <div t-if="record.state.raw_value == 'received'"> Best Price : <field name="best_price"/>
                         </div>
-                        <div t-if="record.state.raw_value == 'accepted'"> Selling Price: <field
-                                name="selling_price" />
+                        <div t-if="record.state.raw_value == 'accepted'"> Selling Price: <field name="selling_price"/>
                         </div>
-                        <field name="property_tag_ids" widget="many2many_tags" />
+                        <field name="property_tag_ids" widget="many2many_tags"/>
                     </t>
                 </templates>
             </kanban>
@@ -177,11 +161,11 @@
     <record id="res_users_view_form" model="ir.ui.view">
         <field name="name">res.users.view.form.inherit.estate.property</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='account_security']" position="after">
                 <page string="Properties">
-                    <field name="property_ids" />
+                    <field name="property_ids"/>
                 </page>
             </xpath>
         </field>

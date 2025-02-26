@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class ResUser(models.Model):
     _inherit = "res.users"
 
@@ -9,4 +10,3 @@ class ResUser(models.Model):
         string="Properties",
         domain="[('state', 'in', ['new', 'offer_received'])]",
     )
-    

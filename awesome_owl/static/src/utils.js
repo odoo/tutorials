@@ -1,8 +1,8 @@
-import { useRef, onMounted } from "@odoo/owl";
+import {onMounted, useRef} from "@odoo/owl";
 
 export function useAutofocus(name) {
-  const inputRef = useRef(name);
-  onMounted(() => {
-    inputRef.el.focus();
-  });
+    const inputRef = useRef(name);
+    onMounted(() => {
+        inputRef.el.focus();
+    });
 }

@@ -1,4 +1,5 @@
-from odoo.http import Controller, route, request
+from odoo.http import Controller, request, route
+
 
 class PropertiesController(Controller):
     @route(

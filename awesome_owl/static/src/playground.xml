@@ -3,7 +3,8 @@
     <t t-name="awesome_owl.playground">
         <div class="container mt-4">
             <div class="text-center mb-3">
-                <h4 class="fw-bold text-primary">Total Sum: <span class="badge bg-success"><t t-out="sum.value"/></span></h4>
+                <h4 class="fw-bold text-primary">Total Sum: <span class="badge bg-success"><t
+                            t-out="sum.value"/></span></h4>
             </div>
 
             <div class="row g-3">
@@ -27,7 +28,7 @@
             <div class="container mt-5">
                 <div class="card shadow-lg p-4 bg-light">
                     <h2 class="text-center text-primary mb-4">📝 My Todo List</h2>
-                    <TodoList />
+                    <TodoList/>
                 </div>
             </div>
         </div>
