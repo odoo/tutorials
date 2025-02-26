@@ -1,8 +1,44 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <p>some content</p>
+            <t t-set-slot="control-panel-create-button">
+                <button class="btn btn-primary" t-on-click="this.showCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="this.showLeads">Leads</button>
+            </t>
+            <div class="container d-flex flex-wrap">
+                <DashboardItem>
+                    <t t-set-slot="title">Number of new orders this month</t>
+                    <t t-set-slot="default">
+                        <t t-esc="this.stats.nb_new_orders" />
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    <t t-set-slot="title">Total amount of new orders this month</t>
+                    <t t-set-slot="default">
+                        <t t-esc="this.stats.total_amount" />
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    <t t-set-slot="title">Average amount of t-shirt by order this month</t>
+                    <t t-set-slot="default">
+                        <t t-esc="this.stats.average_quantity" />
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    <t t-set-slot="title">Number of cancelled orders this month</t>
+                    <t t-set-slot="default">
+                        <t t-esc="this.stats.nb_cancelled_orders" />
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    <t t-set-slot="title">Average time for an order to go from 'new' to 'sent' or 'cancelled'</t>
+                    <t t-set-slot="default">
+                        <t t-esc="this.stats.average_time" />
+                    </t>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
-
 </templates>
