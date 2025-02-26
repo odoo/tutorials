@@ -8,15 +8,39 @@
             </t>
             <div class="d-flex flex-wrap">
                 <DashboardItem>
-                    <h3>Hey</h3>
-                    <p>Some content</p>
-                </DashboardItem>
-                <DashboardItem size="2">
-                    <h3>Sales today</h3>
-                    <p>Some content</p>
+                    <h3>No. of new orders (this month)</h3>
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="statistics.nb_new_orders"/>
+                    </div>
                 </DashboardItem>
                 <DashboardItem>
-                    some more content
+                    <h3>Total amount of new orders (this month)</h3>
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <p t-out="statistics.total_amount"></p>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>Average amount of t-shirt by order (this month)</h3>
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <p t-out="statistics.average_quantity"></p>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>Number of cancelled orders (this month)</h3>
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <p t-out="statistics.nb_cancelled_orders"></p>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <h3>Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’</h3>
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <p t-out="statistics.average_time"></p>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <div class="fs-1 fw-bold text-success text-center">
+                        some more content
+                    </div>
                 </DashboardItem>
             </div>
         </Layout>
