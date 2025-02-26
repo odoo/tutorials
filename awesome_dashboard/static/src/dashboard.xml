@@ -28,6 +28,10 @@
                     <p class="title">Average time between order creation and sending</p>
                     <h3 class="number"><t t-esc="orderStats.value.average_time"/></h3>
                 </DashboardItem>
+                <DashboardItem size="2">
+                    <p class="title">Orders by size</p>
+                    <PieChart data="orderStats.value.orders_by_size" label="'Orders by size'"/>
+                </DashboardItem>
             </div>
         </Layout>
     </t>
