@@ -12,5 +12,9 @@
     <Counter value="4" onChange.bind="incrementSum" onLoad.bind="createInitialSum"/>
     <Counter value="5" onChange.bind="incrementSum" onLoad.bind="createInitialSum"/>
     <h5>The sum is: <t t-esc="sum.value"/></h5>
+
+    <hr/>
+    
+    <TodoList/>
 </t>
 </templates>
