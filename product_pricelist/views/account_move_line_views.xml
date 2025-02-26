@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="account_move_form_inherite_book_price" model="ir.ui.view">
+    <record id="account_move_form_inherit_book_price" model="ir.ui.view">
         <field name="name">account.move.form.inherite.book.price</field>
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
