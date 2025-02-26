@@ -1,6 +1,12 @@
 <t t-name="awesome_owl.todo_list">
     <div>
         <h2>Todo List</h2>
+        <input
+            type="text"
+            placeholder="Enter a new task"
+            t-model="state.newTask"
+            t-on-keyup="addTodo"
+        />
         <ul>
             <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
                 <li>
