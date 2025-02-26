@@ -1,20 +1,20 @@
 import { Component } from "@odoo/owl"
 
-export class DashboardItem extends Component{
+// Component representing a single dashboard item
+export class DashboardItem extends Component {
     static template = "awesome_dashboard.DashboardItem"
-    // static defaultProps = {
-    //     size: 1
-    // };
+
+    // Definition of expected component properties
     static props = {
         slots: {
             type: Object,
-            shape:{
+            shape: {
                 default: Object
             }
         },
         size: {
             type: Number,
-            optional: true
+            optional: true // Size is optional and defaults to 1 if not provided
         },
     };
 }
