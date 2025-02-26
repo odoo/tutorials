@@ -1,6 +1,7 @@
 {
     'name': 'warranty',
     'version': '1.0',
+    'description': 'Manage warranties for products in sales orders',
     'depends': ['sale_management'],
     'author': 'Odoo - Rushil Patel',
     'license': 'LGPL-3',

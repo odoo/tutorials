@@ -8,7 +8,7 @@
                 <sheet>
                     <group>
                         <field name="product_id" />
-                        <field name="year" />
+                        <field name="warranty_id" string="Period" />
                         <field name="end_date" />
                     </group>
                 </sheet>
