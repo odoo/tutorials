@@ -1,13 +1,13 @@
-from odoo import Command, models, fields, api
+from odoo import api, Command, fields, models
 
 
 class AddWarrantyWizard(models.TransientModel):
     _name = 'add.warranty.wizard'
     _description = 'Add Warranty Wizard'
 
-    sale_order = fields.Many2one(comodel_name='sale.order', string='Order', required=True)
+    sale_order = fields.Many2one(comodel_name='sale.order', string="Order", required=True)
     warranty_lines = fields.One2many(
-        comodel_name='warranty.wizard.line', inverse_name='wizard_id', string=' Warranty lines'
+        comodel_name='warranty.wizard.line', inverse_name='wizard_id', string="Warranty lines"
     )
 
     @api.model
@@ -40,7 +40,7 @@ class AddWarrantyWizard(models.TransientModel):
                         "order_id": self.sale_order.id,
                         "name": "Extended Warranty of %d Years - %s"
                         % (line.warranty_config.years, product.name),
-                        "product_template_id": line.product_template.id,
+                        "product_id": self.env.ref('product_warranty.extended_warranty_product_tmpl').id,
                         "product_uom_qty": line.sale_order_line.product_uom_qty,
                         "linked_line_id": line.sale_order_line.id,
                         "price_unit": (line.warranty_config.percentage / 100) * line.sale_order_line.price_unit,
