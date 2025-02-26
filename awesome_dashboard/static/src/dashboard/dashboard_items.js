@@ -1,18 +1,16 @@
-/** @odoo-module **/
-
 import { registry } from "@web/core/registry";
-import { NumberCard } from "./number_card";
-import { PieChartCard } from "./pie_chart_card";
+import { NumberCard } from "./number_card/number_card";
+import { PieChartCard } from "./pie_chart_card/pie_chart_card";
 
 const dashboardItems = [
     {
-        id : "average_quantity",
-        description : "Average amount of t-shirt",
-        Component : NumberCard ,
-        size : 1 ,
+        id: "average_quantity",
+        description: "Average amount of t-shirt",
+        Component: NumberCard,
+        size: 1,
         props: (data) => ({
-            title : "Avg T-Shirts per Order",
-            value : data.average_quantity,
+            title: "Avg T-Shirts per Order",
+            value: data.average_quantity,
         })
     },
 
@@ -51,12 +49,12 @@ const dashboardItems = [
 
     {
         id: "orders_by_size",
-        description : "Shirt Orders by Size",
+        description: "Shirt Orders by Size",
         Component: PieChartCard,
-        size : 2,
+        size: 2,
         props: (data) => ({
             title: "Shirt Orders by Size",
-            data : data.orders_by_size
+            data: data.orders_by_size
         })
     }
 ];

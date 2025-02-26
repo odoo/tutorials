@@ -18,20 +18,21 @@ const statisticsService = {
  */
 
 // real life update
+const statistics = reactive({ stats: {} })
+async function fetchStatistics() {
+    const result = await rpc('/awesome_dashboard/statistics', {});
+    Object.assign(statistics.stats, result)
+    return statistics.stats
+}
+
+
 const statisticsService = {
-    data: reactive({ stats: {} }),
-
-    async fetchData(){
-        const result = await rpc("/awesome_dashboard/statistics");
-        
-        Object.assign(this.data.stats,result);
-    },
-
-    start(){
-        this.fetchData();
-        setInterval(()=> this.fetchData(), 10000);
-        return { stats: this.data.stats }
-    },
+    dependencies: [],
+    start() {
+        fetchStatistics(); 
+        setInterval(() => fetchStatistics(), 10000);
+        return { loadStatistics: fetchStatistics }
+    }
 }
 
 registry.category("services").add("statistics", statisticsService);
