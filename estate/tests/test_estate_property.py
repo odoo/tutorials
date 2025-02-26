@@ -88,11 +88,14 @@ class EstateTestCase(TransactionCase):
         ])
 
     def test_garden_area_reset_on_uncheck(self):
-        """Ensure Garden Area and Orientation reset when the Garden checkbox is unchecked."""
-        self.property_2.garden = True
-        self.property_2.garden_area = 100
-        self.property_2.garden_orientation = 'north'
-        self.property_2.garden = False
+        """Ensure Garden Area and Orientation reset when the Garden checkbox is unchecked using write()."""
+        self.property_2.write({
+            'garden': True,
+            'garden_area': 100,
+            'garden_orientation': 'north'
+        })
+
+        self.property_2.write({'garden': False})
         self.property_2._onchange_garden()
-        self.assertEqual(self.property_2.garden_area,0)
-        self.assertEqual(self.property_2.garden_orientation, False)
+        self.assertEqual(self.property_2.garden_area, 0)
+        self.assertFalse(self.property_2.garden_orientation)
