@@ -5,6 +5,9 @@
         'text-decoration-line-through': props.todo.isCompleted
     }">
         <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="toggleComplete" />
-        <span t-esc="props.todo.description" />
+        <t> </t>
+        <span>
+            <t t-esc="props.todo.id" />: <t t-esc="props.todo.description" />
+        </span>
     </div>
 </t>
