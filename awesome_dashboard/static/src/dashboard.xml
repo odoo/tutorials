@@ -2,7 +2,40 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout t-props="{
+            'display': {controlPanel: {}},
+            'className': 'o_dashboard h-100'}">
+            <t t-set-slot="layout-buttons">
+                <button t-on-click="actionCustomers" class="btn btn-primary">Buttons</button>
+                <button t-on-click="actionLeads" class="btn btn-primary">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    <p>Number of new orders this month</p>
+                    <t t-out="result.nb_new_orders"/>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Total amount of new orders this month</p>
+                    <t t-out="result.total_amount"/>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Average amount of t-shirt by order this month</p>
+                    <t t-out="result.average_quantity"/>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Number of cancelled orders this month</p>
+                    <t t-out="result.nb_cancelled_orders"/>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’</p>
+                    <t t-out="result.average_time"/>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    Shirt orders by size
+                    <PieChart data="result.orders_by_size"/>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
