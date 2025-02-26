@@ -1,18 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates xml:space="preserve">
-    <t t-name="awesome_owl.card">
-        <div class="card o_card" >
-            <div class="card-body">
-                <t t-if="props.title">
-                    <h5 class="card-title" t-esc="props.title"/>
-                </t>
-                <t t-if="props.content">
-                    <p class="card-content" t-esc="props.content"/>
-                </t>
-                <t t-if="props.content">
-                    <p class="card-content" t-out="props.content"/>
-                </t>
+<t t-name="awesome_owl.card">
+    <div class="card">
+        <t t-if="props.title">
+            <div class="card-header">
+                <t t-esc="props.title" />
             </div>
+        </t>
+        <div class="card-body">
+            <t t-slot="default" />
         </div>
-    </t>
-</templates>
+    </div>
+</t>

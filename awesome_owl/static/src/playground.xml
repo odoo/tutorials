@@ -4,10 +4,19 @@
     <t t-name="awesome_owl.playground">
         <div>
             <Counter onChange.bind="incrementSum" onChangeM.bind="decrementSum"/>
-            <Counter onChange.bind="incrementSum" onChangeM.bind="decrementSum"/>
-            <Counter onChange.bind="incrementSum" onChangeM.bind="decrementSum"/>
             <div>Sum: <t t-esc="state.sum" /></div>
-            <Card title="'Card 2'" content="html" />
+            <Card title="'Simple Card'">
+                This is some static text inside the card.
+            </Card>
+
+            <Card title="'Counter Card'">
+                <Counter onChange.bind="incrementSum" onChangeM.bind="decrementSum"/>
+            </Card>
+
+            <Card title="'Mixed Content Card'">
+                <p>Here’s a paragraph.</p>
+                <Counter onChange.bind="incrementSum" onChangeM.bind="decrementSum"/>
+            </Card>
             <TodoList />
         </div>
     </t>
