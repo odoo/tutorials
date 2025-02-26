@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.playground">
+        
+        <div class="container d-flex  flex-column align-items-center mt-4 p-4 border rounded shadow" style="max-width: 300px;">
+            <h3 class="mb-3">Sum: <t t-out="sum.value"/></h3>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+        </div>
+
+        <Card title="'Title'" content="content"/>
+        <Card title="'Title'" content="content"/>
+    </t>
+
+</templates>
