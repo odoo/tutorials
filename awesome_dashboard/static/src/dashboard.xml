@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout class="'o_dashboard h-100'" display="{controlPanel: {} }">
+        <Layout className="'o_dashboard'" display="{controlPanel: {} }">
             <t t-set-slot="layout-buttons">
                 <button class="btn btn-primary" t-on-click="openCustomerKanban">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
