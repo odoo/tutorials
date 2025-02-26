@@ -78,7 +78,7 @@ class Estateproperty(models.Model):
     @api.depends('salesperson_id.name')
     def _compute_desc(self):
         for record in self:
-            record.description = 'Test for salesperson %s' % record.salesperson_id.name
+            record.description = 'For property information contact salesperson %s' % record.salesperson_id.name
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):

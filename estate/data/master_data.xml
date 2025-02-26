@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <data>
+  <data noupdate="1">
     <record id="estate_property_type_residential" model="estate.property.type">
       <field name="name">Residential</field>
     </record>
