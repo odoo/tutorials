@@ -7,7 +7,7 @@
                 <button class="btn btn-primary" t-on-click="openCustomerKanban">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap" t-if="orderStats.value.isReady">
                 <DashboardItem>
                     <p class="title">Number of new orders</p>
                     <h3 class="number"><t t-esc="orderStats.value.nb_new_orders"/></h3>
@@ -28,7 +28,7 @@
                     <p class="title">Average time between order creation and sending</p>
                     <h3 class="number"><t t-esc="orderStats.value.average_time"/></h3>
                 </DashboardItem>
-                <DashboardItem size="2">
+                <DashboardItem size="1.5">
                     <p class="title">Orders by size</p>
                     <PieChart data="orderStats.value.orders_by_size" label="'Orders by size'"/>
                 </DashboardItem>
