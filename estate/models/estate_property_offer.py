@@ -72,6 +72,7 @@ class EstatePropertyOffer(models.Model):
 
     # action to change offer status to refused
     def action_refuse(self):
+        self.ensure_one()
         self.status = 'refused'
 
     @api.model_create_multi

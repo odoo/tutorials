@@ -7,28 +7,31 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <t t-set-slots="control-panel-additonal-actions">
+
+            <t t-set-slot="control-panel-additional-actions">
                 <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
                     <i class="fa fa-cog"></i>
                 </button>
             </t>
             <div class="d-flex flex-wrap" t-if="statistics.isReady">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
-                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                    <DashboardItem t-if="!state.disabledItems.includes(item.id)"
+                                   size="item.size || 1">
+                        <t t-set="itemProp"
+                           t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
                         <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>
                 </t>
             </div>
-        </Layout>
+        </Layout>    
     </t>
 
     <t t-name="awesome_dashboard.ConfigurationDialog">
         <Dialog title="'Dashboard items configuration'">
-            Which cards do you whish to see ?
+            Which cards do you wish to see ?
             <t t-foreach="items" t-as="item" t-key="item.id">
                 <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
-                    <t t-esc="item.description"/>
+                    <t t-out="item.description"/>
                 </CheckBox>
             </t>
             <t t-set-slot="footer">
@@ -38,5 +41,4 @@
             </t>
         </Dialog>
     </t>
-
 </templates>

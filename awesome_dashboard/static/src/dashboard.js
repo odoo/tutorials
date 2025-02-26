@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
@@ -17,6 +15,7 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
+        this.dialog = useService("dialog");
         this.display = {
             controlPanel: {},
         };

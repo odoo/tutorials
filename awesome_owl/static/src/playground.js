@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { Component, markup, useState } from "@odoo/owl";
 import { Counter } from "@awesome_owl/counter/counter";
 import { Card } from "@awesome_owl/card/card";

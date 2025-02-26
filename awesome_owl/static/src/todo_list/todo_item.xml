@@ -10,8 +10,8 @@
                    t-on-change="() => todo.toggle()"/>
             <label t-att-for="todo.id"
                    t-att-class="todo.isCompleted ? 'text-decoration-line-through text-muted' : '' ">
-                <t t-esc="todo.id"/>.
-                <t t-esc="todo.description"/>
+                <t t-out="todo.id"/>.
+                <t t-out="todo.description"/>
             </label>
             <span role="button"
                   class="fa fa-trash ms-3 text-danger"

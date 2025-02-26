@@ -18,7 +18,6 @@ class EstateProperty(models.Model):
         self.env['account.move'].create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
-            'journal_id': journal.id,
             "invoice_line_ids": [
                 Command.create({
                     "name": "Commission (6%)",

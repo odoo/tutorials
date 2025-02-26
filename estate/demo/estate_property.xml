@@ -2,7 +2,6 @@
 <odoo>
     <record id="property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
-        <field name="state">new</field>
         <field name="property_type_id" ref="property_type_residential"/>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
@@ -30,5 +29,150 @@
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
+    </record>
+
+    <record id="property_industrial_warehouse" model="estate.property">
+        <field name="name">Industrial Warehouse</field>
+        <field name="property_type_id" ref="property_type_industrial"/>
+        <field name="description">A large warehouse suitable for manufacturing and storage.</field>
+        <field name="postcode">34567</field>
+        <field name="date_availability">2025-06-10</field>
+        <field name="expected_price">5000000</field>
+        <field name="living_area">1000</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+    </record>
+
+    <record id="property_modern_apartment" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="description">A stylish apartment in the city center.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability">2025-04-01</field>
+        <field name="expected_price">750000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">120</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+    </record>
+
+    <record id="property_beachfront_bungalow" model="estate.property">
+        <field name="name">Beachfront Bungalow</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="description">A cozy bungalow right on the beach.</field>
+        <field name="postcode">30333</field>
+        <field name="date_availability">2025-03-10</field>
+        <field name="expected_price">1250000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">200</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">300</field>
+        <field name="garden_orientation">south</field>
+    </record>
+
+    <record id="property_urban_townhouse" model="estate.property">
+        <field name="name">Urban Townhouse</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="description">A modern townhouse in a trendy neighborhood.</field>
+        <field name="postcode">60606</field>
+        <field name="date_availability">2025-07-01</field>
+        <field name="expected_price">950000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">220</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">150</field>
+        <field name="garden_orientation">north</field>
+    </record>
+
+    <record id="property_mountain_retreat" model="estate.property">
+        <field name="name">Mountain Retreat</field>
+        <field name="property_type_id" ref="property_type_land"/>
+        <field name="description">A peaceful retreat in the mountains.</field>
+        <field name="postcode">11111</field>
+        <field name="date_availability">2025-05-15</field>
+        <field name="expected_price">700000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">160</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">600</field>
+        <field name="garden_orientation">west</field>
+    </record>
+
+    <record id="property_modern_office" model="estate.property">
+        <field name="name">Modern Office Space</field>
+        <field name="property_type_id" ref="property_type_commercial"/>
+        <field name="description">A contemporary office space in a prime business location.</field>
+        <field name="postcode">56789</field>
+        <field name="date_availability">2025-09-01</field>
+        <field name="expected_price">1200000</field>
+        <field name="living_area">500</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+    </record>
+
+    <record id="property_land_investment" model="estate.property">
+        <field name="name">Investment Land</field>
+        <field name="property_type_id" ref="property_type_land"/>
+        <field name="description">A large plot of land ideal for real estate development.</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability">2025-12-01</field>
+        <field name="expected_price">3500000</field>
+        <field name="living_area">0</field>
+        <field name="facades">0</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+    </record>
+
+    <record id="property_city_apartment" model="estate.property">
+        <field name="name">City Apartment</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="description">A modern apartment in the heart of the city.</field>
+        <field name="postcode">90210</field>
+        <field name="date_availability">2025-03-15</field>
+        <field name="expected_price">900000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">150</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+    </record>
+
+    <record id="property_suburban_house" model="estate.property">
+        <field name="name">Suburban House</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="description">A cozy house in a quiet suburban neighborhood.</field>
+        <field name="postcode">33445</field>
+        <field name="date_availability">2025-07-10</field>
+        <field name="expected_price">600000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">220</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">300</field>
+        <field name="garden_orientation">north</field>
+    </record>
+
+    <record id="property_luxury_condo" model="estate.property">
+        <field name="name">Luxury Condo</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="description">A high-end condo with premium amenities.</field>
+        <field name="postcode">77889</field>
+        <field name="date_availability">2025-05-20</field>
+        <field name="expected_price">1500000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">200</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
     </record>
 </odoo>

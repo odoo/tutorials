@@ -4,7 +4,7 @@
     'application': True,
     'category': "Real Estate/Brokerage",
     'installable': True,
-    'depends': ['mail'],
+    'depends': ['mail', 'website'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
@@ -12,6 +12,7 @@
         'data/estate_property_offer_cron.xml',
         'demo/estate_property.xml',
         'demo/estate_property_type.xml',
+        'demo/estate_property_tag.xml',
         'demo/estate_property_offer.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
@@ -21,6 +22,7 @@
         'views/estate_property_tag_views.xml',
         'views/estate_menu_views.xml',
         'views/res_user_views.xml',
+        'views/website_property_views.xml',
     ],
     'license': 'AGPL-3',
 }

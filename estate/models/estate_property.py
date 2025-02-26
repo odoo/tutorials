@@ -72,6 +72,7 @@ class EstateProperty(models.Model):
         required=True,
         default=lambda self: self.env.company
     )
+    image = fields.Binary()
 
     # Computing Total Area from living_area and garden_area
     @api.depends('living_area','garden_area')
@@ -88,6 +89,7 @@ class EstateProperty(models.Model):
     # Change garden_area and garden_orientation when garden field change
     @api.onchange('garden')
     def _onchange_garden(self):
+        self.ensure_one()
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
@@ -97,10 +99,12 @@ class EstateProperty(models.Model):
 
     # action to change state:canceled
     def action_cancel(self):
+        self.ensure_one()
         self.state = 'cancelled'
 
     # action to change state:sold
     def action_sold(self):
+        self.ensure_one()
         if self.state == 'cancelled':
             raise UserError("Cancelled Property can not be sold")
         self.state = 'sold'

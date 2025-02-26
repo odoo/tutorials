@@ -3,7 +3,7 @@
     <record id="estate_property" model="ir.actions.act_window">
         <field name="name">Property</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form,kanban</field>
+        <field name="view_mode">list,form,kanban,graph,pivot</field>
         <field name="context">{'search_default_state': True}</field>
     </record>
 
@@ -47,11 +47,11 @@
                             statusbar_visible="new, received, accepted, sold"/>
                 </header>
                 <sheet>
-                    <group>
-                        <h1>
-                            <field name="name"/>
-                        </h1>
-                    </group>
+                    <field name="image" widget="image" class="oe_avatar"
+                           options="{'size': [150, 150]}" nolabel="1" />
+                    <h1>
+                        <field name="name"/>
+                    </h1>
                     <group>
                         <field name="property_tag_ids"
                                 nolabel="1"
@@ -101,7 +101,6 @@
                                             decoration-success="status == 'accepted'"
                                             decoration-danger="status == 'refused'"
                                             editable="bottom">
-
                                         <field name="price" string="Price"/>
                                         <field name="partner_id" string="Partner"/>
                                         <field name="validity"/>
@@ -149,7 +148,7 @@
                 <field name="selling_price"/>
                 <field name="property_tag_ids"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div class="oe_kanban_card">
                             <strong>
                                 <field name="name"/>
@@ -184,6 +183,33 @@
                     </t>
                 </templates>
             </kanban>
+        </field>
+    </record>
+
+    <!-- Graph view of Property -->
+    <record id="estate_porperty_view_graph" model="ir.ui.view">
+        <field name="name">estate.property.view.graph</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <graph>
+                <field name="date_availability" type="col"/>
+                <field name="property_type_id" type="row"/>
+                <field name="state" type="row"/>
+                <field name="expected_price" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot view of Property -->
+    <record id="estate_porperty_view_pivot" model="ir.ui.view">
+        <field name="name">estate.property.view.pivot</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="state" type="row"/>
+                <field name="property_type_id" type="col"/>
+                <field name="expected_price" type="measure"/>
+            </pivot>
         </field>
     </record>
 
