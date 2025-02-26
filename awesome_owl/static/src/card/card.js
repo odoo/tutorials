@@ -20,14 +20,11 @@ export class Card extends Component {
     },
   };
 
-  /*
-  use of state is not needed here as we are passing static values inside props, this can be used where values are inserted by user with onchange attribute
-  */
+  setup() {
+    this.card_visibility = useState({ visible: true });
+  }
 
-  // setup() {
-  //   this.state = useState({
-  //     title: this.props.title,
-  //     content: this.props.content,
-  //   });
-  // }
+  toggleVisibility = () => {
+    this.card_visibility.visible = !this.card_visibility.visible;
+  };
 }

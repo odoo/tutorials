@@ -1,8 +1,9 @@
 <?xml version="1.1" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.card" >
-        <div class="card text-center" style="width: 18rem; height: 14rem">
-            <div class="card-body">
+        <div class="card text-center" style="width: 18rem; height: 14rem" >
+            <button type="button" class="btn btn-primary" t-esc="this.card_visibility.visible ? 'Hide Card' : 'Show Card'" t-on-click="toggleVisibility"></button>
+            <div class="card-body" t-if="this.card_visibility.visible">
                 <h5 class="card-title"><t t-out="props.title"/></h5>
                 <!-- <p class="card-text"><t t-out="props.content"/></p> -->
                 <p class="card-text"><t t-slot="default"/></p>
