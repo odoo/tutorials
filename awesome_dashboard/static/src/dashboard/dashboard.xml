@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
             <t t-set-slot="control-panel-create-button">
                 <button type="button" class="btn btn-primary" t-on-click="openCustomer" title="Customer">Customer</button>
                 <button type="button" class="btn btn-primary" t-on-click="openLeads" title="Leads">Leads</button>
             </t>
-            <div class="d-flex flex-wrap">
-                <DashboardItem size="2">
-                    some content
-                </DashboardItem>
-                <DashboardItem>
-                    I love milk
-                </DashboardItem>
-                <DashboardItem size="2">
-                    some content
-                </DashboardItem>
+            <div class="d-flex flex-wrap" t-if="statistics.isReady">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
             </div>
         </Layout>
     </t>
-
 </templates>

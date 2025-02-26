@@ -6,7 +6,7 @@
             <input
                 type="checkbox"
                 class="form-checkbox m-2"
-                t-att-checked="props.todo.isCompleted" 
+                t-att-checked="props.todo.isCompleted"
                 t-on-change="() => {props.toggleState(props.todo.id)}"/>
             <t t-esc="props.todo.id"/>.
             <t t-esc="props.todo.description"/>
