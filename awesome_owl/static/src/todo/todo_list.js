@@ -1,5 +1,6 @@
 import { Component, useState } from "@odoo/owl";
 import { TodoItem } from "./todo_item";
+import { useAutofocus } from "@awesome_owl/utils";
 
 export class TodoList extends Component {
     static template = "awesome_owl.todo_list";
@@ -7,28 +8,28 @@ export class TodoList extends Component {
 
     setup() {
         this.state = useState({
-            todos: [], // Start with an empty array instead of hardcoded values
-            newTask: "", // Reactive state for the input
+            todos: [],
+            newTask: "",
         });
-        this.nextId = 1; // Counter for unique IDs
+        this.nextId = 1;
+        this.inputRef = useAutofocus("taskInput");
     }
 
-    // Optional: Handle toggle events from TodoItem
     onTodoToggle(todo) {
         console.log(`Todo ${todo.id} toggled to ${todo.isCompleted}`);
     }
     static props = {};
 
     addTodo(ev) {
-        if (ev.keyCode == 13) { // Check if Enter was pressed
-            const description = this.state.newTask.trim(); // Trim whitespace
-            if (description) { // Only proceed if input is non-empty
+        if (ev.keyCode === 13) {
+            const description = this.state.newTask.trim();
+            if (description) {
                 this.state.todos.push({
-                    id: this.nextId++, // Assign and increment the ID
+                    id: this.nextId++,
                     description: description,
                     isCompleted: false,
                 });
-                this.state.newTask = ""; // Clear the input
+                this.state.newTask = "";
             }
         }
     }

@@ -6,6 +6,7 @@
             placeholder="Enter a new task"
             t-model="state.newTask"
             t-on-keyup="addTodo"
+            t-ref="taskInput"
         />
         <ul>
             <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
