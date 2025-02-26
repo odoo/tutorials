@@ -9,4 +9,4 @@ export class DashboardLoader extends Component {
 
 // Register in the actions registry
 
-registry.category("actions").add("awesome_dashboard.dashboard_action", DashboardLoader);
+registry.category("actions").add("awesome_dashboard.dashboard", DashboardLoader);

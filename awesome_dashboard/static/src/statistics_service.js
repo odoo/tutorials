@@ -9,15 +9,15 @@ async function fetchStatistics() {
     const result =  await rpc("/awesome_dashboard/statistics", {});
     Object.assign(statistics.stats, result);
     console.log(statistics)
+    return statistics.stats
 }
-
+    const loadStatistics=fetchStatistics   
+    
 export const statisticsService = {
     dependencies: [],
     start() {
-        fetchStatistics();
         setInterval(fetchStatistics, 50000);
-
-        return {stats: statistics.stats };
+        return {loadStatistics};
     },
 };
 
