@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-        <record id="event_event_ticket_view_list" model="ir.ui.view">
-        <field name="name">event.event.ticket.view.list.inherit</field>
+    <record id="event_event_ticket_from_event_view_list" model="ir.ui.view">
+        <field name="name">event.event.ticket.list.inherit.event.ticket</field>
         <field name="model">event.event.ticket</field>
-        <field name="inherit_id" ref="event.event_event_ticket_view_tree_from_event"/>
-        <field name="mode">primary</field>
-        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="event.event_event_ticket_view_tree_from_event" />
         <field name="arch" type="xml">
             <field name="description" position="after">
-                <field name="max_tickets_per_order" width="180px" />
+                <field name="tickets_per_registration" width="180px" />
             </field>
         </field>
-      </record>
+    </record>
 </odoo>
