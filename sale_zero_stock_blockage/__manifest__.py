@@ -7,7 +7,7 @@
         This module add zero stock blockage feature in sale module.
     """,
     'depends': [
-        'sale',
+        'sale_management',
         'sales_team'
     ],
     'data': [
