@@ -18,7 +18,6 @@ export class TodoList extends Component {
     // Optional: Handle toggle events from TodoItem
     onTodoToggle(todo) {
         console.log(`Todo ${todo.id} toggled to ${todo.isCompleted}`);
-        // The state is already updated reactively via the todo object reference
     }
     static props = {};
 }
