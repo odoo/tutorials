@@ -3,6 +3,14 @@
 
     <t t-name="awesome_owl.playground">
         <div class="m-3">
+            <Card title="'card 1'">
+                content of card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter />
+            </Card>
+        </div>
+        <div class="m-3">
             <ToDoList />
         </div>
     </t>
