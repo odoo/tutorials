@@ -9,7 +9,11 @@ export class Card extends Component {
 
     setup() {
         this.state = useState({
-            isExpanded: false,
+            isExpanded: true,
         });
+    }
+
+    toggleContent() {
+        this.state.isExpanded = !this.state.isExpanded;
     }
 }
