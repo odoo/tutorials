@@ -10,7 +10,7 @@ import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard_item"
 import { PieChart } from "./pie_chart"
 
-class AwesomeDashboard extends Component {
+export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, DashboardItem, PieChart }
 
@@ -19,6 +19,8 @@ class AwesomeDashboard extends Component {
         this.statisticsLoader = useService("awesome_dashboard.statistics");
 
         this.statistics = useState(this.statisticsLoader);
+
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     openCustomers() {
