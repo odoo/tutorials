@@ -8,33 +8,33 @@
                 <button type="button" class="btn btn-primary" t-on-click="leadsButtonClick">Leads</button>
             </t>
 
-            <DashboardItem title="'Normal'">
+            <DashboardItem title="'Normal'" toggle="true">
                 I am normal hey
             </DashboardItem>
 
-            <DashboardItem title="'Big'" size="4">
+            <DashboardItem title="'Big'" size="4" toggle="true">
                 I am big yay
             </DashboardItem>
 
 
 
-            <DashboardItem title="'Number of new orders this month'" toggle="true">
+            <DashboardItem title="'Number of new orders this month'">
                 <div t-esc="statistics.nb_new_orders" t-att-class="'stat-data'"/>
             </DashboardItem>
 
-            <DashboardItem title="'Total amount of new orders this month'" toggle="true">
+            <DashboardItem title="'Total amount of new orders this month'">
                 <div t-esc="statistics.total_amount" t-att-class="'stat-data'"/>
             </DashboardItem>
 
-            <DashboardItem title="'Average amount of t-shirt by order this month'" toggle="true">
+            <DashboardItem title="'Average amount of t-shirt by order this month'">
                 <div t-esc="statistics.average_quantity" t-att-class="'stat-data'"/>
             </DashboardItem>
 
-            <DashboardItem title="'Number of cancelled orders this month'" toggle="true">
+            <DashboardItem title="'Number of cancelled orders this month'">
                 <div t-esc="statistics.nb_cancelled_orders" t-att-class="'stat-data'"/>
             </DashboardItem>
 
-            <DashboardItem title="'Average time for an order to go from \'new\' to \'sent\' or \'cancelled\''" toggle="true">
+            <DashboardItem title="'Average time for an order to go from \'new\' to \'sent\' or \'cancelled\''">
                 <div t-esc="statistics.average_time" t-att-class="'stat-data'"/>
             </DashboardItem>
 
