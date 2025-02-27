@@ -7,7 +7,11 @@
 
         <t t-if="this.clicker.level >= 1">
             <p><t t-esc="this.clicker.clickerBots"/>x ClickBots (10 clicks per 10 seconds)</p>
-            <button class="btn btn-primary" t-on-click="buy" t-att-disabled="this.clicker.clicks&lt;1000">Buy</button>
+            <button class="btn btn-primary" t-on-click="() => this.clicker.buyBot()" t-att-disabled="this.clicker.clicks&lt;1000">Buy</button>
+        </t>
+        <t t-if="this.clicker.level >= 2">
+            <p><t t-esc="this.clicker.clickerBigBots"/>x Big Bots (100 clicks per 10 seconds)</p>
+            <button class="btn btn-primary" t-on-click="() => this.clicker.buyBigBot()" t-att-disabled="this.clicker.clicks&lt;5000">Buy</button>
         </t>
     </t>
 

@@ -19,6 +19,12 @@ export const clickerService = {
                 message: "Milestone reached! You can now buy clickbots",
             });
         });
+        clicker.bus.addEventListener("MILESTONE_5k", () => {
+            services.effect.add({
+                type: "rainbow_man",
+                message: "Milestone reached! You can now buy BIG bots",
+            });
+        });
         return clicker;
     }
 }

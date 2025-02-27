@@ -12,11 +12,6 @@ export class ClientAction extends Component {
     setup() {
         this.clicker = useClicker();
     }
-
-    buy() {
-        this.clicker.increment(-1000);
-        this.clicker.addBot();
-    }
 }
 
 registry.category("actions").add("awesome_clicker.client_action", ClientAction);
