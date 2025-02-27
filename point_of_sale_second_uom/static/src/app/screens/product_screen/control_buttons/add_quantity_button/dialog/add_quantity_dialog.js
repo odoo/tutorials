@@ -11,14 +11,10 @@ export class AddQuantityDialog extends Component {
         confirm: Function,
         close: Function,
         second_uom: {type: String, optional: true},
+        quantity: {type: Number},
     };
-    setup() {
-        this.state = {
-            quantity: 1,
-        };
-    }
     get quantity1() {
-        return this.state.quantity;
+        return this.props.quantity;
     }
     confirm() {
         this.props.confirm(this.quantity1);
