@@ -6,17 +6,20 @@ class AccountMoveLine(models.Model):
 
     book_price = fields.Float(string="Book Price", compute='_compute_book_price', store=True)
 
-    @api.depends('product_id', 'quantity', 'move_id.invoice_line_ids')
+    @api.depends('product_id', 'quantity', 'move_id.invoice_origin')
     def _compute_book_price(self):
         for line in self:
             if not line.product_id:
                 line.book_price = 0.0
                 continue
 
-            line.book_price = (line.product_id.lst_price * line.quantity)
+            line.book_price = line.product_id.lst_price * line.quantity
 
-            if line.move_id.invoice_line_ids:
-                pricelist = line.move_id.invoice_line_ids.sale_line_ids.order_id.pricelist_id
+            sale_order = self.env['sale.order'].search(
+                [("name", "=", line.move_id.invoice_origin)], limit=1
+            )
+
+            pricelist = sale_order.pricelist_id if sale_order else None
 
             if not pricelist:
                 # Fallback to the partner's pricelist if no sale order pricelist is found
@@ -28,4 +31,4 @@ class AccountMoveLine(models.Model):
                     line.quantity,
                     line.product_uom_id,
                 )
-                line.book_price = (line.book_price * line.quantity)
+                line.book_price = line.book_price * line.quantity
