@@ -1,0 +1,20 @@
+{
+    "name": "Sales Warranty",
+    "version": "1.0",
+    "summary": "Apply warranty on sales orders",
+    "description": "This module allows adding warranty options to products in sales orders. It integrates warranty configuration, automatic warranty line addition, and invoicing.",
+    "category": "Sales",
+    "author": "Darshan Patel",
+    "license": "LGPL-3",
+    "depends": ["sale"],
+    "data": [
+        "security/ir.model.access.csv",
+        "views/product_template_views.xml",
+        "views/warranty_configuration_views.xml",
+        "wizard/warranty_wizard_views.xml",
+        "views/sale_order_views.xml",
+        "views/sale_menus.xml",
+    ],
+    "installable": True,
+    "application": True,
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Sale Order Form to Add Warranty Button -->
+        <record id="view_sale_order_form_inherit_warranty" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit.warranty</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <div name="so_button_below_order_lines" position="inside">
+                    <button name="%(action_warranty_wizard)d" type="action" string="Apply Warranty" class="btn-primary" icon="fa-check"/>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>
