@@ -1,7 +1,7 @@
 <odoo>
     <template id="website_calendar_index_topbar_inherit" inherit_id="website_appointment.website_calendar_index_topbar">
         <xpath expr="//t[@t-call='website.website_search_box_input']" position="before">
-            <form method="get" class="d-flex ms-3 gap-2">
+            <form method="get" class="d-flex gap-2">
 
                 <select class="form-select" name="appointment_mode" onchange="this.form.submit();">
                     <option value="">All Types</option>
