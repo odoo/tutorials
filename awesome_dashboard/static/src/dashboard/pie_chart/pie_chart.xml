@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.pie_chart">
+        <t t-esc="props.title"/>
+        <div class="p-3">
+            <canvas t-ref="canvas"></canvas>
+        </div>
+    </t>
+</templates>

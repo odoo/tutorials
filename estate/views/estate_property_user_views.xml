@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_inherited_users_form" model="ir.ui.view">
+            <field name="name">estate.property.user.form</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="arch" type="xml">
+                <page name="account_security" position="after">
+                    <page string="Real Estate Properties">
+                        <field name="property_ids" widget="one2many_list" />
+                    </page>
+                </page>
+            </field>
+        </record>
+    </data>
+</odoo>

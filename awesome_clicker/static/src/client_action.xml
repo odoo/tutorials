@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="awesome_clicker.ClientAction">
+        <div> Clicks: <ClickValue />
+            <button class="btn btn-primary"
+                t-on-click="increment">Increment</button>
+        </div>
+    </t>
+</templates>
