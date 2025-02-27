@@ -4,9 +4,9 @@ from odoo.http import request
 class EstatePropertyList(http.Controller):
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
     def property_list(self, page=1):
-        Property = request.env['estate_model'].sudo()
+        property = request.env['estate_model'].sudo()
         domain = [('state', 'in', ['new', 'offer_received'])]
-        properties_count = Property.search_count(domain)
+        properties_count = property.search_count(domain)
         pager = request.website.pager(
             url='/properties',
             total=properties_count,

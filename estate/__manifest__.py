@@ -6,6 +6,10 @@
     "data" : [ 
         "security/security.xml",
         "security/ir.model.access.csv",
+        "report/estate_property_reports.xml",
+        "report/estate_property_templates.xml",
+        "report/estate_property_user_report.xml",
+        "report/estate_property_user_template.xml",
         "view/estate_pro_tag_view.xml",
         "view/estate_pro_offer_view.xml",
         "view/estate_pro_type_view.xml",
