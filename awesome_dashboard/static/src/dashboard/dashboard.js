@@ -1,6 +1,6 @@
 import { browser } from "@web/core/browser/browser";
 import { CheckBox } from "@web/core/checkbox/checkbox";
-import { Component, useState, xml } from "@odoo/owl";
+import { Component, useState, onMounted, xml } from "@odoo/owl";
 import { dashboardRegistry } from "../dashboard_registry";
 import { DashboardItem } from "./dashboard_items";
 import { Dialog } from "@web/core/dialog/dialog";
@@ -20,9 +20,12 @@ export class AwesomeDashboard extends Component {
         this.dialog = useService("dialog");
         this.statistics = useState(this.statisticsService.statistics);
         this.state = useState({
-            disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || []
+            disabledItems: JSON.parse(browser.localStorage.getItem("disabledDashboardItems") || "[]"),
         });
         this.items = dashboardRegistry.getAll();
+        onMounted(() => {
+            this.statisticsService.loadStatistics();
+        });
     }
 
     openConfiguration() {
@@ -30,7 +33,7 @@ export class AwesomeDashboard extends Component {
             items: this.items,
             disabledItems: this.state.disabledItems,
             onUpdateConfiguration: this.updateConfiguration.bind(this),
-        })
+        });
     }
 
     updateConfiguration(newDisabledItems) {
@@ -54,18 +57,17 @@ export class AwesomeDashboard extends Component {
         });
     }
 }
+
 class ConfigurationDialog extends Component {
     static template = "awesome_dashboard.ConfigurationDialog";
     static components = { Dialog, CheckBox };
     static props = ["close", "items", "disabledItems", "onUpdateConfiguration"];
 
     setup() {
-        this.items = useState(this.props.items.map((item) => {
-            return {
-                ...item,
-                enabled: !this.props.disabledItems.includes(item.id),
-            }
-        }));
+        this.items = useState(this.props.items.map((item) => ({
+            ...item,
+            enabled: !this.props.disabledItems.includes(item.id),
+        })));
     }
 
     done() {
@@ -74,17 +76,13 @@ class ConfigurationDialog extends Component {
 
     onChange(checked, changedItem) {
         changedItem.enabled = checked;
-        const newDisabledItems = Object.values(this.items).filter(
-            (item) => !item.enabled
-        ).map((item) => item.id)
 
-        browser.localStorage.setItem(
-            "disabledDashboardItems",
-            newDisabledItems,
-        );
+        const newDisabledItems = Object.values(this.items)
+            .filter((item) => !item.enabled)
+            .map((item) => item.id);
+        browser.localStorage.setItem("disabledDashboardItems", JSON.stringify(newDisabledItems));
 
         this.props.onUpdateConfiguration(newDisabledItems);
     }
-
 }
 registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

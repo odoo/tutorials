@@ -28,10 +28,10 @@ export class PieChart extends Component {
         this.chart = new Chart(ctx, {
             type: "pie",
             data: {
-                labels: Object.keys(this.statistics.sizedata || {}),
+                labels: Object.keys(this.statistics.sizedata || []),
                 datasets: [{
                     label: "T-Shirts Sold",
-                    data: Object.values(this.statistics.sizedata || {}),
+                    data: Object.values(this.statistics.sizedata || []),
                     backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0"],
                 }]
             }
