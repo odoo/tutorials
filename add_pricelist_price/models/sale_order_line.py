@@ -4,7 +4,7 @@ from odoo import api, fields, models
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    book_price = fields.Float(string="Book Price", compute="_compute_book_price", store=True)
+    book_price = fields.Float(string="Book Price", compute='_compute_book_price', store=True)
 
     @api.depends('product_id', 'order_id.pricelist_id', 'product_uom_qty')
     def _compute_book_price(self):
