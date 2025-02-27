@@ -4,21 +4,22 @@ import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
-import { DashboardItem } from "./dashboarditem";
-import { rpc } from "@web/core/network/rpc";
+import { DashboardItem } from "../dashboarditem/dashboarditem";
+import { PieChart } from "../piechart/piechart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem }
+    static components = { Layout, DashboardItem, PieChart }
 
     setup() {
         this.action = useService("action");
+        this.stats = useService("awesome_dashboard.statistics");
         this.display = {
             controlPanel: {},
         };
         onWillStart(async () => {
-            this.stats = await rpc("/awesome_dashboard/statistics");
-         });
+            this.stats = await this.stats.loadStats();
+        });
     }
 
     openCustomers() {
