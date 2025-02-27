@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Supplier Portal</field>
+        <field name="url">/supplier_portal</field>
+    </record>
+
+    <template id="supplier_portal_template">
+        <t t-call="website.layout">
+            <div class="d-flex justify-content-center align-items-center flex-column py-5">
+                <h3>Welcome to Supplier Portal</h3>
+                <t t-if="message">
+                <div class="alert alert-info mt-3" role="alert">
+                    <t t-esc="message"/>
+                </div>
+                </t>
+                <div class="container mt-5">
+                    <form action="/supplier_portal/create_draft_bill" method="post" enctype="multipart/form-data">
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-md-4 text-end">
+                                <label for="companySelect" class="fw-bold">Select Organization:</label>
+                            </div>
+                            <div class="col-md-6">
+                                <select id="companySelect" class="form-control" name="company_id">
+                                    <t t-foreach="request.env.user.company_ids" t-as="company">
+                                        <option t-att-value="company.id" t-esc="company.name"></option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-md-4 text-end">
+                                <label for="uploadPDF" class="fw-bold">Upload PDF:</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="file" id="uploadPDF" name="pdf_file"/>
+                            </div>
+                        </div>
+                        <div class="row mb-3 align-items-center">
+                            <div class="col-md-4 text-end">
+                                <label for="uploadXML" class="fw-bold">Upload XML:</label>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="file" id="uploadXML" name="xml_file"/>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
