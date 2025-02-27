@@ -11,6 +11,6 @@ class SaleOrderLine(models.Model):
         for line in self:
             if line.product_id and line.order_id.pricelist_id:
                 book_price = line.order_id.pricelist_id._get_product_price(line.product_id, line.product_uom_qty, line.product_uom)
-                line.book_price = book_price
+                line.book_price = (book_price * line.product_uom_qty)
             else:
-                line.book_price = 0.0
+                line.book_price = (line.product_id.lst_price * line.product_uom_qty)

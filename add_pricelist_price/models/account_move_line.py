@@ -10,7 +10,7 @@ class AccountMoveLine(models.Model):
     def _compute_book_price(self):
         for line in self:
             if not line.product_id:
-                line.book_price = 0.0
+                line.book_price = (line.product_id.lst_price * line.quantity)
                 continue
 
             if line.move_id.invoice_line_ids:
@@ -26,3 +26,4 @@ class AccountMoveLine(models.Model):
                     line.quantity,
                     line.product_uom_id,
                 )
+                line.book_price = (line.book_price * line.quantity)
