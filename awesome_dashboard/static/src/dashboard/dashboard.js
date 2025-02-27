@@ -8,6 +8,9 @@ import { DashboardItem } from "./dashboardItem/dashboard_item";
 import { rpc } from "@web/core/network/rpc";
 import { PieChart } from "./pieChart/pie_chart";
 import { items } from "./dashboard_items";
+import { Dialog } from "@web/core/dialog/dialog";
+import { CheckBox } from "@web/core/checkbox/checkbox";
+import { browser } from "@web/core/browser/browser";
 
 class AwesomeDashboard extends Component {
   static template = "awesome_dashboard.AwesomeDashboard";
@@ -37,6 +40,23 @@ class AwesomeDashboard extends Component {
 
     // this.items = items;
     this.items = registry.category("awesome_dashboard").getAll();
+
+    this.dialog = useService("dialog");
+    this.state = useState({
+      disabledItems:
+        browser.localStorage.getItem("disabledDashboardItems")?.split(",") ||
+        [],
+    });
+  }
+  openConfiguration() {
+    this.dialog.add(ConfigurationDialog, {
+      items: this.items,
+      disabledItems: this.state.disabledItems,
+      onUpdateConfiguration: this.updateConfiguration.bind(this),
+    });
+  }
+  updateConfiguration(newDisabledItems) {
+    this.state.disabledItems = newDisabledItems;
   }
 
   openCustomersKanbanView() {
@@ -52,6 +72,40 @@ class AwesomeDashboard extends Component {
         [false, "list"],
       ],
     });
+  }
+}
+
+class ConfigurationDialog extends Component {
+  static template = "awesome_dashboard.ConfigurationDialog";
+  static components = { Dialog, CheckBox };
+  static props = ["close", "items", "disabledItems", "onUpdateConfiguration"];
+
+  setup() {
+    this.items = useState(
+      this.props.items.map((item) => {
+        return {
+          ...item,
+          enabled: !this.props.disabledItems.includes(item.id),
+        };
+      })
+    );
+    this.newDisabledItems;
+  }
+
+  done() {
+    browser.localStorage.setItem(
+      "disabledDashboardItems",
+      this.newDisabledItems
+    );
+    this.props.onUpdateConfiguration(this.newDisabledItems);
+    this.props.close();
+  }
+
+  onChange(checked, changedItem) {
+    changedItem.enabled = checked;
+    this.newDisabledItems = Object.values(this.items)
+      .filter((item) => !item.enabled)
+      .map((item) => item.id);
   }
 }
 
