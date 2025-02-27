@@ -26,8 +26,8 @@ class EstateController(http.Controller):
             scope=3
         )
         return request.render('estate.property_list_template', {
-            'properties': properties,
             'pager': pager,
+            'properties': properties,
         })
 
     @http.route(route='/property/<int:property_id>', type='http', auth='public', website=True)
@@ -40,7 +40,7 @@ class EstateController(http.Controller):
             ('property_id', '=', property_id),
             ('partner_id', '=', request.env.user.partner_id.id)
         ])
-        max_offer = max(property.mapped('offer_ids.price')) if property.offer_ids else 0
+        max_offer = max(property.offer_ids.mapped('price')) if property.offer_ids else 0
         return request.render('estate.property_detail_template', {
             'property': property,
             'offers': offers,

@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="action_view_property" model="ir.actions.act_window">
-        <field name="name">Estate Property</field>
-        <field name="res_model">estate.property</field>
-        <field name="domain">[('invoice_id', '=', active_id)]</field>
-        <field name="view_mode">form</field>
-        <field name="view_id" ref="estate.estate_property_view_form"/>
-    </record>
-
-    <record id="account_move_invoice_view_form" model="ir.ui.view">
-        <field name="name">Account Invoice</field>
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.form.inherit.estate.account</field>
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">

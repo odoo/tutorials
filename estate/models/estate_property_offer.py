@@ -49,28 +49,25 @@ class EstatePropertyOffer(models.Model):
             property = self.env['estate.property'].browse(offer['property_id'])
             if property.state == 'sold':
                 raise UserError(_("You can not create an offer for a sold property."))
-            if property.state != 'offer_received':
-                property.state = 'offer_received'
             if property.offer_ids:
                 max_offer = max(property.offer_ids.mapped('price'))
-                max_offer_partner_name = property.offer_ids.filtered(lambda x: x.price == max_offer).mapped('partner_id.name')[0]
+                partner_name = property.offer_ids.filtered(lambda x: x.price == max_offer).mapped('partner_id.name')[0]
                 if float_compare(offer['price'], max_offer, precision_rounding=0.01) <= 0:
-                    raise UserError(_(f"The new offer must be higher than the maximum offer of {max_offer:.2f} from {max_offer_partner_name}."))
+                    raise UserError(_("The new offer must be higher than the maximum offer of %(max_offer).2f from %(partner_name)s.", max_offer=max_offer, partner_name=partner_name))
+            if property.state != 'offer_received':
+                property.state = 'offer_received'
         return super().create(vals_list)
 
     def action_accept(self):
+        if 'offer_accepted' in self.mapped('property_id.state'):
+            raise UserError(_("An offer has already been accepted."))
         for offer in self:
-            if 'accepted' in offer.property_id.offer_ids.mapped('state'):
-                raise UserError(_("An offer has already been accepted."))
-            offer.write({ 'state': 'accepted' })
             offer.property_id.write({
                 'state': 'offer_accepted',
                 'selling_price': offer.price,
                 'buyer_id': offer.partner_id.id,
             })
-        return True
+        return self.write({ 'state': 'accepted' })
 
     def action_refuse(self):
-        for offer in self:
-            offer.write({ 'state': 'refused' })
-        return True
+        return self.write({ 'state': 'refused' })

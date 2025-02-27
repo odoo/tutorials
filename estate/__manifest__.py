@@ -17,7 +17,7 @@ This module allows users to run real estate agencies. They can advertise and sel
         'security/estate_groups.xml',
         'security/estate_property_security.xml',
         'security/ir.model.access.csv',
-        'wizard/add_offer_wizard_views.xml',
+        'wizard/estate_property_add_offer_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',

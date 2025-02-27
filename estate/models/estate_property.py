@@ -49,11 +49,11 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
-        help="New: A new property with no offers yet\n"
-            "Offer Received: Offers from others are received\n"
-            "Offer Accepted: An offer has been accepted\n"
-            "Sold: property is sold\n"
-            "Cancelled: property cancelled",
+        help="New: A new property with no offers yet\n \
+            Offer Received: Offers from others are received\n \
+            Offer Accepted: An offer has been accepted\n \
+            Sold: property is sold\n \
+            Cancelled: property cancelled",
         string="Status", required=True, default='new', copy=False, tracking=True)
 
     property_type_id = fields.Many2one(comodel_name='estate.property.type', string="Property Type")
@@ -95,27 +95,25 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         if any(property.state not in ('new', 'cancelled') for property in self):
-            raise UserError(_("You cannot delete a property which is not new or cancelled."))
+            raise UserError(_("Only properties in new or cancelled state can be deleted."))
 
     def action_sold(self):
         if 'cancelled' in self.mapped('state'):
-            raise UserError(_("Cancelled property cannot be sold."))
-        if self.mapped('state').count('offer_accepted') != len(self):
-            raise UserError(_("Can not sell a property without an accepted offer."))
-        self.write({ 'state': 'sold' })
-        return True
+            raise UserError(_("A cancelled property cannot be sold."))
+        if any(property.state != 'offer_accepted' for property in self):
+            raise UserError(_("Cannot sell a property without an accepted offer."))
+        return self.write({ 'state': 'sold' })
 
     def action_cancel(self):
         if 'sold' in self.mapped('state'):
             raise UserError(_("Sold properties cannot be cancelled."))
-        self.write({ 'state': 'cancelled' })
-        return True
+        return self.write({ 'state': 'cancelled' })
 
     def action_open_add_offer(self):
         return {
-            'name': "Add offer",
+            'name': _("Add offer"),
             'type': 'ir.actions.act_window',
-            'res_model': 'add.offer.wizard',
+            'res_model': 'estate.property.add.offer',
             'view_mode': 'form',
             'target': 'new',
             'context': {

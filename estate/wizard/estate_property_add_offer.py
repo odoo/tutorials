@@ -3,8 +3,8 @@
 from odoo import fields, models
 
 
-class AddOfferWizard(models.TransientModel):
-    _name = 'add.offer.wizard'
+class EstatePropertyAddOffer(models.TransientModel):
+    _name = 'estate.property.add.offer'
 
     price = fields.Float(string="Price")
     validity = fields.Integer(string="Validity (days)", default=7)
@@ -14,11 +14,12 @@ class AddOfferWizard(models.TransientModel):
 
     def action_add_offer(self):
         self.ensure_one()
+        vals_list = []
         for property in self.property_ids:
-            self.env['estate.property.offer'].create({
+            vals_list.append({
                 'price': self.price,
                 'validity': self.validity,
                 'property_id': property.id,
                 'partner_id': self.partner_id.id,
             })
-        return
+        return self.env['estate.property.offer'].create(vals_list)

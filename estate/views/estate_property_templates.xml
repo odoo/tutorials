@@ -6,6 +6,7 @@
                 <div class="row">
                     <t t-foreach="properties" t-as="property">
                         <div class="card col-md-4 p-2">
+                            <div t-if="property.state == 'sold'" class="o_ribbon_right text-bg-info">Sold</div>
                             <t t-if="property.property_image">
                                 <img t-att-src="image_data_uri(property.property_image)" class="mb-4 rounded" alt="Property Image" width="400" height="300"/>
                             </t>
