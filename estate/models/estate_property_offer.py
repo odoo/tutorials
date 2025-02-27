@@ -39,8 +39,8 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_rec = self.env['estate.property'].browse(vals.get('property_id', False))
-            if(property_rec.state == 'sold'):
-                raise UserError(_("Can't add offer for sold property."))
+            if(property_rec.state == 'sold' or property_rec.state == 'offer_accepted'):
+                raise UserError(_("Can't add offer for %s property." % property_rec.state.replace('_', ' ')))
             property_rec.state = 'offer_received'
             if vals.get('price', 0) < property_rec.best_price:
                 raise UserError(_("The new offer price must be higher than the current best offer %.2f." % property_rec.best_price))

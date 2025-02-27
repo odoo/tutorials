@@ -5,6 +5,16 @@
             <div class="container">
                 <h1 class="mb-4">Available Properties</h1>
                 <div class="row mb-3">
+                    <div class="col-md-4">
+                        <input type="text" id="property_name" name="property_name" class="form-control" placeholder="Search by property name" t-att-value="property_name"/>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary" onclick="window.location.href='/properties?property_name=' + document.getElementById('property_name').value;">
+                            Search
+                        </button>
+                    </div>
+                </div>
+                <div class="row mb-3">
                     <div class="col-md-3">
                         <input type="date" id="listed_after" name="listed_after" class="form-control" t-att-value="listed_after"/>
                     </div>

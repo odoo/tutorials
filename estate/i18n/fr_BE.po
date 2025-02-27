@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-02-24 16:45+0000\n"
-"PO-Revision-Date: 2025-02-24 16:45+0000\n"
+"POT-Creation-Date: 2025-02-27 13:33+0000\n"
+"PO-Revision-Date: 2025-02-27 13:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,9 @@ msgstr ""
 msgid ""
 "A higher or equal offer has already been accepted. You cannot accept this "
 "offer."
-msgstr "Une offre supérieure ou égale a déjà été acceptée. Vous ne pouvez pas accepter cette offre."
+msgstr ""
+"Une offre supérieure ou égale a déjà été acceptée. Vous ne pouvez pas "
+"accepter cette offre."
 
 #. module: estate
 #: model_terms:ir.ui.view,arch_db:estate.estate_property_offer_view_list
@@ -119,6 +121,13 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property__activity_type_icon
 msgid "Activity Type Icon"
+msgstr ""
+
+#. module: estate
+#: model:ir.actions.act_window,name:estate.estate_property_offer_wizard_action
+#: model_terms:ir.ui.view,arch_db:estate.estate_property_offer_wizard_view_form
+#: model_terms:ir.ui.view,arch_db:estate.estate_property_view_list
+msgid "Add Offer"
 msgstr ""
 
 #. module: estate
@@ -185,16 +194,18 @@ msgstr ""
 
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property__buyer_id
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__buyer_id
 msgid "Buyer"
 msgstr ""
 
 #. module: estate
 #. odoo-python
 #: code:addons/estate/models/estate_property_offer.py:0
-msgid "Can't add offer for sold property."
-msgstr "L'étiquette de propriété doit être unique. Impossible d'ajouter une offre pour la propriété vendue."
+msgid "Can't add offer for %s property."
+msgstr "Impossible d'ajouter une offre pour la propriété %s."
 
 #. module: estate
+#: model_terms:ir.ui.view,arch_db:estate.estate_property_offer_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:estate.estate_property_view_form
 msgid "Cancel"
 msgstr ""
@@ -223,6 +234,7 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property__create_uid
 #: model:ir.model.fields,field_description:estate.field_estate_property_offer__create_uid
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__create_uid
 #: model:ir.model.fields,field_description:estate.field_estate_property_tag__create_uid
 #: model:ir.model.fields,field_description:estate.field_estate_property_type__create_uid
 msgid "Created by"
@@ -231,6 +243,7 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property__create_date
 #: model:ir.model.fields,field_description:estate.field_estate_property_offer__create_date
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__create_date
 #: model:ir.model.fields,field_description:estate.field_estate_property_tag__create_date
 #: model:ir.model.fields,field_description:estate.field_estate_property_type__create_date
 msgid "Created on"
@@ -267,6 +280,7 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property__display_name
 #: model:ir.model.fields,field_description:estate.field_estate_property_offer__display_name
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__display_name
 #: model:ir.model.fields,field_description:estate.field_estate_property_tag__display_name
 #: model:ir.model.fields,field_description:estate.field_estate_property_type__display_name
 msgid "Display Name"
@@ -386,6 +400,7 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property__id
 #: model:ir.model.fields,field_description:estate.field_estate_property_offer__id
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__id
 #: model:ir.model.fields,field_description:estate.field_estate_property_tag__id
 #: model:ir.model.fields,field_description:estate.field_estate_property_type__id
 msgid "ID"
@@ -426,6 +441,7 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property__write_uid
 #: model:ir.model.fields,field_description:estate.field_estate_property_offer__write_uid
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__write_uid
 #: model:ir.model.fields,field_description:estate.field_estate_property_tag__write_uid
 #: model:ir.model.fields,field_description:estate.field_estate_property_type__write_uid
 msgid "Last Updated by"
@@ -434,6 +450,7 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property__write_date
 #: model:ir.model.fields,field_description:estate.field_estate_property_offer__write_date
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__write_date
 #: model:ir.model.fields,field_description:estate.field_estate_property_tag__write_date
 #: model:ir.model.fields,field_description:estate.field_estate_property_type__write_date
 msgid "Last Updated on"
@@ -447,6 +464,11 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property__living_area
 msgid "Living Area (sqm)"
+msgstr ""
+
+#. module: estate
+#: model_terms:ir.ui.view,arch_db:estate.estate_property_offer_wizard_view_form
+msgid "Make an Offer"
 msgstr ""
 
 #. module: estate
@@ -477,6 +499,11 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields.selection,name:estate.selection__estate_property__state__new
 msgid "New"
+msgstr ""
+
+#. module: estate
+#: model:ir.model.fields,field_description:estate.field_estate_property__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
 msgstr ""
 
 #. module: estate
@@ -537,8 +564,18 @@ msgid "Offer Accepted"
 msgstr ""
 
 #. module: estate
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__price
+msgid "Offer Price"
+msgstr ""
+
+#. module: estate
 #: model:ir.model.fields.selection,name:estate.selection__estate_property__state__offer_received
 msgid "Offer Received"
+msgstr ""
+
+#. module: estate
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__validity
+msgid "Offer Validity (days)"
 msgstr ""
 
 #. module: estate
@@ -598,6 +635,7 @@ msgid "Print salesman property"
 msgstr ""
 
 #. module: estate
+#: model:ir.model.fields,field_description:estate.field_estate_property_offer_wizard__property_ids
 #: model:ir.model.fields,field_description:estate.field_estate_property_type__property_ids
 #: model:ir.ui.menu,name:estate.estate_property_menu_action
 #: model:website.menu,name:estate.estate_property_menu
@@ -754,6 +792,16 @@ msgid "Salesman"
 msgstr ""
 
 #. module: estate
+#: model_terms:ir.ui.view,arch_db:estate.estate_property_template
+msgid "Search"
+msgstr ""
+
+#. module: estate
+#: model_terms:ir.ui.view,arch_db:estate.estate_property_template
+msgid "Search by property name"
+msgstr ""
+
+#. module: estate
 #: model_terms:ir.ui.view,arch_db:estate.estate_property_view_kanban
 #: model_terms:ir.ui.view,arch_db:estate.estate_property_view_search
 msgid "Search estate"
@@ -774,7 +822,7 @@ msgstr ""
 #. odoo-python
 #: code:addons/estate/models/estate_property.py:0
 msgid "Selling price must be atleast 90% of expected price."
-msgstr "Le prix de vente doit être d'au moins 90 % du prix attendu."
+msgstr ""
 
 #. module: estate
 #: model:ir.model.fields,field_description:estate.field_estate_property_type__sequence
@@ -832,7 +880,9 @@ msgstr "Le prix attendu doit être strictement positif."
 #. odoo-python
 #: code:addons/estate/models/estate_property_offer.py:0
 msgid "The new offer price must be higher than the current best offer %.2f."
-msgstr "Le prix de la nouvelle offre doit être supérieur à la meilleure offre actuelle"
+msgstr ""
+"Le prix de la nouvelle offre doit être supérieur à la meilleure offre "
+"actuelle"
 
 #. module: estate
 #: model:ir.model.constraint,message:estate.constraint_estate_property_offer_check_price
@@ -891,6 +941,11 @@ msgstr ""
 #. module: estate
 #: model:ir.model.fields.selection,name:estate.selection__estate_property__garden_orientation__west
 msgid "West"
+msgstr ""
+
+#. module: estate
+#: model:ir.model,name:estate.model_estate_property_offer_wizard
+msgid "Wizard to add offers to multiple properties"
 msgstr ""
 
 #. module: estate

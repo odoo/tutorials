@@ -112,6 +112,15 @@ class EstateProperty(models.Model):
                 raise UserError(_("Offer cannot be sold without offer accepted."))
         return True
 
+    def action_add_offer(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': 'estate.property.offer.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_property_ids': [(6, 0, self.ids)]}
+        }
+
     def _track_subtype(self, init_values):
         self.ensure_one()
         if 'state' in init_values and self.state == 'offer_accepted':
