@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_sale_renting_deposit" inherit_id="website_sale_renting.rental_product" name="Deposit">
+        <xpath expr="//div[@id='product_attributes_simple']" position="after">
+            <t t-set="info" t-value="product"/>
+            <div t-if="info.require_deposit" class="mb-4">
+                <strong class="attribute_name">Required Deposit:</strong>
+                <span t-out="info.deposit_amount"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>
