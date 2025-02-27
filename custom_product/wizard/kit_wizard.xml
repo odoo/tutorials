@@ -1,0 +1,39 @@
+<odoo>
+
+    <record id="view_kit_wizard_form" model="ir.ui.view">
+        <field name="name">kit.wizard.form</field>
+        <field name="model">kit.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Kit Configuration">
+                <group>
+                    <field name="product_id" readonly="1"/>
+                </group>
+
+                <group>
+                    <field name="component_ids">
+                        <list editable="bottom">
+                            <field name="product_id" readonly="1"/>
+                            <field name="quantity"/>
+                            <field name="price"/>
+                        </list>
+                    </field>
+                </group>
+
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="action_kit_wizard" model="ir.actions.act_window">
+        <field name="name">Kit Wizard</field>
+        <field name="res_model">kit.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_kit_wizard_form"/>
+        <field name="target">new</field>
+        <field name="context">{'active_id': active_id}</field>
+    </record>
+</odoo>
