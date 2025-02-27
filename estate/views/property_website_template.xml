@@ -8,11 +8,17 @@
                 </div>
 
                 <!-- Filter Section -->
-                <form action="/properties" method="GET" class="d-flex align-items-center mb-3">
-                    <input type="date" name="listed_after" class="form-control w-auto mx-2"
-                        t-att-value="listed_after or ''" />
-                    <button type="submit" class="btn btn-primary">Listed After</button>
-                </form>
+                <div class="d-flex justify-content-between">
+                    <form action="/properties" method="GET" class="d-flex align-items-center mb-3">
+                        <input type="date" name="listed_after" class="form-control w-auto mx-2"
+                            t-att-value="listed_after or ''" />
+                        <button type="submit" class="btn btn-primary">Listed After</button>
+                    </form>
+                    <form method="GET" action="/properties" class="d-flex align-items-center mb-4" style="margin-top: 20px;">
+                        <input type="text" name="search_name" class="form-control" placeholder="Search by property name" style="max-width: 300px;" t-att-value="search_name or ''"/>
+                        <button type="submit" class="btn btn-primary ms-2">Search</button>
+                    </form>
+                </div>
 
                 <!-- Properties Grid -->
                 <div class="row">

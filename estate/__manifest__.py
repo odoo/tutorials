@@ -14,6 +14,7 @@ It provides real estate module
         'data/estate_property_sequence.xml',
         'data/website_menus.xml',
         'data/estate_rating_data_template.xml',
+        'wizard/estate_property_offer_wizard_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',

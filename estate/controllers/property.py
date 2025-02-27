@@ -10,16 +10,18 @@ from odoo.http import request
 class PropertyController(http.Controller):
 
     @http.route(['/properties','/properties/page/<int:page>'], type='http', auth='public', website=True)
-    def list_properties(self, page=1, listed_after=None):
+    def list_properties(self, page=1, listed_after=None, search_name=None):
         properties_per_page = 6
         domain=[('state', 'not in', ['cancelled', 'sold'])]
-        
+
         if listed_after:
             try:
                 date_filter = datetime.strptime(listed_after, '%Y-%m-%d')
                 domain.append(('create_date', '>=', date_filter))
             except ValueError:
                 pass
+        if search_name:
+            domain.append(('name', '=', search_name))
 
         total_properties = request.env['estate.property'].search_count(domain)
         properties = request.env['estate.property'].search(

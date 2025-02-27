@@ -115,4 +115,15 @@ class EstateProperty(models.Model):
         if 'state' in vals and self.state == 'offer_accepted':
             return self.env.ref('estate.mt_state_change')
         return super()._track_subtype(vals)
+
+    def action_open_add_offer(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Add Offer',
+            'res_model': 'estate.property.offer.wizard',
+            'view_mode': 'form',
+            'view_id': self.env.ref('estate.estate_propety_offer_wizard_form').id,
+            'target': 'new',
+            'context': {'default_property_ids': [(6, 0, self.ids)]}
+        }
         

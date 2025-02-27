@@ -9,7 +9,4 @@ export class DashboardItem extends Component {
         size: { type: Number, optional: true },
         slots: { type: Object }
     }
-    setup() {
-        this.defaultSize = this.props.size ?? 1;
-    }
 }

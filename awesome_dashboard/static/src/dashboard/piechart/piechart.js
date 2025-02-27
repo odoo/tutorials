@@ -15,6 +15,10 @@ export class PieChart extends Component {
         useEffect(() => this.renderChart());
     }
     renderChart() {
+        if (this.chart) {
+            this.chart.destroy();
+        }
+
         const chartData = this.props.data || {};
         const ctx = this.canvasRef.el.getContext("2d");
         this.chart = new Chart(ctx, {
@@ -25,10 +29,6 @@ export class PieChart extends Component {
                     data: Object.values(chartData),
                     backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56'],
                 }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
             },
         });
     }
