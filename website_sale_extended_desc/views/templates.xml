@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="product_extended_description" inherit_id="website_sale.product">
+        <xpath expr="//p[@class='alert alert-warning' and contains(text(), 'This product has no valid combination.')]" position="after">
+            <div t-if="product.extended_description_ecommerce" class="accordion mb-5" id="extendedDescriptionAccordion">
+                <div class="accordion-item">
+                    <h3 class="mb-0 accordion-header">
+                        <button class="accordion-button"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#collapseExtendedDescription"
+                                aria-expanded="true"
+                                aria-controls="collapseExtendedDescription">
+                            More Information
+                        </button>
+                    </h3>
+                    <div id="collapseExtendedDescription" class="accordion-collapse collapse show"
+                         data-bs-parent="#extendedDescriptionAccordion">
+                        <div t-field="product.extended_description_ecommerce" class="border rounded p-3 accordion-body"/>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
