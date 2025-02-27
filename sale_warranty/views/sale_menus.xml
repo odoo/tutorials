@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="menu_sale_warranty_configuration"
+        action="action_sale_warranty_config"
+        parent="sale.menu_sale_config" />
+</odoo>
