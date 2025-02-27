@@ -10,8 +10,16 @@ export function useClicker() {
 }
 
 export const clickerService = {
-    start() {
-        return new ClickerModel();
+    dependencies: ["effect"],
+    start(env, services) {
+        const clicker = new ClickerModel();
+        clicker.bus.addEventListener("MILESTONE_1k", () => {
+            services.effect.add({
+                type: "rainbow_man",
+                message: "Milestone reached! You can now buy clickbots",
+            });
+        });
+        return clicker;
     }
 }
 
