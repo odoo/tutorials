@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+<t t-name="awesome_clicker.systrayCounter">
+<Dropdown position="'bottom-end'">
+    <button class="btn btn-light">
+        <t t-esc="this.clicker.clicks_text" /> <i class="fa fa-mouse-pointer" />, <t t-esc="this.clicker.getTotalTrees()" /> <i
+            class="fa fa-tree" />, <t t-esc="this.clicker.getTotalFruits()" /> <i class="fa fa-apple" />
+    </button>
+    <t t-set-slot="content">
+        <DropdownItem onSelected="() => this.openClient()">
+            Open clicker menu
+        </DropdownItem>
+        <p t-if="this.clicker.trees.cherries gt 0">
+            <t t-esc="this.clicker.trees.cherries" /> cherry trees </p>
+        <p t-if="this.clicker.trees.peaches gt 0">
+            <t t-esc="this.clicker.trees.peaches" /> peach trees </p>
+        <p t-if="this.clicker.fruits.cherries gt 0">
+            <t t-esc="this.clicker.trees.cherries" /> cherries </p>
+        <p t-if="this.clicker.fruits.peaches gt 0">
+            <t t-esc="this.clicker.trees.peaches" /> peaches </p>
+    </t>
+</Dropdown>
+</t>
+</templates>
