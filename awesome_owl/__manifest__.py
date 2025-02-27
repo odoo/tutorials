@@ -37,6 +37,7 @@
             'web/static/src/libs/fontawesome/css/font-awesome.css',
             'awesome_owl/static/src/**/*',
         ],
+        
     },
     'license': 'AGPL-3'
 }
