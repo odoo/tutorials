@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 
-class PropertyPlan(models.Model):
+class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     sec_uom_id = fields.Many2one(

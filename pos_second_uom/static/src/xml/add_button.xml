@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
     <t t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" owl="1">
-
         <xpath expr="//button[@class='btn btn-light btn-lg flex-shrink-0 ms-auto']" position="before">
-            <button class="btn btn-primary btn-lg" t-att-class="{'d-none': !showCustomButton.value}" t-on-click="clickCustomButton">
+            <button class="btn btn-primary btn-lg" t-att-class="{'d-none': !showCustomButton?.value}" t-on-click="openConfigurationDialog">
                 <i class="fa fa-plus me-1" />
                     Add Quantity
             </button>
         </xpath>
-
     </t>
 
     <t t-name="pos_second_uom.ConfigurationDialog">
@@ -27,10 +25,9 @@
             </div>
 
             <t t-set-slot="footer">
-                <button class="btn btn-primary" t-on-click="done">Confirm</button>
+                <button class="btn btn-primary" t-on-click="confirmSelection">Confirm</button>
                 <button class="btn btn-secondary" t-on-click="cancel">Discard</button>
             </t>
         </Dialog>
     </t>
-
 </templates>

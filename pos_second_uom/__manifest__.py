@@ -2,7 +2,7 @@
     'name': 'Add Second UOM in POS',
     'version': '1.0.0',
     'category': 'Sales/Point of Sale',
-    'depends': ['point_of_sale', 'awesome_dashboard'],
+    'depends': ['point_of_sale'],
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
