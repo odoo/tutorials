@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<template>
+    <t t-name="awesome_dashboard.number_card">
+        <t t-out="props.title"></t>
+        <div class="o_dashboardItem">
+            <h1><t t-out="props.value"></t></h1>
+        </div>
+    </t>
+</template>
