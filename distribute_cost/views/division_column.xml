@@ -6,13 +6,12 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <!-- Add the "Division" column before "Price Subtotal" -->
+                <!-- Add the "Division" column before "Price Subtotal in sale order Line" -->
                 <xpath expr="//form//notebook//page//field[@name='order_line']/list/field[@name='price_subtotal']" position="before">
                     <field 
-                        name="divided_price" 
-                        string="Division" 
-                        default="0.0" 
-                        editable="bottom"
+                        name="divided_price_tags" 
+                        widget="many2many_tags"
+                        options="{'color_field': 'color'}"
                         readonly="1"
                     />
                 </xpath>

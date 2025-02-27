@@ -7,8 +7,7 @@
         'wizard/distribute_cost_wizard_view.xml',
         'views/orderline_button.xml',
         'views/division_column.xml',
-        
+        'views/email_template.xml',
     ],
-
     'license': 'LGPL-3'
 }

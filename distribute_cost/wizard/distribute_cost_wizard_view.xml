@@ -20,7 +20,7 @@
                             <field name="order_id" invisible="true"/>
                              <field name="order_line_ids" string="">
                                 <list editable="bottom" create="0">
-                                    <field name="name" string="Product" readonly="True"/>
+                                    <field name="product_id" string="Product" readonly="True"/>
                                     <field name="linked_sale_order_line_id" column_invisible="True"/>
                                     <field name="include_for_division" widget="boolean" string="Include"/>
                                     <field name="divided_price" string="Price" widget="monetary" readonly="False"/>

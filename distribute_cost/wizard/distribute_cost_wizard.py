@@ -1,4 +1,4 @@
-from odoo import fields, models, api, _, Command
+from odoo import Command, fields, models
 from odoo.exceptions import ValidationError
 
 class DistributeCostWizard(models.TransientModel):
@@ -12,7 +12,6 @@ class DistributeCostWizard(models.TransientModel):
         price_to_add = (current_line.price_subtotal) / len(initial_lines) if len(initial_lines) > 0 else 0.0
         return [
             Command.create({
-                'name': line.name,
                 'divided_price': price_to_add,
                 'linked_sale_order_line_id': line.id,
                 'include_for_division': True
@@ -24,15 +23,13 @@ class DistributeCostWizard(models.TransientModel):
     order_line_ids = fields.One2many('distribute.cost.line', 'wizard_id', string="Order Lines", default=_default_order_line_id)
 
     def action_divide_cost(self):
-        # Calculate the sum of divided prices only for selected lines
         selected_lines = self.order_line_ids.filtered(lambda line: line.include_for_division)
         total_divided_price = sum(selected_lines.mapped('divided_price'))
-
         original_total_price = self.env.context.get('original_total_price')
         if total_divided_price > original_total_price:
             raise ValidationError("The total of divided prices cannot exceed the original line's price.")
-
         current_line = self.env['sale.order.line'].browse(self.env.context.get('active_id'))
+
         # Apply divided prices only to selected visible lines
         total_amt = 0.0
         for line in selected_lines:
@@ -55,7 +52,7 @@ class DistributeCostLine(models.TransientModel):
     _description = 'Distribute Cost Line'
 
     wizard_id = fields.Many2one('distribute.cost.wizard', string="Wizard")
-    name = fields.Char(string="Product", required=True, default="pdt")
+    linked_sale_order_line_id = fields.Many2one('sale.order.line')
+    product_id = fields.Many2one(related="linked_sale_order_line_id.product_id", string="Product", required=True)
     divided_price = fields.Float(string="Price", default=0.0)
     include_for_division = fields.Boolean(string="Include for Division", default=True)
-    linked_sale_order_line_id = fields.Many2one('sale.order.line')
