@@ -1,7 +1,9 @@
 import { registry } from "@web/core/registry";
 import { rpc } from "@web/core/network/rpc";
+import { reactive } from "@odoo/owl";
 import { memoize } from "@web/core/utils/functions";
 
+/** Main stat function */
 export async function getStatistics() {
     const result = await rpc("/awesome_dashboard/statistics");
     return {
@@ -14,10 +16,30 @@ export async function getStatistics() {
     }
 }
 
-
-export const statisticsService = { 
+/** Stats have the same values during all the runtime */
+export const staticStatisticsService = { 
     start(){
         return { statistics : memoize(getStatistics) };
+    }    
+}
+
+registry.category("services").add("awesome_dashboard.statistics.static", staticStatisticsService);
+
+
+/** Stats values change every few seconds !! */
+export const statisticsService = { 
+    start(){
+        let statistics = reactive({ isReady: false });
+
+        async function loadData() {
+            const updates = await getStatistics();
+            Object.assign(statistics, updates, { isReady: true });
+        }
+
+        setInterval(loadData, 5*1000);
+        loadData();
+        
+        return statistics;
     }    
 }
 
