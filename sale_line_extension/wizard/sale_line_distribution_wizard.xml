@@ -14,14 +14,15 @@
             <form string="Sale Line Distribution" nolabel="1">
                 <sheet>
                     <group>
-                        <field name="order_line_ids" optional="hide" nolabel="1">
+                        <field name="distribution_line_ids" optional="hide" nolabel="1">
                             <list editable="bottom" delete="0" create="0">
+                                <field name="sale_order_line" optional="show"/>
                                 <field name="distributed_cost"/>
                             </list>
                         </field>
                     </group>
                     <footer>
-                        <button string="Apply" class="btn-primary"/>
+                        <button string="Divide" name="action_divide" type="object" class="btn-primary"/>
                         <button string="Cancel" class="btn-secondary" special="cancel"/>
                     </footer>
                 </sheet>
