@@ -1,5 +1,4 @@
 import { registry } from "@web/core/registry";
-import { memoize } from "@web/core/utils/functions";
 import { rpc } from "@web/core/network/rpc";
 import { reactive } from "@odoo/owl";
 
@@ -19,16 +18,6 @@ const statisticsService = {
     loadStatistics();
     setInterval(loadStatistics, 10000);
 
-    // return {
-    // loadStatistics: memoize(async () => {
-    //   try {
-    //     return await rpc("/awesome_dashboard/statistics");
-    //   } catch (error) {
-    //     console.error("loadStatistics failed:", error);
-    //     throw new Error("Failed to load statistics");
-    //   }
-    // }),
-    // };
     return statistics;
   },
 };
