@@ -10,9 +10,11 @@ from odoo.http import request
 class EstatePropertyController(http.Controller):
 
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
-    def list_properties(self, page=1,listed_after=None):
+    def list_properties(self, page=1,listed_after=None, search_name=None):
         domain = [('state', 'in', ['new', 'offerreceived', 'offeraccepted'])]
         properties_per_page = 6
+        if search_name:
+            domain.append(('name', '=', search_name))
         if listed_after:
             try:
                 date_filter = datetime.strptime(listed_after, '%Y-%m-%d')
