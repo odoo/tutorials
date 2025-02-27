@@ -1,0 +1,73 @@
+<odoo>
+    <template id="supplier_invoice_upload_form" name="Supplier Invoice Upload Form">
+        <t t-call="website.layout">
+            <t t-set="title">Invoice Upload</t>
+            <div class="container">
+                <h2 class="text-center">Invoice Details</h2>
+                <form action="/supplier/upload_invoice" method="post" enctype="multipart/form-data"
+                    class="oe_form">
+
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                    <div class="mb-3">
+                        <label for="company">Select Organization:</label>
+                        <select name="company" class="form-control">
+                            <t t-foreach="request.env.user.company_ids" t-as="company">
+                                <option t-att-value="company.id">
+                                    <t t-esc="company.name" />
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="pdf_file">Upload PDF:</label>
+                        <input type="file" name="pdf_file" accept=".pdf" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="xml_file">Upload XML:</label>
+                        <input type="file" name="xml_file" accept=".xml" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="message_template" name="Message Template">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card shadow-lg border-0 rounded-4">
+                            <div class="card-body text-center p-4">
+                                <t t-if="success_message">
+                                    <div
+                                        class="alert alert-success shadow-sm rounded-pill py-2 px-3"
+                                        role="alert">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <t t-esc="success_message" />
+                                    </div>
+                                </t>    
+                                <t t-if="error_message">
+                                    <div class="alert alert-danger shadow-sm rounded-pill py-2 px-3"
+                                        role="alert">
+                                        <i class="fas fa-exclamation-circle me-2"></i>
+                                        <t t-esc="error_message" />
+                                    </div>
+                                </t>    
+                                <div class="mt-3">
+                                    <a href="/supplier/portal"
+                                        class="btn btn-primary btn-lg shadow-sm rounded-pill px-4">
+                                        <i class="fas fa-home me-2"></i> Back to Dashboard </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
