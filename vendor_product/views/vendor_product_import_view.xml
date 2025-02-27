@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+     <record id="vendor_product_import_list_view" model="ir.ui.view">
+        <field name="name">vendor.product.import.list.view</field>
+        <field name="model">vendor.product.import</field>
+        <field name="arch" type="xml">
+            <list string="Vendor Product Import">
+                <field name="name" string="Name"/>
+                <field name="vendor_id" string="Vendor"/>
+                <field name="vendor_template" string="Template"/>
+                <field name="date" string="Date"/>
+                <field name="state" string="State"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="vendor_product_import_form_view" model="ir.ui.view">
+        <field name="name">vendor.product.import.form.view</field>
+        <field name="model">vendor.product.import</field>
+        <field name="arch" type="xml">
+            <form name="Vendor Product Import">  
+                <header>
+                    <button name="action_manual_process" type="object" string="Menual Process" class="oe_highlight"/>
+                    <button name="action_reset_to_pending" type="object" string="Reset to Pending" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"
+                        statusbar_visible="pending, processed, error" />
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name" class="h1" nolabel="1"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="vendor_id" string="Vendor"/>
+                            <field name="fiel_to_process" string="File To Process"/>
+                        </group>
+                        <group>
+                            <field name="vendor_template" string="Vender Template Formate"/>
+                            <field name="date" string="Date"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- view action -->
+
+    <record id="action_vender_product_import" model="ir.actions.act_window">
+        <field name="name">Vendor Product Import</field>
+        <field name="res_model">vendor.product.import</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+</odoo>

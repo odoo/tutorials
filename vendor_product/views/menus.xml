@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <menuitem 
+        id="vendor_product_template"
+        name="Vendor Product Template"
+        parent="sale.product_menu_catalog"
+        action="vendor_product_template_view_action"
+        sequence="40"
+    />
+
+    <menuitem 
+        id="vendor_template"
+        name="Vendor Product Import"
+        parent="sale.product_menu_catalog"
+        action="action_vender_product_import"
+        sequence="50"
+    />
+
+</odoo>

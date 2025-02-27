@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="vendor_template_formate_list_view" model="ir.ui.view">
+        <field name="name">vendor.template.formate.list.view</field>
+        <field name="model">vendor.template.formate</field>
+        <field name="arch" type="xml">
+            <list string="Vendor Template Formate">
+                <field name="file_header" string="File Header"/>
+                <field name="odoo_field" string="Odoo Field"/>
+                <field name="sequence" widget="handle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- view action -->
+    <record id="vendor_template_formate_action" model="ir.actions.act_window">
+        <field name="name">Vendor Template Formate action</field>
+        <field name="res_model">vendor.template.formate</field>
+        <field name="view_mode">list</field>
+    </record>
+
+</odoo>
