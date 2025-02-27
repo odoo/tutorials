@@ -6,7 +6,7 @@
             <button class="btn btn-primary btn-sm" t-on-click="openCustomers"> Customers </button>
             <button class="btn btn-primary btn-sm" t-on-click="openLeads"> Leads </button>
         </t>
-        <div class="d-flex flex-wrap">
+        <div class="d-flex flex-wrap" t-if="stats.dataReady">
             <DashboardItem>
                 Average amount of t-shirt by order this month
                 <div class="fs-1 fw-bold text-success text-center">
