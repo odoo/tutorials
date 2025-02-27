@@ -1,0 +1,7 @@
+<odoo>
+    <template id="report_saleorder_document_inherited" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//tbody[hasclass('sale_tbody')]/t[@t-as='line']" position="attributes">
+                <attribute name="t-if">(doc.is_printable and line.is_subproduct) or not line.is_subproduct</attribute>
+        </xpath>
+    </template>
+</odoo>
