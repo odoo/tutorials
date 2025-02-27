@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='order_details']" position="inside">
-                <field name="zero_stock_approval" readonly="not group_check"/>
+                <field name="zero_stock_approval" readonly="not is_sales_manager"/>
             </xpath>
         </field>
     </record>
