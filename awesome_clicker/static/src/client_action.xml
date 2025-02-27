@@ -2,8 +2,13 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.client_action">
-        <p>Clicks: <t t-esc="clicker.state.clicks"/></p>
+        <ClickValue />
         <button class="btn btn-primary" t-on-click.stop="() => this.clicker.increment(10)">Increment</button>
+
+        <t t-if="this.clicker.level >= 1">
+            <p><t t-esc="this.clicker.clickBots"/>x ClickBots (10 clicks per 10 seconds)</p>
+            <button class="btn btn-primary" t-on-click="buy" t-att-disabled="this.clicker.clicks&lt;1000">Buy</button>
+        </t>
     </t>
 
 </templates>
