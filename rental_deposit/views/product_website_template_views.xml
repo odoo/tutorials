@@ -1,0 +1,13 @@
+<odoo>
+    <template id="product_website_template_views_rental_deposit" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='add_to_cart_wrap']" position="after">
+            <t t-if="product.requires_deposit">
+                <div class="d-flex justify-content-end align-items-center mt-2">
+                    <span class="fw-bold text-dark me-2">Deposit required:</span>
+                    <span t-out="product.deposit_amount" />
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
