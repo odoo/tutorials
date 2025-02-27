@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_list_template" name="Property Listings">
+        <t t-call="web.frontend_layout">
+            <div class="container">
+                <h1 class="text-center">Available Properties</h1>
+
+                <form action="/properties" method="get" class="mb-3">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search properties..." t-att-value="search_query or ''"/>
+                        <input type="date" name="listed_after" class="form-control" t-att-value="listed_after or ''"/>
+                        <button type="submit" class="btn btn-primary">Explore</button>
+                    </div>
+                </form>
+
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4">
+                            <div class="card shadow-sm p-3 mb-5 bg-white rounded">
+                                <img t-if="property.image" t-att-src="'data:image/png;base64,' + property.image.decode()" class="card-img-top" alt="Property Image"/>
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-esc="property.name"/></h5>
+                                    <p class="card-text"><strong>Price:</strong> <t t-esc="property.expected_price"/></p>
+                                    <a t-att-href="'/property/%s' % property.id" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-center my-3">
+                <t t-call="website.pager"/>
+            </div>
+        </t>
+    </template>
+
+    <template id="estate_property_detail_template" name="Property Details">
+        <t t-call="web.frontend_layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <img t-if="property.image" t-att-src="'data:image/png;base64,' + property.image.decode()" class="img-fluid rounded" alt="Property Image"/>
+                    </div>
+                    <div class="col-md-6 card shadow p-3 mb-5 bg-white rounded">
+                        <h1><t t-esc="property.name"/></h1>
+                        <p><strong>Price:</strong> <t t-esc="property.expected_price"/></p>
+                        <p><strong>Listed Date:</strong> <t t-esc="property.create_date.strftime('%Y-%m-%d')"/></p>
+                        <p><strong>Date Availability:</strong> <t t-esc="property.date_availability"/></p>
+                        <p><strong>Total Area:</strong> <t t-esc="property.total_area"/></p>
+                        <p><strong>Property Status</strong> <t t-esc="property._fields['state'].convert_to_export(property.state, property)"/></p>
+                        <a href="/properties" class="btn btn-secondary">Back to Listings</a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
