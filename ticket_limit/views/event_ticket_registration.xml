@@ -22,11 +22,12 @@
         <xpath expr="//div[hasclass('o_wevent_registration_single_select')]" position="replace">
             <select t-att-name="'nb_register-%s' % (tickets.id if tickets else 0)" class="d-inline w-auto form-select">
                 <t t-set="seats_max_ticket" 
-                    t-value="
+                    t-value=" 
+                        tickets.tickets_per_registration if not tickets else (
                         min(tickets.tickets_per_registration, tickets.seats_available) 
-                        if tickets and tickets.seats_limited 
-                        else tickets.tickets_per_registration if tickets 
-                        else event.default_registration_tickets 
+                        if tickets.seats_available and tickets.tickets_per_registration 
+                        else tickets.tickets_per_registration
+                        ) if tickets else event.default_registration_tickets
                 "/>
                 <t t-set="seats_max_event" t-value="event.seats_available if event.seats_limited else seats_max_ticket"/>
                 <t t-set="seats_max" t-value="min(seats_max_event, seats_max_ticket)"/> 
