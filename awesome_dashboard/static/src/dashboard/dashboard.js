@@ -7,6 +7,7 @@ import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboardItem/dashboard_item";
 import { rpc } from "@web/core/network/rpc";
 import { PieChart } from "./pieChart/pie_chart";
+import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
   static template = "awesome_dashboard.AwesomeDashboard";
@@ -33,6 +34,8 @@ class AwesomeDashboard extends Component {
     //     console.error("statistics.loadStatistics  method failed:", error);
     //   }
     // });
+
+    this.items = items;
   }
 
   openCustomersKanbanView() {
@@ -51,6 +54,4 @@ class AwesomeDashboard extends Component {
   }
 }
 
-registry
-  .category("actions")
-  .add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

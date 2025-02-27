@@ -4,6 +4,7 @@ import {
   useRef,
   onMounted,
   onWillUnmount,
+  onWillUpdateProps,
 } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 import { getColor } from "@web/core/colors/colors";
@@ -25,8 +26,6 @@ export class PieChart extends Component {
     onMounted(async () => {
       const sizes = Object.keys(this.props.data);
       const values = Object.values(this.props.data);
-      console.log("sizes  ", sizes);
-      console.log("values  ", values);
 
       const color = sizes.map((_, index) => getColor(index));
       await this.createChart(sizes, values, color);
@@ -34,6 +33,14 @@ export class PieChart extends Component {
 
     onWillUnmount(() => {
       this.chart && this.chart.destroy();
+    });
+
+    onWillUpdateProps((nextProps) => {
+      if (JSON.stringify(nextProps.data) != JSON.stringify(this.props.data)) {
+        const sizes = Object.keys(nextProps.data);
+        const values = Object.values(nextProps.data);
+        this.updateChart(sizes, values);
+      }
     });
   }
 
@@ -53,5 +60,13 @@ export class PieChart extends Component {
         ],
       },
     });
+  }
+
+  // extra: chart is not updating when values update from rpc
+  // fix chart to update
+  async updateChart(sizes, values) {
+    this.chart.data.labels = sizes;
+    this.chart.data.datasets[0].data = values;
+    this.chart.update();
   }
 }

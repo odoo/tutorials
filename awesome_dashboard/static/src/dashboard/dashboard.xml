@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_dashboard.AwesomeDashboard">
+    <t t-name="awesome_dashboard.AwesomeDashboard" owl="1">
         <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
             <t t-set-slot="layout-buttons">
                 <button class="btn btn-primary" t-on-click="openCustomersKanbanView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeadView">Leads</button>
             </t>
             <div class="d-flex flex-wrap">
-                <DashboardItem>
+                <!-- <DashboardItem>
                     <t t-set-slot="content">
                         this is no size provided card
                     </t>
@@ -17,10 +17,10 @@
                     <t t-set-slot="content">
                         this is size 2 provided card
                     </t>
-                </DashboardItem>
+                </DashboardItem> -->
 
                 <div class="d-flex flex-wrap" t-if="statistics.flag">
-                    <DashboardItem t-if="statistics.average_quantity">
+                    <!-- <DashboardItem t-if="statistics.average_quantity">
                         <t t-set-slot="content">
                             Average amount of t-shirt by order this month
                             <h2 class="fw-bold text-center">
@@ -64,9 +64,17 @@
                     <DashboardItem size="2">
                         <t t-set-slot="content">
                             Shirt orders by size
-                            <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
+                            <PieChart data="statistics.orders_by_size || {}" label="'Shirt orders by size'"/>
                         </t>
-                    </DashboardItem>
+                    </DashboardItem> -->
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <DashboardItem size="item.size || 1">
+                            <t t-set-slot="content">
+                                <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                                <t t-component="item.Component" t-props="itemProp" />
+                            </t>
+                        </DashboardItem>
+                    </t>
                 </div>
             </div>
         </Layout>
