@@ -12,6 +12,7 @@ export class DashboardItem extends Component {
     },
     slots: {
       type: Object,
+      optional: true,
       shape: {
         content: {
           type: Object,

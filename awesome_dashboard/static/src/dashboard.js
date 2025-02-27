@@ -1,16 +1,38 @@
 /** @odoo-module **/
 
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboardItem/dashboard_item";
+import { rpc } from "@web/core/network/rpc";
+import { PieChart } from "./pieChart/pie_chart";
 
 class AwesomeDashboard extends Component {
   static template = "awesome_dashboard.AwesomeDashboard";
-  static components = { Layout, DashboardItem };
+  static components = { Layout, DashboardItem, PieChart };
   setup() {
     this.action = useService("action");
+
+    /*
+    // removed in new owl update - odoo version 17.4
+    
+    this.rpc = useService(rpc);
+    onWillStart(async () => {
+      this.statistics = await this.rpc("/awesome_dashboard/statistics");
+    });
+    */
+
+    this.statistics = useService("awesome_dashboard.statistics");
+    onWillStart(async () => {
+      // this.statistics = await rpc("/awesome_dashboard/statistics");
+      try {
+        this.statistics = await this.statistics.loadStatistics();
+        console.log(this.statistics);
+      } catch (error) {
+        console.error("statistics.loadStatistics  method failed:", error);
+      }
+    });
   }
 
   openCustomersKanbanView() {
