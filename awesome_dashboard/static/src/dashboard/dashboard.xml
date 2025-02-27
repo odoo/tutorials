@@ -2,12 +2,11 @@
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
-            <p>some content</p>
             <t t-set-slot="control-panel-create-button">
                 <button class="btn btn-primary" t-on-click="this.showCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="this.showLeads">Leads</button>
             </t>
-            <div class="container d-flex flex-wrap">
+            <div class="container d-flex flex-wrap" t-if="stats.isReady">
                 <DashboardItem>
                     <t t-set-slot="title">Number of new orders this month</t>
                     <t t-set-slot="default">

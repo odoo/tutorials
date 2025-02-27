@@ -5,7 +5,7 @@ import { registry } from '@web/core/registry';
 import { Layout } from '@web/search/layout';
 import { useService } from '@web/core/utils/hooks';
 import { DashboardItem } from './dashboard_item/dashboard_item';
-import { PieChart } from './pie_chart/pie_chart';
+import { PieChart } from '../pie_chart/pie_chart';
 
 class AwesomeDashboard extends Component {
     static template = 'awesome_dashboard.AwesomeDashboard';
@@ -14,13 +14,8 @@ class AwesomeDashboard extends Component {
     setup() {
         this.showCustomers = this.showCustomers.bind(this);
         this.showLeads = this.showLeads.bind(this);
-        this.action = useService("action");
-        this.stats = useState({});
-        this.service = useService('awesome_dashboard.statistics');
-        onWillStart(async () => {
-            this.stats = await this.service.loadStatisitcs();
-            console.log(this.stats);
-        });
+        this.action = useService('action');
+        this.stats = useState(useService('awesome_dashboard.statistics'));
     }
 
     showCustomers() {
@@ -42,5 +37,5 @@ class AwesomeDashboard extends Component {
 }
 
 registry
-    .category('actions')
-    .add('awesome_dashboard.dashboard', AwesomeDashboard);
+    .category('lazy_components')
+    .add('AwesomeDashboard', AwesomeDashboard);

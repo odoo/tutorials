@@ -11,14 +11,8 @@ import { getColor } from '@web/core/colors/colors';
 export class PieChart extends Component {
     static template = 'awesome_dashboard.PieChart';
     static props = {
-        label: {
-            type: String,
-            optional: true,
-        },
-        data: {
-            type: Object,
-            optional: true,
-        },
+        label: String,
+        data: Object,
     };
 
     setup() {
@@ -40,7 +34,7 @@ export class PieChart extends Component {
     getChartData() {
         const labels = Object.keys(this.props.data);
         const data = Object.values(this.props.data);
-        const colors = labels.map((_, index) => getColor(index * 2 + 1));
+        const colors = labels.map((_, index) => getColor(2 ** (index + 2)));
         const chartData = {
             labels,
             datasets: [
@@ -56,6 +50,9 @@ export class PieChart extends Component {
     }
 
     renderChart() {
+        if(this.chart) {
+            this.chart.destroy();
+        }
         const config = {
             type: 'pie',
             data: this.getChartData(),
