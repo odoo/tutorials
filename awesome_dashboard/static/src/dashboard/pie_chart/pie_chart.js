@@ -7,7 +7,7 @@ export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
     static props = {
         label: { type: String },
-        data: { type: Object },  
+        data: { type: Object },
     };
 
     setup(){
@@ -37,4 +37,3 @@ export class PieChart extends Component {
         });
     }
 }
-

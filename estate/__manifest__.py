@@ -14,6 +14,7 @@ Real Estate Properties with the information regarding buyers, sellers, propertie
         'data/mail_message_subtype.xml',
         'data/estate_rating_email_template.xml',
         'data/website_menu.xml',
+        'wizard/estate_property_offer_wizard_views.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
         'views/estate_property_views.xml',

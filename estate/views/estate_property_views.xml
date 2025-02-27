@@ -5,6 +5,9 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list name="estate_property_list" string="Property" decoration-success="state in ('offer_accepted','offer_received')" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
+                <header>
+                    <button name="action_add_offer" type="object" string="Add Offer" class="oe_highlight"/>
+                </header>
                 <field name="name" width="10%"></field>
                 <field name="postcode" width="10%"></field>
                 <field name="bedrooms" width="10%"></field>

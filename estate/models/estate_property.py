@@ -112,6 +112,15 @@ class EstateProperty(models.Model):
                 record.state = 'cancelled'
         return True
 
+    def action_add_offer(self):
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "estate.property.offer.wizard",
+            "view_mode": "form",
+            "target": "new",
+            "context": {"default_property_ids": [(6, 0, self.ids)]},
+        }
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         for record in self:

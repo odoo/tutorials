@@ -209,8 +209,8 @@ msgstr ""
 #. module: estate
 #. odoo-python
 #: code:addons/estate/models/estate_property_offer.py:0
-msgid "Can't add offer for sold property"
-msgstr "Impossible d'ajouter une offre pour une propriété vendue"
+msgid "Can't add offer for a property that is already in '%s' state."
+msgstr "Impossible d'ajouter une offre pour une propriété qui est déjà dans l'état '%s'."
 
 #. module: estate
 #: model_terms:ir.ui.view,arch_db:estate.estate_property_view_form
