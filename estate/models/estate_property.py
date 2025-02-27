@@ -21,7 +21,7 @@ class EstateProperty(models.Model):
         copy=False
     )
     expected_price = fields.Float(string='Expected Price', required=True, tracking=True)
-    selling_price = fields.Float(string='Selling Price', readonly=True)
+    selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
     living_area = fields.Integer(string='Living Area(sqm)')
     facades = fields.Integer(
@@ -62,6 +62,11 @@ class EstateProperty(models.Model):
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
     total_area = fields.Integer(string="Total Area(sqm)", compute="_compute_total_area", store="True")
     property_image = fields.Binary("Image", attachment=True)
+
+    _sql_constraints = [
+        ('positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be greater than zero!'),
+        ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be greater than zero!')
+    ]
 
 #---------------get best price-----------------------------#
     @api.depends('property_offer_ids')
@@ -116,11 +121,6 @@ class EstateProperty(models.Model):
             "view_mode" : 'form',
             "target" : 'new'
         }
-
-    _sql_constraints = [
-        ('positive_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be greater than zero!'),
-        ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be greater than zero!')
-    ]
 
 #---------------check selling price >= 90% of expected price--------------------#
     @api.constrains('selling_price', 'expected_price')

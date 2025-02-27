@@ -5,30 +5,56 @@ from odoo.http import request
 
 class EstatePropertyController(http.Controller):
     @http.route(['/properties', '/properties/page/<int:page>'], auth='public', website=True, type='http')
-    def list_properties(self, page=1, listed_date=None, **kwargs):
+    def list_properties(self, page=1, **kwargs):
         domain = [('state', 'in', ['new', 'offer_accepted', 'offer_received'])]
-        url_args = dict()
+        listed_date = kwargs.get('listed_date')
+        min_price = kwargs.get('min_price')
+        max_price = kwargs.get('max_price')
+
+        if min_price:
+            try:
+                domain.append(('expected_price', '>=', float(min_price)))
+            except ValueError:
+                min_price = None
+
+        if max_price:
+            try:
+                domain.append(('expected_price', '<=', float(max_price)))
+            except ValueError:
+                max_price = None
 
         if listed_date:
-            listed_date = datetime.strptime(listed_date, '%Y-%m-%d').date()
-            domain += [('create_date', '>=', listed_date)]
-            url_args['listed_date'] = listed_date
+            try:
+                listed_date = datetime.strptime(listed_date, '%Y-%m-%d').date()
+                domain.append(('create_date', '>=', listed_date))
+            except ValueError:
+                listed_date = None
 
-        offset = (int(page) -1) * 6
+        url_args = kwargs
+        properties_per_page = 6
+        offset = (int(page) -1) * properties_per_page
         total_properties = request.env['estate.property'].sudo().search_count(domain)
-        properties = request.env['estate.property'].sudo().search(domain, order='create_date desc', limit=6, offset=offset)
+        properties = request.env['estate.property'].sudo().search(
+            domain,
+            order='create_date desc',
+            limit=properties_per_page,
+            offset=offset
+        )
 
         pager = request.website.pager(
             url = "/properties",
             total = total_properties,
             page = page,
-            step = 6,
+            step = properties_per_page,
             scope = 3,
             url_args = url_args
         )
         return request.render('estate.estate_property_template', {
             'properties': properties,
-            'pager': pager
+            'pager': pager,
+            'min_price': min_price,
+            'max_price': max_price,
+            'listed_date': listed_date,
         })
 
     @http.route('/property/<int:property_id>', auth='public', website=True, type='http')

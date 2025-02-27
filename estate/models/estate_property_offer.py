@@ -25,6 +25,10 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
+    _sql_constraints = [
+        ('positive_offer_price', 'CHECK(price > 0)', 'Offer price must be greater than zero!')
+    ]
+
 #-------------compute date using validity days-----------------------#
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -67,10 +71,6 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.status = 'refused'
         return True
-
-    _sql_constraints = [
-        ('positive_offer_price', 'CHECK(price > 0)', 'Offer price must be greater than zero!')
-    ]
 
 #---------------before create offer check the offer is bigger than other offer-----------------------#
     @api.model_create_multi
