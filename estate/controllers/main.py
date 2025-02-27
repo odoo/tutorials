@@ -3,9 +3,11 @@ from odoo.http import request
 
 class EstatePropertyController(http.Controller):
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='user', website=True)
-    def show_property(self, listed_after=None, page=1):
+    def show_property(self, listed_after=None, search_name=None, page=1):
         domain = [('state', 'not in', ['sold', 'cancelled'])]
-        
+        if search_name:
+            domain.append(('name', '=', search_name))
+
         if listed_after:
             domain.append(('create_date', '>', listed_after))
 

@@ -42,6 +42,9 @@ class EstatePropertyOffer(models.Model):
             if property_id.state == 'sold':
                 raise ValidationError(_("You can't create a offer for a sold property."))
 
+            elif property_id.state == 'offer_accepted':
+                raise ValidationError(_("Property already have an accepted offer."))
+
             if property_id:
                 property_id.write({'state': 'offer_received'})
 

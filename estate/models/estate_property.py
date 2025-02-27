@@ -90,6 +90,17 @@ class EstateProperty(models.Model):
             if record.state not in ['new', 'cancelled']:
                 raise UserError(_("Only New or cancelled properties can be deleted."))
 
+    def action_open_add_offer(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Add Offer',
+            'res_model': 'estate.property.offer.wizard',
+            'view_mode': 'form',
+            # 'view_id': self.env.ref('estate.estate_propety_offer_wizard_form').id,
+            'target': 'new',
+            'context': {'default_property_ids': [(6, 0, self.ids)]}
+        }
+
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled': 

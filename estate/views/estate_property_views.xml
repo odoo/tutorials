@@ -9,6 +9,9 @@
                   decoration-success="state in ['offer_accepted', 'offer_received']" 
                   decoration-bf="state == 'offer_accepted'" 
                   decoration-muted="state == 'sold'">
+                <header>
+                    <button name="action_open_add_offer" type="object" string="Add Offer" class="oe_highlight" />
+                </header>
                 <field name="sequence" width="20%"/>
                 <field name="name" width="20%"/>
                 <field name="postcode" width="10%"/>
