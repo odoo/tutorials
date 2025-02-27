@@ -10,7 +10,6 @@ class AccountMoveLine(models.Model):
     book_price = fields.Float(
         string="Book Price",
         compute="_compute_book_price",
-        readonly=True,
         store=True)
 
     @api.depends("product_id", "quantity")
@@ -20,3 +19,6 @@ class AccountMoveLine(models.Model):
                 record.book_price = record.product_id.lst_price * record.quantity
             else:
                 record.book_price = 0.00
+
+            record.book_price = record.product_id.lst_price * \
+                record.quantity if record.product_id else 0.00

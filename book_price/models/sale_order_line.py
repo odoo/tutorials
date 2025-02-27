@@ -10,13 +10,10 @@ class SaleOrderLine(models.Model):
     book_price = fields.Float(
         string="Book Price",
         compute="_compute_book_price",
-        readonly=True,
         store=True)
 
     @api.depends("product_id", "product_uom_qty")
     def _compute_book_price(self):
         for record in self:
-            if record.product_id:
-                record.book_price = record.product_id.lst_price * record.product_uom_qty
-            else:
-                record.book_price = 0.00
+            record.book_price = record.product_id.lst_price * \
+                record.product_uom_qty if record.product_id else 0.00
