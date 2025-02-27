@@ -1,0 +1,6 @@
+<odoo>
+    <menuitem id="coatation_menu_root" name="coatation and claims">
+            <menuitem id="coatation_menu_action" name="coatations" action="coatation_action"/>
+            <menuitem id="claim_menu_action" name="claims"/>
+    </menuitem>
+</odoo>

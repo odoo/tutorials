@@ -1,0 +1,59 @@
+<odoo>
+    <record id="coatation_action" model="ir.actions.act_window">
+        <field name="name">Coatation</field>
+        <field name="res_model">coatations.claims</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="coatation_list" model="ir.ui.view">
+        <field name="name">coatation.list</field>
+        <field name="model">coatations.claims</field>
+        <field name="arch" type='xml'>
+            <list>
+                <field name="name"/>
+            </list>
+            
+        </field>
+    </record>
+
+    <record id="coatation_form" model="ir.ui.view">
+        <field name="name">coatation.form</field>
+        <field name="model">coatations.claims</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="new,active,expired"/>
+                </header>
+                <sheet>
+                    <group>
+                        <h1><field name="name"/></h1>
+                        <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" placeholder="Name, TIN, Email, or Reference" string="Supplier"/>
+                        <field name="reseller_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'reseller', 'show_vat': True}" placeholder="Name, TIN, Email, or Reference" string="Reseller"/>
+                        <field name="client_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" placeholder="Type to find a Client..." string="Client"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <notebook>
+                        <page string="Product info">
+                        <field name="coation_lines_ids">
+                            <list editable="bottom" open_form_view="True">
+                                <field name="id"/>
+                                <field name="internal_reference"/>
+                                <field name="product_id"/>
+                                <field name="coatation_unit_price"/>
+                                <field name="max_qty"/>
+                                <field name="min_qty"/>
+                                <field name="recommended_sp"/>
+                                <field name="consumed"/>
+                                <field name="qty_per_order"/>
+                                <field name="status"/>
+                                <field name="claim"/>
+                            </list>
+                        </field>    
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

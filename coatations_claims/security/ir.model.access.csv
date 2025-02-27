@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_coatations_claims,access_coatations_claims,model_coatations_claims,base.group_user,1,1,1,1
+access_coatations_lines,access_coatations_lines,model_coatations_lines,base.group_user,1,1,1,1
