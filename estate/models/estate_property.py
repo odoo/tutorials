@@ -57,6 +57,7 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area", readonly=False)
     best_price = fields.Float(compute="_compute_best_price", store=True)
     company_id = fields.Many2one('res.company', string='Company ID', required=True, default=lambda self: self.env.company)
+    image = fields.Image(string="image")
 
     ##### compute methods ######
     @api.depends("living_area", "garden_area")

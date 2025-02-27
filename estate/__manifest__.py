@@ -2,7 +2,7 @@
     "version": "1.2",
     "category": "Real Estate/Brokerage",
     "description": "",
-    "depends" : [ "base", "mail" ],
+    "depends" : [ "base", "website", "mail" ],
     "data" : [ 
         "security/security.xml",
         "security/ir.model.access.csv",
@@ -10,6 +10,8 @@
         "view/estate_pro_offer_view.xml",
         "view/estate_pro_type_view.xml",
         "view/estate_property_views.xml",
+        "view/property_list.xml",
+        "view/property_list_detail.xml",
         "view/res_users_inherit.xml",
         "view/estate_model_action.xml",
         "data/master_data.xml"

@@ -6,6 +6,7 @@
         <field name="model">estate_model</field>
         <field name="arch" type="xml">
             <list string="list_view" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
+                <field name="image" widget="image" class="w-25"/>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -58,6 +59,12 @@
         <field name="context">{'search_default_available': 1}</field>
         <field name="view_id" ref="estate_model_list_view"/>
     </record>
+    <!-- ACTION VIEW FOR EXTERNAL WEBSITE -->
+    <record id="open_url_action" model="ir.actions.act_url">
+        <field name="name">Open External Website</field>
+        <field name="url">/properties</field>
+        <field name="target">new</field>
+    </record>
     <!-- form view -->
     <record id="estate_model_form_view" model="ir.ui.view">
         <field name="name">estate_property_form_view</field>
@@ -80,6 +87,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="image" widget="image" class="w-25"/>
                             <field name="property_type_id" options="{'no_create': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
