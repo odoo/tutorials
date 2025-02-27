@@ -14,7 +14,4 @@ export class Card extends Component {
     toggleCard() {
         this.isOpen.value = !this.isOpen.value; 
     }
-    
-    value1 = markup("<div>some text 1</div>");
-    value2 = markup("<div>some <br> text 2</div>");
 }
