@@ -1,5 +1,4 @@
 from odoo import api, fields, models, exceptions
-from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class PropertyOffer(models.Model):
@@ -23,9 +22,11 @@ class PropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            if self.env["estate.property"].browse(vals["property_id"]).status == "sold":
+                raise exceptions.UserError("You can't create an offer for a sold property")
             offers = self.env["estate.property"].browse(vals["property_id"]).offer_ids
             if len(offers) > 0 and min([offer.price for offer in offers]) > vals["price"]:
-                raise exceptions.ValidationError("The offer price can't be lower than another existing offer")
+                raise exceptions.UserError("The offer price can't be lower than another existing offer")
             if self.env["estate.property"].browse(vals["property_id"]).status == "new":
                 self.env["estate.property"].browse(vals["property_id"]).status = "offer_received"
         return super().create(vals_list)

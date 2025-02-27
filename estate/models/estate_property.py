@@ -97,5 +97,7 @@ class Property(models.Model):
     def sold_property(self):
         if self.filtered(lambda property: property.status == "cancelled"):
             raise exceptions.UserError("Cancelled properties cannot be sold")
+        if not self.offer_ids.filtered(lambda offer: offer.status == "accepted"):
+            raise exceptions.UserError("Can't sell property without accepted offer")
         self.status = "sold"
         return True
