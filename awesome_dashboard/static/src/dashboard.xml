@@ -19,53 +19,55 @@
                     </t>
                 </DashboardItem>
 
-                <DashboardItem t-if="statistics.average_quantity">
-                    <t t-set-slot="content">
-                        Average amount of t-shirt by order this month
-                        <h2 class="fw-bold text-center">
-                            <t t-esc="statistics.average_quantity"/>
-                        </h2>
-                    </t>
-                </DashboardItem>
-                <DashboardItem t-if="statistics.average_time">
-                    <t t-set-slot="content">
-                        Average time for an order to go from 'new' to 'sent' or 'cancelled'
-                        <h2 class="fw-bold text-center">
-                            <t t-esc="statistics.average_time"/>
-                        </h2>
-                    </t>
-                </DashboardItem>
-                <DashboardItem t-if="statistics.nb_new_orders">
-                    <t t-set-slot="content">
-                        Number of new orders this month
-                        <h2 class="fw-bold text-center">
-                            <t t-esc="statistics.nb_new_orders"/>
-                        </h2>
-                    </t>
-                </DashboardItem>
-                <DashboardItem t-if="statistics.nb_cancelled_orders">
-                    <t t-set-slot="content">
-                        Number of cancelled orders this month
-                        <h2 class="fw-bold text-center">
-                            <t t-esc="statistics.nb_cancelled_orders"/>
-                        </h2>
-                    </t>
-                </DashboardItem>
-                <DashboardItem t-if="statistics.total_amount">
-                    <t t-set-slot="content">
-                        Total amount of new orders this month
-                        <h2 class="fw-bold text-center">
-                            <t t-esc="statistics.total_amount"/>
-                        </h2>
-                    </t>
-                </DashboardItem>
+                <div class="d-flex flex-wrap" t-if="statistics.flag">
+                    <DashboardItem t-if="statistics.average_quantity">
+                        <t t-set-slot="content">
+                            Average amount of t-shirt by order this month
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.average_quantity"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
+                    <DashboardItem t-if="statistics.average_time">
+                        <t t-set-slot="content">
+                            Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.average_time"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
+                    <DashboardItem t-if="statistics.nb_new_orders">
+                        <t t-set-slot="content">
+                            Number of new orders this month
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.nb_new_orders"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
+                    <DashboardItem t-if="statistics.nb_cancelled_orders">
+                        <t t-set-slot="content">
+                            Number of cancelled orders this month
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.nb_cancelled_orders"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
+                    <DashboardItem t-if="statistics.total_amount">
+                        <t t-set-slot="content">
+                            Total amount of new orders this month
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.total_amount"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
 
-                <DashboardItem size="2">
-                    <t t-set-slot="content">
-                        Shirt orders by size
-                        <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
-                    </t>
-                </DashboardItem>
+                    <DashboardItem size="2">
+                        <t t-set-slot="content">
+                            Shirt orders by size
+                            <PieChart data="statistics['orders_by_size']" label="'Shirt orders by size'"/>
+                        </t>
+                    </DashboardItem>
+                </div>
             </div>
         </Layout>
     </t>

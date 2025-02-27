@@ -25,6 +25,9 @@ export class PieChart extends Component {
     onMounted(async () => {
       const sizes = Object.keys(this.props.data);
       const values = Object.values(this.props.data);
+      console.log("sizes  ", sizes);
+      console.log("values  ", values);
+
       const color = sizes.map((_, index) => getColor(index));
       await this.createChart(sizes, values, color);
     });

@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, onWillStart } from "@odoo/owl";
+import { Component, onWillStart, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
@@ -16,23 +16,23 @@ class AwesomeDashboard extends Component {
 
     /*
     // removed in new owl update - odoo version 17.4
-    
+
     this.rpc = useService(rpc);
     onWillStart(async () => {
       this.statistics = await this.rpc("/awesome_dashboard/statistics");
     });
     */
 
-    this.statistics = useService("awesome_dashboard.statistics");
-    onWillStart(async () => {
-      // this.statistics = await rpc("/awesome_dashboard/statistics");
-      try {
-        this.statistics = await this.statistics.loadStatistics();
-        console.log(this.statistics);
-      } catch (error) {
-        console.error("statistics.loadStatistics  method failed:", error);
-      }
-    });
+    this.statistics = useState(useService("awesome_dashboard.statistics"));
+    // onWillStart(async () => {
+    //   // this.statistics = await rpc("/awesome_dashboard/statistics");
+    //   try {
+    //     this.statistics = await this.statistics.loadStatistics();
+    //     console.log(this.statistics);
+    //   } catch (error) {
+    //     console.error("statistics.loadStatistics  method failed:", error);
+    //   }
+    // });
   }
 
   openCustomersKanbanView() {
