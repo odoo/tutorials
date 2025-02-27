@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_view_kanban_catalog_inherit_redesign_product_catalog" model="ir.ui.view">
+        <field name="name">product.view.kanban.catalog.inherit.redesign_product_catalog</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='image_128']" position="replace">
+                <t t-if="!record.image_1024.raw_value">
+                    <field
+                        name="image_128"
+                        widget="image"
+                        alt="Product"
+                        invisible="not image_128"
+                        class="ms-auto o_product_image"
+                        options="{'size': [55, 55], 'zoom': true, 'zoom_delay': 500}"/>
+                </t>
+                <t t-else="">
+                    <field
+                        name="image_1024"
+                        widget="image"
+                        alt="Product"
+                        preview_image="image_128"
+                        invisible="not image_128"
+                        class="ms-auto o_product_image"
+                        options="{'size': [55, 55], 'zoom': true, 'zoom_delay': 500}"/>
+                </t>
+            </xpath>
+        </field>
+    </record>
+</odoo>
