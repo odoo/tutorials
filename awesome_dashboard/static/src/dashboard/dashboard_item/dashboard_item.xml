@@ -8,7 +8,7 @@
             <div class="card-header">
                 <t t-slot="title" />
             </div>
-            <div class="card-body text-success">
+            <div class="card-body">
                 <t t-slot="default" />
             </div>
         </div>
