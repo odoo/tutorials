@@ -6,7 +6,8 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 
-import { PieChart } from "./pie_chart"
+import { PieChart } from "./pie_chart/pieChart"
+import { DashboardItem } from "./dashboard_item/dashboardItem";
 
 
 class AwesomeDashboard extends Component {
@@ -15,7 +16,18 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.statistics = useState({});
+        this.statistics = useState({
+            'average_quantity': 0,
+            'average_time': 0,
+            'nb_cancelled_orders': 0,
+            'nb_new_orders': 0,
+            'orders_by_size': {
+                'm': 0,
+                's': 0,
+                'xl': 0,
+            },
+            'total_amount': 0
+        });
         this.statisticsService = useService("awesome_dashboard.statistics");
 
         onWillStart(async () => {

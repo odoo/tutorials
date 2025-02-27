@@ -41,7 +41,7 @@
 
 
             <DashboardItem title="'Pie Chart'" size="4">
-                <PieChart label="'orders_by_size'" data="Object.values(statistics.orders_by_size)" labels="Object.keys(statistics.orders_by_size)'"/>
+                <PieChart label="'Shirt orders by size '" data="statistics.orders_by_size"/>
             </DashboardItem>
 
         </Layout>
