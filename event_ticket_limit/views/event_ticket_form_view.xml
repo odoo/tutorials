@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="event_ticket_limit_registration_list" model="ir.ui.view">
+        <field name="name">event.ticket.limit.list.view</field>
+        <field name="model">event.event.ticket</field>
+        <field name="inherit_id" ref="event.event_event_ticket_view_tree_from_event"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='seats_taken']" position="after">
+                 <field name="max_tickets_per_registration" width="205px" string="Max. Tickets Per Registration"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

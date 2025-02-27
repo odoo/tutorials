@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="limit_ticket_registration" inherit_id="website_event.modal_ticket_registration">
+        <!-- Restrict max ticket selection for events with multiple ticket types -->
+        <xpath expr="//t[@t-set='seats_max']" position="after">
+            <t t-set="seats_max" t-value="min(seats_max, ticket.max_tickets_per_registration + 1)" />
+        </xpath>
+
+        <!-- Restrict max ticket selection for events with a single ticket type -->
+        <xpath expr="//div[hasclass('o_wevent_registration_single')]//t[@t-set='seats_max']" position="after">
+            <t t-set="seats_max" t-value="min(seats_max, tickets.max_tickets_per_registration + 1)" />
+        </xpath>
+    </template>
+</odoo>
