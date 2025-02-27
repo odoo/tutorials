@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    "name": "modular_type",
+    "name": "Modular Type",
     "summary": "Manage modular types in manufacturing orders and sales orders",
     "description": """
     This module allows you to define and manage modular types for products in the manufacturing process. 
@@ -16,6 +16,7 @@
     "version": "1.0",
     "depends": ["base","product","mrp","sale"],
     "license": "LGPL-3",
+    "application": True,
     "data": [
         "security/ir.model.access.csv",
         "wizard/modular_type_wizard_views.xml",

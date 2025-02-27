@@ -21,7 +21,4 @@ class MrpBomLine(models.Model):
     @api.depends('product_id')
     def _compute_available_modular_types(self):
         for line in self:
-            if line.product_id:
-                line.available_modular_type_ids = line.parent_product_tmpl_id.modular_types
-            else:
-                line.available_modular_type_ids = False
+            line.available_modular_type_ids = line.parent_product_tmpl_id.modular_types if line.product_id else False

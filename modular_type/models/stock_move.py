@@ -8,7 +8,7 @@ class StockMove(models.Model):
     _inherit = "stock.move"
 
     modular_type_id = fields.Many2one(
-        "modular.types", 
+        "modular.types",
         string="Modular Type",
         compute="_compute_modular_type",
         store=True
@@ -42,12 +42,9 @@ class StockMove(models.Model):
                 [('product_tmpl_id', '=', move.product_id.product_tmpl_id.id)], limit=1)
             if move.product_id and move.modular_type_id:
                 move.multiplied_product_uom_qty = move.modular_type_id.quantity_multiplier * bom.product_qty
-                print("hello", move.multiplied_product_uom_qty,
-                      move.modular_type_id.quantity_multiplier, bom.product_qty, move.product_id.name)
-            elif move.product_id and not move.modular_type_id: 
-                print("hello 1", move.multiplied_product_uom_qty, move.product_id.name)
+            elif move.product_id and not move.modular_type_id:
                 move.multiplied_product_uom_qty = move.product_uom_qty
-    
+
     def _inverse_multiplied_product_uom_qty(self):
         for move in self:
             if move.product_id and move.modular_type_id:
