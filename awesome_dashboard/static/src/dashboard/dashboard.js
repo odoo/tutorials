@@ -35,7 +35,8 @@ class AwesomeDashboard extends Component {
     //   }
     // });
 
-    this.items = items;
+    // this.items = items;
+    this.items = registry.category("awesome_dashboard").getAll();
   }
 
   openCustomersKanbanView() {
