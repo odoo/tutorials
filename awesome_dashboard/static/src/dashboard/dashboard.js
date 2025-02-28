@@ -6,18 +6,26 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 
-import { PieChart } from "./pie_chart/pieChart"
 import { DashboardItem } from "./dashboard_item/dashboardItem";
+
+import { Dialog } from "@web/core/dialog/dialog";
+import { CheckBox } from "@web/core/checkbox/checkbox";
+import { browser } from "@web/core/browser/browser";
 
 
 export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem };
 
     setup() {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
         this.items = registry.category("awesome_dashboard").getAll();
+
+        this.dialog = useService("dialog");
+        this.state = useState({
+            uncheckedItems : [],
+        });
     }
 
     customerButtonClick() {
@@ -34,7 +42,55 @@ export class AwesomeDashboard extends Component {
             domain: [],
         });
     }
-    
+
+    configuration() {
+        this.dialog.add(DashboardConfigs, {
+            items: this.items,
+            disabledItems: this.state.uncheckedItems,
+            applyConfig: this.applyConfiguration.bind(this),
+        })
+    }
+
+    applyConfiguration(newConfig){
+        this.state.uncheckedItems = newConfig;
+    }
 }
+
+export class DashboardConfigs extends Component {
+    static template = "awesome_dashboard.DashboardConfigs";
+    static components = { Dialog, CheckBox }
+
+    static props = {
+        items: Object,
+        disabledItems: Array,
+        applyConfig: Function,
+        close: Function,
+    }
+
+    setup() {
+        this.items = useState(this.props.items.map((item) => {
+            return {
+                ...item,
+                checked: !this.props.disabledItems.includes(item.id),
+            }
+        }));
+    }
+
+    apply(){
+        this.props.applyConfig(this.props.disabledItems);
+        this.props.close();
+    }
+
+    toggle(checked, item){
+        item.checked = checked;
+        if (checked) {
+            this.props.disabledItems = this.props.disabledItems.filter(item.id);
+        }
+        else{
+            this.props.disabledItems = this.props.disabledItems.concat([item.id]);
+        }
+    }
+}
+
 
 registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

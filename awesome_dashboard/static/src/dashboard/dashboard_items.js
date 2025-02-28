@@ -21,7 +21,7 @@ const items = [
         description: "Big",
         Component: TextCard,
         // size and props are optionals
-        size: 4,
+        size: 3.2, // Intervals between cards are 0.1
         props: (data) => ({
             title: "Big",
             value: "I am BIG yaaayyy",
@@ -31,7 +31,7 @@ const items = [
     // Number Cards
     {
         id: "nb_new_orders",
-        description: "",
+        description: "Number of new orders this month",
         Component: NumberCard,
         // size and props are optionals
         props: (data) => ({

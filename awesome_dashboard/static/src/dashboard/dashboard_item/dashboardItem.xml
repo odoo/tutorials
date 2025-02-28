@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.item">
-        <div class="card d-inline-block m-2" t-attf-style="width: {{9*props.size}}rem;">
+        <div class="card d-inline-block m-2" t-attf-style="width: {{10*props.size}}rem;">
             <div class="card-body">
                 <h5 class="card-title">
                     <button class="btn btn-link p-0" t-on-click="this.toggle" t-out="props.title"/>
