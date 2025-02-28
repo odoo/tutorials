@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="print_report"/>
+            </xpath>
+             <xpath expr="//notebook//list/field[@name='product_template_id']" position="after">
+                <button name="action_list_subproducts" type="object" class="btn btn-primary" string="KIT" invisible="not is_kit_product"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
