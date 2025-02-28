@@ -4,7 +4,7 @@ export class DashboardItem extends Component {
     static template = "awesome_dashboard.item";
 
     static props = {
-        title: { type : String },
+        title: { type : String, optional : true },
         slots: { type : Object },
         size: { type : Number, optional : true },
         toggle: { type : Boolean, optional : true },
