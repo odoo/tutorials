@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_with_extended_description" inherit_id="website_sale.product">
+        <xpath expr="//section[@id='product_detail']" position="inside">
+             <div id="product_extended_description" class="oe_website_sale container my-3 my-lg-4">
+                <t t-if="product.ecommerce_extended_description">
+                    <h2 class="mt-4">Extended Description</h2>
+                    <div class="oe_structure">
+                        <t t-esc="product.ecommerce_extended_description"/>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
