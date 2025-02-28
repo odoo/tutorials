@@ -8,6 +8,7 @@ import { ClickValue } from "./click_value";
 export class ClientAction extends Component {
     static template = "awesome_clicker.client_action";
     static components = { ClickValue };
+    static props = {};
 
     setup() {
         this.clicker = useClicker();

@@ -12,6 +12,7 @@ class Clicker extends Component {
                         <button t-on-click="openAction" type="button" class="btn btn-primary">Open</button>`
 
     static components = { ClickValue };
+    static props = {};
     
     setup() {
         this.clicker = useClicker();
