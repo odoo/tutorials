@@ -11,35 +11,35 @@ class AddWarrantyWizard(models.TransientModel):
 
     product_warranty_ids = fields.One2many("warranty.wizard.lines","wizard_id", readOnly=True)
 
-    @api.model
-    def default_get(self, fields_list):
-        defaults = super(AddWarrantyWizard, self).default_get(fields_list)
+    # @api.model
+    # def default_get(self, fields_list):
+    #     defaults = super(AddWarrantyWizard, self).default_get(fields_list)
 
-        sale_order_id = self.env.context.get("default_sale_order_id")
-        sale_order = self.env["sale.order"].browse(sale_order_id)
+    #     sale_order_id = self.env.context.get("default_sale_order_id")
+    #     sale_order = self.env["sale.order"].browse(sale_order_id)
 
-        #get available prodcuts from order lines
-        available_products = sale_order.order_line.filtered(
-            lambda l: not l.related_product_id and l.product_id.product_tmpl_id.warranty and
-                      not sale_order.order_line.filtered(lambda w: w.related_product_id == l.product_id.product_tmpl_id)
-        ).mapped("product_id.product_tmpl_id")        
-        defaults["product_ids"] = [(6, 0, available_products.ids)]
+    #     #get available prodcuts from order lines
+    #     available_products = sale_order.order_line.filtered(
+    #         lambda l: not l.related_product_id and l.product_id.product_tmpl_id.warranty and
+    #                   not sale_order.order_line.filtered(lambda w: w.related_product_id == l.product_id.product_tmpl_id)
+    #     ).mapped("product_id.product_tmpl_id")        
+    #     defaults["product_ids"] = [(6, 0, available_products.ids)]
 
-        product_warranty_data = []
-        for line in available_products:
-            related_line = sale_order.order_line.filtered(lambda l: l.product_id.product_tmpl_id == line)
-            quantity = sum(related_line.mapped("product_uom_qty")) if related_line else 1  # Default to 1 if not found - so it does not give error
+    #     product_warranty_data = []
+    #     for line in available_products:
+    #         related_line = sale_order.order_line.filtered(lambda l: l.product_id.product_tmpl_id == line)
+    #         quantity = sum(related_line.mapped("product_uom_qty")) if related_line else 1  # Default to 1 if not found - so it does not give error
 
-            product_warranty_data.append((0, 0, {
-                'product_id': line.id,
-                'year': False,  # Year needs to be selected manually
-                'end_date': False,
-                'quantity': quantity,
-            }))
+    #         product_warranty_data.append((0, 0, {
+    #             'product_id': line.id,
+    #             'year': False,  # Year needs to be selected manually
+    #             'end_date': False,
+    #             'quantity': quantity,
+    #         }))
 
-        if product_warranty_data:
-            defaults["product_warranty_ids"] = product_warranty_data
-        return defaults
+    #     if product_warranty_data:
+    #         defaults["product_warranty_ids"] = product_warranty_data
+    #     return defaults
 
 
     def action_add_warranty_from_wizard(self):
