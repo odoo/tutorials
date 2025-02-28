@@ -37,7 +37,7 @@ class SaleOrderLine(models.Model):
 
         return {
             'type': 'ir.actions.act_window',
-            'name': ('ProSave Product'),
+            'name': ('Set Modular Types'),
             'res_model': 'modular.type.wizard',
             'views': [[False, 'form']],
             'target': 'new',

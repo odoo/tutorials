@@ -4,7 +4,7 @@
         <field name="name">modular.type.wizard.form</field>
         <field name="model">modular.type.wizard</field>
         <field name="arch" type="xml">
-            <form string="Set Modular Types">
+            <form>
                 <group>
                     <field name="modular_type_ids" nolabel="1">
                         <list editable="bottom" create="0" delete="0">
