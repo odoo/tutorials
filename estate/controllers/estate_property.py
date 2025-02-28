@@ -9,7 +9,7 @@ class EstatePropertyController(http.Controller):
         max_price = kwargs.get('max_price')
         property_type = kwargs.get('property_type')
 
-        domain = ['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]  # Show only available properties
+        domain = ['|', ('stage', '=', 'new'), ('stage', '=', 'offer_received')]  # Show only available properties
 
         if min_price:
             domain.append(('expected_price', '>=', float(min_price)))

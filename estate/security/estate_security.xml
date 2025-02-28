@@ -2,7 +2,7 @@
 <odoo>
     <!-- Record Rule: Restrict Property Manager -->
     <record id="estate_property_record_rule_property_manager" model="ir.rule">
-        <field name="name">Property Manager: Can only see certain property states</field>
+        <field name="name">Property Manager: All Rights</field>
         <field name="model_id" ref="model_estate_property"/>
         <field name="domain_force">[(1, '=', 1)]</field>
         <field name="groups" eval="[(4, ref('estate_property_group_real_estate_manager'))]"/>

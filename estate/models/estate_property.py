@@ -48,7 +48,7 @@ class EstateProperty(models.Model):
 	# reserved field
 	active = fields.Boolean(string="Global Visibility", default=True)
 
-	state = fields.Selection(
+	stage = fields.Selection(
 		string="Status",
 		selection=[
 			('new', "New"),
@@ -58,6 +58,7 @@ class EstateProperty(models.Model):
 			('cancelled', "Cancelled")
 		],
 		default='new',
+		copy=False,
 		group_expand=True,
 		tracking=True
 	)
@@ -129,36 +130,36 @@ class EstateProperty(models.Model):
 	@api.model_create_multi
 	def create(self, vals_list):
 		"""log message at creation of the records/properties"""
-		if 'state' in vals_list and vals_list['state'] in ['offer_accepted', 'sold', 'cancelled']:
-			self._log_offer_accepted_message(vals_list['state'])
+		if 'stage' in vals_list and vals_list['stage'] in ['offer_accepted', 'sold', 'cancelled']:
+			self._log_offer_accepted_message(vals_list['stage'])
 
 		return super().create(vals_list)
 
 	def write(self, vals):
-		"""Restrict state transitions and log messages accordingly."""
+		"""Restrict stage transitions and log messages accordingly."""
 		for property in self:
-			new_state = vals.get('state', property.state)
+			new_stage = vals.get('stage', property.stage)
 
-			# Prevent changing state to 'offer_accepted' if no offer is accepted
-			if new_state == 'offer_accepted' and not any(
+			# Prevent changing stage to 'offer_accepted' if no offer is accepted
+			if new_stage == 'offer_accepted' and not any(
 				property.offer_ids.filtered(lambda offer: offer.status == 'accepted')
 			):
-				raise UserError("Cannot change state to 'Offer Accepted' because no offer has been accepted yet.")
+				raise UserError("Cannot change stage to 'Offer Accepted' because no offer has been accepted yet.")
 
-			# Prevent changing state to 'sold' unless it's in 'offer_accepted'
-			if new_state == 'sold' and property.state != 'offer_accepted':
-				raise UserError("Cannot change state to 'Sold' unless an offer has been accepted.")
+			# Prevent changing stage to 'sold' unless it's in 'offer_accepted'
+			if new_stage == 'sold' and property.stage != 'offer_accepted':
+				raise UserError("Cannot change stage to 'Sold' unless an offer has been accepted.")
 
-			# Log message when the state changes to 'offer_accepted', 'sold', or 'cancelled'
-			if 'state' in vals and new_state in ['offer_accepted', 'sold', 'cancelled']:
-				property._log_offer_accepted_message(new_state)
+			# Log message when the stage changes to 'offer_accepted', 'sold', or 'cancelled'
+			if 'stage' in vals and new_stage in ['offer_accepted', 'sold', 'cancelled']:
+				property._log_offer_accepted_message(new_stage)
 
 		return super().write(vals)
 
 	@api.ondelete(at_uninstall=False)
 	def _unlink_if_property_not_new_cancelled(self):
 		"""property delete restriction: only new or cancelled property can delete"""
-		if any(property.state not in ['new', 'cancelled'] for property in self):
+		if any(property.stage not in ['new', 'cancelled'] for property in self):
 			raise UserError("Only new or cancelled property can be deleted.")
 
 	# ------------------------------------------------------------
@@ -169,32 +170,32 @@ class EstateProperty(models.Model):
 		self.ensure_one()
 		if not self.selling_price:
 			raise UserError("Property cannot sold without any offer accepted.")
-		if self.state == 'sold':
+		if self.stage == 'sold':
 			raise UserError("Property is already Sold.")
-		elif self.state == 'cancelled':
+		elif self.stage == 'cancelled':
 			raise UserError("Cancelled property cannot be sold.")
 
-		self.state = 'sold'
+		self.stage = 'sold'
 
 	def action_set_property_cancel(self):
 		self.ensure_one()
-		if self.state == 'cancelled':
+		if self.stage == 'cancelled':
 			raise UserError("Property is already cancelled.")
-		elif self.state == 'sold':
+		elif self.stage == 'sold':
 			raise UserError("Sold property cannot be cancelled.")
 
-		self.state = 'cancelled'
+		self.stage = 'cancelled'
 
 	# -------------------------------------------------------------------------
     # OTHER METHODS
     # -------------------------------------------------------------------------
 
-	def _log_offer_accepted_message(self, state):
+	def _log_offer_accepted_message(self, stage):
 		"""log message in chatter"""
 		for property in self:
-			state_str = 'Offer Accepted' if state == 'offer_accepted' else state.capitalize()
+			stage_str = 'Offer Accepted' if stage == 'offer_accepted' else stage.capitalize()
 			property.message_post(
-				body=f"Offer has been {state_str} for this property!",
+				body=f"Offer has been {stage_str} for this property!",
 				message_type='comment',
 				subtype_xmlid='mail.mt_comment'
 			)

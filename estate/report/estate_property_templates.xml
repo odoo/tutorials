@@ -47,7 +47,7 @@
                             <span t-field="property.expected_price"/>
                             <br />
                             <strong>Status: </strong>
-                            <span t-field="property.state"/>
+                            <span t-field="property.stage"/>
                         </div>
                         <h3 class="mt-5">
                             <span>Offers</span>
@@ -79,7 +79,7 @@
                             <span t-field="property.expected_price"/>
                             <br />
                             <strong>Status: </strong>
-                            <span t-field="property.state"/>
+                            <span t-field="property.stage"/>
                             <div class="mb-5 mt-2">
                                 <span class="h3">Offers</span>
                                 <br />

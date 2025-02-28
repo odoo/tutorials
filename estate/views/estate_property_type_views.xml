@@ -36,7 +36,7 @@
                                         <list>
                                             <field name="name" string="Title"/>
                                             <field name="expected_price" string="Expected Price"/>
-                                            <field name="state" string="Status"/>
+                                            <field name="stage" string="Status"/>
                                         </list>
                                     </field>
                                 </group>

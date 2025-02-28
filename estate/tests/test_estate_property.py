@@ -22,7 +22,7 @@ class TestEstateProperty(TransactionCase):
         
     def test_cannot_create_offer_on_sold_property(self):
         """Test that an offer cannot be created for a sold property."""
-        self.property.write({'state': 'sold'})
+        self.property.write({'stage': 'sold'})
 
         with self.assertRaises(UserError):
             self.env['estate.property.offer'].create({
@@ -48,7 +48,7 @@ class TestEstateProperty(TransactionCase):
         self.offer.action_accept()  # Accept the offer
         self.property.action_set_property_sold()
 
-        self.assertEqual(self.property.state, 'sold', "Property should be marked as sold.")
+        self.assertEqual(self.property.stage, 'sold', "Property should be marked as sold.")
 
     def test_garden_field_onchange_behavior(self):
         """Test that unchecking 'garden' does not incorrectly reset 'garden_area' and 'garden_orientation'."""
@@ -104,7 +104,7 @@ class TestEstateProperty(TransactionCase):
             "Property selling price should be updated after accepting the offer."
         )
         self.assertEqual(
-            self.property.state,
+            self.property.stage,
             'offer_accepted',
-            "Property state should be updated to 'offer_accepted' after accepting the offer."
+            "Property stage should be updated to 'offer_accepted' after accepting the offer."
         )

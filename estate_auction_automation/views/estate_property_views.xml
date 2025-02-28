@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_propert_view_form_inherit_real_estate_auction_automation" model="ir.ui.view">
+        <field name="name">estate.property.view.form.inherit.real.estate.auction.automation</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_propert_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_set_property_sold']" position="before">
+                <button
+                    name="action_start_property_auction"
+                    string="Start Auction"
+                    class="oe_highlight"
+                    type="object"
+                    invisible="property_sell_type != 'auction'"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button class="oe_stat_button" name="%(estate_auction_automation.account_move_action)d"
+                            type="action" icon="fa-money">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="invoice_count"/>
+                            </span>
+                            <span class="o_stat_text">
+                                Invoices
+                            </span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+            <xpath expr="//div[hasclass('row', 'w-100', 'm-0')]" position="replace">
+                <div class="row w-100 m-0">
+                    <div class="col-11 d-flex align-items-center">
+                        <div class="w-100">
+                            <h1 class="w-100">
+                                <field name="name" string="Title"/>
+                            </h1>
+                            <field name="property_sell_type" widget="radio" options="{'horizontal': true}"/>
+                            <field
+                                name="tag_ids"
+                                class="w-50"
+                                string="Tags"
+                                widget="many2many_tags"
+                                options="{'color_field': 'color'}"
+                                placeholder="Tag for property"/>
+                        </div>
+                    </div>
+                    <div class="col-1 pe-0">
+                        <field name="state" widget="estate_property_state_selection" class="o_task_state_widget"  invisible="property_sell_type != 'auction'"/>
+                        <field
+                            name="property_image"
+                            widget="image"
+                            class="oe_avatar mt-2"
+                            options="{'convert_to_webp': True}"/>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//notebook/page[1]/group" position="replace">
+                <div class="d-flex justify-content-between py-2 px-4">
+                    <div>
+                        <group>
+                            <field name="description" string="Description"/>
+                            <field name="bedrooms" string="Bedrooms"/>
+                            <field name="living_area" string="Living Area(sqm)"/>
+                            <field name="facades" string="Facades"/>
+                            <field name="garage" string="Garage"/>
+                            <field name="garden" string="Garden"/>
+                            <field name="active" string="Visibility"/>
+                            <field name="garden_area" string="Garden Area(sqm)" invisible="not garden"/>
+                            <field
+                                name="garden_orientation"
+                                string="Garden Orientation"
+                                invisible="not garden"/>
+                            <field name="total_area" string="Total Area(sqm)"/>
+                        </group>
+                    </div>
+                    <div>
+                        <group invisible="property_sell_type != 'auction'">
+                            <separator string="Auction Details"/>
+                            <field name="auction_end_time" string="End Time"/>
+                            <field name="best_price" string="Highest Offer"/>
+                            <field name="highest_bidder" string="Highest Bidder"/>
+                        </group>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban_inherit_real_estate_auction_automation" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban.inherit.real.estate.auction.automation</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//span[@t-att-title='record.name.value']" position="replace">
+                <span class="text-truncate d-block fs-4 fw-bold" t-att-title="record.name.value">
+                    <div class="w-100 d-flex justify-content-between">
+                        <field name="name"/>
+                        <field name="state" class="ms-1" widget="estate_property_state_selection"  invisible="property_sell_type != 'auction'"/>
+                    </div>
+                </span>
+            </xpath>
+        </field>
+    </record>
+</odoo>

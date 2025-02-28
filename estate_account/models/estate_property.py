@@ -2,7 +2,7 @@ from odoo import Command, models
 from odoo.fields import Date
 
 
-class InheritedEstatepropertyModel(models.Model):
+class Estateproperty(models.Model):
     _inherit = 'estate.property'
 
     def action_set_property_sold(self):
@@ -14,6 +14,7 @@ class InheritedEstatepropertyModel(models.Model):
                 'partner_id': self.buyer_id.id,
                 'invoice_date': Date.today(),
                 'move_type': 'out_invoice',
+                'property_id': self.id,
                 'invoice_line_ids': [
                     Command.create({
                         'name': f"commision for {self.name}",
