@@ -1,17 +1,52 @@
 import { registry } from "@web/core/registry";
-import { reactive } from "@odoo/owl";
+import { ClickerModel } from "./clicker_model";
+import { EventBus } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
 
-const state = reactive({ clicks: 0 });
+const clickerService = {
+    dependencies: ["action", "effect", "notification"],
+    start(env, services){
+        const clicker_model = new ClickerModel();
 
-export const clickerService = {
-    start(){
-        return {
-            state,
-            increment(inc) {
-                state.clicks += inc;
-            }
-        }
+        const bus = clicker_model.bus;
+        bus.addEventListener("MILESTONE", (ev) => {
+            services.effect.add({
+                type: "rainbow_man",
+                message: `Milestone reached! You can now buy ${ev.detail.unlock}`,
+            });
+        });
+
+        bus.addEventListener("REWARD", (ev) => {
+            const reward = ev.detail;
+            const closeNotification = services.notification.add(
+                `Congrats you won a reward: "${reward.description}"`,
+                {
+                    type: "success",
+                    sticky: true,
+                    buttons: [
+                        {
+                            name: "Collect",
+                            onClick: () => {
+                                reward.apply(clicker_model);
+                                closeNotification();
+                                services.action.doAction({
+                                    type: "ir.actions.client",
+                                    tag: "awesome_clicker.client_action",
+                                    target: "new",
+                                    name: "Clicker Game"
+                                });
+                            }
+                        }
+                    ]
+                }
+            );
+        });
+
+        document.addEventListener("click", () => clicker_model.increment(1), true);
+        setInterval(() => clicker_model.tick(), 10000);
+
+        return clicker_model;
     }
 };
 
