@@ -3,20 +3,12 @@
 
  <template id="modal_ticket_registration" name="Modal for tickets registration" inherit_id="website_event.modal_ticket_registration">
       
-        <xpath expr="//t[@t-set='seats_max_ticket']" position="before">
-            <t t-set="ticket_max_limit" t-value="min(ticket.tickets_per_registration, ticket.seats_available) + 1 if ticket.seats_limited else ticket.tickets_per_registration + 1"/>
-        </xpath>
-    
-        <xpath expr="//t[@t-set='seats_max_ticket']" position="attributes">
-            <attribute name="t-value">ticket_max_limit </attribute>
-        </xpath>
-    
-        <xpath expr="//t[@t-set='seats_max_event']" position="before">
-            <t t-set="event_max_limit" t-value="event.seats_available + 1 if event.seats_limited else ticket.tickets_per_registration + 1"/>
+        <xpath expr="//t[@t-set='seats_max_ticket']" position="replace">
+            <t t-set="seats_max_ticket" t-value="min(ticket.tickets_per_registration, ticket.seats_available) + 1 if ticket.seats_limited else ticket.tickets_per_registration + 1"/>
         </xpath>
 
-        <xpath expr="//t[@t-set='seats_max_event']" position="attributes">
-            <attribute name="t-value">event_max_limit</attribute>
+        <xpath expr="//t[@t-set='seats_max_event']" position="replace">
+            <t t-set="seats_max_event" t-value="event.seats_available + 1 if event.seats_limited else ticket.tickets_per_registration + 1"/>
         </xpath>
         
         <xpath expr="//div[hasclass('o_wevent_registration_single_select')]" position="replace">
@@ -24,9 +16,9 @@
                 <t t-set="seats_max_ticket" 
                     t-value=" 
                         tickets.tickets_per_registration if not tickets else (
-                        min(tickets.tickets_per_registration, tickets.seats_available) 
-                        if tickets.seats_available and tickets.tickets_per_registration 
-                        else tickets.tickets_per_registration
+                           min(tickets.tickets_per_registration, tickets.seats_available) 
+                           if tickets.seats_available and tickets.tickets_per_registration 
+                           else tickets.tickets_per_registration
                         ) if tickets else event.default_registration_tickets
                 "/>
                 <t t-set="seats_max_event" t-value="event.seats_available if event.seats_limited else seats_max_ticket"/>
