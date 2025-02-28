@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_template_form_view_rental" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.rental</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='options']" position='inside'>
+                    <field name="deposit_product" />
+                    <label for="deposit_product" />
+            </xpath>
+
+            <xpath expr="//page[@name='pricing']/group/group[@name='extra_rental']" position="inside">
+                <group string="Deposit" name="rental_deposit" invisible="not rent_ok">
+                    <field name="require_deposit" invisible="not deposit_product" />
+                    <field name="deposit_amount" widget="monetary" invisible="not require_deposit" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

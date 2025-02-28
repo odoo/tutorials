@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="product_template_inherit" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.product_variant_id.require_deposit">
+                <div class="border rounded p-3 bg-light mt-3">
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-lock text-danger me-2" />
+                        <strong class="text-dark">Security Deposit Required:</strong>
+                    </div>
+                    <div class="fs-5 fw-semibold text-primary mt-1">
+                        <t t-out="product.currency_id.symbol"/>
+                        <t t-out="product.deposit_amount"/>
+                    </div>
+                    <small class="text-muted fst-italic">Refundable upon return</small>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="cart_lines" inherit_id="website_sale.cart_lines">
+    <xpath expr="//div[@id='cart_products']" position="after"> 
+        <t t-set="deposit_total" t-value="0"/>
+        <t t-foreach="website.sale_get_order().order_line" t-as="line">
+            <t t-if="line.product_id.require_deposit">
+                <t t-set="deposit_total" t-value="deposit_total + (line.product_id.deposit_amount * line.product_uom_qty)"/>
+            </t>
+        </t>
+        <t t-if="deposit_total > 0">
+            <div class="mt-3 d-flex justify-content-between"> 
+                <strong>Security Deposit:</strong> 
+                <t t-out="website.sale_get_order().currency_id.symbol"/> 
+                <t t-out="'{:,.2f}'.format(deposit_total)"/>
+            </div>
+        </t>
+    </xpath>
+</template>
+</odoo>
