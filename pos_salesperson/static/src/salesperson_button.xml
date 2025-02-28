@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_salesperson.SelectSalesPersonButton">
+        <button class="set-partner btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="() => this.pos.selectSalesPerson()">
+            <div t-if="props.partner" t-esc="props.partner.name" class="text-truncate text-action" />
+            <t t-else="">Salesperson</t>
+        </button>
+    </t>
+</templates>

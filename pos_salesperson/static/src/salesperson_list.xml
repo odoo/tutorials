@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="point_of_sale.SalespersonList">
+        <Dialog bodyClass="'salesperson-list overflow-y-auto'" contentClass="'h-100'">
+            <t t-set-slot="header">
+                <!--[FIX] Add Create and Search Buttons -->
+            </t>
+            <table class="table table-hover">
+                <thead t-if="!ui.isSmall">
+                    <tr>
+                        <th class="py-2">Name</th>
+                        <th class="py-2">Address</th>
+                        <th class="partner-line-email py-2">Contact</th>
+                        <th class="py-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="getSalesperson()" t-as="salesperson" t-key="salesperson.id">
+                        <SalespersonLine
+                                close="props.close"
+                                salesperson="salesperson"
+                                isSelected="props.salesperson?.id === salesperson.id"
+                                onClickUnselect.bind="() => this.clickSalesperson()"
+                                onClickSalesperson.bind="clickSalesperson"/>
+                    </t>
+                </tbody>
+            </table>
+            <t t-set-slot="footer">
+                <div class="d-flex justify-content-start flex-wrap gap-2 w-100">
+                    <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="() => this.clickSalesperson(this.props.salesperson)">Discard</button>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
