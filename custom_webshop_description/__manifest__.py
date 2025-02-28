@@ -1,5 +1,6 @@
 {
     'name' : 'Extended Webshop Description',
+    'summary' : 'eCommerce product descriptions with formatting options',
     'description' : """
         This module adds an "Ecommerce Extended Description" field to the product template.
         - Supports translations.
@@ -10,10 +11,7 @@
     'category' : 'Website',
     'author' : 'Sudhirkumar Sharma',
     'website': "https://www.odoo.com",
-    'depends' : [
-        'base',
-        'website_sale',
-    ],
+    'depends' : ['website_sale'],
     'data' : [
         'views/template.xml',
         'views/product_views.xml',

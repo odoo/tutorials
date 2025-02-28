@@ -5,7 +5,6 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
-
             <xpath expr="//page[@name='sales']//group[@name='ecom_description']" position="after">
                 <group string="Ecommerce Extended Description" name="ecom_ext_description">
                     <field 
@@ -15,7 +14,6 @@
                         placeholder="A detailed,formatted description of product. Use '/' to discover more features."/>
                 </group>
             </xpath>
-
         </field>
     </record>    
 
