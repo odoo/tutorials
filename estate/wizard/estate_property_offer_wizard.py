@@ -1,14 +1,12 @@
-from odoo import models, fields
+from odoo import fields, models
 from odoo.exceptions import UserError
 
 class EstatePropertyOfferwizard(models.TransientModel):
-
     _name = "estate.property.offer.wizard"
     _description = "Wizard for Estate Property Offer"
 
     price = fields.Float(string="Price", required=True)
     partner_id = fields.Many2one(comodel_name="res.partner", string="Buyer", required=True)
-
 
     def action_make_offer(self):
         properties = self.env['estate.property'].browse(self._context.get('active_ids', []))

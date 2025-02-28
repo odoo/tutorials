@@ -1,7 +1,6 @@
-from odoo import models, fields, Command
+from odoo import Command, fields, models
 
 class EstateProperty(models.Model):
-
     _inherit = "estate.property"
 
     def action_sold(self):

@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">kanban,list,form</field>
-        <field name="context">{'search_default_available':True}</field>
-    </record>
 
-    <!-- List View Configuration -->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -29,7 +21,6 @@
         </field>
     </record>
    
-    <!-- Form View Configuration -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -61,15 +52,17 @@
                         <notebook>
                             <page string="Description">
                                 <group>
-                                    <field name="description"/>
-                                    <field name="bedrooms"/>
-                                    <field name="living_area"/>
-                                    <field name="facades"/>
-                                    <field name="garage"/>
-                                    <field name="garden"/>
-                                    <field name="garden_area" invisible="not garden"/>
-                                    <field name="garden_orientation" invisible="not garden"/>
-                                    <field name="total_area"/>
+                                    <group string="Property Details" name="property_details">
+                                        <field name="description"/>
+                                        <field name="bedrooms"/>
+                                        <field name="living_area"/>
+                                        <field name="facades"/>
+                                        <field name="garage"/>
+                                        <field name="garden"/>
+                                        <field name="garden_area" invisible="not garden"/>
+                                        <field name="garden_orientation" invisible="not garden"/>
+                                        <field name="total_area"/>
+                                    </group>
                                 </group>
                             </page>
                             <page string="Offers">
@@ -89,7 +82,6 @@
         </field>
     </record>
 
-    <!-- Search View Configuration -->
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -113,7 +105,6 @@
         </field>
     </record>
 
-    <!-- Kanban View Configuration -->
     <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
@@ -153,6 +144,13 @@
                 </templates>
             </kanban>
         </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_available':True}</field>
     </record>
 
 </odoo>

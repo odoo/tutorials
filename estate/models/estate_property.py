@@ -2,19 +2,12 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
 from odoo import models, fields, api
 
-
 class EstateProperty(models.Model):
+    _inherit = "mail.thread"
 
-    # ..................private attributes..................
     _name = "estate.property"
     _description = "These are Estate Module Properties"
     _order = "id desc"
-    _sql_constraints = [
-        ('check_expected_price','CHECK(expected_price > 0)', 'The expected price must be strictly positive!'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive!')
-    ]
-    _inherit = "mail.thread"
-
 
     # ..................fields attributes..................
     name = fields.Char(string="Name", required=True, tracking=True)
@@ -59,10 +52,15 @@ class EstateProperty(models.Model):
     # ..................relational attributes..................
     property_type_id = fields.Many2one(comodel_name="estate.property.type", string="Property Type")
     property_tag_ids = fields.Many2many(comodel_name="estate.property.tag", string="Tags")
-    property_offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Offers", default=[])
+    property_offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id", string="Offers")
     user_id = fields.Many2one(comodel_name='res.users', string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one(comodel_name='res.partner', string='Buyer', copy=False)
     company_id = fields.Many2one(comodel_name='res.company', string="Company", required=True, default=lambda self: self.env.company)
+
+    _sql_constraints = [
+        ('check_expected_price','CHECK(expected_price > 0)', 'The expected price must be strictly positive!'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive!')
+    ]
 
     # ..................compute methods..................
     @api.depends("living_area", "garden_area")

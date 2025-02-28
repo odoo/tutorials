@@ -1,19 +1,14 @@
 from dateutil.relativedelta import relativedelta
-from odoo.tools import float_compare
 
-from odoo import models, fields, api
+from odoo import api, fields, models
+from odoo.tools import float_compare
 from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
-
-    # ..................private attributes..................
     _name = "estate.property.offer"
     _description = "These are Estate Module Property Offer"
     _order = "price desc"
-    _sql_constraints = [
-        ('check_price','CHECK(price > 0)', 'The offer price must be strictly positive!')
-    ]
 
     # ..................fields attributes..................
     price = fields.Float(string="price")
@@ -30,8 +25,12 @@ class EstatePropertyOffer(models.Model):
     # ..................relational attributes..................
     property_id = fields.Many2one(comodel_name="estate.property", string="Property", required=True)
     partner_id = fields.Many2one(comodel_name="res.partner", string="Partner", required=True)
-    validity = fields.Integer(string="Validity (days)", default=7,_store=True)
+    validity = fields.Integer(string="Validity (days)", default=7, store=True)
     property_type_id = fields.Many2one(comodel_name="estate.property.type", related="property_id.property_type_id", string="Property Type", store=True)
+
+    _sql_constraints = [
+            ('check_price','CHECK(price > 0)', 'The offer price must be strictly positive!')
+        ]
 
     # ..................compute methods..................
     @api.depends("create_date", "validity")
