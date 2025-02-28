@@ -13,6 +13,10 @@
             <p><t t-esc="this.clicker.clickerBigBots"/>x Big Bots (100 clicks per 10 seconds)</p>
             <button class="btn btn-primary" t-on-click="() => this.clicker.buyBigBot()" t-att-disabled="this.clicker.clicks&lt;5000">Buy</button>
         </t>
+        <t t-if="this.clicker.level >= 3">
+            <p><t t-esc="this.clicker.power"/> Power</p>
+            <button class="btn btn-primary" t-on-click="() => this.clicker.buyPower()" t-att-disabled="this.clicker.clicks&lt;50000">Buy</button>
+        </t>
     </t>
 
 </templates>

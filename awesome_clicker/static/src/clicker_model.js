@@ -10,9 +10,10 @@ export class ClickerModel extends Reactive {
         this.level = 0;
         this.clickerBots = 0;
         this.clickerBigBots = 0;
+        this.power = 1;
 
         setInterval(() => {
-            this.increment(this.clickerBots * 10 + this.clickerBigBots * 100);
+            this.increment((this.clickerBots * 10 + this.clickerBigBots * 100) * this.power);
         }, 10000);
 
         this.bus = new EventBus();
@@ -24,9 +25,13 @@ export class ClickerModel extends Reactive {
             this.level++;
             this.bus.trigger("MILESTONE_1k");
         }
-        else if (this.clicks >= 5000 && this.level === 1) {
+        if (this.clicks >= 5000 && this.level === 1) {
             this.level++;
             this.bus.trigger("MILESTONE_5k");
+        }
+        if (this.clicks >= 100000 && this.level === 2) {
+            this.level++;
+            this.bus.trigger("MILESTONE_100k");
         }
     }
 
@@ -38,5 +43,10 @@ export class ClickerModel extends Reactive {
     buyBigBot() {
         this.clicks -= 5000;
         this.clickerBigBots += 1;
+    }
+
+    buyPower() {
+        this.clicks -= 50000;
+        this.power += 1;
     }
 }
