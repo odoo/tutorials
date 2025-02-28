@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="product_quantity_inherit_related" inherit_id="website_sale.cart_lines" name="Hide Quantity Update for Related Products">
+        
+        <xpath expr="//a[i[hasclass('fa-minus')]]" position="attributes">
+            <attribute name="t-if">
+                not line.is_related_product
+            </attribute>
+        </xpath>
+
+        <xpath expr="//input[hasclass('js_quantity', 'quantity', 'form-control')]" position="attributes">
+            <attribute name="readonly">
+                not line.is_related_product
+            </attribute>
+        </xpath>
+
+        <xpath expr="//a[i[hasclass('fa-plus')]]" position="attributes">
+            <attribute name="t-if">
+                not line.is_related_product
+            </attribute>
+        </xpath>
+
+        <xpath expr="//a[hasclass('js_delete_product')]" position="attributes">
+            <attribute name="t-if">
+                not line.is_related_product
+            </attribute>
+        </xpath>
+
+    </template>
+</odoo>
