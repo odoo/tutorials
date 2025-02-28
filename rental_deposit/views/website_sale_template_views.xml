@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <template id="rental_deposits" name="deposits" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='product_attributes_simple']" position="before">
+            <t t-if="product.require_deposit"> 
+                <div class="mt-4">
+                    <h5>
+                        Deposit Required :
+                        <span t-esc="product.currency_id.symbol" style="color: 'black';" />
+                        <span t-field="product.amount" style="color: 'black';" />
+                    </h5>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="new_rental_deposit" name="rental" inherit_id="website_sale.cart_lines">
+        <xpath expr="//div[@name='o_wsale_cart_line_button_container']" position="after">
+           <t t-if="line.product_id.require_deposit"> 
+            <div class="mt-4">
+                <h5>
+                    Deposit for 
+                    <span t-field="line.product_id.name" style="color: black;" />
+                </h5>
+            </div>
+          </t>
+        </xpath>
+    </template>
+
+    <template id="deposit_display_after_amounts" name="after_amounts" inherit_id="website_sale.cart_lines">
+        <xpath expr="//div[@name='website_sale_cart_line_price']" position="after">
+           <t t-if="line.product_id.require_deposit"> 
+            <div class="mt-4">
+                <h5>
+                    <span t-esc="line.product_id.currency_id.symbol"> </span>
+                    <span t-field="line.product_id.amount" style="color: black;" />
+                </h5>
+            </div>
+          </t>
+        </xpath>
+    </template>
+
+</odoo>
