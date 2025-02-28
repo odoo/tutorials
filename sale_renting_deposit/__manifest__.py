@@ -4,10 +4,9 @@
     "summary": "Adds deposit for rental products.",
     "author": "Odoo PS",
     "category": "Sales/Rental",
-    "depends": ["sale_renting", "sale_management", "website_sale"],
+    "depends": ["sale_renting", "product"],
     "data": [
         "views/res_config_settings_views.xml",
-        "views/product_template_views.xml",
     ],
     "installable": True,
     "application": True,

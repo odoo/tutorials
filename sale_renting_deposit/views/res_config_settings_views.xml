@@ -1,15 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="view_res_config_settings_rental" model="ir.ui.view">
+    <record id="res_config_settings_view_form" model="ir.ui.view">
         <field name="name">res.config.settings.view.form.inherit.rental</field>
         <field name="model">res.config.settings</field>
-        <field name="inherit_id" ref="sale_renting.res_config_settings_view_form"/>
+        <field name="priority" eval="10"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//setting[@name='rental_delay_costs']/div[@class='content-group']" position="inside">
-                <div class="row mt2">
-                    <label string="Deposit" for="deposit_product_id" class="col-lg-3 o_light_label"/>
-                    <field name="deposit_product_id" options="{'no_create': true}" class="col-lg-2"/>
+            <field name="extra_product" position="after">
+                <div class="row mt8">
+                    <label string="Deposit" for="deposit_product" class="col-lg-3 o_light_label"/>
+                    <field name="deposit_product" placeholder="Product to set as deposit" />
                 </div>
-            </xpath>
+            </field>
         </field>
     </record>
 </odoo>
