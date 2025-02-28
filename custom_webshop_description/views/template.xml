@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="product_inherit" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='product_details']" position="after">
+            <div id="ecommerce_extended_description">
+                <t t-if="product.ecommerce_extended_description">
+                    <h2 class="h3-fs">Description</h2>
+                    <div t-field="product.ecommerce_extended_description"
+                        placeholder="A detailed,formatted description of product. Use '/' to discover more features."/>
+                </t>
+            </div>
+        </xpath>
+
+    </template>
+
+</odoo>
