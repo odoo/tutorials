@@ -13,12 +13,12 @@ class SubProductWizard(models.TransientModel):
     def default_get(self, fields):
         defaults = super().default_get(fields)
         
-        sale_order_line_id = self.env.context.get('active_id')
+        sale_order_line_id = self.env.context.get('default_sale_order_line_id')  
         sale_order_line = self.env['sale.order.line'].browse(sale_order_line_id)
         product = sale_order_line.product_id
 
         line_data = []
-        existing_wizard = self.env['sub.product.wizard'].search([('sale_order_line_id', '=', sale_order_line_id)])
+        existing_wizard = self.search([('sale_order_line_id', '=', sale_order_line_id)])
 
         if existing_wizard:
             for line in existing_wizard.line_ids:
@@ -28,7 +28,7 @@ class SubProductWizard(models.TransientModel):
                 line_data.append((0, 0, {
                     'product_id': sub_product.id,
                     'quantity': 1,
-                    'price_unit': sub_product.lst_price,  # Fixed field name
+                    'price_unit': sub_product.lst_price,  
                 }))
 
         defaults.update({
@@ -41,11 +41,10 @@ class SubProductWizard(models.TransientModel):
 
     def action_confirm(self):
         self.ensure_one()
-
+        
         # Ensure at least one sub-product is selected
         if not any(self.line_ids.mapped('quantity')):
             raise UserError("You must select at least 1 sub-product to purchase the kit product.")
-
 
         sale_order = self.sale_order_line_id.order_id 
         
@@ -91,7 +90,13 @@ class SubProductWizard(models.TransientModel):
             'price_subtotal': total_price, 
         })
 
-        return True
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'sale.order',
+            'res_id': sale_order.id,
+            'target': 'current',
+        }
 
 class SubProductLineWizard(models.TransientModel):
     _name = 'sub.product.line.wizard'

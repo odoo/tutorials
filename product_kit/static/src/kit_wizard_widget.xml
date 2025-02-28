@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+    <t t-name="product_kit.KitWizardWidget">
+        <t t-if="props.record.data.is_kit_product">
+            <button type="button" class="btn btn-secondary" t-on-click="openKitWizard">
+                <i class="fa fa-cogs"/> Open Kit Wizard
+            </button>
+        </t>
+    </t>
+</templates>
+

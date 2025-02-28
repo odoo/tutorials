@@ -9,19 +9,9 @@ class SaleOrderLine(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_all_sub_product_lines(self):
-        for line in self:
-            if line.product_id.is_kit:
-                linked_lines = self.env['sale.order.line'].filtered(lambda line: line.parent_line_id.id == self.parent_line_id.id)
-                for linked_line in linked_lines:
-                    linked_line.unlink()
+        kit_lines = self.filtered(lambda l: l.product_id.is_kit)
+        if kit_lines:
+            self.search([('parent_line_id', 'in', kit_lines.ids)]).unlink()
 
-    def action_open_kit_wizard(self):
-        return {
-            'name': f"Product: {self.product_id.name}",
-            'type': 'ir.actions.act_window',
-            'res_model': 'sub.product.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-        }
+    kit_wizard_button = fields.Char(string="Kit Wizard Button")
     
-   
