@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="seq_vendor_product_import" model="ir.sequence">
+        <field name="name">Vendor product Import</field>
+        <field name="code">vendor.product.import</field>
+        <field name="prefix">VPT</field>
+        <field name="padding">6</field>
+    </record>
+
+</odoo>

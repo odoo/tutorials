@@ -23,7 +23,7 @@
             <form name="Vendor Product Import">  
                 <header>
                     <button name="action_manual_process" type="object" string="Menual Process" class="oe_highlight"/>
-                    <button name="action_reset_to_pending" type="object" string="Reset to Pending" class="oe_highlight"/>
+                    <button name="action_reset_to_pending" type="object" string="Reset to Pending"/>
                     <field name="state" widget="statusbar" options="{'clickable': '1'}"
                         statusbar_visible="pending, processed, error" />
                 </header>
@@ -34,7 +34,7 @@
                     <group>
                         <group>
                             <field name="vendor_id" string="Vendor"/>
-                            <field name="fiel_to_process" string="File To Process"/>
+                            <field name="file_to_process" string="File To Process"/>
                         </group>
                         <group>
                             <field name="vendor_template" string="Vender Template Formate"/>

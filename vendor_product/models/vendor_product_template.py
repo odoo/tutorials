@@ -6,7 +6,5 @@ class VendorProductTemplate(models.Model):
     _description = 'Vendor Product template model'
 
     name = fields.Char(requierd=True, string="Name")
-    vendor_id = fields.Many2one('res.partner', requierd=True)
+    vendor_id = fields.Many2one('res.partner', required=True)
     template_formate_ids = fields.One2many('vendor.template.formate', 'template_id', string="Vendor Template Formate")
-
-    
