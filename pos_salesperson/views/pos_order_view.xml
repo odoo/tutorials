@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+        <record id="view_pos_order_list_inherited" model="ir.ui.view">
+            <field name="name">view.pos.order.list.salesperson.inherited</field>
+            <field name="model">pos.order</field> 
+            <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/> 
+            <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="salesperson_id"/>
+                </xpath>
+            </field>  
+        </record>
+
+        <record id="view_pos_order_form_inherited" model="ir.ui.view">
+        <field name="name">view.pos.order.form.salesperson.inherited</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="salesperson_id"/>
+            </xpath>
+        </field>
+        </record>
+</odoo>
