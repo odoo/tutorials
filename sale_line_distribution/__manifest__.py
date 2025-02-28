@@ -1,5 +1,5 @@
 {
-    'name': "Sale Line Extension",
+    'name': "Sale Line Distribution",
     'version': "1.0",
     'author': "Vaidik Gorasiya - vrgo",
     'depends': ['base', 'sale_management'],

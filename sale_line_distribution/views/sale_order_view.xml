@@ -9,11 +9,11 @@
                 <xpath expr="//field[@name='product_template_id']" position="after">
                     <button
                         class="fa fa-share-alt"
-                        name="%(sale_line_distribution_wizard_action)d"
+                        name="%(sale_order_line_distribution_wizard_action)d"
                         type="action"/>
                 </xpath>
                 <xpath expr="//field[@name='price_total'][@invisible='is_downpayment']" position="after">
-                    <field name="distributed_cost_ids" widget="many2many_tags" options="{'color_field': 'color'}" groups="base.group_user"/>
+                    <field name="distributed_cost_tags" widget="many2many_tags" options="{'color_field': 'color'}" groups="base.group_user"/>
                 </xpath>
            </field>
         </record>
