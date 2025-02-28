@@ -31,7 +31,7 @@
             </xpath>
         </field>
     </record>
-
+    <!-- Added label layout button in gear icon -->
     <record id="action_open_label_layout" model="ir.actions.act_window">
         <field name="name">Choose Labels Layout</field>
         <field name="res_model">product.label.layout</field>  <!-- Ensure res_model is included -->
@@ -41,7 +41,7 @@
                 (0, 0, {'view_mode': 'form', 'view_id': ref('product.product_label_layout_form')})]" />
         <field name="target">new</field>
     </record>
-
+    <!-- Added replenish button in gear icon -->
     <record id="action_product_replenish" model="ir.actions.act_window">
         <field name="name">Low on stock? Let's replenish.</field>
         <field name="res_model">product.replenish</field>  <!-- Ensure this field is present -->
@@ -51,15 +51,39 @@
         <field name="target">new</field>
     </record>
 
-    <record id="product_template_view_form_inherit" model="ir.ui.view">
-        <field name="name">product.template.form.inherit.sale.kit</field>
+    <!-- <record id="product_template_view_form_inherit_update" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.update</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view" />
         <field name="arch" type="xml">
             <group name="group_general" position="inside">
-                <field name="is_kit" />
-                <field name="sub_product_ids" invisible="not is_kit" />
+                <field name="Quantity_on_Hand" />
+            </group>
+        </field>
+    </record> -->
+
+    <record id="product_template_form_view_quantity_on_hand" model="ir.ui.view">
+        <field name="name">product.template.form.quantity_on_hand</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <group name="group_general" position="inside">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="o_stat_text">Quantity on Hand</span>
+                    <span class="o_stat_value">
+                        <field name="qty_available" class="oe_inline" />
+                    </span>
+                    <span class="o_stat_text">
+                        <field name="uom_name" class="oe_inline" />
+                    </span>
+                    <button type="object"
+                        name="action_update_quantity_on_hand"
+                        class="oe_button btn btn-sm btn-primary"
+                        icon="fa-refresh"
+                        string="Update" />
+                </div>
             </group>
         </field>
     </record>
+
 </odoo>
