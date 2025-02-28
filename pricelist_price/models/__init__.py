@@ -1,2 +1,2 @@
-from . import pricelist_account_move_line
-from . import pricelist_sale_order_line
+from . import account_move_line
+from . import sale_order_line
