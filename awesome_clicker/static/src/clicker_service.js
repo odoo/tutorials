@@ -2,6 +2,7 @@ import { useState } from "@odoo/owl";
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
+import { browser } from "@web/core/browser/browser";
 
 import  { ClickerModel } from "./clicker_model"
 
@@ -13,6 +14,11 @@ export const clickerService = {
     dependencies: ["effect"],
     start(env, services) {
         const clicker = new ClickerModel();
+        const data = JSON.parse(browser.localStorage.getItem("awesome_clicker.clicker"));
+        if (data) {
+            Object.assign(clicker, data);
+        }
+
         clicker.bus.addEventListener("MILESTONE_1k", () => {
             services.effect.add({
                 type: "rainbow_man",
@@ -25,6 +31,11 @@ export const clickerService = {
                 message: "Milestone reached! You can now buy BIG bots",
             });
         });
+
+        setInterval(() => {
+            clicker.increment((clicker.clickerBots * 10 + clicker.clickerBigBots * 100) * clicker.power);
+            browser.localStorage.setItem("awesome_clicker.clicker", JSON.stringify(clicker, (key, value) => {if (key === "bus") {return undefined} return value}));
+        }, 10000);
 
         return clicker;
     }

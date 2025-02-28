@@ -12,10 +12,6 @@ export class ClickerModel extends Reactive {
         this.clickerBigBots = 0;
         this.power = 1;
 
-        setInterval(() => {
-            this.increment((this.clickerBots * 10 + this.clickerBigBots * 100) * this.power);
-        }, 10000);
-
         this.bus = new EventBus();
     }
 
