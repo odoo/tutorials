@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='sales']//group[@name='sale']" position="after">
                 <group name="web_product_description" string="Ecommerce Product Extended Description">
-                    <field name="wbsp_product_description" placeholder="Extended Description" nolabel="1" string="Ecommerce Extended Description"/>
+                    <field name="wbsp_product_description" string="Ecommerce Extended Description" placeholder="Extended Description" nolabel="1"/>
                 </group>
             </xpath>
         </field>
