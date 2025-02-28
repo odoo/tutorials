@@ -1,7 +1,7 @@
 {
     'name': 'Limit Registrations in Event',
     'version': '1.0.0',
-    'depends': ['event'],
+    'depends': ['website_event'],
     'installable': True,
     'application': True,
     'license': 'LGPL-3',
