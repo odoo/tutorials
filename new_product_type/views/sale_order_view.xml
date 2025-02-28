@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="sale_order_template_view_extend" model="ir.ui.view">
+    <field name="name">sale.order.form.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"></field>
+    <field name="arch" type="xml">
+
+       <xpath expr="//group[@name='order_details']/field[@name='payment_term_id']" position='after'>
+         <field name="sub_products_in_report" />
+       </xpath> 
+       <xpath expr="//field[@name='product_template_id']" position="after">
+          <button string="Add Kit" name="action_open_wizard" type="object" invisible="not is_kit_available or state in 'sale'"/>
+       </xpath>
+
+    </field>
+  </record> 
+</odoo>
