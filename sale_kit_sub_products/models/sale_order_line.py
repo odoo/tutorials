@@ -1,14 +1,13 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     is_kit = fields.Boolean(
-        related='product_template_id.is_kit',
-        depends=['product_id']
+        related='product_template_id.is_kit'
     )
-
     parent_line_id = fields.Many2one('sale.order.line', string="Parent Line", ondelete='cascade')
 
     def action_open_kit_wizard(self):
@@ -19,6 +18,3 @@ class SaleOrderLine(models.Model):
             'view_mode': 'form',
             'target': 'new',
         }
-    
-
-    

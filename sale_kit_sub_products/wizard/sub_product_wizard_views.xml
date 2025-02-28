@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
- <record id="sub_product_wizard_view_form" model="ir.ui.view">
+    <record id="sub_product_wizard_view_form" model="ir.ui.view">
         <field name="name">sub.product.wizard.form</field>
         <field name="model">sub.product.wizard</field>
         <field name="arch" type="xml">
@@ -9,20 +9,18 @@
                     <label for="line_ids" class="fs-2 mb-2"></label>
                     <field name="line_ids">
                         <list create="false" editable="bottom">
-                            <field name="product_id" readonly="1" force_save="1"/>
-                            <field name="quantity"/>
-                            <field name="price_unit"/>
+                            <field name="product_id" readonly="1" force_save="1" />
+                            <field name="quantity" />
+                            <field name="price_unit" />
                         </list>
                     </field>
                 </sheet>
                 <footer>
-                    <button string="Confirm" type="object" name="action_confirm" class="oe_highlight"/>
-                    <button string="Cancel" special="cancel"/>
+                    <button string="Confirm" type="object" name="action_confirm"
+                        class="oe_highlight" />
+                    <button string="Cancel" special="cancel" />
                 </footer>
             </form>
         </field>
     </record>
-
-    
-
 </odoo>
