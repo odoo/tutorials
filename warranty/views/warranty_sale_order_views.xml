@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_open_discount_wizard']" position="before">
-                <button name="action_open_add_warranty_wizard" type="object" string="Add Warranty" />
+                <button name="action_open_add_warranty_wizard" type="object" class="btn btn-primary btn-sm" string="Add Warranty" />
             </xpath>
         </field>
     </record>

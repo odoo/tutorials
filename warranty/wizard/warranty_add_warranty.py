@@ -7,13 +7,9 @@ class AddWarrantyWizard(models.TransientModel):
 
     sale_order_id = fields.Many2one(
         'sale.order', default=lambda self: self.env.context.get('default_sale_order_id'), required=True)
-    product = fields.Many2one(
-        "product.template", string="Product",
-        domain="[('id', 'in', product_ids)]", required=True)
-    year = fields.Many2one("warranty.configuration", string="Year", required=True)
-    end_date = fields.Date(compute="_compute_end_date")
-    quantity = fields.Float(string="Quantity", readonly=True)
     product_ids = fields.Many2many("product.template", store=True, readonly=False)
+
+    product_warranty_ids = fields.One2many("warranty.wizard.lines","wizard_id", readOnly=True)
 
     @api.model
     def default_get(self, fields_list):
@@ -23,51 +19,48 @@ class AddWarrantyWizard(models.TransientModel):
         sale_order = self.env["sale.order"].browse(sale_order_id)
 
         #get available prodcuts from order lines
-        available_products = sale_order.order_line.filtered(lambda l: not l.related_product_id and l.product_id.product_tmpl_id.warranty).mapped("product_id.product_tmpl_id")
+        available_products = sale_order.order_line.filtered(
+            lambda l: not l.related_product_id and l.product_id.product_tmpl_id.warranty and
+                      not sale_order.order_line.filtered(lambda w: w.related_product_id == l.product_id.product_tmpl_id)
+        ).mapped("product_id.product_tmpl_id")        
         defaults["product_ids"] = [(6, 0, available_products.ids)]
 
-        if available_products:
-            defaults["product"] = available_products[0].id # get 1st product as default in wizard
+        product_warranty_data = []
+        for line in available_products:
+            related_line = sale_order.order_line.filtered(lambda l: l.product_id.product_tmpl_id == line)
+            quantity = sum(related_line.mapped("product_uom_qty")) if related_line else 1  # Default to 1 if not found - so it does not give error
 
-            matching_line = sale_order.order_line.filtered(
-                lambda l: l.product_id.product_tmpl_id == available_products[0]
-            )
-            if matching_line:
-                defaults["quantity"] = matching_line[0].product_uom_qty # as well as get its quantity
+            product_warranty_data.append((0, 0, {
+                'product_id': line.id,
+                'year': False,  # Year needs to be selected manually
+                'end_date': False,
+                'quantity': quantity,
+            }))
 
+        if product_warranty_data:
+            defaults["product_warranty_ids"] = product_warranty_data
         return defaults
 
-    # To get updated quantity
-    @api.onchange("product")
-    def _onchange_product(self):
-        if self.product and self.sale_order_id:
-            order_line = self.sale_order_id.order_line.filtered(
-                lambda l: l.product_id.product_tmpl_id == self.product
-            )
-            self.quantity = order_line.product_uom_qty if order_line else 0
 
     def action_add_warranty_from_wizard(self):
         self.ensure_one()
 
-        description = "End Date: " + (self.end_date.strftime('%Y-%m-%d') if self.end_date else "N/A")
-        price = self.product.list_price * self.year.percentage / 100
-        sale_order_line_vals = {
-            'order_id': self.sale_order_id.id,
-            'product_id': self.year.product_id.product_variant_id.id,
-            'name': description,
-            'product_uom_qty': self.quantity,
-            'price_unit': price,
-            'price_subtotal': price * self.quantity,
-            'related_product_id': self.product.id, # for deleting warranty when delete it's product
-        }
-        
-        self.env['sale.order.line'].create(sale_order_line_vals)
+        for warranty_line in self.product_warranty_ids:
+            print("hellohellohello"+str(warranty_line.quantity))
+            if not warranty_line.year:
+                continue  # Skip entries where warranty year is not selected
 
-    def get_year_number(self):
-        match = re.search(r'(\d+)', str(self.year.name))
-        return int(match.group(1)) if match else 0
-
-    @api.depends("year.name")
-    def _compute_end_date(self):
-        for record in self:
-            record.end_date = fields.Date.add(fields.Date.today(), years=record.get_year_number())
+            description = f"[{warranty_line.product_id.name}'s warranty end date is {warranty_line.end_date.strftime('%Y-%m-%d') if warranty_line.end_date else 'N/A'}"
+            price = warranty_line.product_id.list_price * warranty_line.year.percentage / 100
+            sale_order_line_vals = {
+                'order_id': self.sale_order_id.id,
+                'product_id': warranty_line.year.product_id.product_variant_id.id,
+                'name': description,
+                'product_uom_qty': warranty_line.quantity, 
+                'price_unit': price,
+                'price_subtotal': price * warranty_line.quantity,
+                'tax_id': False,
+                'related_product_id': warranty_line.product_id.id,
+            }
+            self.env['sale.order.line'].create(sale_order_line_vals)
+            
