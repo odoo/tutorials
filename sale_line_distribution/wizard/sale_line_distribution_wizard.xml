@@ -16,7 +16,7 @@
                     <group>
                         <field name="distribution_line_ids" optional="hide" nolabel="1">
                             <list editable="bottom" delete="0" create="0">
-                                <field name="sale_order_line" optional="show"/>
+                                <field name="sale_order_line"/>
                                 <field name="distributed_amount"/>
                             </list>
                         </field>

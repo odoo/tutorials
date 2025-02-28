@@ -55,18 +55,6 @@ class SaleOrderLineDistributionWizard(models.TransientModel):
 
         tag_color = randint(1, 11)
 
-        for distribution_line in self.distribution_line_ids:
-            if distribution_line.distributed_amount:
-                cost_tag = self.env['distributed.cost.tag'].create({
-                    'name': f"+ {distribution_line.distributed_amount:.2f}",
-                    'color': tag_color,
-                    'sale_order_line': sale_order_line.id
-                })
-                distribution_line.sale_order_line.write({
-                    'distributed_cost_tags': [(4, cost_tag.id)],
-                    'price_subtotal': distribution_line.sale_order_line.price_subtotal + distribution_line.distributed_amount
-                })
-
         if total_distributed_amount > 0:
             negative_cost_tag = self.env['distributed.cost.tag'].create({
                 'name': f"-{total_distributed_amount:.2f}",
@@ -77,3 +65,16 @@ class SaleOrderLineDistributionWizard(models.TransientModel):
                 'distributed_cost_tags': [(4, negative_cost_tag.id)],
                 'price_subtotal': sale_order_line.price_subtotal - total_distributed_amount
             })
+
+        for distribution_line in self.distribution_line_ids:
+            if distribution_line.distributed_amount:
+                cost_tag = self.env['distributed.cost.tag'].create({
+                    'name': f"+ {distribution_line.distributed_amount:.2f}",
+                    'color': tag_color,
+                    'sale_order_line': distribution_line.sale_order_line.id,
+                    'parent_tag': negative_cost_tag.id
+                })
+                distribution_line.sale_order_line.write({
+                    'distributed_cost_tags': [(4, cost_tag.id)],
+                    'price_subtotal': distribution_line.sale_order_line.price_subtotal + distribution_line.distributed_amount
+                })
