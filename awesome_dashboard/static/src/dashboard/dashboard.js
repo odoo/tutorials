@@ -24,7 +24,7 @@ export class AwesomeDashboard extends Component {
 
         this.dialog = useService("dialog");
         this.state = useState({
-            uncheckedItems : [],
+            uncheckedItems : browser.localStorage.getItem("dashboardDisabledItems")?.split(",") || [],
         });
     }
 
@@ -78,13 +78,17 @@ export class DashboardConfigs extends Component {
 
     apply(){
         this.props.applyConfig(this.props.disabledItems);
+        browser.localStorage.setItem(
+            "dashboardDisabledItems",
+            this.props.disabledItems,
+        );
         this.props.close();
     }
 
     toggle(checked, item){
         item.checked = checked;
         if (checked) {
-            this.props.disabledItems = this.props.disabledItems.filter(item.id);
+            this.props.disabledItems = this.props.disabledItems.filter((locID) => locID != item.id);
         }
         else{
             this.props.disabledItems = this.props.disabledItems.concat([item.id]);
