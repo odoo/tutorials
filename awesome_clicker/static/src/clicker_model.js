@@ -5,23 +5,23 @@ import { getReward } from "./click_reward";
 
 
 export class ClickerModel extends Reactive {
-    constructor(){
+    constructor(state){
         super();
-        this._clicks = 0;
-        this._level = 0;
-        this._power = 1;
+        this._clicks = state?._clicks || 0;
+        this._level = state?._level || 0;
+        this._power = state?._power || 1;
         this._bots = {
             clickBot: {
                 price: 1000,
                 level: 1,
                 increment: 10,
-                purchased: 0,
+                purchased: state?._bots?.clickBot?.purchased || 0,
             },
             bigBot: {
                 price: 5000,
                 level: 2,
                 increment: 100,
-                purchased: 0,
+                purchased: state?._bots?.bigBot?.purchased || 0,
             },
         };
         this.trees = {
@@ -29,18 +29,18 @@ export class ClickerModel extends Reactive {
                 price: 1000000,
                 level: 4,
                 produce: "pear",
-                purchased: 0
+                purchased: state?.trees?.pearTree?.purchased || 0
             },
             cherryTree: {
                 price: 1000000,
                 level: 4,
                 produce: "cherry",
-                purchased: 0
+                purchased: state?.trees?.cherryTree?.purchased || 0
             },
         };
         this.fruits = {
-            pear: 0,
-            cherry: 0,
+            pear: state?.fruits?.pear || 0,
+            cherry: state?.fruits?.cherry || 0,
         };
         this._milestones = [
             { clicks: 1000, unlock: "clickBot" },
@@ -49,7 +49,7 @@ export class ClickerModel extends Reactive {
             { clicks: 1000000, unlock: "trees" },
         ];
         this._bus = new EventBus();
-        this._tick = 0;
+        this._tick = state?._tick || 0;
     }
 
     setup(){}
@@ -62,6 +62,14 @@ export class ClickerModel extends Reactive {
     set power(pwr){ this._power = pwr; }
 
     get bots() { return this._bots; }
+
+    get firePower(){
+        let sum = 0;
+        for(const bot in this._bots){
+            sum += this._bots[bot].purchased * this._bots[bot].increment * this._power;
+        }
+        return sum;
+    }
 
     get bus(){ return this._bus; }
 
