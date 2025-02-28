@@ -6,7 +6,12 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='general_information']//field[@name='product_tooltip']" position="after">
                 <field name="is_kit"/>
-                <field name="kit_product_ids" widget="many2many_tags" invisible="not is_kit"/>
+                <field name="kit_product_ids" invisible="not is_kit">
+                   <list>
+                        <field name="name"/>
+                        <field name="list_price"/>
+                    </list>
+                </field>
             </xpath>
         </field>
     </record>

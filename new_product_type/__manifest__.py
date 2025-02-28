@@ -6,7 +6,7 @@
         This module allows selling products as kits, grouping sub-products under a main product in the Sales module.
     """,
     'author': 'Mandani Tushar',
-    'depends': ['sale', 'product'],
+    'depends': ['sale_management', 'product'],
     'data': ['security/ir.model.access.csv',
             'views/product_view.xml',
             'views/sale_order_form_views.xml',

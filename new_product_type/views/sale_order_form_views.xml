@@ -6,7 +6,27 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='product_template_id']" position="after">
-                <button name="action_open_add_kit_wizard" type="object" class="btn-secondary" string="Add/Update Kit" invisible="is_kit_product == False" />
+                <button name="action_open_add_kit_wizard" type="object" class="btn-secondary" 
+                        string="Sub Products" invisible="not is_kit or state != 'draft'" />
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="decoration-warning">is_sub_product</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
             </xpath>
         </field>
     </record>
