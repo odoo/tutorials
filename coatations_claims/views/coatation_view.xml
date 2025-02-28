@@ -11,6 +11,9 @@
         <field name="arch" type='xml'>
             <list>
                 <field name="name"/>
+                <field name="client_id"/>
+                <field name="state"/>
+               
             </list>
             
         </field>

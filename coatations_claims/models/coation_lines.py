@@ -10,13 +10,19 @@ class CoationsClaims(models.Model):
     min_qty = fields.Integer()
     qty_per_order = fields.Integer()
     recommended_sp = fields.Float()
-    consumed = fields.Integer()
+    consumed = fields.Integer(compute="_compute_consumed", readonly=True)
     status = fields.Selection(
-        string="state", selection=[("active", "Active"), ("expired", "Expired")]
+        string="state",
+        selection=[("active", "Active"), ("expired", "Expired")],
+        required=True,
+        compute="_compute_state",
+        default="active",
+        readonly=True,
     )
     claim = fields.Boolean()
     coation_id = fields.Many2one("coatations.claims")
     internal_reference = fields.Char(compute="_compute_internal_reference")
+    sale_order_ids = fields.Many2many("sale.order")
 
     _sql_constraints = [
         # Ensuring max_qty is positive
@@ -55,17 +61,17 @@ class CoationsClaims(models.Model):
             "CHECK(recommended_sp > 0)",
             "Recommended selling price must be greater than zero!",
         ),
-        # Ensuring max_qty is greater than or equal to consumed
+        # Ensuring max_qty is greater than or equal to consumed only if not expired
         (
             "max_qty_greater_than_consumed",
-            "CHECK(max_qty >= consumed)",
-            "Maximum quantity must be greater than or equal to consumed quantity!",
+            "CHECK(status = 'expired' OR max_qty >= consumed)",
+            "Maximum quantity must be greater than or equal to consumed quantity if status is not expired!",
         ),
-        # Ensuring consumed quantity is greater than zero
+        # Ensuring consumed quantity is greater than or equal to zero
         (
             "positive_consumed_qty",
-            "CHECK(consumed > 0)",
-            "Consumed quantity must be greater than zero!",
+            "CHECK(consumed >= 0)",
+            "Consumed quantity must be greater than or equal to zero!",
         ),
     ]
 
@@ -76,3 +82,48 @@ class CoationsClaims(models.Model):
                 self.internal_reference = reference.name
             else:
                 self.internal_reference = ""
+
+    @api.depends("sale_order_ids.order_line.product_uom_qty")
+    def _compute_consumed(self):
+        for record in self:
+            if record.status == "expired":
+                continue  # Skip processing for expired records
+
+            total_consumed = 0
+            sale_order_lines = self.env["sale.order.line"].search(
+                [
+                    ("order_id.partner_id", "=", record.coation_id.client_id.id),
+                    ("product_id", "=", record.product_id.id),
+                    (
+                        "order_id.state",
+                        "in",
+                        ["sale", "done"],
+                    ),  # Only consider confirmed or done orders
+                ]
+            )
+
+        # Sum the quantities of the matching order lines
+        for line in sale_order_lines:
+            total_consumed += line.product_uom_qty
+
+        # Assign the computed consumed value
+        record.consumed = total_consumed
+        record.write({"consumed": total_consumed})
+        print(
+            f"Consumed for {record.product_id.name} and client {record.coation_id.client_id.name}: {total_consumed}"
+        )
+
+    @api.depends("consumed")
+    def _compute_state(self):
+        for record in self:
+            if record.status == "expired":
+                continue  # Skip processing for expired records
+            # Check if consumed is properly initialized
+            if record.consumed is not None and record.max_qty is not None:
+                if record.consumed >= record.max_qty:
+                    record.status = "expired"
+                else:
+                    record.status = "active"
+            else:
+                # Default status if consumed is not initialized properly
+                record.status = "active"
