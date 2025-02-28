@@ -1,10 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <templates xml:space="preserve">
+   <t t-name="awesome_owl.Playground">
+      <div class="container mt-5">
+         <div class="text-center">
+            <h1 class="mb-4">Welcome To Owl WebFrameworks</h1>
+         </div>
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
+         <div class="row justify-content-center">
+            <div class="col-md-5 mb-3">
+               <div class="card-body text-center">
+                  <Card title="'Property 1'"> NEWNEW</Card>
+               </div>
+            </div>
+            <div class="col-md-5 mb-3">
+               <div class="card-body text-center">
+                  <Card title="'Property 2'"> old old</Card>
+               </div>
+            </div>
+         </div>
 
+         <div class="row justify-content-center">
+            <div class="col-md-5 mb-3">
+               <div class="card-body text-center">
+                  <Card title="'count'">
+                     <Counter onChange.bind="incrementSum"/>
+                  </Card>
+               </div>
+            </div>
+            <div class="col-md-5 mb-3">
+               <div class="card-body text-center">
+                  <Card title="'count'">
+                     <Counter onChange.bind="incrementSum"/>
+                  </Card>
+               </div>
+            </div>
+            <div class='gradient-container text-center fw-bold' style="font-size: 1.5em;">
+               Sum: <t t-esc="state.sum"/>
+            </div>
+         </div>
+
+         <div class="row justify-content-center text-center mt-5">
+            <TodoList />
+         </div>
+      </div>
+   </t>
 </templates>
