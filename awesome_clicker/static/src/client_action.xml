@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+
+    <t t-name="awesome_clicker.ClickerClientAction">
+        <ClickValue/> <button class="btn btn-primary" t-att-click-count="10">Increment</button>
+        <Notebook>
+            <t t-set-slot="clicks" title="'Clicks'" isVisible="clicker.bots.length">
+                <div class="ms-1 mt-1">
+                    <h2>Bots</h2>
+                    <div class="d-flex flex-row">
+                        <div class="card" t-foreach="this.clicker.bots" t-as="bot" t-key="bot.name">
+                            <div class="card-header">
+                                <t t-esc="bot.count"/>x <t t-esc="bot.name"/> (<t t-esc="this.clicker.effectiveBotAmount(bot)"/> clicks/<t t-esc="bot.delay"/> seconds)
+                                <i class="fa fa-android"></i>
+                            </div>
+                            <div class="card-body">
+                                <button t-on-click="() => this.clicker.buyBot(bot)" class="btn btn-primary" t-att-disabled="!this.clicker.checkBuyBot(bot)">
+                                    Buy <t t-esc="bot.name"/> (<t t-esc="bot.price"/> clicks)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div t-if="clicker.multiplier" class="ms-1 mt-1">
+                    <h2>Multiplier</h2>
+                    <div class="d-flex flex-row">
+                        <div class="card">
+                            <div class="card-header">
+                                <t t-esc="clicker.multiplier"/>x
+                                <i class="fa fa-superpowers"></i>
+                            </div>
+                            <div class="card-body">
+                                <button t-on-click="() => this.clicker.buyMultiplier()" class="btn btn-primary" t-att-disabled="!this.clicker.checkBuyMultiplier()">
+                                    Buy Power Multiplier (<t t-esc="this.clicker.multiplierPrice"/> clicks)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+            <t t-set-slot="tree" title="'Trees and Fruits'" isVisible="clicker.trees.length">
+                <div t-if="clicker.trees.length" class="ms-1 mt-1">
+                    <h2>Trees</h2>
+                    <div class="d-flex flex-row" t-foreach="clicker.trees" t-as="tree" t-key="tree.name">
+                        <div class="card">
+                            <div class="card-header">
+                                <t t-esc="tree.count"/>x <t t-esc="tree.name"/> (<t t-esc="tree.amount"/> clicks/<t t-esc="tree.delay"/> seconds)
+                                <i class="fa fa-tree"></i>
+                            </div>
+                            <div class="card-body">
+                                <button t-on-click="() => this.clicker.buyTree(tree)" class="btn btn-primary" t-att-disabled="!this.clicker.checkBuyTree(tree)">
+                                    Buy <t t-esc="tree.name"/> (<t t-esc="tree.price"/> clicks)
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div t-if="clicker.fruitCount()" class="ms-1 mt-1">
+                    <h2>Fruits</h2>
+                    <div class="d-flex flex-row" t-foreach="clicker.trees" t-as="tree" t-key="tree.name">
+                        <div class="card" t-if="tree.fruitCount">
+                            <div class="card-header">
+                                <t t-esc="tree.fruitCount"/>x <t t-esc="tree.fruitsName"/> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </Notebook>
+    </t>
+
+</templates>
