@@ -2,7 +2,6 @@ from odoo import http, fields
 from odoo.http import request
 
 
-
 class EstatePropertyController(http.Controller):
 
     @http.route(['/properties','/properties/page/<int:page_no>'], type='http', auth='public', website = True)
@@ -12,7 +11,7 @@ class EstatePropertyController(http.Controller):
         date_listed = kwargs.get('date_listed')
         if date_listed:
             filter_date = fields.Datetime.to_datetime(date_listed + " 00:00:00")
-            domain.append(('create_date','>=', filter_date))
+            domain.append(('create_date', '>=', filter_date))
 
         total_count = request.env['estate.property'].sudo().search_count(domain)
         per_page = 6

@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class EstateAddOfferWizard(models.TransientModel):
@@ -9,7 +9,6 @@ class EstateAddOfferWizard(models.TransientModel):
     partner_id=fields.Many2one('res.partner', string='Partner', required=True)
 
     def action_estate_add_offer_wizard(self):
-        print("adding offer".center(100,"*"))
         active_ids = self._context.get("active_ids",[])
         property_obj = self.env['estate.property'].browse(active_ids)
         for property in property_obj:

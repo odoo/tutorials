@@ -12,7 +12,6 @@ export class TodoList extends Component{
     }
 
     addTodo(event){
-
         if(event.keyCode == 13 && event.target.value.trim()){
             this.todos.push({ 'id': this.counter.value++ ,'description': event.target.value, 'isCompleted': false })
             event.target.value = ""

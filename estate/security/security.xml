@@ -9,7 +9,6 @@
         <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
         <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         <field name="implied_ids" eval="[4, ref('estate.estate_group_user')]"></field>
-
     </record>
 
     <record id="estate_property_agent_rule" model="ir.rule">
@@ -33,5 +32,4 @@
                 ('company_id', 'in', company_ids)
         ]</field>
     </record>
-
 </odoo>

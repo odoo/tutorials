@@ -63,7 +63,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id', string="Offers")
     total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area')
     best_price = fields.Integer(string='Best Offer', compute='_compute_best_price', tracking=True)
-    company_id = fields.Many2one('res.company', string="Company", default = lambda self: self.env.company, required = True)
+    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company, required=True)
     image = fields.Binary("Image",attachment = True)
 
     _sql_constraints = [
@@ -89,7 +89,7 @@ class EstateProperty(models.Model):
             if float_is_zero(record.selling_price, precision_digits=3):
                 return
             if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=3) < 0:
-                raise ValidationError("the selling price cannot be lower than 90 percentage of the expected price")
+                raise ValidationError(_("the selling price cannot be lower than 90 percentage of the expected price"))
 
     @api.onchange('garden')
     def _onchange_garden(self):
