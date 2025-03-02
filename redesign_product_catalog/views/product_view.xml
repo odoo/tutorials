@@ -5,6 +5,9 @@
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
         <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="js_class">product_popoup_kanban_catalog</attribute>
+            </xpath>
             <xpath expr="//field[@name='image_128']" position="replace">
                 <t t-if="!record.image_1024.raw_value">
                     <field
