@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
@@ -18,17 +20,10 @@ class SaleOrder(models.Model):
     def action_confirm(self):
         for order in self:
             has_zero_stock = False
-
-            if not order.order_line:
-                if not order.zero_stock_approval:
-                    raise UserError(_('Cannot confirm empty order without approval.'))
-
             for line in order.order_line:
                 if line.product_uom_qty <= 0:
                     has_zero_stock = True
                     break
-
             if has_zero_stock and not order.zero_stock_approval:
                 raise UserError(_('Cannot confirm order with zero stock products without approval.'))
-
         return super().action_confirm()
