@@ -1,15 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="action_kit_subproducts_wizard" model="ir.actions.act_window">
+        <field name="name">Configure Kit Subproducts</field>
+        <field name="res_model">kit.subproducts.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
     <record id="view_order_form_inherit" model="ir.ui.view">
         <field name="name">sale.order.form.inherit</field>
         <field name="model">sale.order</field>
-        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='payment_term_id']" position="after">
-                <field name="print_report"/>
+                <field name="print_report" />
             </xpath>
-             <xpath expr="//notebook//list/field[@name='product_template_id']" position="after">
-                <button name="action_list_subproducts" type="object" class="btn btn-primary" string="KIT" invisible="not is_kit_product"/>
+            <xpath expr="//notebook//list/field[@name='product_template_id']" position="after">
+                <button name="%(action_kit_subproducts_wizard)d" type="action"
+                    class="btn btn-primary" string="Configure Kit"
+                    invisible="not is_kit or state!='draft'" />
+            </xpath>
+            <xpath expr="//notebook//list/field[@name='product_id']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+            <xpath expr="//notebook//list/field[@name='product_template_id']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+            <xpath expr="//notebook//list/field[@name='product_uom_qty']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+            <xpath expr="//notebook//list/field[@name='price_unit']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+            <xpath expr="//notebook//list/field[@name='tax_id']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+            <xpath expr="//notebook//list/field[@name='discount']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
             </xpath>
         </field>
     </record>

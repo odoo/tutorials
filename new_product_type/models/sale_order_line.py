@@ -1,32 +1,31 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
-    is_kit_product = fields.Boolean(related='product_id.is_kit')
+    is_kit = fields.Boolean(related='product_id.is_kit')
+    parent_line_id = fields.Many2one('sale.order.line', ondelete='cascade')
+    is_subproduct = fields.Boolean(default=False)
 
-    def action_list_subproducts(self):
-        product_list = (
-            [
-                [rec.product_id.id, rec.product_uom_qty, rec.product_id.list_price, rec.id]
-                for rec in self.linked_line_ids
-            ]
-            if self.linked_line_ids
-            else [
-                [rec.id, 1, rec.list_price, 0]
-                for rec in self.product_id.sub_products_ids
-            ]
-        )
+    def unlink(self):
+        # Find all child lines in a single query and unlink them efficiently
+        child_lines = self.env['sale.order.line'].search([
+            ('parent_line_id', 'in', self.filtered(lambda l: l.product_id.is_kit).ids)
+        ])
+        if child_lines:
+            child_lines.unlink()
+        return super(SaleOrderLine, self).unlink()
 
-        return {
-            "type": "ir.actions.act_window",
-            "target": "new",
-            "res_model": "",
-            "view_mode": "form",
-            "context": {
-                "pname": self.product_id.name,
-                "sale_order_id": self.order_id.id,
-                "product_ids": product_list,
-            },
-        }
+    def write(self, vals):
+        result = super(SaleOrderLine, self).write(vals)
+        if vals.get('product_template_id'):
+            for line in self:
+                product_template = self.env['product.template'].browse(vals.get('product_template_id'))
+                # Update price in a separate write to avoid recursion
+                line.price_unit = product_template.list_price
+                # Delete child lines in a single operation
+                child_lines = self.env['sale.order.line'].search([('parent_line_id', '=', line.id)])
+                if child_lines:
+                    child_lines.unlink()
+        return result

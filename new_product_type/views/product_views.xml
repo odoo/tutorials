@@ -5,8 +5,8 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <xpath expr="//group[@name='group_general']" position="inside">
-                    <field name="is_kit"/>
-                    <field name="sub_products_ids" widget="many2many_tags" invisible="not is_kit"/>
+                <field name="is_kit" invisible="type== 'service'"/>
+                <field name="sub_products_ids" widget="many2many_tags" invisible="not is_kit"/>
             </xpath>
         </field>
     </record>
