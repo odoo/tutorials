@@ -81,7 +81,7 @@
                         <page string="Other Info">
                             <group>
                                 <field name="user_id" />
-                                <field name="buyer_id" />
+                                <field name="buyer_id" readonly="status == 'offer_accepted'"/>
                             </group>
                         </page>
                     </notebook>

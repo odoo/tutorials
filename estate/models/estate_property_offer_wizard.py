@@ -18,7 +18,7 @@ class EstatePropertyOfferWizard(models.TransientModel):
                     self.env['estate.property.offer'].create({
                         'price': self.price,
                         'validity': self.validity,
-                        'buyer_id': self.partner_id.id,
+                        'partner_id': self.buyer_id.id,
                         'property_id': property.id,
                     })
         return {'type': 'ir.actions.act_window_close'}
