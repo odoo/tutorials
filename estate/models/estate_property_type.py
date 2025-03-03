@@ -11,12 +11,12 @@ class EstatePropertyType(models.Model):
     ]
 
     name = fields.Char(string="Name")
-    property_ids = fields.One2many('estate.property', 'property_type_id')
-    sequence = fields.Integer('Sequence', help="Used to order stages. Lower is better.")
-    offer_ids = fields.One2many('estate.property.offer', 'property_type_id')
+    property_ids = fields.One2many(comodel_name='estate.property', inverse_name='property_type_id')
+    sequence = fields.Integer(string="Sequence", help="Used to order stages. Lower is better.")
+    offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_type_id')
     offer_count = fields.Integer(string="Offer Count", compute='_compute_offer_count')
 
     @api.depends('offer_ids')
     def _compute_offer_count(self):
         for property_type in self:
-            property_type.offer_count = len(property_type.offer_ids)
+            property_type.offer_count = self.env['estate.property.offer'].search_count([('property_id.property_type_id', '=', property_type.id)])

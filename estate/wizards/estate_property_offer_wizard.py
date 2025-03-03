@@ -7,20 +7,18 @@ class EstatePropertyOfferWizard(models.TransientModel):
     _name = "estate.property.offer.wizard"
     _description = "Estate Property Offer Wizards"
 
-    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
-    property_id = fields.Many2one('estate.property', string="Property", required=True)
+    partner_id = fields.Many2one(comodel_name='res.partner', string="Partner", required=True)
+    property_id = fields.Many2one(comodel_name='estate.property', string="Property", required=True)
     price = fields.Float(string="Offer Price", required=True)
 
     def action_create_offer(self):
         if self.price <= 0:
             raise UserError(_("Offer price must be positive."))
-
         self.env['estate.property.offer'].create({
             'partner_id': self.partner_id.id,
             'property_id': self.property_id.id,
             'price': self.price,
         })
-
         return {
             'type': 'ir.actions.client',
             'tag': 'display_notification',

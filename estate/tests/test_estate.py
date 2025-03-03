@@ -34,22 +34,16 @@ class EstateTestCase(TransactionCase):
         self.property.state = 'sold_offer'
         with self.assertRaises(UserError, msg="Selling a property without an accepted offer!"):
             self.property.action_sold()
-
         self.offer1.action_accept()
-
         with self.assertRaises(UserError, msg="Offer1 has already been accepted, so no new offer allowed!"):
             self.offer2.action_accept()
-
         self.assertEqual(self.property.buyer_id, self.buyer, msg="Buyer not matched!")
         self.assertEqual(self.property.selling_price, 9000, msg="Selling price not matched!")
-
         self.property.action_sold()
         self.assertEqual(self.property.state, 'sold_offer', msg="State not changes to sold offer!")
-
         self.assertRecordValues(self.property, [
             {'state': 'sold_offer'},
         ])
-
         with self.assertRaises(UserError, msg="Can't create an offer, as property already been sold!"):
             self.env['estate.property.offer'].create({
                 'partner_id': self.buyer.id,
@@ -61,11 +55,9 @@ class EstateTestCase(TransactionCase):
         with Form(self.property) as prop:
             self.assertEqual(prop.garden_area, 0, msg="check default value of garden_area")
             self.assertIs(prop.garden_orientation, False, msg="check default value of garden_orientation")
-
             prop.garden = True
             self.assertEqual(prop.garden_area, 10, msg="Garden is set, so default value would'nt work!")
             self.assertEqual(prop.garden_orientation, "north")
-
             prop.garden = False
             self.assertEqual(prop.garden_area, 0, msg="Garden is reset, default value would work!")
             self.assertIs(prop.garden_orientation, False)

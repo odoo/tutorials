@@ -11,9 +11,7 @@ class EstateProperty(models.Model):
             self.check_access('write')
         except AccessError:
             raise AccessError(_("You don't have permission to change/update the properties!"))
-
         result =  super().action_sold()
-
         for property in self:
             try:
                 self.env['account.move'].sudo().create({
@@ -36,5 +34,4 @@ class EstateProperty(models.Model):
                 })
             except AccessError:
                 raise AccessError(_("You do not have the required access rights to create an invoice. Please contact your administrator."))
-
         return result

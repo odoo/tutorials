@@ -38,15 +38,21 @@ class EstateProperty(models.Model):
         ('offer_accepted', "Offer Accepted"),
         ('sold_offer', "Sold"),
         ('cancel_offer', "Cancelled"),
-    ], string="Status", required=True, default='new_offer', copy=False)
+    ],
+    help="New: A new property with no offers\n\
+        Offer Received: Offer to receive\n\
+        Offer Accepted: Offer to accept\n\
+        Sold: Property to sold\n\
+        Cancelled: Property to cancel",
+    string="Status", required=True, default='new_offer', copy=False)
     property_image = fields.Image(string="Property Image", max_width=1024, max_height=1024, store=True)
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company, string="Company")
-    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
-    saleperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
-    tag_ids = fields.Many2many('estate.property.tag', string="Property Tag")
-    offer_ids = fields.One2many('estate.property.offer', 'property_id')
-    total_area = fields.Integer(compute='_compute_total')
+    property_type_id = fields.Many2one(comodel_name='estate.property.type', string="Property Type")
+    company_id = fields.Many2one(comodel_name='res.company', required=True, default=lambda self: self.env.company, string="Company")
+    buyer_id = fields.Many2one(comodel_name='res.partner', string="Buyer", copy=False)
+    saleperson_id = fields.Many2one(comodel_name='res.users', string="Salesperson", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many(comodel_name='estate.property.tag', string="Property Tag")
+    offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id', string="Offers")
+    total_area = fields.Integer(compute='_compute_total', string="Total Area (sqm)")
     best_price = fields.Float(string="Best Offer", compute='_compute_best_price', store=True)
 
     @api.constrains('selling_price', 'expected_price')
@@ -63,41 +69,29 @@ class EstateProperty(models.Model):
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        for offer in self:
-            if offer.offer_ids:
-                offer.best_price = max(offer.offer_ids.mapped('price'))
-            else:
-                offer.best_price = 0.0
+        for property in self:
+            property.best_price = max(property.offer_ids.mapped('price')) if property.offer_ids else 0.0
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north' if self.garden else False
 
     @api.ondelete(at_uninstall=False)
     def _restrict_property_unlink(self):
-        for property in self:
-            if property.state not in ('new_offer', 'cancel_offer'):
+        if any(property.state not in ('new_offer', 'cancel_offer') for property in self):
                 raise UserError(_('You can only delete properties in "New" or "Cancelled" state.'))
 
     def action_sold(self):
-        for property in self:
-            if property.state == "cancelled":
-                raise UserError("Cancelled property cannot be sold")
-
-            if not property.buyer_id or not property.selling_price or not property.state=="offer_accepted":
-                raise UserError("Property must have an accepted offer before being sold")
-
-            property.state = "sold_offer"
-            return True
+        if 'cancelled' in self.mapped('state'):
+            raise UserError("Cancelled property cannot be sold")
+        if any(not property.buyer_id or not property.selling_price or property.state != "offer_accepted" for property in self):
+            raise UserError("Property must have an accepted offer before being sold")
+        self.write({'state': 'sold_offer'})
+        return True
 
     def action_cancel(self):
         if 'sold_offer' in self.mapped('state'):
             raise UserError(_("Sold property can't be cancelled!"))
-        for property in self:
-            property.state = 'cancel_offer'
+        self.write({'cancel_offer'})
         return True
