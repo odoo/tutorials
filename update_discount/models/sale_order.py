@@ -178,11 +178,12 @@ class SaleOrderDiscount(models.TransientModel):
     def action_apply_discount(self):
         self.ensure_one()
         self = self.with_company(self.company_id)
-        if self.discount_type == 'sol_discount':
-            self.sale_order_id.order_line.write({'discount': self.discount_percentage*100})
-        elif self.discount_type == 'so_discount':
-            # Store the discount percentage on the sale order for future reference
+        print("Self:", self)
+        
+        if self.discount_type == 'so_discount':
             self.sale_order_id.global_discount_percentage = self.discount_percentage * 100
-            self.sale_order_id._create_global_discount_lines(self.discount_percentage)
+            result = super().action_apply_discount()
+            self.sale_order_id._update_global_discount()
+            return result
         else:
-            self._create_discount_lines()
+            return super().action_apply_discount()
