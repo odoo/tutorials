@@ -56,7 +56,7 @@
                     />
                 </header>
                 <sheet>
-                    <group>
+                    <group name="property_info">
                         <group>
                             <h1>
                                 <field name="name" placeholder="Property Name"/>
@@ -91,23 +91,18 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                            <group>
-                                <field name="description"/>
-                            </group>
-                            <group colspan="2">
+                            <group colspan="2" name="property_description_groups">
                                 <group>
+                                    <field name="description"/>
                                     <field name="bedrooms"/>
                                     <field name="living_area"/>
                                     <field name="garden"/>
                                     <field name="garden_area" invisible="garden == False"/>
                                     <field name="total_area"/>
-                                </group>
-                                <group>
                                     <field name="facades"/>
                                     <field name="garden_orientation" invisible="garden == False"/>
                                     <field name="garage"/>
                                     <field name="active"/>
-                                    <field name="company_id"/>
                                 </group>
                             </group>
                         </page>

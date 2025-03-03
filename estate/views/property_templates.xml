@@ -98,8 +98,8 @@
                     </div>
 
                     <!-- Property Details -->
-                    <div class="col-md-6">
-                        <h2 class="mb-3"><t t-esc="property_details.name"/></h2>
+                    <div class="col-md-6" name="property_details_only">
+                        <h2 class="mb-3" name="property_name"><t t-esc="property_details.name"/></h2>
                         <p class="text-muted">Property Type: 
                             <strong>
                                 <t t-esc="property_details.property_type_id.name"/>

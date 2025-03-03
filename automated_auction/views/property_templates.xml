@@ -1,0 +1,23 @@
+<odoo>
+    <template id="property_details_auction_filter" inherit_id="estate.property_list_template">
+        <xpath expr="//select[@name='property_type']" position="after">
+            <input type="checkbox" name="property_auction_type" onchange="this.form.submit()"/>
+        </xpath>
+    </template>
+    <template id="property_details_auction_template" inherit_id="estate.property_detail_template">
+        <xpath expr="//h2[@name='property_name']" position="before">
+            <t t-if="property_details.property_auction_type == 'auction'">
+                <div class="bg-primary text-center">
+                    Remaining time will be showed here
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[@name='property_details_only']" position="inside">
+            <t t-if="property_details.property_auction_type == 'auction'">
+                <a t-attf-href="/properties/#{property_details.id}/add_offer" class="btn btn-primary">
+                    Create Offer
+                </a>
+            </t>
+        </xpath>
+    </template>
+</odoo>

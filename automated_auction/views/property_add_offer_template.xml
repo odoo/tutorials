@@ -1,0 +1,31 @@
+<odoo>
+    <template id="property_offer_added">
+        <div>
+            <h1>
+                Congratulations! Your Offer has been successfully placed. We will notify you of the results as soon as the auction concludes
+            </h1>
+            <a t-attf-href="/properties" class="btn btn-primary">
+                Home
+            </a>
+        </div>
+    </template>
+
+    <template id="property_add_offer_template">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h2 class="mb-3" name="property_name">Add Offer For<t t-esc="property_details.name"/></h2>
+                <form t-attf-action="/properties/#{property_details.id}/submit_offer" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <label>Name: </label>
+                    <input name="bidder_name" type="text" t-att-value="request.env.user.name" readonly="True"/>
+                    <label>Amount: </label>
+                    <input name="offer_amount" type="number"/>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a t-attf-href="/properties/#{property_details.id}/" class="btn btn-primary">
+                        Cancel
+                    </a>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>

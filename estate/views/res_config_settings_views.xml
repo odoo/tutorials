@@ -22,6 +22,11 @@
                             <field name="module_estate_account"/>
                         </setting>
                     </block>
+                    <block title="Auction" name="auction">
+                        <setting id="auction_settings" help="Automated Auction for Estate properties">
+                            <field name="module_automated_auction"/>
+                        </setting>
+                    </block>
                 </app>
             </xpath>
         </field>
