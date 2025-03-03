@@ -22,8 +22,8 @@ export class PieChart extends Component {
         });
 
         onPatched(() => {
-            this.chart.destroy();
-            this.displayChart();
+            this.chart.data.datasets[0].data = Object.values(this.props.data);
+            this.chart.update();
         });
 
         onWillUnmount(() => {
