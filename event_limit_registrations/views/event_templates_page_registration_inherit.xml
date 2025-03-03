@@ -1,0 +1,16 @@
+<odoo>
+    <template id="event_ticket_registration" inherit_id="website_event.modal_ticket_registration">
+        <xpath expr="//select[@class='d-inline w-auto form-select']//t[@t-set='seats_max_event']" position="after">
+            <t t-set="custom_max_seat" t-value="event.set_max_ticket+1"/>
+        </xpath>
+        <xpath expr="//select[@class='d-inline w-auto form-select']//t[@t-set='seats_max']" position="replace">
+            <t t-set="seats_max" t-value="min(seats_max_ticket, seats_max_event, custom_max_seat) if tickets else min(custom_max_seat, seats_max_event+1)"/>
+        </xpath>
+        <xpath expr="//select[@class='w-auto form-select']//t[@t-set='seats_max_event']" position="after">
+            <t t-set="custom_max_seat" t-value="event.set_max_ticket+1"/>
+        </xpath>
+        <xpath expr="//select[@class='w-auto form-select']//t[@t-set='seats_max']" position="replace">
+            <t t-set="seats_max" t-value="min(seats_max_ticket, seats_max_event, custom_max_seat+1)"/>
+        </xpath>
+    </template>
+</odoo>
