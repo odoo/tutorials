@@ -9,8 +9,8 @@ class EstatePropertyAccount(models.Model):
     self.check_access_rule('write')
     journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
   
-    for record in self:
-      self.env["account.move"].create({
+    for record in res:
+      res.env["account.move"].create({
         'partner_id': record.buyer_id.id,
         'move_type': 'out_invoice',
         'journal_id': journal.id,
