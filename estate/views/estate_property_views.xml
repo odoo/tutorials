@@ -81,17 +81,19 @@
                         </div>
                         <notebook>
                             <page string="Description">
-                                <group>
-                                    <field name="description" string="Description"/>
-                                    <field name="bedrooms" string="Bedrooms"/>
-                                    <field name="living_area" string="Living Area [in sqft]"/>
-                                    <field name="facades" string="Facades"/>
-                                    <field name="garage" string="Garage"/>
-                                    <field name="garden" string="Garden"/>
-                                    <field name="garden_area" string="Garden Area" invisible="garden == False"/>
-                                    <field name="garden_orientation" string="Garden Orientation" invisible="garden == False"/>
-                                    <field name="total_area" string="Total Area (sqm)"/>
-                                </group>
+                                <div>
+                                    <group>
+                                        <field name="description" string="Description"/>
+                                        <field name="bedrooms" string="Bedrooms"/>
+                                        <field name="living_area" string="Living Area [in sqft]"/>
+                                        <field name="facades" string="Facades"/>
+                                        <field name="garage" string="Garage"/>
+                                        <field name="garden" string="Garden"/>
+                                        <field name="garden_area" string="Garden Area" invisible="garden == False"/>
+                                        <field name="garden_orientation" string="Garden Orientation" invisible="garden == False"/>
+                                        <field name="total_area" string="Total Area (sqm)"/>
+                                    </group>
+                                </div>
                             </page>
                             <page string="Offers" widget="one2many" name="offer_ids">
                                 <field name="offer_ids" readonly="state == 'offer_accepted'">
