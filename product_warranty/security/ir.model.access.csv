@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_product_warranty_config_salesman,access.product.warranty.config,product_warranty.model_product_warranty_config,sales_team.group_sale_salesman,1,1,1,1
+access_product_warranty_salesman,access.product.warranty,product_warranty.model_product_warranty,sales_team.group_sale_salesman,1,1,1,1
+access_warranty_line_salesman,access.warranty.line,product_warranty.model_warranty_line,sales_team.group_sale_salesman,1,1,1,1

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="extended_warranty_product" model="product.product">
+        <field name="name">Extended Warranty</field>
+        <field name="type">service</field>
+    </record>
+</odoo>

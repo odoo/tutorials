@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- is warranty button in product form view -->
+    <record id="product_template_form_view_inherit_website_sale_stock_warranty" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.product.warrenty</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='upsell']" position="after">
+                <group string="Warranty">
+                    <field name="is_warranty"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
