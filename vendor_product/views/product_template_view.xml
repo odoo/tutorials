@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
 
    <record id="product_import_histry_form_view" model="ir.ui.view">
         <field name="name">product.import.histry</field>
-        <field name="model">product.product</field>
+        <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
              <xpath expr="//notebook" position="inside">
-                <page string="grfgsdgs">
-                    <field name="import_histry_ids" />
+                <page name="import_history" string="Import Histry">
+                    <field name="import_histry_ids" readonly="True">
+                        <list string="Type">
+                            <field name="import_reference" string="Import Reference "/>
+                            <field name="date_of_import" string="Date Of Import"/>
+                            <field name="file_name" string="File Name" />
+                            <field name="old_price" string="Old Price"/>
+                            <field name="new_price" string="New Price"/>
+                        </list>
+                    </field>
                 </page>
              </xpath>
         </field>

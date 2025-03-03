@@ -1,16 +1,19 @@
 import base64
 import io
 from openpyxl import load_workbook
-from odoo import api, fields, models
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 class VendorProductImport(models.Model):
     _name = 'vendor.product.import'
+    _inherit = ['mail.thread']
 
     name = fields.Char(string="Name", default="New", readonly="1")
     vendor_id = fields.Many2one(comodel_name='res.partner', string="Vendor", required=True)
     vendor_template = fields.Many2one(comodel_name="vendor.product.template", string="Vendor Template Formate", domain="[('vendor_id', '=', vendor_id)]")
     file_to_process = fields.Binary(string="File to Process")
+    file_name = fields.Char(string="File Name")
     date = fields.Datetime(string="Date", default=fields.Datetime.now)
     state = fields.Selection(
         selection=[
@@ -18,6 +21,7 @@ class VendorProductImport(models.Model):
             ('processed', "Processed"),
             ('error', "Error")
         ],
+        tracking=True,
         string="State",
         default='pending'
     )
@@ -42,70 +46,77 @@ class VendorProductImport(models.Model):
         self.state = 'pending'
 
     def action_manual_process(self):
-        """Process the uploaded Excel file to update or create products based on product_unique_id."""
+        """Process the uploaded Excel file to update or create products and log history."""
         if not self.file_to_process:
-            self.state = 'error'
             raise UserError("Please upload an Excel file before processing.")
 
         if not self.vendor_template:
-            self.state = 'error'
             raise UserError("No vendor template selected.")
 
         try:
-            # 1: Read the Excel file
+            # Read the Excel file
             file_content = base64.b64decode(self.file_to_process)
             file_stream = io.BytesIO(file_content)
             workbook = load_workbook(file_stream, data_only=True)
             sheet = workbook.worksheets[0]
 
-            # 2: Get required field mappings from vendor template
+            # Get required field mappings from vendor template
             template_format_lines = self.vendor_template.template_formate_ids
             required_headers = template_format_lines.mapped('file_header')
 
-            # 3: Validate headers
+            # Validate headers
             header_tuple = tuple(cell.value for cell in sheet[1])
             missing_headers = set(required_headers) - set(header_tuple)
             if missing_headers:
                 self.state = 'error'
-                raise UserError(f"The uploaded file is missing required headers: {', '.join(missing_headers)}")
+                self.message_post(body=_(f"The uploaded file is missing required headers: {', '.join(missing_headers)}"))
+                return
 
-            # 4: Map Excel headers to Odoo fields
+            # Map Excel headers to Odoo fields
             field_mapping = {line.file_header: line.odoo_field.name for line in template_format_lines}
-
-            # Ensure product_unique_id is part of the template format
             if 'product_unique_id' not in field_mapping.values():
                 self.state = 'error'
-                raise UserError("The field 'product_unique_id' must be in the template format.")
+                self.message_post(body=_("The field 'product_unique_id' must be in the template format."))
+                return
 
-            # 5: Prepare data for product creation or update
-            product_model = self.env['product.product']
             products_to_create = []
             products_to_update = []
+            import_references = []
 
             for row in sheet.iter_rows(min_row=2, values_only=True):
                 product_data = {field_mapping[header]: row[header_tuple.index(header)] for header in field_mapping}
+                product_unique_id = product_data.get('product_unique_id')
+                if not product_unique_id:
+                    self.message_post(body=_("Missing 'product_unique_id' in the imported data."))
+                    return
 
-                existing_product = product_model.search([('product_unique_id', '=', product_data['product_unique_id'])], limit=1)
-
+                existing_product = self.env['product.template'].with_context(active_test=False).search([('product_unique_id', '=', product_unique_id)], limit=1)
+                old_price = existing_product.list_price if existing_product else 0
+                
                 if existing_product:
                     existing_product.write(product_data)
                     products_to_update.append(existing_product.id)
+                    new_price = existing_product.list_price
                 else:
-                    products_to_create.append(product_data)
+                    new_product = self.env['product.template'].create(product_data)
+                    products_to_create.append(new_product.id)
+                    new_price = new_product.list_price
 
-            if products_to_create:
-                product_model.create(products_to_create)
+                import_references.append({
+                    'import_reference': f"{self.name}",
+                    'date_of_import': fields.Date.today(),
+                    'file_name': self.file_name,
+                    'old_price': old_price,
+                    'new_price': new_price,
+                    'product_id': existing_product.id if existing_product else new_product.id
+                })
+            
+            if import_references:
+                self.env['product.import.histry'].create(import_references)
 
+            self.message_post(body=_(f'Successfully processed {len(products_to_create)} new product(s) and updated {len(products_to_update)} existing product(s).'))
             self.state = 'processed'
-
-            return {
-                'effect': {
-                    'fadeout': 'slow',
-                    'message': f'Successfully processed {len(products_to_create)} new product(s) and updated {len(products_to_update)} existing product(s).',
-                    'type': 'rainbow_man',
-                }
-            }
-
+            
         except Exception as e:
             self.state = 'error'
-            raise UserError(f"An error occurred while processing the file: {str(e)}")
+            self.message_post(body=_(f"An error occurred while processing the file: {str(e)}"))

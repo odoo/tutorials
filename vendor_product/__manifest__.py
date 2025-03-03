@@ -2,8 +2,10 @@
     'name' : "Import/Modify Products",
     'version' : "1.0",
     'depends' : [
+        'product',
         'sale',
-        'sale_management'
+        'sale_management',
+        'mail'
     ],
     'category' : 'Sales/Sales',
     'auther' : "Soham Zadafiya [soza]",

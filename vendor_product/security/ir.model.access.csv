@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 base_vendor_product_template,base_vendor_product_template,model_vendor_product_template,base.group_user,1,1,1,1
 base_vendor_template_formate,base_vendor_template_formate,model_vendor_template_formate,base.group_user,1,1,1,1
 base_vendor_product_import,base_vendor_product_import,model_vendor_product_import,base.group_user,1,1,1,1
+base_product_import_hisroty,base_product_import_hisroty,model_product_import_histry,base.group_user,1,1,1,1
