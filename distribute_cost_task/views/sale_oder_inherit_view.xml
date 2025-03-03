@@ -1,0 +1,15 @@
+<odoo>
+    <record id="sale_order_line_inherit_view" model="ir.ui.view">
+        <field name="name">sale.order.line.inherit.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="after">
+                <button name="action_open_order_line_wizard"
+                    type="object"
+                    icon="fa-cogs"/>
+                    <field name="divide_cost" column_invisible="not parent.divide_column"></field>
+            </xpath>
+        </field>
+    </record>
+</odoo>
