@@ -1,11 +1,13 @@
 {
     "name": "Rental Deposit Feature",
     "version": "1.0",
-    "summary": "Adds deposit for rental products.",
+    "summary": "Deposit feature for rental product.",
     "author": "Odoo PS",
-    "category": "Sales/Rental",
-    "depends": ["sale_renting", "product"],
+    "category": "Tutorials",
+    "depends": ["sale_renting", "website_sale"],
     "data": [
+        "views/product_template_views.xml",
+        "views/product_website_template_views.xml",
         "views/res_config_settings_views.xml",
     ],
     "installable": True,

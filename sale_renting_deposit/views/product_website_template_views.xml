@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_website_template_views_rental_deposit" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.requires_deposit">
+                <div class="mt-2">
+                    <span class="fw-bold text-dark me-2">Deposit required:</span>
+                    <span t-esc="product.currency_id.symbol"/>
+                    <span t-esc="product.deposit_amount"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
