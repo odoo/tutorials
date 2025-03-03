@@ -1,4 +1,6 @@
-from odoo import models, fields 
+# -*- encoding: utf-8 -*-
+
+from odoo import models, fields
 
 
 class EventTicket(models.Model):

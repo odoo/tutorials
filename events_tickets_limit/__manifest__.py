@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 {
     'name': 'Event ticket max register',
     'version': '1.0',
