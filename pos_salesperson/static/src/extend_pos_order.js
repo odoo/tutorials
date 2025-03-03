@@ -16,12 +16,9 @@ patch(PosOrder.prototype, {
     
     set_salesperson(salesperson) {
         this.update({ salesperson_id: salesperson });
-        console.log("Salesperson set:", salesperson ? salesperson.name : "None");
     },
 
     get_salesperson() {
-        const salesperson = this.salesperson_id;
-        console.log("Getting salesperson:", salesperson ? salesperson.name : "None");
-        return salesperson;
+        return this.salesperson_id;
     },
 });

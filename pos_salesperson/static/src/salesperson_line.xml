@@ -12,27 +12,7 @@
                     </div>
                     <Dropdown>
                         <button class="btn btn-ligth fa fa-bars" />
-                        <!-- <t t-set-slot="content">
-                            <DropdownItem onSelected="() => props.onClickEdit(props.salesperson)">
-                                Edit Details
-                            </DropdownItem>
-                            <DropdownItem onSelected="() => props.onClickOrders(props.salesperson)">
-                                All Orders
-                            </DropdownItem>
-                        </t> -->
                     </Dropdown>
-                </div>
-                <div class="salesperson-line-adress p-1" t-if="props.salesperson.contact_address" t-esc="props.salesperson.contact_address" />
-                <div class="salesperson-line-email p-1">
-                    <div class="mb-1" t-if="props.salesperson.phone">
-                        <i class="fa fa-fw fa-phone me-2" /><t t-esc="props.salesperson.phone" />
-                    </div>
-                    <div class="mb-1" t-if="props.salesperson.mobile">
-                        <i class="fa fa-fw fa-mobile me-2" /><t t-esc="props.salesperson.mobile" />
-                    </div>
-                    <div t-if="props.salesperson.email" class="email-field mb-1">
-                        <i class="fa fa-fw fa-paper-plane-o me-2" /><t t-esc="props.salesperson.email" />
-                    </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center p-1">
                     <button t-if="props.isSelected" t-on-click.stop="props.onClickUnselect" class="unselect-tag-mobile d-inline-block d-lg-none btn btn-light border ms-2">
@@ -49,42 +29,6 @@
                     <b t-esc="props.salesperson.name or ''" />
                     <div class="company-field text-bg-muted" t-esc="props.salesperson.parent_name or ''" />
                 </td>
-                <td>
-                    <div class="salesperson-line-adress" t-if="props.salesperson.contact_address" t-esc="props.salesperson.contact_address" />
-                </td>
-                <td class="salesperson-line-email ">
-                    <div t-if="props.salesperson.phone">
-                        <i class="fa fa-fw fa-phone me-2"/><t t-esc="props.salesperson.phone"/>
-                    </div>
-                    <div t-if="props.salesperson.mobile">
-                        <i class="fa fa-fw fa-mobile me-2"/><t t-esc="props.salesperson.mobile"/>
-                    </div>
-                    <div t-if="props.salesperson.email" class="email-field">
-                        <i class="fa fa-fw fa-paper-plane-o me-2"/><t t-esc="props.salesperson.email" />
-                    </div>
-                </td>
-                <!-- FIXME: this should be in pos_settle_due, not here -->
-                <!-- <td class="partner-line-balance" t-if="props.isBalanceDisplayed"></td>
-                <td class="edit-partner-button-cell align-middle pe-0">
-                    <button t-if="props.isSelected" t-on-click.stop="props.onClickUnselect" class="unselect-tag d-lg-inline-block d-none btn btn-link btn-lg mt-1 float-end">
-                        <i class="fa fa-check"/>
-                    </button>
-                </td> -->
-                <!-- <td class="edit-partner-button-cell align-middle">
-                    <Dropdown>
-                        <button class="btn btn-light btn-lg lh-lg border float-end">
-                            <i class="fa fa-fw fa-bars"/>
-                        </button>
-                        <t t-set-slot="content">
-                            <DropdownItem onSelected="() => props.onClickEdit(props.partner)">
-                                Edit Details
-                            </DropdownItem>
-                            <DropdownItem onSelected="() => props.onClickOrders(props.partner)">
-                                All Orders
-                            </DropdownItem>
-                        </t>
-                    </Dropdown>
-                </td> -->
             </tr>
         </t>
     </t>

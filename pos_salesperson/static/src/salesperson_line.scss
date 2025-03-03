@@ -1,6 +1,6 @@
 @include media-breakpoint-down(lg) {
 
-    .partner-line {
+    .salesperson-line {
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -15,18 +15,18 @@
         }
     }
     
-    .partner-line-balance{
+    .salesperson-line-balance{
         order: 3;
     }
-    .partner-line .pos-right-align{
+    .salesperson-line .pos-right-align{
         text-align: left ;
     }
-    .edit-partner-button-cell {
+    .edit-salesperson-button-cell {
         order: 4;
     }
 }
 
-.partner-line {
+.salesperson-line {
     &:hover i.oi-chevron-right {
         transition: $transition-base;
         transform: translateX(.5rem);

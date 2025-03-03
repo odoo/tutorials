@@ -1,8 +1,9 @@
 {
-    'name': 'POS Add Salesperson',
+    'name': "POS Salesperson",
     'version': '1.0',
     'category': 'Point of Sale',
-    'depends': ['point_of_sale', 'hr'],
+    'author': "Odoo S.A.",
+    'depends': ['pos_hr'],
     'data':[
         'views/pos_order_views.xml',
     ],
@@ -12,5 +13,5 @@
         ],
     },
     'installable': True,
-    'application': False,
+    'license': 'LGPL-3'
 }

@@ -9,4 +9,3 @@ class PosSession(models.Model):
         data = super()._load_pos_data_models(config_id)
         data.append("hr.employee")
         return data
-
