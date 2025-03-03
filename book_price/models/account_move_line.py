@@ -12,13 +12,8 @@ class AccountMoveLine(models.Model):
         compute="_compute_book_price",
         store=True)
 
-    @api.depends("product_id", "quantity")
+    @api.depends("product_id.lst_price", "quantity")
     def _compute_book_price(self):
         for record in self:
-            if record.product_id:
-                record.book_price = record.product_id.lst_price * record.quantity
-            else:
-                record.book_price = 0.00
-
             record.book_price = record.product_id.lst_price * \
                 record.quantity if record.product_id else 0.00
