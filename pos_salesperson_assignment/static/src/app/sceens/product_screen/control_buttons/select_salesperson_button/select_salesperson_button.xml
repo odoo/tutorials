@@ -9,11 +9,11 @@
                     </div>
                     <i class="fa fa-close" style="padding-left: 8px" t-on-click="onRemove"/>
                 </div>
-                <t t-else="">
-                    <div t-on-click="onClick">
+                <div t-else="">
+                    <div t-on-click="onClick" class="text-truncate">
                         <i class="fa fa-user"/> Salesperson
                     </div>
-                </t>
+                </div>
         </button>
     </t>
 </templates>
