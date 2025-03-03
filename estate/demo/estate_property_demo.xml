@@ -2,7 +2,7 @@
 <odoo>
     <record id="estate_property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
-        <field name="property_type_id" ref="estate.property_type_residential"/>
+        <field name="property_type_id" ref="estate.property_type_residential" />
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
@@ -19,7 +19,7 @@
 
     <record id="estate_property_trailer_home" model="estate.property">
         <field name="name">Trailer Home</field>
-        <field name="property_type_id" ref="estate.property_type_residential"/>
+        <field name="property_type_id" ref="estate.property_type_residential" />
         <field name="state">canceled</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
@@ -35,7 +35,7 @@
     <!-- Create a new property -->
     <record id="estate_property_luxury_villa" model="estate.property">
         <field name="name">Luxury Villa</field>
-        <field name="property_type_id" ref="estate.property_type_land"/>
+        <field name="property_type_id" ref="estate.property_type_land" />
         <field name="state">new</field>
         <field name="description">A beautiful luxury villa with sea view</field>
         <field name="postcode">98765</field>
@@ -49,8 +49,8 @@
         <field name="garden">True</field>
         <field name="garden_area">5000</field>
         <field name="garden_orientation">west</field>
-
-        <field name="offer_ids" eval="[
+        <field name="offer_ids"
+            eval="[
             Command.create({
                 'price': 2600000,
                 'partner_id': ref('base.res_partner_12'),

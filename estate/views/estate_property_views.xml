@@ -47,6 +47,7 @@
                             <field name="name" placeholder="Property Name" />
                         </h1>
                     </group>
+                    <field name="property_img" widget="image" class="oe_avatar" nolabel="1" />
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"
                         nolabel="1" placeholder="Tags" />
                     <group>

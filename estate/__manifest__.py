@@ -1,6 +1,6 @@
 {
     'name': "Real Estate",
-    'depends': ['base', 'mail'],
+    'depends': ['base', 'mail', 'website'],
     'author': "Ayush Kumar Singh",
     'application': True,
     'data': [

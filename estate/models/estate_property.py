@@ -41,6 +41,12 @@ class Property_Plan(models.Model):
         default=lambda self: self.env.company,  
         string="Company"
     )
+    property_img = fields.Binary(string="Property Image", attachment=True)
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', "The expected price must be strictly positive."),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', "The selling price must be positive."),
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -78,11 +84,6 @@ class Property_Plan(models.Model):
     def button_sold_action(self):
         """Mark the property as sold."""
         self.change_state('sold')
-
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', "The expected price must be strictly positive."),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', "The selling price must be positive."),
-    ]
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
