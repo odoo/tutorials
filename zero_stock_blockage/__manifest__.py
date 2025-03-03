@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 {
     'name': "Zero Stock Blockage",
     'description':
@@ -9,6 +11,5 @@
         'views/sale_order_views.xml'
     ],
     'installable': True,
-    'application': True,
     'license': "LGPL-3"
 }

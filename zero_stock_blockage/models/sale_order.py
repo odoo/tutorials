@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from odoo import _,api,fields,models,_
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
-    _inherit ='sale.order'
+    _inherit = 'sale.order'
 
-    zero_stock_approval = fields.Boolean(string='Approval')
+    zero_stock_approval = fields.Boolean(string='Approval', copy=False)
 
     @api.model
     def fields_get(self, allfields=None, attributes=None):
