@@ -9,6 +9,7 @@
             <list string="Warranty Configurations" editable="bottom">
                 <field name="name"/>
                 <field name="product_id"/>
+                <field name="warranty_year_id"/>
                 <field name="percentage"/>               
             </list>
         </field>
