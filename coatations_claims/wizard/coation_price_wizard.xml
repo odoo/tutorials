@@ -1,0 +1,27 @@
+<odoo>
+    <record id="action_coation_price_wizard" model="ir.actions.act_window">
+        <field name="name">Price selection Wizard</field>
+        <field name="res_model">coatation.price.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+        <record id="view_coatation_price_wizard_form" model="ir.ui.view">
+            <field name="name">coatation.price.wizard.form</field>
+            <field name="model">coatation.price.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Select Negotiated Price">
+                    <group>
+                        <field name="order_line_id"/>
+                        <field name="customer_id"/>
+                        <field name="coation_ids"/> 
+                    </group>
+
+                    <footer>
+                        <button string="Select Price" type="object" name="action_select_price" class="btn-primary"/>
+                        <button string="Cancel" type="object" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+</odoo>

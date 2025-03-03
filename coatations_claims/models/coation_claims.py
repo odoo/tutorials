@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
+
 class CoationsClaims(models.Model):
     _name = "coatations.claims"
     _description = "List of all coations"
@@ -15,19 +16,25 @@ class CoationsClaims(models.Model):
         index="trigram",
         default=lambda self: ("New"),
     )
-    partner_id = fields.Many2one("res.partner",required=True)
-    client_id = fields.Many2one("res.partner",required=True)
-    reseller_id = fields.Many2one("res.partner", string="Reseller", readonly=False,required=True)
-    date_from = fields.Date(default=lambda self: fields.Datetime.today(),required=True)
-    date_to = fields.Date(required=True,default=lambda self: fields.Datetime.today() + relativedelta(months=3))
+    partner_id = fields.Many2one("res.partner", required=True)
+    client_id = fields.Many2one("res.partner", required=True)
+    reseller_id = fields.Many2one(
+        "res.partner", string="Reseller", readonly=False, required=True
+    )
+    date_from = fields.Date(default=lambda self: fields.Datetime.today(), required=True)
+    date_to = fields.Date(
+        required=True,
+        default=lambda self: fields.Datetime.today() + relativedelta(months=3),
+    )
     state = fields.Selection(
         string="state",
         selection=[("new", "New"), ("active", "Active"), ("expired", "Expired")],
         default="new",
-        compute="_compute_state"
+        compute="_compute_state",
     )
     coation_lines_ids = fields.One2many("coatations.lines", "coation_id")
     sale_order_ids = fields.Many2many("sale.order")
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -46,21 +53,21 @@ class CoationsClaims(models.Model):
                     raise ValidationError(
                         "The 'Date To' cannot be earlier than 'Date From'. Please correct the dates."
                     )
-    
-    @api.depends('coation_lines_ids.status')
+
+    @api.depends("coation_lines_ids.status")
     def _compute_state(self):
         for record in self:
             # Flag to track the state of the lines
             has_active = False
             has_expired = False
-            
+
             # Loop through the coation_lines_ids to check the status
             for line in record.coation_lines_ids:
-                if line.status == 'active':
+                if line.status == "active":
                     has_active = True
-                elif line.status == 'expired':
+                elif line.status == "expired":
                     has_expired = True
-            
+
             # Get today's date using fields.Date.today() since 'date_to' is a Date field
             today = fields.Date.today()
 
