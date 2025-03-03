@@ -9,11 +9,10 @@ class AccountMoveLine(models.Model):
     @api.depends('product_id', 'quantity', 'move_id.invoice_origin', 'sale_line_ids')
     def _compute_book_price(self):
         for line in self:
-            sale_order_line = line.sale_line_ids[:1]
-            if sale_order_line and sale_order_line.order_id.pricelist_id:
-                pricelist = sale_order_line.order_id.pricelist_id
-                line.book_price = pricelist._get_product_price(
-                    line.product_id, line.quantity
-                )
+            if line.product_id and line.move_id and line.move_id.invoice_line_ids:
+              product_pricelist = line.move_id.invoice_line_ids.mapped('sale_line_ids.order_id.pricelist_id')[:1]
+              if product_pricelist:
+                  price = product_pricelist._get_product_price(line.product_id, line.quantity or 1.0) or 0.0
+                  line.book_price = price * (line.quantity or 1.0)
             else:
                 line.book_price = 0.0
