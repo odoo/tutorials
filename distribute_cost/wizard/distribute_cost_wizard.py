@@ -34,15 +34,15 @@ class DistributeCostWizard(models.TransientModel):
         total_amt = 0.0
         for line in selected_lines:
             total_amt += line.divided_price
-            line.linked_sale_order_line_id.divided_price += line.divided_price
-            line.linked_sale_order_line_id.price_subtotal += line.divided_price
+            line.linked_sale_order_line_id.divided_price = round(line.divided_price, 2)
+            line.linked_sale_order_line_id.price_subtotal += round(line.divided_price, 2)
             line.linked_sale_order_line_id.parent_division_id = current_line.id
 
-        current_line.divided_price = max(current_line.price_subtotal - total_amt, 0.0)
-        remaining_price = original_total_price - total_divided_price
+        current_line.divided_price = round(max(current_line.price_subtotal - total_amt, 0.0), 2)
+        remaining_price = round(original_total_price - total_divided_price, 2)
         if remaining_price > 0:
             current_line.divided_price = remaining_price
-            current_line.price_subtotal = current_line.price_subtotal+remaining_price
+            current_line.price_subtotal = remaining_price
         else:
             current_line.price_subtotal =0.0
         return {'type': 'ir.actions.act_window_close'}

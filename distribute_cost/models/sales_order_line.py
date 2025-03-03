@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import ValidationError
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
@@ -61,10 +62,16 @@ class SaleOrderLine(models.Model):
                 if child_lines:        
                     for child in child_lines:
                         child.price_subtotal -= (line.price_unit * line.product_uom_qty) / len(child_lines)
+                        if(child.price_subtotal<0):
+                            raise ValidationError("You cannot delete this as price_subtotal may leads to negative")
                         child.divided_price = 0.0
                         child.parent_division_id = None
                 if parent_line:
-                    parent_line.price_subtotal += line.price_subtotal
+                    parent_line.price_subtotal += (line.price_subtotal - (line.product_uom_qty*line.price_unit))
+                    if(parent_line.price_subtotal<0):
+                            raise ValidationError("You cannot delete this as price_subtotal may leads to negative")
+
+                    
                 line.divided_price = 0.0
                 line.parent_division_id = None
             else:
