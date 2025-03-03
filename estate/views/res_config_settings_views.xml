@@ -17,9 +17,20 @@
             <xpath expr="//form" position="inside">
                 <app data-string="Real Estate" string="Real Estate" name="estate">`
                     <block title="Estate">
-                        <group string="Invoicing">
-                            <field name="module_estate_account"/>
-                        </group>
+                        <div class="row">
+                            <!-- Invoicing Section -->
+                            <div class="col-md-6">
+                                <group string="Invoicing">
+                                    <field name="module_estate_account"/>
+                                </group>
+                            </div>
+                            <!-- Auction Section -->
+                            <div class="col-md-6">
+                                <group string="Auction">
+                                    <field name="module_estate_auction"/>
+                                </group>
+                            </div>
+                        </div>
                     </block>
                 </app>
             </xpath>

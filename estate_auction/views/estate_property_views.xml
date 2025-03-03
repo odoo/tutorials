@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_auction_estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit.estate.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="%(estate_property_type_action_invoices)d" type="action"
+                        icon="fa-pencil-square-o" string="Invoice" class="oe_stat_button" invisible="invoice_count == 0"/>
+                    </div>
+            </xpath>
+            <xpath expr="//h1" position="after">
+                <field name="property_sale_format" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+            <xpath expr="//field[@name='image']" position="before">
+                <div>
+                    <field name="auction_stage" class="o_task_state_widget" invisible="property_sale_format != 'auction'"></field>
+                </div>
+            </xpath>
+            <xpath expr="//header/button[@name='action_sold']" position="before">
+                <button name="action_start_auction"
+                    type="object"
+                    string="Start Auction"
+                    invisible="property_sale_format != 'auction'"/>
+            </xpath>
+            <xpath expr="//notebook/page[1]/group" position="replace">
+                <div class="row">
+                    <div class="col-md-6">
+                        <group>
+                            <field name="description"/>
+                            <field name="bedrooms"/>
+                            <field name="living_area"/>
+                            <field name="facades"/>
+                            <field name="garage"/>
+                            <field name="garden"/>
+                            <field name="garden_area" invisible="not garden"/>
+                            <field name="garden_orientation" invisible="not garden"/>
+                            <field name="total_area"/>
+                        </group>
+                    </div>
+                    <div class="col-md-6">
+                        <group string="Auction" invisible="property_sale_format != 'auction'">
+                            <field name="auction_end_time"/>
+                            <field name="best_price"/>
+                            <field name="highest_bidder" readonly="1"/>
+                        </group>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//page[2]//button[@name='action_confirm']" position="attributes">
+                <attribute name="invisible">property_sale_format == 'auction'</attribute>
+            </xpath>
+            <xpath expr="//page[2]//button[@name='action_cancel']" position="attributes">
+                <attribute name="invisible">property_sale_format == 'auction'</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_auction_estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban.inherit.estate.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='card']/div[@class='o_kanban_record']" position="inside">
+               <field name="auction_stage" class="o_task_state_widget" invisible="property_sale_format != 'auction'"></field>
+            </xpath>
+        </field>
+    </record>
+</odoo>
