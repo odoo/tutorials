@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
@@ -14,7 +14,7 @@ class SaleOrderLine(models.Model):
             'res_model': 'sub.product.wizard',
             'view_mode': 'form',
             'target': 'new',
-            'context': {'sale_order_line_id': self.id},  
+            'context': {'default_sale_order_line_id': self.id},  
         }
 
     def unlink(self):
@@ -29,5 +29,3 @@ class SaleOrderLine(models.Model):
                 if sub_lines:
                     sub_lines.unlink()
         return super(SaleOrderLine, self).unlink()
-
-    

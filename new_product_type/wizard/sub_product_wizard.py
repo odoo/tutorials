@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import  api, fields, models 
+
 
 class SubProductWizard(models.TransientModel):
     _name = 'sub.product.wizard'
@@ -6,11 +7,12 @@ class SubProductWizard(models.TransientModel):
 
     line_ids = fields.One2many("sub.product.wizard.line", 'wizard_id', string="Sub Products")
     kit_product_ids = fields.Many2many("product.product", string="Kit Products")
+    sale_order_line_id = fields.Many2one("sale.order.line", string="Sale Order Line")
 
     @api.model
     def default_get(self, fields_list):
         res = super(SubProductWizard, self).default_get(fields_list)
-        sale_order_line_id = self.env.context.get('sale_order_line_id')
+        sale_order_line_id = self.env.context.get('default_sale_order_line_id')
 
         if sale_order_line_id:
             sale_order_line = self.env['sale.order.line'].browse(sale_order_line_id)
@@ -38,7 +40,7 @@ class SubProductWizard(models.TransientModel):
 
     def action_confirm(self):
         self.ensure_one()
-        sale_order_line_id = self.env.context.get('sale_order_line_id')
+        sale_order_line_id = self.sale_order_line_id.id
         
         if not sale_order_line_id:
             return {'type': 'ir.actions.act_window_close'}
@@ -55,7 +57,6 @@ class SubProductWizard(models.TransientModel):
         if lines_to_remove:
             lines_to_remove.unlink()
 
-        sub_product_lines = []
         sub_total_price = 0
 
         for line in self.line_ids:
@@ -63,19 +64,16 @@ class SubProductWizard(models.TransientModel):
                 existing_line = existing_sub_product_map[line.product_id.id]
                 existing_line.write({'product_uom_qty': line.quantity, 'price_unit': 0.0})
             else:
-                sub_product_lines.append((0, 0, {
+                self.env['sale.order.line'].create({
                     'order_id': sale_order.id,
                     'product_id': line.product_id.id,
                     'product_uom_qty': line.quantity,
                     'price_unit': 0.0,
                     'is_sub_product': True,
                     'linked_line_id': sale_order_line.id
-                }))
+                })
             
             sub_total_price += line.price * line.quantity
-
-        if sub_product_lines:
-            sale_order.write({'order_line': [(4, line.id) for line in sale_order.order_line] + sub_product_lines})
 
         sale_order_line.write({'price_unit': sub_total_price})
 

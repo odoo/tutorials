@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class SubProductWizardLine(models.TransientModel):
     _name = "sub.product.wizard.line"
     _description = "Wizard Line for Kit Products"
