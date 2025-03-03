@@ -1,10 +1,12 @@
 /** @odoo-module **/
 
 import { patch } from "@web/core/utils/patch";
-import { ControlButtons } from "@point_of_sale/app/screens/product_screen/control_buttons/control_buttons";
 import { Dialog } from "@web/core/dialog/dialog";
-import { Component, onWillStart, useState, useEffect } from "@odoo/owl";
+
+import { ControlButtons } from "@point_of_sale/app/screens/product_screen/control_buttons/control_buttons";
 import { usePos } from "@point_of_sale/app/store/pos_hook";
+
+import { Component, onWillStart, useState, useEffect } from "@odoo/owl";
 
 // ConfigurationDialog Component
 class ConfigurationDialog extends Component {
@@ -15,7 +17,6 @@ class ConfigurationDialog extends Component {
         this.orm = this.env.services.orm;
         this.pos = usePos();
 
-        // Initialize state
         this.state = useState({
             quantity: 1,
             secUomId: null,
@@ -35,41 +36,47 @@ class ConfigurationDialog extends Component {
             if (!productData.length || !productData[0].sec_uom_id) return;
 
             const secUomId = productData[0].sec_uom_id[0];
-            const categoryData = await this.orm.searchRead(
-                "uom.uom",
-                [["id", "=", secUomId]],
-                ["category_id"]
-            );
-            if (!categoryData.length) return;
 
-            const categoryId = categoryData[0].category_id[0];
-            const secUomsData = await this.orm.searchRead(
+            const uomsData = await this.orm.searchRead(
                 "uom.uom",
-                [["category_id", "=", categoryId],["id", "!=", this.uomId]],
-                ["id", "name"]
+                [["id", "in", [secUomId, this.uomId]]],
+                ["id", "name", "category_id"]
             );
-            this.state.secUoms = secUomsData;
-            this.state.secUomId = secUomsData.length ? secUomsData[0].id : null;
+
+            const secUom = uomsData.find((uom) => uom.id === secUomId);
+            if (!secUom) return;
+
+            const categoryId = secUom.category_id[0];
+
+            this.state.secUoms = uomsData.filter(
+                (uom) => uom.category_id[0] === categoryId && uom.id !== this.uomId
+            );
+
+            this.state.secUomId = this.state.secUoms.length ? this.state.secUoms[0].id : null;
         });
     }
 
     async confirmSelection() {
-        const [secUomData, firstUomData] = await Promise.all([
-            this.orm.searchRead("uom.uom", [["id", "=", this.state.secUomId]], ["factor", "uom_type"]),
-            this.orm.searchRead("uom.uom", [["id", "=", this.uomId]], ["factor", "uom_type"]),
-        ]);
+        const uomsData = await this.orm.searchRead(
+            "uom.uom",
+            [["id", "in", [this.state.secUomId, this.uomId]]],
+            ["id", "factor", "uom_type"]
+        );
 
-        if (!firstUomData.length || !secUomData.length) {
-            console.warn("UOM data missing, cannot confirm selection.");
+        const secUomData = uomsData.find((uom) => uom.id === this.state.secUomId);
+        const firstUomData = uomsData.find((uom) => uom.id === this.uomId);
+
+        if (!firstUomData || !secUomData) {
+            console.log("UOM data missing, cannot confirm selection.");
             return;
         }
 
         this.props.onConfirm(
             this.state.quantity,
-            firstUomData[0].uom_type,
-            secUomData[0].factor,
-            firstUomData[0].factor,
-            secUomData[0].uom_type
+            firstUomData.uom_type,
+            secUomData.factor,
+            firstUomData.factor,
+            secUomData.uom_type
         );
         this.props.close();
     }
@@ -90,12 +97,12 @@ patch(ControlButtons.prototype, {
 
         // Monitor selected order line and update state
         useEffect(() => {
-            this.getProductIdsFromOrderlines();
+            this.getProductDetailsFromOrderLine();
         }, () => [this.pos.get_order().get_selected_orderline()?.id]);
     },
 
-    // Retrieve product details from the selected order line
-    async getProductIdsFromOrderlines() {
+    // Retrieve product and UOM details from the selected order line
+    async getProductDetailsFromOrderLine() {
         const order = this.pos.get_order();
         if (!order || order.lines.length === 0) return;
 
@@ -105,7 +112,7 @@ patch(ControlButtons.prototype, {
         this.productId = selectedOrder.product_id._raw.product_tmpl_id;
         this.uomId = selectedOrder.product_id.uom_id.id;
 
-        // Check if the product has a secondary UOM
+        // Fetch product and UOM data in a single query
         const productData = await this.orm.searchRead(
             "product.template",
             [["id", "=", this.productId]],
