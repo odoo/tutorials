@@ -16,3 +16,18 @@ class SaleOrderLine(models.Model):
             'target': 'new',
             'context': {'sale_order_line_id': self.id},  
         }
+
+    def unlink(self):
+        for line in self:
+            if not line.is_sub_product:
+                sale_order_line_id=line.id
+                sub_lines = self.search([
+                    ('product_id', '=', line.product_id.id),
+                    ('is_sub_product', '=', True),
+                    ('linked_line_id', '=', sale_order_line_id)
+                ])
+                if sub_lines:
+                    sub_lines.unlink()
+        return super(SaleOrderLine, self).unlink()
+
+    

@@ -28,6 +28,10 @@
             <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="attributes">
                 <attribute name="readonly">is_sub_product</attribute>
             </xpath>
+
+             <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="print_in_report" string="Print in report?"/>
+            </xpath>
         </field>
     </record>
 </odoo>

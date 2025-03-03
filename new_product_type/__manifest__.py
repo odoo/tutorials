@@ -1,5 +1,5 @@
 {
-    'name': 'Product Kits for Sales',
+    'name': 'Product Kit Type for Product',
     'version': '1.0',
     'summary': 'Sell products as kits without BoM or Manufacturing Module',
     'description': """
