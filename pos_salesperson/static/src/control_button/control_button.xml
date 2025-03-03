@@ -5,7 +5,7 @@
         <xpath 
         expr="//button[@t-if='!props.showRemainingButtons and !ui.isSmall and props.onClickMore']"
         position="before">
-            <SelectSalespersonButton salesperson="props.salesperson"/>
+            <SelectSalespersonButton/>
         </xpath>
     </t>
 
