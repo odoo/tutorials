@@ -3,8 +3,7 @@
     <!-- Real Estate (TOP MENU) -->
     <menuitem
         id="estate_property_menu_root"
-        name="Real Estate"
-        web_icon="estate,static/img/icon.png"/>
+        name="Real Estate"/>
 
     <!-- Advertisement (MAIN USER MENU) -->
     <menuitem

@@ -4,7 +4,6 @@
     'depends': ['base', 'mail', 'website'],
     'author': "Prince Beladiya",
     'category': 'Real Estate/Brokerage',
-    'icon': '/estate/static/img/icon.png',
     'description': """
     The Real Estate Advertisement module
     """,

@@ -14,13 +14,17 @@
         'data/ir_cron.xml',
         'data/mail_templates.xml',
         'views/account_move_views.xml',
+        'views/estate_property_template.xml',
         'views/estate_property_views.xml',
-        'views/estate_property_offer_views.xml',
-        'views/res_config_settings_views.xml'
+        'views/estate_property_offer_views.xml'
     ],
     'assets': {
         'web.assets_backend': [
-            'estate_auction_automation/static/src/**/*'
+            'estate_auction_automation/static/src/**/*',
+            ('remove', 'estate_auction_automation/static/src/js/**/*'),
+        ],
+        'web.assets_frontend': [
+            'estate_auction_automation/static/src/js/**/*',
         ]
     }
 }

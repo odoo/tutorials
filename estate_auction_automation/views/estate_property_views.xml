@@ -16,7 +16,7 @@
             <xpath expr="//sheet" position="inside">
                 <div class="oe_button_box" name="button_box">
                     <button class="oe_stat_button" name="%(estate_auction_automation.account_move_action)d"
-                            type="action" icon="fa-money">
+                            type="action" icon="fa-pencil-square-o">
                         <div class="o_stat_info">
                             <span class="o_stat_value">
                                 <field name="invoice_count"/>

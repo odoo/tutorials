@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="website_property_details_template_inherit_estate_auction_automation" inherit_id="estate.wesite_property_details_template">
+        <xpath expr="//div[hasclass('card', 'w-100', 'my-2')]" position="replace">
+            <div class="d-flex flex-row justify-content-center align-items-center gap-3 card w-100 my-2">
+                <div class="mt-3 w-100 h-100">
+                    <t t-if="property.property_image">
+                        <img t-att-src="image_data_uri(property.property_image)" 
+                            class="img-fluid card-img-top" alt="Property Image"/>
+                    </t>
+                    <t t-else="">
+                        <img t-att-src="'/estate/static/img/no_image.jpg'" 
+                            class="img-fluid card-img-top" alt="No Image Available"/>
+                    </t>
+                </div>
+                <div class="w-100 h-100 mt-3">
+                    <t t-if="property.auction_end_time">
+                        <div class="alert alert-info text-center" role="alert">
+                            <strong>Auction Ends In: </strong>
+                            <span id="auction_timer" t-att-data-end-time="property.auction_end_time">
+                                Loading...
+                            </span>
+                        </div>
+                    </t>
+                    <h4 class="mt-2">Property Details:</h4>
+                    <div class="card-body">
+                        <p class="card-text">
+                            Description: <t t-esc="property.description"/> 
+                            <t t-if="property.tag_ids">
+                                (
+                                    <t t-foreach="property.tag_ids" t-as="tag">
+                                        <t t-esc="tag.name"/>,  
+                                    </t>
+                                )
+                            </t>
+                        </p>
+                    </div>
+                    <hr />
+                    <ul class="d-flex justify-content-center flex-row gap-2 list-group list-group-light list-group-small my-2">
+                        <div>
+                            <li class="list-group-item px-4">
+                                Expected price: <t t-esc="property.expected_price"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Property type: <t t-esc="property.property_type_id.name"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Postcode: <t t-esc="property.postcode"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Available from: <t t-esc="property.date_availability"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Bedrooms: <t t-esc="property.bedrooms"/>
+                            </li>
+                        </div>
+                        <div>
+                            <li class="list-group-item px-4">
+                                Salesman: <t t-esc="property.salesman_id.name"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Living Area: <t t-esc="property.living_area"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Garden Area: <t t-esc="property.garden_area"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Total Area: <t t-esc="property.total_area"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Garage: <t t-esc="property.garage"/>
+                            </li>
+                        </div>
+                    </ul>
+                    <div class="w-100 d-flex justify-content-center mt-2">
+                        <button id="make_offer_btn" class="text-light rounded btn bg-primary">Create Offer</button>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

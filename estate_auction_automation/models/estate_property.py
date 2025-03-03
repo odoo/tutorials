@@ -26,16 +26,20 @@ class Estateproperty(models.Model):
     # COMPUTE METHODS
     # -------------------------------------------------------------------------
 
-    @api.depends('invoice_ids')
-    def _compute_invoice_count(self):
-        for invoice in self:
-            invoice.invoice_count = len(invoice.invoice_ids)
-
     @api.depends('offer_ids.price')
     def _compute_highest_bidder(self):
         for property in self:
             highest_offer = max(property.offer_ids, key=lambda offer: offer.price, default=False)
             property.highest_bidder = highest_offer.partner_id if highest_offer else False
+
+    @api.depends('invoice_ids')
+    def _compute_invoice_count(self):
+        for invoice in self:
+            invoice.invoice_count = len(invoice.invoice_ids)
+
+    # -------------------------------------------------------------------------
+    # ACTIONS
+    # -------------------------------------------------------------------------
 
     def action_start_property_auction(self):
         """Start the auction if conditions are met."""
@@ -63,7 +67,7 @@ class Estateproperty(models.Model):
         ])
 
         for property in properties:
-            highest_offer = property.offer_ids.sorted(key=lambda o: o.price,     reverse=True)
+            highest_offer = property.offer_ids.sorted(key=lambda o: o.price, reverse=True)
             
             if highest_offer:
                 highest_offer = highest_offer[0]  # Get the highest bid

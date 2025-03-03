@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -8,36 +8,9 @@ class EstatePropertyOffer(models.Model):
     # related field
     property_sell_type = fields.Selection(related='property_id.property_sell_type', store=True)
 
-    # -------------------------------------------------------------------------
-    # CRUD OPERATIONS
-    # -------------------------------------------------------------------------
-
-    @api.model_create_multi
     def create(self, vals_list):
-        """Extend offer creation to check that the offer must be higher than expected price"""
-        for vals in vals_list:
-            property = self.env['estate.property'].browse(vals['property_id'])
-            
-            # Prevent offer creation if the property is already sold
-            if property.stage == 'sold':
-                raise UserError(_("The offer cannot be created for a sold property."))
-
-            max_price = property.best_price
-            expected_price = property.expected_price
-
-            # Check if the offer is higher than the current best price
-            if vals['price'] <= max_price:
-                raise UserError(_("The offer must be higher than %s.") % max_price)
-
-            # Ensure the offer is also higher than the expected price
-            if vals['price'] <= expected_price:
-                raise UserError(_("The offer must be higher than the expected price of %s.") % expected_price)
-
-            # Change property stage if it's still new
-            if property.stage == 'new':
-                property.stage = 'offer_received'
-
-        return super().create(vals_list)
+        """Bypasses all parent validations while creating offers"""
+        return models.Model.create(self, vals_list)
 
     # ------------------------------------------------------------
     # ACTIONS
