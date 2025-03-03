@@ -12,7 +12,7 @@ class PropertyType(models.Model):
     ]
     
     name = fields.Char('Name', required=True, translate=True)
-    sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
+    sequence = fields.Integer('Sequence', default=999, help="Used to order stages. Lower is better.")
     property_ids = fields.One2many('estate.property', 'property_type_id')
     offer_ids = fields.One2many('estate.property.offer', 'property_type_id')
     offer_count = fields.Integer('Offer Count', compute="_compute_offer_count")
