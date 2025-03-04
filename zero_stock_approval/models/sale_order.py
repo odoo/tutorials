@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -10,12 +10,11 @@ class SaleOrder(models.Model):
 
     zero_stock_approval = fields.Boolean(string='Approval', copy=False)
 
+    @api.model
     def fields_get(self, allfields=None, attributes=None):
-        res = super().fields_get()
+        res = super().fields_get(allfields, attributes)
         user = self.env.user
-        is_salesman = user.has_group("sales_team.group_sale_salesman")
-        is_manager = user.has_group("sales_team.group_sale_manager")
-        if is_salesman and not is_manager:
+        if not user.has_group("sales_team.group_sale_manager"):
             if "zero_stock_approval" in res:
                 res["zero_stock_approval"]["readonly"] = True
         return res
