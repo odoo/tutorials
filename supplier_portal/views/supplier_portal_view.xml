@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="supplier_portal_template" name="supplier_page">
+        <t t-call="website.layout">
+            <div class="container">
+                <h3 class="mb-4">Bill Details</h3>
+                <t t-if="request.params.get('error')">
+                    <div class="alert alert-danger">
+                        Please select an organization before submitting.
+                    </div>
+                </t>
+                <t t-if="request.params.get('success')">
+                    <div class="alert alert-success">
+                        Successfully submitted.
+                    </div>
+                </t>
+                <div class="row mb-3">
+                    <form action="/supplier/portal/submit" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="col-md-6">
+                            <div class="mb-3 d-flex align-items-center">
+                                <label style="width: 250px;">Select Organization:</label>
+                                <select name="company_id" class="form-control">
+                                    <option value=""></option>
+                                    <t t-foreach="company_id" t-as="company">
+                                        <option t-att-value="company.id">
+                                            <t t-esc="company.name"></t>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="mb-3 d-flex align-items-center">
+                                <label style="width: 150px;">Upload PDF:</label>
+                                <input type="file" name="pdf_file" class="form-control" accept="application/pdf"/>
+                            </div>
+                            <div class="mb-3 d-flex align-items-center">
+                                <label style="width: 150px;">Upload XML:</label>
+                                <input type="file" name="xml_file" class="form-control" accept="text/xml"/>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
