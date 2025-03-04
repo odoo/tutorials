@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_filter_buttons" name="Appointment Filter Buttons" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//t[@t-call='website.website_search_box_input']" position="before">
+            <div class="d-flex flex-wrap align-items-center">
+                <div class="dropdown d-none d-lg-block me-3 mb-2">
+                    <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" title="Filter by Type">
+                        <i class="fa fa-video-camera me-1" aria-hidden="true"></i>
+                        <t t-if="current_filters.get('type')">
+                            <t t-if="current_filters['type'] == 'online'"><span class="text-success">Online</span></t>
+                            <t t-elif="current_filters['type'] == 'offline'"><span class="text-danger">Offline</span></t>
+                            <t t-else="">Type</t>
+                        </t>
+                        <t t-else="">Type</t>
+                    </a>
+                    <div class="dropdown-menu">
+                        <span t-attf-data-post="/appointment?#{keep_query('*', type='all')}" class="post_link cursor-pointer dropdown-item">All</span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', type='online')}" 
+                              t-attf-class="post_link cursor-pointer dropdown-item text-success #{current_filters.get('type') == 'online' and 'active' or ''}">
+                            <i class="fa fa-check me-2" t-if="current_filters.get('type') == 'online'"></i>Online
+                        </span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', type='offline')}" 
+                              t-attf-class="post_link cursor-pointer dropdown-item text-danger #{current_filters.get('type') == 'offline' and 'active' or ''}">
+                            <i class="fa fa-check me-2" t-if="current_filters.get('type') == 'offline'"></i>Offline
+                        </span>
+                    </div>
+                </div>
+                <div class="dropdown d-none d-lg-block me-3 mb-2">
+                    <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" title="Filter by Payment Step">
+                        <i class="fa fa-credit-card me-1" aria-hidden="true"></i>
+                        <t t-if="current_filters.get('payment_step')">
+                            <t t-if="current_filters['payment_step'] == 'paid'"><span class="text-success">Paid</span></t>
+                            <t t-elif="current_filters['payment_step'] == 'free'"><span class="text-danger">Free</span></t>
+                            <t t-else="">Payment</t>
+                        </t>
+                        <t t-else="">Payment</t>
+                    </a>
+                    <div class="dropdown-menu">
+                        <span t-attf-data-post="/appointment?#{keep_query('*', payment_step='all')}" class="post_link cursor-pointer dropdown-item">All</span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', payment_step='paid')}" 
+                              t-attf-class="post_link cursor-pointer dropdown-item text-success #{current_filters.get('payment_step') == 'paid' and 'active' or ''}">
+                            <i class="fa fa-check me-2" t-if="current_filters.get('payment_step') == 'paid'"></i>Paid
+                        </span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', payment_step='free')}" 
+                              t-attf-class="post_link cursor-pointer dropdown-item text-danger #{current_filters.get('payment_step') == 'free' and 'active' or ''}">
+                            <i class="fa fa-check me-2" t-if="current_filters.get('payment_step') == 'free'"></i>Free
+                        </span>
+                    </div>
+                </div>
+                <div class="dropdown d-none d-lg-block me-3 mb-2">
+                    <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" title="Filter by Schedule">
+                        <i class="fa fa-calendar me-1" aria-hidden="true"></i>
+                        <t t-if="current_filters.get('schedule')">
+                            <t t-if="current_filters['schedule'] == 'users'"><span class="text-primary">Users</span></t>
+                            <t t-elif="current_filters['schedule'] == 'resources'"><span class="text-secondary">Resources</span></t>
+                            <t t-else="">Schedule</t>
+                        </t>
+                        <t t-else="">Schedule</t>
+                    </a>
+                    <div class="dropdown-menu">
+                        <span t-attf-data-post="/appointment?#{keep_query('*', schedule='all')}" class="post_link cursor-pointer dropdown-item">All</span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', schedule='users')}" 
+                              t-attf-class="post_link cursor-pointer dropdown-item text-primary #{current_filters.get('schedule') == 'users' and 'active' or ''}">
+                            <i class="fa fa-check me-2" t-if="current_filters.get('schedule') == 'users'"></i>Users
+                        </span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', schedule='resources')}" 
+                              t-attf-class="post_link cursor-pointer dropdown-item text-secondary #{current_filters.get('schedule') == 'resources' and 'active' or ''}">
+                            <i class="fa fa-check me-2" t-if="current_filters.get('schedule') == 'resources'"></i>Resources
+                        </span>
+                    </div>
+                </div>
+                <a href="/appointment" t-attf-class="btn btn-danger d-none d-lg-block mb-2 #{has_filters and '' or 'd-none'}">
+                    <i class="fa fa-times me-1"></i> Reset Filters
+                </a>
+            </div>
+        </xpath>
+    </template>
+    
+    <template id="applied_filters" name="Applied Filters" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//div[hasclass('d-flex', 'flex-wrap', 'align-items-center', 'justify-content-between', 'w-100')]" position="after">
+            <t t-if="has_filters and active_filters">
+                <div class="mt-4 mb-3">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="me-2 mb-2">
+                            <span class="badge rounded-pill bg-primary p-2">
+                                <i class="fa fa-filter me-1"></i> Filtered Results: 
+                                <t t-if="filtered_count is not None">
+                                    <strong t-esc="filtered_count"/> / <span t-esc="total_count"/> appointments
+                                </t>
+                            </span>
+                        </div>
+                        <t t-foreach="active_filters" t-as="active">
+                            <div class="me-2 mb-2">
+                                <span class="badge rounded-pill bg-info p-2">
+                                    <i class="fa fa-tag me-1"></i>
+                                    <span t-esc="active"/>
+                                </span>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+            <t t-if="has_filters and filtered_count == 0">
+                <div class="alert alert-warning mt-3">
+                    <i class="fa fa-exclamation-triangle me-2"></i>
+                    No appointments match your selected filters. <a href="/appointment" class="alert-link">Reset filters</a> to see all available appointments.
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Add a responsive view for mobile devices -->
+    <template id="mobile_filter_buttons" name="Mobile Appointment Filters" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//div[hasclass('d-flex', 'flex-wrap', 'align-items-center', 'justify-content-between', 'w-100')]" position="after">
+            <div class="d-block d-lg-none mt-3 mb-3">
+                <button class="btn btn-primary w-100 mb-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileFilters" 
+                        aria-expanded="false" aria-controls="mobileFilters">
+                    <i class="fa fa-filter me-1"></i> Filter Appointments 
+                    <t t-if="has_filters">
+                        <span class="badge bg-light text-dark ms-1" t-esc="len([f for f in [current_filters.get('type'), current_filters.get('payment_step'), current_filters.get('schedule')] if f and f != 'all'])"></span>
+                    </t>
+                </button>
+                <div class="collapse" id="mobileFilters">
+                    <div class="card card-body">
+                        <div class="row g-2">
+                            <div class="col-12 mb-2">
+                                <label class="fw-bold">
+                                    <i class="fa fa-video-camera me-1"></i> Type
+                                </label>
+                                <div class="btn-group w-100" role="group">
+                                    <a t-attf-href="/appointment?#{keep_query('*', type='online')}" 
+                                       t-attf-class="btn btn-sm #{current_filters.get('type') == 'online' and 'btn-success' or 'btn-outline-success'}">
+                                        Online
+                                    </a>
+                                    <a t-attf-href="/appointment?#{keep_query('*', type='offline')}" 
+                                       t-attf-class="btn btn-sm #{current_filters.get('type') == 'offline' and 'btn-danger' or 'btn-outline-danger'}">
+                                        Offline
+                                    </a>
+                                    <a t-attf-href="/appointment?#{keep_query('*', type='all')}" 
+                                       t-attf-class="btn btn-sm #{not current_filters.get('type') or current_filters.get('type') == 'all' and 'btn-secondary' or 'btn-outline-secondary'}">
+                                        All
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label class="fw-bold">
+                                    <i class="fa fa-credit-card me-1"></i> Payment
+                                </label>
+                                <div class="btn-group w-100" role="group">
+                                    <a t-attf-href="/appointment?#{keep_query('*', payment_step='paid')}" 
+                                       t-attf-class="btn btn-sm #{current_filters.get('payment_step') == 'paid' and 'btn-success' or 'btn-outline-success'}">
+                                        Paid
+                                    </a>
+                                    <a t-attf-href="/appointment?#{keep_query('*', payment_step='free')}" 
+                                       t-attf-class="btn btn-sm #{current_filters.get('payment_step') == 'free' and 'btn-danger' or 'btn-outline-danger'}">
+                                        Free
+                                    </a>
+                                    <a t-attf-href="/appointment?#{keep_query('*', payment_step='all')}" 
+                                       t-attf-class="btn btn-sm #{not current_filters.get('payment_step') or current_filters.get('payment_step') == 'all' and 'btn-secondary' or 'btn-outline-secondary'}">
+                                        All
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-2">
+                                <label class="fw-bold">
+                                    <i class="fa fa-calendar me-1"></i> Schedule
+                                </label>
+                                <div class="btn-group w-100" role="group">
+                                    <a t-attf-href="/appointment?#{keep_query('*', schedule='users')}" 
+                                       t-attf-class="btn btn-sm #{current_filters.get('schedule') == 'users' and 'btn-primary' or 'btn-outline-primary'}">
+                                        Users
+                                    </a>
+                                    <a t-attf-href="/appointment?#{keep_query('*', schedule='resources')}" 
+                                       t-attf-class="btn btn-sm #{current_filters.get('schedule') == 'resources' and 'btn-secondary' or 'btn-outline-secondary'}">
+                                        Resources
+                                    </a>
+                                    <a t-attf-href="/appointment?#{keep_query('*', schedule='all')}" 
+                                       t-attf-class="btn btn-sm #{not current_filters.get('schedule') or current_filters.get('schedule') == 'all' and 'btn-secondary' or 'btn-outline-secondary'}">
+                                        All
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-12 mt-2">
+                                <a href="/appointment" class="btn btn-danger btn-sm w-100">
+                                    <i class="fa fa-times me-1"></i> Reset All Filters
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
