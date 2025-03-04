@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="sale_order_portal_content_inherit" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//tbody/t/tr" position="attributes">
+            <attribute name="t-if">
+                (not line.parent_line_id) or (sale_order.print_in_report and line.parent_line_id)
+            </attribute>
+        </xpath>
+    </template>
+</odoo>

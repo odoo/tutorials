@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="inherit_sale_order_line_form_view" model="ir.ui.view">
+        <field name="name">sale.order.form.view.subproducts.button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="print_in_report" />
+            </xpath>
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <button name="action_product_subproduct_wizard" type="object" string="Kit Products"
+                    class="btn btn-primary" invisible="state != 'draft' or not is_kit" />
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="editable">bottom</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_id']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']"
+                position="attributes">
+                <attribute name="readonly">is_subproduct</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
