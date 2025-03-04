@@ -14,9 +14,12 @@
     Product Warranty
     ''',
     'data': [
-         'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/product_template_views.xml',
         'views/product_warranty_views.xml',
         'views/product_warranty_menus.xml',
+        'wizard/product_warranty_wizard_view.xml',
+        'views/sale_order_line_view.xml',
+
     ],
 }
