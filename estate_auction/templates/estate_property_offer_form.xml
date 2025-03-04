@@ -1,0 +1,38 @@
+<odoo>
+    <template id="estate_property_offer_form" name="Property Offer Form">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 mb-4">
+                        <div class="card shadow-sm p-5">
+                            <h2>Add Offer for <t t-esc="property.name"/></h2>
+                            <form action="/estate/property/submit_offer" method="post">
+                                <t t-if="error">
+                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <t t-esc="error"/>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"/>
+                                    </div>
+                                </t>
+                                <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                <div class="mt-3">
+                                    <label for="buyer_name" class="form-label">Name</label>
+                                    <input type="text" name="buyer_name" id="buyer_name" class="form-control" t-att-value="request.env.user.name" readonly=""/>
+                                </div>
+                                <div class="mt-3">
+                                    <label for="offer_amount" class="form-label">
+                                        Amount <span class="text-danger">*</span>
+                                    </label>
+                                    <input type="number" name="offer_amount" id="offer_amount" class="form-control" required=""/>
+                                </div>
+                                <div class="mt-3">
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                    <a t-att-href="'/estate/property/' + str(property.id) + ''" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

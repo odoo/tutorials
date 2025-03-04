@@ -1,0 +1,24 @@
+<odoo>
+    <template id="estate_property_offer_success" name="Offer Submission Success">
+        <t t-call="website.layout">
+            <div class="container d-flex justify-content-center align-items-center vh-100">
+                <div class="card shadow-lg text-center p-5 border-0" style="max-width: 720px;">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <i class="fa fa-check-circle text-success" style="font-size: 5rem;"/>
+                        </div>
+                        <h2 class="text-success fw-bold">Congratulations!</h2>
+                        <p class="text-muted">
+                            Your offer has been successfully placed. We will notify you of the results as soon as the auction concludes.
+                        </p>
+                        <div class="mt-4">
+                            <a t-att-href="'/estate/property/' + str(property.id)" class="btn btn-primary w-100">
+                                <i class="fa fa-home me-2"/>Back to Property Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

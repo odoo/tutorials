@@ -1,0 +1,52 @@
+<odoo>
+    <template id="estate_properties_website_inherit" inherit_id="estate.estate_properties_website">
+        <xpath expr="//form" position="replace">
+            <form method="GET" action="/estate/properties" class="row justify-content-center mt-5 mb-5">
+                <div class="col-md-2">
+                    <label for="status_filter" class="form-label">Status</label>
+                    <select name="status" id="status_filter" class="form-control">
+                        <option value="">New/Offer Received</option>
+                        <option value="all" t-att-selected="'all' if status == 'all' else None">All Status</option>
+                        <option value="new" t-att-selected="'new' if status == 'new' else None">New</option>
+                        <option value="offer_received" t-att-selected="'offer_received' if status == 'offer_received' else None">Offer Received</option>
+                        <option value="offer_accepted" t-att-selected="'offer_accepted' if status == 'offer_accepted' else None">Offer Accepted</option>
+                        <option value="sold" t-att-selected="'sold' if status == 'sold' else None">Sold</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="min_price" class="form-label">Min Price</label>
+                    <input type="number" name="min_price" id="min_price" class="form-control"
+                        placeholder="Min Price" t-att-value="min_price or ''" />
+                </div>
+
+                <div class="col-md-2">
+                    <label for="max_price" class="form-label">Max Price</label>
+                    <input type="number" name="max_price" id="max_price" class="form-control"
+                        placeholder="Max Price" t-att-value="max_price or ''" />
+                </div>
+
+                <div class="col-md-2">
+                    <label for="auction_filter" class="form-label">Sale Type</label>
+                    <select name="auction" id="auction_filter" class="form-control">
+                        <option value="">All</option>
+                        <option value="yes" t-att-selected="'yes' if auction == 'yes' else None">Auction</option>
+                        <option value="no" t-att-selected="'no' if auction == 'no' else None">Regular</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label for="listed_after" class="form-label">Listed After</label>
+                    <input type="date" name="listed_after" id="listed_after" class="form-control"
+                        t-att-value="listed_after or ''" />
+                </div>
+
+                <div class="col-md-2 align-content-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fa fa-filter me-2"/> Apply Filters
+                    </button>
+                </div>
+            </form>
+        </xpath>
+    </template>
+</odoo>

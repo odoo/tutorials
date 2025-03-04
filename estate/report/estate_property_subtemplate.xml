@@ -1,0 +1,36 @@
+<odoo>
+    <template id="estate_property_offer_subtemplate">
+        <table class="table table-striped table-condensed">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center"><strong>Price</strong></th>
+                    <th class="text-center"><strong>Partner</strong></th>
+                    <th class="text-center"><strong>Validity (days)</strong></th>
+                    <th class="text-center"><strong>Deadline</strong></th>
+                    <th class="text-center"><strong>State</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="offers" t-as="offer">
+                    <tr>
+                        <td class="text-center">
+                            <span t-field="offer.price"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="offer.partner_id.name"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="offer.validity"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="offer.date_deadline"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-if="offer.status" t-field="offer.status"/>
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </template>
+</odoo>

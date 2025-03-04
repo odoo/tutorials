@@ -1,0 +1,19 @@
+<odoo>
+    <template id="estate_property_detail_website_inherit" inherit_id="estate.estate_property_detail_website">
+        <xpath expr="//div[hasclass('card-body')]" position="after">
+            <t t-if="property.sale_type == 'auction' and property.auction_state in ['auction', 'sold']">
+                <div class="alert alert-info col-md-10 m-3" t-if="property.auction_end_time">
+                    <strong t-if="property.state not in ['offer_accepted', 'sold']">Auction Ends In:</strong>
+                    <div t-att-data-auction_end_time="property.auction_end_time" class="js_auction_timer"></div>
+                </div>
+                <t t-if="property.state not in ['offer_accepted', 'sold']">
+                    <div class="card-footer">
+                        <a t-att-href="'/estate/property/' + str(property.id) + '/create_offer'" class="btn btn-primary w-50">
+                            Create Offer
+                        </a>
+                    </div>
+                </t>
+            </t>
+        </xpath>
+    </template>
+</odoo>
