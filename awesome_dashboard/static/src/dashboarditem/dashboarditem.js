@@ -10,7 +10,7 @@ export class DashBoardItem extends Component {
     static props = {
         size: {
             type: Number,
-            optional: true,
-        },
+            optional: true
+        }
       }
 }

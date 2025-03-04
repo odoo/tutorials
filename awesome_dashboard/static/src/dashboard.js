@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component } from '@odoo/owl';
+import { Component, onWillStart, useState } from '@odoo/owl';
 import { DashBoardItem } from './dashboarditem/dashboarditem';
 import { Layout } from '@web/search/layout';
 import { registry } from '@web/core/registry';
@@ -12,6 +12,8 @@ export class AwesomeDashboard extends Component {
 
     setup(){
         this.action = useService('action');
+        this.awesome_dashboard_statistics = useService("awesome_dashboard.statistics")
+        this.result = useState(this.awesome_dashboard_statistics());
     }
 
     openCustomers(){
@@ -23,7 +25,7 @@ export class AwesomeDashboard extends Component {
             type: 'ir.actions.act_window',
             target: 'current',
             res_model: 'crm.lead',
-            views: [[false, 'form']],
+            views: [[false, 'form']]
         });
     }
 }
