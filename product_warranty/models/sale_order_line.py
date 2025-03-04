@@ -8,10 +8,10 @@ class SaleOrderLine(models.Model):
     _inherit="sale.order.line"
 
     warranty = fields.Boolean(default=False)
-    warranty_orderline = fields.Many2one("sale.order.line", ondelete="cascade")
-    is_warranty = fields.Boolean(default=False)
-    products = fields.Many2one("sale.order.line")
     warranty_product_id = fields.Many2one("product.warranty")
+    warranty_orderline = fields.Many2one("sale.order.line", ondelete="cascade")
+    products = fields.Many2one("sale.order.line")
+    is_warranty = fields.Boolean(default=False)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_warranty(self):

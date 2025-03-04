@@ -3,6 +3,7 @@
 
 from odoo import fields, models
 
+
 class ProductWarranty(models.Model):
     _name = "product.warranty"
     _description = "Product Warranty"
