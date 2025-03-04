@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_inherit_deposit_field" inherit_id="website_sale.product" name="Product Inherit for Deposit Field">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.deposit_required">
+                <h4 class="mt-3 d-flex align-items-center">
+                    <label class="me-2 fw-bold">Deposit Required:</label>
+                    <span class="oe_price text-muted mb-0">
+                        <t t-esc="product.currency_id.symbol"/>
+                        <span id="deposit_amount" data-deposit-amount="t-esc='product.deposit_amount'">
+                            <t t-esc="product.deposit_amount"/>
+                        </span>
+                    </span>
+                </h4>
+            </t>
+        </xpath>
+    </template>
+</odoo>
