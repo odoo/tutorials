@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="auction_automate_action" model="ir.cron">
+            <field name="name">Automate Auction</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="state">code</field>
+            <field name="code">model.sudo().automate_auction()</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>          
+            <field name="interval_type">minutes</field>
+            <field name="nextcall" eval="(datetime.now() + timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_property_detail_website_estate_auction" inherit_id="estate.template_property_detail_website_view">
+        <xpath expr="//h5[@class='card-title']" position="attributes">
+            <attribute name="style">display: flex; justify-content: space-between; align-items: center;</attribute>
+        </xpath>
+        <xpath expr="//span[@id='estate_property_name']" position="after">
+            <div id="countdown" t-att-style="'background: #007bff; color: white; padding: 3px 7px; border-radius: 8px;' if property.auction_end_time else ''"/>
+            <span id="auction_end_time" style="display: none;">
+                <t t-out="property.auction_end_time"/>
+            </span>
+        </xpath>
+        <xpath expr="//div[@id='back_button']" position="before">
+            <div>
+                <t t-if="property.auction_end_time">
+                    <button id="offer_modal_button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#offerModal">
+                    Make an Offer
+                    </button>
+                </t>
+            </div>
+            <div class="modal fade" id="offerModal" tabindex="-1" aria-labelledby="offerModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="offerModalTitle">Add Offer for <t t-out="property.name"/>
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <form id="offerForm" action="/create" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                <div class="mb-3">
+                                    <label for="partnerSelect" class="form-label">Select Partner:</label>
+                                    <select class="form-control" id="partnerSelect" name="partner_id">
+                                        <t t-set="current_user" t-value="request.env.user.partner_id.id"/>
+                                        <t t-foreach="request.env['res.partner'].search([])" t-as="partner">
+                                            <option t-att-value="partner.id" t-att-selected="true if partner.id == current_user else None">
+                                                <t t-esc="partner.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="offerPrice" class="form-label">Offer Price:</label>
+                                    <input name="offer_price" type="number" class="form-control" id="offerPrice"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" id="submitOffer">Submit Offer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="template_property_list_website_estate_auction" inherit_id="estate.template_property_list_website_view">
+        <xpath expr="//h3" position="after">
+            <div class="dropdown d-flex align-items-center">
+                <button class="btn btn-outline-primary dropdown-toggle" type="button" id="selectType" data-bs-toggle="dropdown" aria-expanded="false">
+                    Type
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="selectType">
+                    <li>
+                        <a class="dropdown-item" href="/property">All</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="/property?sell_type=regular">Regular</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="/property?sell_type=auction">Auction</a>
+                    </li>
+                </ul>
+            </div>
+        </xpath>
+    </template>
+</odoo>

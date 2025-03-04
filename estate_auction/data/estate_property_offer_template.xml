@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_offer_notification" model="mail.template">
+        <field name="name">Offer Email Notification Template</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="email_from">{{ object.property_id.company_id.email }}</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="subject">Offer Update for Property {{ object.property_id.name }}</field>
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                <p>Dear
+                    <strong>
+                        <t t-out="object.partner_id.name"/>
+                    </strong>
+                    ,
+                </p>
+                <p>
+                    Thank you for your interest in our property. Here are the details of your offer:
+                </p>
+                <table style="border: 1px solid #ddd; border-collapse: collapse; width: 100%; margin-top: 10px;">
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">
+                            <strong>Property:</strong>
+                        </td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">
+                            <t t-out="object.property_id.name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">
+                            <strong>Offer Price:</strong>
+                        </td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">
+                            <t t-out="object.price"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border: 1px solid #ddd; padding: 8px;">
+                            <strong>Offer Status:</strong>
+                        </td>
+                        <td style="border: 1px solid #ddd; padding: 8px;">
+                            <t t-out="object.status"/>
+                        </td>
+                    </tr>
+                </table>
+                <p style="margin-top: 20px;">
+                    We will review your offer and get back to you soon. Feel free to contact us if you have any questions.
+                </p>
+                <p>Best Regards,</p>
+                <p>
+                    <strong>
+                        <t t-out="object.property_id.company_id.name"/>
+                    </strong>
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>
