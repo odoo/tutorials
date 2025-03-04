@@ -42,7 +42,6 @@ class CoationsClaims(models.Model):
                 year = datetime.datetime.now().year
                 sequence = self.env["ir.sequence"].next_by_code(self.id) or "0000"
                 vals["name"] = f"COT/{year}/{sequence}"
-
         return super(CoationsClaims, self).create(vals)
 
     @api.constrains("date_from", "date_to")

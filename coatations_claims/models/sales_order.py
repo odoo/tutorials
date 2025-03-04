@@ -22,12 +22,3 @@ class SaleOrder(models.Model):
                     print(coatation.coation_lines_ids.product_id)
                    
                 pass #apply some function to add coation value.
-    def action_select_price(self):
-                return {
-            'type': 'ir.actions.act_window',
-            'name': 'Price selection Wizard',
-            'res_model': 'coatation.price.wizard',
-            'view_mode': 'form',
-            'target': 'new',
-            'context' : {'active_id':self.id}
-        }

@@ -12,9 +12,12 @@
             <field name="arch" type="xml">
                 <form string="Select Negotiated Price">
                     <group>
+                        <field name="type_of_price"/>
                         <field name="order_line_id"/>
                         <field name="customer_id"/>
-                        <field name="coation_ids"/> 
+                        <field name="coation_ids" domain="domain_ids" invisible="type_of_price not in ['coatation']" string="Available coatations"/> 
+                        <field name="recommended_selling_price" invisible="type_of_price not in ['coatation']"/>
+                        <field name="last_sales_order_unit_price" invisible="type_of_price not in ['last']"/>
                     </group>
 
                     <footer>

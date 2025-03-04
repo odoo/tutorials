@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 
 
-class CoationsClaims(models.Model):
+class CoationsLines(models.Model):
     _name = "coatations.lines"
     _description = "List of all coations"
     product_id = fields.Many2one("product.product")
@@ -22,9 +22,9 @@ class CoationsClaims(models.Model):
     )
     claim = fields.Boolean()
     coation_id = fields.Many2one("coatations.claims")
-    internal_reference = fields.Char(compute="_compute_internal_reference")
+    internal_reference= fields.Char(compute="_compute_internal_reference",store=True)
     sale_order_ids = fields.Many2many("sale.order")
-
+    name=fields.Char()
     _sql_constraints = [
         # Ensuring max_qty is positive
         (
@@ -75,6 +75,11 @@ class CoationsClaims(models.Model):
             "Consumed quantity must be greater than or equal to zero!",
         ),
     ]
+    @api.model_create_multi
+    def create(self,vals_list):
+        for vals in vals_list:
+            vals["name"] = "Recommended selling price:"+str(vals["recommended_sp"]) 
+        return super(CoationsLines,self).create(vals_list)
 
     @api.depends("coation_id")
     def _compute_internal_reference(self):
@@ -83,6 +88,9 @@ class CoationsClaims(models.Model):
                 self.internal_reference = reference.name
             else:
                 self.internal_reference = ""
+
+        
+            
 
     @api.depends("sale_order_ids.order_line.product_uom_qty")
     def _compute_consumed(self):

@@ -41,7 +41,7 @@
                         <field name="coation_lines_ids">
                             <list editable="bottom" open_form_view="True">
                                 <field name="id"/>
-                                <field name="internal_reference"/>
+                                <field name="internal_reference" string="Internal reference"/>
                                 <field name="product_id"/>
                                 <field name="coatation_unit_price"/>
                                 <field name="max_qty"/>
