@@ -7,7 +7,6 @@ class SaleOrderLine(models.Model):
     book_price = fields.Float(
         string="Booked Price", 
         compute="_compute_book_price", 
-        store=True,
     )
 
     @api.depends('product_id', 'order_id.pricelist_id', 'product_uom_qty')

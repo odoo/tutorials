@@ -7,7 +7,6 @@ class AccountMoveLine(models.Model):
     book_price = fields.Float(
         string="Book Price", 
         compute="_compute_book_price", 
-        store=True,
     )
 
     @api.depends("product_id", "quantity", "sale_line_ids.order_id.pricelist_id")
