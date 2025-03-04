@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_salesperson.SalespersonList">
+        <Dialog bodyClass="'salesperson-list overflow-y-auto'" contentClass="'h-100'">
+            <t t-set-slot="header">
+                <Input tModel="[state, 'query']" class="'ms-auto'" isSmall="env.isSmall" placeholder.translate="Search Salespersons..." icon="{type: 'fa', value: 'fa-search'}" autofocus="true" debounceMillis="100" t-on-input="onSearchInput" />
+            </t>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="py-2">Name</th>
+                        <th class="py-2">Email</th>
+                        <th class="py-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="filteredSalespersons.length !== 0">
+                        <t t-foreach="filteredSalespersons" t-as="salesperson" t-key="salesperson.id">
+                            <tr>
+                                <td t-esc="salesperson.name"/>
+                                <td t-esc="salesperson?.work_contact_id?.email"/>
+                                <t t-if="this.props.currentSelectedSalesperson?.id === salesperson?.id">
+                                    <td>
+                                        <button t-on-click="() => this.selectSalesperson(salesperson)" class="btn btn-transparent text-danger">
+                                           <i class="fa fa-times text-danger" />
+                                        </button>
+                                    </td>
+                                </t>
+                                <t t-else="">
+                                    <td>
+                                        <button t-on-click="() => this.selectSalesperson(salesperson)" class="btn btn-transparent btn-link">
+                                            <i class="fa fa-check btn-link"/>
+                                        </button>
+                                    </td>
+                                </t>
+                            </tr>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <tr>
+                            <td colspan="4" class="text-center py-3">No Salesperson Found</td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <t t-set-slot="footer">
+                <div class="d-flex justify-content-start flex-wrap gap-2 w-100">
+                    <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="props.close">Discard</button>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+</templates>
