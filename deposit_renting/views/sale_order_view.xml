@@ -1,0 +1,14 @@
+<odoo>
+    <record id="view_order_form_inherited" model="ir.ui.view">
+        <field name="name">sale.order.view.order.form.inherited</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="before">
+                <div class="alert alert-warning" role="alert" invisible="not require_deposit_config">
+                    <span>Deposit product is not configured in setting.</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
