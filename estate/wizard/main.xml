@@ -9,7 +9,7 @@
                     <group>
                         <field name="price" string="Price"/>
                         <field name="validity" string="Validity"/>
-                        <field name="buyer_id" string="Buyer"/>
+                        <field name="partner_id" string="Buyer"/>
                     </group>
                 </sheet>
                 <footer>

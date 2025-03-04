@@ -41,7 +41,7 @@ class EstateProperty(models.Model):
     def _compute_highest_bidder(self):
         for property in self:
             highest_offer = max(property.offer_ids, key=lambda offer: offer.price, default=None)
-            property.highest_bidder = highest_offer.buyer_id if highest_offer else False
+            property.highest_bidder = highest_offer.partner_id if highest_offer else False
 
     def start_property_auction(self):
         for property in self:
@@ -66,17 +66,17 @@ class EstateProperty(models.Model):
             if highest_offer:
                 highest_offer = highest_offer[0]
                 property.write({
-                    'buyer_id': highest_offer.buyer_id.id,
+                    'buyer_id': highest_offer.partner_id.id,
                     'selling_price': highest_offer.price,
                     'state': 'sold',
                     'stage': 'sold'
                 })
                 # Notify the winning bidder
-                property.send_auction_result_email(highest_offer.buyer_id, "accepted")
+                property.send_auction_result_email(highest_offer.partner_id, "accepted")
                 # Notify rejected bidders
                 rejected_offers = highest_offer[1:]
                 for offer in rejected_offers:
-                    property.send_auction_result_email(offer.buyer_id, "rejected")
+                    property.send_auction_result_email(offer.partner_id, "rejected")
 
     def send_auction_result_email(self, partner, status):
         """Send email to bidders about auction results."""

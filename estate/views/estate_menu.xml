@@ -3,6 +3,8 @@
     <data>
         <!-- Root Menu for Estate -->
         <menuitem id="estate_menu_root" name="Estate" web_icon="estate,static/description/icon.png"/>
+        <!--Configuration setting-->
+        <menuitem id="menu_estate_config_settings" name="Configuration" parent="estate_menu_root" sequence="100"/>
         <!-- Property Menu Item -->
         <menuitem id="estate_first_level_menu" name="Property" parent="estate_menu_root"/>
         <menuitem id="estate_model_menu_action" name="Properties" action="estate_property_action" parent="estate_first_level_menu"/>

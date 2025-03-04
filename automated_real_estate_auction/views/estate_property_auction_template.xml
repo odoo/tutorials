@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="property_detail_inherit" inherit_id="estate.property_detail" name="Estate Property Description - Auction Button">
+        <xpath expr="//div[@class='container']" position="inside">
+            <t t-if="property.sell_type == 'auction' and property.stage == 'auction'">
+                <span id="auction_end_time" t-esc="property.auction_end_time" class="d-none"/>
+                <!-- Countdown Timer -->
+                <h4>Auction Ends In:</h4>
+                <div id="remaining_auction_time" class="auction-timer">Loading...</div>
+                <div class="col-md-6">
+                    <a t-att-href="'/auction/property/%d' % property.id" class="btn btn-primary">
+                        <i class="fa fa-gavel"></i> Create Offer
+                    </a>
+                </div>
+            </t>
+        </xpath>
+    </template>
+    <template id="create_bid_template" name="Create Bid Form">
+        <t t-call="website.layout">
+            <div class="d-flex justify-content-center">
+                <div class="">
+                    <h2>Add Offer for <t t-esc="property.name"/>
+                    </h2>
+                    <form action="/property/auction/bid" method="post" enctype="multipart/form-data" class="mt-4">
+                        <div class="row justify-content-center">
+                            <input type="hidden" name="property_id" t-att-value="property.id"/>
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="col-lg-12">
+                                <!-- Name Field -->
+                                <div class="mb-3 row align-items-center">
+                                    <label for="name" class="col-sm-3 col-form-label text-end">name:</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" id="name" name="name" t-att-value="request.env.user.name" readonly="true" class="form-control"/>
+                                    </div>
+                                </div>
+                                <!-- Offer Amount Field -->
+                                <div class="mb-3 row align-items-center">
+                                    <label for="bid_amount" class="col-sm-3 col-form-label text-end">amount:</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" id="bid_amount" name="bid_amount" required="true" class="form-control" min="1" placeholder="Enter your offer amount"/>
+                                    </div>
+                                </div>
+                                <!-- Submit & Cancel Buttons -->
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Submit Offer</button>
+                                    <a t-att-href="'/property/%d' % property.id" class="btn btn-secondary">Cancel</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="auction_success_template" name="Auction Success">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>Offer Submitted Successfully!</h1>
+                <p t-esc="message"></p>
+                <a href="/estate_property/properties">
+                    <button class="btn btn-primary">Back to Properties</button>
+                </a>
+            </div>
+        </t>
+    </template>
+    <template id="template_property_list_website_estate_auction" inherit_id="estate.property_list">
+        <xpath expr="//div[@class='col-12']" position="before">
+            <form method="get" action="/estate_property/properties" class="row mb-4 align-items-end">
+                <t t-set="query_params" t-value="request.httprequest.args"/>
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">Sell Type:</label>
+                    <select name="sell_type" class="form-select">
+                        <option value="">All</option>
+                        <option value="auction" t-att-selected="request.httprequest.args.get('sell_type') == 'auction'">
+                          Auction
+                        </option>
+                        <option value="regular" t-att-selected="request.httprequest.args.get('sell_type') == 'regular'">
+                           Regular
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fa fa-filter"></i> Filter
+                    </button>
+                </div>
+            </form>
+        </xpath>
+    </template>
+</odoo>

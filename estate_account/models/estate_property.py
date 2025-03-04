@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
         for property in self:
             self.env['account.move'].create({
                   'move_type': 'out_invoice',
-                  'partner_id': property.buyer_id.id,
+                  'partner_id': property.partner_id.id,
                   'journal_id': journal.id,
                   'invoice_date': fields.Date.today(),
                   'invoice_line_ids': [

@@ -68,13 +68,13 @@ class EstateProperty(models.Model):
 
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
-      for property in self:
-         if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0:
-             raise ValidationError(
-                  "The selling price cannot be lower than 90% of the expected price. Expected Price: {:.2f}, Selling Price: {:.2f}".format(
-                     property.expected_price, property.selling_price
-                    )
-                )
+          for property in self:
+            if (
+                not float_is_zero(property.selling_price, precision_digits=2)
+                and float_compare(property.selling_price, property.expected_price * 0.9,
+                precision_digits=2) == -1
+            ):
+                raise ValidationError("Selling price must be at least 90% of the expected price!")
     
     def unlink(self):
         if any(property.state not in ['new', 'cancelled'] for property in self):

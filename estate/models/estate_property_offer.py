@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
         copy=False
     )
     amount = fields.Float(string="Offer Amount")
-    buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
+    partner_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
     salesperson_id = fields.Many2one('res.partner', string="Salesperson")
     validity = fields.Integer(string="Validity (days)", default=7)
@@ -80,7 +80,7 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.write({
               'state': 'offer_accepted',
               'selling_price': offer.price,
-              'buyer_id': offer.buyer_id.id,
+              'buyer_id': offer.partner_id.id,
             })
         other_offers.write({'status': 'refused'})
 

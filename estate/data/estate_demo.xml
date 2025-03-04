@@ -33,7 +33,6 @@
         <field name="postcode">12345</field>
         <field name="date_availability">2025-01-17</field>
         <field name="expected_price">1600000</field>
-        <field name="selling_price">1440000</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
         <field name="facades">4</field>
@@ -67,7 +66,6 @@
         <field name="postcode">1234</field>
         <field name="date_availability">2025-01-17</field>
         <field name="expected_price">45890000</field>
-        <field name="selling_price">41301000</field>
         <field name="property_type_id" ref="property_industrial"/>
     </record>
 
@@ -92,7 +90,7 @@
     <record id="offer_azure_villa_1" model="estate.property.offer">
         <field name="price">10000</field>
         <field name="validity">14</field>
-        <field name="buyer_id" ref="base_res_partner_12"/>
+        <field name="partner_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="villa"/>
         <field name="date_deadline">2025-01-31</field>
     </record>
@@ -100,7 +98,7 @@
     <record id="offer_azure_villa_2" model="estate.property.offer">
         <field name="price">1500000</field>
         <field name="validity">14</field>
-        <field name="buyer_id" ref="base_res_partner_12"/>
+        <field name="partner_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="villa"/>
         <field name="date_deadline">2025-01-31</field>
     </record>
@@ -108,7 +106,7 @@
     <record id="offer_deco_villa" model="estate.property.offer">
         <field name="price">1500001</field>
         <field name="validity">14</field>
-        <field name="buyer_id" ref="base_res_partner_12"/>
+        <field name="partner_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="villa"/>
         <field name="date_deadline">2025-01-31</field>
     </record>
@@ -129,7 +127,7 @@
     <record id="offer_cabin_1" model="estate.property.offer">
         <field name="price">60000</field>
         <field name="validity">14</field>
-        <field name="buyer_id" ref="base_res_partner_12"/>
+        <field name="partner_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="cabin"/>
         <field name="date_deadline">2025-01-31</field>
     </record>
@@ -137,7 +135,7 @@
     <record id="offer_cabin_2" model="estate.property.offer">
         <field name="price">75000</field>
         <field name="validity">14</field>
-        <field name="buyer_id" ref="base_res_partner_12"/>
+        <field name="partner_id" ref="base_res_partner_12"/>
         <field name="property_id" ref="cabin"/>
         <field name="date_deadline">2025-01-31</field>
     </record>

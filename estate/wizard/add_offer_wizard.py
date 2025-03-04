@@ -7,7 +7,7 @@ class AddOfferWizard(models.TransientModel):
 
     price = fields.Float(string="Price", required=True)
     validity = fields.Integer(string="Validity (days)", required=True)
-    buyer_id = fields.Many2one('res.partner', string="Buyer", required=True)
+    partner_id = fields.Many2one('res.partner', string="Buyer", required=True)
 
     def add_offer(self):
       property_ids = self.env.context.get('active_ids', [])
@@ -16,5 +16,5 @@ class AddOfferWizard(models.TransientModel):
                 'property_id': property.id,
                 'price': self.price,
                 'validity': self.validity,
-                'buyer_id': self.buyer_id.id
+                'partner_id': self.partner_id.id
             })

@@ -19,7 +19,7 @@
                                 <t t-esc="offer.price"/>
                             </td>
                             <td>
-                                <t t-esc="offer.buyer_id"/>
+                                <t t-esc="offer.partner_id"/>
                             </td>
                             <td>
                                 <t t-esc="offer.validity"/>
