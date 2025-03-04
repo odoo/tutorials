@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="property_list_template" name="Property listing">
+        <t t-call="website.layout">
+            <div class="container">
+            <div class="d-flex justify-content-between align-items-center flex-wrap">
+                <form method="GET" action="/properties" class="d-flex align-items-center mb-4" style="margin-top: 20px;">
+                    <input type="date" name="filter_date" class="form-control" style="max-width: 200px;" t-att-value="filter_date or ''" required="True"/>
+                    <button type="submit" class="btn btn-primary ms-2" style="white-space: nowrap;">Listed After</button>
+                </form>
+                <form method="GET" action="/properties" class="d-flex align-items-center mb-4" style="margin-top: 20px;">
+                    <input type="text" name="search_name" class="form-control" placeholder="Search by property name" style="max-width: 300px;" t-att-value="search_name or ''"/>
+                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                </form>
+            </div>
+                <div class="container mt-4">
+                    <h2 class="text-center">Available properties</h2>
+                </div>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img t-if="property.image" t-att-src="image_data_uri(property.image)" class="card-img-top" style="height: 200px; object-fit:cover;"/>
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-out="property.name"/></h5>
+                                    <p class="card-text">Price: $ <t t-out="property.expected_price"/></p>
+                                    <p class="card-text">Listed on: <t t-out="property.create_date"/></p>
+                                    <a t-att-href="'/property/%s' % property.id" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="mb-5">
+                        <t t-call="website.pager"></t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
