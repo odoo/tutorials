@@ -5,18 +5,30 @@
         <field name="model">estate.property</field>
         <field name="inherit_id" ref="estate.estate_property_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button
+                        class="oe_stat_button"
+                        string="Invoices"
+                        icon="fa-pencil-square-o"
+                        help="Invoices related to this Property"
+                        invisible="state != 'sold'"
+                    >
+                    </button>
+                </div>
+            </xpath>
             <xpath expr="//h1" position="after">
                 <field name="property_auction_type" widget="radio" options="{'horizontal': true}"/>
             </xpath>
             <xpath expr="//group[@name='property_description_groups']" position="inside">
                 <group name="auction_details" string="Auction Details" invisible="property_auction_type == 'regular'">
                     <field name="end_time" string="Auction End Time"/>
-                    <field name="highest_offer_amount" string="Highest Amount"/>
+                    <field name="best_price" string="Highest Amount"/>
                     <field name="highest_offer_bidder" string="Highest Bidder"/>
                 </group>
             </xpath>
             <xpath expr="//button[@name='action_sold']" position="before">
-                <button name="start_auction" string="Start Auction"/>
+                <button name="action_start_auction" string="Start Auction" type="object" invisible="property_auction_type == 'regular'"/>
             </xpath>
         </field>
     </record>

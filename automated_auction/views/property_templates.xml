@@ -1,7 +1,12 @@
 <odoo>
     <template id="property_details_auction_filter" inherit_id="estate.property_list_template">
         <xpath expr="//select[@name='property_type']" position="after">
-            <input type="checkbox" name="property_auction_type" onchange="this.form.submit()"/>
+            <label class="col-form-label fw-bold text-primary" for="selected_property_auction_type">Property Auction Type</label>
+            <select name="selected_property_auction_type" class="form-select" onchange="this.form.submit()">
+                <option value="all" t-att-selected="selected_property_auction_type == 'all'">All</option>
+                <option value="auction" t-att-selected="selected_property_auction_type == 'auction'">Auction</option>
+                <option value="regular" t-att-selected="selected_property_auction_type == 'regular'">Regular</option>
+            </select>
         </xpath>
     </template>
     <template id="property_details_auction_template" inherit_id="estate.property_detail_template">

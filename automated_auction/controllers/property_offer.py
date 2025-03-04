@@ -17,7 +17,7 @@ class EstatePropertyOfferContoller(Controller):
     def add_offer_submit_form(self, property_id, **post):
         property_details = request.env['estate.property'].sudo().browse(property_id)
 
-        offer_amount = float(post.get('offer_amount'))
+        offer_amount = float(post.get('offer_amount', 0))
         if offer_amount <= property_details.expected_price:
             raise UserError(_("Price must be greater than expected price"))
 

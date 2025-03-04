@@ -10,6 +10,7 @@
     'license': "LGPL-3",
     'data': [
         'views/estate_property_views.xml',
+        'views/estate_property_offer_views.xml',
         'views/property_add_offer_template.xml',
         'views/property_templates.xml',
     ],

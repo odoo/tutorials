@@ -5,14 +5,15 @@ class EstatePropertyController(Controller):
     _references_per_page = 3
     # Route For all properties
     @route(['/properties', '/properties/page/<int:page>'], type='http', auth="public", website=True)
-    def list_properties(self, page=1, **kwargs):
+    def list_properties(self, page=1, domain=None, **kwargs):
         Property = request.env['estate.property']
         PropertyType = request.env['estate.property.type']
 
         property_types = PropertyType.sudo().search([])
         selected_type = kwargs.get('property_type')
 
-        domain = [('state', 'in', ['new', 'offer_received'])]
+        domain = domain or []
+        domain.append(('state', 'in', ['new', 'offer_received']))
         if selected_type:
             domain.append(('property_type_id', '=', int(selected_type)))
 
@@ -35,7 +36,8 @@ class EstatePropertyController(Controller):
             'properties': properties,
             'pager': pager,
             'property_types': property_types,
-            'selected_type': int(selected_type) if selected_type else None
+            'selected_type': int(selected_type) if selected_type else None,
+            'selected_property_auction_type': kwargs.get('selected_auction_type')
         })
 
     # Route For Particular Property

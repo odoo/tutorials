@@ -1,29 +1,38 @@
 <odoo>
     <template id="property_offer_added">
-        <div>
-            <h1>
-                Congratulations! Your Offer has been successfully placed. We will notify you of the results as soon as the auction concludes
-            </h1>
-            <a t-attf-href="/properties" class="btn btn-primary">
-                Home
-            </a>
-        </div>
+        <t t-call="website.layout">
+            <div class="container text-center mt-5">
+                <div class="card shadow-lg p-4">
+                    <h1 class="text-success">
+                        🎉 Congratulations!
+                    </h1>
+                    <p class="fs-5">
+                        Your offer has been successfully placed. We will notify you of the results as soon as the auction concludes.
+                    </p>
+                    <a t-attf-href="/properties" class="btn btn-primary mt-3">
+                        Return to Properties
+                    </a>
+                </div>
+            </div>
+        </t>
     </template>
 
     <template id="property_add_offer_template">
         <t t-call="website.layout">
             <div class="container mt-4">
-                <h2 class="mb-3" name="property_name">Add Offer For<t t-esc="property_details.name"/></h2>
+                <h2 class="mb-3" name="property_name">Add Offer For <t t-esc="property_details.name"/></h2>
                 <form t-attf-action="/properties/#{property_details.id}/submit_offer" method="post">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                    <label>Name: </label>
-                    <input name="bidder_name" type="text" t-att-value="request.env.user.name" readonly="True"/>
-                    <label>Amount: </label>
-                    <input name="offer_amount" type="number"/>
+                    <div class="mb-3">
+                        <label class="form-label">Name:</label>
+                        <input class="form-control" name="bidder_name" type="text" t-att-value="request.env.user.name" readonly="True"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Amount:</label>
+                        <input class="form-control" name="offer_amount" type="number"/>
+                    </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
-                    <a t-attf-href="/properties/#{property_details.id}/" class="btn btn-primary">
-                        Cancel
-                    </a>
+                    <a t-attf-href="/properties/#{property_details.id}/" class="btn btn-primary">Cancel</a>
                 </form>
             </div>
         </t>
