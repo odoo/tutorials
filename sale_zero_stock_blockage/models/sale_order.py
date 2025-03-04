@@ -1,11 +1,11 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
 class SaleOrder(models.Model):
     _inherit = ["sale.order"]
 
-    zero_stock_approval = fields.Boolean(string="Zero Stock Approval")
+    zero_stock_approval = fields.Boolean(string="Zero Stock Approval", copy=False)
     is_sales_manager = fields.Boolean(compute="_compute_is_sales_manager")
 
     def action_confirm(self):
@@ -19,6 +19,6 @@ class SaleOrder(models.Model):
                     )
         return super().action_confirm()
 
+    @api.depends_context('uid')
     def _compute_is_sales_manager(self):
-        for order in self:
-            order.is_sales_manager = order.env.user.has_group('sales_team.group_sale_manager')
+            self.is_sales_manager = self.env.user.has_group('sales_team.group_sale_manager')
