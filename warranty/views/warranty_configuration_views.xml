@@ -1,0 +1,44 @@
+<odoo>
+    <record id="action_warranty_configuration" model="ir.actions.act_window">
+        <field name="name">Warranty</field>
+        <field name="res_model">warranty.configuration</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_sale_config_warranty"
+        name="Warranty"
+        action="warranty.action_warranty_configuration"
+        parent="sale.prod_config_main"
+        sequence="100"
+        groups="sales_team.group_sale_manager" />
+
+    <record id="warranty_configuration_view_list" model="ir.ui.view">
+        <field name="name">warranty.configuration.list</field>
+        <field name="model">warranty.configuration</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="product_id"/>
+                <field name="percentage"/>
+                <field name="years"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="warranty_configuration_view_form" model="ir.ui.view">
+        <field name="name">warranty.configuration.form</field>
+        <field name="model">warranty.configuration</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="product_id" />
+                        <field name="percentage"/>
+                        <field name="years" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
