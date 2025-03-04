@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_auction_won" model="mail.template">
+        <field name="name">Auction Winner Notification</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="subject">Congratulations! You've Won the Auction: {{ object.name }}</field>
+        <field name="email_to">{{ object.buyer_id.email }}</field>
+        <field name="description">Sent to the winner of the auction.</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Hello <t t-out="object.buyer_id.name or ''"></t>,</p>
+                <p>Congratulations! You have won the auction for the item: <strong><t t-out="object.name"></t></strong>.</p>
+                <p>Winning Bid: <strong><t t-out="object.selling_price"></t></strong></p>
+                <p>We will contact you shortly with the next steps.</p>
+                <p>Thank you for participating in the auction!</p>
+            </div>
+        </field>
+    </record>
+
+    <record id="mail_template_auction_lost" model="mail.template">
+        <field name="name">Auction Lost Notification</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="subject">Auction Result: You Didn't Win the Auction for {{ object.property_id.name }}</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="description">Sent to bidders who lost the auction.</field>
+        <field name="body_html" type="html">
+            <div>
+                <p>Hello <t t-out="object.partner_id.name or ''"></t>,</p>
+                <p>Thank you for participating in the auction for 
+                <strong><t t-out="object.property_id.name"></t></strong>.</p>
+                <p>Unfortunately, your bid was not the highest. Better luck next time!</p>
+                <p>We encourage you to check out other exciting auctions on our platform.</p>
+                <p>Thank you for your participation!</p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

@@ -16,14 +16,15 @@
             </xpath>
             <xpath expr="//field[@name='image']" position="before">
                 <div>
-                    <field name="auction_stage" class="o_task_state_widget" invisible="property_sale_format != 'auction'"></field>
+                    <field name="auction_stage" widget="estate_property_state_selection" invisible="property_sale_format != 'auction'"></field>
                 </div>
             </xpath>
             <xpath expr="//header/button[@name='action_sold']" position="before">
                 <button name="action_start_auction"
                     type="object"
+                    class="btn-primary"
                     string="Start Auction"
-                    invisible="property_sale_format != 'auction'"/>
+                    invisible="property_sale_format != 'auction' or auction_stage != '01_template'"/>
             </xpath>
             <xpath expr="//notebook/page[1]/group" position="replace">
                 <div class="row">
@@ -64,7 +65,7 @@
         <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//t[@t-name='card']/div[@class='o_kanban_record']" position="inside">
-               <field name="auction_stage" class="o_task_state_widget" invisible="property_sale_format != 'auction'"></field>
+               <field name="auction_stage" widget="estate_property_state_selection" invisible="property_sale_format != 'auction'"></field>
             </xpath>
         </field>
     </record>

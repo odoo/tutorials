@@ -4,10 +4,11 @@ from odoo.http import request
 
 class EstateWebsite(http.Controller):
     @http.route(['/property', "/property/page/<int:page>"], type="http", auth="public",website=True)
-    def list_properties(self, page=1, status="all", min_price=None, max_price=None, **kwargs):
+    def list_properties(self, page=1, status="all", min_price=None, max_price=None, domain=None, **kwargs):
         step = 6
         offset = (page-1)*step
-        domain = [('company_id', '=', request.env.company.id)]  # Filter by company
+        domain = domain or []
+        domain.append(('company_id', '=', request.env.company.id))  # Filter by company
         if status=="all":
             domain.append(('state', 'in', ["new", "offer_received"]))
         else:

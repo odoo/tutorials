@@ -9,11 +9,19 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        if not vals_list:
+            return super().create(vals_list)
+        property_id = vals_list[0].get('property_id')
+        if not property_id:
+            raise ValidationError("Property reference is missing.")
+        # Fetch the property once
+        property = self.env['estate.property'].browse(property_id)
         for vals in vals_list:
             if vals['property_id']:
-                property = self.env['estate.property'].browse(vals['property_id'])
                 if property.expected_price > vals['price']:
                     raise ValidationError(
                         "You cannot create an offer lower than expected price."
                     )
-        return models.Model.create(self, vals_list)
+        if property.property_sale_format == 'auction':
+            return models.Model.create(self, vals_list)
+        return super().create(vals_list)

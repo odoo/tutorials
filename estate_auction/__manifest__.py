@@ -1,7 +1,7 @@
 {
     'name': "Real Estate - Auction",
     'version': '1.0',
-    'depends': ['base', 'estate', 'website'],
+    'depends': ['base', 'estate', 'mail'],
     'author': "Vaidik Gorasiya - vrgo",
     'description': """
         This module is designed to manage auction for real estate properties.
@@ -12,7 +12,16 @@
         'views/estate_property_views.xml',
         'data/ir_cron.xml',
         'views/estate_website.xml',
+        'data/mail_template_data.xml'
     ],
+    'assets': {
+        'web.assets_backend': [
+            'estate_auction/static/src/components/**/*'
+        ],
+        'web.assets_frontend': [
+            'estate_auction/static/src/js/**/*'
+        ],
+    },
     'installable': True,
     'license': 'LGPL-3',
 }

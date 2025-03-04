@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <template id="listing_page_inherit_auction" inherit_id="estate.listing_page" name="Estate Property Listing - Auction">
+        <xpath expr="//div[@class='row']//div[3]" position="after">
+            <div class="col-md-3">
+                <label class="form-label">Property Sale Formate</label>
+                <select name="property_sale_format" class="form-control">
+                    <option value="all" t-att-selected="request.params.get('property_sale_format') == 'all'">All</option>
+                    <option value="auction" t-att-selected="request.params.get('property_sale_format') == 'auction'">Auction</option>
+                    <option value="regular" t-att-selected="request.params.get('property_sale_format') == 'regular'">Regular</option>
+                </select>
+            </div>
+        </xpath>
+    </template>
     <!-- Inherited Estate Property Detail Page -->
     <template id="property_detail_page_inherit" inherit_id="estate.property_detail_page" name="Estate Property Description - Auction Button">
         <xpath expr="//div[1]/div[2]" position="inside">
+            <t t-if="property.property_sale_format == 'auction' and property.auction_stage in ['02_auction', '03_sold']">
+                <div class="alert alert-info col-md-12">
+                    <strong>Auction Ends In:</strong>
+                    <div t-att-data-auction_end_time="property.auction_end_time" class="js_auction_timer"></div>
+                </div>
+            </t>
             <t t-if="property.property_sale_format == 'auction' and property.auction_stage == '02_auction'">
                 <div class="col-md-6">
                     <a t-att-href="'/property/auction/%d' % property.id" class="btn btn-warning">

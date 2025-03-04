@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
@@ -22,38 +22,67 @@ class EstateProperty(models.Model):
         default='01_template',
     )
     auction_end_time = fields.Datetime(string="Auction End Time")
-    highest_bidder = fields.Many2one(string="Highest Bidder", comodel_name="res.partner")
+    highest_bidder = fields.Many2one(string="Highest Bidder",
+        comodel_name="res.partner",
+        compute="_compute_highest_bidder",
+        store=True
+    )
     invoice_ids = fields.One2many(string="Invoice", comodel_name="account.move", inverse_name="estate_property_id")
     invoice_count = fields.Integer(string="Invoice Count", compute="_compute_invoice_count")
 
+    def write(self, vals):
+        if self.auction_stage == '03_sold' and self.state == 'sold':
+            raise UserError("You cannot change the auction stage from sold")
+        elif self.auction_stage == '03_sold' and self.state == 'cancelled':
+            vals.update({'state': 'new'})
+        elif vals.get('auction_stage') == '03_sold':
+            if not self.offer_ids:
+                vals.update({
+                    'state': 'cancelled'
+                })
+            else:
+                winner_template = self.env.ref('estate_auction.mail_template_auction_won')
+                losser_template = self.env.ref('estate_auction.mail_template_auction_lost')
+                highest_offer = max(self.offer_ids, key=lambda o: o.price, default=False)
+                highest_offer.action_confirm()
+                if highest_offer.partner_id.email:
+                    winner_template.send_mail(self.id)
+                for offer in self.offer_ids:
+                    if offer != highest_offer:
+                        losser_template.send_mail(self.id)
+                vals.update({
+                    'state': 'sold',
+                    'selling_price': highest_offer.price,
+                    'buyer_id': highest_offer.partner_id.id,
+                    'auction_stage': '03_sold',
+                    'auction_end_time': fields.Datetime.now()
+                })
+                self.action_sold()
+        return super().write(vals)
+
+    @api.depends('best_price')
+    def _compute_highest_bidder(self):
+        for property in self:
+            if property.offer_ids:
+                highest_offer = max(property.offer_ids, key=lambda offer: offer.price, default=False)
+                property.highest_bidder = highest_offer.partner_id if highest_offer else False
+            else:
+                property.highest_bidder = False
     @api.depends('invoice_ids')
     def _compute_invoice_count(self):
         for record in self:
             record.invoice_count = len(record.invoice_ids)
 
+    @api.model
     def _action_close_expired_auctions(self):
         """ Close expired auctions """
         expired_properties = self.search([
             ('property_sale_format', '=', 'auction'),
-            ('auction_stage', '=', 'auction'),
+            ('auction_stage', '=', '02_auction'),
             ('auction_end_time', '<', fields.Datetime.now())
         ])
-        expired_properties.write([
-            ('auction_stage', '=', 'sold')
-        ])
         for property in expired_properties:
-            if property.offer_ids:
-                property.offer_ids.sort(key=lambda offer: offer.price, reverse=True)
-                property.offer_ids[0].action_confirm()
-                property.write({
-                    'state': 'sold',
-                    'selling_price': property.offer_ids[0].price,
-                    'buyer_id': property.offer_ids[0].partner_id.id
-                })
-            else:
-                property.write({
-                    'state': 'cancelled'
-                })
+            property.write({'auction_stage': '03_sold'})
 
     def action_start_auction(self):
         self.auction_stage = '02_auction'
