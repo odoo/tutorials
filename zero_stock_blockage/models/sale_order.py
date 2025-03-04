@@ -18,7 +18,10 @@ class SaleOrder(models.Model):
         return res
 
     def action_confirm(self):
+        # Loop through each order in the recordset
         for order in self:
-            if not order.zero_stock_approval:
-                raise UserError(_("The order must be approved by a Sales Manager before confirmation."))
+            # Loop through each order line in the order
+            if any(line.product_uom_qty <= 0 for line in order.order_line):
+                if not order.zero_stock_approval:
+                    raise UserError(_('Approval is required to confirm an order containing products with zero stock.'))
         return super().action_confirm()
