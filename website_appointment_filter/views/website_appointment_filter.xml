@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="appointment_website_filter_template" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//h4" position="after">
+            <div class="d-flex flex-grow-1 justify-content-end gap-2 px-2">
+                <t t-set="appointment_filters" t-value="[
+                    {
+                        'title': 'Type',
+                        'param': 'appointment_type',
+                        'options': [
+                            {'value': 'all', 'label': 'All'},
+                            {'value': 'online', 'label': 'Online'},
+                            {'value': 'offline', 'label': 'Offline'}
+                        ]
+                    },
+                    {
+                        'title': 'Payment Step',
+                        'param': 'payment_step',
+                        'options': [
+                            {'value': 'all', 'label': 'All'},
+                            {'value': 'required', 'label': 'Required'},
+                            {'value': 'not_required', 'label': 'Not Required'}
+                        ]
+                    },
+                    {
+                        'title': 'Based On',
+                        'param': 'schedule_based_on',
+                        'options': [
+                            {'value': 'all', 'label': 'All'},
+                            {'value': 'users', 'label': 'Users'},
+                            {'value': 'resources', 'label': 'Resources'}
+                        ]
+                    }
+                ]"/>
+                <t t-foreach="appointment_filters" t-as="dropdown">
+                    <div class="dropdown">
+                        <t t-set="selected_value" t-value="request.params.get(dropdown['param'], 'all')"/>
+                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <t t-esc="dropdown['title']"/>
+                            <t t-if="selected_value != 'all'">
+                                <span class="badge bg-secondary ms-2">1</span>
+                            </t>
+                        </button>
+                        <div class="dropdown-menu">
+                            <t t-foreach="dropdown['options']" t-as="option">
+                                <t t-set="query_params" t-value="dict(request.params, **{dropdown['param']: option['value']})"/>
+                                <a t-att-href="'/appointment?' + '&amp;'.join(['%s=%s' % (k, v) for k, v in query_params.items() if v and v != 'all'])"
+                                   t-att-class="'dropdown-item' + (' active' if selected_value == option['value'] else '')">
+                                    <t t-esc="option['label']"/>
+                                </a>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+    </template>
+</odoo>
