@@ -4,10 +4,10 @@
         <t t-call="website.layout">
             <div class="container">
                 <h2 class="mt-3 mb-3">Real Estate Properties</h2>
-                <form method="get" action="/properties"
+                <!-- <form method="get" action="/properties"
                     class="o_searchbar_form s_searchbar_input o_wsale_products_searchbar_form me-auto flex-grow-1 d-lg-inline d-inline">
                     <div role="search" class="input-group mb-5">
-                        <input type="search" name="price"
+                        <input type="number" name="price"
                             class="search-query form-control oe_search_box border-0 text-bg-light border-0 bg-light"
                             placeholder="Price Filter" />
                         <button type="submit" aria-label="Search" title="Search"
@@ -15,7 +15,19 @@
                             <i class="oi oi-search"></i>
                         </button>
                     </div>
+                </form> -->
+                <form method="get" action="/properties" class="o_searchbar_form s_searchbar_input o_wsale_products_searchbar_form me-auto flex-grow-1 d-lg-inline d-inline">
+                    <div class="input-group mb-5">
+                        <input type="number" t-att-value="min_price" name="min_price" class="form-control oe_search_box border-0 text-bg-light bg-light" placeholder="Min Price" min="0" />
+
+                        <input type="number" t-att-value="max_price" name="max_price" class="form-control oe_search_box border-0 text-bg-light bg-light" placeholder="Max Price" min="0" />
+
+                        <button type="submit" class="btn btn-primary" title="Filter">
+                            <i class="oi oi-filter"></i> Filter
+                        </button>
+                    </div>
                 </form>
+
                 <div class="row">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-md-4 mb-4">

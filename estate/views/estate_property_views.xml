@@ -36,7 +36,7 @@
                         statusbar_visible="new, offer_received, offer_accepted, sold, cancelled" />
                 </header>
                 <sheet>
-                    <group>
+                    <group name="property_name">
                         <group>
                             <field name="name" class="h1" placeholder="Property Name" nolabel="1" />
                         </group>
@@ -61,16 +61,18 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" invisible="not garden" />
-                                <field name="garden_orientation" invisible="not garden" />
-                                <field name="active" />
-                                <field name="total_area" />
+                                <group name='description'>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" invisible="not garden" />
+                                    <field name="garden_orientation" invisible="not garden" />
+                                    <field name="active" />
+                                    <field name="total_area" />
+                                </group>
                             </group>
                         </page>
                         <page string="Other Info">
@@ -79,7 +81,7 @@
                                 <field name="salesperson_id" />
                             </group>
                         </page>
-                        <page string="Offers">
+                        <page name="offers" string="Offers">
                             <group>
                                 <field name="offer_ids" editable="bottom" nolabel="1"
                                     readonly="state in ['offer_accepted', 'sold', 'cancelled']">

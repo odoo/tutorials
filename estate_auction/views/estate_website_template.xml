@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <template id="property_detailspage_website_inherit" inherit_id="estate.property_detail_page">
+        <xpath expr="//div[hasclass('container')]" position="inside">
+            <t t-if="property.selling_type == 'auction'">
+                <a t-att-href="'/createoffer/%d' % property.id" class="btn btn-primary btn-lg text-center" >Create Offer</a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="properties_list_page_inherit" inherit_id="estate.properties_list_page">
+        <xpath expr="//input[@name='max_price']" position="after">
+            <select name="selling_type" t-att-value="selling_type"  class="form-select bg-light border-0">
+                <option value="">Select Selling Type</option>
+                <option value="regular">Regular</option>
+                <option value="auction">Auction</option>
+            </select>
+        </xpath>
+    </template>
+
+    <template id="add_offer_page" name="Create Offer Page">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="m-5 ">
+                <h2 class="mt-3 mb-3 text-center">Add Offer for <t t-esc="property.name"/></h2>
+                    <form method="post" t-att-action="'/addoffer/%d' % property.id" class="p-4 border rounded shadow bg-white">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <div class="mb-3">
+                            <label for="name" class="form-label fw-bold" >Name</label>
+                            <input type="text" id="name" t-att-value="request.env.user.name" name="name" class="form-control" placeholder="Enter your name" required="True" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="amount" class="form-label fw-bold">Amount</label>
+                            <input type="number" id="amount" name="amount" class="form-control" placeholder="Enter amount" min="0" required="True" />
+                        </div>
+
+                        <div class="d-flex justify-content-center gap-2">
+                            <button type="submit"  class="btn btn-primary px-4">Submit</button>
+                            <a t-att-href="'/property/%d' % property.id" class="btn btn-secondary px-4">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="congratulation_page" name="Offer Confirmation Page">
+        <t t-call="website.layout">
+            <section class="container text-center my-5">
+                <div class="card shadow-lg p-5 rounded bg-light">
+                    <div class="mb-4">
+                        <i class="fa fa-check-circle text-success" style="font-size: 80px;"></i>
+                    </div>
+                    <h1 class="fw-bold text-primary">Congratulations!</h1>
+                    <p class="fs-5 text-muted">
+                        Your offer has been successfully placed. We will notify you of the result as soon as the auction concludes.
+                    </p>
+                    <div class="mt-4">
+                        <a href="/properties" class="btn btn-primary px-4 py-2">
+                            <i class="fa fa-arrow-left me-2"></i> Back to Property List
+                        </a>
+                    </div>
+                </div>
+            </section>
+         </t>
+    </template>
+
+
+</odoo>

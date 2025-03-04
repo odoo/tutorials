@@ -56,7 +56,6 @@ class EstatepropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        res = []
         for vals in vals_list:
             property_id = vals.get('property_id')
             new_offer_price = vals.get('price')
@@ -70,8 +69,7 @@ class EstatepropertyOffer(models.Model):
                 if existing_offer:
                     raise exceptions.UserError("Already Higher offer exist, Increase your offer price")
                 property.state = 'offer_received'
-                res.append(super(EstatepropertyOffer, self).create(vals))
-        return res
+        return super().create(vals_list)
 
     #---------------------------------
         #Actions methods

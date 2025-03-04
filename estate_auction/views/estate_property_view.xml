@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id="estate_property_view_form_inherit" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_sold']" position="before" >
+                <button name="start_auction" type="object" string="Start Auction" class="oe_highlight"
+                        invisible="(auction_state in ['auction', 'sold']) or (selling_type == 'regular')" />
+            </xpath>
+            <xpath expr="//button[@name='action_sold']" position="replace" >
+                <button name="action_sold" type="object" string="Sold" class="oe_highlight"
+                        invisible="(auction_state in ['auction', 'sold']) or (selling_type == 'auction')" />
+            </xpath>
+            <xpath expr="//group[@name='property_name']" position="before">
+                <group>
+                    <field name="auction_state" nolabel="1" class="d-inline-block w-auto float-end oe_stat_button" />
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <group>
+                    <field name="selling_type" widget="radio" options="{'horizontal': True}" nolabel="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='description']" position='after'>
+                <group invisible="selling_type == 'regular'">
+                    <separator string="Auction Information"/> 
+                    <field name="auction_end_date" />
+                    <field name="auction_highest_offer" readonly="1"/>
+                    <field name="auction_highest_bidder" readonly="1"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
