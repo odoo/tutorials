@@ -82,6 +82,9 @@ class Property_Plan(models.Model):
         self.change_state('canceled')
 
     def button_sold_action(self):
+        """Prevent selling a property if no offers are accepted."""
+        if not any(offer.status == 'accepted' for offer in self.offer_ids):
+            raise UserError("You cannot sell a property without an accepted offer.")
         """Mark the property as sold."""
         self.change_state('sold')
 

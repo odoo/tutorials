@@ -3,9 +3,9 @@ from odoo import models, fields, Command
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-    def button_sold_action(self):
-        """Override Sold button action to create an invoice with invoice lines."""
-        res = super().button_sold_action()  
+    state = fields.Selection(selection_add=[('invoiced', 'Invoiced')], ondelete={'invoiced': 'cascade'})
+
+    def button_invoice_action(self):
         self.check_access("write")
         invoice_vals = {
             "partner_id": self.buyer_id.id,  
@@ -32,6 +32,5 @@ class EstateProperty(models.Model):
         }
 
         invoice = self.env["account.move"].sudo().create(invoice_vals)
-
+        self.state = 'invoiced'
         print(f"Invoice {invoice.id} created with lines for property {self.id}")  
-        return res 
