@@ -1,61 +1,67 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, Command
 
 class SubProductWizard(models.TransientModel):
     _name = "sub.product.wizard"
     _description = "Wizard to add sub-products"
-
-    sub_product_ids = fields.One2many(comodel_name='sub.product.line.wizard', inverse_name='wizard_id', string="Sub Products")
-    order_id = fields.Many2one('sale.order', string="Sale Order")
-
-    @api.onchange('order_id')
-    def _onchange_order_id(self):
-        if self.order_id and not self.order_id.id:
-            raise UserError("Please save the order before adding sub-products.")
-
+   
+    product_id = fields.Many2one("product.product", string="Product", required=True)
+    existing_ids = fields.One2many("sub.product.line.wizard", "wizard_id", string="Sub Products")
+   
     @api.model
     def default_get(self, fields_list):
-        res = super(SubProductWizard, self).default_get(fields_list)
-        active_id = self.env.context.get('active_id')
+        res = super().default_get(fields_list)
+        sale_order_line_id = self.env.context.get("active_id")  
+        if not sale_order_line_id:
+            return res
+        
+        main_order_line = self.env["sale.order.line"].browse(sale_order_line_id)
+        existing_sub_products = []
 
-        if active_id:
-             main_line = self.env['sale.order.line'].browse(active_id)
-             order = main_line.order_id
-             existing_sub_products = self.env['sale.order.line'].search([
-                 ('order_id', '=', order.id),
-                 ('sequence', '>', main_line.sequence)  
-             ])
-             sub_products = []
-             if existing_sub_products:
-                for line in existing_sub_products:
-                    sub_products.append((0, 0, {
-                       'product_id': line.product_id.id,
-                       'quantity': line.product_uom_qty,
-                       'price': line.price_unit,
-                    }))
-             else:
-                 if main_line.product_id and main_line.product_template_id.is_kit:
-                     for sub_product in main_line.product_template_id.sub_products_ids:
-                         sub_products.append((0, 0, {
-                           'product_id': sub_product.id,
-                           'quantity': 1.0,
-                           'price': sub_product.lst_price,
-                         }))
-             res['sub_product_ids'] = sub_products
+        if main_order_line.component_ids:
+            for record in main_order_line.component_ids:
+                existing_sub_products.append(Command.create({
+                    "product_id": record.product_id.id,
+                    "quantity": record.product_uom_qty,
+                    "price": record.price_unit,
+                    "order_line_id": record.id,  
+                })) 
+        elif main_order_line.product_id.is_kit:
+            for product in main_order_line.product_id.sub_products_ids:
+                existing_sub_products.append(Command.create({
+                    "product_id": product.id,
+                    "quantity": 1.0,
+                    "price": product.lst_price,
+                }))
+
+        res.update({
+            "product_id": main_order_line.product_id.id,  
+            "existing_ids": existing_sub_products,
+        })
         return res
-                   
+
     def action_add_products(self):
-        active_id = self.env.context.get('active_id')
-        if active_id:
-            main_line = self.env['sale.order.line'].browse(active_id)
-            order = main_line.order_id
-            sequence = main_line.sequence + 1 
-            for line in self.sub_product_ids:
-                self.env['sale.order.line'].create({
-                    'order_id': order.id,
-                    'product_id': line.product_id.id,
-                    'product_uom_qty': line.quantity,
-                    'price_unit': line.price,
-                    'sequence': sequence,
-                })
-                sequence += 1 
-        return {'type': 'ir.actions.act_window_close'}
+        main_order_line = self.env["sale.order.line"].browse(
+            self.env.context.get("active_id")
+        )
+
+        if not main_order_line:
+            raise UserError("Sale order line not found!")
+
+        existing_products = { line.product_id.id: line for line in main_order_line.component_ids }
+        for sub_product in self.existing_ids:
+            if sub_product.product_id.id in existing_products:
+                existing_products[sub_product.product_id.id].write({
+                "product_uom_qty": sub_product.quantity,
+                "price_unit": sub_product.price,
+            })
+            else:
+                self.env["sale.order.line"].create({
+                "order_id": main_order_line.order_id.id,
+                "product_id": sub_product.product_id.id,
+                "price_unit": sub_product.price,
+                "product_uom_qty": sub_product.quantity,
+                "parent_id": main_order_line.id,
+            })
+
+        total_price = sum(product.quantity * product.price for product in self.existing_ids)
+        main_order_line.write({"price_unit": total_price})

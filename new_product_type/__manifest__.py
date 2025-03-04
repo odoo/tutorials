@@ -12,7 +12,9 @@
          'security/ir.model.access.csv',
          'views/product_template_views.xml',
          'views/sale_order_view.xml',
-         'wizard/sub_product_wizard.xml'
+         'wizard/sub_product_wizard.xml',
+         'report/sub_product_report.xml',
+         'report/sale_portal_template.xml'
     ],
     'auto_install': True,
     'license': 'LGPL-3',
