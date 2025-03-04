@@ -2,6 +2,7 @@ import publicWidget from "@web/legacy/js/public/public_widget";
 
 publicWidget.registry.AuctionTimer = publicWidget.Widget.extend({
     selector: "#auction_timer",
+    
     start: function () {
         let auctionTimerElement = this.$el[0];
         let endTimeUTCString = auctionTimerElement.getAttribute("data-end-time");
@@ -19,6 +20,7 @@ publicWidget.registry.AuctionTimer = publicWidget.Widget.extend({
             if (timeRemaining <= 0) {
                 auctionTimerElement.innerText = "Auction Ended";
                 clearInterval(countdownInterval);
+                
                 return;
             }
 

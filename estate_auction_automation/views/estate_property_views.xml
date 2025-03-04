@@ -11,7 +11,7 @@
                     string="Start Auction"
                     class="oe_highlight"
                     type="object"
-                    invisible="property_sell_type != 'auction'"/>
+                    invisible="property_sell_type != 'auction' or stage == 'sold'"/>
             </xpath>
             <xpath expr="//sheet" position="inside">
                 <div class="oe_button_box" name="button_box">
@@ -46,7 +46,11 @@
                         </div>
                     </div>
                     <div class="col-1 pe-0">
-                        <field name="state" widget="estate_property_state_selection" class="o_task_state_widget"  invisible="property_sell_type != 'auction'"/>
+                        <field name="state"
+                            widget="estate_property_state_selection"
+                            class="o_task_state_widget"
+                            invisible="property_sell_type != 'auction'"
+                            readonly="state == '03_sold' or stage == 'sold'"/>
                         <field
                             name="property_image"
                             widget="image"
@@ -77,7 +81,9 @@
                     <div>
                         <group invisible="property_sell_type != 'auction'">
                             <separator string="Auction Details"/>
-                            <field name="auction_end_time" string="End Time"/>
+                            <field name="auction_end_time"
+                                string="End Time"
+                                readonly="state in ['02_auction', '03_sold']"/>
                             <field name="best_price" string="Highest Offer"/>
                             <field name="highest_bidder" string="Highest Bidder"/>
                         </group>
@@ -96,7 +102,11 @@
                 <span class="text-truncate d-block fs-4 fw-bold" t-att-title="record.name.value">
                     <div class="w-100 d-flex justify-content-between">
                         <field name="name"/>
-                        <field name="state" class="ms-1" widget="estate_property_state_selection"  invisible="property_sell_type != 'auction'"/>
+                        <field name="state"
+                            class="ms-1"
+                            widget="estate_property_state_selection"
+                            invisible="property_sell_type != 'auction'"
+                            readonly="state == '03_sold' or stage == 'sold'"/>
                     </div>
                 </span>
             </xpath>

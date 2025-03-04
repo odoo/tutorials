@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <!-- Mail template for the accepted offer -->
+    <record id="estate_offer_acceptance_email" model="mail.template">
+        <field name="name">Offer Accepted</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="email_from">{{ ctx.get('user_email', '') }}</field>
+        <field name="partner_to">{{ ctx.get('partner_id', '') }}</field>
+        <field name="subject">Offer Accepted for {{ ctx.get('property_name', '') }}</field>
+        <field name="description">Notification for accepted offer</field>
+        <field name="body_html" type="html">
+            <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                <tr><td align="center">
+                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                        <tbody>
+                            <tr>
+                                <td valign="top" style="font-size: 13px;">
+                                    <div>
+                                        <p>Dear <t t-out="ctx.get('partner_name', 'Valued Customer')">Customer</t>,</p>
+                                        <p>We are pleased to inform you that your offer has been accepted.</p>
+                                        <p><strong>Offer Details:</strong></p>
+                                        <ul>
+                                            <li>Property: <t t-out="ctx.get('property_name', '')">Property Name</t></li>
+                                            <li>Offer Amount: <t t-out="ctx.get('offer_amount', '0.00')">$0.00</t></li>
+                                        </ul>
+                                        <p>
+                                            Please contact us for the next steps regarding the agreement and further formalities.
+                                        </p>
+                                        <p>Best regards</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td></tr>
+            </table>
+        </field>
+    </record>
+
+    <!-- Mail template for the refused offer -->
+    <record id="estate_offer_refusal_email" model="mail.template">
+        <field name="name">Offer Refused</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="email_from">{{ ctx.get('user_email', '') }}</field>
+        <field name="partner_to">{{ ctx.get('partner_id', '') }}</field>
+        <field name="subject">Offer Refused for {{ ctx.get('property_name', '') }}</field>
+        <field name="description">Notification for refused offer</field>
+        <field name="body_html" type="html">
+            <table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+                <tr><td align="center">
+                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                        <tbody>
+                            <tr>
+                                <td valign="top" style="font-size: 13px;">
+                                    <div>
+                                        <p>Dear <t t-out="ctx.get('partner_name', 'Valued Customer')">Customer</t>,</p>
+                                        <p>We regret to inform you that your offer has been refused.</p>
+                                        <p><strong>Offer Details:</strong></p>
+                                        <ul>
+                                            <li>Property: <t t-out="ctx.get('property_name', '')">Property Name</t></li>
+                                            <li>Offer Amount: <t t-out="ctx.get('offer_amount', '0.00')">$0.00</t></li>
+                                        </ul>
+                                        <p>You may exploring other available properties.</p>
+                                        <p>Best regards</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td></tr>
+            </table>
+        </field>
+    </record>
+</odoo>

@@ -193,9 +193,9 @@ class EstateProperty(models.Model):
 	def _log_offer_accepted_message(self, stage):
 		"""log message in chatter"""
 		for property in self:
-			stage_str = 'Offer Accepted' if stage == 'offer_accepted' else stage.capitalize()
+			stage_str = 'property Accepted' if stage == 'offer_accepted' else stage.capitalize()
 			property.message_post(
-				body=f"Offer has been {stage_str} for this property!",
+				body=f"property has been {stage_str} for this property!",
 				message_type='comment',
 				subtype_xmlid='mail.mt_comment'
 			)

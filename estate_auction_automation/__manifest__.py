@@ -1,18 +1,17 @@
 {
     'name': "Real Estate Auction",
     'version': '1.0',
-    'depends': ['estate', 'estate_account', 'web'],
+    'depends': ['estate', 'estate_account'],
     'author': "Prince Beladiya",
     'category': 'Real Estate/Brokerage',
-    'icon': '/estate_auction_automation/static/img/icon.png',
     'description': """
-    The Real Estate Auction AUtomation
+    The Real Estate Auction Automation
     """,
     'application': True,
     'license': 'LGPL-3',
     'data': [
         'data/ir_cron.xml',
-        'data/mail_templates.xml',
+        'data/estate_property_offer_mail_template.xml',
         'views/account_move_views.xml',
         'views/estate_property_template.xml',
         'views/estate_property_views.xml',

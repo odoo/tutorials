@@ -74,7 +74,6 @@
                     <div class="d-flex justify-content-center my-3">
                         <t t-call="website.pager"/>
                     </div>
-
                 </t>
                 <t t-else="">
                     <p>No properties available.</p>
