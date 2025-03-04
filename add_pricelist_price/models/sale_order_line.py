@@ -6,7 +6,7 @@ class SaleOrderLine(models.Model):
 
     book_price = fields.Float(string="Book Price", compute='_compute_book_price', store=True)
 
-    @api.depends('product_id', 'order_id.pricelist_id', 'product_uom_qty')
+    @api.depends('product_id', 'order_id.pricelist_id')
     def _compute_book_price(self):
         for line in self:
             if not line.product_id:
@@ -14,7 +14,6 @@ class SaleOrderLine(models.Model):
                 continue
 
             if line.order_id.pricelist_id:
-                book_price = line.order_id.pricelist_id._get_product_price(line.product_id, line.product_uom_qty, line.product_uom)
-                line.book_price = (book_price * line.product_uom_qty)
+                line.book_price = line.order_id.pricelist_id._get_product_price(line.product_id, line.product_uom)
             else:
-                line.book_price = (line.product_id.lst_price * line.product_uom_qty)
+                line.book_price = line.product_id.lst_price

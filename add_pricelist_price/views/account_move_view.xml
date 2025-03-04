@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="account.view_move_form" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='quantity']" position="before">
-                <field name="book_price" />
+                <field name="book_price" invisible="not sale_line_ids" />
             </xpath>
         </field>
     </record>
