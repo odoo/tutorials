@@ -10,19 +10,28 @@ class SaleOrder(models.Model):
         if not self.env:
             return
         
-        if self.order_line.product_id.requires_deposit:
-            deposit_product = self.company_id.deposit_product
-            deposit_amount = self.order_line.product_id.deposit_amount
+        deposit_product = self.company_id.deposit_product
+        if not deposit_product:
+            return
 
-            if not deposit_product:
-                self.order_line -= self.order_line[-1]
-                raise ValidationError(_("No deposit product? What are we, a charity? 🤣 Go to settings and add one!"))
-            else:
-                self.order_line += self.env['sale.order.line'].new({
-                    'product_id': deposit_product.id,
-                    'name': f"Deposit For {self.order_line.product_id.name}",
-                    'product_uom_qty': self.order_line.product_uom_qty,
-                    'price_unit': deposit_amount,
-                    'order_id': self.id
-                })
+        existing_rental_products = self.order_line.mapped("product_id")
+        removed_deposit_lines = self.order_line.filtered(
+            lambda line: line.product_id == self.company_id.deposit_product and 
+            not any(f"Deposit For {rental.name}" == line.name for rental in existing_rental_products)
+        )
+        self.order_line -= removed_deposit_lines
 
+        rental_product_lines = self.order_line.filtered(lambda line: line.product_id.requires_deposit)
+        if rental_product_lines:
+            for rental_product_line in rental_product_lines:
+                existing_deposit = self.order_line.filtered(
+                    lambda line: line.product_id == deposit_product and line.name == f"Deposit For {rental_product_line.product_id.name}"
+                )
+                if not existing_deposit:
+                    self.order_line += self.env['sale.order.line'].new({
+                        'product_id': deposit_product.id,
+                        'name': f"Deposit For {rental_product_line.product_id.name}",
+                        'product_uom_qty': rental_product_line.product_uom_qty,
+                        'price_unit': rental_product_line.product_id.deposit_amount,
+                        'order_id': self.id
+                    })
