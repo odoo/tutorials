@@ -5,7 +5,7 @@ from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
-    _name = "estate_model"
+    _name = "estate.property"
     _inherit = ['mail.thread']
     _description = "This is the description for esatet properties model:"
     _order = "id desc"

@@ -17,7 +17,7 @@
         "view/property_list.xml",
         "view/property_list_detail.xml",
         "view/res_users_inherit.xml",
-        "view/estate_model_action.xml",
+        "view/estate_property_action.xml",
         "data/master_data.xml"
     ],
     "demo" :[

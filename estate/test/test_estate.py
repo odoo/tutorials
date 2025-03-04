@@ -10,7 +10,7 @@ class EstateTestCase(TransactionCase):
     def setUpClass(cls):
         super(EstateTestCase, cls).setUpClass()
 
-        cls.properties = cls.env["estate_model"].create(
+        cls.properties = cls.env["estate.property"].create(
             [
                 {
                     "name": "Villa on the beach",
@@ -25,7 +25,7 @@ class EstateTestCase(TransactionCase):
             ]
         )
 
-        cls.offer = cls.env["estate_model.offer"].create(
+        cls.offer = cls.env["estate.property.offer"].create(
             {
                 "partner_id": cls.env.ref("base.res_partner_12").id,
                 "property_id": cls.properties[0].id,
@@ -63,7 +63,7 @@ class EstateTestCase(TransactionCase):
         """Test that no new offer can be created for a property once it's sold."""
         self.properties[0].action_sold()
         with self.assertRaises(UserError):
-            self.env["estate_model.offer"].create(
+            self.env["estate.property.offer"].create(
                 {
                     "partner_id": self.env.ref("base.res_partner_12").id,
                     "property_id": self.properties[0].id,

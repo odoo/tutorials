@@ -24,7 +24,7 @@ class EstatePropertyOffer(models.Model):
         ]
     )
     partner_id = fields.Many2one('res.partner', required=True,  tracking=True)
-    property_id = fields.Many2one('estate_model', required=True)
+    property_id = fields.Many2one('estate.property', required=True)
     property_type_id = fields.Many2one("estate_property_type_model", name="Property Type", related='property_id.property_type_id')
     create_date = fields.Datetime(default=fields.Date.today(), readonly=True)
     validity = fields.Integer('Validity (Days)', default=7)
@@ -74,7 +74,7 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property_id = self.env["estate_model"].browse(vals.get("property_id"))
+            property_id = self.env["estate.property"].browse(vals.get("property_id"))
             if not property_id:
                     raise UserError("Property must be specified for an offer.")
             if property_id.offer_ids and vals["price"] <= max(property_id.offer_ids.mapped("price")):

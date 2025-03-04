@@ -1,12 +1,10 @@
 from odoo import Command, models
 
 class EstatePropertyAccount(models.Model):
-  _inherit = "estate_model"
+  _inherit = "estate.property"
 
   def action_sold(self):
     res = super().action_sold()
-    self.check_access_rights('write')
-    self.check_access_rule('write')
     journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
   
     for record in res:

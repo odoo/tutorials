@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <odoo>
     <!-- list view -->
-    <record id="estate_model_list_view" model="ir.ui.view">
+    <record id="estate.property_list_view" model="ir.ui.view">
         <field name="name">estate_property_view</field>
-        <field name="model">estate_model</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="list_view" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
                 <field name="image" widget="image" class="w-25"/>
@@ -22,7 +22,7 @@
     <!-- search view -->
     <record id="search_view" model="ir.ui.view">
         <field name="name">estate_search_view</field>
-        <field name="model">estate_model</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search View">
                 <!-- Fields for searching -->
@@ -52,12 +52,12 @@
         </field>
     </record>
     <!-- action model -->
-    <record id="estate_model_action" model="ir.actions.act_window">
+    <record id="estate.property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
-        <field name="res_model">estate_model</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban,graph</field>
         <field name="context">{'search_default_available': 1}</field>
-        <field name="view_id" ref="estate_model_list_view"/>
+        <field name="view_id" ref="estate.property_list_view"/>
     </record>
     <!-- ACTION VIEW FOR EXTERNAL WEBSITE -->
     <record id="open_url_action" model="ir.actions.act_url">
@@ -66,9 +66,9 @@
         <field name="target">new</field>
     </record>
     <!-- form view -->
-    <record id="estate_model_form_view" model="ir.ui.view">
+    <record id="estate.property_form_view" model="ir.ui.view">
         <field name="name">estate_property_form_view</field>
-        <field name="model">estate_model</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
