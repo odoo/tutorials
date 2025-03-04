@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- Wizard Action -->
+        <record id="action_distribute_cost_wizard" model="ir.actions.act_window">
+            <field name="name">Distribute Cost</field>
+            <field name="res_model">distribute.cost.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{'active_id': active_id}</field>
+        </record>
+            <!-- Wizard Form View -->
+        <record id="view_distribute_cost_wizard_form" model="ir.ui.view">
+            <field name="name">distribute.cost.wizard.form</field>
+            <field name="model">distribute.cost.wizard</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="order_id" invisible="true"/>
+                             <field name="order_line_ids" string="">
+                                <list editable="bottom" create="0">
+                                    <field name="product_id" string="Product" readonly="True"/>
+                                    <field name="linked_sale_order_line_id" column_invisible="True"/>
+                                    <field name="include_for_division" widget="boolean" string="Include"/>
+                                    <field name="divided_price" string="Price" widget="monetary" readonly="False"/>
+                                </list>
+                            </field>
+                        </group>
+                        <footer>
+                            <button name="action_divide_cost" type="object" string="Divide" class="btn-primary"/>
+                            <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>  
+            </field>
+        </record>
+    </data>
+</odoo>

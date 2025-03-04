@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//td[@name='td_priceunit']//span" position="replace">
+            <span t-field="line.unit_price" />
+        </xpath>
+    </template>
+</odoo>
