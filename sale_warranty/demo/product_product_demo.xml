@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <data noupdate="1">
+        <record id="product_warranty_1_year" model="product.product">
+            <field name="name">Extended Warranty 1 year</field>
+        </record>
+
+        <record id="product_warranty_2_year" model="product.product">
+            <field name="name">Extended Warranty 2 year</field>
+        </record>
+
+        <record id="product_warranty_3_year" model="product.product">
+            <field name="name">Extended Warranty 3 year</field>
+        </record>
+    </data>
+</odoo>
