@@ -13,6 +13,8 @@
         'data/real_estate_tag_data.xml',
 
         # Security
+        'security/res_groups.xml',
+        'security/res_users.xml',  # Depends on `res_partner_data.xml`, `res_groups.xml`.
         'security/ir.model.access.csv',
 
         # Views

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="real_estate.agent_group" model="res.groups">
+        <field name="name">Real Estate Agent</field>
+    </record>
+
+    <record id="real_estate.manager_group" model="res.groups">
+        <field name="name">Real Estate Manager</field>
+        <field name="implied_ids" eval="[Command.link(ref('real_estate.agent_group'))]"/>
+    </record>
+
+</odoo>
