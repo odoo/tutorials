@@ -4,7 +4,6 @@
     "license": "LGPL-3",
     "depends": ["base","point_of_sale","hr"],
     "data": ["views/pos_order_views.xml",],
-    # "assets": {"point_of_sale._assets_pos": ["salesperson_Pos/static/src/**/*",]},
     "assets": {
         "point_of_sale._assets_pos": [
             "salesperson_Pos/static/src/models/pos_order.js",
