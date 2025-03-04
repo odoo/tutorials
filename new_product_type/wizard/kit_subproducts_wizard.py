@@ -1,86 +1,107 @@
 from odoo import api, fields, models
 
 
-class KitSubproductsWizard(models.TransientModel):
-    _name = 'kit.subproducts.wizard'
-    _description = 'Wizard for managing kit subproducts'
+class KitSubproductWizard(models.TransientModel):
+    _name = 'kit.subproduct.wizard'
+    _description = 'Wizard for configuring kit subproducts'
 
-    def _get_default(self):
+    subproduct_lines = fields.One2many('kit.subproduct.wizard.line', 'wizard_id', default=lambda self: self._default_subproduct_lines())
+
+    def _default_subproduct_lines(self):
         sale_order_line_id = self.env.context.get('active_id')
         if not sale_order_line_id:
             return []
-        return self.env['kit.subproducts.wizard.line']._create_or_update_lines(sale_order_line_id)
+        subproduct_line_ids = self.env['kit.subproduct.wizard.line'].with_context(
+            wizard_id=self.id, active_id=sale_order_line_id
+        )._prepare_subproduct_lines()
+        return [(6, 0, subproduct_line_ids.ids)]
 
-    sub_line_ids = fields.One2many(
-        'kit.subproducts.wizard.line', 'wizard_id', 
-        default=_get_default
-    )
-
-    def action_confirm(self):
-        sale_order_line_id = self.env.context.get('active_id')
-        sale_order_line = self.env['sale.order.line'].browse(sale_order_line_id)
+    def action_apply_configuration(self):
+        sale_order_line = self.env['sale.order.line'].browse(self.env.context.get('active_id'))
         if not sale_order_line:
             return
 
-        # Use a single create for all new lines
-        new_lines_vals = []
-        total = 0
-        for line in self.sub_line_ids:
-            existing_line = sale_order_line.order_id.order_line.filtered(
-                lambda l: l.parent_line_id == sale_order_line and l.product_id == line.product_id
-            )
-            if existing_line:
-                existing_line.product_uom_qty = line.product_uom_qty
-            else:
-                new_lines_vals.append({
-                    'order_id': sale_order_line.order_id.id,
-                    'name': line.product_id.name,
-                    'product_id': line.product_id.id,
-                    'product_template_id': line.product_id.product_tmpl_id.id,
-                    'product_uom_qty': line.product_uom_qty,
+        sale_order = sale_order_line.order_id
+        total_subproduct_price = 0
+        configured_lines = self.subproduct_lines
+
+        existing_subproduct_lines = self.env['sale.order.line'].search([
+            ('parent_line_id', '=', sale_order_line.id),
+            ('order_id', '=', sale_order.id)
+        ])
+        existing_subproduct_map = {line.product_id.id: line for line in existing_subproduct_lines}
+
+        new_subproduct_values = []
+        updated_subproduct_values = []
+
+        for configured_line in configured_lines:
+            if configured_line.product_id.id in existing_subproduct_map:
+                existing_line = existing_subproduct_map[configured_line.product_id.id]
+                updated_subproduct_values.append((1, existing_line.id, {
+                    'product_uom_qty': configured_line.quantity,
                     'price_unit': 0,
-                    'parent_line_id': sale_order_line_id,
+                }))
+                total_subproduct_price += configured_line.quantity * configured_line.unit_price
+            else:
+                new_subproduct_values.append({
+                    'order_id': sale_order.id,
+                    'name': configured_line.product_id.name,
+                    'product_id': configured_line.product_id.id,
+                    'product_template_id': configured_line.product_id.product_tmpl_id.id,
+                    'product_uom_qty': configured_line.quantity,
+                    'price_unit': 0,
+                    'parent_line_id': sale_order_line.id,
                     'is_subproduct': True,
                 })
-            total += line.product_uom_qty * line.price_unit
+                total_subproduct_price += configured_line.quantity * configured_line.unit_price
 
-        if new_lines_vals:
-            self.env['sale.order.line'].create(new_lines_vals)
+        if new_subproduct_values:
+            self.env['sale.order.line'].create(new_subproduct_values)
+        if updated_subproduct_values:
+            sale_order.write({'order_line': updated_subproduct_values})
 
-        sale_order_line.price_unit = total
+        sale_order_line.price_unit = total_subproduct_price
         return {'type': 'ir.actions.act_window_close'}
 
 
-class KitSubproductsWizardLine(models.TransientModel):
-    _name = 'kit.subproducts.wizard.line'
-    _description = 'Wizard Line for Kit Subproducts'
+class KitSubproductWizardLine(models.TransientModel):
+    _name = 'kit.subproduct.wizard.line'
+    _description = 'Line for Kit Subproduct Configuration'
 
-    wizard_id = fields.Many2one('kit.subproducts.wizard')
-    product_id = fields.Many2one('product.product', required=True)
-    price_unit = fields.Float(string='Unit Price')
-    product_uom_qty = fields.Float(string='Quantity', default=1.0)
+    wizard_id = fields.Many2one('kit.subproduct.wizard')
+    product_id = fields.Many2one(comodel_name='product.product', required=True)
+    unit_price = fields.Float(string='Unit Price')
+    quantity = fields.Float(string='Quantity', default=1.0)
 
-    @api.model
-    def _create_or_update_lines(self, sale_order_line_id):
-        sale_order_line = self.env['sale.order.line'].browse(sale_order_line_id)
-        product_tmpl_id = sale_order_line.product_id.product_tmpl_id
-        existing_lines = self.env['kit.subproducts.wizard.line'].search([
-            ('wizard_id', '=', self.env.context.get('wizard_id'))
+    def _prepare_subproduct_lines(self):
+        sale_order_line = self.env['sale.order.line'].browse(self.env.context.get('active_id'))
+        product = sale_order_line.product_id.product_tmpl_id
+        existing_wizard_lines = self.search([('wizard_id', '=', self.env.context.get("wizard_id", False))])
+
+        if existing_wizard_lines:
+            return existing_wizard_lines
+
+        existing_sale_subproduct_lines = self.env['sale.order.line'].search([
+            ('parent_line_id', '=', sale_order_line.id),
+            ('order_id', '=', sale_order_line.order_id.id)
         ])
-        if existing_lines:
-            return [(6, 0, existing_lines.ids)]
+        existing_subproduct_map = {line.product_id.id: line for line in existing_sale_subproduct_lines}
 
-        # Use a single create for all new lines
-        vals_list = []
-        for sub_product in product_tmpl_id.sub_products_ids:
-            existing_sale_line = sale_order_line.order_id.order_line.filtered(
-                lambda l: l.parent_line_id == sale_order_line and l.product_id == sub_product
-            )
-            qty = existing_sale_line.product_uom_qty if existing_sale_line else 1.0
-            vals_list.append({
-                'wizard_id': self.env.context.get('wizard_id'),
+        subproduct_line_values = []
+        for sub_product in product.sub_products_ids:
+            if sub_product.id in existing_subproduct_map:
+                existing_line = existing_subproduct_map[sub_product.id]
+                quantity = existing_line.product_uom_qty
+                unit_price = sub_product.list_price
+            else:
+                quantity = 1.0
+                unit_price = sub_product.list_price
+
+            subproduct_line_values.append({
+                'wizard_id': self.env.context.get("wizard_id", False),
                 'product_id': sub_product.id,
-                'price_unit': sub_product.list_price,
-                'product_uom_qty': qty,
+                'unit_price': unit_price,
+                'quantity': quantity,
             })
-        return [(0, 0, vals) for vals in vals_list]
+
+        return self.create(subproduct_line_values)

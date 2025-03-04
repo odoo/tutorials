@@ -2,21 +2,22 @@
 <odoo>
     <record id="view_subproducts_kit_wizard" model="ir.ui.view">
         <field name="name">subproducts.kit.wizard.form</field>
-        <field name="model">kit.subproducts.wizard</field>
+        <field name="model">kit.subproduct.wizard</field>
         <field name="arch" type="xml">
             <form string="Configure Kit Subproducts">
                 <sheet>
-                    <field name="sub_line_ids">
+                    <field name="subproduct_lines">
                         <list create="false" editable="bottom">
-                            <field name="product_id" readonly="1"/>
-                            <field name="product_uom_qty"/>
-                            <field name="price_unit"/>
+                            <field name="product_id" readonly="1" />
+                            <field name="quantity" />
+                            <field name="unit_price" />
                         </list>
                     </field>
                 </sheet>
                 <footer>
-                    <button string="Confirm" name="action_confirm" type="object" class="btn btn-primary"/>
-                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                    <button string="Confirm" name="action_apply_configuration" type="object"
+                        class="btn btn-primary" />
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" />
                 </footer>
             </form>
         </field>

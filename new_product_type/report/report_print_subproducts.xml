@@ -5,10 +5,10 @@
             <attribute name="t-if">(line.price_unit !=0) or (doc.print_report)</attribute>
         </xpath>
     </template>
-    
+
     <template id="portal_order_lines" inherit_id="sale.sale_order_portal_content">
         <xpath expr="//table[@id='sales_order_table']/tbody/t/tr" position="attributes">
             <attribute name="t-if">(sale_order.print_report) or (line.price_unit != 0)</attribute>
         </xpath>
-     </template>
+    </template>
 </odoo>

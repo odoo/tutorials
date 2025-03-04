@@ -2,9 +2,10 @@
 <odoo>
     <record id="action_kit_subproducts_wizard" model="ir.actions.act_window">
         <field name="name">Configure Kit Subproducts</field>
-        <field name="res_model">kit.subproducts.wizard</field>
+        <field name="res_model">kit.subproduct.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
+        <field name="context">{'default_sale_order_line_id': active_id}</field>
     </record>
 
     <record id="view_order_form_inherit" model="ir.ui.view">
