@@ -5,8 +5,12 @@
     'author': 'Your Name',
     'category': 'Sales',
     'depends': ['base'],
+    'license':'LGPL-3',
     'data': [
         # Add your XML/CSV files if any
+        'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml',
     ],
     'installable': True,  # This is required!
     'application': True,
