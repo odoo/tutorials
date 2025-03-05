@@ -1,0 +1,74 @@
+<odoo>
+    <template id="estate_website_templates_inherited" inherit_id="estate.estate_website_properties">
+        <xpath expr="//form[@method='GET']/div[@class='col-md-4']" position="after">
+            <div class="col-md-4">
+                <select name="is_auction" class="form-control">
+                    <option value="">-- Auction Filter --</option>
+                    <option value="1" t-att-selected="'is_auction' in request.params and request.params.get('is_auction') == '1'">Auction Properties</option>
+                    <option value="0" t-att-selected="'is_auction' in request.params and request.params.get('is_auction') == '0'">Non-Auction Properties</option>
+                </select>
+            </div>
+        </xpath>
+        <xpath expr="//form[@method='GET']//button[@type='submit']" position="replace">
+            <button type="submit" class="btn btn-primary" id="filter-btn">Search</button>
+        </xpath>
+    </template>
+    <template id="estate_website_property_detail_templates_inherited" inherit_id="estate.estate_website_property_detail">
+        <xpath expr="//div[2]/div/div/div/span" position="after">
+            <t t-if="property.is_auction and (property.auction_stages == 'active')">
+            <div id="auction_timer_container">
+                <strong>Time Remaining: </strong>
+                <span id="auction_timer" t-att-data-end-time="property.auction_end_time">Loading timer...</span>
+            </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[@class='card-body']" position="inside">
+            <t t-if="property.is_auction and (property.auction_stages == 'active')">
+                <button id="offer_modal_button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#offerModal">
+                    Make an Offer
+                </button>
+            </t>
+            <t t-if="request.params.get('error')">
+                <div class="alert alert-danger">
+                    <t t-esc="request.params.get('error')"/>
+                </div>
+            </t>
+            <div class="modal fade" id="offerModal" tabindex="-1" aria-labelledby="offerModalTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="offerModalTitle">Add Offer for <t t-out="property.name"/>
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <form id="offerForm" action="/estate/property/offer/create" method="post">
+                                <!-- embed a CSRF token in the form -->
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/> 
+                                <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                <div class="mb-3">
+                                    <label for="partnerSelect" class="form-label">Select Partner:</label>
+                                    <select class="form-control" id="partnerSelect" name="partner_id">
+                                        <t t-set="current_user" t-value="request.env.user.partner_id.id"/>
+                                        <t t-foreach="request.env['res.partner'].search([])" t-as="partner">
+                                            <option t-att-value="partner.id" t-att-selected="true if partner.id == current_user else None">
+                                                <t t-esc="partner.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="offerPrice" class="form-label">Offer Price:</label>
+                                    <input name="offer_price" type="number" class="form-control" id="offerPrice"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary" id="submitOffer">Submit Offer</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<record id="estate_property_views_inherit_view_form" model="ir.ui.view">
+		<field name="name">estate.property.views.inherit.view.form</field>
+		<field name="model">estate.property</field>
+		<field name="inherit_id" ref="estate.estate_property_form_view" />
+		<field name="arch" type="xml">
+			<xpath expr="//form/header/group" position="attributes">
+				<attribute name="invisible">is_auction or state in ['sold','cancelled']</attribute>
+			</xpath>
+			<xpath expr="//form/header/group" position="before">
+				<button invisible="not is_auction or auction_stages != 'draft'" name="action_estate_auction_start_auction" type="object" string="Start Auction" class="btn btn-primary" />
+			</xpath>
+			<xpath expr="//sheet/h1" position="before">
+                <div name='button_box'>
+                        <button type="action" class="oe_stat_button"
+                            name="account.action_move_out_invoice_type" 
+							icon="fa-credit-card">
+							<span name='property_invoices' widget='statinfo'>Invoices</span>
+                        </button>
+                </div>
+            </xpath>
+			<xpath expr="//sheet/h1" position="after">
+				<group>
+					<field name="property_selling_type" readonly="auction_stages != 'draft'" widget="radio" options="{'horizontal': true}"/>
+					<field name="auction_stages" readonly='1' invisible="not is_auction" widget="project.project_task_state_selection" class="o_task_state_widget"/>
+				</group>
+			</xpath>
+			<xpath expr="//notebook/page[1]/group" position="after">
+					<group name="auction_details" string="Auction Details" invisible="property_selling_type != 'auction'">
+						<field name="auction_end_time" readonly="auction_stages != 'draft'" />
+						<field name="highest_offer" />
+						<field name="highest_bidder" />
+				    </group>
+			</xpath>
+			<xpath expr="//page/field[@name='offer_ids']" position="attributes">
+				<attribute name="readonly">state in ['offer_accepted','sold','cancelled'] or is_auction</attribute>
+			</xpath>
+		</field>
+	</record>
+</odoo>
