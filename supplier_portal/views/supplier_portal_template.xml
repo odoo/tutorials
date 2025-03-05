@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="upload_portal_template" name="Upload Vendor Bills">
+        <t t-call="website.layout">
+            <div class="container d-flex justify-content-center align-items-center">
+                <form class="w-50 card p-3 mt-3" enctype="multipart/form-data" action="/supplier/upload/bills" method="post">
+                    <h2>Upload your bills</h2>
+                    <div class="mb-3">
+                        <label for="company" class="form-label">Company</label>
+                        <select class="form-select" name="company" id="company">
+                            <t t-foreach="request.env.user.company_ids" t-as="company">
+                                <option t-att-value="company['id']" t-att-selected="request.env.user.company_id.id == company['id']">
+                                    <t t-esc="company['name']" />
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="file1" class="form-label">Bill (XML File)</label>
+                        <input class="form-control" type="file" name="bill-type-xml" accept=".xml" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="file2" class="form-label">Bill (PDF File)</label>
+                        <input class="form-control" type="file" name="bill-type-pdf" accept=".pdf" />
+                    </div>
+
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="message_template" name="Message Template">
+        <t t-call="website.layout">
+            <div class="container">
+                <t t-if="message">
+                    <div t-attf-class="alert mt-4 w-50 mx-auto alert-{{message_type}}">
+                        <h3>
+                            <t t-esc="message_title" />
+                        </h3>
+                        <div>
+                            <t t-esc="message" />
+                        </div>
+                    </div>
+                </t>
+                <div class="w-50 mx-auto">
+                    <a t-att-href="'/supplier/upload'" class="btn btn-primary">Back to portal</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
