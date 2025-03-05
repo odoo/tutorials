@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="view_res_config_settings_rental" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.rental</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale_renting.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <div class="app_settings_block" data-string="Rental Deposit">
+                    <block title="Rental Deposit">
+                        <setting name="rental_deposit_product_setting" help="Select Products for mandatory deposits">
+                            <field name="deposit_product_id" options="{'no_create': true}" />
+                        </setting>
+                    </block>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
