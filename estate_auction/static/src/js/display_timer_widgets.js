@@ -18,8 +18,6 @@ publicWidget.registry.auctionCountdownWidget = publicWidget.Widget.extend({
     updateCountdown() {
         // Get the current time in UTC
         const now = Date.now(); // UTC timestamp (milliseconds)
-        console.log("Auction End Time (UTC):", new Date(this.endTime).toISOString());
-        console.log("Current Time (UTC):", new Date(now).toISOString());
         // Calculate remaining time
         const timeLeft = this.endTime - now;
 

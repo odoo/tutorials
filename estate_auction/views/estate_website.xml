@@ -69,14 +69,35 @@
     <template id="generic_message" name="Generic Message">
         <t t-call="website.layout">
             <div class="d-flex justify-content-center">
-                <div class="">
-                    <h2>Message</h2>
+                <div class="text-center">
+                    <h3 t-esc="title"></h3>
                     <p t-esc="message"></p>
                 </div>
             </div>
             <div class="text-center mt-4">
                     <a href="/property" class="btn btn-primary">
-                        <i class="fa fa-home"></i> Back to Property List
+                       Back to Property List
+                    </a>
+            </div>
+        </t>
+    </template>
+    <template id="generic_error" name="Generic Error">
+        <t t-call="website.layout">
+            <div class="d-flex justify-content-center">
+                <div class="text-center">
+                    <h3 class="text-danger">Oops!</h3>
+                    <p t-esc="error"></p>
+                    <t t-if="expected_price">
+                        <p>Expected price is: <t t-esc="expected_price"/></p>
+                    </t>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                    <a t-att-href="'/property/auction/%s' %id" class="btn btn-primary">
+                        Back to bid form
+                    </a>
+                    <a href="/property" class="btn btn-primary">
+                        Back to Property List
                     </a>
             </div>
         </t>

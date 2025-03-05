@@ -10,16 +10,18 @@ class EstateProperty(models.Model):
             ('auction', "Auction"),
             ('regular', "Regular"),
         ],
-        default='regular'
+        default='regular',
+        copy=False
     )
     auction_stage = fields.Selection(
         string="Auction Stage",
         selection=[
             ('01_template', "Template"),
             ('02_auction', "Auction"),
-            ('03_sold', "Sold"),
+            ('03_offer_accepted', "Offer Accepted"),
         ],
         default='01_template',
+        copy=False
     )
     auction_end_time = fields.Datetime(string="Auction End Time")
     highest_bidder = fields.Many2one(string="Highest Bidder",
@@ -31,11 +33,11 @@ class EstateProperty(models.Model):
     invoice_count = fields.Integer(string="Invoice Count", compute="_compute_invoice_count")
 
     def write(self, vals):
-        if self.auction_stage == '03_sold' and self.state == 'sold':
+        if self.auction_stage == '03_offer_accepted' and self.state == 'sold':
             raise UserError("You cannot change the auction stage from sold")
-        elif self.auction_stage == '03_sold' and self.state == 'cancelled':
+        elif self.auction_stage == '03_offer_accepted' and self.state == 'cancelled':
             vals.update({'state': 'new'})
-        elif vals.get('auction_stage') == '03_sold':
+        elif vals.get('auction_stage') == '03_offer_accepted':
             if not self.offer_ids:
                 vals.update({
                     'state': 'cancelled'
@@ -51,13 +53,12 @@ class EstateProperty(models.Model):
                     if offer != highest_offer:
                         losser_template.send_mail(self.id)
                 vals.update({
-                    'state': 'sold',
+                    'state': 'offer_accepted',
                     'selling_price': highest_offer.price,
                     'buyer_id': highest_offer.partner_id.id,
-                    'auction_stage': '03_sold',
+                    'auction_stage': '03_offer_accepted',
                     'auction_end_time': fields.Datetime.now()
                 })
-                self.action_sold()
         return super().write(vals)
 
     @api.depends('best_price')
@@ -82,7 +83,10 @@ class EstateProperty(models.Model):
             ('auction_end_time', '<', fields.Datetime.now())
         ])
         for property in expired_properties:
-            property.write({'auction_stage': '03_sold'})
+            property.write({'auction_stage': '03_offer_accepted'})
 
     def action_start_auction(self):
-        self.auction_stage = '02_auction'
+        if self.auction_end_time:
+            self.auction_stage = '02_auction'
+        else:
+            raise UserError("You will need to set Auction End Time")
