@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="distribute_sale_line.view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.view.form.inherit.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='order_lines']//list//field[@name='price_unit']" position="after">
+                <button name="action_open_distribute_sale_order_line_wizard" type="object"
+                        icon="fa-share-alt" title="Distribute"/>
+                <field name="target_sale_order_line_distribution_ids" widget="many2many_tags"
+                       options="{'color_field': 'color'}" string="Distributions"/>
+                <field name="is_included_in_distribution"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

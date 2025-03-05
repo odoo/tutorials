@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_line_distribution,access.sale.order.line.distribution,model_sale_order_line_distribution,base.group_user,1,1,1,1
+access_sale_order_line_distribution_wizard,access.sale.order.line.distribution.wizard,model_sale_order_line_distribution_wizard,base.group_user,1,1,1,1
+access_source_sale_order_line_wizard,access.source.sale.order.line.wizard,model_source_sale_order_line_wizard,base.group_user,1,1,1,1
