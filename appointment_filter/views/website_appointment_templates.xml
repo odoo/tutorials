@@ -1,26 +1,71 @@
 <odoo>
-    <template id="website_calendar_index_topbar_inherit" inherit_id="website_appointment.website_calendar_index_topbar">
+    <template id="website_calendar_index_topbar_inherit"
+        inherit_id="website_appointment.website_calendar_index_topbar">
         <xpath expr="//t[@t-call='website.website_search_box_input']" position="before">
-            <form method="get" class="d-flex gap-2">
+            <div class="container">
+                <div class="d-flex align-items-center flex-wrap gap-3 w-100">
 
-                <select class="form-select" name="appointment_mode" onchange="this.form.submit();">
-                    <option value="">All Types</option>
-                    <option value="online" t-att-selected="filters.get('appointment_mode') == 'online'">Online</option>
-                    <option value="offline" t-att-selected="filters.get('appointment_mode') == 'offline'">Offline</option>
-                </select>
+                    <div class="dropdown">
+                        <a href="#" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                            <t t-if="filters.get('appointment_mode')">
+                                <t t-esc="filters.get('appointment_mode').capitalize()" />
+                            </t>
+                            <t t-else="">All Types</t>
+                        </a>
+                        <div class="dropdown-menu">
+                            <span
+                                t-att-data-post="'/appointment?%s' % keep_query('*', appointment_mode='')"
+                                class="post_link cursor-pointer dropdown-item">All Types</span>
+                            <span
+                                t-att-data-post="'/appointment?%s' % keep_query('*', appointment_mode='online')"
+                                class="post_link cursor-pointer dropdown-item">Online</span>
+                            <span
+                                t-att-data-post="'/appointment?%s' % keep_query('*', appointment_mode='offline')"
+                                class="post_link cursor-pointer dropdown-item">Offline</span>
+                        </div>
+                    </div>
 
-                <select class="form-select" name="schedule_based_on" onchange="this.form.submit();">
-                    <option value="">Schedules By All</option>
-                    <option value="user" t-att-selected="filters.get('schedule_based_on') == 'user'">User</option>
-                    <option value="resource" t-att-selected="filters.get('schedule_based_on') == 'resource'">Resource</option>
-                </select>
+                    <div class="dropdown">
+                        <a href="#" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                            <t t-if="filters.get('schedule_based_on')">
+                                <t t-esc="filters.get('schedule_based_on').capitalize()" />
+                            </t>
+                            <t t-else="">All</t>
+                        </a>
+                        <div class="dropdown-menu">
+                            <span
+                                t-att-data-post="'/appointment?%s' % keep_query('*', schedule_based_on='')"
+                                class="post_link cursor-pointer dropdown-item">All</span>
+                            <span
+                                t-att-data-post="'/appointment?%s' % keep_query('*', schedule_based_on='user')"
+                                class="post_link cursor-pointer dropdown-item">User</span>
+                            <span
+                                t-att-data-post="'/appointment?%s' % keep_query('*', schedule_based_on='resource')"
+                                class="post_link cursor-pointer dropdown-item">Resource</span>
+                        </div>
+                    </div>
 
-                <select class="form-select" name="has_payment_step" onchange="this.form.submit();">
-                    <option value="">Payment Step</option>
-                    <option value="true" t-att-selected="filters.get('has_payment_step') == 'true'">Required</option>
-                    <option value="false" t-att-selected="filters.get('has_payment_step') == 'false'">Not Required</option>
-                </select>
-            </form>
+                    <div class="dropdown">
+                        <a href="#" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                            <t t-if="filters.get('has_payment_step')">
+                                <t t-esc="filters.get('has_payment_step').capitalize()" />
+                            </t>
+                            <t t-else="">Payment Step</t>
+                        </a>
+                        <div class="dropdown-menu">
+                            <span
+                                t-att-data-post="'/appointment?%s' % keep_query('*', has_payment_step='')"
+                                class="post_link cursor-pointer dropdown-item">Any</span>
+                            <span
+                                t-att-data-post="'/appointment?%s' % keep_query('*', has_payment_step='true')"
+                                class="post_link cursor-pointer dropdown-item">Required</span>
+                            <span
+                                t-att-data-post="'/appointment?%s' % keep_query('*', has_payment_step='false')"
+                                class="post_link cursor-pointer dropdown-item">Not Required</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </xpath>
     </template>
 </odoo>
