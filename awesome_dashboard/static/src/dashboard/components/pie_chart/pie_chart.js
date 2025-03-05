@@ -2,7 +2,7 @@ import { Component, useRef, onWillStart, onMounted, onWillUnmount, useEffect } f
 import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
-    static template = "awesome_dashboard.pieChart";
+    static template = "awesome_dashboard.pie_chart";
     static props = {
         data: { type: Object },
     };
@@ -27,17 +27,16 @@ export class PieChart extends Component {
                     this.renderChart();
                 }
             },
-            () => [this.props.data]
+            () => [this.props]
         );
     }
-
     renderChart() {
-        if (!this.props.data || Object.keys(this.props.data).length === 0) {
+        if (!this.props || Object.keys(this.props).length === 0) {
             return;
         }
 
-        const labels = Object.keys(this.props.data);
-        const data = Object.values(this.props.data);
+        const labels = Object.keys(this.props);
+        const data = Object.values(this.props);
 
         this.chart = new Chart(this.canvasRef.el, {
             type: "pie",
@@ -55,8 +54,8 @@ export class PieChart extends Component {
     updateChart() {
         if (!this.chart) return;
 
-        const labels = Object.keys(this.props.data);
-        const data = Object.values(this.props.data);
+        const labels = Object.keys(this.props);
+        const data = Object.values(this.props);
 
         this.chart.data.labels = labels;
         this.chart.data.datasets[0].data = data;

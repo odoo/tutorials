@@ -6,19 +6,17 @@ const STATS_REFRESH_TIME = 10000
 
 const statsService = {
     start(){
-        const stats = reactive({})
+        const stats = reactive({ isReady: false })
 
         async function fetchStats() {
             const latestStats = await rpc("/awesome_dashboard/statistics")
-            Object.assign(stats, latestStats)
+            Object.assign(stats,  { isReady: true, ...latestStats })
         }
 
         fetchStats()
         setInterval(fetchStats, STATS_REFRESH_TIME)
 
-        return{
-            stats
-        }
+        return stats
     }
 }
 

@@ -1,5 +1,5 @@
 <templates xml:space="preserve">
-    <t t-name="awesome_dashboard.pieChart">
+    <t t-name="awesome_dashboard.pie_chart">
         <canvas t-ref="canvas"/>
     </t>
 </templates>
