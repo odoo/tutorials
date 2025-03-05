@@ -7,9 +7,9 @@ class ProductTemplate(models.Model):
     is_kit = fields.Boolean("Is kit")
     kit_product_ids = fields.Many2many(
         "product.product",
-        "product_template_kit_rel",  # Table name
-        "template_id",  # Column linking to product.template
-        "product_id",  # Column linking to product.product
+        "product_template_kit_rel",
+        "template_id",
+        "product_id",
         string="Sub Products",
         ondelete="cascade",
     )

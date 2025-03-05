@@ -8,10 +8,38 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='order_lines']//list//field[@name='name']" position="after">
                 <button name="%(action_sale_kit_wizard)d" 
-                    string="Sub p   roducts" 
+                    string="Sub products" 
                     type="action" 
                     class="oe_highlight" 
+                    invisible="not is_kit_product or state != 'draft' "
                     context="{'default_product_id': product_id, 'default_sale_order_id': order_id}"/>
+            </xpath>
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="print_subproducts"/>
+            </xpath>
+
+            <xpath expr="//page[@name='order_lines']//list//field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly">kit_parent_id</attribute>
+            </xpath>            
+            <xpath expr="//page[@name='order_lines']//list//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">kit_parent_id</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']//list//field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">kit_parent_id</attribute>
+            </xpath>
+            <xpath expr="//page[@name='order_lines']//list//field[@name='qty_delivered']" position="attributes">
+                <attribute name="readonly">kit_parent_id</attribute>
+            </xpath>            
+            <xpath expr="//page[@name='order_lines']//list//field[@name='customer_lead']" position="attributes">
+                <attribute name="readonly">kit_parent_id</attribute>
+            </xpath>            
+            <xpath expr="//page[@name='order_lines']//list//field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">kit_parent_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list" position="attributes">
+                <attribute name="decoration-warning">kit_parent_id</attribute>
+                <attribute name="readonly">is_kit_product</attribute>  
             </xpath>
         </field>
     </record>

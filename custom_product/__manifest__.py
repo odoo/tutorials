@@ -1,7 +1,7 @@
 {
     "name": "Costom Product",
     "version": "1.0",
-    "depends": ["sale"],
+    "depends": ["sale_management"],
     "author": "Darshan Patel",
     "category": "Sales",
     "license": "LGPL-3",
@@ -11,8 +11,9 @@
         "views/product_template_views.xml",
         "wizard/sale_kit_wizard_view.xml",
         "views/sale_order_views.xml",
-        # "reports/sale_order_report.xml"
+        "reports/sale_order_report.xml",
+        "views/sale_order_portal_templates.xml",
     ],
     "installable": True,
-    "application": True,
+    "application": False,
 }

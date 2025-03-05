@@ -6,13 +6,13 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view" />
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='general_information']" position="inside">
+            <xpath expr="//page[@name='general_information']//field[@name='product_tooltip']" position="after">
                 <group>
                     <field name="is_kit" />
-                    <field name="kit_product_ids" widget="many2many_tags" invisible="is_kit==False"/>
+                    <field name="kit_product_ids" widget="many2many_tags" invisible="is_kit==False" />
                 </group>
             </xpath>
-            
+
         </field>
     </record>
 

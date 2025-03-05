@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, models, fields
 
 
 class SaleKitWizard(models.TransientModel):
@@ -18,26 +18,48 @@ class SaleKitWizard(models.TransientModel):
         kit_parent_id = self.env.context.get("active_id")
         sale_order_id = self.env.context.get("default_sale_order_id")
         product_id = self.env.context.get("default_product_id")
-        print("parent_id", kit_parent_id)
-        print("order_id", sale_order_id)
-        print("product", product_id)
 
         kit_line = []
         if sale_order_id and product_id:
             product = self.env["product.product"].browse(product_id)
+
+            # Look for existing sale order lines related to the current product and kit
+            sale_order_lines = self.env["sale.order.line"].search(
+                [
+                    ("order_id", "=", sale_order_id),
+                    ("kit_parent_id", "=", kit_parent_id),
+                ]
+            )
+
             for pro in product.product_tmpl_id.kit_product_ids:
-                print(pro.id)
-                kit_line.append(
-                    (
-                        0,
-                        0,
-                        {
-                            "product_id": pro.id,
-                            "quantity": 1,
-                            "price": pro.list_price,
-                        },
-                    )
+                existing_line = sale_order_lines.filtered(
+                    lambda line: line.product_id.id == pro.id
                 )
+                if existing_line:
+                    price_unit = existing_line.product_uom_qty * pro.list_price
+                    kit_line.append(
+                        (
+                            0,
+                            0,
+                            {
+                                "product_id": pro.id,
+                                "quantity": existing_line.product_uom_qty,
+                                "price": price_unit,
+                            },
+                        )
+                    )
+                else:
+                    kit_line.append(
+                        (
+                            0,
+                            0,
+                            {
+                                "product_id": pro.id,
+                                "quantity": 1,
+                                "price": pro.list_price,
+                            },
+                        )
+                    )
             res.update(
                 {
                     "sale_order_id": sale_order_id,
@@ -50,16 +72,31 @@ class SaleKitWizard(models.TransientModel):
 
     def confirm_kit(self):
         order = self.sale_order_id
+        total_price = 0
         for line in self.kit_line_ids:
-            print(self.kit_parent_id)
-            order.order_line.create(
-                {
-                    "order_id": order.id,
-                    "product_id": line.product_id.id,
-                    "product_uom_qty": line.quantity,
-                    "price_unit": line.price,
-                    "kit_parent_id": self.kit_parent_id.id,
-                }
+            existing_order_line = order.order_line.filtered(
+                lambda l: l.product_id.id == line.product_id.id
+                and l.kit_parent_id.id == self.kit_parent_id.id
+            )
+
+            if existing_order_line:
+                existing_order_line.product_uom_qty = line.quantity
+                existing_order_line.price_unit = 0.0
+            else:
+                order.order_line.create(
+                    {
+                        "order_id": order.id,
+                        "product_id": line.product_id.id,
+                        "product_uom_qty": line.quantity,
+                        "price_unit": 0.0,
+                        "kit_parent_id": self.kit_parent_id.id,
+                    }
+                )
+            total_price += line.price * line.quantity
+
+        if self.kit_parent_id:
+            self.kit_parent_id.price_unit = (
+                self.kit_parent_id.product_id.list_price + total_price
             )
 
 

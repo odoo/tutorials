@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_saleorder_document_inherit_subproduct" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//table//tbody/t/tr" position="attributes">
+            <attribute name="t-if">doc.print_subproducts or not line.kit_parent_id</attribute>
+        </xpath>
+    </template>
+
+</odoo>
