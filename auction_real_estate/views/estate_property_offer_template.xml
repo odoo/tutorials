@@ -1,0 +1,42 @@
+<odoo>
+    <template id="estate_property_offer_template">
+        <t t-call="website.layout">
+            <div class="d-flex justify-content-center align-items-center  mt-5">
+                <div class="card text-center p-3 bg-white rounded shadow-lg w-50">
+                    <div class="card-body d-flex flex-column justify-content-center justify-content-center">
+                        <h5 class="card-title">Add offer for <span t-esc="property.name"/></h5>
+                        <br/>
+                        <form t-attf-action="/properties/#{property.id}/offer" method="POST">
+                            <p class="card-text d-flex justify-content-center align-items-center">
+                                <strong class="me-2">Name</strong> 
+                                <input type="text" name="user" t-att-value="user.name" class="form-control border-0 border-bottom text-center w-50 shadow-none" readonly="1"/>
+                            </p>
+                            <p class="card-text d-flex justify-content-center align-items-center">
+                                <strong class="me-2">Amount:</strong> 
+                                <input type="number" name="amount" class="form-control border-0 border-bottom text-center w-50 shadow-none"/>
+                            </p>
+                            <div class="d-flex justify-content-evenly mt-3">
+                            <button type="submit" class="btn btn-primary px-4">Confirm</button>
+                            <a t-attf-href="/properties/#{property.id}" class="btn btn-secondary px-4">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="estate_property_offer_status_template">
+        <t t-call="website.layout">
+            <t t-if="success==True">
+            <div>
+                Congratulations! Your offer has been succesfully placed. We will notify you of the result as soon as the auction concludes
+            </div>
+            </t>
+            <t t-else="">
+                <div>
+                    Sorry! Your offer price is less than Expected price
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

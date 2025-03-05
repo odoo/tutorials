@@ -63,9 +63,9 @@
                             icon="fa-print" />
                     </div>
                         <field name="image_1920" widget="image" class="oe_avatar"/>
-                    <h1>
-                        <field name="name"/>
-                    </h1>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
                     <group class="col-6">
                         <field name="tag_ids" widget="many2many_tags"
                             options="{'color_field':'color'}"/>
