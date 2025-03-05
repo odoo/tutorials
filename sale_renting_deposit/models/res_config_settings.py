@@ -10,5 +10,4 @@ class ResConfigSettings(models.TransientModel):
         comodel_name="product.product",
         related="company_id.deposit_product",
         readonly=False,
-        domain=[("rent_ok", "=", "True")],
     )

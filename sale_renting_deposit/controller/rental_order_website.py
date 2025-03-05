@@ -7,25 +7,24 @@ class RentalOrderWebsite(WebsiteSale):
     def cart(self, access_token=None, revive='', **post):
         order = request.website.sale_get_order()
         deposit_product = request.env.company.deposit_product
-        # print("this is deposit product", deposit_product)
 
-        if not deposit_product or not order:
-            return super().cart(access_token=access_token, revive=revive, **post)
+        if deposit_product and order:
+            order._add_deposit_product(order, deposit_product)
 
-        rental_products = order.order_line.filtered(lambda product: product.product_id.requires_deposit)
-        # print("this is rental products", rental_products.product_id)
-        if rental_products:
-            for rental_product in rental_products:
-                existing_deposit = order.order_line.filtered(
-                    lambda product: product.product_id == deposit_product and product.name == f"Deposit For {rental_product.product_id.name}"
-                )
-                if not existing_deposit:
-                    order.order_line += order.env['sale.order.line'].new({
-                        'product_id': deposit_product.id,
-                        'name': f"Deposit For {rental_product.product_id.name}",
-                        'product_uom_qty': rental_product.product_uom_qty,
-                        'price_unit': rental_product.product_id.deposit_amount,
-                        'order_id': order.id
-                    })
+        return super().cart(access_token, revive, **post)
+ 
+    @route(['/shop/cart/update_json'], type='json', auth="public", methods=['POST'], website=True)
+    def cart_update_json(
+        self, product_id, line_id=None, add_qty=None, set_qty=None, display=True,
+        product_custom_attribute_values=None, no_variant_attribute_value_ids=None, **kwargs
+    ):
+        order = request.website.sale_get_order()
+        deposit_product = request.env.company.deposit_product
 
-        return super().cart(access_token=access_token, revive=revive, **post)
+        if deposit_product and order:
+            order._add_deposit_product(order, deposit_product)
+
+        return super().cart_update_json(
+            product_id, line_id, add_qty, set_qty, display,
+            product_custom_attribute_values, no_variant_attribute_value_ids, **kwargs
+        )
