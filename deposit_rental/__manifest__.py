@@ -2,7 +2,7 @@
     "name": "Deposit Rental",
     "description": "Adds deposit functionality for rental products.",
     "category": "Rental/Deposit",
-    "depends": ["sale_renting","website_sale"],
+    "depends": ["website_sale_renting"],
     "data": [
         "views/website_sale_templates.xml",
         "views/product_template_views.xml",
