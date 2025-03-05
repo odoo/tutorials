@@ -8,11 +8,11 @@ import base64
 
 class SupplierPortal(http.Controller):
 
-    @route(['/supplier_portal'], type='http', auth="user", website=True)
+    @route(['/my/supplier_portal'], type='http', auth="user", website=True)
     def supplier_portal(self, **kw):
         return request.render("supplier_portal.supplier_portal_login_success", {})
 
-    @route(['/supplier_portal/upload_invoice'], type='http', auth="user", methods=['POST'], website=True)
+    @route(['/my/supplier_portal/upload_invoice'], type='http', auth="user", methods=['POST'], website=True)
     def upload_invoice(self, **post):
         supplier = request.env.user.partner_id
         organisation_id = int(post.get('organisation_id'))

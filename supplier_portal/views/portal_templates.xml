@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="supplier_portal_login" inherit_id="web.login">
-        <xpath expr="//div[hasclass('oe_login_buttons')]" position="inside">
-            <button type="submit" name="redirect" value="/supplier_portal" class="btn btn-link btn-sm">Log into Supplier Portal</button>
+    <template id="supplier_portal_login" name="Supplier Portal Login" inherit_id="portal.portal_my_home" customize_show="True">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_vendor_category_enable" t-value="True"/>   
         </xpath>
+        <div id="portal_vendor_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'supplier_portal/static/src/img/bag.svg'"/>
+                <t t-set="title">Supplier Portal</t>
+                <t t-set="url" t-value="'/my/supplier_portal'"/>
+                <t t-set="text">Create new vendor invoice</t>
+                <t t-set="placeholder_count" t-value="'invoice_count'"/>
+            </t>
+        </div>
     </template>
 
     <template id="supplier_portal_login_success">
@@ -11,7 +20,7 @@
             <div class="oe_login_form">
                 <p>Welcome, Supplier! Please upload your documents.</p>
 
-                <form action="/supplier_portal/upload_invoice" method="post" enctype="multipart/form-data">
+                <form action="/my/supplier_portal/upload_invoice" method="post" enctype="multipart/form-data">
                     <div class="form-group">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                         <label for="organisation">Select Organisation</label>
@@ -36,10 +45,6 @@
 
                     <button type="submit" class="btn btn-success mt-3">Submit</button>
                 </form>
-
-                <div class="clearfix oe_login_buttons text-center mt-3">
-                    <a class="btn btn-primary" href="/web/session/logout">Log out</a>
-                </div>
             </div>
         </t>
     </template>
@@ -48,7 +53,7 @@
         <t t-call="web.login_layout">
             <div class="oe_login_form">
                 <p>Invoice uploaded successfully!</p>
-                <a href="/supplier_portal">Go back to the portal</a>
+                <a href="/my">Go back to the portal</a>
             </div>
         </t>
     </template>
