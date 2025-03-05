@@ -1,7 +1,7 @@
 from odoo import api, fields, models
 
 
-class InheritOrderLine(models.Model):
+class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
     divide_cost = fields.Float("Devision")
@@ -21,7 +21,7 @@ class InheritOrderLine(models.Model):
         }
 
     @api.ondelete(at_uninstall=False)
-    def _divide_cost(self):
+    def _unlink_order_line(self):
         for record in self:
             for line in record.divide_to_order_lines:
                 line.divide_from_order_line.divide_cost += line.cost
@@ -32,10 +32,8 @@ class InheritOrderLine(models.Model):
 
     @api.depends('product_uom_qty', 'discount', 'price_unit', 'tax_id', 'divide_cost')
     def _compute_amount(self):
-        super(InheritOrderLine, self)._compute_amount() 
+        super(SaleOrderLine, self)._compute_amount() 
         for record in self:
             if record.divide_from_order_lines:
                 record.price_subtotal -= record.price_unit
-                record.price_subtotal += record.divide_cost
-            else:
-                record.price_subtotal += record.divide_cost
+            record.price_subtotal += record.divide_cost

@@ -1,8 +1,7 @@
 {
     'name': 'Distribute Cost Price',
     'depends': [
-        'sale_management',
-        'base',
+        'sale_management'
     ],
     'data': [
 
