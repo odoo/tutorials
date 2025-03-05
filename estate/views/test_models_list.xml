@@ -1,0 +1,118 @@
+
+<!-- <?xml version="1.0"?> -->
+<odoo>
+
+<record id="test_models_list" model="ir.ui.view">
+    <field name="name">test.models.list</field>
+    <field name="model">test.model</field>
+    <field name="arch" type="xml">
+        <list string="Estate Properties">
+            <field name="name"/>
+            <field name="postcode"/>
+            <field name="bedrooms"/>
+            <field name="living_area"/>
+            <!-- <field name="expected_price"/> -->
+            <field name="selling_price"/>
+            <field name="date_availability"/>
+        </list>
+    </field>
+</record>
+
+<!-- <form string="Test">
+    <sheet>
+        <group>
+            <group>
+                <field name="name"/>
+            </group>
+            <group>
+                <field name="last_seen"/>
+            </group>
+        </group>
+        <notebook>
+            <page string="Description">
+                <field name="description"/>
+            </page>
+        </notebook>
+    </sheet>
+</form> -->
+
+
+    <record id="test_model_form_view" model="ir.ui.view">
+        <field name="name">test.model.form</field>
+        <field name="model">test.model</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <sheet>
+                    <group>
+                        <group string="Basic Information">
+                            <field name="name" string="Property Name"/>
+                            <field name="postcode" string="Postcode"/>
+                            <field name="date_availability" string="Available From"/>
+                        </group>
+                        <group string="Pricing">
+                            <!-- <field name="expected_price" string="Expected Price"/> -->
+                            <field name="selling_price" string="Selling Price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <!-- <page string="Description">
+                            <field name="description" string="Property Description"/>
+                        </page> -->
+                        <page string="Description">
+                            <group string="House Features">
+                                <field name="description" string="Description"/>
+
+                                <field name="bedrooms" string="Bedrooms"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="facades" string="Facades"/>
+                            </group>
+                            <group string="Extra Features">
+                                <field name="garage" string="Garage"/>
+                                <field name="garden" string="Garden"/>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
+                                <!-- <field name="garden_orientation" string="Garden Orientation"/> -->
+                                <field name="state" string = "State">   </field> 
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+  
+    <record id="test_model_search_view" model="ir.ui.view">
+        <field name="name">test.model.search</field>
+        <field name="model">test.model</field>
+        <field name="arch" type="xml">
+           <search string="Search Properties">
+    <!-- Quick Search Fields -->
+    <field name="name" string="Title"/>
+    <field name="postcode" string="Postcode"/>
+    <field name="bedrooms" string="Bedrooms"/>
+    <field name="living_area" string="Living Area (sqm)"/>
+    <field name="facades" string="Facades"/>
+
+    <!-- Alternative Filters -->
+    <filter name="filter_by_bedrooms" string="3+ Bedrooms" domain="[('bedrooms', '>=', 3)]"/>
+    <filter name="filter_by_living_area" string="Large Living Area" domain="[('living_area', '>', 100)]"/>
+    <filter name="filter_by_postcode" string="Area 4000+" domain="[('postcode', '>=', '4000')]"/>
+    <filter name="filter_by_facades" string="More than 2 Facades" domain="[('facades', '>', 2)]"/>
+
+    <filter name="available proerty" string="Avaialbe Property" domain="[('state','in',['new','offer_received'])]" />
+
+    <!-- Group By Options -->
+    <!-- <group expand="0" string="Group By">
+        <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+    </group> -->
+</search>
+
+        </field>
+    </record>
+
+
+
+   
+
+</odoo>
