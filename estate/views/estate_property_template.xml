@@ -5,13 +5,13 @@
         <t t-call="website.layout">
             <div class="container my-5">
                 <h2 class="text-center mb-4">Available Properties</h2>
-                <form method="get" action="/properties" class="mb-4 border">
+                <form method="get" action="/properties" class="mb-4">
                     <div class="row justify-content-end">
                         <div class="col-md-4">
                             <label for="date_filter" class="form-label">Date</label>
                             <input type="date" id="date_filter" name="date_filter" class="form-control" t-att-value="date_filter or ''"/>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 d-flex align-items-end">
                             <button type="submit" class="btn btn-primary">List Properties</button>
                         </div>
                     </div>
@@ -21,12 +21,22 @@
                         <t t-foreach="properties" t-as="property">
                             <div class="col-md-4 mb-4">
                                 <div class="card shadow-lg">
-                                    <img t-if="property.property_image"
-                                        t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
-                                        class="card-img-top"
-                                        style="height: 200px; object-fit: cover;"
-                                        alt="Property Image"
-                                    />
+                                    <t t-if="property.property_image">
+                                        <img
+                                            t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
+                                            class="card-img-top"
+                                            style="height: 200px; object-fit: cover;"
+                                            alt="Property Image"
+                                        />
+                                    </t>
+                                    <t t-else="">
+                                        <img
+                                            t-att-src="'/estate/static/src/img/nf-home.png'"
+                                            class="card-img-top"
+                                            style="height: 200px; object-fit: cover;"
+                                            alt="Property Image"
+                                        />
+                                    </t>
                                     <div class="card-body">
                                         <h5 class="card-title" t-esc="property.name"/>
                                         <p class="card-text"> <t t-esc="property.description"/> </p>
@@ -57,11 +67,22 @@
                 <div class="container my-5">
                     <div class="row">
                         <div class="col-md-6">
-                            <img t-if="property.property_image"
-                                t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
-                                class="img-fluid rounded shadow-lg"
-                                style="object-fit: cover; height: 100%;"
-                                alt="Property Image"/>
+                            <t t-if="property.property_image">
+                                <img
+                                    t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
+                                    class="img-fluid rounded shadow-lg"
+                                    style="object-fit: cover; height: 100%;"
+                                    alt="Property Image"
+                                />
+                            </t>
+                            <t t-else="">
+                                <img
+                                    t-att-src="'/estate/static/src/img/nf-home.png'"
+                                    class="img-fluid rounded shadow-lg"
+                                    style="object-fit: cover; height: 100%;"
+                                    alt="Property Image"
+                                />
+                            </t>
                         </div>
                         <div class="col-md-6">
                             <h2 t-esc="property.name"/>
