@@ -1,0 +1,34 @@
+<odoo>
+    <template id="website_filter_buttons" name="Appointment Filter Buttons" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//t[@t-call='website.website_search_box_input']" position="before">
+            <div class="d-flex align-items-center">
+                <div class="dropdown d-none d-lg-block me-3">
+                    <a href="#" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">Type</a>
+                    <div class="dropdown-menu">
+                        <a t-att-href="'/appointment'" class="dropdown-item">All</a>
+                        <a t-att-href="'/appointment?type=online'" class="dropdown-item">Online</a>
+                        <a t-att-href="'/appointment?type=offline'" class="dropdown-item">Offline</a>
+                    </div>
+                </div>
+
+                <div class="dropdown d-none d-lg-block me-3">
+                    <a href="#" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">Payment Step</a>
+                    <div class="dropdown-menu">
+                        <a t-att-href="'/appointment'" class="dropdown-item">All</a>
+                        <a t-att-href="'/appointment?payment_step=paid'" class="dropdown-item">Paid</a>
+                        <a t-att-href="'/appointment?payment_step=free'" class="dropdown-item">Free</a>
+                    </div>
+                </div>
+
+                <div class="dropdown d-none d-lg-block me-3">
+                    <a href="#" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">Schedule</a>
+                    <div class="dropdown-menu">
+                        <a t-att-href="'/appointment'" class="dropdown-item">All</a>
+                        <a t-att-href="'/appointment?schedule=users'" class="dropdown-item">Users</a>
+                        <a t-att-href="'/appointment?schedule=resources'" class="dropdown-item">Resources</a>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
