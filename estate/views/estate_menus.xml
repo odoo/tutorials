@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+ 
+   <!-- Root main menu
+    <menuitem id="estate_root_menu" name="Estate" />
+
+     First level menu 
+    <menuitem id="estate_first_level_menu" name="Properties" parent="estate_root_menu" />
+
+    <menuitem id="estate_configuration_menu" name="Configuration" parent="estate_root_menu" />
+
+
+     Menu Actions
+     Action for Properties Menu
+    <menuitem id="estate_property_menu" action="estate_property_action"
+        parent="estate_first_level_menu" />
+
+    Actions For Configuration menu-
+    <menuitem id="estate_configuration_level_action" action="estate_property_action"
+        parent="estate_configuration_menu" /> -->
+
+
+    <menuitem id="estate_root_menu" name="Estate">
+        <menuitem id="estate_first_level_menu" name="Properties">
+            <menuitem id="estate_property_menu" action="estate_property_action">
+            </menuitem>
+        </menuitem>
+    </menuitem>
+</odoo>
+
+
+  
