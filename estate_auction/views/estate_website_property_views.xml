@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="template_property_detail_website_estate_auction" inherit_id="estate.template_property_detail_website_view">
-        <xpath expr="//h5[@class='card-title']" position="attributes">
+        <xpath expr="//h5[hasclass('card-title')]" position="attributes">
             <attribute name="style">display: flex; justify-content: space-between; align-items: center;</attribute>
         </xpath>
         <xpath expr="//span[@id='estate_property_name']" position="after">
@@ -12,7 +12,7 @@
         </xpath>
         <xpath expr="//div[@id='back_button']" position="before">
             <div>
-                <t t-if="property.auction_end_time">
+                <t t-if="property.auction_end_time and not is_auction_ended">
                     <button id="offer_modal_button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#offerModal">
                     Make an Offer
                     </button>
@@ -66,10 +66,10 @@
                         <a class="dropdown-item" href="/property">All</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="/property?sell_type=regular">Regular</a>
+                        <a class="dropdown-item" href="/property?sale_type=regular">Regular</a>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="/property?sell_type=auction">Auction</a>
+                        <a class="dropdown-item" href="/property?sale_type=auction">Auction</a>
                     </li>
                 </ul>
             </div>
