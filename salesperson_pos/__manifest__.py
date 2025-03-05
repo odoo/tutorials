@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 {
     'name': 'salesperson_pos',
     'summary': 'Adding salesperson in the POS Screen',
@@ -11,8 +13,11 @@
         'views/pos_view.xml',
     ],
     'assets': {
-        'point_of_sale._assets_pos': [
+        'point_of_sale._assets': [
             'salesperson_pos/static/src/**/*',
+            'salesperson_pos/static/src/control_button/control_button.js',
+            'salesperson_pos/static/src/salesperson/salesperson_button.js',
+            'salesperson_pos/static/src/models/pos_order.js',
         ],
     },
     'license': 'LGPL-3',

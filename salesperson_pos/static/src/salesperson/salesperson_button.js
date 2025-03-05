@@ -7,8 +7,8 @@ import { _t } from "@web/core/l10n/translation";
 import { makeAwaitable } from "@point_of_sale/app/store/make_awaitable_dialog";
 import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_popup";
 
-export class SelectSalespersonButton extends Component {
-    static template = "point_of_sale.SelectSalespersonButton";
+export class SalespersonButton extends Component {
+    static template = "point_of_sale.SalespersonButton";
     static props = ["salesperson?"];
 
     setup() {
