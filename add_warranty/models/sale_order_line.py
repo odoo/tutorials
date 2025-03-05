@@ -6,7 +6,6 @@ from odoo import api, fields, models
 
 class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
-    _description = "Sales Order Line"
 
     order_line_linked_to_warranty = fields.Many2one(comodel_name="sale.order.line", copy=False , string="Warranty Product", ondelete="cascade")
     has_warranty = fields.Boolean(string="Is Warranty Added", copy=False)

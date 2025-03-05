@@ -2,19 +2,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name':'',
+    'name':'Warranty',
     'version':'1.0',
     'author':'JODH',
     'description':"""
 This Module provides warranty feature for Product.
 """,
     'depends': ['sale_management'],
-'data':[
+    'data':[
         'security/ir.model.access.csv',
         'wizard/add_warranty_wizard_views.xml',
-        'views/warranty_config_views.xml',
         'views/product_template_views.xml',
         'views/sale_order_views.xml',
+        'views/warranty_config_views.xml',
         'views/warranty_config_menus.xml',
     ],
     'installable': True,

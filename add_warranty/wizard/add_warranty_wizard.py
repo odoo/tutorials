@@ -1,15 +1,16 @@
+# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models, _
-from odoo.exceptions import UserError, ValidationError
+from odoo import api, fields, models
+
 
 class AddWarrantyLinesWizard(models.TransientModel):
     _name = "add.warranty.lines.wizard"
     _description = "Add Warranty Lines Wizard"
 
-    wizard_id = fields.Many2one('add.warranty.wizard', string="Wizard Reference", ondelete="cascade", required=True)
+    wizard_id = fields.Many2one('add.warranty.wizard', string="Wizard Reference", ondelete="cascade")
     product_id = fields.Many2one(comodel_name="product.product", string="Product")
     sale_order_line_id = fields.Many2one(comodel_name="sale.order.line", string="Sale order lines")
     year_id = fields.Many2one(comodel_name="warranty.config", string="Year")
@@ -18,10 +19,7 @@ class AddWarrantyLinesWizard(models.TransientModel):
     @api.depends('year_id')
     def _compute_end_date(self):
         for record in self:
-            if record.year_id:
-                record.end_date = fields.Date.today() + relativedelta(days=365 * record.year_id.period)
-            else:
-                record.end_date = False 
+            record.end_date = record.year_id and fields.Date.today() + relativedelta(days=365 * record.year_id.period) or False
 
 class AddWarrantyWizard(models.TransientModel):
     _name = "add.warranty.wizard"
@@ -41,12 +39,10 @@ class AddWarrantyWizard(models.TransientModel):
         })
         return res
 
-
     def action_add(self):
         sale_order_line = self.env['sale.order.line']
-        warranty_lines=self.wizard_line_ids
+        warranty_lines = self.wizard_line_ids
         for line in warranty_lines:
-            print(line.product_id)
             if line.year_id:
                 sale_order_line.create({
                     'order_id': line.sale_order_line_id.order_id.id,
