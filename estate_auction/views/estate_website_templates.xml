@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Extend the properties list page to add selling mode filter -->
+    <template id="properties_list_page_inherit" inherit_id="estate.properties_list_page" name="Auction Properties List">
+        <!-- Add selling mode filter -->
+        <xpath expr="//div[@class='col-md-4']" position="after">
+            <div class="col-md-4">
+                <div class="form-floating">
+                    <select class="form-select" id="selling_mode" name="selling_mode">
+                        <option value="">All Properties</option>
+                        <option value="regular" t-att-selected="selling_mode == 'regular'">Regular Sale</option>
+                        <option value="auction" t-att-selected="selling_mode == 'auction'">Auction</option>
+                    </select>
+                    <label for="selling_mode">Property Type</label>
+                </div>
+            </div>
+        </xpath>
+        
+        <!-- Add selling mode badge to property cards -->
+        <xpath expr="//div[@class='card-body']" position="inside">
+            <div t-if="property.selling_mode == 'auction'" class="mt-2">
+                <span class="badge bg-warning text-dark">Auction</span>
+                <t t-if="property.auction_end_time">
+                    <small class="text-muted d-block">
+                        Ends: <t t-esc="property.auction_end_time" t-options="{'widget': 'datetime'}"/>
+                    </small>
+                </t>
+            </div>
+            <div t-if="property.selling_mode == 'regular'" class="mt-2">
+                <span class="badge bg-info text-dark">Regular Sale</span>
+            </div>
+        </xpath>
+    </template>
+</odoo>

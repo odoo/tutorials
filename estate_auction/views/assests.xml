@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="assets_frontend" inherit_id="web.assets_frontend">
+        <xpath expr="." position="inside">
+            <script type="text/javascript" src="/estate_auction/static/src/js/countdown.js"></script>
+        </xpath>
+    </template>
+</odoo>
