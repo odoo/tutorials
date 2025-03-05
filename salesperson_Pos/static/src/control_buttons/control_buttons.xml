@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates xml:space="preserve">
-    <t t-name="salesperson_pos.SelectSalespersonButton" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" >
-        <xpath expr="//SelectPartnerButton" position="after">
-            <t t-log="hello" />
-            <SelectSalespersonButton />
-        </xpath>
-    </t>
-</templates>

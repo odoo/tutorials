@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- add salesperson field in invoice form view  -->
+    <record id="view_mode_form_inherit_salesperson_pos" model="ir.ui.view">
+        <field name="name">account.move.view.form.inherit</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <field name="partner_shipping_id" position="after">
+                <field name="salesperson_id" widget="res_partner_many2one"
+                    invisible="move_type not in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt')"
+                    readonly="state != 'draft'" options="{'no_quick_create': True}"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- report template  -->
+    <template id="report_invoice_document_salesperson"
+        inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='informations']" position="after">
+            <div class="offset-col-6 col-6">
+                <strong>POS Salesperson:</strong>
+                <t t-esc="o.salesperson_id.name or 'No Salesperson Found'"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

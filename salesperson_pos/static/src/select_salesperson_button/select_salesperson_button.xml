@@ -4,7 +4,7 @@
         <button class="set-partner btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="() => this.selectSalesperson()">
             <t t-if="this.state.selectedSalesperson">
                 <div class="text-truncate text-action">
-                    <t t-esc="this.state.selectedSalesperson.name" /> 
+                    <t t-esc="this.state.selectedSalesperson.name"/> 
                 </div>
             </t>
             <t t-else="">Salesperson</t>
