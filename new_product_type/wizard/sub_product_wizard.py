@@ -4,8 +4,8 @@ class SubProductWizard(models.TransientModel):
     _name = "sub.product.wizard"
     _description = "Wizard to add sub-products"
    
-    product_id = fields.Many2one("product.product", string="Product", required=True)
-    existing_ids = fields.One2many("sub.product.line.wizard", "wizard_id", string="Sub Products")
+    product_id = fields.Many2one("product.product", required=True)
+    existing_ids = fields.One2many("sub.product.line.wizard", "wizard_id")
    
     @api.model
     def default_get(self, fields_list):
@@ -24,7 +24,7 @@ class SubProductWizard(models.TransientModel):
                     "quantity": record.product_uom_qty,
                     "price": record.price_unit,
                     "order_line_id": record.id,  
-                })) 
+                }))
         elif main_order_line.product_id.is_kit:
             for product in main_order_line.product_id.sub_products_ids:
                 existing_sub_products.append(Command.create({

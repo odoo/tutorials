@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//group[@name='group_general']">
                 <field name="is_kit"/>
-                <field name="sub_products_ids" widget="many2many_tags" type="action"/>
+                <field name="sub_products_ids" widget="many2many_tags"/>
             </xpath>
         </field>
     </record>
