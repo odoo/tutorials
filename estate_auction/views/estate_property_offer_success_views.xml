@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_property_offer_success" name="Property Offer Created">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+                    <h1 class="text-center">Offer created successfully for <t t-out="property"/> Property</h1>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

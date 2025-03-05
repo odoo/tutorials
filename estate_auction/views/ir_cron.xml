@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="cron_sell_auction_properties" model="ir.cron">
+            <field name="name">Sell Properties of autometed auction</field>
+            <field name="interval_type">minutes</field>
+            <field name="interval_number">1</field>
+            <field name="nextcall"
+                eval="(datetime.now() + timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M:%S')" />
+            <field name="model_id" ref="estate.model_estate_property" />
+            <field name="state">code</field>
+            <field name="code">model.sudo().automate_auction_property_selling()</field>
+        </record>
+    </data>
+</odoo>

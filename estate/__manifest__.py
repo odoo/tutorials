@@ -27,7 +27,8 @@
         "report/estate_property_offer_reports.xml",
         "report/estate_property_offer_res_user_template.xml",
         "views/estate_website_templates.xml",
-        "data/estate_property_website_menu.xml"
+        "data/estate_property_website_menu.xml",
+        "views/res_config_settings_views.xml"
     ],
     "demo" : [
         "demo/demo_estate_property_data.xml",

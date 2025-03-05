@@ -1,0 +1,40 @@
+<odoo>
+    <data>
+        <record id="email_template_offer_accepted" model="mail.template">
+            <field name="name">Offer Accepted Notification</field>
+            <field name="model_id" ref="estate.model_estate_property_offer" />
+            <field name="subject">Your Offer for ${object.property_id.name} Has Been Accepted</field>
+            <field name="email_from">${(object.company_id.email or 'no-reply@yourdomain.com') if
+                object.company_id else 'no-reply@yourdomain.com'}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.partner_id.name},</p>
+                    <p>Congratulations! Your offer of <strong>${object.price}</strong> for the property <strong>${object.property_id.name}</strong> has been accepted.</p>
+                    <p>Our team will reach out to you for the next steps.</p>
+                    <p>Best Regards,</p>
+                    <p>Your Real Estate Team</p>
+                ]]>
+            </field>
+        </record>
+
+        <!-- Offer Refused Email Template -->
+        <record id="email_template_offer_refused" model="mail.template">
+            <field name="name">Offer Refused Notification</field>
+            <field name="model_id" ref="estate.model_estate_property_offer" />
+            <field name="subject">Your Offer for ${object.property_id.name} Has Been Refused</field>
+            <field name="email_from">${(object.company_id.email or 'no-reply@yourdomain.com') if
+                object.company_id else 'no-reply@yourdomain.com'}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.partner_id.name},</p>
+                    <p>We regret to inform you that your offer of <strong>${object.price}</strong> for the property <strong>${object.property_id.name}</strong> has been refused.</p>
+                    <p>You can try making a new offer or explore other properties.</p>
+                    <p>Best Regards,</p>
+                    <p>Your Real Estate Team</p>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>
