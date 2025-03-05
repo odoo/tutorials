@@ -12,7 +12,7 @@
                 </header>
                 <h4>SUB PRODUCTS</h4>
                 <field name="sub_product_kit">
-                    <list create="false" edit="True">
+                    <list create="false" editable="bottom">
                         <field name="sub_product_name" readonly="1"/>
                         <field name="unit_price"/>
                         <field name="quantity"/>
