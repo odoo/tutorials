@@ -64,7 +64,7 @@ class EstatePropertyController(EstatePropertyController):
             offer_price = post.get('offer_price')
 
             if not property_id or not offer_price:
-                return request.redirect('/not-found')
+                return request.redirect('/message?type=error&message=Invalid property or offer price.')
 
             property_id = int(property_id)
             offer_price = float(offer_price)
@@ -72,27 +72,32 @@ class EstatePropertyController(EstatePropertyController):
             # Ensure the property exists
             property = request.env['estate.property'].sudo().browse(property_id)
             if not property.exists():
-                return request.redirect('/not-found')
+                return request.redirect('/message?type=error&message=Property not found.')
 
             if not property.auction_end_time or property.state != '02_auction' or property.property_sell_type != 'auction':
-                return request.redirect('/not-found')  # Redirect if conditions are not met
+                return request.redirect('/message?type=error&message=This property is not available for auction.')
 
             request.env['estate.property.offer'].sudo().create({
                 'property_id': property_id,
-                'partner_id': user.partner_id.id,  # Corrected: use `partner_id`
+                'partner_id': user.partner_id.id,
                 'price': offer_price,
             })
 
-            return request.redirect('/thank-you')
+            return request.redirect('''/message?
+                type=success&
+                message=Your offer has been successfully placed.
+                    We will notify you of the results as soon as the auction concludes.''')
 
         except Exception as e:
             request.env.cr.rollback()
-            return request.redirect('/error-page')
+            return request.redirect(f'/message?type=error&message={e}')
 
-    @http.route('/thank-you', type='http', auth="user", website=True)
-    def thank_you(self):
-        return request.render("estate_auction_automation.website_thank_you_template")
-    
-    @http.route('/not-found', type='http', auth="user", website=True)
-    def not_found(self):
-        return request.render("estate_auction_automation.website_not_found_template")
+    @http.route('/message', type='http', auth="user", website=True)
+    def message_page(self, **kwargs):
+        """ A generic message page for success and error messages """
+        message_type = kwargs.get('type', 'error')
+        message = kwargs.get('message', "Something went wrong. Please try again.")
+        return request.render('estate_auction_automation.website_generic_message_template', {
+            'message_type': message_type,
+            'message': message
+        })

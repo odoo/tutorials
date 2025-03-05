@@ -11,7 +11,9 @@
                     string="Start Auction"
                     class="oe_highlight"
                     type="object"
-                    invisible="property_sell_type != 'auction' or stage == 'sold'"/>
+                    invisible="state in ['02_auction', '03_offer_accepted'] or
+                        property_sell_type != 'auction' or
+                        stage in ['offer_accepted', 'sold', 'cancelled']"/>
             </xpath>
             <xpath expr="//sheet" position="inside">
                 <div class="oe_button_box" name="button_box">
@@ -50,7 +52,7 @@
                             widget="estate_property_state_selection"
                             class="o_task_state_widget"
                             invisible="property_sell_type != 'auction'"
-                            readonly="state == '03_sold' or stage == 'sold'"/>
+                            readonly="state == '03_offer_accepted' or stage == 'offer_accepted'"/>
                         <field
                             name="property_image"
                             widget="image"
@@ -83,7 +85,7 @@
                             <separator string="Auction Details"/>
                             <field name="auction_end_time"
                                 string="End Time"
-                                readonly="state in ['02_auction', '03_sold']"/>
+                                readonly="state in ['02_auction', '03_offer_accepted']"/>
                             <field name="best_price" string="Highest Offer"/>
                             <field name="highest_bidder" string="Highest Bidder"/>
                         </group>
@@ -106,7 +108,7 @@
                             class="ms-1"
                             widget="estate_property_state_selection"
                             invisible="property_sell_type != 'auction'"
-                            readonly="state == '03_sold' or stage == 'sold'"/>
+                            readonly="state == '03_offer_accepted' or stage in ['offer_accepted', 'sold']"/>
                     </div>
                 </span>
             </xpath>

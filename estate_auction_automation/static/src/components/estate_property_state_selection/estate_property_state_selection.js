@@ -27,17 +27,17 @@ export class EstatePropertyStateSelection extends StateSelectionField {
         this.icons = {
             "01_template": "o_status",
             "02_auction": "fa fa-lg fa-exclamation-circle",
-            "03_sold": "o_status o_status_green"
+            "03_offer_accepted": "o_status o_status_green"
         };
         this.colorIcons = {
             "01_template": "",
             "02_auction": "o_status_changes_requested",
-            "03_sold": "text-success"
+            "03_offer_accepted": "text-success"
         };
         this.colorButton = {
             "01_template": "btn-outline-secondary",
             "02_auction": "btn-outline-warning",
-            "03_sold": "btn-outline-success"
+            "03_offer_accepted": "btn-outline-success"
         };
         if (this.props.viewType !== 'form') {
             super.setup();

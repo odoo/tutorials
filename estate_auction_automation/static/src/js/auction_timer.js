@@ -12,6 +12,7 @@ publicWidget.registry.AuctionTimer = publicWidget.Widget.extend({
         }
 
         let endTimeUTC = new Date(endTimeUTCString.replace(" ", "T") + "Z").getTime();
+        let offerButton = document.getElementById("create_offer_button");
 
         function updateCountdown() {
             let nowUTC = new Date().getTime();
@@ -20,7 +21,10 @@ publicWidget.registry.AuctionTimer = publicWidget.Widget.extend({
             if (timeRemaining <= 0) {
                 auctionTimerElement.innerText = "Auction Ended";
                 clearInterval(countdownInterval);
-                
+
+                if (offerButton) {
+                    offerButton.style.display = "none";
+                }                
                 return;
             }
 

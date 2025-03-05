@@ -13,7 +13,7 @@ class Estateproperty(models.Model):
     state = fields.Selection([
         ('01_template', "Template"),
         ('02_auction', "Auction"),
-        ('03_sold', "Sold"),
+        ('03_offer_accepted', "Offer Accepted"),
     ], string="State", copy=False, default='01_template',
         required=True, readonly=False, store=True,
         index=True, tracking=True)
@@ -79,7 +79,7 @@ class Estateproperty(models.Model):
             ('state', '=', '02_auction'),
             ('property_sell_type', '=', 'auction'),
             ('auction_end_time', '<=', now),
-            ('stage', 'not in', ['sold', 'cancelled'])
+            ('stage', 'not in', ['offer_accepted', 'sold', 'cancelled'])
         ])
 
         for property in properties:
@@ -89,8 +89,7 @@ class Estateproperty(models.Model):
                 highest_offer = highest_offer[0]  # Get the highest bid
                 highest_offer.action_accept()
 
-                property.state = '03_sold'
-                property.action_set_property_sold()
+                property.state = '03_offer_accepted'
             else:
                 property.state = '01_template'
                 property.message_post(body="Auction ended, but no offers were placed.")

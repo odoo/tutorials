@@ -123,7 +123,7 @@
                     </ul>
                     <t t-if="property.auction_end_time and property.state == '02_auction'">
                         <div class="w-100 d-flex justify-content-center mt-2">
-                            <a t-att-href="'/make-offer/' + str(property.id)" class="text-light rounded btn bg-primary">
+                            <a id="create_offer_button" t-att-href="'/make-offer/' + str(property.id)" class="text-light rounded btn bg-primary">
                                 Create Offer
                             </a>
                         </div>
@@ -167,23 +167,26 @@
         </t>
     </template>
 
-    <template id="website_thank_you_template">
+    <template id="website_generic_message_template">
         <t t-call="website.layout">
             <div class="container mt-5 text-center">
-                <h2>Congratulations!</h2>
-                <p>Your offer has been successfully placed.</p>
-                <p> We will notify you of the results as soon as the auction concludes.</p>
-                <a href="/" class="btn btn-primary">Go Home</a>
-            </div>
-        </t>
-    </template>
-    
-    <template id="website_not_found_template">
-        <t t-call="website.layout">
-            <div class="container mt-5 text-center">
-                <h2>Opps!</h2>
-                <p>Something went wrong. Offer can't created. Please try again.</p>
-                <a href="/" class="btn btn-primary">Go Home</a>
+                <h2 t-if="message_type == 'success'">Congratulations!</h2>
+                <h2 t-elif="message_type == 'error'">Oops!</h2>
+
+                <div t-att-class="'w-auto alert text-center text-black ' + 
+                    ('alert-success'if message_type == 'success' else 'alert-danger')" role="alert">
+                        <p t-if="message" t-esc="message"/>
+                        <p t-else="">Something went wrong. Please try again.</p>
+                </div>
+
+                <div class="mt-3">
+                    <a href="/properties" class="btn btn-primary">
+                        <i class="fa fa-home"></i> Go Home
+                    </a>
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">
+                        <i class="fa fa-arrow-left"></i> Go Back
+                    </button>
+                </div>
             </div>
         </t>
     </template>

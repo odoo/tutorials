@@ -38,8 +38,8 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
         
         # Validate if the property can be sold
-        if self.property_sell_type == 'auction' and self.property_id.state in ['01_template', '03_sold']:
-            raise UserError("Property cannot be sold.")
+        if self.property_sell_type == 'auction' and self.property_id.state in ['01_template', '03_offer_accepted']:
+            raise UserError("Offer cannot be accepted.")
 
         if self.property_id.stage == 'sold':
             raise UserError("Property already sold.")

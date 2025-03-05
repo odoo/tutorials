@@ -21,30 +21,6 @@
         action="estate.estate_property_properties_action"
         sequence="1"/>
 
-    <!-- Settings (MAIN USER MENU) -->
-    <menuitem
-        id="estate_property_menu_settings"
-        name="Settings"
-        parent="estate_property_menu_root"
-        groups="estate_property_group_real_estate_manager"
-        sequence="2"/>
-
-    <!-- Property Types (Settings SUB MENU) -->
-    <menuitem
-        id="estate_property_type_menu_property_types"
-        name="Property Types"
-        parent="estate_property_menu_settings"
-        action="estate.estate_property_type_action"
-        sequence="1"/>
-
-    <!-- Property Tag (Settings SUB MENU) -->
-    <menuitem
-        id="estate_property_tag_menu_property_tags"
-        name="Property Tags"
-        parent="estate_property_menu_settings"
-        action="estate.estate_property_tag_action"
-        sequence="2"/>
-
     <!-- Configuration (MAIN USER MENU) -->
     <menuitem
         id="estate_property_menu_configuration"
@@ -59,4 +35,23 @@
         parent="estate_property_menu_configuration"
         action="estate.action_estate_config"
         sequence="1"/>
+
+    <!-- Property Types (Configuration SUB MENU) -->
+    <menuitem
+        id="estate_property_type_menu_property_types"
+        name="Property Types"
+        parent="estate_property_menu_configuration"
+        action="estate.estate_property_type_action"
+        sequence="2"/>
+
+    <!-- Property Tag (Configuration SUB MENU) -->
+    <menuitem
+        id="estate_property_tag_menu_property_tags"
+        name="Property Tags"
+        parent="estate_property_menu_configuration"
+        action="estate.estate_property_tag_action"
+        sequence="3"/>
+
+
+    
 </odoo>

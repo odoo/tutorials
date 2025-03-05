@@ -25,7 +25,8 @@
                 </button>
                 <button t-else=""
                         class="o_state_button btn rounded-pill"
-                        t-attf-class="{{ currentValue == '03_sold' ? 'btn-success' : 'btn-outline-secondary' }}"
+                        t-attf-class="{{ currentValue == '03_offer_accepted' ? 
+                            'btn-success' : 'btn-outline-secondary' }}"
                         t-att-class="{'bg-view border': state.isStateButtonHighlighted}"
                         t-on-click="toggleState"
                         t-on-mouseenter="onMouseEnterStateButton"
@@ -35,7 +36,7 @@
                             <t t-if="state.isStateButtonHighlighted">
                                 <span class="text-success">
                                     <i class="fa fa-fw fa-check"/>
-                                    Mark as Sold
+                                    Mark as Offer Accepted
                                 </span>
                             </t>
                             <t t-else="">
@@ -56,7 +57,7 @@
                 <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}"/>
             </div>
             <div t-else="" class="d-flex align-items-center">
-                <t t-if="currentValue != '03_sold'">
+                <t t-if="currentValue != '03_offer_accepted'">
                     <span t-attf-class="o_status_label" t-out="label"/>
                 </t>
                 <t t-else="">
@@ -78,7 +79,7 @@
 
         <!-- Dropdown divider -->
         <xpath expr="//DropdownItem" position="before">
-            <div t-if="option[0] == '03_sold'" role="separator" class="dropdown-divider"/>
+            <div t-if="option[0] == '03_offer_accepted'" role="separator" class="dropdown-divider"/>
         </xpath>
 
         <!-- Dropdown icons -->
