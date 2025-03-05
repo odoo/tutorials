@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="property_tag_1" model="estate.property.tag">
+            <field name="name">Rich</field>
+        </record>
+        <record id="property_tag_2" model="estate.property.tag">
+            <field name="name">Cozy</field>
+        </record>
+        <record id="property_tag_3" model="estate.property.tag">
+            <field name="name">Renovated</field>
+        </record>
+        <record id="property_tag_4" model="estate.property.tag">
+            <field name="name">Seaside</field>
+        </record>
+        <record id="property_tag_5" model="estate.property.tag">
+            <field name="name">Lifestyle</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Form View of Estate Property Wizard -->
+    <record id="account_automatic_entry_wizard_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.wizard.form</field>
+        <field name="model">estate.property.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="price"/>
+                    <field name="validity"/>
+                    <field name="buyer_id"/>
+                </group>
+                <footer>
+                    <button string="Create Property Offers" name="action_add_offer" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Estate Property Wizard -->
+    <record id="estate_property_offer_wizard_action" model="ir.actions.act_window">
+        <field name="name">Create Offer</field>
+        <field name="res_model">estate.property.offer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
