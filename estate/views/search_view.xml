@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<odoo>
+
+<record id ="estate_search_view" model="ir.ui.view">
+  
+  <field name="name">Estate properties search</field>
+  <field name="model">estate_model</field>
+  <field name="arch" type="xml">
+    
+    <search string="Estate Search">
+    <field name="name"/>
+
+    <separator/>
+      <filter string="Filter on state" name="state" domain="['|',('state','=','new'),('state','=','Offer Received')]"/>
+
+      <separator/>
+      
+        <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>
+        <separator/>
+
+    </search>
+  </field>
+   
+
+</record>
+    
+</odoo>
