@@ -8,8 +8,7 @@ publicWidget.registry.CountdownTimer = publicWidget.Widget.extend({
         let countdownDate;
 
         let auctionEndTime = document.getElementById("auction_end_time").innerText;
-console.log(auctionEndTime)
-        countdownDate = new Date(auctionEndTime).getTime();
+        countdownDate = new Date(new Date(auctionEndTime).getTime() - new Date(auctionEndTime).getTimezoneOffset() * 60000).getTime();
 
         let x = setInterval(function () {
             let now = new Date().getTime();
@@ -22,7 +21,7 @@ console.log(auctionEndTime)
 
             if (distance) document.getElementById("countdown").innerHTML =
                 days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
-            console.log(distance,countdownDate,now)
+
             if (distance < 0) {
                 clearInterval(x);
                 document.getElementById("countdown").innerHTML = "Auction Time Ended";

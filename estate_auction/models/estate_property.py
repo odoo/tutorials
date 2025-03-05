@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
         [("draft", "Draft"), ("active", "Active"), ("sold", "Sold")], default="draft")
     is_auction_started = fields.Boolean(
         string="Is Auction Started", default=False)
-    auction_end_time = fields.Datetime(string="End Time")
+    auction_end_time = fields.Datetime(string="End Time",default=datetime.now())
     invoice_id = fields.Many2one(
         "account.move", string="Invoice", readonly=True)
     highest_bidder = fields.Char(
@@ -23,21 +23,13 @@ class EstateProperty(models.Model):
     highest_bid_price = fields.Float(
         string="Highest Bid Price", readonly=True, store=True, compute="_calculate_bidder_and_price")
 
-    @api.model_create_multi
-    def create(self,values):
-        print("time update",self.auction_end_time)
-
-    @api.model_create_multi
-    def write(self,values):
-        print("write time update", self.auction_end_time,values)
-
     @api.constrains('auction_end_time')
     def _check_auction_end_time(self):
         for record in self:
-            if record.auction_end_time and record.auction_end_time < datetime.now():
+            if not record.auction_end_time or record.auction_end_time < datetime.now():
                 raise ValidationError(
-                    "Auction end time cannot be in the past!")
-            
+                    "Auction end time cannot be in the past or empty!")
+
     @api.onchange("sale_type")
     def _onchange_sale_type(self):
         if self.is_auction_started:
@@ -58,9 +50,7 @@ class EstateProperty(models.Model):
                 record.highest_bid_price = 0.0
                 record.highest_bidder = False
 
-
     def action_sold_property(self):
-        print("override")
         super().action_sold_property()
         for estate_property in self:
             if estate_property.invoice_id:
@@ -73,13 +63,12 @@ class EstateProperty(models.Model):
                 "line_ids": [
                     Command.create({
                         "name": estate_property.name,
-                        "quantity":1,
+                        "quantity": 1,
                         "price_unit": estate_property.selling_price
                     })
                 ]
             })
             self.invoice_id = new_invoice.id
-
 
     def action_open_modualr_type_wizard(self):
         return {
@@ -89,29 +78,13 @@ class EstateProperty(models.Model):
             'views': [[False, 'form']],
             'target': 'new',
         }
-    
+
     def action_start_auction(self):
         if self.auction_end_time == False:
             raise UserError("Please Select Appropriate End Time For Auction")
 
         self.is_auction_started = True
         self.auction_stages = "active"
-
-
-    def automate_auction(self):
-        properties = self.search(
-            [('state', 'in', ('new','offer_received')),("sale_type", "=", "auction"), ("is_auction_started", "=", True)])
-        for record in properties:
-            if record.auction_end_time and datetime.now() > record.auction_end_time:
-                best_offer = self.env['estate.property.offer'].search([
-                    ('property_id', '=', record.id)
-                ], order='price desc', limit=1)
-
-                if best_offer:
-                    best_offer.action_accept_offer()
-                    record.auction_stages = 'sold'
-                    record.is_auction_started = False
-                    record.state = "sold"
 
     def action_view_invoice(self):
         self.ensure_one()
@@ -126,3 +99,18 @@ class EstateProperty(models.Model):
             "res_id": self.invoice_id.id,
             "target": "current",
         }
+
+    def automate_auction(self):
+        properties = self.search(
+            [('state', 'in', ('new', 'offer_received')), ("sale_type", "=", "auction"), ("is_auction_started", "=", True)])
+        for record in properties:
+            if record.auction_end_time and datetime.now() > record.auction_end_time:
+                best_offer = self.env['estate.property.offer'].search([
+                    ('property_id', '=', record.id)
+                ], order='price desc', limit=1)
+
+                if best_offer:
+                    best_offer.action_accept_offer()
+                    record.auction_stages = 'sold'
+                    record.is_auction_started = False
+                    record.state = "sold"

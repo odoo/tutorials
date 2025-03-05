@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
         <record id="auction_automate_action" model="ir.cron">
@@ -7,7 +7,7 @@
             <field name="state">code</field>
             <field name="code">model.sudo().automate_auction()</field>
             <field name="user_id" ref="base.user_root"/>
-            <field name="interval_number">1</field>          
+            <field name="interval_number">1</field>
             <field name="interval_type">minutes</field>
             <field name="nextcall" eval="(datetime.now() + timedelta(minutes=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
         </record>

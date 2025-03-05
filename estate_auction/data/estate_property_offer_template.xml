@@ -11,8 +11,7 @@
                 <p>Dear
                     <strong>
                         <t t-out="object.partner_id.name"/>
-                    </strong>
-                    ,
+                    </strong>,
                 </p>
                 <p>
                     Thank you for your interest in our property. Here are the details of your offer:
