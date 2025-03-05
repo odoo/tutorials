@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="sale_mrp_modular_wizard_view_form" model="ir.ui.view">
+        <field name="name">sale.mrp.modular.wizard.view.form</field>
+        <field name="model">sale.mrp.modular.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Modular Type Values">
+                <sheet>
+                    <group>
+                        <field name="source_sale_order_line_id" readonly="1" force_save="True" />
+                    </group>
+
+                    <group>
+                        <field name="modular_wizard_line_ids">
+                            <list editable="bottom" create="0">
+                                <field name="modular_type_id" readonly="1" force_save="True" />
+                                <field name="value"/>
+                            </list>
+                        </field>
+                    </group>
+
+                    <footer>
+                        <button name="action_add_modular_values" type="object" string="Add" class="btn btn-primary"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="sale_mrp_modular_wizard_action" model="ir.actions.act_window">
+        <field name="name">Set Modular Type Values</field>
+        <field name="res_model">sale.mrp.modular.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="sale_mrp_modular_wizard_view_form" />
+    </record>
+
+</odoo>
