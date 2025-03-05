@@ -36,9 +36,9 @@ class EstateWebsiteInherit(EstateWebsite):
 
 
 
-    @route("/property/<model('estate.property'):property>", type='http', auth='public', website=True)
-    def property_details(self, property, **kwargs):
-        return {'property': property}
+    # @route("/property/<model('estate.property'):property>", type='http', auth='public', website=True)
+    # def property_details(self, property, **kwargs):
+    #     return {'property': property}
 
 
 # class EndDate(Controller):

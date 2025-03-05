@@ -5,7 +5,19 @@
     <template id="property_detailspage_website_inherit" inherit_id="estate.property_detail_page">
         <xpath expr="//div[hasclass('container')]" position="inside">
             <t t-if="property.selling_type == 'auction'">
-                <a t-att-href="'/createoffer/%d' % property.id" class="btn btn-primary btn-lg text-center" >Create Offer</a>
+                <div class="d-flex align-items-center justify-content-between gap-3 p-3 rounded shadow-sm auction-container">
+                    <t t-if="property.auction_state == 'template'">
+                        <p class="fs-3">Auction is not start yet</p>
+                    </t>
+                    <t t-else="">
+                        <div class="auction_countdown d-flex align-items-center justify-content-center p-3  fs-3" 
+                            t-att-data-auction-end="property.auction_end_date">
+                        </div>
+                        <t t-if="property.auction_state == 'auction'">
+                            <a t-att-href="'/createoffer/%d' % property.id" class="btn btn-primary btn-lg text-nowrap">Create Offer</a>
+                        </t>
+                    </t>
+                </div>
             </t>
         </xpath>
     </template>

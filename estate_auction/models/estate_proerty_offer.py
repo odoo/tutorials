@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatepropertyOffer(models.Model):
@@ -21,4 +22,7 @@ class EstatepropertyOffer(models.Model):
                 property.state = 'offer_received'
                 if property.selling_type == 'regular':
                     return super().create(vals_list)
+                else:
+                    if property.expected_price > float(new_offer_price):
+                        raise UserError(f"Offre must be higher then expected price {property.expected_price}")
         return models.Model.create(self,vals_list)

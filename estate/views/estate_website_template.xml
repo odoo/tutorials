@@ -73,12 +73,12 @@
                 <div class="mb-5 text-center">
                     <t t-if="property.image">
                         <img t-att-src="image_data_uri(property.image)"
-                            class="img-fluid rounded-3 shadow-lg w-100" style="object-fit: cover;"
+                            class="img-fluid rounded-3 shadow-lg w-50" style="object-fit: cover;"
                             alt="Property Image" />
                     </t>
                     <t t-else="">
                         <img src="/estate/static/src/img/default.jpeg"
-                            class="img-fluid rounded-3 shadow-lg w-100" style="object-fit: cover;"
+                            class="img-fluid rounded-3 shadow-lg w-50" style="object-fit: cover;"
                             alt="Property Image" />
                     </t>
                 </div>
