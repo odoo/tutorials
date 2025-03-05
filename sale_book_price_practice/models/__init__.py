@@ -1,2 +1,2 @@
-from . import account_invoice_line_inherit
-from . import sale_oders_line_Inherit
+from . import account_move_line
+from . import sale_oders_line
