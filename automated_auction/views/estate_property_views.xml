@@ -28,7 +28,25 @@
                 </group>
             </xpath>
             <xpath expr="//button[@name='action_sold']" position="before">
-                <button name="action_start_auction" string="Start Auction" type="object" invisible="property_auction_type == 'regular'"/>
+                <button name="action_start_auction" string="Start Auction" type="object" invisible="property_auction_type == 'regular'  or auction_state != 'in_template'"/>
+            </xpath>
+            <xpath expr="//field[@name='image_1920']" position="before">
+                <field name="auction_state" widget="property_auction_state_selection" options="{'fold_field': 'fold'}" nolabel="1" invisible="property_auction_type == 'regular'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_views_auction_inherit_kanban" model="ir.ui.view">
+        <field name="name">estate.property.views.auction.inherit.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@class='o_kanban_card']" position="after">
+                <footer class="pt-1">
+                    <div class="d-flex ms-auto">
+                        <field name="auction_state" class="ms-1" widget="property_auction_state_selection" options="{'is_toggle_mode': true}"/>
+                    </div>
+                </footer>
             </xpath>
         </field>
     </record>

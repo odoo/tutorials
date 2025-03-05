@@ -10,10 +10,12 @@ class PropertyOffer(models.Model):
     # CRUD
     @api.model_create_multi
     def create(self, vals_list):
+        '''overriding create method to create offer which is less than best price
+        which will only work if property_auction_type is auction'''
         property_price_list = [] 
         for vals in vals_list:
             property = self.env['estate.property'].browse(vals.get('property_id'))
-            actual_price = vals.get('price', 0)  # Store actual offer price
+            actual_price = vals.get('price', 0)
             property_price_list.append(actual_price)
             vals['price'] = actual_price if actual_price > property.best_price else property.best_price + 1
 
@@ -26,10 +28,10 @@ class PropertyOffer(models.Model):
             property = offer.property_id
 
             if property.property_auction_type == 'regular' and property.best_price > actual_price:
-                raise UserError(_(f"A higher or equal offer already exists, increase your offer price.\n(It should be more than {property.best_price})"))
+                raise UserError(_(f"A higher offer already exists, increase your offer price.\n(It should be more than {property.best_price})"))
             elif property.property_auction_type == 'auction' and not property.start_time:
                 raise UserError(_("Auction isn't started yet."))
-            elif property.property_auction_type == 'auction' and property.end_time and property.end_time < fields.Datetime.now():
+            elif property.property_auction_type == 'auction' and property.end_time < fields.Datetime.now():
                 raise UserError(_("Auction time Ended."))
             elif property.expected_price > actual_price:
                 raise UserError(_("You can not add offer less than Expected price"))
@@ -40,5 +42,6 @@ class PropertyOffer(models.Model):
         return offers
 
     def _generate_price(self, property_price_vals=None):
+        '''helper method to reset price'''
         if property_price_vals:
             self.write({'price': property_price_vals})

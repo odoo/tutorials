@@ -12,8 +12,13 @@
     <template id="property_details_auction_template" inherit_id="estate.property_detail_template">
         <xpath expr="//h2[@name='property_name']" position="before">
             <t t-if="property_details.property_auction_type == 'auction'">
-                <div class="bg-primary text-center">
-                    Remaining time will be showed here
+                <div class="text-center bg-primary text-white p-3 rounded" id="auction_timer" t-att-data-end-time="property_details.end_time">
+                    <t t-if="property_details.start_time">
+                        <span class="fw-bold">Auction Ended</span>
+                    </t>
+                    <t t-else="">
+                        <span class="fw-bold">Auction is not started yet</span>
+                    </t>
                 </div>
             </t>
         </xpath>
