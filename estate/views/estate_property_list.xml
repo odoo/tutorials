@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_list_search" model="ir.ui.view">
+        <field name="name">estate.property.list.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Active Properties">
+                <field name="name" string="Name"/>
+                <field name="description" string="Description"/>
+                <field name="postcode" string="Postal Code"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area (sqft)"/>
+                <separator/>
+                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <filter name="bedrooms" string="Bedrooms 3+" domain="[('bedrooms', '>', 2)]"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter name="postcode" string="Postal Code" context="{'group_by': 'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <tree string="Properties List">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_available"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
