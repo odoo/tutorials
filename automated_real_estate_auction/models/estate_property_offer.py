@@ -13,12 +13,47 @@ class EstatePropertyOffer(models.Model):
         property_id = vals.get('property_id')
         if not property_id:
             raise ValueError("Missing 'property_id' in values")
-
         property = self.env['estate.property'].browse(property_id)
         if vals['price'] < property.expected_price:
             raise exceptions.UserError(f"offer price must not be lower than expected price :  {property.expected_price}")
         return super(EstatePropertyOffer, self).create(vals)
 
     def action_accept(self):
-        if self.sell_type == 'auction' and self.property_id.stage in ['template', 'sold']:
-          raise exceptions.UserError("Property can not be sold during auction process")
+        for offer in self:
+            if offer.property_id.sell_type == 'auction' and offer.property_id.stage in ['template', 'sold']:
+                raise exceptions.UserError("Property cannot be sold or accepted during the auction process.")
+
+            if offer.property_id.state == 'sold':
+                raise exceptions.UserError("The property has already been sold, you cannot accept an offer.")
+            elif offer.property_id.state == 'cancelled':
+                raise exceptions.UserError("The property has been cancelled, you cannot accept an offer.")
+            # Accept the offer
+            offer.status = 'accepted'
+            offer.property_id.write({
+                'state': 'offer_accepted',
+                'selling_price': offer.price,
+                'buyer_id': offer.partner_id.id,
+            })
+            offer.property_id.update({
+                'stage': 'template'
+            })
+            # Notify the accepted bidder
+            offer.partner_id.message_post(
+                body=f"Congratulations! Your offer of {offer.price} has been accepted for {offer.property_id.name}.",
+                subject="Your Offer Has Been Accepted!",
+                message_type="comment",
+                subtype_xmlid="mail.mt_comment"
+            )
+            # Reject other offers and notify bidders
+            other_offers = self.search([
+                ('property_id', '=', offer.property_id.id),
+                ('id', '!=', offer.id)
+            ])
+            other_offers.write({'status': 'refused'})
+            for rejected_offer in other_offers:
+                rejected_offer.partner_id.message_post(
+                    body=f"Unfortunately, your offer of {rejected_offer.price} for {rejected_offer.property_id.name} was not accepted.",
+                    subject="Your Offer Was Not Accepted",
+                    message_type="comment",
+                    subtype_xmlid="mail.mt_comment"
+                )

@@ -52,13 +52,12 @@
         <field name="model">estate.property</field>
         <field name="inherit_id" ref="estate.estate_property_kanban"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@class='oe_kanban_card']" position="inside">
-                <div t-if="record.stage.value">
-                    <field t-if="widget.editable" name="stage" widget="property_stage_selection" class="o_task_state_widget"/>
-                    <span t-if="!widget.editable" t-att-class="'o_status_bubble mx-0 o_color_bubble_' + record.stage_color.value" t-att-title="record.stage.value">
-                        <t t-esc="record.stage.value"/>
-                    </span>
-                </div>
+            <xpath expr="//div[@class='mt-auto pt-0 ms-1']" position="after">
+                <footer class="mt-auto pt-0 ms-1">
+                    <div class="d-flex ms-auto align-items-center">
+                        <field name="stage" widget="property_stage_selection"/>
+                    </div>
+                </footer>
             </xpath>
         </field>
     </record>

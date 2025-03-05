@@ -1,0 +1,32 @@
+.o_status_bubble {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.o_color_bubble_template {
+    background-color: #ccc;
+    color: #333;
+}
+
+.o_color_bubble_auction {
+    background-color: #ff9800;  /* Orange */
+    color: white;
+}
+
+.o_color_bubble_sold {
+    background-color: #4caf50;  /* Green */
+    color: white;
+}
+
+.o_state_button {
+    transition: all 0.3s ease-in-out;
+}
+
+.o_state_button:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}

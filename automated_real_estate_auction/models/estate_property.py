@@ -30,7 +30,6 @@ class EstateProperty(models.Model):
         string="Invoices"
     )
     invoice_count = fields.Integer(string="Invoices", compute='_compute_invoice_count')
-    stage_color = fields.Integer(string="Stage Color", compute="_get_stage_color", store=True)
 
     @api.depends('invoice_ids')
     def _compute_invoice_count(self):
@@ -49,6 +48,8 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Only auction properties can be started.")
             if not property.auction_end_time:
                 raise exceptions.UserError("Please set an auction end time before starting the auction.")
+            if property.state == 'offer_accepted':
+                raise exceptions.UserError("this property has already accepted offer.")
             property.stage = 'auction'
 
     @api.model
@@ -62,26 +63,12 @@ class EstateProperty(models.Model):
         ])
         for property in properties:
             highest_offer = sorted(property.offer_ids, key=lambda offer: offer.price, reverse=True)
-            
             if highest_offer:
                 highest_offer = highest_offer[0]
-                property.write({
-                    'buyer_id': highest_offer.partner_id.id,
-                    'selling_price': highest_offer.price,
-                    'state': 'sold',
-                    'stage': 'sold'
-                })
-                # Notify the winning bidder
-                property.send_auction_result_email(highest_offer.partner_id, "accepted")
-                # Notify rejected bidders
-                rejected_offers = highest_offer[1:]
-                for offer in rejected_offers:
-                    property.send_auction_result_email(offer.partner_id, "rejected")
-
-    def send_auction_result_email(self, partner, status):
-        """Send email to bidders about auction results."""
-        template = self.env.ref('estate.email_template_auction_' + status)
-        template.send_mail(self.id, force_send=True)
+                highest_offer.action_accept()
+                property.stage = 'sold'
+            else:
+                property.stage = 'template'
 
     def action_open_invoices(self):
       """Open related invoices."""
@@ -93,13 +80,3 @@ class EstateProperty(models.Model):
         'res_model': 'account.move',
         'domain': [('property_id', '=', self.id)],
      }
-
-    def _get_stage_color(self):
-        """ Assign colors to different stages """
-        color_map = {
-          'template': 0,  # Grey
-          'auction': 2,    # Blue
-          'sold': 10       # Green
-        }
-        for property in self:
-           property.stage_color = color_map.get(property.stage, 0)

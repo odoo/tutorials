@@ -169,7 +169,7 @@
                                     <span>Selling Price:<field name="selling_price"/>
                                     </span>
                                 </div>
-                                <div>
+                                <div class="mt-auto pt-0 ms-1">
                                     <span>
                                         <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                     </span>

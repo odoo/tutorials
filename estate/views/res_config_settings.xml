@@ -12,7 +12,7 @@
                         <setting string="Invoicing" help="Activate to create sale invoice for the property">
                             <field name="estate_account_invoicing"/>
                         </setting>
-                        <setting string="Auction" help="Activate to use the auction system for property sell.">
+                        <setting string="Automated Auction" help="Activate to use automatically the auction system for property sell.">
                             <field name="estate_enable_auction_auto"/>
                         </setting>
                     </block>
