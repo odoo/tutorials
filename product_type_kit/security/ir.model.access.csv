@@ -1,0 +1,3 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"product_type_kit.access_product_type_kit_wizard","access_product_type_kit_wizard","product_type_kit.model_product_type_kit_wizard","base.group_user",1,0,0,0
+"product_type_kit.access_product_type_kit_wizard_line","access_product_type_kit_wizard_line","product_type_kit.model_product_type_kit_wizard_line","base.group_user",1,0,0,0
