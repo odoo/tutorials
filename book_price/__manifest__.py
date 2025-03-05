@@ -9,6 +9,7 @@
     "depends": ["sale_management"],
     "data": [
         "views/sale_order_line_views.xml",
+        "views/account_move_line_views.xml",
     ],
     "application": True,
     "installable": True,
