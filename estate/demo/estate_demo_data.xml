@@ -36,7 +36,7 @@
         <field name="garage">False</field>
     </record>
 
-    <record id="property_id_3" model="estate.property">
+    <!-- <record id="property_id_3" model="estate.property">
         <field name="name">New Willa Apartment</field>
         <field name="state">new</field>
         <field name="description">New modern appartment</field>
@@ -55,7 +55,7 @@
                 'partner_id': ref('property_partner_2')
             })
         ]"/>
-    </record>
+    </record> -->
 
    <record id="property_partner_1" model="res.partner">
         <field name="name">Azure Interior</field>
