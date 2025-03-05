@@ -4,7 +4,9 @@ from odoo import api, fields, models
 class CoatationPriceWizard(models.TransientModel):
     _name = "coatation.price.wizard"
     _description = "Select negotiated price on the sales order form"
-    coation_ids = fields.Many2one("coatations.claims", string="Coatations Claims",required=True)
+    coation_ids = fields.Many2one(
+        "coatations.claims", string="Coatations Claims", required=True
+    )
     coation_lines_ids = fields.One2many(
         "coatations.lines",
         related="coation_ids.coation_lines_ids",
@@ -36,7 +38,9 @@ class CoatationPriceWizard(models.TransientModel):
             ("regular", "Regular price"),
             ("coatation", "Coatation price"),
             ("last", "Last selling price"),
-        ],default="regular",required=True
+        ],
+        default="regular",
+        required=True,
     )
 
     @api.model_create_multi
@@ -47,30 +51,73 @@ class CoatationPriceWizard(models.TransientModel):
             res.update({"order_line_id": active_id})
         return res
 
+    def _fetch_coatation_records(self):
+        active_id = self.env.context.get("active_id")
+        product_id = self.env["sale.order.line"].browse(active_id).product_id.id
+        sale_order_id = self.env["sale.order.line"].browse(active_id).order_id
+        client_id = sale_order_id.partner_id.id
+        product = self.env["product.product"].browse(product_id)
+        coatation_lines = self.env["coatations.lines"].search(
+            [
+                ("product_id", "=", product.id),
+                ("coation_id.client_id", "=", client_id),
+                ("status", "=", "active"),
+            ]
+        )
+        coatation_ids = coatation_lines.mapped("coation_id.id")
+        return coatation_lines, coatation_ids
+
     @api.depends("coation_ids", "coation_lines_ids")
     def _compute_coation_ids_domain(self):
         for coationID in self:
-            active_id = self.env.context.get("active_id")
-            product_id = self.env["sale.order.line"].browse(active_id).product_id.id
-            sale_order_id = self.env["sale.order.line"].browse(active_id).order_id
-            client_id = sale_order_id.partner_id.id
-            product = self.env["product.product"].browse(product_id)
-            coatation_lines = self.env["coatations.lines"].search(
-                [
-                    ("product_id", "=", product.id),
-                    ("coation_id.client_id", "=", client_id),
-                    ("status", "=", "active"),
-                ]
-            )
-            coatation_ids = coatation_lines.mapped("coation_id.id")
+            # active_id = self.env.context.get("active_id")
+            # product_id = self.env["sale.order.line"].browse(active_id).product_id.id
+            # sale_order_id = self.env["sale.order.line"].browse(active_id).order_id
+            # client_id = sale_order_id.partner_id.id
+            # product = self.env["product.product"].browse(product_id)
+            # coatation_lines = self.env["coatations.lines"].search(
+            #     [
+            #         ("product_id", "=", product.id),
+            #         ("coation_id.client_id", "=", client_id),
+            #         ("status", "=", "active"),
+            #     ]
+            # )
+            coatation_lines, coatation_ids = self._fetch_coatation_records()
+            print(coatation_lines)
+            # coatation_ids = coatation_lines.mapped("coation_id.id")
             coationID.domain_ids = [("id", "in", coatation_ids)]
 
     @api.depends("coation_ids")
     def _compute_recommended_selling_price(self):
         for wizard in self:
-            # the recommended_sp values from the related `coatations.lines`
-            wizard.recommended_selling_price = wizard.coation_lines_ids.recommended_sp
-            print(wizard.recommended_selling_price)
+            # Fetch coation lines and coation ids that match the product and client
+            coatation_lines, coatation_ids = self._fetch_coatation_records()
+            print("Coatation Lines:", coatation_lines)
+            print("Coatation IDs:", coatation_ids)
+
+            # Initialize recommended_selling_price
+            wizard.recommended_selling_price = 0.0
+
+            # Check if the wizard's coation_id matches the coation_id list
+            if wizard.coation_ids.id in coatation_ids:
+                # Filter the coatation lines that correspond to the wizard's selected coation_id
+                matching_lines = [
+                    line
+                    for line in coatation_lines
+                    if line.coation_id.id == wizard.coation_ids.id
+                ]
+
+                # Now, if matching lines exist, get the recommended selling price for the product
+                if matching_lines:
+                    for line in matching_lines:
+                        # Match the product in the coatation line and get its recommended price
+                        if line.product_id == wizard.order_line_id.product_id:
+                            wizard.recommended_selling_price = line.recommended_sp
+                            break  # Exit the loop once a match is found
+
+                print("Recommended Selling Price:", wizard.recommended_selling_price)
+            else:
+                print("No matching coatation_id found.")
 
     @api.depends("order_line_id.price_unit")
     def _compute_last_sales_order_unit_price(self):
@@ -111,29 +158,50 @@ class CoatationPriceWizard(models.TransientModel):
         for wizard in self:
             wizard.last_sales_order_unit_price = last_unit_price
 
-
     def action_select_price(self):
         """
         Method to process the selected price and update the sales order line or take further actions.
         This method will apply either the coation price (recommended selling price),
         the last sales order price (if it exists), or the regular price of the product.
         """
+        selected_price = None
+        # Start by checking if the price type is 'regular'
         if self.type_of_price == "regular":
             # When the user selects 'regular' price, fetch the price from the product.
-            product = self.order_line_id.product_id  # Get the product from the sales order line
-            selected_price = product.list_price  # This is the regular price from the product
+            product = (
+                self.order_line_id.product_id
+            )  # Get the product from the sales order line
+            selected_price = (
+                product.list_price
+            )  # This is the regular price from the product
 
         elif self.type_of_price == "last":
             # If 'last' price is selected, use the last sales order price
             last_sales_order_price = self.last_sales_order_unit_price
+            print("printing last order price!!!")
+            print(last_sales_order_price)
             if last_sales_order_price:
                 # If a last sale order line exists, use its price unit
                 selected_price = last_sales_order_price
 
         elif self.type_of_price == "coatation":
             # If 'coatation' price is selected, use the recommended selling price
-            selected_line = self.coation_lines_ids[0]
-            selected_price = selected_line.recommended_sp
+            # Match the product in the sales order line with the correct coatation line
+            selected_price = None
+            selected_coation_id = None  # Initialize the selected coation ID to None
+
+            for line in self.coation_lines_ids:
+                if line.product_id == self.order_line_id.product_id:
+                    # If the product in the coatation line matches the order line's product
+                    selected_price = line.recommended_sp
+                    selected_coation_id = (
+                        line.coation_id.id
+                    )  # Get the corresponding coatation_id
+                    break  # Exit once the matching product is found
+
+            # If no matching coatation line is found, fall back to a default price or raise an error
+            if not selected_price:
+                return False  # Could also handle this with a fallback price or raise an error
 
         else:
             # If no price type is selected, do nothing (or raise an error)
@@ -142,9 +210,28 @@ class CoatationPriceWizard(models.TransientModel):
         # Update the order line's price_unit based on the selected price
         if selected_price is not None:
             self.order_line_id.price_unit = selected_price
+            self.order_line_id.type_of_price = self.type_of_price
+
+            # If coatation price is selected, set the coation_id
+            if self.type_of_price == "coatation" and selected_coation_id:
+                print("Setting the coation_id for the sales order line:")
+                print(
+                    self.coation_ids.name
+                )  # Print the selected coation ID name (for debugging)
+                self.order_line_id.coation_ids = (
+                    selected_coation_id  # Set the selected coation ID
+                )
+            else:
+                # If regular or last price is selected, clear the coation ID
+                self.order_line_id.coation_ids = None
+
         else:
             # In case no price is found (should not happen), fallback to a default value
-            self.order_line_id.price_unit = 0.0  # Or some default value
+            product = (
+                self.order_line_id.product_id
+            )  # Get the product from the sales order line
+            self.order_line_id.price_unit = product.list_price  # Use the regular price
+            self.order_line_id.type_of_price = "regular"
+            self.order_line_id.coation_ids = None
 
         return True
-

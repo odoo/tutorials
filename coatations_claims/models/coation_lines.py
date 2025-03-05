@@ -18,13 +18,13 @@ class CoationsLines(models.Model):
         compute="_compute_state",
         default="active",
         readonly=True,
-        store=True
+        store=True,
     )
     claim = fields.Boolean()
     coation_id = fields.Many2one("coatations.claims")
-    internal_reference= fields.Char(compute="_compute_internal_reference",store=True)
+    internal_reference = fields.Char(compute="_compute_internal_reference", store=True)
     sale_order_ids = fields.Many2many("sale.order")
-    name=fields.Char()
+    name = fields.Char()
     _sql_constraints = [
         # Ensuring max_qty is positive
         (
@@ -75,11 +75,12 @@ class CoationsLines(models.Model):
             "Consumed quantity must be greater than or equal to zero!",
         ),
     ]
+
     @api.model_create_multi
-    def create(self,vals_list):
+    def create(self, vals_list):
         for vals in vals_list:
-            vals["name"] = "Recommended selling price:"+str(vals["recommended_sp"]) 
-        return super(CoationsLines,self).create(vals_list)
+            vals["name"] = "Recommended selling price:" + str(vals["recommended_sp"])
+        return super(CoationsLines, self).create(vals_list)
 
     @api.depends("coation_id")
     def _compute_internal_reference(self):
@@ -89,17 +90,14 @@ class CoationsLines(models.Model):
             else:
                 self.internal_reference = ""
 
-        
-            
-
     @api.depends("sale_order_ids.order_line.product_uom_qty")
     def _compute_consumed(self):
         for record in self:
             print(record.status)
             if record.status == "expired":
-                record.consumed=record.max_qty# Skip processing for expired records
+                record.consumed = record.max_qty  # Skip processing for expired records
             else:
-                total_consumed=0
+                total_consumed = 0
                 sale_order_lines = self.env["sale.order.line"].search(
                     [
                         ("order_id.partner_id", "=", record.coation_id.client_id.id),
@@ -118,7 +116,9 @@ class CoationsLines(models.Model):
 
                 # Assign the computed consumed value
                 record.consumed = total_consumed
-                record.write({"consumed": total_consumed}) #added this because it helps the active status line change to expired
+                record.write(
+                    {"consumed": total_consumed}
+                )  # added this because it helps the active status line change to expired
                 print(
                     f"Consumed for {record.product_id.name} and client {record.coation_id.client_id.name}: {total_consumed}"
                 )
