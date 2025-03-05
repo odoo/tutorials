@@ -4,14 +4,11 @@
         <Dialog size="'sm'" title="'Enter Quantity - in ' + props.second_uom">
             <div class="mb-3">
                 <label for="quantityInput" class="form-label">Quantity</label>
-                <input id="quantityInput" type="number" class="form-control" t-model="props.quantity"/>
+                <input id="quantityInput" type="number" class="form-control pos-second" t-model="props.quantity"/>
             </div>
             <t t-set-slot="footer">
                 <button class="btn btn-primary" t-on-click="confirm">
                     Confirm
-                </button>
-                <button class="btn btn-secondary" t-on-click="close">
-                    Discard
                 </button>
             </t>
         </Dialog>

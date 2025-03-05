@@ -2,6 +2,7 @@ import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { Component } from "@odoo/owl";
 
+
 export class AddQuantityDialog extends Component {
     static template = "pos.AddQuantityDialog";
     static components = {
@@ -18,9 +19,6 @@ export class AddQuantityDialog extends Component {
     }
     confirm() {
         this.props.confirm(this.quantity1);
-        this.props.close();
-    }
-    close() {
         this.props.close();
     }
 }

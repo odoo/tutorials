@@ -1,5 +1,6 @@
 from odoo import models,fields,api
 
+
 class ProductTemplate(models.Model):
     _inherit = ['product.template']
 
@@ -12,7 +13,7 @@ class ProductTemplate(models.Model):
 
 class ProductProduct(models.Model):
     _name = 'product.product'
-    _inherit = ['product.product', 'pos.load.mixin']
+    _inherit = ['product.product']
 
     @api.model
     def _load_pos_data_fields(self, config_id):

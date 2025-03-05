@@ -15,6 +15,9 @@
         "point_of_sale._assets_pos": [
             "point_of_sale_second_uom/static/src/**/*",
         ],
+        'web.assets_tests': [
+            'point_of_sale_second_uom/static/tests/tours/**/*',
+        ],
     },
     "license": "LGPL-3",
 }
