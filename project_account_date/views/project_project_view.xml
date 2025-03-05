@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="project_project_form_inherit_view" model="ir.ui.view">
+        <field name="name">project.project.form.inherit.view</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position='after'>
+                <div class="alert alert-info" role="alert" invisible="not is_reload_required">
+                    You have Journal Items that need to be recognised from
+                    <bold><field name="date_start" class="fw-bold" readonly="1" /></bold>.
+                </div>
+            </xpath>
+
+            <xpath expr="//field[@name='date']" position='after'>
+                <button name="open_cutoff_wizard" type="object"
+                    string="Recognise Invoices" help="Recompute dates on invoices"
+                    class="btn-link mb-1 px-0" icon="fa-refresh" invisible="not is_reload_required" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
