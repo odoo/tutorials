@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'estate'}</field>
+    </record>
+    <menuitem id="estate_menu_root" name="Real Estate" web_icon="estate,static/description/estate_icon.png">
+        <menuitem id="estate_menu_advertisement" name="Advertisement">
+            <menuitem id="estate_action_advertisement" action="estate_model_action"/>
+        </menuitem>
+        <menuitem id="estate_menu_settings" name="Settings" groups="estate.estate_group_manager">
+            <menuitem id="estate_action_type_model" action="estate_type_model_action"/>
+            <menuitem id="estate_action_tag_model" action="estate_tag_model_action"/>
+            <menuitem id="estate_settings_configurtion_action" name="Configuration" action="res_config_settings_action"/>
+        </menuitem>
+    </menuitem>
+</odoo>
