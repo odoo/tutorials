@@ -11,10 +11,10 @@
                     <app data-string="Estate" string="Estate" name="estate">
                         <block title="Estate Management" name="estate_setting_container">
                             <setting id="estate_invoicing" string="Enable Invoicing" help="Enable invoicing features for estate management.">
-                                <field name="module_estate_account" widget="upgrade_boolean"/>
+                                <field name="module_estate_account"/>
                             </setting>
                             <setting id="estate_auction" string="Enable Auction" help="Enable auction features for estate management.">
-                                <field name="module_estate_auction" widget="upgrade_boolean"/>
+                                <field name="module_estate_auction"/>
                             </setting>
                         </block>
                     </app>
