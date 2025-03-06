@@ -5,11 +5,12 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title"><t t-out="props.title"/></h5>
-                <p class="card-text">
-                    <t t-out="props.content"/>
-                </p>
+                <input type="checkbox" t-on-click="toggleState" checked="true"/>
+                <t t-if="state.value == 'open'">
+                    <t t-slot="default"/>
+                </t>
             </div>
         </div> 
     </t>
-    
+
 </templates>

@@ -2,10 +2,24 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todoList">
-        <input type="text" placeholder="Add a todo." t-on-keyup="event => this.addTodo(event)" t-ref="todo_input"/>
-        <t t-foreach="todos" t-as="todo" t-key="todo.id">
-            <TodoItem todo="todo"/>
-        </t>
+        <div class="container mt-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Todo List</h5>
+                </div>
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Add a todo..."
+                               t-on-keyup="event => this.addTodo(event)" t-ref="todo_input"/>
+                    </div>
+                    <ul class="list-group">
+                        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                            <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
+                        </t>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </t>
 
 </templates>

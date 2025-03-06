@@ -2,7 +2,7 @@
 <odoo noupdate="1">
     <record id="demo_property_1" model="estate.property">
         <field name="name">Big Villa</field>
-        <field name="property_type_id" ref="property_type_1"/>
+        <field name="property_type_id" ref="estate_property_type_1"/>
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
@@ -18,7 +18,7 @@
     </record>
     <record id="demo_property_2" model="estate.property">
         <field name="name">Trailer home</field>
-        <field name="property_type_id" ref="property_type_1"/>
+        <field name="property_type_id" ref="estate_property_type_1"/>
         <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>

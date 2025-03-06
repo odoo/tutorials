@@ -25,4 +25,12 @@ export class TodoList extends Component {
             event.target.value = '';
         }
     }
+
+    toggleState = (todo) => {
+        todo.isCompleted = !todo.isCompleted
+    }
+
+    removeTodo = (todo) => {
+        this.todos.splice(this.todos.indexOf(todo), 1);
+    }
 }
