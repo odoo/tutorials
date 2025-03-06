@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- this is the  properties field action-->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
-    <!-- this the list view-->
+
+    <!-- this the property list view-->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Properties">
-                <field name="name" />
-                <field name="postcode" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="available_from" />
-
+            <list>
+                <field name="name" width="20%" />
+                <field name="postcode" width="10%" />
+                <field name="bedrooms" width="10%" />
+                <field name="living_area" width="10%" />
+                <field name="expected_price" width="15%" />
+                <field name="selling_price" width="15%" />
+                <field name="available_from" width="20%" />
             </list>
         </field>
     </record>
 
-    <!-- this the form view -->
+    <!-- this the property form view -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form.view</field>
         <field name="model">estate.property</field>
@@ -31,27 +32,29 @@
             <form string="description">
                 <sheet>
                     <group>
-                        <field name="name" />
+                        <h1 class="mb32">
+                            <field name="name" placeholder="Enter property name..." />
+                        </h1>
                     </group>
-
                     <group>
-
                         <group>
+                            <field name="tag_ids" widget="many2many_tags" string="Property tags" />
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="available_from" />
                         </group>
-
                         <group>
                             <field name="expected_price" />
+                            <field name="best_price" readonly="1" />
                             <field name="selling_price" />
                         </group>
                     </group>
-
-
                     <notebook>
+
+                        <!-- this is description field-->
                         <page string="description">
                             <group>
-                                <field name="description"></field>
+                                <field name="description" />
                                 <field name="bedrooms" />
                                 <field name="living_area" />
                                 <field name="facades" />
@@ -59,17 +62,34 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
-                                <field name="status"></field>
+                                <field name="total_area" readonly="1" />
+                                <field name="status" />
+                            </group>
+                        </page>
+
+                        <!-- this is the offer view-->
+                        <page string="offers">
+                            <group>
+                                <h5>
+                                    <field name="offer_ids" />
+                                </h5>
+                            </group>
+                        </page>
+
+                        <!-- this is the other info field-->
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" string="Salesperson" />
+                                <field name="buyer_id" string="Buyer" />
                             </group>
                         </page>
                     </notebook>
                 </sheet>
             </form>
-
         </field>
-
     </record>
-    <!-- This is the search view and filter creation-->
+
+    <!-- This is the property search view and filter creation-->
     <record id="estate_property_search_view" model="ir.ui.view">
         <field name="name">estate.property.search.view</field>
         <field name="model">estate.property</field>
@@ -83,20 +103,14 @@
                 <field name="status" />
 
                 <!-- filters-->
-                <filter string="Available Properties" name="available_properties"
-                    domain="[('status', 'in', ['new', 'offer_received'])]"
-                ></filter>
-                <filter name="sold_property" string="Sold Property"
-                    domain="[('status', 'in', ['sold', 'offer_accepted'])]"
-                ></filter>
+                <filter string="Available Properties" name="available_properties" domain="[('status', 'in', ['new', 'offer_received'])]"/>
+                <filter name="sold_property" string="Sold Property" domain="[('status', 'in', ['sold', 'offer_accepted'])]"/>
 
                 <!-- Group By-->
                 <group expand="0" string="Group by">
-                    <filter string="Postcode" name="group_by_postcode"
-                        context="{'group_by': 'postcode'}" />
+                    <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}" />
                 </group>
             </search>
         </field>
     </record>
-
 </odoo>
