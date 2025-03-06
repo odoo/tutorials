@@ -14,5 +14,10 @@
         'views/product_template_views.xml',
         'views/website_rent_template.xml'
     ],
+    'assets':{
+        'web.assets_frontend': [
+            'rental_deposit/static/src/js/rental_deposit_quantity.js',
+        ],
+    },
     'installable': True,
 }

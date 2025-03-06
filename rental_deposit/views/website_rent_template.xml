@@ -2,10 +2,9 @@
 <odoo>
     <template id="website_sale_renting_deposit" inherit_id="website_sale_renting.rental_product" name="Deposit">
         <xpath expr="//div[@id='product_attributes_simple']" position="after">
-            <t t-set="info" t-value="product"/>
-            <div t-if="info.require_deposit" class="mb-4">
-                <strong class="attribute_name">Required Deposit for 1 Quantity:</strong>
-                <span t-out="info.deposit_amount"/>
+            <div t-if="product.require_deposit" class="mb-4 o_qty_rental">
+                <strong>Required Deposit</strong>
+                <span id="add_qty" t-att-data-deposit="product.deposit_amount">0.00</span>
             </div>
         </xpath>
     </template>
