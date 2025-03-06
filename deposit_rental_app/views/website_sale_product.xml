@@ -1,0 +1,13 @@
+<odoo>
+    <template id="product_deposit_inherit" inherit_id="website_sale.product"
+        name="Product Deposit Info">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.require_deposit">
+                <div class="o_deposit_info" style="font-size:14px; color:#555; margin-top:5px;">
+                    <span>Deposit Required: </span>
+                    <strong id="total_amount" t-esc="product.amount" />
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
