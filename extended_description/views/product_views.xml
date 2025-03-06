@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.product.website.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales']/group[@name='sale']" position="inside">
+                <group string="Ecommerce Extended Description" name="ecom_extnd_description">
+                    <field
+                        name="ecom_extended_description"
+                        placeholder="detailed,formatted description for product,
+                                     Use '/' to discover more features."
+                        nolabel="1"
+                    />
+                </group>
+            </xpath>
+            <xpath expr="//page[@name='sales']/group[@name='sale']//group[@name='product_template_images']" position="attributes">
+                <attribute name="colspan"/>
+            </xpath>
+            <xpath expr="//page[@name='sales']/group[@name='sale']//group[@name='product_template_images']//field" position="attributes">
+                <attribute name="colspan"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
