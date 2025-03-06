@@ -29,7 +29,7 @@ class PropertyOffer(models.Model):
 
             if property.property_auction_type == 'regular' and property.best_price > actual_price:
                 raise UserError(_(f"A higher offer already exists, increase your offer price.\n(It should be more than {property.best_price})"))
-            elif property.property_auction_type == 'auction' and not property.start_time:
+            elif property.property_auction_type == 'auction' and property.auction_state != 'in_auction':
                 raise UserError(_("Auction isn't started yet."))
             elif property.property_auction_type == 'auction' and property.end_time < fields.Datetime.now():
                 raise UserError(_("Auction time Ended."))

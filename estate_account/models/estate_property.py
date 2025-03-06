@@ -13,6 +13,7 @@ class EstateProperty(models.Model):
             invoice_vals = {
                 'partner_id': record.buyer_id.id,
                 'move_type': 'out_invoice',
+                'property_id': record.id,
                 'invoice_line_ids': [
                     Command.create({
                         'name': "Service Fee(6%)",

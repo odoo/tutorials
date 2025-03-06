@@ -7,8 +7,7 @@ class Property(models.Model):
 
     property_auction_type = fields.Selection(
         string="Auction Type",
-        help="Automated auction\n"
-             "Regular auction",
+        help="Automated auction\nRegular auction",
         selection=[
             ('auction', "Auction"),
             ('regular', "Regular"),
@@ -16,7 +15,6 @@ class Property(models.Model):
         required=True,
         default='regular',
     )
-    start_time = fields.Datetime()
     end_time = fields.Datetime()
     highest_offer_bidder = fields.Many2one('res.partner', compute="_compute_highest_bidder", readonly=True)
     auction_state = fields.Selection([
@@ -41,7 +39,6 @@ class Property(models.Model):
             raise UserError(_("You can not start auction for offer accepted or sold properties"))
         elif self.auction_state == 'in_auction':
             raise UserError(_("Auction is already going on"))
-        self.start_time = fields.Datetime.now()
         self.auction_state = 'in_auction'
 
     def _auto_accept_property_offer(self):
@@ -51,10 +48,36 @@ class Property(models.Model):
             ('state', '=', 'offer_received')
         ])
         for property in auction_ended_properties:
+            for offer in property.offer_ids:
+                offer.action_accepted()
             if property.best_price and property.highest_offer_bidder:
                 property.write({
                     'buyer_id': property.highest_offer_bidder.id,
                     'selling_price': property.best_price,
-                    'state': 'offer_accepted',
                     'auction_state': 'done'
                 })
+                self.action_send_mail(property.id)
+        if not auction_ended_properties:
+            auction_ended_but_no_offers = self.search([
+                ('end_time', '<', fields.Datetime.now()),
+                ('state', '=', 'new')
+            ])
+            for property in auction_ended_but_no_offers:
+                property.write({'auction_state': 'done'})
+
+    def action_send_mail(self, property_id):
+        property = self.env['estate.property'].browse(property_id)
+        
+        offer_accepted_participant = property.highest_offer_bidder
+        offer_refused = self.env['estate.property.offer'].search([
+            ('property_id', '=', property_id),
+            ('status', '=', 'refused')
+        ])
+
+        template_offer_accepted = self.env.ref('automated_auction.email_template_for_offer_accepted')
+        template_offer_refused = self.env.ref('automated_auction.email_template_for_offer_refused')
+
+        if offer_accepted_participant:
+            template_offer_accepted.send_mail(property_id, force_send=True)
+        for offer in offer_refused:
+            template_offer_refused.send_mail(offer.id, force_send=True)

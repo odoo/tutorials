@@ -13,20 +13,25 @@
         <xpath expr="//h2[@name='property_name']" position="before">
             <t t-if="property_details.property_auction_type == 'auction'">
                 <div class="text-center bg-primary text-white p-3 rounded" id="auction_timer" t-att-data-end-time="property_details.end_time">
-                    <t t-if="property_details.start_time">
-                        <span class="fw-bold">Auction Ended</span>
-                    </t>
-                    <t t-else="">
+                    <t t-if="auction_state == 'in_template'">
                         <span class="fw-bold">Auction is not started yet</span>
+                    </t>
+                    <t t-elif="auction_state == 'in_auction'">
+                        <span class="fw-bold">In Auction</span>
+                    </t>
+                    <t t-elif="auction_state == 'done'">
+                        <span class="fw-bold">Auction Ended</span>
                     </t>
                 </div>
             </t>
         </xpath>
         <xpath expr="//div[@name='property_details_only']" position="inside">
             <t t-if="property_details.property_auction_type == 'auction'">
-                <a t-attf-href="/properties/#{property_details.id}/add_offer" class="btn btn-primary">
-                    Create Offer
-                </a>
+                <t t-if="auction_state == 'in_auction'">
+                    <a t-attf-href="/properties/#{property_details.id}/add_offer" class="btn btn-primary">
+                        Create Offer
+                    </a>
+                </t>
             </t>
         </xpath>
     </template>

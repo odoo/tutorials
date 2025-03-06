@@ -1,7 +1,7 @@
 {
     'name': "Automated Auction",
     'version': '1.0',
-    'depends': ['estate'],
+    'depends': ['estate', 'estate_account'],
     'author': "ppch",
     'category': '',
     'description': """
@@ -10,6 +10,7 @@
     'license': "LGPL-3",
     'data': [
         'data/service_cron.xml',
+        'data/mail_template_data.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/property_add_offer_template.xml',
