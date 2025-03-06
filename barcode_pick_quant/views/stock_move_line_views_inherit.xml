@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit Stock Move Line Form View -->
+    <record id="stock_move_line_product_selector_inherit_stock_move_line" model="ir.ui.view">
+        <field name="name">stock.move.line.view.form.inherit</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock_barcode.stock_move_line_product_selector"/>
+        <field name="arch" type="xml">
+            <!-- Add custom JavaScript class to the form -->
+            <xpath expr="//form" position="attributes">
+                <attribute name="js_class">check_product_details</attribute>
+            </xpath>
+            
+            <!-- Add label before selection field -->
+            <xpath expr="//div[hasclass('col-12', 'my-2', 'd-flex')]" position="before">
+                <span class="fs-5 fw-bold text-center text-black-50 mb-2 px-2">
+                Select where else to pick the product from
+                </span>
+            </xpath>
+            
+            <!-- Replace existing field with custom widget -->
+            <xpath expr="//div[hasclass('col-12', 'my-2', 'd-flex')]" position="replace">
+                <field name="product_stock_quant_ids" widget="custom_widget" mode="kanban" context="{
+                            'kanban_view_ref': 'stock_barcode.stock_quant_barcode_kanban_2',
+                            'list_view_ref': 'stock_barcode.view_stock_quant_tree'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Inherit Stock Quant Kanban View -->
+    <record id="stock_quant_barcode_kanban_2_inherit_stock_barcode" model="ir.ui.view">
+        <field name="name">stock.quant.view.form.inherit</field>
+        <field name="model">stock.quant</field>
+        <field name="inherit_id" ref="stock_barcode.stock_quant_barcode_kanban_2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='quantity']" position="replace">
+                 <field name="reserved_quantity" invisible="1"/>
+                <t t-if="(record.quantity.raw_value - record.reserved_quantity.raw_value) > 0">
+                    Available: <field name="quantity" /> /
+                    <t t-out="record.quantity.raw_value - record.reserved_quantity.raw_value"/>.00
+                </t>
+                <t t-else="">
+                    Available: 00
+                </t>
+            </xpath>
+        </field>
+    </record>
+</odoo>
