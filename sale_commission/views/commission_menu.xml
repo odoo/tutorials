@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="menu_sale_commission_rule"
+        name="Commission Rules"
+        parent="sale.menu_sale_config"
+        sequence="20"
+        action="sale_commission.sale_commission_rule"/>
+    <menuitem
+        id="menu_sale_commission_report"
+        name="Sales Commissions"
+        parent="sale.menu_sale_report"
+        action="sale_commission.sale_commission_action_report"/>
+</odoo>

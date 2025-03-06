@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_commission_rule,access.commission.rule,sale_commission.model_commission_rule,sales_team.group_sale_manager,1,1,1,1
+access_commission_rule_line,access.commission.rule.line,sale_commission.model_commission_rule_line,sales_team.group_sale_manager,1,1,1,1

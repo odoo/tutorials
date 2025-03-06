@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="commission_rule_1" model="commission.rule">
+        <field name="rate">0.5</field>
+        <field name="due_at">invoicing</field>
+        <field name="commission_for">person</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="product_expired">no_impact</field>
+    </record>
+
+    <record id="commission_rule_2" model="commission.rule">
+        <field name="rate">0.3</field>
+        <field name="due_at">payment</field>
+        <field name="commission_for">team</field>
+        <field name="team_id" ref="sales_team.team_sales_department"/>
+        <field name="product_expired">no_impact</field>
+    </record>
+
+    <record id="commission_rule_3" model="commission.rule">
+        <field name="rate">0.7</field>
+        <field name="due_at">invoicing</field>
+        <field name="commission_for">person</field>
+        <field name="product_category_id" ref="product.product_category_all"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="product_expired">no_impact</field>
+    </record>
+
+    <record id="commission_rule_4" model="commission.rule">
+        <field name="product_category_id" ref="product.product_category_consumable"/>
+        <field name="rate">0.4</field>
+        <field name="due_at">payment</field>
+        <field name="commission_for">team</field>
+        <field name="team_id" ref="sales_team.team_sales_department"/>
+        <field name="product_expired">no_impact</field>
+    </record>
+
+    <record id="commission_rule_5" model="commission.rule">
+        <field name="rate">0.2</field>
+        <field name="due_at">invoicing</field>
+        <field name="commission_for">person</field>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="product_expired">no_impact</field>
+    </record>
+</odoo>
