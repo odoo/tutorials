@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="estate_property_offer_list" model="ir.ui.view">
+            <field name="name">Properties.offer.list</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <list string="Channel">
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                    <field name="validity"/>
+                    <field name="date_deadline" widget="date"/>
+                    <button name="action_accept" type="object" string="Accept" icon="fa-check" />
+                    <button name="action_refuse" type="object" string="Refuse" icon="fa-times" />
+                    <field name="status"/>
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>
