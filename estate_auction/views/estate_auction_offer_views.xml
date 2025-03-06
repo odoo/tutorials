@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Estate Property Offer List View -->
+        <record id="view_estate_property_offer_list_auction" model="ir.ui.view">
+            <field name="name">estate.property.offer.list.auction</field>
+            <field name="model">estate.property.offer</field>
+            <field name="inherit_id" ref="estate.view_estate_property_offer_list"/>
+            <field name="arch" type="xml">
+
+               <xpath expr="//button[@name='action_accepted']" position="attributes">
+                    <attribute name="invisible">is_auction</attribute>
+                </xpath>
+
+                <!-- Hide Refuse Button when Property is an Auction -->
+                <xpath expr="//button[@name='action_refused']" position="attributes">
+                    <attribute name="invisible">is_auction</attribute>
+                </xpath>
+
+            </field>
+        </record>
+    </data>
+</odoo>

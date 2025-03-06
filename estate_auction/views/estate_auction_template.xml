@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_listing_template_inherit" inherit_id="estate.property_listing_template">
+
+        <xpath expr="//div[contains(@class, 'property-item')]" position="attributes">
+            <attribute name="t-att-data-auction">'true' if property.sale_type == 'auction' else 'false'</attribute>
+        </xpath>
+        <xpath expr="//button[@id='filter-btn']" position="after">
+            <!-- Auction Filter Button -->
+            <button class="btn btn-outline-dark px-4 rounded-pill" id="auction-filter-btn">
+                <i class="fa fa-gavel me-2"></i> Auction Only
+            </button>
+        </xpath>
+
+        <xpath expr="//script" position="before">
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    let auctionFilterBtn = document.getElementById("auction-filter-btn");
+                    let propertyItems = document.querySelectorAll(".property-item");
+
+                    auctionFilterBtn.addEventListener("click", function() {
+                        let isActive = auctionFilterBtn.classList.contains("active");
+
+                        if (isActive) {
+                            // Reset: Show all properties
+                            propertyItems.forEach(item => item.style.display = "block");
+                            auctionFilterBtn.classList.remove("active");
+                            auctionFilterBtn.style.backgroundColor = "";
+                            auctionFilterBtn.style.color = "";
+                        } else {
+                            // Apply filter: Show only auction properties
+                            propertyItems.forEach(function(item) {
+                                let isAuction = item.getAttribute("data-auction") === "true";
+                                item.style.display = isAuction ? "block" : "none";
+                            });
+
+                            // Activate button (darker color)
+                            auctionFilterBtn.classList.add("active");
+                            auctionFilterBtn.style.backgroundColor = "#875A7B"; /* Odoo Primary Button Color */
+                            auctionFilterBtn.style.color = "white";
+                        }
+                    });
+                });
+            </script>
+            <style>
+                /* Ensure styles override Bootstrap */
+                #auction-filter-btn:hover,
+                #auction-filter-btn.active {
+                    background-color: #875A7B !important; /* Odoo Primary Button Color */
+                    color: white !important;
+                    border-color: #875A7B !important;
+                }
+
+                /* Force Bootstrap override using higher specificity */
+                .btn.auction-filter-btn:hover {
+                    background-color: #875A7B !important;
+                    color: white !important;
+                    border-color: #875A7B !important;
+                }
+
+                /* When button is active, keep the color */
+                .btn.auction-filter-btn.active {
+                    background-color: #875A7B !important;
+                    color: white !important;
+                    border-color: #875A7B !important;
+                }
+            </style>
+        </xpath>
+    </template>
+</odoo>

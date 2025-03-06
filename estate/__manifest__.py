@@ -7,6 +7,7 @@
     'depends': ['base', 'web', 'mail','website'],
     'data': [
         'views/estate_action.xml',
+        'views/res_config_settings_views.xml',
         'views/estate_menus.xml',
         'security/estate_security.xml',
         'security/security.xml',
