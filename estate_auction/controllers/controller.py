@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo import _
 from odoo.http import Controller, request, route
 
 
 class EstatePropertyOffer(Controller):
     @route("/create", type="http", auth="public", website=True, methods=['POST'])
     def create_offer(self, **post):
-        offer_price = post.get("offer_price")
-        partner_id = post.get("partner_id")
-        property_id = post.get("property_id")
+        offer_price = float(post.get("offer_price"))
+        partner_id = int(post.get("partner_id"))
+        property_id = int(post.get("property_id"))
 
         try:
-            partner_id = int(partner_id) if partner_id else None
-            property_id = int(property_id) if property_id else None
-            offer_price = float(offer_price) if offer_price else None
-
             if not partner_id or not property_id or offer_price is None:
-                return request.redirect("/error?message=Missing+Required+Fields")
+                return _("Misisng Required Fields")
 
             property_record = request.env["estate.property"].sudo().browse(
                 property_id)
+            
+            if property_record.expected_price > offer_price:
+                return _("offer price must be greater or eaqual to %s",property_record.expected_price)
 
             request.env["estate.property.offer"].create({
                 "partner_id": partner_id,
@@ -31,5 +31,5 @@ class EstatePropertyOffer(Controller):
 
             return request.render("estate_auction.template_property_offer_success", {"property": property_record.name})
 
-        except ValueError:
-            return request.send("An Error Occured")
+        except Exception as err:
+            return _("An Error Occured %s",err)

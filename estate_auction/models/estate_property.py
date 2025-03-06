@@ -15,7 +15,8 @@ class EstateProperty(models.Model):
         [("draft", "Draft"), ("active", "Active"), ("sold", "Sold")], default="draft")
     is_auction_started = fields.Boolean(
         string="Is Auction Started", default=False)
-    auction_end_time = fields.Datetime(string="End Time",default=datetime.now())
+    auction_end_time = fields.Datetime(
+        string="End Time", default=datetime.now())
     invoice_id = fields.Many2one(
         "account.move", string="Invoice", readonly=True)
     highest_bidder = fields.Char(
@@ -28,12 +29,12 @@ class EstateProperty(models.Model):
         for record in self:
             if not record.auction_end_time or record.auction_end_time < datetime.now():
                 raise ValidationError(
-                    "Auction end time cannot be in the past or empty!")
+                    _("Auction end time cannot be in the past or empty!"))
 
     @api.onchange("sale_type")
     def _onchange_sale_type(self):
         if self.is_auction_started:
-            raise UserError("Already an Auction was Started")
+            raise UserError(_("Already an Auction was Started"))
 
     @api.depends("offer_ids.price")
     def _calculate_bidder_and_price(self):
@@ -81,7 +82,8 @@ class EstateProperty(models.Model):
 
     def action_start_auction(self):
         if self.auction_end_time == False:
-            raise UserError("Please Select Appropriate End Time For Auction")
+            raise UserError(
+                _("Please Select Appropriate End Time For Auction"))
 
         self.is_auction_started = True
         self.auction_stages = "active"
@@ -89,7 +91,7 @@ class EstateProperty(models.Model):
     def action_view_invoice(self):
         self.ensure_one()
         if not self.invoice_id:
-            raise UserError("No invoice is linked to this property.")
+            raise UserError(_("No invoice is linked to this property."))
 
         return {
             "name": "Property Invoice",

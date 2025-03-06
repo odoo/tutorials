@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models
+from odoo import _, fields, models
 from odoo.exceptions import UserError
 
 
@@ -21,7 +21,7 @@ class EstatePropertyOffer(models.Model):
                 template.send_mail(record.id, force_send=True)
             else:
                 raise UserError(
-                    "Mail Template not found. Please check the template.")
+                    _("Mail Template not found. Please check the template."))
 
     def action_refuse_offer(self):
         self.is_property_for_auction("Refuse")
@@ -32,9 +32,9 @@ class EstatePropertyOffer(models.Model):
             template.send_mail(self.id, force_send=True)
         else:
             raise UserError(
-                "Mail Template not found. Please check the template.")
+                _("Mail Template not found. Please check the template."))
 
     def is_property_for_auction(self, status):
         if self.property_id.sale_type == 'auction':
             raise UserError(
-                f"You Can't {status} Offer Manually due to Auction")
+                _("You Can't %s Offer Manually due to Auction", status))

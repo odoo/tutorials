@@ -20,7 +20,7 @@
                 <button string="Auction Started" invisible="is_auction_started == False or sale_type == 'regular'" class="btn btn-primary"/>
             </xpath>
             <xpath expr="//h1[hasclass('oe_inline')]" position="after">
-                <field name="auction_stages" widget="task_stage_with_state_selection" nolabel="1"/>
+                <field name="auction_stages" widget="task_stage_with_state_selection" nolabel="1" readonly="1"/>
             </xpath>
             <xpath expr="//header" position="before">
                 <div name='button_box'>
