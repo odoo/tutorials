@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
    <record id="product_import_histry_form_view" model="ir.ui.view">
         <field name="name">product.import.histry</field>
         <field name="model">product.template</field>
@@ -21,5 +20,4 @@
              </xpath>
         </field>
     </record>
-
 </odoo>

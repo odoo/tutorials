@@ -3,7 +3,6 @@
     'version' : "1.0",
     'depends' : [
         'product',
-        'sale',
         'sale_management',
         'mail'
     ],

@@ -22,7 +22,8 @@
             <form name="Vendor Product Import">  
                 <header>
                     <button name="action_manual_process" type="object" string="Manual Process" class="oe_highlight"/>
-                    <button name="action_reset_to_pending" type="object" string="Reset to Pending"/>
+                    <button name="action_reset_to_pending" type="object" string="Reset to Pending"
+                        invisible="state == 'pending'"/>
                     <field name="state" widget="statusbar" options="{'clickable': '1'}"
                         statusbar_visible="pending,processed,error" />
                 </header>

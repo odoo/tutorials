@@ -10,8 +10,8 @@ class VendorProductImport(models.Model):
     _inherit = ['mail.thread']
 
     name = fields.Char(string="Name", default="New", readonly="1")
-    vendor_id = fields.Many2one(comodel_name='res.partner', string="Vendor", required=True)
-    vendor_template = fields.Many2one(comodel_name="vendor.product.template", string="Vendor Template Formate", domain="[('vendor_id', '=', vendor_id)]")
+    vendor_id = fields.Many2one('res.partner', string="Vendor", required=True)
+    vendor_template = fields.Many2one('vendor.product.template', string="Vendor Template Formate", domain="[('vendor_id', '=', vendor_id)]")
     file_to_process = fields.Binary(string="File to Process")
     file_name = fields.Char(string="File Name")
     date = fields.Datetime(string="Date", default=fields.Datetime.now)
@@ -62,35 +62,29 @@ class VendorProductImport(models.Model):
 
             # Get required field mappings from vendor template
             template_format_lines = self.vendor_template.template_formate_ids
-            required_headers = template_format_lines.mapped('file_header')
+            field_mapping = {line.file_header: line.odoo_field.name for line in template_format_lines}
 
-            # Validate headers
-            header_tuple = tuple(cell.value for cell in sheet[1])
-            missing_headers = set(required_headers) - set(header_tuple)
+            header_tuple = {header: idx for idx, header in enumerate(cell.value for cell in sheet[1])}
+            missing_headers = set(field_mapping.keys()) - set(header_tuple.keys())
             if missing_headers:
                 self.state = 'error'
                 self.message_post(body=_(f"The uploaded file is missing required headers: {', '.join(missing_headers)}"))
                 return
 
-            # Map Excel headers to Odoo fields
-            field_mapping = {line.file_header: line.odoo_field.name for line in template_format_lines}
-            if 'product_unique_id' not in field_mapping.values():
-                self.state = 'error'
-                self.message_post(body=_("The field 'product_unique_id' must be in the template format."))
-                return
-
             products_to_create = []
             products_to_update = []
             import_references = []
+            all_existing_products = self.env['product.template'].with_context(active_test=False).search([])
+            all_existing_products = {product.product_unique_id : product for product in all_existing_products}
 
             for row in sheet.iter_rows(min_row=2, values_only=True):
-                product_data = {field_mapping[header]: row[header_tuple.index(header)] for header in field_mapping}
+                product_data = {field_mapping[header]: row[header_tuple.get(header)] for header in field_mapping}
                 product_unique_id = product_data.get('product_unique_id')
                 if not product_unique_id:
                     self.message_post(body=_("Missing 'product_unique_id' in the imported data."))
                     return
 
-                existing_product = self.env['product.template'].with_context(active_test=False).search([('product_unique_id', '=', product_unique_id)], limit=1)
+                existing_product = all_existing_products.get(product_unique_id)
                 old_price = existing_product.list_price if existing_product else 0
                 
                 if existing_product:
