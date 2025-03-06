@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+    <!-- oferrs section under property details -->
+        <record id="real_estate_property_offer_list" model="ir.ui.view">
+            <field name="name">Properties Offer</field>
+            <field name="model">real.estate.property.offer</field>
+            <field name="arch" type="xml">
+                <list string="Channel">
+                    <field name="price" />
+                    <field name="partner_id" />
+                    <field name="validity" />
+                    <field name="date_deadline" />
+                    <field name="status" />
+                </list>
+            </field>
+        </record>
+    </data>
+</odoo>

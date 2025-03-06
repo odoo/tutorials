@@ -1,22 +1,22 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
-        <!--creating action for menu name called
-        Properties-->
+        <!--creating action for menu name called Properties-->
         <record id="real_estate_property_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">real.estate.property</field>
             <field name="view_mode">list,form</field>
         </record>
 
-        <!--Changing
-        list view-->
-        <record id="real_estate_property_view_tree" model="ir.ui.view">
-            <field name="name">Properties.list</field>
+        <!--Changing list view-->
+        <record id="real_estate_property_view_list" model="ir.ui.view">
+            <field name="name">Properties List</field>
             <field name="model">real.estate.property</field>
             <field name="arch" type="xml">
                 <list string="Channel">
                     <field name="name" />
+                    <field name="tag_id" widget="many2many_tags" />
+                    <field name="property_type_id" />
                     <field name="postcode" />
                     <field name="bedrooms" />
                     <field name="living_area" />
@@ -27,9 +27,11 @@
             </field>
         </record>
 
+
+
         <!-- Changing Form view-->
         <record id="real_state_property_view_form" model="ir.ui.view">
-            <field name="name">Properties.Form</field>
+            <field name="name">Properties Form</field>
             <field name="model">real.estate.property</field>
             <field name="arch" type="xml">
                 <form string="Property Form">
@@ -41,13 +43,16 @@
                         </group>
                         <group>
                             <group>
+                                <field name="tag_id" widget="many2many_tags" />
+                                <field name="property_type_id" />
                                 <field name="postcode" />
                                 <field name="date_availability" />
                                 <field name="status" />
                             </group>
                             <group>
                                 <field name="expected_price" />
-                                <field name="selling_price" />
+                                <field name="best_price" />
+                                <field name="selling_price" />                             
                             </group>
                         </group>
                         <notebook>
@@ -61,34 +66,45 @@
                                     <field name="garden" />
                                     <field name="garden_area" />
                                     <field name="garden_orientation" />
+                                    <field name="total_area" />
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                  <field name="offer_id" />                          
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="salesperson_id" />
+                                    <field name="partner_id" />
                                 </group>
                             </page>
                         </notebook>
-
                     </sheet>
                 </form>
             </field>
         </record>
 
-    <!-- Creating serach view -->
+        <!-- Creating search view -->
         <record id="real_estate_property_view_search" model="ir.ui.view">
-            <field name="name">Properties.Search</field>
+            <field name="name">Properties Search</field>
             <field name="model">real.estate.property</field>
             <field name="arch" type="xml">
                 <search string="Property Search">
-                    <field name="name"/>
-                    <field name="postcode"/>
-                    <field name="expected_price"/>
-                    <field name="bedrooms"/>
-                    <field name="living_area"/>
-                    <field name="facades"/>
-                    <separator/>
-                    <!-- <filter string="Available" name="active" domain="[('active', '=', True)]"/>
-                    <filter string="Unvailable" name="active" domain="[('active', '=', False)]"/> -->
-                    <!-- <filter string="New or Offer Received" name="status" domain="['|', ('status','=', 'new'), ('status', '=', 'offer_received')]"/> -->
-                    <filter string="Available" name="status" domain="['|', ('status','=', 'new'), ('status', '=', 'offer_received')]"/>
+                    <field name="name" />
+                    <field name="postcode" />
+                    <field name="expected_price" />
+                    <field name="bedrooms" />
+                    <field name="living_area" />
+                    <field name="facades" />
+                    <field name="property_type_id" />
+                    <separator />
+                    <filter string="Available" name="status"
+                        domain="['|', ('status','=', 'new'), ('status', '=', 'offer_received')]" />
                     <group expand="1" string="Group By">
-                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                        <filter string="Postcode" name="postcode"
+                            context="{'group_by':'postcode', 'residual_visible':True}" />
+                        <filter string="Property Type" name="property_type_id"
+                            context="{'group_by':'property_type_id', 'residual_visible':True}" />
                     </group>
                 </search>
             </field>
