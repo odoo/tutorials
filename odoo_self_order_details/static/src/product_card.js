@@ -1,0 +1,37 @@
+import { patch } from "@web/core/utils/patch";
+import { ProductCard } from "@pos_self_order/app/components/product_card/product_card";
+import { CustomProductInfoPopup } from "./product_info_popup";
+
+patch(ProductCard.prototype, {
+    async selectProduct(qty = 1) {
+        const product = this.props.product;
+
+        if (!product.self_order_available || !this.isAvailable) {
+            return;
+        }
+
+        if (product.isCombo()) {
+            this.router.navigate("combo_selection", { id: product.id });
+        } else if (product.needToConfigure()) {
+            this.router.navigate("product", { id: product.id });
+        } else {
+            this.dialog.add(CustomProductInfoPopup, {
+                product: product,
+                addToCart: (qty) => {
+                    this.flyToCart();
+                    this.scaleUpPrice();
+
+                    const isProductInCart = this.selfOrder.currentOrder.lines.find(
+                        (line) => line.product_id === product.id
+                    );
+
+                    if (isProductInCart) {
+                        isProductInCart.qty += qty;
+                    } else {
+                        this.selfOrder.addToCart(product, qty);
+                    }
+                }
+            });
+        }
+    }
+});
