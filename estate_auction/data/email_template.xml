@@ -1,0 +1,39 @@
+<odoo>
+    <data noupdate="1">
+        <record id="email_template_offer_accepted" model="mail.template">
+            <field name="name">Offer Accepted Notification</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="subject">Congratulations! Your offer has been accepted</field>
+            <field name="email_from">${object.company_id.email or 'noreply@yourcompany.com'}</field>
+            <field name="email_to">${object.buyer_id.email}</field>
+            <field name="body_html">
+                <![CDATA[
+                <p>Hello <strong>${object.buyer_id.name}</strong>,</p>
+                <p>We are pleased to inform you that your offer of <strong>${object.selling_price}</strong> has been accepted for the property <strong>${object.name}</strong>.</p>
+                <p>Our team will reach out to you soon for the next steps.</p>
+                <p>Best regards,<br/>
+                <strong>${object.company_id.name}</strong></p>
+                ]]>
+            </field>
+        </record>
+    </data> 
+
+     <data noupdate="1">
+        <record id="email_template_offer_rejected" model="mail.template">
+            <field name="name">Offer Rejected Notification</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="subject">Your offer has not been accepted</field>
+            <field name="email_from">${object.company_id.email or 'noreply@yourcompany.com'}</field>
+            <field name="email_to">${object.buyer_id.email}</field>
+            <field name="body_html">
+                <![CDATA[
+                <p>Hello <strong>${object.buyer_id.name}</strong>,</p>
+                <p>Unfortunately, your offer of <strong>${object.selling_price}</strong> for the property <strong>${object.name}</strong> was not accepted.</p>
+                <p>We appreciate your interest, and we hope to have you participate in future auctions.</p>
+                <p>Best regards,<br/>
+                <strong>${object.company_id.name}</strong></p>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>

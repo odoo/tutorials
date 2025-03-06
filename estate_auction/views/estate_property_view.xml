@@ -12,7 +12,7 @@
 
            <xpath expr="//header/button[@name='action_sold']" position="before">
              <button name="action_start_auction" type="object" string="Start Auction" class="btn-primary"
-                        invisible="auction_type != 'auction'"/>
+                        invisible="auction_type != 'auction' or auction_started == True"/>
            </xpath>
            <xpath expr="//group[1]/field[@name='tag_ids']" position="after">
                 <field name="auction_type" widget="radio"/>
@@ -25,9 +25,6 @@
                     <field name="highest_bidder_id"/>
                </group>
            </xpath> 
-           <xpath expr="//sheet/div[2]" position="before">
-             <button name="open_status" type="object" string="auction started" class="btn-primary" invisible="auction_type != 'auction'"/>
-           </xpath>
 
      </field>
   </record>
