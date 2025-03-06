@@ -1,11 +1,10 @@
-from odoo import fields, models
+from odoo import api, models
 
 
-class ProductTemplate(models.Model):
-    _inherit = "product.template"
+class ProductProduct(models.Model):
+    _inherit = "product.product"
 
-    sec_uom_id = fields.Many2one(
-        "uom.uom",
-        "Second Unit of Measure",
-        help="Second unit of measure used for all stock operations.",
-    )
+    def _load_pos_data_fields(self, config):
+        fields = super()._load_pos_data_fields(config)
+        fields.append("sec_uom_id")
+        return fields

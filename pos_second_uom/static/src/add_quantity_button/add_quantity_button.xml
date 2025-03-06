@@ -14,19 +14,13 @@
             <div class="d-flex justify-content-center align-items-center gap-3">
                 <label>Enter Quantity:</label>
                 <input type="number" t-model="state.quantity" class="form-control"/>
-
-                <select class="form-control w-25" t-model="state.secUomId">
-                    <t t-foreach="state.secUoms" t-as="uom" t-key="uom.id">
-                        <option t-att-value="uom.id">
-                            <t t-esc="uom.name"/>
-                        </option>
-                    </t>
-                </select>
+                <label>Unit:</label>
+                <div class="form-control"><t t-out="secUomName"/></div>
             </div>
 
             <t t-set-slot="footer">
                 <button class="btn btn-primary" t-on-click="confirmSelection">Confirm</button>
-                <button class="btn btn-secondary" t-on-click="cancel">Discard</button>
+                <button class="btn btn-secondary" t-on-click="props.close">Discard</button>
             </t>
         </Dialog>
     </t>
