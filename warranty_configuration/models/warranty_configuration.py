@@ -6,8 +6,6 @@ class WarrantyConfiguration(models.Model):
     _description = "Warranty Configuration"
 
     name = fields.Char(string="Name", required=True)
-    product_id = fields.Many2one("product.product", string="Product", required=True)
+    product_id = fields.Many2one("product.product", string="Extended Warranty", required=True)
     percentage = fields.Float(string="Percentage", required=True)
-    warranty_year_id = fields.Many2one(
-        "warranty.year", string="Warranty Duration", required=True
-    )
+    duration_years = fields.Integer(string="Duration (Years)", required=True)

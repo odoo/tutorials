@@ -2,4 +2,3 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_warranty_configuration_user,sales_warranty_configuration_user,model_warranty_configuration,base.group_user,1,1,1,1
 access_warranty_wizard,warranty.wizard,model_warranty_wizard,base.group_user,1,1,1,1
 access_warranty_line_wizard,warranty.line.wizard,model_warranty_line_wizard,base.group_user,1,1,1,1
-access_warranty_year,warranty.year,model_warranty_year,base.group_user,1,1,1,1

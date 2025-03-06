@@ -1,4 +1,3 @@
 from . import product_template
-from . import warranty_configuration
 from . import sale_order_line
-from . import warranty_year
+from . import warranty_configuration

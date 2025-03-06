@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Warranty Configuration Tree View -->
+    <!-- Warranty Configuration List View -->
     <record id="view_warranty_configuration_tree" model="ir.ui.view">
         <field name="name">warranty.configuration.list</field>
         <field name="model">warranty.configuration</field>
         <field name="arch" type="xml">
             <list string="Warranty Configurations" editable="bottom">
-                <field name="name"/>
-                <field name="product_id"/>
-                <field name="warranty_year_id"/>
-                <field name="percentage"/>               
+                <field name="name" />
+                <field name="duration_years" />
+                <field name="product_id" />
+                <field name="percentage" />
             </list>
         </field>
     </record>

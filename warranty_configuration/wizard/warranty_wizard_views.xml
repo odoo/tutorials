@@ -10,9 +10,9 @@
                         <sheet>
                             <field name="order_id" invisible="1"/>
                             <field name="warranty_line_ids">
-                                <list editable="bottom" create="False">
+                                <list editable="bottom" create="False" delete="False">
                                     <field name="product_id"/>
-                                    <field name="warranty_year_id" required="True"/>
+                                    <field name="warranty_configuration_id" />
                                     <field name="order_line_id" column_invisible="True"/>
                                     <field name="end_date"/>
                                 </list>

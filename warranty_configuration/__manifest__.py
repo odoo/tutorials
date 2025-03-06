@@ -6,7 +6,7 @@
     "category": "Sales",
     "author": "Darshan Patel",
     "license": "LGPL-3",
-    "depends": ["sale"],
+    "depends": ["sale_management"],
     "data": [
         "security/ir.model.access.csv",
         "views/product_template_views.xml",
@@ -16,5 +16,5 @@
         "views/sale_menus.xml",
     ],
     "installable": True,
-    "application": True,
+    "application": False,
 }
