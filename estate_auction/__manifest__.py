@@ -17,6 +17,7 @@
         "views/estate_property_views.xml",
         "views/estate_website_property_views.xml",
         "views/estate_property_offer_success_views.xml",
+        "views/estate_auction_property_offer_error.xml",
         "views/ir_cron.xml",
         "data/estate_property_offer_template.xml"
     ],
