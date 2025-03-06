@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet/div[hasclass('oe_title')]" position="before">
                 <div>
-                    <widget name="web_ribbon" title="To be approved" bg_color="text-bg-danger"/>
+                    <widget name="web_ribbon" title="To be approved" bg_color="text-bg-danger" invisible="approved or state in ['sale','sent']"/>
                  </div>
             </xpath>
             <xpath expr="//page[@name='order_lines']//list//field[@name='price_tax']" position="after">

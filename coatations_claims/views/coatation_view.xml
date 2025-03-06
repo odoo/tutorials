@@ -47,6 +47,7 @@
                                 <field name="max_qty"/>
                                 <field name="min_qty"/>
                                 <field name="recommended_sp"/>
+                                <field name="last_applied_price"/>
                                 <field name="consumed"/>
                                 <field name="qty_per_order"/>
                                 <field name="status"/>

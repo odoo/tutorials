@@ -4,9 +4,7 @@ from odoo import api, fields, models
 class CoatationPriceWizard(models.TransientModel):
     _name = "coatation.price.wizard"
     _description = "Select negotiated price on the sales order form"
-    coation_ids = fields.Many2one(
-        "coatations.claims", string="Coatations Claims", required=True
-    )
+    coation_ids = fields.Many2one("coatations.claims", string="Coatations Claims")
     coation_lines_ids = fields.One2many(
         "coatations.lines",
         related="coation_ids.coation_lines_ids",
@@ -22,7 +20,7 @@ class CoatationPriceWizard(models.TransientModel):
         readonly=True,
     )  # Related to the sales order
     domain_ids = fields.Char(
-        string="Custome Domain",
+        string="Custom Domain",
         help="dynamic domain used for mapped customers",
         compute="_compute_coation_ids_domain",
     )
@@ -70,21 +68,8 @@ class CoatationPriceWizard(models.TransientModel):
     @api.depends("coation_ids", "coation_lines_ids")
     def _compute_coation_ids_domain(self):
         for coationID in self:
-            # active_id = self.env.context.get("active_id")
-            # product_id = self.env["sale.order.line"].browse(active_id).product_id.id
-            # sale_order_id = self.env["sale.order.line"].browse(active_id).order_id
-            # client_id = sale_order_id.partner_id.id
-            # product = self.env["product.product"].browse(product_id)
-            # coatation_lines = self.env["coatations.lines"].search(
-            #     [
-            #         ("product_id", "=", product.id),
-            #         ("coation_id.client_id", "=", client_id),
-            #         ("status", "=", "active"),
-            #     ]
-            # )
             coatation_lines, coatation_ids = self._fetch_coatation_records()
             print(coatation_lines)
-            # coatation_ids = coatation_lines.mapped("coation_id.id")
             coationID.domain_ids = [("id", "in", coatation_ids)]
 
     @api.depends("coation_ids")
@@ -227,6 +212,7 @@ class CoatationPriceWizard(models.TransientModel):
 
         else:
             # In case no price is found (should not happen), fallback to a default value
+            print("fall back else is selected")
             product = (
                 self.order_line_id.product_id
             )  # Get the product from the sales order line

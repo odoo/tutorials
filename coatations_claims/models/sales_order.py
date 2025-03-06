@@ -1,34 +1,15 @@
-from odoo import api, fields, models
-from odoo import Command
+from odoo import api, Command, fields, models
+from odoo.exceptions import ValidationError
 
 
 class SaleOrder(models.Model):
-    _inherit = ["sale.order.line"]
-
-    coation_ids = fields.Many2one("coatations.claims", readonly=True)
-    type_of_price = fields.Selection(
-        selection=[
-            ("regular", "Regular price"),
-            ("coatation", "Coatation price"),
-            ("last", "Last selling price"),
-        ],
-        default="regular",
-        required=True,
-        readonly=True,
-        string="Type of price:",
-        compute="_compute_type_of_price",
-        store=True,
-    )
-    price_approval_created = fields.Boolean(
-        string="Approval Created",
-        default=False,
-        store=True,
-        compute="_compute_approval",
-    )
+    _inherit = ["sale.order"]
+    approved = fields.Boolean(default=True, compute="_compute_approval", store=True)
 
     def _create_price_approval_request(
         self, line, recommended_price, coatation, sale_order
     ):
+        print("approval function called!")
         """
         Creates an approval request when the unit price is lower than the recommended price.
         """
@@ -39,74 +20,82 @@ class SaleOrder(models.Model):
             f"Coatation ID: {coatation.name}, Sale Order ID: {sale_order.name}",
             "partner_id": sale_order.partner_id.id,
             "reference": sale_order.name,
+            "request_status": "pending",
             "product_line_ids": [Command.create({"product_id": line.product_id.id})],
         }
-        self.env["approval.request"].create(approval_vals)
+        self.env["approval.request"].sudo().create(approval_vals)
         print("approvals have been created!")
 
-    @api.depends("product_uom_qty", "coation_ids")
-    def _compute_type_of_price(self):
-        for line in self:
-            if line.coation_ids:  # Ensure that there is a related coation record
-                # Fetch the corresponding coatation line based on the product
-                coatation_line = line.coation_ids.coation_lines_ids.filtered(
-                    lambda l: l.product_id == line.product_id
-                )
-                # Check if there is a matching coatation line
-                if coatation_line:
-                    coatation_line = coatation_line[
-                        0
-                    ]  # Assuming only one coatation line for the product
-
-                    # Get the min and max quantities from the coatation line
-                    min_qty = coatation_line.min_qty
-                    print("min quantity is:")
-                    print(min_qty)
-                    max_qty = coatation_line.max_qty
-                    print("max qty is")
-                    print(max_qty)
-
-                    # Check if the quantity is within the valid range
-                    if min_qty <= line.product_uom_qty <= max_qty:
-                        # If quantity is within range, retain the coatation price
-                        line.type_of_price = "coatation"
-                        line.price_unit = coatation_line.recommended_sp
-                        print("checking if price is lower than sp")
-                        print("recommended price is:")
-                        print(coatation_line.recommended_sp)
-                        print("unit price is:")
-                        print(line.price_unit)
-                        print(line.price_approval_created)
-                        # if line.price_unit < coatation_line.recommended_sp and not line.price_approval_created:
-                        #     print("creating approval!!!")
-                        #     self._create_price_approval_request(line, coatation_line.recommended_sp, line.coation_ids, line.order_id)
-                        #     line.price_approval_created = True # Set the flag to True after creating approval to avoid creating double approvals 1 when changed and one when saving.
-                    else:
-                        # If quantity is out of bounds, revert to the regular price
-                        line.type_of_price = "regular"
-                        # Revert the price to the regular price
-                        line.price_unit = line.product_id.list_price
-                        line.price_approval_created = (
-                            False  # Reset approval flag if price is reset
-                        )
-                else:
-                    # If no matching coatation line is found, fallback to regular price
-                    line.type_of_price = "regular"
-                    line.price_unit = line.product_id.list_price
-                    line.price_approval_created = (
-                        False  # Reset approval flag if price is reset
+    @api.constrains("state")
+    def _check_quotation_expiry(self):
+        """
+        This method checks if any of the associated coatation lines have expired.
+        If any of the quotations have expired, it raises an exception.
+        """
+        for order in self:
+            for line in order.order_line:
+                # Check if the sale order line is linked to a quotation (CoationsLines)
+                if line.coation_ids:
+                    # Search for the related CoationsLines for the same product and the same client
+                    matching_coatation_lines = self.env["coatations.lines"].search(
+                        [
+                            ("product_id", "=", line.product_id.id),
+                            (
+                                "coation_id.client_id",
+                                "=",
+                                order.partner_id.id,
+                            ),  # client_id is from coation_id
+                            (
+                                "status",
+                                "=",
+                                "expired",
+                            ),  # Check if the status is expired
+                            ("coation_id", "=", line.coation_ids.id),
+                        ]
                     )
-            else:
-                # If no coatation_ids are set, fallback to regular price
-                line.type_of_price = "regular"
-                line.price_unit = line.product_id.list_price
-                line.price_approval_created = (
-                    False  # Reset approval flag if no coatation_ids
-                )
 
-    @api.depends("price_unit")
+                    # If any expired quotation is found, raise validation error
+                    if matching_coatation_lines:
+                        raise ValidationError(
+                            "The quotation for product '{}' has expired. Please create or select a new quotation for this client.".format(
+                                line.product_id.name
+                            )
+                        )
+
+    @api.model_create_multi
+    def create(self, vals):
+        # Ensure that expired quotations don't get linked during creation
+        if "order_line" in vals:
+            for order_line in vals["order_line"]:
+                coatation_line = self.env["coatations.lines"].browse(
+                    order_line.get("coatation_line_id")
+                )
+                if coatation_line and coatation_line.state == "expired":
+                    raise ValidationError(
+                        "The quotation for product '{}' has expired. Please create a new quotation.".format(
+                            coatation_line.product_id.name
+                        )
+                    )
+        return super(SaleOrder, self).create(vals)
+
+    def action_confirm(self):
+        """Override action_confirm to include the quotation expiry check."""
+        self._check_quotation_expiry()
+        return super(SaleOrder, self).action_confirm()
+
+    def action_quotation_send(self):
+        """Override to add quotation expiry check before sending."""
+        self._check_quotation_expiry()
+        return super(SaleOrder, self).action_quotation_send()
+
+    def action_cancel(self):
+        """Override cancel action to ensure expired quotations aren't processed."""
+        self._check_quotation_expiry()
+        return super(SaleOrder, self).action_cancel()
+
+    @api.depends("order_line.price_unit")
     def _compute_approval(self):
-        for line in self:
+        for line in self.order_line:
             if line.coation_ids:
                 # Find the matching coatation line for this product
                 coatation_line = line.coation_ids.coation_lines_ids.filtered(
@@ -117,19 +106,20 @@ class SaleOrder(models.Model):
 
                     # Check if the price is lower than the recommended price and if approval has not been created
                     if line.price_unit < recommended_price:
-                        self._create_price_approval_request(
-                            line,
-                            coatation_line.recommended_sp,
-                            line.coation_ids,
-                            line.order_id,
-                        )
-                        line.price_approval_created = True
-                        line.order_id.isApproved = (
-                            False  # for confirm button and ribbon
-                        )
+                        # checking if we are not working in cache memory to only call apporval function when saved.
+                        if not isinstance(line.id, models.NewId):
+                            self._create_price_approval_request(
+                                line,
+                                coatation_line.recommended_sp,
+                                line.coation_ids,
+                                line.order_id,
+                            )
+                        self.approved = False  # for confirm button and ribbon
+                        print("printing approval boolean!")
+                        print(line.order_id.approved)
+
                     elif line.price_unit >= recommended_price:
                         # If price is above or equal to the recommended price, reset the approval flag
-                        line.price_approval_created = False
-                        line.order_id.isApproved = (
-                            False  # for confirm button and ribbon
-                        )
+                        print("printing approval boolean")
+                        self.approved = True  # for confirm button and ribbon
+                        print(line.order_id.approved)

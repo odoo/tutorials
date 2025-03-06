@@ -30,7 +30,7 @@ class CoationsClaims(models.Model):
         string="state",
         selection=[("new", "New"), ("active", "Active"), ("expired", "Expired")],
         default="new",
-        compute="_compute_state",
+        compute="_compute_state",store=True
     )
     coation_lines_ids = fields.One2many("coatations.lines", "coation_id")
     sale_order_ids = fields.Many2many("sale.order")
@@ -53,18 +53,23 @@ class CoationsClaims(models.Model):
                         "The 'Date To' cannot be earlier than 'Date From'. Please correct the dates."
                     )
 
-    @api.depends("coation_lines_ids.status")
+    @api.depends("coation_lines_ids.status","date_to")
     def _compute_state(self):
         for record in self:
             # Flag to track the state of the lines
             has_active = False
             has_expired = False
+            print("STATE IS UPDATATING!!!!")
 
             # Loop through the coation_lines_ids to check the status
             for line in record.coation_lines_ids:
                 if line.status == "active":
+                    print("Line status are:")
+                    print(line.status)
                     has_active = True
                 elif line.status == "expired":
+                    print("parent coation has expired")
+                    print(line.status)
                     has_expired = True
 
             # Get today's date using fields.Date.today() since 'date_to' is a Date field

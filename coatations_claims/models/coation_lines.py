@@ -1,15 +1,16 @@
 from odoo import api, fields, models
-
+from odoo.exceptions import ValidationError
 
 class CoationsLines(models.Model):
     _name = "coatations.lines"
-    _description = "List of all coations"
+    _description = "List of all coatations"
+    
     product_id = fields.Many2one("product.product")
     coatation_unit_price = fields.Float()
     max_qty = fields.Integer()
     min_qty = fields.Integer()
     qty_per_order = fields.Integer()
-    recommended_sp = fields.Float()
+    recommended_sp = fields.Float(help="Keep 0 to apply last coatation selling price if not available set the price accordingly.")
     consumed = fields.Integer(compute="_compute_consumed", readonly=True)
     status = fields.Selection(
         string="state",
@@ -24,7 +25,9 @@ class CoationsLines(models.Model):
     coation_id = fields.Many2one("coatations.claims")
     internal_reference = fields.Char(compute="_compute_internal_reference", store=True)
     sale_order_ids = fields.Many2many("sale.order")
+    last_applied_price = fields.Float(compute="_compute_last_applied_price", store=True)  # Computed field for last applied price
     name = fields.Char()
+
     _sql_constraints = [
         # Ensuring max_qty is positive
         (
@@ -76,8 +79,44 @@ class CoationsLines(models.Model):
         ),
     ]
 
+    def _set_last_sales_order_price(self):
+        """Set the last applied sales order price for the product."""
+        if not self.product_id or not self.coation_id:
+            return
+        
+        # Find the last sale order line with the same product and coation_id
+        sale_order_lines = self.env["sale.order.line"].search(
+            [
+                ("product_id", "=", self.product_id.id),
+                ("order_id.partner_id", "=", self.coation_id.client_id.id),
+                ("order_id.state", "in", ["sale", "done"]),
+            ]
+        )
+
+        sorted_sale_order_lines = sorted(
+            sale_order_lines, key=lambda line: line.order_id.create_date, reverse=True
+        )
+        
+        if sorted_sale_order_lines:
+            last_sale_order_line = sorted_sale_order_lines[0]
+            last_unit_price = last_sale_order_line.price_unit
+
+            # Set the last applied price (regardless of recommended_sp)
+            self.last_applied_price = last_unit_price
+
+            # If recommended_sp is not set (i.e., it is 0), apply the last sales price
+            if self.recommended_sp == 0 or not self.recommended_sp:
+                self.recommended_sp = last_unit_price
+
+    @api.depends("product_id")
+    def _compute_last_applied_price(self):
+        """Computes the last applied price based on the product_id."""
+        for record in self:
+            record._set_last_sales_order_price()
+
     @api.model_create_multi
     def create(self, vals_list):
+        """Create method override to handle initial setup of last applied price on creation."""
         for vals in vals_list:
             vals["name"] = "Recommended selling price:" + str(vals["recommended_sp"])
         return super(CoationsLines, self).create(vals_list)
@@ -93,7 +132,6 @@ class CoationsLines(models.Model):
     @api.depends("sale_order_ids.order_line.product_uom_qty")
     def _compute_consumed(self):
         for record in self:
-            print(record.status)
             if record.status == "expired":
                 record.consumed = record.max_qty  # Skip processing for expired records
             else:
@@ -102,11 +140,7 @@ class CoationsLines(models.Model):
                     [
                         ("order_id.partner_id", "=", record.coation_id.client_id.id),
                         ("product_id", "=", record.product_id.id),
-                        (
-                            "order_id.state",
-                            "in",
-                            ["sale", "done"],
-                        ),  # Only consider confirmed or done orders
+                        ("order_id.state", "in", ["sale", "done"]),
                     ]
                 )
 
@@ -118,22 +152,34 @@ class CoationsLines(models.Model):
                 record.consumed = total_consumed
                 record.write(
                     {"consumed": total_consumed}
-                )  # added this because it helps the active status line change to expired
+                )
                 print(
                     f"Consumed for {record.product_id.name} and client {record.coation_id.client_id.name}: {total_consumed}"
                 )
 
-    @api.depends("consumed")
+    @api.depends("consumed","coation_id.state")
     def _compute_state(self):
+        print("parent coation state")
+        print(self.coation_id.state)
+        print(" ")
+        print(" ")
+        print(" ")
         for record in self:
-            if record.status == "expired":
-                continue  # Skip processing for expired records
-            # Check if consumed is properly initialized
-            if record.consumed is not None and record.max_qty is not None:
-                if record.consumed >= record.max_qty:
-                    record.status = "expired"
+            if self.coation_id.state == "active" or self.coation_id.state == "new":
+                print(record.id)
+                if record.status == "expired":
+                    continue  # Skip processing for expired records
+                # Check if consumed is properly initialized
+                if record.consumed !=0 and record.max_qty !=0:
+                    print(record.consumed)
+                    print(record.max_qty)
+                    if record.consumed >= record.max_qty:
+                        print("setting status")
+                        record.status = "expired"
+                    else:
+                        record.status = "active"
                 else:
                     record.status = "active"
             else:
-                # Default status if consumed is not initialized properly
-                record.status = "active"
+                print("setting line status to expired")
+                record.status ="expired"
