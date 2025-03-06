@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_product_kit_wizard" model="ir.actions.act_window">
+        <field name="name">Product Kit</field>
+        <field name="res_model">productkit</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="action_subproduct_wizard_view" model="ir.ui.view">
+        <field name="name">Product Kit Wizard</field>
+        <field name="model">productkit</field>
+        <field name="arch" type="xml">
+            <form string="Kitproduct">
+                <group>
+                    <field name="product_id" readonly="1"/>
+                    <field name="kit_product_ids">
+                        <list editable="bottom" create="false">
+                            <field name="kit_product_name" readonly="1"/>
+                            <field name="kit_product_qty"/>
+                            <field name="kit_product_price"/>
+                        </list>
+                    </field>
+                </group>
+            </form>
+        </field>
+    </record>
+
+</odoo>
