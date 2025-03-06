@@ -79,8 +79,8 @@ class EstateProperty(models.Model):
 
         # Log the invoice creation with property link
         self.message_post(
-                body=_("Invoice created and linked to property: <a href='#' data-oe-model='account.move' data-oe-id='%s'>%s</a>") % 
-                (invoice.id, invoice.name)
+                body=_(("Invoice created and linked to property: <a href='#' data-oe-model='account.move' data-oe-id='%s'>%s</a>") % 
+                (invoice.id, invoice.name))
             )
         return invoice
 
@@ -133,8 +133,8 @@ class EstateProperty(models.Model):
 
                 # Log the automatic acceptance
                 property.message_post(
-                    body=_("Auction ended. Highest offer (%s) from %s was automatically accepted.") % 
-                    (highest_offer.price, highest_offer.partner_id.name)
+                    body=_(("Auction ended. Highest offer (%s) from %s was automatically accepted.") % 
+                    (highest_offer.price, highest_offer.partner_id.name))
                 )
 
             else:
