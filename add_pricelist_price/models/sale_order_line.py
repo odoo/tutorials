@@ -11,9 +11,10 @@ class SaleOrderLine(models.Model):
         for line in self:
             if not line.product_id:
                 line.book_price = 0.0
-                continue
-
-            if line.order_id.pricelist_id:
-                line.book_price = line.order_id.pricelist_id._get_product_price(line.product_id, line.product_uom)
             else:
-                line.book_price = line.product_id.lst_price
+                pricelist = line.order_id.pricelist_id
+
+                line.book_price = (
+                    pricelist._get_product_price(line.product_id, line.product_uom)
+                    if pricelist else line.product_id.lst_price
+                )
