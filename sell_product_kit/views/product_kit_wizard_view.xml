@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_kit_wizard_form_view" model="ir.ui.view">
+        <field name="name">product.kit.wizard.form</field>
+        <field name="model">product.kit.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="product_id" invisible="1"/>
+                <field name="order_line_id" invisible="1"/>
+                <header>
+                <h3>Product: <field name="product_id" readonly="1" nolabel="1"/></h3>
+                </header>
+                <h4>SUB PRODUCTS</h4>
+                <field name="sub_product_kit">
+                    <list create="false" editable="bottom">
+                        <field name="sub_product_name" readonly="1"/>
+                        <field name="unit_price"/>
+                        <field name="quantity"/>
+                        <field name="subtotal" readonly="1"/>
+                    </list>
+                </field>
+                <group class="oe_subtotal_footer">
+                    <field name="sub_total" widget="monetary"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="btn-primary"/>
+                    <button special="cancel" string="Cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_product_kit_wizard" model="ir.actions.act_window">
+        <field name="name">Sub Product Configuration</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.kit.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
