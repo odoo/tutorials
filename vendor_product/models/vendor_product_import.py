@@ -37,7 +37,6 @@ class VendorProductImport(models.Model):
         for vals in vals_list:
             if vals.get('name', 'New') == 'New':
                 vals['name'] = self.env['ir.sequence'].next_by_code('vendor.product.import') or 'New'
-
         return super().create(vals_list)
 
     # Acction methods
@@ -62,7 +61,7 @@ class VendorProductImport(models.Model):
 
             # Get required field mappings from vendor template
             template_format_lines = self.vendor_template.template_formate_ids
-            field_mapping = {line.file_header: line.odoo_field.name for line in template_format_lines}
+            field_mapping = {line.file_header: line.odoo_field_id.name for line in template_format_lines}
 
             header_tuple = {header: idx for idx, header in enumerate(cell.value for cell in sheet[1])}
             missing_headers = set(field_mapping.keys()) - set(header_tuple.keys())
@@ -74,8 +73,8 @@ class VendorProductImport(models.Model):
             products_to_create = []
             products_to_update = []
             import_references = []
-            all_existing_products = self.env['product.template'].with_context(active_test=False).search([])
-            all_existing_products = {product.product_unique_id : product for product in all_existing_products}
+            all_existing_products_list = self.env['product.template'].with_context(active_test=False).search([])
+            all_existing_products = {product.product_unique_id : product for product in all_existing_products_list}
 
             for row in sheet.iter_rows(min_row=2, values_only=True):
                 product_data = {field_mapping[header]: row[header_tuple.get(header)] for header in field_mapping}

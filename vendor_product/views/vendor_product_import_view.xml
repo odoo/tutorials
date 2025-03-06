@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
      <record id="vendor_product_import_list_view" model="ir.ui.view">
         <field name="name">vendor.product.import.list.view</field>
         <field name="model">vendor.product.import</field>
@@ -25,7 +24,7 @@
                     <button name="action_reset_to_pending" type="object" string="Reset to Pending"
                         invisible="state == 'pending'"/>
                     <field name="state" widget="statusbar" options="{'clickable': '1'}"
-                        statusbar_visible="pending,processed,error" />
+                        statusbar_visible="pending,processed,error"/>
                 </header>
                 <sheet>
                     <group>
@@ -35,7 +34,7 @@
                         <group>
                             <field name="vendor_id" string="Vendor"/>
                             <field name="file_to_process" string="File To Process" filename="file_name"/>
-                            <field name="file_name" invisible="True" />
+                            <field name="file_name" invisible="True"/>
                         </group>
                         <group>
                             <field name="vendor_template" string="Vender Template Formate"/>
@@ -55,5 +54,4 @@
         <field name="res_model">vendor.product.import</field>
         <field name="view_mode">list,form</field>
     </record>
-
 </odoo>

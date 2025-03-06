@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
     <menuitem 
         id="vendor_product_template"
         name="Vendor Product Template"
@@ -16,5 +15,4 @@
         action="action_vender_product_import"
         sequence="50"
     />
-
 </odoo>

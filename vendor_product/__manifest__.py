@@ -4,9 +4,8 @@
     'depends' : [
         'product',
         'sale_management',
-        'mail'
     ],
-    'category' : 'Sales/Sales',
+    'category' : "Sales/Sales",
     'auther' : "Soham Zadafiya [soza]",
     'description' : """
         Vender can import or modify multiple product by excel file
@@ -21,5 +20,5 @@
         'views/product_template_view.xml',
         'data/ir_sequence_data.xml'
     ],
-    'license' : 'LGPL-3'
+    'license' : "LGPL-3"
 }
