@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="ir_cron_check_auction_endtime" model="ir.cron">
+        <field name="name">Auction End Time Check</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="code">model._check_auction_time_status()</field>
+        <field name="state">code</field>
+        <field name="active" eval="True"/>
+    </record>
+</odoo>
