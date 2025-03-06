@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Action for Property Tag (SUB MENU <- Settings) -->
+    <record id="product_type_kit_action" model="ir.actions.act_window">
+        <field name="name">product.type.kit.action</field>
+        <field name="res_model">product.type.kit.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'default_sale_order_line_id': active_id}</field>
+    </record>
+
     <record id="view_order_form_inherit_real_estate_auction_automation" model="ir.ui.view">
         <field name="name">view.order.form.inherit.product.type.kit</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='product_template_id']" position="after">
-               <button name="action_open_kit_products" type="object" string="Kit Products" icon="fa-cubes" invisible="(not product_is_kit) or product_state == 'sale'"/>
+               <button name="%(product_type_kit.product_type_kit_action)d" type="action" string="Kit Products" icon="fa-cubes" invisible="(not product_is_kit) or product_state == 'sale'"/>
             </xpath>
+            
+            <xpath expr="//list/field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly">kit_parent_line_id</attribute>
+            </xpath>
+
+            <xpath expr="//list/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">kit_parent_line_id</attribute>
+            </xpath>
+
+            <xpath expr="//list/field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">kit_parent_line_id</attribute>
+            </xpath>
+
+            <xpath expr="//list/field[@name='discount']" position="attributes">
+                <attribute name="readonly">kit_parent_line_id</attribute>
+            </xpath>
+
+            <xpath expr="//list/field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">kit_parent_line_id</attribute>
+            </xpath>
+
         </field>
     </record>
 </odoo>

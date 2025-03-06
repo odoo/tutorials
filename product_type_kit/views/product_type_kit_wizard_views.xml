@@ -10,14 +10,18 @@
                         <h2>Sub Products</h2>
                         <newline/>
                         <field name="sub_product_ids" nolabel="1">
-                            <list editable="bottom">
-                                <field name="product_id"/>
+                            <list editable="bottom" create="0" delete="0">
+                                <field name="product_id" required="1" readonly="1" force_save="1"/>
                                 <field name="quantity"/>
                                 <field name="price"/>
                             </list>
                         </field>
                     </group>
                 </sheet>
+                <footer>
+                    <button name="action_confirm" type="object" string="Confirm" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
             </form>
         </field>
     </record>
