@@ -1,0 +1,36 @@
+import { Component, onWillStart, onMounted, useRef } from "@odoo/owl"
+import { loadJS } from "@web/core/assets";
+
+export class PieChart extends Component{
+
+    static template = "awesome_dashboard.piechart"
+
+    setup(){
+        this.canvasRef = useRef("canvasRef")
+        onWillStart(()=> loadJS("/web/static/lib/Chart/Chart.js"))
+        onMounted(()=> this.renderChart())
+        console.log("i am from pie chart")
+    }
+
+    renderChart(){
+        if(this.chart){
+            this.chart.destroy()
+        }
+        console.log(this.props.data)
+        this.chart = new Chart(this.canvasRef.el, {
+            type: "pie",
+            data: {
+                labels: Object.keys(this.props.data),
+                datasets: [
+                    {
+                        data: Object.values(this.props.data)
+                    }
+                ]
+            }
+        });
+    }
+
+    static props = {
+        data: Object
+    }
+}
