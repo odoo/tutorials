@@ -4,79 +4,79 @@
         
         <!-- Remove Listed Badge -->
         <xpath expr="//span[contains(@class, 'badge bg-secondary')]" position="replace">
-            <span></span> <!-- Empty span instead of trying to remove -->
+            <span></span> <!-- Empty span to remove existing badge -->
         </xpath>
 
         <!-- Insert Auction Timer Badge -->
         <xpath expr="//div[contains(@class, 'bg-light rounded-3 p-3 mb-4 shadow-sm')]/div" position="inside">
             <t t-if="property.sale_type == 'auction'">
                 <span id="auction-timer"
-                    class=""
+                    class="auction-timer"
                     style="font-size: 1.5rem; font-weight: bold;"
-                    t-att-data-end-time="property.auction_end_time">
+                    t-att-data-end-time="property.auction_end_time if property.auction_end_time else ''">
                     Loading...
                 </span>
             </t>
         </xpath>
 
         <!-- Insert JavaScript to Update Auction Timer Every Second -->
-        <xpath expr="//t[@t-call='website.layout']" position="inside">
+        <xpath expr="//div[last()]" position="after">
             <script type="text/javascript">
+            <![CDATA[
                 document.addEventListener("DOMContentLoaded", function () {
-                    function updateAuctionTimer() {
-                        let timerElement = document.getElementById("auction-timer");
-                        if (!timerElement) return;
-
-                        // Fetch auction end time from the data attribute
-                        let endTimeString = timerElement.getAttribute("data-end-time");
-
-                        // Ensure the date format is valid
-                        if (!endTimeString) {
-                            timerElement.textContent = "Invalid End Time";
-                            return;
-                        }
-
-                        let endTime = new Date(endTimeString).getTime();
-                        if (isNaN(endTime)) {
-                            timerElement.textContent = "Invalid End Time";
-                            return;
-                        }
-
-                        function refreshTimer() {
-                            let now = new Date().getTime();
-                            let remainingTime = endTime - now;
-
-                           if (remainingTime &lt;= 0) {
-                                timerElement.textContent = "Auction Ended";
-                                timerElement.classList.remove("bg-danger");
-                                timerElement.classList.add("bg-dark");
-                                return;
-                            }
-
-                            let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-                            let hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                            let minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
-                            let seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
-
-                            timerElement.textContent = 
-                                (days &gt; 0 ? days + "d " : "") +
-                                (hours &gt; 0 ? hours + "h " : "") +
-                                minutes + "m " + seconds + "s";
-
-                            if (days &lt; 1) {
-                                timerElement.classList.add("text-danger");
-                            } else {
-                                timerElement.classList.remove("text-danger");
-                            }
-
-                            setTimeout(refreshTimer, 1000);
-                        }
-
-                        refreshTimer();
+            function updateAuctionTimer() {
+                let timerElement = document.getElementById("auction-timer");
+                if (!timerElement) return;
+        
+                let endTimeString = timerElement.getAttribute("data-end-time");
+                if (!endTimeString || endTimeString.trim() === "") {
+                    timerElement.textContent = "Invalid End Time";
+                    return;
+                }
+        
+                let endTime = new Date(endTimeString + "Z").getTime();
+                if (isNaN(endTime)) {
+                    timerElement.textContent = "Invalid End Time";
+                    return;
+                }
+        
+                function refreshTimer() {
+                    let now = new Date().getTime();
+                    let remainingTime = endTime - now;
+        
+                    if (remainingTime <= 0) {
+                        timerElement.textContent = "Auction Ended";
+                        timerElement.classList.remove("text-danger");
+                        timerElement.classList.add("text-dark");
+                        return;
                     }
+        
+                    let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+                    let hours = Math.floor((remainingTime / (1000 * 60 * 60)) % 24);
+                    let minutes = Math.floor((remainingTime / (1000 * 60)) % 60);
+                    let seconds = Math.floor((remainingTime / 1000) % 60);
+        
+                    timerElement.textContent =
+                        (days > 0 ? days + "d " : "") +
+                        (hours > 0 ? hours + "h " : "") +
+                        minutes + "m " + seconds + "s";
+        
+                    if (days < 1) {
+                        timerElement.classList.add("text-danger");
+                    } else {
+                        timerElement.classList.remove("text-danger");
+                    }
+        
+                    setTimeout(refreshTimer, 1000);
+                }
+        
+                refreshTimer();
+            }
+        
+            updateAuctionTimer();
+            });
 
-                    updateAuctionTimer();
-                });
+            ]]>
             </script>
         </xpath>
     </template>

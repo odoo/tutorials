@@ -1,20 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-        <!-- Inherit Estate Property Offer List View -->
-        <record id="view_estate_property_offer_list_auction" model="ir.ui.view">
-            <field name="name">estate.property.offer.list.auction</field>
-            <field name="model">estate.property.offer</field>
-            <field name="inherit_id" ref="estate.view_estate_property_offer_list"/>
+        <!-- Inherit the main property form (estate.view_estate_property_form) -->
+        <record id="view_estate_property_form_inherit_auction_offers" model="ir.ui.view">
+            <field name="name">estate.property.form.inherit.auction.offers</field>
+            <field name="model">estate.property</field>
+            <field name="inherit_id" ref="estate.view_estate_property_form"/>
             <field name="arch" type="xml">
 
-               <xpath expr="//button[@name='action_accepted']" position="attributes">
-                    <attribute name="invisible">is_auction</attribute>
+                <!-- Replace the Accept button to hide when the property is an auction or status is accepted/cancelled -->
+                <xpath expr="//page[field[@name='offer_ids']]/field[@name='offer_ids']/list/button[@name='action_accepted']"
+                       position="replace">
+                    <button name="action_accepted" type="object" icon="fa-check" string="Accept"
+                        invisible="(status in ['accepted','cancelled']) or is_auction_property"/>
                 </xpath>
 
-                <!-- Hide Refuse Button when Property is an Auction -->
-                <xpath expr="//button[@name='action_refused']" position="attributes">
-                    <attribute name="invisible">is_auction</attribute>
+                <!-- Replace the Refuse button to hide when the property is an auction or status is refused/cancelled -->
+                <xpath expr="//page[field[@name='offer_ids']]/field[@name='offer_ids']/list/button[@name='action_refused']"
+                       position="replace">
+                    <button name="action_refused" type="object" icon="fa-times" string="Refuse"
+                        invisible="(status in ['refused','cancelled']) or is_auction_property"/>
                 </xpath>
 
             </field>

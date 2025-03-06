@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"id_estate_auction_stage_user","Estate Auction Stage: User Access","model_estate_auction_stage","base.group_user",1,0,0,0

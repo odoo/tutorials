@@ -3,68 +3,129 @@
     <template id="property_listing_template_inherit" inherit_id="estate.property_listing_template">
 
         <xpath expr="//div[contains(@class, 'property-item')]" position="attributes">
-            <attribute name="t-att-data-auction">'true' if property.sale_type == 'auction' else 'false'</attribute>
+            <attribute name="t-att-data-auction">'true' if property.auction_stage == 'auction' else
+                'false'</attribute>
+            <attribute name="t-att-data-price">property.expected_price</attribute>
         </xpath>
         <xpath expr="//button[@id='filter-btn']" position="after">
             <!-- Auction Filter Button -->
-            <button class="btn btn-outline-dark px-4 rounded-pill" id="auction-filter-btn">
-                <i class="fa fa-gavel me-2"></i> Auction Only
-            </button>
+            <div class="filter">
+                <button class="btn btn-outline-dark px-4 rounded-pill" id="auction-filter-btn">
+                    <i class="fa fa-gavel me-2"></i> Auction </button>
+
+
+                <div id="price-filter-panel margin-top: 10px;" style="display: contents;">
+                    <input type="number" id="min-price" placeholder="Min Price" class="form-control"
+                        style="display: inline-block; width: 20%;margin-left: 2%;" />
+                    <input type="number" id="max-price" placeholder="Max Price" class="form-control"
+                        style="display: inline-block; width: 20%;margin-left: 2%;" />
+                    <button class="btn btn-outline-dark px-4 rounded-pill" id="apply-price-filter-btn"
+                        style="margin-left: 2%;">
+                        <i class="fa fa-filter me-2"></i> Apply </button>
+                </div>
+            </div>
         </xpath>
 
         <xpath expr="//script" position="before">
             <script>
-                document.addEventListener("DOMContentLoaded", function() {
-                    let auctionFilterBtn = document.getElementById("auction-filter-btn");
-                    let propertyItems = document.querySelectorAll(".property-item");
+                document.addEventListener("DOMContentLoaded", function () {
+                    const auctionFilterBtn = document.getElementById("auction-filter-btn");
+                    const minPriceInput = document.getElementById("min-price");
+                    const maxPriceInput = document.getElementById("max-price");
+                    const applyPriceBtn = document.getElementById("apply-price-filter-btn");
+                    const propertyItems = document.querySelectorAll(".property-item");
 
-                    auctionFilterBtn.addEventListener("click", function() {
-                        let isActive = auctionFilterBtn.classList.contains("active");
+                    // State for filters
+                    let auctionActive = false;
+                    let minPrice = 0;
+                    let maxPrice = Infinity;
 
-                        if (isActive) {
-                            // Reset: Show all properties
-                            propertyItems.forEach(item => item.style.display = "block");
-                            auctionFilterBtn.classList.remove("active");
-                            auctionFilterBtn.style.backgroundColor = "";
-                            auctionFilterBtn.style.color = "";
-                        } else {
-                            // Apply filter: Show only auction properties
-                            propertyItems.forEach(function(item) {
-                                let isAuction = item.getAttribute("data-auction") === "true";
-                                item.style.display = isAuction ? "block" : "none";
-                            });
+                    function applyFilters() {
+                        // Get updated price values
+                        let minPriceValue = minPriceInput.value.trim();
+                        let maxPriceValue = maxPriceInput.value.trim();
 
-                            // Activate button (darker color)
-                            auctionFilterBtn.classList.add("active");
-                            auctionFilterBtn.style.backgroundColor = "#875A7B"; /* Odoo Primary Button Color */
-                            auctionFilterBtn.style.color = "white";
-                        }
+                        minPrice = minPriceValue !== "" ? parseFloat(minPriceValue) : 0;
+                        maxPrice = maxPriceValue !== "" ? parseFloat(maxPriceValue) : Infinity;
+
+                        propertyItems.forEach(item =&gt; {
+                            // Retrieve attributes from elements
+                            const isAuction = item.getAttribute("data-auction") === "true";
+                            const priceAttr = item.getAttribute("data-price");
+                            const price = priceAttr ? parseFloat(priceAttr) : 0; // Ensure it's a valid number
+
+                            let showItem = true;
+
+                            // Apply Auction filter
+                            if (auctionActive &amp;&amp; !isAuction) {
+                                showItem = false;
+                            }
+
+                            // Apply Price filter
+                            if (price &lt; minPrice || price &gt; maxPrice) {
+                                showItem = false;
+                            }
+
+                            // Apply final visibility
+                            item.style.display = showItem ? "block" : "none";
+                        });
+                    }
+
+                    // Auction Filter Button - Toggle Auction Filter
+                    auctionFilterBtn.addEventListener("click", function () {
+                        auctionActive = !auctionActive; // toggle
+                        auctionFilterBtn.classList.toggle("active", auctionActive);
+                        auctionFilterBtn.style.backgroundColor = auctionActive ? "#875A7B" : "";
+                        auctionFilterBtn.style.color = auctionActive ? "white" : "";
+
+                        applyFilters(); // Apply filters immediately
                     });
+
+                    // Apply filters when clicking the "Apply" button
+                    applyPriceBtn.addEventListener("click", applyFilters);
                 });
+
             </script>
+
             <style>
-                /* Ensure styles override Bootstrap */
-                #auction-filter-btn:hover,
-                #auction-filter-btn.active {
-                    background-color: #875A7B !important; /* Odoo Primary Button Color */
-                    color: white !important;
-                    border-color: #875A7B !important;
-                }
+            #auction-filter-btn:hover,
+            #auction-filter-btn.active {
+                background-color: #875A7B !important;
+                color: white !important;
+                border-color: #875A7B !important;
+            }
 
-                /* Force Bootstrap override using higher specificity */
-                .btn.auction-filter-btn:hover {
-                    background-color: #875A7B !important;
-                    color: white !important;
-                    border-color: #875A7B !important;
-                }
+            #price-filter-btn:hover,
+            #price-filter-btn.active {
+                background-color: #875A7B !important;
+                color: white !important;
+                border-color: #875A7B !important;
+            }
+            #apply-price-filter-btn:hover,
+            #apply-price-filter-btn.active {
+                background-color: #875A7B !important;
+                color: white !important;
+                border-color: #875A7B !important;
+            }
 
-                /* When button is active, keep the color */
-                .btn.auction-filter-btn.active {
-                    background-color: #875A7B !important;
-                    color: white !important;
-                    border-color: #875A7B !important;
-                }
+            #apply-price-filter-btn:hover,
+            #apply-price-filter-btn.active {
+                background-color: #875A7B !important;
+                color: white !important;
+                border-color: #875A7B !important;
+            }
+            .filter{
+                display: flex;
+                align-items: center;
+                width: 50%;
+            }
+            .price-filter-panel{
+                display: contents;
+            }
+
+
             </style>
         </xpath>
+
     </template>
 </odoo>

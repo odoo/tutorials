@@ -12,11 +12,11 @@ class EstateAuctionOffer(http.Controller):
 
     @http.route('/submit-offer/<int:property_id>', type='http', auth='user', website=True, methods=['POST'])
     def submit_offer(self, property_id, **kwargs):
-        _logger.info("📌 Received Offer Submission for Property ID: %s", property_id)
+        _logger.info(" Received Offer Submission for Property ID: %s", property_id)
         _logger.info("🔹 Request Data: %s", kwargs)
 
         if not request.env.user:
-            _logger.error("❌ User not authenticated.")
+            _logger.error(" User not authenticated.")
             return request.redirect('/')
 
         # Extract form values
@@ -24,7 +24,7 @@ class EstateAuctionOffer(http.Controller):
         offer_price = kwargs.get('offer_price')
 
         if not offer_price:
-            _logger.error("❌ Offer price is missing!")
+            _logger.error(" Offer price is missing!")
             return request.redirect('/')
 
         offer_price = float(offer_price)
@@ -32,7 +32,7 @@ class EstateAuctionOffer(http.Controller):
         # Get the property
         property = request.env['estate.property'].sudo().browse(property_id)
         if not property.exists():
-            _logger.error("❌ Property not found!")
+            _logger.error("Property not found!")
             return request.redirect('/')
 
         # Create offer
@@ -42,6 +42,6 @@ class EstateAuctionOffer(http.Controller):
             'price': offer_price,
         })
 
-        _logger.info("✅ Offer Successfully Created: %s", offer.id)
+        _logger.info("Offer Successfully Created: %s", offer.id)
 
         return request.render('estate_auction.estate_auction_offer_success', {'property': property, 'offer': offer})
