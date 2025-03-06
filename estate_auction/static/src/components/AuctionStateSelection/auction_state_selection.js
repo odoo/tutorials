@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { _t } from "@web/core/l10n/translation";
 import {
     StateSelectionField,
@@ -27,17 +25,17 @@ export class AuctionStateSelection extends StateSelectionField {
         this.icons = {
             "template": "fa fa-circle text-primary fa-2x",
             "auction": "fa fa-bullhorn fa-2x",
-            "sold": "fa fa-check-circle fa-2x"
+            "done": "fa fa-check-circle fa-2x"
         };
         this.colorIcons = {
             "template": "text-secondary",
             "auction": "text-warning",
-            "sold": "text-success"
+            "done": "text-success"
         };
         this.colorButton = {
             "template": "btn-outline-secondary",
             "auction": "btn-outline-warning",
-            "sold": "btn-outline-success"
+            "done": "btn-outline-success"
         };
         if (this.props.viewType !== 'form') {
             super.setup();

@@ -5,17 +5,17 @@ class EstateWebsiteInherit(EstateWebsite):
 
     @route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
     def list_properties(self, page=1, **kwargs):
-        
-        response = super().list_properties(page, **kwargs)
-        values = response.qcontext
 
-        if kwargs.get('selling_type'):
-            selling_type = kwargs.get('selling_type')
-            values['properties'] = filter(lambda prop : prop.selling_type == selling_type, values['properties'])
+        selling_type = kwargs.get('selling_type')
+        domain = []
 
-        return request.render('estate.properties_list_page', values)
+        if selling_type:
+            domain.append(('selling_type', '=', selling_type))
 
-    
+        kwargs['domain'] = domain
+
+        return super().list_properties(**kwargs)
+
     @route("/createoffer/<model('estate.property'):property>", type='http', auth='public', website=True)
     def create_offer(self, property, **kwargs):
         return request.render('estate_auction.add_offer_page', {'property': property})
@@ -33,21 +33,3 @@ class EstateWebsiteInherit(EstateWebsite):
             })
 
         return request.render('estate_auction.congratulation_page')
-
-
-
-    # @route("/property/<model('estate.property'):property>", type='http', auth='public', website=True)
-    # def property_details(self, property, **kwargs):
-    #     return {'property': property}
-
-
-# class EndDate(Controller):
-#     @route("/property/<model('estate.property'):property>", type='http', auth='public', website=True)
-#     def property_details(self, property, **kwargs):
-#         return property.auction_end_date
-
-
-    
-
-
-

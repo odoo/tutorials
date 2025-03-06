@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <odoo>
 
     <record id="estate_property_view_form_inherit" model="ir.ui.view">
@@ -9,15 +8,12 @@
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_sold']" position="before" >
                 <button name="start_auction" type="object" string="Start Auction" class="oe_highlight"
-                        invisible="(auction_state in ['auction', 'sold']) or (selling_type == 'regular')" />
+                        invisible="(auction_state in ['auction', 'done']) or (selling_type == 'regular') or (state not in ['new', 'offer_received'])" />
             </xpath>
-            <!-- <xpath expr="//button[@name='action_sold']" position="replace" >
-                <button name="action_sold" type="object" string="Sold" class="oe_highlight"
-                        invisible="(auction_state in ['auction', 'sold']) or (selling_type == 'auction')" />
-            </xpath> -->
             <xpath expr="//group[@name='property_name']" position="before">
                 <group>
-                    <field name="auction_state" nolabel="1" widget="auction_state_selection" class="d-inline-block w-auto float-end oe_stat_button" />
+                    <field name="auction_state" nolabel="1" widget="auction_state_selection" class="d-inline-block w-auto float-end oe_stat_button"
+                            invisible="selling_type == 'regular'" />
                 </group>
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
@@ -33,6 +29,14 @@
                     <field name="auction_highest_bidder" readonly="1"/>
                 </group>
             </xpath>
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box" invisible="state != 'sold'">
+                    <button name="action_view_invoice" type="object" icon="fa-file"
+                        class="oe_button_box ">
+                        <span class="o_stat_text p-1">Invoice</span>
+                    </button>
+                </div>            
+            </xpath>
         </field>
     </record>
 
@@ -43,13 +47,11 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="replace">
                 <div class="d-flex justify-content-between align-items-center">
-                    <field name="name" class="fw-bold fs-5" />
-                    <field name="auction_state" widget="auction_state_selection"/>
+                    <field name="name" class="fw-bold fs-5 h3" />
+                    <field name="auction_state" widget="auction_state_selection" invisible="selling_type == 'regular'"/>
                 </div>
             </xpath>
         </field>
     </record>
-
-
 
 </odoo>

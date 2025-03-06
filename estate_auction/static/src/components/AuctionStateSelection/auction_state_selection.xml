@@ -22,7 +22,7 @@
                 </button>
                 <button t-else=""
                         class="o_state_button btn rounded-pill"
-                        t-attf-class="{{ currentValue == '03_sold' ? 'btn-success' : 'btn-outline-secondary' }}"
+                        t-attf-class="{{ currentValue == '03_done' ? 'btn-success' : 'btn-outline-secondary' }}"
                         t-att-class="{'bg-view border': state.isStateButtonHighlighted}"
                         t-on-click="toggleState"
                         t-on-mouseenter="onMouseEnterStateButton"
@@ -52,7 +52,7 @@
                 <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}"/>
             </div>
             <div t-else="" class="d-flex align-items-center">
-                <t t-if="currentValue != '03_sold'">
+                <t t-if="currentValue != '03_done'">
                     <span t-attf-class="o_status_label" t-out="label"/>
                 </t>
                 <t t-else="">

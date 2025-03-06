@@ -11,6 +11,8 @@ class EstateProperty(models.Model):
         if not (self.env.user.has_group('estate.estate_group_user') or self.env.user.has_group('estate.estate_group_manager')):
             raise exceptions.UserError(("Only Property Agent and Manager Can create invoice"))
 
+        super().action_sold()
+
         for property in self:
             if not property.buyer_id:
                 raise exceptions.UserError("Property does not have a customer!")
@@ -31,8 +33,12 @@ class EstateProperty(models.Model):
                         "name" : "administrative fees",
                         "quantity": 1,
                         "price_unit": 100,
+                    }),
+                    Command.create({
+                        "name": property.name,
+                        "quantity": 1,
+                        "price_unit": property.selling_price,
                     })
                 ],
             }
-            invoice = self.env['account.move'].sudo().create(invoice_values)
-            return super().action_sold()
+            return self.env['account.move'].sudo().create(invoice_values)

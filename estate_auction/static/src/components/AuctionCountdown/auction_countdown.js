@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import publicWidget from "@web/legacy/js/public/public_widget";
 
 publicWidget.registry.AuctionCountdown = publicWidget.Widget.extend({
@@ -19,7 +17,9 @@ publicWidget.registry.AuctionCountdown = publicWidget.Widget.extend({
         const endTime = new Date(this.auctionEndTime).getTime();
 
         this.interval = setInterval(function () {
-            const now = new Date().getTime();
+            const nowIst = new Date();  
+            const nowUtc = new Date(nowIst.getTime() - (5.5 * 60 * 60 * 1000));  
+            const now = nowUtc.getTime();
             const distance = endTime - now;
 
             if (distance <= 0) {

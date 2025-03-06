@@ -4,6 +4,7 @@
         id="estate_menu_root"
         name="Real Estate"
         sequence="5"
+        web_icon="estate,static/description/icon.png"
     />
 
     <menuitem
@@ -46,7 +47,5 @@
         parent="estate.estate_setting_menu"
         action="estate_config_settings_action"
     />
-
-
 
 </odoo>

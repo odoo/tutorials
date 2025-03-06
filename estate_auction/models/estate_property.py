@@ -1,8 +1,10 @@
-from odoo import api, fields, models
+from odoo import api, Command, fields, models
+from odoo.exceptions import UserError
 from datetime import datetime
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
+
 
     selling_type = fields.Selection(
         selection = [
@@ -15,7 +17,7 @@ class EstateProperty(models.Model):
     auction_state = fields.Selection([
         ('template', 'Template'),
         ('auction', 'Auction'),
-        ('sold', 'Sold')
+        ('done', 'Done')
     ],
     string='Auction State',
     default='template',
@@ -41,19 +43,41 @@ class EstateProperty(models.Model):
         properties = self.search([('selling_type', '=', 'auction'), ('auction_state', '=', 'auction'), ('state', 'in', ['new', 'offer_received'])])
         for property in properties:
             if(datetime.now() > property.auction_end_date):
-                highest_offer = max(property.offer_ids, key=lambda offer:offer.price)
-                for offer in property.offer_ids:
-                    if offer != highest_offer:
-                        offer.status = 'refused'
+                property.auction_state = 'done'
+                if property.offer_ids:
+                    highest_offer = max(property.offer_ids, key=lambda offer:offer.price)
+                    template = self.env.ref('estate_auction.auction_result_email_template')
+                    property.write({
+                        'buyer_id' : highest_offer.partner_id,
+                        'selling_price' : highest_offer.price,
+                        'state' : 'offer_accepted'
+                    })
 
-                property.write({
-                    'auction_state' : 'sold',
-                    'buyer_id' : highest_offer.partner_id,
-                    'selling_price' : highest_offer.price,
-                    'state' : 'offer_accepted'
-                })
-                highest_offer.status = 'accepted'
-                
+                    for offer in property.offer_ids:
+                        offer.status = 'refused' if offer != highest_offer else 'accepted'
+                        template.send_mail(offer.id, force_send=True)
+
     def start_auction(self):
         for record in self:
+            if not record.auction_end_date:
+                raise UserError("Please Enter Auction End Date First")
             record.auction_state = 'auction'
+
+
+    def action_sold(self):
+        invoice = super().action_sold()
+        invoice.property_id = self.id
+        return invoice
+
+    def action_view_invoice(self):
+        self.ensure_one()
+        invoice = self.env['account.move'].search(
+            [('property_id', '=', self.id)],
+        )
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Property Invoice',
+            'res_model': 'account.move',
+            'view_mode': 'list,form',
+            'domain': [('id', '=', invoice.id)],
+        }
