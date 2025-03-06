@@ -35,7 +35,11 @@
                     <field name="status" widget="statusbar"/>
                 </header>
                 <sheet>
-                    <h1><field name="name"/></h1>
+                    <group name="name">
+                        <group>
+                            <h1><field name="name"/></h1>
+                        </group>
+                    </group>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <field name="image" string="" widget='image' optional="show" class="oe_avatar" style="max-width: 250px; max-height: 250px;"/>
                     <group>
@@ -52,16 +56,18 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                            <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area" invisible = 'not garden'/>
-                                <field name="garden_orientation" invisible = 'not garden'/>
-                                <field name="total_area"/>
+                            <group name="description">
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible = 'not garden'/>
+                                    <field name="garden_orientation" invisible = 'not garden'/>
+                                    <field name="total_area"/>
+                                </group>
                             </group>
                         </page>
                         <page string="Offers">
