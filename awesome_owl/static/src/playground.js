@@ -3,7 +3,7 @@
 import { Component, markup, useState } from "@odoo/owl";
 import { Counter } from "./counter/counter";
 import { Card } from "./cards/card";
-import { TodoList } from "./todo_list/todo_list";
+import { TodoList } from "./to-do/todo_list";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
@@ -14,8 +14,8 @@ export class Playground extends Component {
         this.sum = useState({ value: 2 });
     }
 
-    incrementSum(){
+    incrementSum = () => {
         this.sum.value++;
-    }
+    };
 }
     
