@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="sale_order_view_list" model="ir.ui.view">
+        <field name="name">sale.order.view.list.inherit.order_lines</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//field[@name='order_line']/list/field[@name='product_uom_qty']"
+                position="before">
+                <button name="open_wizard" type="object" icon="fa-share-alt" title="Button"/>
+            </xpath>
+            <xpath
+                expr="//field[@name='order_line']/list/field[@name='price_subtotal']"
+                position="before">
+                <field name="distributed_price_tags" widget="many2many_tags"
+                    options="{'color_field': 'color'}" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
