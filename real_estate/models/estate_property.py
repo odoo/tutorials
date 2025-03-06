@@ -1,11 +1,11 @@
-from odoo import models, fields
+from odoo import models, fields ,api
 from datetime import date
 
 class EstateProperty(models.Model):
-    _name = "estate.property" 
+    _name = "estate.property"
     _description = "Real Estate Property"
 
-    name = fields.Char(string="Title", required=True)
+    name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(string="Available From", default=lambda self: date.today())
@@ -17,33 +17,44 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-
-    garden_orientation = fields.Selection(
-        [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
-        string="Garden Orientation"
-    )
+    total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True)
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store=True)
 
 
-# id                 | integer                     |           | not null | nextval('estate_property_id_seq'::regclass)
-# create_uid         | integer                     |           |          |
-# create_date        | timestamp without time zone |           |          |
-# write_uid          | integer                     |           |          |
-# write_date         | timestamp without time zone |           |          |
-# name               | character varying           |           |          |
-# description        | text                        |           |          |
-# postcode           | character varying           |           |          |
-# date_availability  | date                        |           |          |
-# expected_price     | double precision            |           |          |
-# selling_price      | double precision            |           |          |
-# bedrooms           | integer                     |           |          |
-# living_area        | integer                     |           |          |
-# facades            | integer                     |           |          |
-# garage             | boolean                     |           |          |
-# garden             | boolean                     |           |          |
-# garden_area        | integer                     |           |          |
-# garden_orientation | character varying           |           |          |
-# Indexes:
-#     "estate_property_pkey" PRIMARY KEY, btree (id)
-# Foreign-key constraints:
-#     "estate_property_create_uid_fkey" FOREIGN KEY (create_uid) REFERENCES res_users(id) ON DELETE SET NULL
-#     "estate_property_write_uid_fkey" FOREIGN KEY (write_uid) REFERENCES res_users(id) ON DELETE SET NULL
+    garden_orientation = fields.Selection([
+        ('north', 'North'),
+        ('south', 'South'),
+        ('east', 'East'),
+        ('west', 'West'),
+    ], string="Garden Orientation")
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+
+
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+     
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation= 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False

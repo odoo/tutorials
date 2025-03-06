@@ -1,13 +1,20 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="estate_properties_action" model="ir.actions.act_window">
-        <field name="name">Property action</field>
+        <field name="name">Property type</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="view_estate_property_tree" model="ir.ui.view">
-        <field name="name">estate.property.tree</field>
+    <record id="estate_properties_action_tags" model="ir.actions.act_window">
+        <field name="name">Property tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list>
@@ -31,67 +38,104 @@
             <form string="Estate Property">
                 <sheet>
                     <group>
+                        <field name="name" />
+                        <field name="tag_ids" widget="many2many_tags" />
+
+                    </group>
+                    <group>
                         <group>
-                            <field name="name" />
+
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
+
+                            <field name="best_price" readonly="1" />
+
                             <field name="selling_price" />
 
                         </group>
                     </group>
-                    <notebook>
-                    
-                        <page string="Description">
+                    <group>
+                        <notebook>
 
-                        <group>
-                        <field name="description" />
-                        <field name="bedrooms" />
-                        <field name="living_area" />
-                        <field name="facades" />
-                        <field name="garage" />
-                        <field name="garden" />
-                        <field name="garden_area" />
-                        <field name="garden_orientation" />
+                            <page string="Description">
+
+                                <group>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" />
+                                    <field name="garden_orientation" />
+                                    <field name="total_area" />
+                                </group>
+                            </page>
+
+
+                            <page string="other info">
+
+                                <group>
+                                    <field name="salesperson_id" />
+                                    <field name="buyer_id" />
+
+                                </group>
+
+                            </page>
+
+
+                            <page string="Offers">
+                                <field name="offer_ids">
+                                    <list editable="bottom">
+                                        <field name="price" />
+                                        <field name="partner_id" />
+                                        <field name="validity" />
+                                        <field name="date_deadline" />
+                                        <field name="status" />
+                                    </list>
+                                </field>
+                            </page>
+
+                        </notebook>
+
                     </group>
-                    </page>
-                        
-                    </notebook>
-                    
+
+
                 </sheet>
             </form>
         </field>
     </record>
 
 
-   <record id="view_estate_property_search" model="ir.ui.view">
-    <field name="name">estate.property.search</field>
-    <field name="model">estate.property</field>
-    <field name="arch" type="xml">
-        <search string="Estate Property Search">
-            <field name="name" />
-            <field name="postcode" />
-            <field name="expected_price" />
-            <field name="selling_price" />
-            <field name="date_availability" />
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Estate Property Search">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
 
-            <group expand="0" string="Group By">
-                <filter name="group_by_postcode" string="Postcode"
-                    context="{'group_by': 'postcode'}" />
-            </group>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_postcode" string="Postcode"
+                        context="{'group_by': 'postcode'}" />
+                </group>
 
-            <filter name="available" string="Available" domain="[('expected_price', '>', 0)]" />
-            <filter name="unavailable" string="Unavailable" domain="[('expected_price', '=', 0)]" />
+                <filter name="available" string="Available" domain="[('expected_price', '>', 0)]" />
+                <filter name="unavailable" string="Unavailable"
+                    domain="[('expected_price', '=', 0)]" />
 
-            <!-- 🔹 New Filter: Show Properties Available Today -->
-            <filter name="available_today" string="Available Today"
-                domain="[('date_availability', '=', context_today())]" />
-        </search>
-    </field>
-</record>
-
+                <!-- 🔹 New Filter: Show Properties Available Today -->
+                <filter name="available_today" string="Available Today"
+                    domain="[('date_availability', '=', context_today())]" />
+            </search>
+        </field>
+    </record>
 
 
 </odoo>

@@ -1,9 +1,0 @@
-<!-- <odoo>
-    <data>
-        
-        <record id="group_estate_manager" model="res.groups">
-            <field name="name">Estate Manager</field>
-            <field name="category_id" ref="base.module_category_sales_management"/>
-        </record>
-    </data>
-</odoo> -->

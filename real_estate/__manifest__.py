@@ -6,15 +6,16 @@
     'category': 'Sales',
     'author': 'Ajay Karma',
     'license': 'LGPL-3',
-    'depends': ['base'], 
+    'depends': ['base'],
     'installable': True,
     'application': True,
     'data': [
-     
-     'security/ir.model.access.csv',
-     'views/estate_property_views.xml',
-     'views/estate_menus.xml',
-    
-],
-    'auto-install':True,
+        'security/ir.model.access.csv',
+        'views/estate_menus.xml',
+        'views/estate_property_views.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_tag.xml',
+        'views/estate_property_offer.xml',
+    ],
+    'auto-install': True,
 }

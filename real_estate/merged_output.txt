@@ -1,0 +1,366 @@
+
+
+# ----- Start of __init__.py ----- #
+from . import models
+
+# ----- End of __init__.py ----- #
+
+
+# ----- Start of __manifest__.py ----- #
+{
+    'name': 'Real Estate',
+    'version': '1.0',
+    'summary': 'Manage real estate properties',
+    'description': 'This module helps in listing and managing real estate properties.',
+    'category': 'Sales',
+    'author': 'Ajay Karma',
+    'license': 'LGPL-3',
+    'depends': ['base'],
+    'installable': True,
+    'application': True,
+    'data': [
+        'security/ir.model.access.csv',
+        'views/estate_menus.xml',
+        'views/estate_property_views.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_tag.xml',
+        'views/estate_property_offer.xml',
+    ],
+    'auto-install': True,
+}
+
+
+# ----- End of __manifest__.py ----- #
+
+
+# ----- Start of merge.py ----- #
+import os
+
+def merge_all_files_in_folder(folder_path="."):
+    """Recursively merge all text files inside the current folder into one file."""
+    output_file = os.path.join(folder_path, "merged_output.txt")  
+
+    with open(output_file, "w", encoding="utf-8") as outfile:
+        for root, _, files in os.walk(folder_path):
+            for file in sorted(files):
+                file_path = os.path.join(root, file)
+
+                # खुद output file को skip करें
+                if file == "merged_output.txt":
+                    continue  
+
+                # सिर्फ text-based files ही merge करें (case-insensitive check)
+                if not file.lower().endswith((".txt", ".py", ".xml", ".csv", ".md", ".json", ".html", ".css", ".js")):
+                    print(f"⚠️ Skipping non-text file: {file_path}")
+                    continue
+
+                try:
+                    with open(file_path, "r", encoding="utf-8", errors="ignore") as infile:
+                        outfile.write(f"\n\n# ----- Start of {file} ----- #\n")
+                        for line in infile:  # Memory-efficient reading
+                            outfile.write(line)
+                        outfile.write(f"\n\n# ----- End of {file} ----- #\n")
+                except Exception as e:
+                    print(f"❌ Error reading {file_path}: {e}")
+
+    print(f"✅ All files merged into: {output_file}")
+
+# Run the script inside the current folder
+merge_all_files_in_folder(os.getcwd())  
+
+
+# ----- End of merge.py ----- #
+
+
+# ----- Start of __init__.py ----- #
+from . import estate_property
+from . import estate_tag
+from . import estate_type
+from . import estate_offer
+
+
+
+# ----- End of __init__.py ----- #
+
+
+# ----- Start of estate_offer.py ----- #
+from odoo import models, fields
+
+class EstatePropertyOffer(models.Model):
+    _name = "estate.property.offer"
+    _description = "Property Offer"
+
+    price = fields.Float()
+    status = fields.Selection([
+        ('accepted', 'Accepted'),
+        ('refused', 'Refused')
+    ], copy=False)
+    partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", required=True)
+
+
+# ----- End of estate_offer.py ----- #
+
+
+# ----- Start of estate_property.py ----- #
+from odoo import models, fields
+from datetime import date
+
+class EstateProperty(models.Model):
+    _name = "estate.property"
+    _description = "Real Estate Property"
+
+    name = fields.Char(string="Title", required=True)
+    description = fields.Text()
+    postcode = fields.Char()
+    date_availability = fields.Date(string="Available From", default=lambda self: date.today())
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float()
+    bedrooms = fields.Integer()
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+
+    garden_orientation = fields.Selection([
+        ('north', 'North'),
+        ('south', 'South'),
+        ('east', 'East'),
+        ('west', 'West'),
+    ], string="Garden Orientation")
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+
+# ----- End of estate_property.py ----- #
+
+
+# ----- Start of estate_tag.py ----- #
+from odoo import models, fields
+
+class EstatePropertyTag(models.Model):
+    _name = "estate.property.tag"
+    _description = "Property Tag"
+
+    name = fields.Char(required=True)
+
+
+# ----- End of estate_tag.py ----- #
+
+
+# ----- Start of estate_type.py ----- #
+from odoo import models, fields
+
+class EstatePropertyType(models.Model):
+    _name = "estate.property.type"
+    _description = "Property Type"
+
+    name = fields.Char(required=True)
+
+
+# ----- End of estate_type.py ----- #
+
+
+# ----- Start of ir.model.access.csv ----- #
+
+d,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_base_group_users,base_group_users,model_estate_properties,base.group_user,1,1,1,1
+estate.access_estate_property_type,access_estate_property_type,estate.model_estate_property_type,base.group_user,1,1,1,1
+estate.access_estate_property_tag,access_estate_property_tag,estate.model_estate_property_tag,base.group_user,1,1,1,1
+estate.access_estate_property_offer,access_estate_property_offer,estate.model_estate_property_offer,base.group_user,1,1,1,1
+
+# ----- End of ir.model.access.csv ----- #
+
+
+# ----- Start of estate_menus.xml ----- #
+<?xml version="1.0"?>
+    <odoo>
+
+        <menuitem id="home_real_estate" name="Real Estate">
+            <menuitem id="property_first_level_menu" name="setting">
+                <menuitem id="property_model_menu_action" action="estate_properties_action"/>
+                <menuitem id="property_model_menu_action_tags" action="estate_properties_action_tags"/>       
+            </menuitem>
+        </menuitem>
+
+    </odoo>
+
+# ----- End of estate_menus.xml ----- #
+
+
+# ----- Start of estate_property_offer.xml ----- #
+<odoo>
+<record id="view_estate_property_type_list" model="ir.ui.view">
+    <field name="name">estate.property.type.list</field>
+    <field name="model">estate.property.type</field>
+    <field name="arch" type="xml">
+        <list>
+            <field name="name"/>
+        </list>
+    </field>
+</record>
+</odoo>
+
+# ----- End of estate_property_offer.xml ----- #
+
+
+# ----- Start of estate_property_tag.xml ----- #
+<odoo>
+    <record id="view_estate_property_tag_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+</odoo>
+
+
+# ----- End of estate_property_tag.xml ----- #
+
+
+# ----- Start of estate_property_type_views.xml ----- #
+<odoo>
+    <record id="view_estate_property_type_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+</odoo>
+
+
+# ----- End of estate_property_type_views.xml ----- #
+
+
+# ----- Start of estate_property_views.xml ----- #
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_properties_action" model="ir.actions.act_window">
+        <field name="name">Property type</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+     <record id="estate_properties_action_tags" model="ir.actions.act_window">
+        <field name="name">Property tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
+
+            </list>
+        </field>
+    </record>
+
+
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" />
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+
+                        </group>
+                    </group>
+                    <group>
+                        <notebook>
+
+                            <page string="Description">
+
+                                <group>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" />
+                                    <field name="garden_orientation" />
+                                </group>
+                            </page>
+
+
+                            <page string="other info">
+
+                                <group>
+                                    <field name="salesperson_id" />
+                                    <field name="buyer_id" />
+
+                                </group>
+
+                            </page>
+                        </notebook>
+
+                    </group>
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="view_estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Estate Property Search">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
+
+                <group expand="0" string="Group By">
+                    <filter name="group_by_postcode" string="Postcode"
+                        context="{'group_by': 'postcode'}" />
+                </group>
+
+                <filter name="available" string="Available" domain="[('expected_price', '>', 0)]" />
+                <filter name="unavailable" string="Unavailable"
+                    domain="[('expected_price', '=', 0)]" />
+
+                <!-- 🔹 New Filter: Show Properties Available Today -->
+                <filter name="available_today" string="Available Today"
+                    domain="[('date_availability', '=', context_today())]" />
+            </search>
+        </field>
+    </record>
+
+
+</odoo>
+
+# ----- End of estate_property_views.xml ----- #
