@@ -13,11 +13,8 @@
         'views/pos_view.xml',
     ],
     'assets': {
-        'point_of_sale._assets': [
+        'point_of_sale._assets_pos': [
             'salesperson_pos/static/src/**/*',
-            'salesperson_pos/static/src/control_button/control_button.js',
-            'salesperson_pos/static/src/salesperson/salesperson_button.js',
-            'salesperson_pos/static/src/models/pos_order.js',
         ],
     },
     'license': 'LGPL-3',
