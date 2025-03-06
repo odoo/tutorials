@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="property_list_template_inherit" inherit_id="estate.property_list_template">
+        <xpath expr="//div[@id='filter-apply-btn']" position="before">
+            <div class="w-100">
+                <label for="prop_sale_type" class="form-label">Property Sale Type</label>
+                <select name="prop_sale_type" id="prop_sale_type" class="form-control">
+                    <option value="" t-att-selected="not prop_sale_type">All</option>
+                    <option value="regular" t-att-selected="prop_sale_type == 'regular'">Regular</option>
+                    <option value="auction" t-att-selected="prop_sale_type == 'auction'">Auction</option>
+                </select>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="property_detail_template_inherit" inherit_id="estate.property_detail_template">
+        <xpath expr="//a[@href='/properties']" position="after">
+            <t t-if="property.sale_type == 'auction'">
+                <a t-att-href="'/property/%s/add-offer' %property.id" class="btn btn-primary">Add Offer</a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="property_add_offer_template">
+        <t t-call="website.layout">
+            <div class="container my-5">
+    
+                <div class="container d-flex justify-content-center align-items-center">
+                    <div class="card p-4 shadow-lg" style="width: 60%;">
+                        <h3 class="text-center mb-4">Add Offer for <t t-esc="property.name"/></h3>
+                        
+                        <form t-att-action="'/property/%s/offer-submit' %property.id" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name:</label>
+                                <input type="text" class="form-control" id="name" t-att-value="name" readonly="readonly"/>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="price" class="form-label">Amount:</label>
+                                <input type="number" class="form-control" id="price" name="price" required="required"/>
+                            </div>
+
+                            <div class="d-flex justify-content-evenly">
+                                <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                <a t-att-href="'/property/%s' % property.id" class="btn btn-secondary px-4">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </t>
+    </template>
+
+
+    <template id="add_offer_acknowledged_template">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="container d-flex justify-content-center align-items-center">
+                    <div class="card p-4 shadow-lg" style="width: 60%;">
+                        <h3 class="text-center mb-4"><t t-esc="message"/></h3>
+                        <div class="d-flex justify-content-evenly mt-4">
+                            <a t-att-href="'/property/%s' % property_id" class="btn btn-secondary px-4">Back to Property</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
