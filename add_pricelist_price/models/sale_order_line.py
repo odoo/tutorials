@@ -12,7 +12,7 @@ class SaleOrderLine(models.Model):
             if line.product_id and line.order_id.pricelist_id:
                 price = line.order_id.pricelist_id._get_product_price(
                     product=line.product_id, 
-                    quantity=line.product_uom_qty or 1.0
+                    quantity=line.product_uom_qty
                 )
                 line.book_price = price if price else 0.0
             else:
