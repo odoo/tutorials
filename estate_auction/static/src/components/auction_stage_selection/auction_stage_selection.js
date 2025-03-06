@@ -24,17 +24,17 @@ export class AuctionStageSelection extends StateSelectionField {
         this.icons = {
             "01_template": "fa fa-lg fa-file-text-o",
             "02_auction": "fa fa-lg fa-gavel",
-            "03_sold": "fa fa-lg fa-check-circle",
+            "03_done": "fa fa-lg fa-check-circle",
         };
         this.colorIcons = {
             "01_template": "text-muted",
             "02_auction": "text-primary",
-            "03_sold": "text-success",
+            "03_done": "text-success",
         };
         this.colorButton = {
             "01_template": "btn-outline-secondary",
             "02_auction": "btn-outline-primary",
-            "03_sold": "btn-outline-success",
+            "03_done": "btn-outline-success",
         };
         if (this.props.viewType != 'form') {
             super.setup();
@@ -69,7 +69,7 @@ export class AuctionStageSelection extends StateSelectionField {
 
     get options() {
         const labels = new Map(super.options);
-        const states = ["01_template", "02_auction", "03_sold"];
+        const states = ["01_template", "02_auction", "03_done"];
         return states.map((state) => [state, labels.get(state)]);
     }
 

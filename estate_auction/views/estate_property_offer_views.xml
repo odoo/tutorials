@@ -6,10 +6,10 @@
         <field name="inherit_id" ref="estate.estate_property_offer_view_list" />
         <field name="arch" type="xml">
             <xpath expr="//button[@name='action_accept']" position="attributes">
-                <attribute name="invisible">selling_mode == 'auction'</attribute>
+                <attribute name="invisible">selling_mode == 'auction' or status</attribute>
             </xpath>
             <xpath expr="//button[@name='action_refuse']" position="attributes">
-                <attribute name="invisible">selling_mode == 'auction'</attribute>
+                <attribute name="invisible">selling_mode == 'auction' or status</attribute>
             </xpath>
         </field>
     </record>

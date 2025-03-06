@@ -21,6 +21,7 @@
         'views/res_users_views.xml',
         'views/estate_property_menus.xml',
         'views/estate_website_templates.xml',
+        'views/res_config_settings_views.xml',
         'data/estate_property_data.xml',
         'wizard/estate_property_wizard_view.xml',
     ],

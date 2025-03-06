@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     def action_sold(self):
         self.ensure_one()
         # Call the parent class method to retain existing behavior
-        result = super().action_sold()
+        super().action_sold()
         for property in self:
             if not property.buyer_id:
                 raise UserError("Property does not have a customer.")
@@ -25,7 +25,7 @@ class EstateProperty(models.Model):
                     "You do not have permission to create an invoice for this property."
                 )
 
-            self.env["account.move"].sudo().create(
+            invoice = self.env["account.move"].sudo().create(
                 {
                     "partner_id": property.buyer_id.id,
                     "move_type": "out_invoice",
@@ -47,4 +47,5 @@ class EstateProperty(models.Model):
                     ],
                 }
             )
-        return result
+
+        return invoice

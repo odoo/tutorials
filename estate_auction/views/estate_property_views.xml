@@ -5,9 +5,17 @@
         <field name="model">estate.property</field>
         <field name="inherit_id" ref="estate.estate_property_view_form" />
         <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box" invisible="state != 'sold'">
+                    <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-file-text-o"
+                            invisible="invoice_count == 0">
+                        <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                    </button>
+                </div>
+            </xpath>
             <xpath expr="//button[@name='action_sold']" position="before">
                 <button name="action_start_auction" type="object" string="Start Auction"
-                    invisible="selling_mode == 'regular'" class="btn btn-primary" />
+                    invisible="selling_mode == 'regular' or state in ['sold', 'cancelled', 'offer_accepted'] or auction_stage != '01_template'" class="btn btn-primary" />
             </xpath>
             <xpath expr="//field[@name='tag_ids']" position="before">
                 <group>
@@ -31,7 +39,7 @@
                 </div>
             </xpath>
             <xpath expr="//button[@name='action_sold']" position="attributes">
-                <attribute name="invisible">selling_mode == 'auction'</attribute>
+                <attribute name="invisible">selling_mode == 'auction' or state in ['sold', 'cancelled']</attribute>
             </xpath>
         </field>
     </record>

@@ -23,7 +23,7 @@ class EstateAuctionWebsite(EstateWebsite):
             domain.append(('expected_price', '>=', float(min_price)))
         if max_price:
             domain.append(('expected_price', '<=', float(max_price)))
-            
+
         # Filter by selling mode
         selling_mode = kwargs.get('selling_mode')
         if selling_mode in ['regular', 'auction']:

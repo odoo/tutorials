@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_estate" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.estate</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="30"/>
+            <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="inside">
+                    <app data-string="Estate" string="Estate" name="estate">
+                        <block title="Estate Management" name="estate_setting_container">
+                            <setting id="estate_invoicing" string="Enable Invoicing" help="Enable invoicing features for estate management.">
+                                <field name="module_estate_account" widget="upgrade_boolean"/>
+                            </setting>
+                            <setting id="estate_auction" string="Enable Auction" help="Enable auction features for estate management.">
+                                <field name="module_estate_auction" widget="upgrade_boolean"/>
+                            </setting>
+                        </block>
+                    </app>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="action_estate_config_settings" model="ir.actions.act_window">
+            <field name="name">Settings</field>
+            <field name="res_model">res.config.settings</field>
+            <field name="view_mode">form</field>
+            <field name="target">inline</field>
+            <field name="context">{'module' : 'estate'}</field>
+        </record>
+
+        <menuitem id="estate_property_menu_config_settings" name="Configuration" parent="estate.estate_property_menu_root"
+            sequence="100" groups="base.group_user"/>
+        <menuitem id="estate_property_menu_general_settings" name="Settings" parent="estate_property_menu_config_settings"
+            sequence="0" action="action_estate_config_settings" groups="base.group_user"/>
+    </data>
+</odoo>

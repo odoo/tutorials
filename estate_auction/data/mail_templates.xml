@@ -3,9 +3,8 @@
     <!-- Email template for accepted offers -->
     <record id="email_template_offer_accepted" model="mail.template">
         <field name="name">Property Offer: Accepted</field>
-        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="model_id" ref="estate_auction.model_estate_property_offer"/>
         <field name="subject">Congratulations! Your offer for ${object.property_id.name} has been accepted</field>
-        <field name="email_from">${object.company_id.email or user.email_formatted|safe}</field>
         <field name="email_to">${object.partner_id.email}</field>
         <field name="body_html" type="html">
             <div style="margin: 0px; padding: 0px;">
@@ -30,9 +29,8 @@
     <!-- Email template for rejected offers -->
     <record id="email_template_offer_rejected" model="mail.template">
         <field name="name">Property Offer: Rejected</field>
-        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="model_id" ref="estate_auction.model_estate_property_offer"/>
         <field name="subject">Update on your offer for ${object.property_id.name}</field>
-        <field name="email_from">${object.company_id.email or user.email_formatted|safe}</field>
         <field name="email_to">${object.partner_id.email}</field>
         <field name="body_html" type="html">
             <div style="margin: 0px; padding: 0px;">

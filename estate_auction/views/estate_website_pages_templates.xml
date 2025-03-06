@@ -4,7 +4,30 @@
     <template id="property_detail_page_inherit" inherit_id="estate.property_detail_page" name="Auction Property Details">
         <!-- Add auction information section -->
         <xpath expr="//div[@class='row']" position="before">
-            <div t-if="property.selling_mode == 'auction'" class="row mb-4">
+             <div t-if="property.selling_mode == 'auction' and property.auction_stage == '01_template'" class="row mb-4">
+                <div class="col-12">
+                    <div class="card border-primary">
+                        <div class="card-header bg-primary text-white">
+                            <h3 class="mb-0">Auction Pending</h3>
+                        </div>
+                        <div class="card-body text-center">
+                            <p class="lead">
+                                This property is scheduled for auction. The auction will begin once the administrator starts it.
+                            </p>
+                            <p>
+                                Stay tuned for updates!
+                            </p>
+                            <div t-if="property.auction_end_time">
+                                <p>
+                                    Scheduled End Time: <t t-esc="property.auction_end_time" t-options="{'widget': 'datetime'}"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div t-if="property.selling_mode == 'auction' and property.auction_stage == '02_auction'" class="row mb-4">
                 <div class="col-12">
                     <div class="card border-primary">
                         <div class="card-header bg-primary text-white">
@@ -41,7 +64,7 @@
         <xpath expr="//div[@class='container my-5']" position="inside">
             <div class="row mt-4">
                 <div class="col-12 text-center">
-                    <a t-if="property.state != 'sold' and property.state != 'cancelled'" 
+                    <a t-if="property.state not in ['sold', 'cancelled'] and property.auction_stage == '02_auction'"
                        t-att-href="'/property/%s/offer' % property.id" 
                        class="btn btn-lg btn-primary">
                         Make an Offer
