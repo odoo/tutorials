@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="order_receipt_template" xml:space="preserve">
+    <t t-name="simplified_receipt.order_receipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
+        <xpath expr="//OrderWidget" position="replace">
+
+            <t t-if="props.simplified_receipt">
+                <t t-foreach="guests" t-as="guest" t-key="guest.id">
+                    <div style="margin-bottom: 8px;">
+                        <span style="font-weight: bold; font-size: 16px; display: block;">
+                            <t t-esc="guest.name"/>
+                        </span>
+                        <span style="margin-left: 20px; display: block; font-size: 14px; color: #555;">
+            1 X $ <t t-esc="guest.price"/> / Units
+                        </span>
+                    </div>
+                </t>
+
+            </t>
+            <t t-else="">
+                <OrderWidget t-if="props.data.orderlines?.length" lines="props.data.orderlines" t-slot-scope="scope" generalNote="props.data.generalNote or ''" screenName="props.data.screenName">
+                    <t t-set="line" t-value="scope.line"/>
+                    <Orderline basic_receipt="props.basic_receipt" line="omit(scope.line, 'customerNote')" class="{ 'px-0': true }" showTaxGroupLabels="showTaxGroupLabels">
+                        <li t-if="line.customerNote" class="customer-note w-100 p-2 my-1 rounded text-break">
+                            <i class="fa fa-sticky-note me-1" role="img" aria-label="Customer Note" title="Customer Note"/>
+                            <t t-esc="line.customerNote" />
+                        </li>
+                    </Orderline>
+                </OrderWidget>
+            </t>
+
+        </xpath>
+    </t>
+</templates>

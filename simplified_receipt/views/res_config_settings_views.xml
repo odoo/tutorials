@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.point_of_sale</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="95"/>
+        <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+
+            <xpath expr="//block[@id='pos_bills_and_receipts_section']" position="inside">
+                <setting help="Print Receipt with no details about the items bought" documentation="/applications/sales/point_of_sale/receipts_invoices.html">
+                    <field name="pos_simplified_receipt"/>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
