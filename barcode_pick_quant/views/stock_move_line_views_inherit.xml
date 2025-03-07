@@ -12,15 +12,18 @@
             </xpath>
             
             <!-- Add label before selection field -->
-            <xpath expr="//div[hasclass('col-12', 'my-2', 'd-flex')]" position="before">
+            <xpath expr="//div[label[@for='product_stock_quant_ids']]" position="after">
                 <span class="fs-5 fw-bold text-center text-black-50 mb-2 px-2">
                 Select where else to pick the product from
                 </span>
             </xpath>
             
             <!-- Replace existing field with custom widget -->
-            <xpath expr="//div[hasclass('col-12', 'my-2', 'd-flex')]" position="replace">
-                <field name="product_stock_quant_ids" widget="custom_widget" mode="kanban" context="{
+            <xpath expr="//field[@name='product_stock_quant_ids']" position="attributes">
+            <attribute name="class">d-none</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_stock_quant_ids']" position="after">
+                <field name="product_stock_quant_ids" widget="barcode_quant_one_2_many" mode="kanban" context="{
                             'kanban_view_ref': 'stock_barcode.stock_quant_barcode_kanban_2',
                             'list_view_ref': 'stock_barcode.view_stock_quant_tree'}"/>
             </xpath>
@@ -34,14 +37,8 @@
         <field name="inherit_id" ref="stock_barcode.stock_quant_barcode_kanban_2"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='quantity']" position="replace">
-                 <field name="reserved_quantity" invisible="1"/>
-                <t t-if="(record.quantity.raw_value - record.reserved_quantity.raw_value) > 0">
-                    Available: <field name="quantity" /> /
-                    <t t-out="record.quantity.raw_value - record.reserved_quantity.raw_value"/>.00
-                </t>
-                <t t-else="">
-                    Available: 00
-                </t>
+                    <span> Available: <field name="available_quantity" /> /
+                    <field name="quantity" /> </span>
             </xpath>
         </field>
     </record>

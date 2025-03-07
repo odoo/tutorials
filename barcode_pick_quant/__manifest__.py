@@ -8,8 +8,6 @@
     'assets': {
         'web.assets_backend': [
             'barcode_pick_quant/static/src/**/*.js',
-            'barcode_pick_quant/static/src/**/*.scss',
-            'barcode_pick_quant/static/src/**/*.xml',
         ]
     },
     'license': 'LGPL-3'

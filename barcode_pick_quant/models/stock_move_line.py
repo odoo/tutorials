@@ -1,22 +1,25 @@
-# -*- coding: utf-8 -*-
-from odoo import api, fields, models
+from odoo import api, models
+
 
 class StockMoveLine(models.Model):
     _inherit = "stock.move.line"
-    
-    @api.depends("product_id")
+
+    @api.depends("product_id", "location_id")
     def _compute_product_stock_quant_ids(self):
-        """
-        Computes stock quants related to the product, filtering only those:
-        - Belonging to the same company
-        - Located in internal locations
-        - Having a positive quantity
-        """
+
+        # Fetch stock quants using _read_group (aggregated results)
+        result = dict(self.env["stock.quant"]._read_group(
+            domain=[
+                ("product_id", "in", self.product_id.ids),
+                ("location_id", "child_of", self.picking_id.location_id.ids),
+                ("location_id.usage", "=", "internal"),
+                ("quantity", ">", 0),
+                ("company_id", "in", self.env.companies.ids),
+            ],
+            groupby=["product_id"],
+            aggregates=["id:recordset"],
+        ))
+        
+        # Assign computed stock quant IDs
         for line in self:
-            line.product_stock_quant_ids = line.product_id.stock_quant_ids.filtered(
-                lambda q: (
-                    q.company_id in self.env.companies
-                    and q.location_id.usage == "internal"
-                    and q.quantity > 0
-                )
-            )
+            line.product_stock_quant_ids = result.get(line.product_id, self.env["stock.quant"])

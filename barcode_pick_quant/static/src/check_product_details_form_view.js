@@ -1,3 +1,5 @@
+/** @odoo-module **/
+
 import { FormController } from "@web/views/form/form_controller";
 import { formView } from "@web/views/form/form_view";
 import { registry } from "@web/core/registry";
@@ -8,6 +10,7 @@ export class CheckProductDetailsController extends FormController {
     setup() {
         super.setup(...arguments);
         this.notification = useService("notification");
+        this.dialogService = useService("dialog");
     }
 
     /**
@@ -15,88 +18,39 @@ export class CheckProductDetailsController extends FormController {
      * Validates product details before executing the action button.
      */
     async beforeExecuteActionButton(clickParams) {
-        if (clickParams.special !== "save") {
-            return super.beforeExecuteActionButton(...arguments);
-        }
+        if (clickParams.special === "save") {
+            try {
+                const { location_id: locationData, qty_done: qtyDone = 0, available_quantity } = this.model.root.data;
+                const locationName = locationData?.[1] || "the selected location";
 
-        const productId = this.model.root.data.product_id?.[0];
-        if (!productId) return super.beforeExecuteActionButton(...arguments);
+                if (available_quantity > qtyDone) {
+                    return super.beforeExecuteActionButton(clickParams);
+                }
 
-        // Preserve the product data to prevent it from being reset
-        const originalProductData = this.model.root.data.product_id;
-
-        try {
-            // Fetch product template ID from product
-            const [productData] = await this.orm.searchRead(
-                "product.product",
-                [["id", "=", productId]],
-                ["product_tmpl_id"],
-                { limit: 1 }
-            );
-
-            if (!productData) return super.beforeExecuteActionButton(...arguments);
-
-            const product_tmpl_id = productData.product_tmpl_id?.[0];
-
-            // Fetch product type from template
-            const [templateData] = await this.orm.searchRead(
-                "product.template",
-                [["id", "=", product_tmpl_id]],
-                ["type"],
-                { limit: 1 }
-            );
-
-            if (!templateData) return super.beforeExecuteActionButton(...arguments);
-
-            const type = templateData.type;
-            const locationId = this.model.root.data.location_id?.[0];
-            const locationName = this.model.root.data.location_id?.[1] || "the selected location";
-
-            // Fetch stock quantity and reserved quantity
-            const [quantData] = await this.orm.searchRead(
-                "stock.quant",
-                [["product_tmpl_id", "=", product_tmpl_id], ["location_id", "=", locationId]],
-                ["quantity", "reserved_quantity"],
-                { limit: 1 }
-            );
-
-            const stockQty = quantData?.quantity ?? 0;
-            const reservedQty = quantData?.reserved_quantity ?? 0;
-            const qtyDone = this.model.root.data.qty_done ?? 0;
-
-            // Validate stock availability
-            if (stockQty - reservedQty > qtyDone && type === "consu") {
-                return super.beforeExecuteActionButton(...arguments);
+                const confirmed = await this.showConfirmationDialog(locationName);
+                if (confirmed) {
+                    return super.beforeExecuteActionButton(clickParams);
+                }
+                return false; // Prevent execution if the user cancels
+            } catch (error) {
+                console.error("Error in beforeExecuteActionButton:", error);
             }
-
-            // Show confirmation dialog using a Promise
-            return this.showConfirmationDialog(locationName)
-                .then(async () => {
-                    await super.beforeExecuteActionButton(...arguments);
-                })
-
-        } catch (error) {
-            super.beforeExecuteActionButton(...arguments);
         }
+
+        return super.beforeExecuteActionButton(clickParams);
     }
 
-    /**
-     * Shows a confirmation dialog and returns a Promise.
-     * Resolves on "Confirm", rejects on "Discard".
-     */
-    showConfirmationDialog(locationName) {
-        return new Promise((resolve, reject) => {
+    async showConfirmationDialog(locationName) {
+        return new Promise((resolve) => {
             this.dialogService.add(ConfirmationDialog, {
                 body: `Oops! It seems that this product is not located at ${locationName}. Do you confirm you picked it there?`,
                 confirmLabel: "Confirm",
                 cancelLabel: "Discard",
-                confirm: resolve,
-                cancel: reject,
+                confirm: () => resolve(true),
+                cancel: () => resolve(false),
             });
         });
     }
-
-    async afterExecuteActionButton(clickParams) {}
 }
 
 export const CheckProductDetails = {
