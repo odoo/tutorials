@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        <record id="mail_template_auction_result" model="mail.template">
+            <field name="name">Auction Result Notification</field>
+            <field name="model_id" ref="model_estate_property_offer"/>
+            <field name="subject">Auction Result for ${object.property_id.name}</field>
+            <field name="email_from">${(object.property_id.salesman_id.email or 'noreply@example.com')|safe}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="body_html"><![CDATA[
+                <p>Hello ${object.partner_id.name},</p>
+
+                % if object.partner_id.id == object.property_id.auction_highest_bidder.id:
+                    <p>🎉 Congratulations! You won the auction for <strong>${object.property_id.name}</strong>.</p>
+                    <p>Your winning bid: <strong>${object.property_id.highest_offer}</strong></p>
+                    <p>We will contact you soon for further process.</p>
+                % else:
+                    <p>Unfortunately, your bid of <strong>${object.price}</strong> for <strong>${object.property_id.name}</strong> was not the highest.</p>
+                    <p>Thank you for participating. Better luck next time!</p>
+                % endif
+
+                <p>Best Regards,</p>
+                <p>The Auction Team</p>
+            ]]></field>
+        </record>
+    </data>
+</odoo>
