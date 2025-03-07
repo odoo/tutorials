@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="action_product_kit_wizard" model="ir.actions.act_window">
-        <field name="name">Product Kit</field>
-        <field name="res_model">productkit</field>
+    <record id="action_subproduct_wizard" model="ir.actions.act_window">
+        <field name="name">Sub-Products-Wizard</field>
+        <field name="res_model">subproduct</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
 
     <record id="action_subproduct_wizard_view" model="ir.ui.view">
-        <field name="name">Product Kit Wizard</field>
-        <field name="model">productkit</field>
+        <field name="name">Sub-Products-Wizard</field>
+        <field name="model">subproduct</field>
         <field name="arch" type="xml">
-            <form string="Kitproduct">
+            <form string="Subproduct">
                 <group>
                     <field name="product_id" readonly="1"/>
-                    <field name="kit_product_ids">
+                    <field name="sub_product_ids">
                         <list editable="bottom" create="false">
                             <field name="kit_product_name" readonly="1"/>
                             <field name="kit_product_qty"/>
@@ -23,6 +23,10 @@
                         </list>
                     </field>
                 </group>
+                <footer>
+                    <button type="object" name="action_confirm_subproduct" string="Confirm" class="btn-primary" />
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
             </form>
         </field>
     </record>

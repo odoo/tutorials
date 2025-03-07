@@ -9,7 +9,7 @@
     "depends": ["sale_management"],
     "data": [
         "security/ir.model.access.csv",
-        "wizard/product_kit_wizard_views.xml",
+        "wizard/subproduct_wizard_view.xml",
         "views/product_views.xml",
         "views/sale_order_views.xml",
     ],
