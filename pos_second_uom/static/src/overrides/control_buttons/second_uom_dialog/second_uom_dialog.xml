@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_second_uom.SecondUomDialog">
+        <Dialog size="sm" header="false">
+            <div class="d-flex flex-column">
+                <label for="secondUomQty" class="fw-bold">Quantity in Second UoM:</label>
+                <input type="number" min="0" id="secondUomQty" t-ref="inp" class="form-control"/>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="confirm">Confirm</button>
+                <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
