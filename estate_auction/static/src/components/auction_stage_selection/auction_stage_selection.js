@@ -1,13 +1,14 @@
+import { useState } from "@odoo/owl";
+
+import { useCommand } from "@web/core/commands/command_hook";
 import { _t } from "@web/core/l10n/translation";
+import { registry } from "@web/core/registry";
+
+import { formatSelection } from "@web/views/fields/formatters";
 import {
     StateSelectionField,
     stateSelectionField,
 } from "@web/views/fields/state_selection/state_selection_field";
-import { useCommand } from "@web/core/commands/command_hook";
-import { formatSelection } from "@web/views/fields/formatters";
-
-import { registry } from "@web/core/registry";
-import { useState } from "@odoo/owl";
 
 export class AuctionStageSelection extends StateSelectionField {
     static template = "auction.AuctionStageSelection";
@@ -22,19 +23,19 @@ export class AuctionStageSelection extends StateSelectionField {
             isStateButtonHighlighted: false,
         });
         this.icons = {
-            "01_template": "fa fa-lg fa-file-text-o",
-            "02_auction": "fa fa-lg fa-gavel",
-            "03_done": "fa fa-lg fa-check-circle",
+            "template": "fa fa-lg fa-file-text-o",
+            "auction": "fa fa-lg fa-gavel",
+            "done": "fa fa-lg fa-check-circle",
         };
         this.colorIcons = {
-            "01_template": "text-muted",
-            "02_auction": "text-primary",
-            "03_done": "text-success",
+            "template": "text-muted",
+            "auction": "text-primary",
+            "done": "text-success",
         };
         this.colorButton = {
-            "01_template": "btn-outline-secondary",
-            "02_auction": "btn-outline-primary",
-            "03_done": "btn-outline-success",
+            "template": "btn-outline-secondary",
+            "auction": "btn-outline-primary",
+            "done": "btn-outline-success",
         };
         if (this.props.viewType != 'form') {
             super.setup();
@@ -69,7 +70,7 @@ export class AuctionStageSelection extends StateSelectionField {
 
     get options() {
         const labels = new Map(super.options);
-        const states = ["01_template", "02_auction", "03_done"];
+        const states = ["template", "auction", "done"];
         return states.map((state) => [state, labels.get(state)]);
     }
 

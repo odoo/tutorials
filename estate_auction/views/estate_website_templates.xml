@@ -15,7 +15,7 @@
                 </div>
             </div>
         </xpath>
-        
+
         <!-- Add selling mode badge to property cards -->
         <xpath expr="//div[@class='card-body']" position="inside">
             <div t-if="property.selling_mode == 'auction'" class="mt-2">

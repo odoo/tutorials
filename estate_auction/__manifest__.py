@@ -1,7 +1,7 @@
 {
     'name': "Real Estate Auction",
     'version': '1.0',
-    'depends': ['estate', 'mail', 'account'],
+    'depends': ['estate_account'],
     'author': "Himilsinh Sindha (hisi)",
     'category': 'Real Estate',
     'description': "Automated Auction for Real Estate Properties",

@@ -15,7 +15,7 @@
             </xpath>
             <xpath expr="//button[@name='action_sold']" position="before">
                 <button name="action_start_auction" type="object" string="Start Auction"
-                    invisible="selling_mode == 'regular' or state in ['sold', 'cancelled', 'offer_accepted'] or auction_stage != '01_template'" class="btn btn-primary" />
+                    invisible="selling_mode == 'regular' or state in ['sold', 'cancelled', 'offer_accepted'] or auction_stage != 'template'" class="btn btn-primary" />
             </xpath>
             <xpath expr="//field[@name='tag_ids']" position="before">
                 <group>

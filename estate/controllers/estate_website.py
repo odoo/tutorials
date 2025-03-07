@@ -9,7 +9,10 @@ class EstateWebsite(http.Controller):
         step = 6
         offset = (page - 1) * step
 
-        domain = [('state', 'in', ['new', 'offer_received', 'offer_accepted']), ('active', '=', True)]
+        domain = kwargs.get('domain') if kwargs.get('domain') else []
+
+        domain.append(('state', 'in', ['new', 'offer_received', 'offer_accepted']))
+        domain.append(('active', '=', True))
 
         # Search by Property Name
         search_query = kwargs.get('search')

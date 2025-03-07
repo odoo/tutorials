@@ -17,10 +17,10 @@ class EstateProperty(models.Model):
     highest_bidder = fields.Many2one('res.partner', string="Highest Bidder", compute='_compute_highest_offer')
     auction_stage = fields.Selection(
         selection=[
-        ('01_template', "Template"),
-        ('02_auction', "Auction"),
-        ('03_done', "Done")
-    ], string="Auction Stage", default='01_template', tracking=True)
+        ('template', "Template"),
+        ('auction', "Auction"),
+        ('done', "Done")
+    ], string="Auction Stage", default='template', tracking=True)
     invoice_count = fields.Integer(string="Invoices", compute='_compute_invoice_count')
     invoice_ids = fields.One2many('account.move', 'property_id', string="Invoices")
 
@@ -65,8 +65,8 @@ class EstateProperty(models.Model):
 
     @api.onchange('selling_mode')
     def _onchange_selling_mode(self):
-        if self.selling_mode == 'regular' and self.auction_stage != '01_template':
-            self.auction_stage = '01_template'
+        if self.selling_mode == 'regular' and self.auction_stage != 'template':
+            self.auction_stage = 'template'
             self.auction_end_time = False
 
     def action_sold(self):
@@ -96,11 +96,10 @@ class EstateProperty(models.Model):
         if self.auction_end_time <= fields.Datetime.now():
             raise UserError(_("Auction end time must be in the future."))
         
-        self.auction_stage = '02_auction'
-        return True
+        self.auction_stage = 'auction'
 
     def write(self, vals):
-        if 'selling_mode' in vals and self.auction_stage in ['02_auction', '03_done']:
+        if 'selling_mode' in vals and self.auction_stage in ['auction', 'done']:
             if vals['selling_mode'] == 'regular':
                 raise UserError(_("Cannot change selling mode to 'Regular' when auction is in progress or completed."))
 
@@ -115,20 +114,16 @@ class EstateProperty(models.Model):
         auction_properties = self.search([
             ('selling_mode', '=', 'auction'),
             ('state', 'in', ['new', 'offer_received']),
-            ('auction_stage', '=', '02_auction'),
+            ('auction_stage', '=', 'auction'),
             ('auction_end_time', '<=', fields.Datetime.now())
         ])
 
         for property in auction_properties:
             if property.offer_ids:
-                # Find the highest offer
-                highest_offer = max(property.offer_ids, key=lambda o: o.price)
-                
-                # Accept the highest offer
-                highest_offer.action_accept()
+                property.highest_offer.action_accept()
 
                 property.write({
-                    'auction_stage': '03_done'
+                    'auction_stage': 'done'
                 })
 
                 # Log the automatic acceptance
@@ -140,6 +135,6 @@ class EstateProperty(models.Model):
             else:
                 # No offers received, mark as auction ended
                 property.write({
-                    'auction_stage': '03_done'  # Using the done stage even though it's cancelled
+                    'auction_stage': 'done'  # Using the done stage even though it's cancelled
                 })
                 property.message_post(body=_("Auction ended with no offers."))
