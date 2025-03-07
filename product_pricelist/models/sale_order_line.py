@@ -17,6 +17,6 @@ class SaleOrderLine(models.Model):
             if pricelist:
                 record.book_price = pricelist._get_product_price(
                     record.product_id, record.product_uom_qty
-                ) * record.product_uom_qty
+                )
             else:
-                record.book_price = record.product_id.lst_price * record.product_uom_qty
+                record.book_price = record.product_id.lst_price

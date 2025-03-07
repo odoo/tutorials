@@ -1,7 +1,7 @@
 {
     'name': "Book Price (Pricelist Price)",
     'version': '1.0',
-    'depends': ['base', 'sale_management'],
+    'depends': ['sale_management'],
     'author': "ppch",
     'category': 'Category',
     'description': """
