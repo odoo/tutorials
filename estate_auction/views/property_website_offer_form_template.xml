@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="offer_form_template" name="Offer Form Page">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h2>Add Offer for <t t-esc="property.name"/></h2>
+
+                <form t-att-action="'/property/%d/offer' % property.id" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="mb-3">
+                        <label>Name:</label>
+                        <input type="text" name="offer_name" class="form-control" t-att-value="request.env.user.name"/>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label>Amount:</label>
+                        <input type="number" name="offer_amount" class="form-control" required="required"/>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a t-att-href="'/property/%s' % property.id" class="btn btn-secondary">Cancel</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="offer_add_success_template" name="Offer Form Page">
+        <t t-call="website.layout">
+            <div class="container mt-5 text-center">
+                <div class="alert alert-success p-4 rounded">
+                    <h2 class="text-success">🎉 Congratulations!</h2>
+                    <p class="lead">Your offer has been successfully placed. We will notify you once the auction concludes.</p>
+                    <a t-att-href="'/property/%d' % property.id" class="btn btn-primary mt-3">Back to Property</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
