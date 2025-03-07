@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="group_sales_order_creator" model="res.groups">
+        <field name="name">Sales Order Creator</field>
+        <field name="category_id" ref="base.module_category_sales_sales" />
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]" />
+    </record>
+
+    <record id="rule_sale_order_line_subproduct_readonly" model="ir.rule">
+        <field name="name">Subproduct lines are readonly</field>
+        <field name="model_id" ref="sale.model_sale_order_line" />
+        <field name="domain_force">[('is_subproduct', '=', True), ('parent_line_id', '!=', False)]</field>
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="False" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="False" />
+        <field name="groups" eval="[(4, ref('group_sales_order_creator'))]" />
+    </record>
+
+    <record id="rule_sale_order_line_normal_access" model="ir.rule">
+        <field name="name">Normal Sale Order Line Access</field>
+        <field name="model_id" ref="sale.model_sale_order_line" />
+        <field name="domain_force">['|', ('is_subproduct', '=', False), ('parent_line_id', '=',
+            False)]</field>
+        <field name="groups" eval="[(4, ref('group_sales_order_creator'))]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="True" />
+    </record>
+</odoo>

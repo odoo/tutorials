@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="Configure Kit Subproducts">
                 <sheet>
-                    <field name="subproduct_lines">
+                    <field name="subproduct_lines_ids">
                         <list create="false" editable="bottom">
                             <field name="product_id" readonly="1" />
                             <field name="quantity" />

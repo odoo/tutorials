@@ -1,3 +1,5 @@
 "id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
 "access_kit_subproducts_wizard","access_kit_subproducts_wizard","model_kit_subproduct_wizard","base.group_user",1,1,1,1
 "access_kit_subproducts_wizard_line","access_kit_subproducts_wizard_line","model_kit_subproduct_wizard_line","base.group_user",1,1,1,0
+"access_sale_order_creator","access_sale_order_creator","sale.model_sale_order","group_sales_order_creator",1,1,1,0
+"access_sale_order_line_creator","access_sale_order_line_creator","sale.model_sale_order_line","group_sales_order_creator",1,1,1,0

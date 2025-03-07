@@ -10,6 +10,7 @@
     'category': "Inventory",
     'author': "Himilsinh Sindha (hisi)",
     'data': [
+        'security/new_product_type_security.xml',
         'security/ir.model.access.csv',
         'wizard/kit_subproducts_wizard.xml',
         'report/report_print_subproducts.xml',

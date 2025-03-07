@@ -6,7 +6,7 @@ class SaleOrderLine(models.Model):
 
     is_kit = fields.Boolean(related='product_id.is_kit')
     parent_line_id = fields.Many2one('sale.order.line', ondelete='cascade')
-    is_subproduct = fields.Boolean(default=False)
+    is_subproduct = fields.Boolean(default=False, store=True)
 
     def unlink(self):
         # Find all child lines in a single query and unlink them efficiently

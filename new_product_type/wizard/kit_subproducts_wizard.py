@@ -5,14 +5,14 @@ class KitSubproductWizard(models.TransientModel):
     _name = 'kit.subproduct.wizard'
     _description = 'Wizard for configuring kit subproducts'
 
-    subproduct_lines = fields.One2many('kit.subproduct.wizard.line', 'wizard_id', default=lambda self: self._default_subproduct_lines())
+    subproduct_lines_ids = fields.One2many('kit.subproduct.wizard.line', 'kit_configuration_id', default=lambda self: self._default_subproduct_lines())
 
     def _default_subproduct_lines(self):
         sale_order_line_id = self.env.context.get('active_id')
         if not sale_order_line_id:
             return []
         subproduct_line_ids = self.env['kit.subproduct.wizard.line'].with_context(
-            wizard_id=self.id, active_id=sale_order_line_id
+            kit_configuration_id=self.id, active_id=sale_order_line_id
         )._prepare_subproduct_lines()
         return [(6, 0, subproduct_line_ids.ids)]
 
@@ -23,7 +23,7 @@ class KitSubproductWizard(models.TransientModel):
 
         sale_order = sale_order_line.order_id
         total_subproduct_price = 0
-        configured_lines = self.subproduct_lines
+        configured_lines = self.subproduct_lines_ids
 
         existing_subproduct_lines = self.env['sale.order.line'].search([
             ('parent_line_id', '=', sale_order_line.id),
@@ -61,14 +61,13 @@ class KitSubproductWizard(models.TransientModel):
             sale_order.write({'order_line': updated_subproduct_values})
 
         sale_order_line.price_unit = total_subproduct_price
-        return {'type': 'ir.actions.act_window_close'}
 
 
 class KitSubproductWizardLine(models.TransientModel):
     _name = 'kit.subproduct.wizard.line'
     _description = 'Line for Kit Subproduct Configuration'
 
-    wizard_id = fields.Many2one('kit.subproduct.wizard')
+    kit_configuration_id = fields.Many2one('kit.subproduct.wizard')
     product_id = fields.Many2one(comodel_name='product.product', required=True)
     unit_price = fields.Float(string='Unit Price')
     quantity = fields.Float(string='Quantity', default=1.0)
@@ -76,7 +75,7 @@ class KitSubproductWizardLine(models.TransientModel):
     def _prepare_subproduct_lines(self):
         sale_order_line = self.env['sale.order.line'].browse(self.env.context.get('active_id'))
         product = sale_order_line.product_id.product_tmpl_id
-        existing_wizard_lines = self.search([('wizard_id', '=', self.env.context.get("wizard_id", False))])
+        existing_wizard_lines = self.search([('kit_configuration_id', '=', self.env.context.get("kit_configuration_id", False))])
 
         if existing_wizard_lines:
             return existing_wizard_lines
@@ -98,7 +97,7 @@ class KitSubproductWizardLine(models.TransientModel):
                 unit_price = sub_product.list_price
 
             subproduct_line_values.append({
-                'wizard_id': self.env.context.get("wizard_id", False),
+                'kit_configuration_id': self.env.context.get("kit_configuration_id", False),
                 'product_id': sub_product.id,
                 'unit_price': unit_price,
                 'quantity': quantity,
