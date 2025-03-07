@@ -1,0 +1,15 @@
+<odoo>
+    <record id="res_config_settings_view_form_deposit_renting" model="ir.ui.view">
+        <field name="name">res.config.settings.deposit.renting.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale_renting.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//setting[@name='rental_delay_costs']" position="after">
+                <setting string="Deposit Product" help="Product to be used for deposit on sale order">
+                    <label string="Deposit" for="deposit_product_id" class="o_light_label me-3" />
+                    <field name="deposit_product_id" />
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
