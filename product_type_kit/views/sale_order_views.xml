@@ -15,27 +15,36 @@
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='product_template_id']" position="after">
-               <button name="%(product_type_kit.product_type_kit_action)d" type="action" string="Kit Products" icon="fa-cubes" invisible="(not product_is_kit) or product_state == 'sale'"/>
+                <button
+                    name="%(product_type_kit.product_type_kit_action)d"
+                    type="action"
+                    string="Kit Products"
+                    icon="fa-cubes"
+                    invisible="(not product_is_kit) or product_state == 'sale'"/>
             </xpath>
             
-            <xpath expr="//list/field[@name='product_template_id']" position="attributes">
-                <attribute name="readonly">kit_parent_line_id</attribute>
+            <xpath expr="//list/field[@name='product_id']" position="attributes">
+                <attribute name="readonly">linked_line_id</attribute>
             </xpath>
 
             <xpath expr="//list/field[@name='product_uom_qty']" position="attributes">
-                <attribute name="readonly">kit_parent_line_id</attribute>
+                <attribute name="readonly">linked_line_id</attribute>
+            </xpath>
+            
+            <xpath expr="//list/field[@name='customer_lead']" position="attributes">
+                <attribute name="readonly">linked_line_id</attribute>
             </xpath>
 
             <xpath expr="//list/field[@name='price_unit']" position="attributes">
-                <attribute name="readonly">kit_parent_line_id</attribute>
-            </xpath>
-
-            <xpath expr="//list/field[@name='discount']" position="attributes">
-                <attribute name="readonly">kit_parent_line_id</attribute>
+                <attribute name="readonly">linked_line_id</attribute>
             </xpath>
 
             <xpath expr="//list/field[@name='tax_id']" position="attributes">
-                <attribute name="readonly">kit_parent_line_id</attribute>
+                <attribute name="readonly">linked_line_id</attribute>
+            </xpath>
+
+            <xpath expr="//form/sheet//field[@name='payment_term_id']" position="after">
+                <field name="print_in_report"/>
             </xpath>
 
         </field>

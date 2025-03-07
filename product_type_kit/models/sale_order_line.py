@@ -1,5 +1,4 @@
-from odoo import fields, models
-from odoo.exceptions import UserError
+from odoo import api, fields, models
 
 
 class SaleOrderLine(models.Model):
@@ -7,23 +6,13 @@ class SaleOrderLine(models.Model):
 
     product_is_kit = fields.Boolean(related='product_template_id.is_kit', string="Is Kit")
     product_state = fields.Selection(related='order_id.state', string="Product Status")
-    kit_parent_line_id = fields.Many2one(
-        comodel_name='sale.order.line',
-        string="Parent Kit Line",
-        help="Main kit product line"
-    )
 
-    def unlink(self):
-        """Prevent main kit product deletion if sub-products exist, but allow sub-product deletion independently."""
-        for line in self:
-            if not line.kit_parent_line_id:
-                sub_products = self.env['sale.order.line'].search([
-                    ('kit_parent_line_id', '=', line.id)
-                ])
-                if sub_products:
-                    raise UserError(
-                        """This main kit product has sub-products.
-                        Delete them first before deleting the main kit product."""
-                    )
+    @api.depends('product_id', 'product_uom', 'product_uom_qty')
+    def _compute_price_unit(self):
+        """Price unit calculation for Kit and Regular products."""
+        kit_prices = {order_line.id: order_line.price_unit for order_line in self if order_line.product_is_kit}
 
-        return super(SaleOrderLine, self).unlink()
+        super()._compute_price_unit()
+
+        for line in self.filtered(lambda order_line: order_line.product_is_kit and order_line.product_id):
+            line.price_unit = kit_prices.get(line.id, line.price_unit)
