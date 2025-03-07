@@ -13,10 +13,21 @@
             <form string="Estate Property Type">
                 <sheet>
                     <group>
-                        <group>
-                            <field name="name" />
-                        </group>
+                        <field name="name" />
                     </group>
+                    <notebook>
+                        <page name="Properties">
+                        <group>
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

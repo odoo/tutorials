@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
     <menuitem id="estate_menu_root" name="Real Estate">
-
         <!-- First Level Menu for Advertisement  -->
         <menuitem id="estate_first_level_menu" name="Advertisement">
 

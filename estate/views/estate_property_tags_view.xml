@@ -13,9 +13,7 @@
             <form string="Estate Property Tags">
                 <sheet>
                     <group>
-                        <group>
-                            <field name="name" />
-                        </group>
+                        <field name="name" />
                     </group>
                 </sheet>
             </form>

@@ -1,5 +1,5 @@
-from datetime import timedelta
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class estatePropertyOffer(models.Model):
@@ -29,11 +29,39 @@ class estatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             create_date = record.create_date or fields.Date.today()
-            record.date_deadline = create_date + timedelta(days=record.validity)
+            record.date_deadline = fields.Date.add(create_date, days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
-            create_date = record.create_date or fields.Date.today()
+            create_date = record.create_date.date() or fields.Date.today()
             record.validity = (
                 (record.date_deadline - create_date).days if record.date_deadline else 0
             )
+
+    def action_accepted(self):
+        for record in self:
+            record.status = "Accepted"
+
+        if record.property_id.state == "offer_accepted":
+            raise UserError("One Offer already Accepted, can'nt accept another offer")
+
+        record.property_id.selling_price = record.price
+        record.property_id.buyer_id = record.partner_id
+        record.property_id.state = "offer_accepted"
+        record.status = "Accepted"
+
+    def action_refused(self):
+        for record in self:
+            if record.status == "Accepted":
+                record.property_id.selling_price = 0.0
+                record.property_id.buyer_id = False
+                record.property_id.state = "new"
+            record.status = "Refused"
+
+    _sql_constraints = [
+        (
+            "check_offer_price",
+            "CHECK(price > 0)",
+            "Offer Price must be strictly postitive",
+        )
+    ]
