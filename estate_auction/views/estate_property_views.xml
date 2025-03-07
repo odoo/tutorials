@@ -12,7 +12,7 @@
             </xpath>
 
             <xpath expr="//button[@name='action_sold']" position="before">
-                <button name="action_start_acution" string="Start Auction" type="object" invisible="sale_type == 'regular'"/>
+                <button name="action_start_auction" string="Start Auction" class="oe_highlight" type="object" invisible="sale_type == 'regular' or state in ['sold', 'cancelled']"/>
             </xpath>
 
             <xpath expr="//field[@name='property_tag_ids']" position="before">

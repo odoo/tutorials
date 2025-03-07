@@ -6,11 +6,11 @@ from odoo.tests import tagged, Form
 
 @tagged('post_install', '-at_install')
 class EstateTestCase(TransactionCase):
-    
+
     @classmethod
     def setUpClass(cls):
         super(EstateTestCase, cls).setUpClass()
-        
+
         demo_properties =[
             {
                 "name": "property_1",
@@ -37,7 +37,7 @@ class EstateTestCase(TransactionCase):
             }
         ]
         cls.properties = cls.env['estate.property'].create(demo_properties)
-        
+
         demo_offers = [
             {
                 'property_id': cls.properties[0].id,
@@ -71,7 +71,7 @@ class EstateTestCase(TransactionCase):
                 self.assertEqual(form.garden_orientation, "north")
                 form.garden = False
                 self.assertEqual(form.garden_area, 0)
-                self.assertEqual(form.garden_orientation, False) 
+                self.assertEqual(form.garden_orientation, False)
 
 
     # Testing action_sold() with different type of property state

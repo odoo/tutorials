@@ -20,7 +20,7 @@
             </list>
         </field>
     </record>
-   
+
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -28,7 +28,7 @@
             <form string="Estate Property">
                 <header>
                     <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                     <button name="%(estate.action_estate_property_report)d" type="action" string="Print" class="btn-primary" invisible="state != 'sold'" target="new"/>
                 </header>
@@ -38,7 +38,7 @@
                         <field name="property_image" class="oe_avatar" widget="image" style="max-width: 200px; max-height: 200px; border-radius: 5px;"/>
                     </h1>
                     <field name="property_tag_ids" widget="many2many_tags" placeholder="Tags" options="{'color_field': 'color'}"/>
-                    <group>  
+                    <group>
                         <group>
                             <field name="property_type_id" options="{'no_create': True, 'no_edit': True}"/>
                             <field name="postcode"/>
@@ -73,7 +73,7 @@
                                     <field name="user_id"/>
                                     <field name="buyer_id"/>
                                 </group>
-                            </page> 
+                            </page>
                         </notebook>
                     </group>
                 </sheet>
@@ -86,7 +86,7 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search> 
+            <search>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
@@ -95,7 +95,7 @@
                 <field name="property_type_id"/>
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
 
-                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>         
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <filter string="Sold" name="sold" domain="[('state', '=', 'sold')]"/>
 
                 <group>

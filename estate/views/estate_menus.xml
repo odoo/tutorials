@@ -9,6 +9,9 @@
             <menuitem id="estate_property_menu_tag_action" action="estate_property_tag_action" name="Property Tag"/>
             <menuitem id="estate_property_menu_type_action" action="estate_property_type_action" name="Property Type"/>
         </menuitem>
+        <menuitem id="estate_setting_menu" name="Configuartion">
+            <menuitem id="estate_setting_menu_action" action="estate_setting_action" name="Setting"/>
+        </menuitem>
     </menuitem>
 
 </odoo>

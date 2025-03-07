@@ -1,63 +1,41 @@
-import { registry } from "@web/core/registry";
-import { useState, onMounted } from "@odoo/owl";
-import { Component } from "@odoo/owl";
-import { standardFieldProps } from "@web/views/fields/standard_field_props";
+import publicWidget from "@web/legacy/js/public/public_widget";
 
-export class CountdowmTimer extends Component{
-    static template = "estate_auction.CountdownTimerWidget";
-    static props = {
-        ...standardFieldProps,
-    };
+publicWidget.registry.AuctionCountdown = publicWidget.Widget.extend({
+    selector: ".auction_countdown", // The element where the countdown will be applied
 
-    
-    setup(){
-        this.state = useState({timeLeft : this.calculateTimeLeft()});
-
-        onMounted(() =>{registry
+    start: function () {
+        this._super.apply(this, arguments);
+        this.auctionEndTime = this.$el.data("auction-end");
+        if (this.auctionEndTime) {
             this.startCountdown();
-        });
-    }
-
-    calculateTimeLeft(){
-        const endDate = new Date(this.props.endDate);
-        const now = new Date();
-        const diff = endDate - now;
-
-        if(diff <= 0){
-            return {
-                days: 0, hours: 0, minutes: 0, seconds: 0
-            };
         }
+    },
 
-        return {
-            days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((diff / (1000 * 60)) % 60),
-            seconds : Math.floor((diff / 1000) % 60)
-        };
-    }
+    startCountdown: function () {
+        const self = this;
+        const endTime = new Date(this.auctionEndTime).getTime();
 
-    startCountdown(){
-        this.interval = setInterval(() => {
-            this.state.timeLeft = this.calculateTimeLeft();
+        this.interval = setInterval(function () {
+            const nowIst = new Date();
+            const nowUtc = new Date(nowIst.getTime() - (5.5 * 60 * 60 * 1000));
+            const now = nowUtc.getTime();
+            const distance = endTime - now;
 
+            if (distance <= 0) {
+                clearInterval(self.interval);
+                self.$el.text("Auction Ended");
+            } else {
+                const days = String(Math.floor(distance / (1000 * 60 * 60 * 24))).padStart(2, "0");
+                const hours = String(Math.floor((distance / (1000 * 60 * 60)) % 24)).padStart(2, "0");
+                const minutes = String(Math.floor((distance / (1000 * 60)) % 60)).padStart(2, "0");
+                const seconds = String(Math.floor((distance / 1000) % 60)).padStart(2, "0");
+                self.$el.text(`Time Left: ${days}d ${hours}h ${minutes}m ${seconds}s`);
+            }
         }, 1000);
-    }
+    },
 
-    get timerText(){
-        const { days, hours, minutes, seconds } = this.state.timeLeft;
-        return '${days}d ${hours}h ${minutes}m ${seconds}s';
-    }
-
-    willUnmount(){
+    destroy: function () {
         clearInterval(this.interval);
-    }
-
-}
-
-export const countdowmTimer = {
-    component: CountdowmTimer,
-}
-
-registry.category("fields").add("countdown_timer", countdowmTimer);
-
+        this._super.apply(this, arguments);
+    },
+});

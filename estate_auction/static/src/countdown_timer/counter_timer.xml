@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<template xml:space="preserve">
-    <t t-name="estate_auction.CountdownTimerWidget">
-        <div class="oe_countdown_timer alert alert-info">
-            <strong>Time Left: </strong>
-            <t t-esc="timerText"/>
-        </div>
-    </t>
-</template>
