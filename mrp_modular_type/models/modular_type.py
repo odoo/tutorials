@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class ModularType(models.Model):
     _name = 'modular.type'
 

@@ -2,7 +2,7 @@ from odoo import api, fields, models
 
 
 class MrpBomLine(models.Model):
-    _inherit = "mrp.bom.line"
+    _inherit = 'mrp.bom.line'
 
     modular_type_id = fields.Many2one(
         comodel_name='modular.type',
@@ -13,8 +13,7 @@ class MrpBomLine(models.Model):
     available_modular_type_ids = fields.Many2many(
         comodel_name='modular.type',
         compute='_compute_available_modular_types',
-        string="Available Modular Types",
-        store=False
+        string="Available Modular Types"
     )
 
     @api.depends('product_id')
