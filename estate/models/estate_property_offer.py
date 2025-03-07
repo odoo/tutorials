@@ -14,6 +14,10 @@ class estate_Property_Offer(models.Model):
     validity =fields.Integer("Validity (days)",default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
 
+    _sql_constraints = [
+        ('price', 'CHECK(price >= 0)','The price must be strictly positive.')
+    ]
+
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
         for record in self:
@@ -24,15 +28,15 @@ class estate_Property_Offer(models.Model):
             record.validity = (record.date_deadline - date.today()).days
 
     def action_accept(self):
-        if self.property_id.Selling_price:
+        if self.property_id.selling_price:
             raise UserError("Another offer is already accepted")
         else:
             self.status = "accepted"
             self.property_id.buyer_id = self.partner_id
-            self.property_id.Selling_price = self.price
+            self.property_id.selling_price = self.price
 
     def action_refuse(self):
         self.status = "refused"
-        self.property_id.Selling_price = 0
+        self.property_id.selling_price = 0
         self.property_id.buyer_id = False
 

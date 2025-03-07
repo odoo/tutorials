@@ -1,6 +1,8 @@
-from odoo import fields, models, api # type: ignore
+from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+from odoo.tools import float_utils
+
 
 
 class estate_Properties(models.Model):
@@ -12,7 +14,7 @@ class estate_Properties(models.Model):
     Postcode = fields.Char("PostCode")
     date_avaibility = fields.Date(string = "Available From", copy = False, default = fields.Date.today() + relativedelta(months=+3))
     expected_price = fields.Float(string = "Expected Price")
-    Selling_price = fields.Float(readonly=True,copy=False)
+    selling_price = fields.Float(copy=False)
     Bedrooms = fields.Integer()
     living_area = fields.Integer(string = "Living Area (sqm)")
     facades = fields.Integer("Is Facades Available")
@@ -30,6 +32,17 @@ class estate_Properties(models.Model):
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total")
     best_offer = fields.Float("Best Offer", compute="_compute_best_offer")
 
+    _sql_constraints = [
+        ('selling_price', 'CHECK(selling_price >= 0)','The selling price must be strictly positive.'),
+        ('expected_price', 'CHECK(expected_price >= 0)','The expected price must be strictly positive.')
+    ]
+
+    @api.constrains('selling_price','expected price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_utils.float_compare(record.selling_price,0.9*record.expected_price,precision_digits=2)<=0:
+                raise UserError("selling price must be grater than 90 percent of the expected price")
+
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
         for record in self:
@@ -40,7 +53,7 @@ class estate_Properties(models.Model):
         for record in self:   
             price1 = record.offer_ids.mapped('price')
             if len(price1)>0:
-                record.best_offer = max(record.offer_id.mapped('price'))
+                record.best_offer = max(record.offer_ids.mapped('price'))
             else:
                 record.best_offer = 0
 

@@ -5,3 +5,7 @@ class estate_Property_Type(models.Model):
     _description = "relevent type"
 
     name = fields.Char(required=True)
+
+    _sql_constraints = [
+        ('check_type_name', 'UNIQUE(name)','The name must be unique.')
+    ]
