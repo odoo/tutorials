@@ -1,21 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+    <!-- Property Types -->
     <record id="property_residential" model="estate.property.type">
         <field name="name">Residential</field>
     </record>
-
     <record id="property_commercial" model="estate.property.type">
         <field name="name">Commercial</field>
     </record>
-
     <record id="property_industrial" model="estate.property.type">
         <field name="name">Industrial</field>
     </record>
-
     <record id="property_land" model="estate.property.type">
         <field name="name">Land</field>
     </record>
 
+    <!-- Properties -->
     <record id="demo_property_1" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
@@ -32,9 +31,7 @@
         <field name="garden_orientation">north</field>
         <field name="property_type_id" ref="property_residential"/>
         <field name="image" type="base64" file="estate/static/src/img/image1.png"></field>
-
     </record>
-
     <record id="demo_property_2" model="estate.property">
         <field name="name">Trailer home</field>
         <field name="state">cancelled</field>
@@ -51,7 +48,6 @@
         <field name="property_type_id" ref="property_industrial"/>
         <field name="image" type="base64" file="estate/static/src/img/image2.png"></field>
     </record>
-
     <record id="demo_property_3" model="estate.property">
         <field name="name">suzie home</field>
         <field name="state">new</field>
@@ -67,5 +63,4 @@
         <field name="property_type_id" ref="property_commercial"/>
         <field name="image" type="base64" file="estate/static/src/img/image3.png"></field>
     </record>
-
 </odoo>

@@ -1,11 +1,10 @@
-from odoo import models, Command
+from odoo import Command, models
 
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def action_sold_btn(self):
-
         self.check_access("write")
         self.env["account.move"].sudo().create({
             "move_type": "out_invoice",
@@ -27,5 +26,4 @@ class EstateProperty(models.Model):
                 )
             ]
         })
-
         return super().action_sold_btn()

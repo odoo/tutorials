@@ -1,4 +1,4 @@
-import { Component, onWillStart, onMounted, useRef } from "@odoo/owl"
+import { Component, onWillStart, onMounted, useRef, onWillUpdateProps } from "@odoo/owl"
 import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component{
@@ -9,14 +9,14 @@ export class PieChart extends Component{
         this.canvasRef = useRef("canvasRef")
         onWillStart(()=> loadJS("/web/static/lib/Chart/Chart.js"))
         onMounted(()=> this.renderChart())
-        console.log("i am from pie chart")
+        onWillUpdateProps(()=> this.renderChart())
     }
 
     renderChart(){
         if(this.chart){
             this.chart.destroy()
         }
-        console.log(this.props.data)
+
         this.chart = new Chart(this.canvasRef.el, {
             type: "pie",
             data: {

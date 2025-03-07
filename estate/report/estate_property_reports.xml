@@ -10,7 +10,6 @@
         <field name="binding_model_id" ref="model_estate_property"/>
         <field name="binding_type">report</field>
     </record>
-
     <record id="report_salesman_property_offers_action" model="ir.actions.report">
         <field name="name">Salesman Property Offers</field>
         <field name="model">res.users</field>

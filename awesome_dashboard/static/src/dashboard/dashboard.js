@@ -12,12 +12,9 @@ class AwesomeDashboard extends Component {
     static components = { Layout, DashboardItem, PieChart }
 
     setup(){
-        this.result = useState({data: null})
         this.action = useService("action")
         this.statistics = useService("awesome_dashboard.statistics")
-        onWillStart(async()=>{
-            this.result.data = await this.statistics.loadStatistics()
-        })
+        this.result = useState(this.statistics.data.stat)
     }
 
     opoenCustomers(){
@@ -35,4 +32,4 @@ class AwesomeDashboard extends Component {
     }
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("awesome_dashboard.dashboard", AwesomeDashboard);

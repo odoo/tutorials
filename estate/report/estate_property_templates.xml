@@ -4,7 +4,6 @@
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
-
                     <div class="page">
                         <h2>
                             <span t-field="property.name"/>
@@ -87,7 +86,6 @@
                             <span>No any Property listed Yet</span>
                         </h2>
                     </t>
-
                 </t>
             </t>
         </t>

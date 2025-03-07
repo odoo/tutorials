@@ -1,5 +1,5 @@
 from odoo.tests.common import TransactionCase
-from odoo.tests import tagged, Form
+from odoo.tests import Form, tagged
 from odoo.exceptions import UserError
 
 
@@ -39,9 +39,7 @@ class EstatePropertyTestCase(TransactionCase):
                 'garden_orientation': "south",
                 'living_area': 5000,
                 'garden_area': 800
-            }
-        ]
-
+            }]
         )
 
         cls.offer1 = cls.env['estate.property.offer'].create([

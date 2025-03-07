@@ -1,17 +1,16 @@
 {
-    'name':"Real Estate", # this will be the user friendly name of the module will show as the name of our moudle 
-
-    'summary':"an application which helps every real estate business owner", 
-
-    'description':"This application is designed to streamline operations for real estate business owners, offering a comprehensive platform to manage property listings, client interactions, and transactions efficiently. ",
-
-    'author': "panj",
-    'website': "https://www.odoo.com",
-
+    'name':"Real Estate",
     'version': '0.1',
-    'application': True,
+    'summary':"an application which helps every real estate business owner", 
+    'description':"""
+This module introduces a dedicated real estate management system, covering property listings,
+detailed property information, and offer tracking. It provides a list view for properties and
+a form view summarizing key details such as type and location. The module also enables sellers
+to manage offers from potential buyers, allowing bids above or below the expected price.
+    """,
+    'author': "panj",
     'category': 'Real Estate/Brokerage',
-    'installable': True,
+    'website': "https://www.odoo.com",
     'depends': ['base', 'website', 'mail'],
     'data':[
         'security/security.xml',
@@ -31,5 +30,7 @@
         'demo/estate_property_demo.xml',
         'demo/estate_property_offer_demo.xml'
     ],
+    'application': True,
+    'installable': True,
     'license': 'AGPL-3'
 }

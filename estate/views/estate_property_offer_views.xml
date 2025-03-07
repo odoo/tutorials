@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id='estate_property_offer_list_view' model='ir.ui.view'>
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
@@ -14,7 +14,6 @@
             </list>
         </field>
     </record>
-
     <record id="estate_property_offer_form_view" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
@@ -32,12 +31,10 @@
             </form>
         </field>
     </record>
-
     <record id="action_view_offer" model="ir.actions.act_window">
         <field name="name">Property Type Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list,form</field>
         <field name="domain">[("property_id.property_type_id", "=", active_id)]</field>
     </record>
-
 </odoo>

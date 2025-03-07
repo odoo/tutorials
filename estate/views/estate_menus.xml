@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <menuitem id="estate_menu_root" name="Real Estate">
         <menuitem id="estate_first_level_menu_advertisement" name="Advertisements">
             <menuitem id="estate_property_model_menu_action" action="action_estate_property" name="properties"/>
@@ -9,5 +9,4 @@
             <menuitem id="estate_property_type_model_menu_action" action="action_estate_property_type" name="Property types"/>
         </menuitem>
     </menuitem>
-    
 </odoo>

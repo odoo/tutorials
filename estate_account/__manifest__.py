@@ -1,17 +1,16 @@
 {
     'name':"Estate Account",
-
-    'summary':"an module which links estate module with account to generate invoice",
-
-    'description':"this module is developed for generating invoice seamlessly when any properties of estate module is sold",
-
     'version': '0.1',
-    'application': True,
+    'summary':"an module which links estate module with account to generate invoice",
+    'description':"""
+this module is developed for generating invoice seamlessly when any properties of estate module is sold
+""",
     'category': 'Tutorial/Estate Account',
-    'installable': True,
     'depends': ['estate','account'],
     'data':[
         'report/estate_account_templates.xml'
     ],
+    'application': True,
+    'installable': True,
     'license': 'AGPL-3'
 }

@@ -11,9 +11,7 @@
         </Card>
         <Card title="'Card 1'">
             <Counter/>
-
         </Card>
-
         <TodoList/>
     </t>
 
