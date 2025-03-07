@@ -10,8 +10,9 @@
     'depends' : ['event' , 'website_event'],
     'data' : [
         'views/event_event_views.xml',
+        'views/event_ticket_views.xml',
         'views/event_registration_views.xml'
     ],
     'installable' : True,
-    'license': 'AGPL-3',
+    'license': "AGPL-3",
 }
