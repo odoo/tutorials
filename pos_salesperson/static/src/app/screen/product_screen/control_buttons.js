@@ -1,0 +1,10 @@
+import { patch } from "@web/core/utils/patch";
+import { ControlButtons } from "@point_of_sale/app/screens/product_screen/control_buttons/control_buttons";
+import { SelectSalespersonButton } from "./control_buttons/select_salesperson_button/select_salesperson_button";
+
+patch(ControlButtons, {
+    components: {
+        ...ControlButtons.components,
+        SelectSalespersonButton,
+    }
+})
