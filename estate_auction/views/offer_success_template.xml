@@ -1,0 +1,13 @@
+<odoo>
+    <data>
+        <template id="offer_success_template" name="Offer Success">
+            <t t-call="website.layout">
+                <div class="container mt-5 text-center">
+                    <h2 class="text-success">Congratulations!</h2>
+                    <p>Your offer has been successfully placed. We will notify you of the results as soon as the auction concludes.</p>
+                    <a href="/properties" class="btn btn-primary">Go Back to Properties</a>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,35 @@
+{
+    'name': 'Estate',
+    "description": "This is a real estate listing module.",
+    'version': '1.0',
+    "category": "Real Estate/Brokerage",
+    'depends': ['base','mail', 'website'],
+    'license': 'LGPL-3',
+    'author' : 'Manthan Akbari',
+    
+    'data' : [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'data/estate.property.type.csv',
+        'wizards/estate_property_offer_wizard.xml',
+        'data/website_menu.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_property_offer_views.xml',
+        'views/estate_property_type_views.xml',
+        'views/res_users_views.xml',
+        'views/property_listing.xml',
+        'views/estate_property_views.xml',
+        'report/estate_property_reports.xml',
+        'report/estate_property_template.xml',
+        'report/estate_property_res_user_template.xml',
+        'views/res_config_settings_views.xml',
+        'views/estate_menus.xml',
+         ], 
+    'demo': [
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml',
+    ],
+
+    
+    'application': True,
+}

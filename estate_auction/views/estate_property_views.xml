@@ -1,0 +1,46 @@
+<odoo>
+    <record id="estate_property_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">estate.property.kanban.inherit.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//h2" position="inside">
+                    <field name="auction_state" widget="auction_state_selection" class="w-100" invisible="selling_method != 'auction'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_estate_property_form_inherit" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+
+            <header>
+                <button name="action_start_auction" string="Start Auction" type="object" class="oe_highlight" invisible="selling_method != 'auction' or auction_state !='template' "/>
+            </header>
+            <xpath expr="//h1" position="after">
+                <field name="selling_method" widget="radio" options="{'horizontal': True}" readonly="auction_state == 'sold'"/>
+            </xpath>
+            <xpath expr="//div[hasclass('oe_title', 'pe-0')]/h1" position="inside">
+                <field name="auction_state" widget="auction_state_selection" class="me-5" invisible="selling_method != 'auction'"/>
+            </xpath>
+
+
+            <xpath expr="//notebook" position="inside">
+                <page string="Auction Details" invisible="selling_method != 'auction'">
+                    <group>
+                        <field name="auction_end_time"/>
+                        <field name="highest_offer"/>
+                        <field name="highest_bidder"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//field[@name='offer_ids']" position="attributes">
+                <attribute name="readonly">state in ['offer_accepted','sold','cancelled'] or (auction_state not in ['auction'] and selling_method in ['auction'])</attribute>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

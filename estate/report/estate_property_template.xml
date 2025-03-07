@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="estate_property_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="property">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h1>
+                                <span t-field="property.name"/>
+                            </h1>
+                            <t t-if="property.salesperson_id">
+                                <h6>
+                                    <span>
+                                        <b>Salesperson:</b>
+                                    </span>
+                                    <span t-field="property.salesperson_id"/>
+                                </h6>
+                            </t>
+                            <t t-else="">
+                                <span>
+                                    <b>Salesperson:</b>
+                                </span>
+                            </t>
+                            <h6>
+                                <span>
+                                    <b>Expected Price: </b>
+                                </span>
+                                <span t-field="property.expected_price"/>
+                            </h6>
+                            <h6>
+                                <span>
+                                    <b>Status: </b>
+                                </span>
+                                <span t-field="property.state"/>
+                            </h6>
+                            <t t-set="offers" t-value="property.offer_ids"/>
+                            <t t-if="len(offers) != 0">
+                                <t t-call="estate.estate_property_subtemplate"/>
+                            </t>
+                            <t t-else="">
+                                <h1>
+                                    <span>There are no offers yet!!</span>
+                                </h1>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+
+        <template id="estate_property_subtemplate">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="offers" t-as="offer">
+                        <tr>
+                            <td>
+                                <span t-out="offer.price"/>
+                            </td>
+                            <td>
+                                <span t-out="offer.partner_id.name"/>
+                            </td>
+                            <td>
+                                <span t-out="offer.validity"/>
+                            </td>
+                            <td>
+                                <span t-out="offer.date_deadline"/>
+                            </td>
+                            <td>
+                                <t t-if="offer.status">
+                                    <span t-out="offer.status.capitalize()"/>
+                                </t>
+                                <t t-else="">
+                                    <span t-out="offer.status"/>
+                                </t>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </template>
+    </data>
+</odoo>
