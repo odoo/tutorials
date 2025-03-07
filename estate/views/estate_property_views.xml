@@ -1,4 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="esate_property_action" model="ir.actions.act_window">
+        <field name="name">Estate Property</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -19,6 +26,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" />
+                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -27,6 +40,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state" string="Status" />
                             <field name="property_type_id" string="Property Type" />
                             <field name="tag_type_id" widget="many2many_tags" string="Property Tags" />
                             <field name="postcode" string="Postcode" />
@@ -50,7 +64,7 @@
                                 <field name="garage" string="Garage" />
                                 <field name="garden" string="Garden" />
                                 <field name="garden_area" string="Garden Area (sqm)" />
-                                <field name="state" string="State" />
+                                <field name="orientation" />
                             </group>
                         </page>
 
@@ -84,12 +98,18 @@
                 <field name="postcode" string="Postcode" />
                 <field name="bedrooms" string="Bedrooms" />
                 <field name="living_area" string="Living Area (sqm)" />
+                <field name="orientation" />
                 <field name="facades" string="Facades" />
-                <filter name="filter_by_bedrooms" string="3+ Bedrooms" domain="[('bedrooms', '>=', 3)]" />
-                <filter name="filter_by_living_area" string="Large Living Area" domain="[('living_area', '>', 100)]" />
-                <filter name="filter_by_postcode" string="Area 4000+" domain="[('postcode', '>=', '4000')]" />
-                <filter name="filter_by_facades" string="More than 2 Facades" domain="[('facades', '>', 2)]" />
-                <filter name="available_property" string="Available Property" domain="[('state', 'in', ['new', 'offer_received'])]" />
+                <filter name="filter_by_bedrooms" string="3+ Bedrooms"
+                    domain="[('bedrooms', '>=', 3)]" />
+                <filter name="filter_by_living_area" string="Large Living Area"
+                    domain="[('living_area', '>', 100)]" />
+                <filter name="filter_by_postcode" string="Area 4000+"
+                    domain="[('postcode', '>=', '4000')]" />
+                <filter name="filter_by_facades" string="More than 2 Facades"
+                    domain="[('facades', '>', 2)]" />
+                <filter name="available_property" string="Available Property"
+                    domain="[('state', 'in', ['new', 'offer_received'])]" />
             </search>
         </field>
     </record>

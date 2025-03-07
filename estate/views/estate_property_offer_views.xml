@@ -4,7 +4,7 @@
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form string="Property Offer">
+            <form string="Property Offer">               
                 <sheet>
                     <group>
                         <field name="price" />
@@ -26,6 +26,8 @@
             <list string="Property Offers">
                 <field name="price" />
                 <field name="partner_id" />
+                    <button name="action_accept" type="object" icon="fa-check" title="Accept" />
+                    <button name="action_refuse" type="object" icon="fa-times" title="Refuse" />
                 <field name="status" />
             </list>
         </field>

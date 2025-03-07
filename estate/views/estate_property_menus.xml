@@ -1,5 +1,4 @@
 <odoo>
-    <!-- Root menu -->
     <menuitem id="test_menu_root" name="Estate Property"/>
     <menuitem id="test_first_level_menu" name="Estate Properties" parent="test_menu_root"/>
     <menuitem id="test_model_menu_action" action="esate_property_action" parent="test_first_level_menu"/>
