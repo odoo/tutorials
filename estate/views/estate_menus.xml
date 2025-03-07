@@ -18,6 +18,5 @@
             <!-- Action Menu for Property Tags -->
             <menuitem id="estate_property_tags_menu_action" action="estate_property_tags_action" />
         </menuitem>
-
     </menuitem>
 </odoo>

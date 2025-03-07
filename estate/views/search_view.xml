@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="estate_search_view" model="ir.ui.view">
-
         <field name="name">Estate properties search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
