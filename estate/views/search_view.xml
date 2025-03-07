@@ -1,27 +1,23 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="estate_search_view" model="ir.ui.view">
 
-<record id ="estate_search_view" model="ir.ui.view">
-  
-  <field name="name">Estate properties search</field>
-  <field name="model">estate_model</field>
-  <field name="arch" type="xml">
-    
-    <search string="Estate Search">
-    <field name="name"/>
+        <field name="name">Estate properties search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
 
-    <separator/>
-      <filter string="Filter on state" name="state" domain="['|',('state','=','new'),('state','=','Offer Received')]"/>
+            <search string="Estate Search">
+                <field name="name" />
 
-      <separator/>
-      
-        <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>
-        <separator/>
+                <separator />
+                <filter string="Filter on state" name="state"
+                    domain="['|',('state','=','new'),('state','=','Offer Received')]" />
 
-    </search>
-  </field>
-   
+                <separator />
+                <filter string="postcode" name="postcode" context="{'group_by':'postcode'}" />
+                <separator />
 
-</record>
-    
+            </search>
+        </field>
+    </record>
 </odoo>
