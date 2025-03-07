@@ -1,10 +1,11 @@
-from datetime import date, timedelta
 from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offers on Estate Listed"
+    _order="price desc"
 
     price = fields.Float(string="Offered Price", required=True)
     validity = fields.Integer(string="Validity(in days)", default=7)
@@ -12,31 +13,53 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_deadline",
         inverse="_inverse_validity",
         store=True,
-        default=lambda self: date.today() + timedelta(days=7),
+        default=lambda self: fields.Date.add(fields.Date.today(), days=7),
         copy=False,
     )
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")],
-        inverse="_inverse_validity",
         string="Status",
         copy=False,
     )
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    partner_id = fields.Many2one("res.partner", required=True, ondelete="cascade")
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
+
+    _sql_constraints = [
+        ("positive_offer_price", "CHECK(price>0)", "Offer Price should be positive.")
+    ]
 
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
             create_date = (
-                record.create_date.date() if record.create_date else date.today()
+                record.create_date.date() if record.create_date else fields.Date.today()
             )
-            record.deadline = create_date + timedelta(days=record.validity)
+            record.deadline = fields.Date.add(create_date, days=record.validity)
 
     def _inverse_validity(self):
         for record in self:
             create_date = (
-                record.create_date.date() if record.create_date else date.today()
+                record.create_date.date() if record.create_date else fields.Date.today()
             )
             if record.deadline:
                 record.validity = (record.deadline - create_date).days
-                
+
+    def action_set_accept_offer(self):
+        for record in self:
+            if record.property_id.state == "offer_accepted":
+                raise UserError("You can only accept offer ones.")
+            record.property_id.selling_price = record.price
+            record.property_id.state = "offer_accepted"
+            record.property_id.buyer = record.partner_id
+            record.status = "accepted"
+        return True
+
+    def action_set_refuse_offer(self):
+        for record in self:
+            if record.status == "accepted":
+                record.property_id.selling_price = 0
+                record.property_id.state = "offer_received"
+                record.property_id.buyer = False
+
+        record.status = "refused"
+        return True

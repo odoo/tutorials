@@ -19,6 +19,31 @@
         </field>
     </record>
 
+    <!--Estate
+    Property Type Form View -->
+    <record id="estate_proprty_type_form" model="ir.ui.view">
+        <field name="name">Property Type Form View</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="name" string="" nolabel="1" class="fs-1 fw-bold m-2" />
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list class="m-2 d-flex justify-content-center align-items-center">
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <!-- Estate Property Type Search View -->
     <record id="estate_property_type_search_view" model="ir.ui.view">
         <field name="name">Estate Property Type Search View</field>
