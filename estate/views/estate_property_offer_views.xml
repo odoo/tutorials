@@ -7,10 +7,13 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list>
-                <field name="price" width="25%"/>
-                <field name="partner_id" width="25%"/>
-                <field name="valadity" width="25%"/>
-                <field name="date_deadline" width="25%"/>
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="validity" />
+                <field name="date_deadline" />
+                <button name="action_accept_offer" type="object" icon="fa-check" title="Accept" />
+                <button name="action_refuse_offer" type="object" icon="fa-times" title="Refuse" />
+                <field name="status" />
             </list>
         </field>
     </record>
@@ -21,13 +24,14 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form>
-            <sheet>
-                <group>
-                    <field name="price"/>
-                    <field name="partner_id"/>
-                    <field name="valadity"/>
-                    <field name="date_deadline" string="Deadline"/>
-                </group>
+                <sheet>
+                    <group>
+                        <field name="price" />
+                        <field name="partner_id" />
+                        <field name="validity" />
+                        <field name="date_deadline" string="Deadline" />
+                        <field name="status" />
+                    </group>
                 </sheet>
             </form>
         </field>

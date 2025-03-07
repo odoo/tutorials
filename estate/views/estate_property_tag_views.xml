@@ -24,11 +24,9 @@
         <field name="arch" type="xml">
             <form string="Property Tag">
                 <sheet>
-                    <group>
                         <h1>
                             <field name="name" placeholder="eg : cozy"/>
                         </h1>
-                    </group>
                 </sheet>
             </form>
         </field>
