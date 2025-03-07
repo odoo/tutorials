@@ -16,13 +16,13 @@
     <!-- Inherited Estate Property Detail Page -->
     <template id="property_detail_page_inherit" inherit_id="estate.property_detail_page" name="Estate Property Description - Auction Button">
         <xpath expr="//div[1]/div[2]" position="inside">
-            <t t-if="property.property_sale_format == 'auction' and property.auction_stage in ['02_auction', '03_sold']">
+            <t t-if="property.property_sale_format == 'auction' and property.auction_stage in ['auction', 'offer_accepted']">
                 <div class="alert alert-info col-md-12">
                     <strong>Auction Ends In:</strong>
                     <div t-att-data-auction_end_time="property.auction_end_time" class="js_auction_timer"></div>
                 </div>
             </t>
-            <t t-if="property.property_sale_format == 'auction' and property.auction_stage == '02_auction'">
+            <t t-if="property.property_sale_format == 'auction' and property.auction_stage == 'auction'">
                 <div class="col-md-6">
                     <a t-att-href="'/property/auction/%d' % property.id" class="btn btn-warning">
                         <i class="fa fa-gavel"></i> Participate in Auction

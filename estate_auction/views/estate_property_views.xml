@@ -24,31 +24,14 @@
                     type="object"
                     class="btn-primary"
                     string="Start Auction"
-                    invisible="property_sale_format != 'auction' or auction_stage != '01_template'"/>
+                    invisible="property_sale_format != 'auction' or auction_stage != 'template'"/>
             </xpath>
-            <xpath expr="//notebook/page[1]/group" position="replace">
-                <div class="row">
-                    <div class="col-md-6">
-                        <group>
-                            <field name="description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area" invisible="not garden"/>
-                            <field name="garden_orientation" invisible="not garden"/>
-                            <field name="total_area"/>
-                        </group>
-                    </div>
-                    <div class="col-md-6">
-                        <group string="Auction" invisible="property_sale_format != 'auction'">
-                            <field name="auction_end_time"/>
-                            <field name="best_price"/>
-                            <field name="highest_bidder" readonly="1"/>
-                        </group>
-                    </div>
-                </div>
+            <xpath expr="//notebook/page[1]/group" position="after">
+                <group string="Auction" invisible="property_sale_format != 'auction'">
+                    <field name="auction_end_time"/>
+                    <field name="best_price"/>
+                    <field name="highest_bidder" readonly="1"/>
+                </group>
             </xpath>
             <xpath expr="//page[2]//button[@name='action_confirm']" position="attributes">
                 <attribute name="invisible">property_sale_format == 'auction'</attribute>

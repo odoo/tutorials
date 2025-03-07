@@ -11,7 +11,7 @@ class AuctionPropertyController(http.Controller):
                 ('partner_id', '=', request.env.user.partner_id.id)
             ])
             if property_bids:
-                return request.render('estate_auction.generic_message', {"title":"Oops!","message": "You can only place one bid on a property"})
+                return request.render('estate_auction.generic_message', {"title":"Oops!", "message": "You can only place one bid on a property"})
             return request.render("estate_auction.create_bid", {"property": property})
         except Exception as e:
             return request.render('estate_auction.generic_error', {"error": e, "id": property.id})

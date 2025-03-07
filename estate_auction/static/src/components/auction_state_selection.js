@@ -1,15 +1,12 @@
 /** @odoo-module **/
 
-import { _t } from "@web/core/l10n/translation";
-import {
-    StateSelectionField,
-    stateSelectionField,
-} from "@web/views/fields/state_selection/state_selection_field";
-import { useCommand } from "@web/core/commands/command_hook";
-import { formatSelection } from "@web/views/fields/formatters";
-
-import { registry } from "@web/core/registry";
 import { useState } from "@odoo/owl";
+import { useCommand } from "@web/core/commands/command_hook";
+import { _t } from "@web/core/l10n/translation";
+import { registry } from "@web/core/registry";
+import { formatSelection } from "@web/views/fields/formatters";
+import { StateSelectionField, stateSelectionField } from "@web/views/fields/state_selection/state_selection_field";
+
 
 export class AuctionStateSelection extends StateSelectionField {
     static template = "estate_auction.AuctionStateSelection";
@@ -25,19 +22,19 @@ export class AuctionStateSelection extends StateSelectionField {
             isStateButtonHighlighted: false,
         });
         this.icons = {
-            "01_template": "o_status",
-            "02_auction": "fa fa-lg fa-exclamation-circle",
-            "03_offer_accepted": "o_status o_status_green"
+            "template": "o_status",
+            "auction": "fa fa-lg fa-exclamation-circle",
+            "offer_accepted": "o_status o_status_green"
         };
         this.colorIcons = {
-            "01_template": "",
-            "02_auction": "o_status_changes_requested",
-            "03_offer_accepted": "text-success"
+            "template": "",
+            "auction": "o_status_changes_requested",
+            "offer_accepted": "text-success"
         };
         this.colorButton = {
-            "01_template": "btn-outline-secondary",
-            "02_auction": "btn-outline-warning",
-            "03_offer_accepted": "btn-outline-success"
+            "template": "btn-outline-secondary",
+            "auction": "btn-outline-warning",
+            "offer_accepted": "btn-outline-success"
         };
         if (this.props.viewType !== 'form') {
             super.setup();

@@ -13,7 +13,7 @@
 
         <!-- Toggle Button -->
         <xpath expr="//t[@t-if='props.readonly']" position="after">
-            <t t-elif="isToggleMode and currentValue == '02_auction'">
+            <t t-elif="isToggleMode and currentValue == 'auction'">
                 <button t-if="isView(['kanban', 'list']) or this.env.isSmall"
                         class="d-flex align-items-center btn fw-normal p-0"
                         tabindex="-1"
@@ -24,7 +24,7 @@
                 </button>
                 <button t-else=""
                         class="o_state_button btn rounded-pill"
-                        t-attf-class="{{ currentValue == '03_offer_accepted' ? 'btn-success' : 'btn-outline-secondary' }}"
+                        t-attf-class="{{ currentValue == 'offer_accepted' ? 'btn-success' : 'btn-outline-secondary' }}"
                         t-att-class="{'bg-view border': state.isStateButtonHighlighted}"
                         t-on-click="toggleState"
                         t-on-mouseenter="onMouseEnterStateButton"
@@ -55,7 +55,7 @@
                 <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}"/>
             </div>
             <div t-else="" class="d-flex align-items-center">
-                <t t-if="currentValue != '03_offer_accepted'">
+                <t t-if="currentValue != 'offer_accepted'">
                     <span t-attf-class="o_status_label" t-out="label"/>
                 </t>
                 <t t-else="">

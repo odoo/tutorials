@@ -1,7 +1,7 @@
 {
     'name': "Real Estate - Auction",
     'version': '1.0',
-    'depends': ['base', 'estate', 'mail'],
+    'depends': ['estate_account'],
     'author': "Vaidik Gorasiya - vrgo",
     'description': """
         This module is designed to manage auction for real estate properties.

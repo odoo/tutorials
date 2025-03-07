@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
-    <t t-name="awesome_dashboard.PieChart">
-        <div t-att-class="'h-100 w-100'" t-ref="root">
-            <canvas t-ref="canvas"/>
-        </div>
-    </t>
-</templates>
