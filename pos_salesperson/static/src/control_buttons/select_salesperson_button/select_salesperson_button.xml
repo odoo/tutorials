@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="pos_salesperson.SelectSalespersonButton">
+        <button t-attf-class="{{props.class}} mt-2 mt-lg-0" t-on-click="() => this.pos.selectSalesperson()">
+            <div t-if="props.salesperson" t-out="props.salesperson.name" class="text-action text-truncate" />
+            <div t-else="">Salesperson</div>
+        </button>
+    </t>
+</templates>

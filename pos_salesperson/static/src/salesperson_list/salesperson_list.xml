@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="pos_salesperson.SalespersonList">
+        <Dialog size="'lg'" title="'Select Salesperson'">
+            <t t-foreach="getSalespersons()" t-as="salesperson" t-key="salesperson.id">
+                <div t-attf-class="salesperson-item mb-2 d-flex align-items-center border p-3 w-full rounded-3 {{salesperson.id == props.salesperson?.id ? 'selected' : ''}}"
+                    t-on-click="() => this.selectSalesperson(salesperson)">
+                    <img t-att-src="'data:image/png;base64,' + salesperson.image_1920" alt="Salesperson Image" />
+                    <div>
+                        <div class="fw-bold fs-3" t-out="salesperson.name" />
+                        <div t-out="salesperson.job_title" />
+                    </div>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-lg btn-secondary" t-on-click="discardDialog">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

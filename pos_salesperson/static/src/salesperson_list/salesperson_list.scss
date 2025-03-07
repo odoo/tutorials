@@ -1,0 +1,21 @@
+.salesperson-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: #f0f0f0;
+    }
+
+    &.selected {
+        background-color: $o-component-active-bg;
+        border: $border-width solid $o-component-active-border;
+    }
+
+    img {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 15px;
+    }
+}
