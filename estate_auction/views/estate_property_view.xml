@@ -1,31 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<odoo>
+<odoo> 
+     <!-- <record id="estate_auction_view_kanban" model="ir.ui.view">
+          <field name="name">estate.auction.kanban</field>
+          <field name="model">estate.property</field>
+          <field name="inherit_id" ref="estate.estate_property_view_kanban">
+               <field name="arch" type="xml">
+                    <xpath expr="//class[@name='oe_canban_card']" position="inside">
+                              <span class="float-end">
+                                   <field name="auction_state" widget="auction_state_selection"
+                                        class="w-100" invisible="selling_type != 'auction" />
+                              </span>
+                    </xpath>
+               </field>
+          </field>
+     </record> -->
 
-  <record id="auction_estate_form_view" model="ir.ui.view">
-  
-     <field name="name">auction.estate.form.view</field>
-     <field name="model">estate.property</field>
-     <field name="inherit_id" ref="estate.estate_property_view_form"/> 
+     <record id="auction_estate_form_view" model="ir.ui.view">
+          <field name="name">auction.estate.form.view</field>
+          <field name="model">estate.property</field>
+          <field name="inherit_id" ref="estate.estate_property_view_form" />
+          <field name="arch" type="xml">
+               <xpath expr="//header/button[@name='action_sold']" position="before">
+                    <button name="action_start_auction" type="object" string="Start Auction"
+                         class="btn-primary"
+                         invisible="selling_type != 'auction'" />
+               </xpath>
+               <xpath expr="//group[1]/field[@name='tag_ids']" position="after">
+                    <field name="selling_type" widget="radio" />
+               </xpath>
+               <xpath expr="//notebook//page[1]/group" position="after">
+                    <group invisible="selling_type != 'auction'">
+                         <field name="auction_end_time" />
+                         <field name="highest_offer" />
+                         <field name="highest_bidder_id" />
+                    </group>
+               </xpath>
+               <xpath expr="//div[2]//field[@name='image_1920']" position="after">
 
-     <field name="arch" type="xml">
-
-           <xpath expr="//header/button[@name='action_sold']" position="before">
-             <button name="action_start_auction" type="object" string="Start Auction" class="btn-primary"
-                        invisible="auction_type != 'auction' or auction_started == True"/>
-           </xpath>
-           <xpath expr="//group[1]/field[@name='tag_ids']" position="after">
-                <field name="auction_type" widget="radio"/>
-           </xpath>
-
-           <xpath expr="//notebook//page[1]/group" position="after">
-               <group invisible="auction_type != 'auction'">
-                    <field name="auction_end_time"/>
-                    <field name="highest_offer"/>
-                    <field name="highest_bidder_id"/>
-               </group>
-           </xpath> 
-
-     </field>
-  </record>
+                    <div class="d-flex justify-content-end o_state_container"
+                         style="text-align: -webkit-right;" invisible="selling_type != 'auction'">
+                         <field name="auction_state" widget="auction_state_selection"
+                              class="o_task_state_widget" />
+                    </div>
+               </xpath>
+          </field>
+     </record>
 </odoo>

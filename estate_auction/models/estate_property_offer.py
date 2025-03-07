@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
             if property_id:
                 property = self.env['estate.property'].browse(property_id)
 
-                if property.auction_type == 'regular':
+                if property.selling_type == 'regular':
                     return super().create(vals_list)
                 else:
                     if new_offer < property.expected_price:
