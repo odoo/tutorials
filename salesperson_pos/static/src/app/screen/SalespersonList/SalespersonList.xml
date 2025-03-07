@@ -1,0 +1,54 @@
+<templates id="template" xml:space="preserve">
+
+    <t t-name="salesperson_pos.SalespersonList">
+        <Dialog bodyClass="'salesperson-list overflow-y-auto'" contentClass="'h-100'">
+            <t t-set-slot="header">
+                <button t-if="!ui.isSmall" class="btn btn-primary btn-lg lh-lg" role="img" aria-label="Add a salesperson"
+                        t-on-click="() => this.editSalesperson()"
+                        title="Add a salesperson">
+                Create
+                </button>
+                <Input tModel="[state, 'query']"
+                    class="'ms-auto'"
+                    isSmall="ui.isSmall"
+                    placeholder.translate="Search Salespersons..."
+                    icon="{type: 'fa', value: 'fa-search'}"
+                    autofocus="true"
+                    debounceMillis="100" />
+            </t>
+            <table class="table table-hover">
+                <thead t-if="!ui.isSmall">
+                    <tr>
+                        <th class="py-2">Name</th>
+                        <th class="py-2">Job Title</th>
+                        <th class="py-2">Email</th>
+                        <th class="py-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="getFilteredSalespeople()" t-as="salesperson" t-key="salesperson.id">
+                        <SalespersonLine
+                                close="props.close"
+                                salesperson="salesperson"
+                                isSelected="props.salesperson?.id === salesperson.id"
+                                onClickEdit.bind="(s) => this.editSalesperson(s)"
+                                onClickUnselect.bind="() => this.clickSalesperson()"
+                                onClickSalesperson.bind="clickSalesperson"/>
+                    </t>
+                </tbody>
+            </table>
+            <t t-set-slot="footer">
+                <div class="d-flex justify-content-start flex-wrap gap-2 w-100">
+                    <button t-if="ui.isSmall" class="btn btn-primary btn-lg lh-lg" role="img" aria-label="Add a salesperson"
+                        t-on-click="() => this.editSalesperson()"
+                        title="Add a salesperson">
+                    New
+                    </button>
+                    <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="props.close">
+                        Discard
+                    </button>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+</templates>
