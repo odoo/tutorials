@@ -8,9 +8,6 @@
             <menuitem id="property_first_level_menu2" name="Settings">
                 <menuitem id="property_model_menu_action2" action="estate_property_type_action"/> 
                 <menuitem id="property_model_menu_action3" action="estate_property_tag_action"/>      
-                <!-- <menuitem id="property_model_menu_action4" action="estate_property_offer_action"/>                -->
             </menuitem>  
         </menuitem>
-
-
     </odoo>
