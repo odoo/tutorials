@@ -1,6 +1,5 @@
 {
     'name': "My Real Estate",
-    'sequence': 1,
     'license': 'LGPL-3',
     'depends': ['base'],
     'installable': True,
@@ -11,6 +10,6 @@
         'views/real_estate_property_category_views.xml',
         'views/real_estate_property_tags_views.xml',
         'views/real_estate_property_offers_views.xml',
-        'views/real_estate_menus.xml'      
+        'views/real_estate_menus.xml',
     ]
 }

@@ -6,11 +6,11 @@
             <menuitem id="real_estate_menu_action" action="real_estate_property_action" />
         </menuitem>
 
-        <menuitem id="real_estate_first_level_menu_1" name="Settings">
-            <menuitem id="real_estate_menu_action_1" action="real_estate_property_category_action"/>
-            <menuitem id="real_estate_menu_action_2" action="real_estate_property_tag_action" />
+        <menuitem id="real_estate_first_level_menu_settings" name="Settings">
+            <menuitem id="real_estate_third_level_menu_action_category" action="real_estate_property_category_action"/>
+            <menuitem id="real_estate_third_level_menu_action_tag" action="real_estate_property_tag_action" />
         </menuitem>
 
-
     </menuitem>
+    
 </odoo>

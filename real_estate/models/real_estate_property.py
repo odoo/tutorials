@@ -1,5 +1,6 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 from dateutil.relativedelta import relativedelta
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class RealEstate(models.Model):
     _name = "real.estate.property"
@@ -26,7 +27,6 @@ class RealEstate(models.Model):
 
         ],
         string = 'Garden Orientation'
-
     )
     status = fields.Selection(
         [
@@ -41,35 +41,33 @@ class RealEstate(models.Model):
         copy = False
     )
     active = fields.Boolean(string = "Active", default = True)
-    
     property_type_id = fields.Many2one('real.estate.property.category', string = "Property Type")
-    
     partner_id = fields.Many2one("res.partner", string = "Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user)
-
-    tag_id = fields.Many2many('real.estate.property.tag', string = "Tag")
-
-    offer_id = fields.One2many('real.estate.property.offer', 'property_id', string = 'Offer', copy = False)
-
+    tag_ids = fields.Many2many('real.estate.property.tag', string = "Tag")
+    offer_ids = fields.One2many('real.estate.property.offer', 'property_id', string = 'Offer', copy = False)
     total_area = fields.Float(compute = "_compute_total_area", string = "Total Area (sqm)", readonly = True)
-
     best_price = fields.Float(compute = "_compute_best_price", string = "Best Offer", readonly = True, default = 0, copy = False)
+    sold = fields.Boolean(string = "Sold", default = False)
+    cancel = fields.Boolean(string = "Cancel", default = False)
 
+    #depends method to calculate total area based on garden area and living area
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
     
-    @api.depends('offer_id.price')
+    #depends method to calculate best offer among all other offers
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        # print("hello",self.offer_id.price)
         for record in self:
-            price_list = record.offer_id.mapped('price')
+            price_list = record.offer_ids.mapped('price')
             if len(price_list) > 0:
-                record.best_price = max(record.offer_id.mapped('price'))
+                record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0
 
+    #onchange method to give default garden area and garden orientation if garden is selected
     @api.onchange("garden")
     def _onchange_garden_details(self):
         if self.garden:
@@ -78,6 +76,43 @@ class RealEstate(models.Model):
         else:
             self.garden_area = ''
             self.garden_orientation = ''
+    
+    #method to sold property 
+    def action_property_sold(self):
+        if self.status == 'cancelled':
+            raise exceptions.UserError("Cancelled properties cannot be sold.")
+        elif self.status == 'sold':
+            raise exceptions.UserError("Already sold.")
+        else:
+            self.sold = True
+            self.status = 'sold'
+        return
+        
+    #method to cancel property
+    def action_property_cancel(self):
+        if self.status == 'sold':
+            raise exceptions.UserError("Sold properties cannot be cancelled.")
+        if self.status == 'cancelled':
+            raise exceptions.UserError("Already cancelled.")
+        else:
+            self.cancel = True
+            self.status = 'cancelled'
+        return
+
+    #sql constraints to check that expected and selling price is not a negative number
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price >= 0)', 'A property expected price must be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'A property expected price must be positive')
+    ]
+
+    #Python constraint to check that selling price is 90% of expected
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 2):
+                if(float_compare((record.expected_price * 0.9), (record.selling_price), 2) == 1):
+                    raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
         
 
 

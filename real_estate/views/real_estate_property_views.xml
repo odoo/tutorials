@@ -15,7 +15,7 @@
             <field name="arch" type="xml">
                 <list string="Channel">
                     <field name="name" />
-                    <field name="tag_id" widget="many2many_tags" />
+                    <field name="tag_ids" widget="many2many_tags" />
                     <field name="property_type_id" />
                     <field name="postcode" />
                     <field name="bedrooms" />
@@ -27,14 +27,16 @@
             </field>
         </record>
 
-
-
         <!-- Changing Form view-->
         <record id="real_state_property_view_form" model="ir.ui.view">
             <field name="name">Properties Form</field>
             <field name="model">real.estate.property</field>
             <field name="arch" type="xml">
                 <form string="Property Form">
+                    <header>
+                        <button name="action_property_sold" string="Sold" type="object" />
+                        <button name="action_property_cancel" string="Cancel" type="object" />
+                    </header>
                     <sheet>
                         <group>
                             <h1 class="mb32">
@@ -43,7 +45,7 @@
                         </group>
                         <group>
                             <group>
-                                <field name="tag_id" widget="many2many_tags" />
+                                <field name="tag_ids" widget="many2many_tags" />
                                 <field name="property_type_id" />
                                 <field name="postcode" />
                                 <field name="date_availability" />
@@ -52,7 +54,7 @@
                             <group>
                                 <field name="expected_price" />
                                 <field name="best_price" />
-                                <field name="selling_price" />                             
+                                <field name="selling_price" />
                             </group>
                         </group>
                         <notebook>
@@ -70,7 +72,7 @@
                                 </group>
                             </page>
                             <page string="Offers">
-                                  <field name="offer_id" />                          
+                                <field name="offer_ids" />
                             </page>
                             <page string="Other Info">
                                 <group>
@@ -101,10 +103,8 @@
                     <filter string="Available" name="status"
                         domain="['|', ('status','=', 'new'), ('status', '=', 'offer_received')]" />
                     <group expand="1" string="Group By">
-                        <filter string="Postcode" name="postcode"
-                            context="{'group_by':'postcode', 'residual_visible':True}" />
-                        <filter string="Property Type" name="property_type_id"
-                            context="{'group_by':'property_type_id', 'residual_visible':True}" />
+                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
+                        <filter string="Property Type" name="property_type_id" context="{'group_by':'property_type_id'}" />
                     </group>
                 </search>
             </field>
