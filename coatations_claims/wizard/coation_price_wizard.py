@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class CoatationPriceWizard(models.TransientModel):
@@ -41,6 +42,36 @@ class CoatationPriceWizard(models.TransientModel):
         required=True,
     )
 
+    # def _create_activity_for_expired_quotation(self):
+    #     """
+    #     Creates an activity to remind the user about the expired quotation.
+    #     This activity will be linked to the related partner (customer) of the quotation.
+    #     """
+    #     print("CREATING ACTIVITY!!!!!!!!!!")
+    #     # Create an activity (e.g., a todo task) for the expired quotation
+    #     activity_type = self.env["mail.activity.type"].search(
+    #         [("id", "=", "4")], limit=1
+    #     )
+
+    #     if not activity_type:
+    #         raise ValidationError("No 'To Do' activity type found.")
+
+    #     # Create the activity linked to the partner (customer)
+    #     self.env["mail.activity"].create(
+    #         {
+    #             "summary": " Finalize quotation",
+    #             "activity_type_id": activity_type.id,
+    #             "res_model_id": self.env["ir.model"]._get_id("sale.order"),
+    #             "res_id": self.id,  # Customer related to the quotation
+    #             "date_deadline": self.coation_ids.date_to,  # You can adjust this date based on your business logic
+    #             "user_id": self.env.user.id,  # Activity assigned to the current user
+    #             "res_name":self.order_line_id.order_id.name,
+    #         }
+    #     )
+    #     print(
+    #         "Activity created for quotation."
+    #     )
+
     @api.model_create_multi
     def default_get(self, fields):
         res = super().default_get(fields)
@@ -65,7 +96,7 @@ class CoatationPriceWizard(models.TransientModel):
         coatation_ids = coatation_lines.mapped("coation_id.id")
         return coatation_lines, coatation_ids
 
-    @api.depends("coation_ids", "coation_lines_ids")
+    @api.depends("coation_ids", "coation_lines_ids.status")
     def _compute_coation_ids_domain(self):
         for coationID in self:
             coatation_lines, coatation_ids = self._fetch_coatation_records()
@@ -206,6 +237,7 @@ class CoatationPriceWizard(models.TransientModel):
                 self.order_line_id.coation_ids = (
                     selected_coation_id  # Set the selected coation ID
                 )
+                # self._create_activity_for_expired_quotation()
             else:
                 # If regular or last price is selected, clear the coation ID
                 self.order_line_id.coation_ids = None

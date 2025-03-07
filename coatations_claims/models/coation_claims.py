@@ -30,7 +30,8 @@ class CoationsClaims(models.Model):
         string="state",
         selection=[("new", "New"), ("active", "Active"), ("expired", "Expired")],
         default="new",
-        compute="_compute_state",store=True
+        compute="_compute_state",
+        store=True,
     )
     coation_lines_ids = fields.One2many("coatations.lines", "coation_id")
     sale_order_ids = fields.Many2many("sale.order")
@@ -53,23 +54,23 @@ class CoationsClaims(models.Model):
                         "The 'Date To' cannot be earlier than 'Date From'. Please correct the dates."
                     )
 
-    @api.depends("coation_lines_ids.status","date_to")
+    @api.depends("coation_lines_ids.status", "date_to", "coation_lines_ids.consumed")
     def _compute_state(self):
         for record in self:
             # Flag to track the state of the lines
             has_active = False
             has_expired = False
-            print("STATE IS UPDATATING!!!!")
+            # print("STATE IS UPDATATING!!!!")
 
             # Loop through the coation_lines_ids to check the status
             for line in record.coation_lines_ids:
                 if line.status == "active":
-                    print("Line status are:")
-                    print(line.status)
+                    print("coation_claims line 68: is active")
+                    # print(line.status)
                     has_active = True
                 elif line.status == "expired":
-                    print("parent coation has expired")
-                    print(line.status)
+                    print("coation_claims line 72: has expired")
+                    # print(line.status)
                     has_expired = True
 
             # Get today's date using fields.Date.today() since 'date_to' is a Date field
@@ -77,11 +78,20 @@ class CoationsClaims(models.Model):
 
             # Compute the state based on today's date and the line statuses
             if today < record.date_to:
+                print("coation_claims line 81: Entering if statements!")
                 if not (has_active or has_expired):
                     record.state = "new"
                 elif has_active:
                     record.state = "active"
+                    record.write(
+                        {"state": record.state}
+                    )  # to write in database before reload
                 elif has_expired:
+                    print("coation_claims line 82: Entering expired statement")
                     record.state = "expired"
+                    record.write(
+                        {"state": record.state}
+                    )  # to write in database before reload
             else:
                 record.state = "expired"
+                record.write({"state": record.state})
