@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_global_info_attribute_list_grouped" model="ir.ui.view">
+        <field name="name">global.info.attribute.list.grouped</field>
+        <field name="model">global.info.attribute</field>
+        <field name="arch" type="xml">
+            <list default_order="category_id">
+                <field name="category_id" readonly="1"/>
+                <field name="attribute_id" readonly="1"/>
+                <field name="default_value_id"/>
+            </list>
+        </field>
+    </record>
+</odoo>

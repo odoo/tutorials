@@ -1,0 +1,16 @@
+<odoo>
+    <record id="view_order_form_inherit_global_info" model="ir.ui.view">
+        <field name="name">sale.order.form.global.info</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Global Info">
+                    <group>
+                        <field name="global_info_attributes" nolabel="1"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
