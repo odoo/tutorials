@@ -1,0 +1,29 @@
+<templates xml:space="preserve">
+    <t t-name="odoo_self_order_details.ProductDetailsPopup">
+        <div role="dialog" class="modal d-block" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body overflow-auto">
+                        <div class="text-center p-3">
+                            <img
+                                t-if="props.product.image_128"
+                                class="img-fluid rounded object-fit-contain"
+                                t-attf-src="/web/image/product.product/{{ props.product.id }}/image_512?unique={{props.product.write_date}}"
+                                alt="Product image"
+                                loading="lazy"
+                                onerror="this.remove()"/>
+                        </div>
+                        <div class="p-3" style="max-height: 60vh;">
+                            <h2 class="fw-bold text-center mb-3" t-esc="props.product.display_name"/>
+                            <div class="modal-body" t-out="self_order_description"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between border-top">
+                        <button class="btn btn-secondary flex-grow-1 me-2" t-on-click="props.close">Cancel</button>
+                        <button class="btn btn-primary flex-grow-1" t-on-click="addToOrder">Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
