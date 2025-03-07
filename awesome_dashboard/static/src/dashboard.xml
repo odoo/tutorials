@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout t-props="{'controlPanel': {}}" className="'o_dashboard h-100'">
+            <div class="header_button">
+                <button class="btn btn-primary" t-on-click="openCustomersKanbanView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </div>
+            <div class="dashboard_item" t-if="statistics.isReady">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
     </t>
-
 </templates>

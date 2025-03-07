@@ -16,14 +16,14 @@ export class TodoList extends Component {
     }
 
     addTodo = (event) => {
-        if (event.keyCode === 13 && event.target.value != "") {
+        if (event.key === 'Enter' && this.inputRef.el.value.trim() !== "") {
             this.newId++;
             this.todos.push({
                 id: this.newId,
-                description: event.target.value,
+                description: this.inputRef.el.value.trim(),
                 isCompleted: false,
             });
-            event.target.value = "";
+            this.inputRef.el.value = "";
         }
     };
 
