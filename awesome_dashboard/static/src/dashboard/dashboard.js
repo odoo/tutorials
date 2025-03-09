@@ -6,6 +6,7 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks"
 import { DashboardItem } from "./components/dashboarditem/dashboarditem";
 import { PieChart } from "./components/piechart/piechart";
+import { Settings } from "./settings/settings";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -15,6 +16,11 @@ class AwesomeDashboard extends Component {
         this.action = useService("action")
         this.statistics = useService("awesome_dashboard.statistics")
         this.result = useState(this.statistics.data.stat)
+        this.items = registry.category("awesome_dashboard").getAll()
+        this.dialog = useService("dialog");
+        // get the ids of items to be hidden
+        const storedHiddenItems = JSON.parse(localStorage.getItem('hiddenDashboardItems')) || []
+        this.hiddenItems = useState(new Set(storedHiddenItems))
     }
 
     opoenCustomers(){
@@ -29,6 +35,22 @@ class AwesomeDashboard extends Component {
             res_model: 'crm.lead',
             views: [[false,'list'],[false,'form']]
         })
+    }
+
+    openSettings(){
+        // opens the dialog using Settings Component
+        this.dialog.add(Settings,{
+            onDone : (hiddenItems)=>{
+                // update the hidden items based on settings change
+                this.hiddenItems.clear();
+                hiddenItems.forEach(id => this.hiddenItems.add(id));
+            }
+        });
+    }
+
+    get selectedItems(){
+        // return only selected items
+        return Object.values(this.items.filter(item => !this.hiddenItems.has(item.id)))
     }
 }
 
