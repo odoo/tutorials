@@ -7,7 +7,7 @@
     """,
     'category': "Sales", 
     'author': "BHPR",
-    'depends': ['sale','product'], 
+    'depends': ['sale', 'product'], 
     'data': [
          'security/ir.model.access.csv',
          'views/product_template_views.xml',

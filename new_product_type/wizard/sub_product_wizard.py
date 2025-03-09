@@ -5,7 +5,7 @@ class SubProductWizard(models.TransientModel):
     _description = "Wizard to add sub-products"
    
     product_id = fields.Many2one("product.product", required=True)
-    existing_ids = fields.One2many("sub.product.line.wizard", "wizard_id")
+    existing_ids = fields.One2many("sub.product.line.wizard", "sub_product_wizard_id")
    
     @api.model
     def default_get(self, fields_list):
@@ -17,8 +17,8 @@ class SubProductWizard(models.TransientModel):
         main_order_line = self.env["sale.order.line"].browse(sale_order_line_id)
         existing_sub_products = []
 
-        if main_order_line.component_ids:
-            for record in main_order_line.component_ids:
+        if main_order_line.kit_component_ids:
+            for record in main_order_line.kit_component_ids:
                 existing_sub_products.append(Command.create({
                     "product_id": record.product_id.id,
                     "quantity": record.product_uom_qty,
@@ -47,7 +47,7 @@ class SubProductWizard(models.TransientModel):
         if not main_order_line:
             raise UserError("Sale order line not found!")
 
-        existing_products = { line.product_id.id: line for line in main_order_line.component_ids }
+        existing_products = { line.product_id.id: line for line in main_order_line.kit_component_ids }
         for sub_product in self.existing_ids:
             if sub_product.product_id.id in existing_products:
                 existing_products[sub_product.product_id.id].write({

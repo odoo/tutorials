@@ -4,7 +4,7 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
     is_kit_available = fields.Boolean(related="product_template_id.is_kit")
-    component_ids = fields.One2many("sale.order.line", "parent_id")
+    kit_component_ids = fields.One2many("sale.order.line", "parent_id")
     parent_id = fields.Many2one("sale.order.line", ondelete="cascade")
     
     def action_open_wizard(self):
