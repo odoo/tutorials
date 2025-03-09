@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
+        <xpath expr="//Orderline[@line]" position="attributes">
+            <attribute name="line">omit(scope.line, 'customerNote', 'employeeName')</attribute>
+        </xpath>
+
+        <xpath expr="//li" position="after">
+            <li t-if="line.employeeName" class="employee-note w-100 p-2 my-1 rounded text-break">
+                <i class="fa fa-user me-1" role="img" aria-label="Employee" title="Employee" />
+                <t t-esc="line.employeeName" />
+            </li>
+        </xpath>
+    </t>
+</templates>
