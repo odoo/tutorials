@@ -3,7 +3,7 @@
     <template id="property_listing_template" name="Property Listings">
         <t t-call="website.layout">
             <div class="container my-5">
-                <h2 class="text-center text-primary fw-bold mb-4">Find Your Dream Property</h2>
+                <h2 id="header_of_properties_page" class="text-center text-primary fw-bold mb-4">Find Your Dream Property</h2>
                 <div class="card shadow-sm border-0 mb-4 p-3">
                     <div class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3">
                         <div class="input-group w-auto">

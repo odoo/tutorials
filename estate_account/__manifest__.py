@@ -5,6 +5,7 @@
     "data": [
             "report/estate_property_inherited_report.xml"
     ],
-    "installable": True,
+    'installable': True,
+    "auto_install": True,
     "license": "LGPL-3"
 }

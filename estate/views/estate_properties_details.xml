@@ -33,7 +33,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="d-none d-lg-block">
-                            <h1 class="text-primary fw-bold h2"><t t-esc="property.name"/></h1>
+                            <h1 name="title_property" class="text-primary fw-bold h2"><t t-esc="property.name"/></h1>
                             <t t-if="property.property_tag_id">
                                 <p class="mb-3">
                                     <t t-foreach="property.property_tag_id" t-as="tag">
@@ -50,7 +50,7 @@
                                 </t>
                             </div>
                         </div>
-                        <div class="row g-2 mb-4">
+                        <div class="row g-2 mb-4" name="property_highlighted_details">
                             <t t-foreach="[('fa-home', 'Property Type', property.property_type_id.name),
                                            ('fa-bed', 'Bedrooms', property.bedrooms),
                                            ('fa-arrows-alt', 'Total Area', '%s sq.ft.' % property.total_area),

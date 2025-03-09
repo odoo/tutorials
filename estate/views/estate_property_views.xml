@@ -90,17 +90,19 @@
                         </group>
                     </group>
                     <notebook>
-                        <page string="Description">
-                            <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area" invisible = "not garden"/>
-                                <field name="garden_orientation" invisible = "not garden"/>
-                                <field name="total_area"/>
+                        <page name="description" string="Description">
+                            <group name="description_parent_group">
+                                <group name="description_group">
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible = "not garden"/>
+                                    <field name="garden_orientation" invisible = "not garden"/>
+                                    <field name="total_area"/>
+                                </group>
                             </group>
                         </page>
                         <page string="Offers">

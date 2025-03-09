@@ -16,7 +16,8 @@
             "views/estate_menus.xml",
             "report/estate_property_reports.xml",
             "report/estate_property_report_template.xml",
-            "report/estate_property_salesman_report.xml"
+            "report/estate_property_salesman_report.xml",
+            "views/inherited_res_config_setting.xml"
     ],
     'demo': [
         "demo/estate_property_type_demo.xml",
@@ -30,7 +31,7 @@
         ],
     },
     'images': ['static/description/icon.png'],
-    "installable": True,
+    "auto_install": True,
     "application": True,
     "license": "LGPL-3"
 }

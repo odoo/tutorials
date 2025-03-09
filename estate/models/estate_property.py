@@ -50,7 +50,7 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users",string="Salesman",default=lambda self:self.env.user)
     offer_ids = fields.One2many("estate.property.offer","property_id")
     total_area = fields.Integer(string="Total Area (sqm)", compute = "_compute_total_area", store = True)
-    best_offer = fields.Char(compute = "_compute_best_offer", store = True)
+    best_offer = fields.Float(compute = "_compute_best_offer", store = True)
     company_id = fields.Many2one(comodel_name='res.company', string="Company", default=lambda self: self.env.user.company_id,required=True)
 
     _sql_constraints = [

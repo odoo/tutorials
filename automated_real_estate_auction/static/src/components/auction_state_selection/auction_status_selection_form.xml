@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="automated_real_estate_auction.AuctionStatusSelection" t-inherit="web.StateSelectionField" t-inherit-mode="primary">
+        <xpath expr="//t[@t-if='props.readonly']" position="after">
+            <t t-elif="isToggleMode and currentValue == 'auction'">
+                <button t-if="isView(['activity', 'kanban', 'list', 'calendar']) or this.env.isSmall"
+                        class="d-flex align-items-center btn fw-normal p-0"
+                        tabindex="-1"
+                        t-att-class="{'o_task_state_list_view': isView(['list'])}"
+                        t-on-click.stop="toggleState">
+                    <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}"></i>
+                </button>
+            </t>
+        </xpath>
+        <xpath expr="//Dropdown/button/div" position="replace">
+            <div t-if="isView(['activity', 'kanban', 'list', 'calendar']) or this.env.isSmall" class="d-flex align-items-center" t-att-title="label">
+                <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}"/>
+            </div>
+            <div t-else="" class="d-flex align-items-center">
+                <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}"/>
+                <span class="o_status_label" t-out="label"/>
+            </div>
+        </xpath>
+        <xpath expr="//Dropdown/button" position="attributes">
+            <attribute name="tooltip">''</attribute>
+            <attribute name="class" remove="p-0" add="shadow-none" separator=" "/>
+            <attribute name="t-att-class">getTogglerClass(currentValue)</attribute>
+        </xpath>
+        <xpath expr="//DropdownItem/span[1]" position="attributes">
+            <attribute name="t-attf-class" separator=" " add="{{ stateIcon(option[0]) }}" remove="o_status"></attribute>
+        </xpath>
+    </t>
+</templates>
