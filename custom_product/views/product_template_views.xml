@@ -9,7 +9,7 @@
             <xpath expr="//page[@name='general_information']//field[@name='product_tooltip']" position="after">
                 <group>
                     <field name="is_kit" />
-                    <field name="kit_product_ids" widget="many2many_tags" invisible="is_kit==False" />
+                    <field name="kit_product_ids" widget="many2many_tags" invisible="not is_kit" />
                 </group>
             </xpath>
 

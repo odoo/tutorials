@@ -11,7 +11,7 @@
                 </group>
                 <group>
                     <field name="kit_line_ids" nolabel="1">
-                        <list editable="bottom">
+                        <list editable="bottom"  create="false">
                             <field name="product_id" options="{'no_create': True}"/>
                             <field name="quantity"/>
                             <field name="price"/>
@@ -19,7 +19,7 @@
                     </field>
                 </group>
                 <footer>
-                    <button string="Confirm" type="object" name="confirm_kit" class="oe_highlight"/>
+                    <button string="Confirm" type="object" name="action_confirm_kit" class="oe_highlight"/>
                     <button string="Cancel" class="oe_link" special="cancel"/>
                 </footer>
             </form>

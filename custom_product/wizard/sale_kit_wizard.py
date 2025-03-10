@@ -15,10 +15,9 @@ class SaleKitWizard(models.TransientModel):
     @api.model
     def default_get(self, fields):
         res = super().default_get(fields)
+        product_id = res['kit_product_id']
         kit_parent_id = self.env.context.get("active_id")
         sale_order_id = self.env.context.get("default_sale_order_id")
-        product_id = self.env.context.get("default_product_id")
-
         kit_line = []
         if sale_order_id and product_id:
             product = self.env["product.product"].browse(product_id)
@@ -62,21 +61,19 @@ class SaleKitWizard(models.TransientModel):
                     )
             res.update(
                 {
-                    "sale_order_id": sale_order_id,
-                    "kit_product_id": product_id,
                     "kit_parent_id": kit_parent_id,
                     "kit_line_ids": kit_line,
                 }
             )
         return res
 
-    def confirm_kit(self):
+    def action_confirm_kit(self):
         order = self.sale_order_id
         total_price = 0
         for line in self.kit_line_ids:
             existing_order_line = order.order_line.filtered(
-                lambda l: l.product_id.id == line.product_id.id
-                and l.kit_parent_id.id == self.kit_parent_id.id
+                lambda ln: ln.product_id.id == line.product_id.id
+                and ln.kit_parent_id.id == self.kit_parent_id.id
             )
 
             if existing_order_line:
@@ -94,10 +91,9 @@ class SaleKitWizard(models.TransientModel):
                 )
             total_price += line.price * line.quantity
 
-        if self.kit_parent_id:
-            self.kit_parent_id.price_unit = (
-                self.kit_parent_id.product_id.list_price + total_price
-            )
+        self.kit_parent_id.price_unit = (
+            self.kit_parent_id.product_id.list_price + total_price
+        )
 
 
 class SaleKitLineWizard(models.TransientModel):

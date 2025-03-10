@@ -15,5 +15,4 @@
         "views/sale_order_portal_templates.xml",
     ],
     "installable": True,
-    "application": False,
 }

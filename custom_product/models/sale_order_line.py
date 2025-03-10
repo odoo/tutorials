@@ -7,9 +7,6 @@ class SaleOrderLine(models.Model):
     kit_parent_id = fields.Many2one(
         "sale.order.line", string="Kit Parent Line", ondelete="cascade"
     )
-    kit_child_line_ids = fields.One2many(
-        "sale.order.line", "kit_parent_id", string="Kit Child Lines"
-    )
 
     is_kit_product = fields.Boolean(
         string="Is Kit Product", compute="_compute_is_kit_product", store=False
