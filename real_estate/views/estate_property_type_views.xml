@@ -5,4 +5,50 @@
             <field name="res_model">estate.property.type</field>
             <field name="view_mode">list,form</field>
         </record>      
-    </odoo> 
+
+        <record id="estate_property_type_list" model="ir.ui.view">
+            <field name="name">estate.property.type.list</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <list >
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
+
+    <record id="estate_property_type_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form >
+                
+                <sheet>
+                <div class="oe_button_box" name="button_box">
+                    <button name="%(estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-list">
+                        <field name="offer_count"  widget="statinfo"/>
+                    </button>
+                </div>
+                    <group>
+                    <h1>
+                        <field name="name" placeholder="Name"/>
+                    </h1>
+                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <group>
+                                <field name="property_ids" string="" readonly="1">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    </odoo>
