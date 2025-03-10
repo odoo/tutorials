@@ -1,8 +1,9 @@
 from odoo import http
 from odoo.http import request
+from odoo.addons.estate.controllers.estate_property_controller import EstateController
 
 
-class EstateAuctionController(http.Controller): 
+class EstateAuctionController(EstateController): 
      @http.route('/auction/property/<int:property_id>', type="http", auth="public", website=True)
      def participate_in_property_auction(self, property_id):
         property = request.env['estate.property'].browse(property_id)
@@ -37,21 +38,12 @@ class EstateAuctionController(http.Controller):
         })
 
      @http.route(['/estate_property/properties'], type='http', auth="public", website=True)
-     def list_properties(self, page=1, **kwargs):
-        properties_per_page = 4
-        page = int(page)
-        # Apply filtering based on sell_type
+     def list_properties(self, page=1, domain=None, **kwargs):
+        response = super().list_properties(page=page, domain=domain, **kwargs)
         sell_type = kwargs.get("sell_type")
-        domain = [('state', 'in', ('new', 'offer_received'))]
+        domain = domain or []
         if sell_type:
             domain.append(('sell_type', '=', sell_type))
-        offset = (page - 1) * properties_per_page
-        properties = request.env['estate.property'].sudo().search(domain, offset=offset, limit=properties_per_page)
-        total_properties = request.env['estate.property'].sudo().search_count(domain)
-        total_pages = (total_properties + properties_per_page - 1) // properties_per_page
-        return request.render('estate.property_list', {
-            'properties': properties,
-            'current_page': page,
-            'total_pages': total_pages,
-            'selected_sell_type': sell_type,
-        })
+        properties = request.env['estate.property'].search(domain)
+        response.qcontext.update({'properties': properties})
+        return response

@@ -19,21 +19,11 @@ class EstatePropertyOffer(models.Model):
         return super(EstatePropertyOffer, self).create(vals)
 
     def action_accept(self):
+        res = super(EstatePropertyOffer, self).action_accept()
         for offer in self:
             if offer.property_id.sell_type == 'auction' and offer.property_id.stage in ['template', 'sold']:
                 raise exceptions.UserError("Property cannot be sold or accepted during the auction process.")
 
-            if offer.property_id.state == 'sold':
-                raise exceptions.UserError("The property has already been sold, you cannot accept an offer.")
-            elif offer.property_id.state == 'cancelled':
-                raise exceptions.UserError("The property has been cancelled, you cannot accept an offer.")
-            # Accept the offer
-            offer.status = 'accepted'
-            offer.property_id.write({
-                'state': 'offer_accepted',
-                'selling_price': offer.price,
-                'buyer_id': offer.partner_id.id,
-            })
             offer.property_id.update({
                 'stage': 'template'
             })
@@ -44,12 +34,11 @@ class EstatePropertyOffer(models.Model):
                 message_type="comment",
                 subtype_xmlid="mail.mt_comment"
             )
-            # Reject other offers and notify bidders
             other_offers = self.search([
                 ('property_id', '=', offer.property_id.id),
                 ('id', '!=', offer.id)
             ])
-            other_offers.write({'status': 'refused'})
+            #Notify rejected bidders
             for rejected_offer in other_offers:
                 rejected_offer.partner_id.message_post(
                     body=f"Unfortunately, your offer of {rejected_offer.price} for {rejected_offer.property_id.name} was not accepted.",
@@ -57,3 +46,4 @@ class EstatePropertyOffer(models.Model):
                     message_type="comment",
                     subtype_xmlid="mail.mt_comment"
                 )
+        return res

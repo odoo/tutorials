@@ -5,13 +5,13 @@ class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     sell_type = fields.Selection([
-        ('auction', 'Auction'),
-        ('regular', 'Regular')
+        ('auction', "Auction"),
+        ('regular', "Regular")
     ])
     stage = fields.Selection([
-          ('template', 'Template'),
-          ('auction', 'Auction'),
-          ('sold', 'Sold'),
+          ('template', "Template"),
+          ('auction', "Auction"),
+          ('sold', "Sold"),
         ],
         default='template'
     )
@@ -54,21 +54,14 @@ class EstateProperty(models.Model):
 
     @api.model
     def check_auction_over(self):
-        now = fields.Datetime.now()
         properties = self.search([
             ('stage', '=', 'auction'),
-            ('sell_type', '=', 'auction'),
-            ('auction_end_time', '<=', now),
-            ('state', 'not in', ['sold', 'cancelled'])
+            ('auction_end_time', '<=', fields.Datetime.now()),
+            ('state', '=', 'offer_received')
         ])
-        for property in properties:
-            highest_offer = sorted(property.offer_ids, key=lambda offer: offer.price, reverse=True)
-            if highest_offer:
-                highest_offer = highest_offer[0]
-                highest_offer.action_accept()
-                property.stage = 'sold'
-            else:
-                property.stage = 'template'
+        for property in properties:  
+          property.stage = 'sold'
+          property.offer_ids
 
     def action_open_invoices(self):
       """Open related invoices."""

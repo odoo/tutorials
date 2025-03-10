@@ -75,7 +75,7 @@
                           Auction
                         </option>
                         <option value="regular" t-att-selected="request.httprequest.args.get('sell_type') == 'regular'">
-                           Regular
+                          Regular
                         </option>
                     </select>
                 </div>

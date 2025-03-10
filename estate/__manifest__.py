@@ -19,8 +19,8 @@
        'report/estate_property_report_action.xml',
        'report/estate_property_report_template.xml',
        'wizard/main.xml',
-       'views/res_config_settings.xml',
        'views/estate_menu.xml',
+       'views/res_config_settings.xml'
     ],
     'demo' : [
         'data/estate_demo.xml',

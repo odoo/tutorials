@@ -1,15 +1,12 @@
-/** @odoo-module **/
-
+import { useState } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
+import { useCommand } from "@web/core/commands/command_hook";
+import { registry } from "@web/core/registry";
+import { formatSelection } from "@web/views/fields/formatters";
 import {
     StateSelectionField,
     stateSelectionField,
 } from "@web/views/fields/state_selection/state_selection_field";
-import { useCommand } from "@web/core/commands/command_hook";
-import { formatSelection } from "@web/views/fields/formatters";
-
-import { registry } from "@web/core/registry";
-import { useState } from "@odoo/owl";
 
 export class PropertyAuctionStageSelection extends StateSelectionField {
     static template = "automated_real_estate_auction.PropertyAuctionStageSelection";

@@ -25,7 +25,6 @@ class TestEstateProperty(TransactionCase):
             'status': 'accepted'
         })
 
-
     def test_create_offer_for_sold_property(self):
         #Test that you cannot create an offer for a sold property
         self.property.state = 'sold'

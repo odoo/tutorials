@@ -4,13 +4,13 @@ from odoo.http import request
 
 class EstateController(http.Controller):
     @http.route(['/estate_property/properties'], type='http', auth='public', website=True)
-    def list_properties(self, **kwargs):
-        page = kwargs.get('page', 1)
+    def list_properties(self, page=1, domain=None, **kwargs):
         properties_per_page = 4
         page = int(page)
         offset = (page - 1) * properties_per_page
-        properties = request.env['estate.property'].search([('state', '=', 'new')], offset=offset, limit=properties_per_page)
-        total_properties = request.env['estate.property'].search_count([('state', '=', 'new')])
+        domain = [('state', 'in', ('new', 'offer_received'))]
+        properties = request.env['estate.property'].search(domain, offset=offset, limit=properties_per_page)
+        total_properties = request.env['estate.property'].search_count(domain)
         total_pages = (total_properties + properties_per_page - 1) // properties_per_page
         return request.render('estate.property_list', {
             'properties': properties,
