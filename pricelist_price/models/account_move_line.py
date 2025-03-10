@@ -5,7 +5,7 @@ class AccountMoveLine(models.Model):
     _inherit = "account.move.line"
 
     book_price = fields.Float(
-        string="Book Price", compute="_compute_book_price", store=True
+        string="Book Price", compute="_compute_book_price"
     )
 
     @api.depends("product_id", "move_id.invoice_line_ids", "quantity")
