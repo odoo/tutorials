@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ir_cron_check_expired_auction" model="ir.cron">
+        <field name="name">Check Expired Auction and Accept Heighest offer</field>
+        <field name="model_id" ref="estate_auction.model_estate_property"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_check_expired_auction()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="nextcall" eval="(DateTime.now() + relativedelta(minutes=1)).strftime('%Y-%m-%d %H:%M:%S')"/>
+        <field name="active" eval="True"/>
+    </record>
+
+</odoo>

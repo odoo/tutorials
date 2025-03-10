@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="agent_rule" model="ir.rule">
+        <field name="name">Allow Agent to see thier and unassigned property</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="domain_force">['|', ('user_id', '=', False), ('user_id', '=', user.id)]</field>
+    </record>
+
+    <record id="manager_rule" model="ir.rule">
+        <field name="name">Allow Manager to see all property</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="company_rule" model="ir.rule">
+        <field name="name">Company rules for agents</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+    </record>
+
+</odoo>
