@@ -31,6 +31,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Lost Reason">
+
+                <header>
+                    <button name="action_do_sold" type="object" string="Sold" class="oe_highlight" />
+                    <button name="action_do_cencelled" type="object" string="Cancelled" class="oe_secondary"/>
+                </header>
+
                 <sheet>
                     <group>
                         <h1>
@@ -40,6 +46,8 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -56,8 +64,6 @@
                                 <field name="bedrooms"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
-                                <field name="state"/>
-                                <field name="property_type_id"/>
                                 <field name="garden"/>
                                 <field name="garden_orientation"/>
                                 <field name="garden_area"/>
@@ -67,15 +73,7 @@
                         </page>
 
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list>
-                                    <field name="price"/>
-                                    <field name="partner_id"/>
-                                    <field name="status"/>
-                                    <field name="validity"/>
-                                    <field name="date_deadline"/>
-                                </list>
-                            </field>
+                            <field name="offer_ids"/>
                         </page>
 
                         <page string="Other Info">

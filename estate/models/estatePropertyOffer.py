@@ -30,4 +30,20 @@ class EstatePropertyOffer(models.Model):
                 delta = (record.date_deadline - record.create_date.date()).days
                 record.validity = delta
 
+    def action_accept_offer(self):
+        for record in self:
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+            for offer in record.property_id.offer_ids:
+                if offer != record:
+                    offer.status = "refused"
     
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
+    
+    # constraints for offer 
+    _sql_constraints = [
+        ("check_offer_price", "CHECK(price > 0)", "The offer price must be strictly positive.")
+    ]
