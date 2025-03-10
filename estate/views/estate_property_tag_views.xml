@@ -22,5 +22,15 @@
                 </form>
             </field>
         </record>
+
+        <record id="estate_property_tag_list" model="ir.ui.view">
+            <field name="name">Properties.tag.list</field>
+            <field name="model">estate.property.tag</field>
+            <field name="arch" type="xml">
+                <list string="tags" editable="bottom">
+                    <field name="name"/>
+                </list>
+            </field>
+        </record>
     </data>
 </odoo>

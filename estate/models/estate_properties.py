@@ -4,10 +4,10 @@ from odoo.exceptions import UserError
 from odoo.tools import float_utils
 
 
-
 class estate_Properties(models.Model):
     _name = "estate.properties"
     _description = "Information of Properties"
+    _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
     description = fields.Text()
@@ -33,29 +33,26 @@ class estate_Properties(models.Model):
     best_offer = fields.Float("Best Offer", compute="_compute_best_offer")
 
     _sql_constraints = [
-        ('selling_price', 'CHECK(selling_price >= 0)','The selling price must be strictly positive.'),
-        ('expected_price', 'CHECK(expected_price >= 0)','The expected price must be strictly positive.')
+        ('expected_price', 'CHECK(expected_price > 0)','The expected price must be strictly positive.'),
+        ('selling_price', 'CHECK(selling_price >= 0)','The selling price must be strictly positive.')
     ]
 
-    @api.constrains('selling_price','expected price')
-    def _check_selling_price(self):
-        for record in self:
-            if float_utils.float_compare(record.selling_price,0.9*record.expected_price,precision_digits=2)<=0:
-                raise UserError("selling price must be grater than 90 percent of the expected price")
+
 
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area 
 
-    @api.depends('offer_ids')
+    @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self:   
-            price1 = record.offer_ids.mapped('price')
-            if len(price1)>0:
-                record.best_offer = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_offer = 0
+            record.best_offer = max(record.offer_ids.mapped('price'), default=0)
+
+    @api.onchange("best_offer")
+    def _onchange_best_offer(self):
+        if self.best_offer > 0:
+            self.status="offer recieved"
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -67,13 +64,24 @@ class estate_Properties(models.Model):
             self.garden_orientation = ""
 
     def action_sold(self):
-        for record in self:
-            if record.status == 'cancelled':
-                raise UserError("A cancelled property cannot be sold.")
-            record.status = 'sold'
+        if self.status == 'cancelled':
+            raise UserError("A cancelled property cannot be sold.")
+        else:
+            for record in self.offer_ids:
+                if record.status == "accepted": 
+                    self.status = "sold" 
+                    break
+            if self.status != "sold":
+                raise UserError("Accept an offer first.")                             
 
     def action_cancelled(self):
         for record in self:
             if record.status == 'sold':
                 raise UserError("A sold property cannot be cancelled.")
             record.status = 'cancelled'
+
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+            if self.selling_price != 0:
+                if float_utils.float_compare(self.selling_price,0.9*self.expected_price,precision_digits=2)<=0:
+                    raise UserError("selling price must be grater than 90 percent of the expected price")

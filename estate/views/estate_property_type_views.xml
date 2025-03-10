@@ -7,20 +7,46 @@
             <field name="view_mode">list,form</field>
         </record>
 
+        <record id="estate_property_type_list" model="ir.ui.view">
+            <field name="name">Properties.type.list</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <list string="Properties">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" />
+                </list>
+            </field>
+        </record>
+
         <record id="estate_property_type_view_form" model="ir.ui.view">
             <field name="name">Property.type</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
                 <form string="Types">
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="%(estate_property_all_offer_list)d" string="Offers" icon="fa-dollar"
+                                type="action" />
+                        </div>
                         <group>
-                        <h1>
-                            <field name="name"/>
-                        </h1>
+                            <h1>
+                                <field name="name" />
+                            </h1>
                         </group>
+                        <notebook>
+                            <page string="Properties">
+                                <field name="property_ids">
+                                    <list editable="bottom">
+                                        <field name="name" />
+                                        <field name="expected_price" />
+                                        <field name="status" />
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
-         </record>
+        </record>
     </data>
 </odoo>
