@@ -1,5 +1,5 @@
 from datetime import  datetime, timedelta
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -8,9 +8,9 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc" 
-    sequence = fields.Integer("Sequence", default=1, help="Used to order property types. Lower is better.")
 
     name = fields.Char(string="Name", required=True)
+    sequence = fields.Integer("Sequence", default=1, help="Used to order property types. Lower is better.")
     description = fields.Text(string="Description")
     living_area = fields.Float(string="Living Area (sqm)")
     garden = fields.Boolean(string="Garden")
@@ -21,17 +21,18 @@ class EstateProperty(models.Model):
     )
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    tag_type_id = fields.Many2many("estate.property.tag", string="Property Tag")
+    tag_type_ids = fields.Many2many("estate.property.tag", string="Property Tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store=True)
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True)
 
-    price = fields.Float(string="Offer Price", required=True)
+    price = fields.Float(string="Offer Price", required=True, default=0.0)
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     seller_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
     # Read-Only 
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    # offer_received = fields.Boolean(string="Offer Received", default=False)
 
     availability_date = fields.Date(
         string="Availability Date",
@@ -49,8 +50,10 @@ class EstateProperty(models.Model):
     date_availability = fields.Date()
     expected_price = fields.Float(required=True)
     selling_price = fields.Float() 
-#   living_area=fields.Integer()
+    # living_area=fields.Integer()
     living_area=fields.Integer()
+    # living_area = fields.Float(string="Living Area", store=True, index=True)
+
     # State Field with Selection
     state = fields.Selection([
         ('new', "New"),
@@ -79,7 +82,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
-    
+    @api.ondelete(at_uninstall=False)
+    def _check_property_deletion(self):
+        for property in self:
+            if property.state not in ['new', 'cancelled']:
+                raise exceptions.UserError("You can only delete properties that are 'New' or 'Cancelled'.")
+
     def action_cancel(self):
         # Cancels the property and prevents selling it later.
         for record in self:

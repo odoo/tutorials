@@ -4,19 +4,26 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Properties">
+            <list string="Estate Property"
+                decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'"
+                editable="bottom" open_form_view="open">
                 <field name="name" />
+                <field name="property_type_id" />
+                <field name="tag_type_ids" widget="many2many_tags" string="Tags"
+                    options="{'color_field': 'color'}" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="selling_price" />
-                <field name="date_availability" />
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
@@ -25,10 +32,14 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Estate Property">
+            <form string="Estate Property"
+                decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-muted="state == 'sold'" decoration-bold="state == 'offer_accepted'">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" />
-                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight" />
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight"
+                        invisible="state != 'offer_accepted'" />
+                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"
+                        invisible="state in ('sold','cancelled')" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
@@ -41,14 +52,20 @@
                     <group>
                         <group>
                             <field name="state" string="Status" />
-                            <field name="property_type_id" string="Property Type" />
-                            <field name="tag_type_id" widget="many2many_tags" string="Property Tags" />
+                            <field name="property_type_id"
+                                options="{'no_create': True, 'no_create_edit': True}"
+                                string="Property Type" />
+                            <field name="tag_type_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" string="Property Tags" />
                             <field name="postcode" string="Postcode" />
                             <field name="date_availability" string="Available From" />
                         </group>
                         <group>
-                            <field name="expected_price" string="Expected Price" />
-                            <field name="selling_price" string="Selling Price" />
+                            <field name="expected_price"
+                            />
+                            <field name="selling_price"
+                            />
+                            <field name="best_price" readonly="1" />
                             <field name="total_area" />
                         </group>
                     </group>
@@ -62,15 +79,17 @@
                             </group>
                             <group string="Extra Features">
                                 <field name="garage" string="Garage" />
-                                <field name="garden" string="Garden" />
-                                <field name="garden_area" string="Garden Area (sqm)" />
-                                <field name="orientation" />
+                                <field name="garden" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="orientation" invisible="not garden" />
                             </group>
                         </page>
 
                         <page string="Offers">
+                            <!-- Offer Management -->
                             <group>
-                                <field name="offer_ids" />
+                                <field name="offer_ids"
+                                    readonly="state in ('offer_accepted', 'sold', 'cancelled')" />
                             </group>
                             <group>
                                 <field name="best_price" readonly="1" />
@@ -94,10 +113,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
+                <filter name="available" string="Available" domain="[('state', '=', 'new')]"
+                    help="Show only available properties" />
+                <field name="living_area" string="Living Area"
+                    filter_domain="[('living_area', '>=', self)]" />
+
                 <field name="name" string="Title" />
                 <field name="postcode" string="Postcode" />
                 <field name="bedrooms" string="Bedrooms" />
-                <field name="living_area" string="Living Area (sqm)" />
                 <field name="orientation" />
                 <field name="facades" string="Facades" />
                 <filter name="filter_by_bedrooms" string="3+ Bedrooms"
