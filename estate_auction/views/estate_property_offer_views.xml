@@ -9,7 +9,6 @@
             <xpath expr="//button[@name='action_accept']" position="attributes">
                 <attribute name="invisible" separator="or" add="property_sale_type == 'auction'"/>
             </xpath>
-
             <xpath expr="//button[@name='action_refuse']" position="attributes">
                 <attribute name="invisible" separator="or" add="property_sale_type == 'auction'"/>
             </xpath>

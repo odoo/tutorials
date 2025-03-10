@@ -6,20 +6,27 @@
         <field name="model">estate.property</field>
         <field name="inherit_id" ref="estate.estate_property_view_form"/>
         <field name="arch" type="xml">
-
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="%(estate_property_invoices_action)d" type="action"
+                        icon="fa-pencil-square-o" string="Invoices" class="oe_stat_button" invisible="invoice_count == 0"/>
+                </div>
+            </xpath>
             <xpath expr="//field[@name='property_image']" position="before">
-                <field name="auction_state" widget="statusbar" class="oe_avatar" invisible="sale_type == 'regular'"/>
+                <field name="auction_state" widget="estate_property_state_selection" invisible="sale_type == 'regular'"/>
             </xpath>
-
             <xpath expr="//button[@name='action_sold']" position="before">
-                <button name="action_start_auction" string="Start Auction" class="oe_highlight" type="object" invisible="sale_type == 'regular' or state in ['sold', 'cancelled']"/>
+                <button name="action_start_auction" class="oe_highlight" type="object"
+                    invisible="sale_type == 'regular' or state in ['sold', 'cancelled']" readonly="state in ['sold', 'offer_accepted', 'cancelled']">
+                        <span invisible="auction_state != 'template'">Start Auction</span>
+                        <span invisible="auction_state != 'auction'">Auction Started</span>
+                        <span invisible="auction_state != 'sold'">Auction Ended</span>
+                </button>
             </xpath>
-
             <xpath expr="//field[@name='property_tag_ids']" position="before">
-                <field name="sale_type" widget="radio" options="{'horizontal': true}"/>
+                <field name="sale_type" widget="radio" options="{'horizontal': true}" readonly="state in ['sold', 'offer_accepted', 'cancelled']"/>
                 <br/>
             </xpath>
-
             <xpath expr="//group[@name='property_details']" position="after">
                 <group string="Auction details" name="action_details" invisible="sale_type == 'regular'">
                     <field name="auction_start" invisible="auction_state in ['template']"/>
@@ -30,6 +37,17 @@
             </xpath>
         </field>
 
+    </record>
+
+    <record id="estate_property_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">estate.property.kanban.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='card']//div" position="inside">
+                <field name="auction_state" widget="estate_property_state_selection" invisible="sale_type != 'auction'"></field>
+            </xpath>
+        </field>
     </record>
 
 </odoo>

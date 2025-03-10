@@ -9,20 +9,18 @@
             <xpath expr="//form" position="inside">
                 <app data-string="Real Estate" string="Real Estate" name="estate">
                     <block title="Real Estate Settings" name="real_estate">
-                            <group>
-                                <group name="automate_auction" string="Automate Auction">
-                                    <setting string="Automate Auction" id="automate_auction_setting">
-                                        <field name="estate_auction" string="Automated Auction" />
-                                    </setting>
-                                </group>
-
-                                <group name="invoicing" string="Invoicing">
-                                    <setting string="Invoicing" id="invoicing_setting">
-                                        <field name="estate_account" string="Invoicing Setting" />
-                                    </setting>
-                                </group>
+                        <group>
+                            <group name="automate_auction" string="Automate Auction">
+                                <setting string="Automate Auction" id="automate_auction_setting">
+                                    <field name="module_estate_auction" string="Automated Auction" />
+                                </setting>
                             </group>
-
+                            <group name="invoicing" string="Invoicing">
+                                <setting string="Invoicing" id="invoicing_setting">
+                                    <field name="module_estate_account" string="Invoicing Setting" />
+                                </setting>
+                            </group>
+                        </group>
                     </block>
                 </app>
             </xpath>
@@ -30,7 +28,7 @@
     </record>
 
     <record id="estate_setting_action" model="ir.actions.act_window">
-        <field name="name">Property Tags</field>
+        <field name="name">Estate Settings</field>
         <field name="res_model">res.config.settings</field>
         <field name="view_mode">form</field>
         <field name="target">inline</field>

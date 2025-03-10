@@ -1,4 +1,3 @@
-import re
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
@@ -30,6 +29,14 @@ class EstateProperty(models.Model):
         default='template',
         tracking= True
     )
+
+    invoice_ids = fields.One2many(string="Invoice", comodel_name="account.move", inverse_name="estate_property_id")
+    invoice_count = fields.Integer(string="Invoice Count", compute="_compute_invoice_count")
+
+    @api.depends('invoice_ids')
+    def _compute_invoice_count(self):
+        for property in self:
+            property.invoice_count = len(property.invoice_ids)
 
     @api.onchange('sale_type')
     def _onchange_sale_type(self):
@@ -71,16 +78,12 @@ class EstateProperty(models.Model):
                 "auction_state": "sold",
                 "state": "offer_accepted",
             })
-            # send accepted mail
             template = self.env.ref("estate_auction.email_template_offer_accepted")
             template.send_mail(highest_offer.id, force_send=True)
-
-            lower_offer = offers[1:]
-            for offer in lower_offer:
+            lower_offers = offers[1:]
+            for offer in lower_offers:
                 offer.state = 'refused'
-            # send rejected mail
+                template = self.env.ref("estate_auction.email_template_offer_refused")
+                template.send_mail(offer.id, force_send=True)
+            property.auction_state = 'sold'
         return True
-
-    def send_mail(self):
-        template = self.env.ref("estate_auction.email_template_offer_accepted")
-        property = self.search([("name", "=", "Morden Flat")])
