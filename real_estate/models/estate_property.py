@@ -7,7 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Model"
-    _order="id desc"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -15,14 +15,13 @@ class EstateProperty(models.Model):
     postcode = fields.Char(required=True)
     date_availability = fields.Date(
         default=lambda self: date.today() + timedelta(days=90),
-        required=True,
         copy=False,
     )
     selling_price = fields.Float(copy=False, readonly=True)
     bedrooms = fields.Integer(required=True, default=2)
     living_area = fields.Integer(required=True)
-    facades = fields.Integer(required=True)
-    garage = fields.Boolean(required=True)
+    facades = fields.Integer()
+    garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
     total_area = fields.Float(compute="_compute_total_area")
@@ -41,7 +40,6 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         string="Status",
-        required=True,
         copy=False,
         default="new",
     )
@@ -85,12 +83,6 @@ class EstateProperty(models.Model):
                 )
                 < 0
             ):
-                # if record.state=="offer_accepted":
-                #     record.selling_price=0
-                #     record.state="offer_received"
-                #     accepted_offer=record.offer_ids.filtered(lambda o:o.status=="accepted")
-                #     if accepted_offer:
-                #         accepted_offer.write({"status":"refused"})
                 raise ValidationError(
                     "The offer price can't be less than 90`%` of the expected price."
                 )

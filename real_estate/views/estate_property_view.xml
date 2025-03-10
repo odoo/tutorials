@@ -5,6 +5,7 @@
         <field name="name">Estate Property Action</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available':True}</field>
     </record>
     <!--Estate
     Property List View -->
@@ -12,15 +13,20 @@
         <field name="name">Estate_Property List View</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Listed Properties">
+            <list string="Listed Properties" editable="bottom" create="1" edit="1"
+                open_form_view="True"
+                decoration-success="state in ['offer_accepted','offer_received']"
+                decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
                 <field name="name" />
-                <field name="tags_ids" widget="many2many_tags" />
-                <field name='property_type_id' />
+                <field name="tags_ids" widget="many2many_tags"
+                    options="{'no_create':true,'color_field':'color','no_edit_color':True}" />
+                <field name='property_type_id' options="{'no_create':true,'no_open':true}" />
                 <field name="postcode" string="PostCode" />
                 <field name="bedrooms" string="Bedrooms" />
                 <field name="living_area" string="Living Area (sqm)" />
                 <field name="expected_price" string="Exp. Price" />
                 <field name="selling_price" string="Selling Price" />
+                <field name="date_availability" string="Available From" optional="hide" />
             </list>
         </field>
 
@@ -33,9 +39,9 @@
             <form string="Property (form view)">
                 <header>
                     <button name="action_set_sold" string="Sold" type="object"
-                        class="oe_highlight" invisible="state in ['sold','refused']" />
+                        class="oe_highlight" invisible="state in ['sold','cancelled']" />
                     <button name="action_set_cancel" string="Cancel" type="object"
-                        class="oe_highlight" invisible="state in ['sold','refused']" />
+                        class="oe_highlight" invisible="state in ['sold','cancelled']" />
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
@@ -43,7 +49,8 @@
                     <group>
                         <group>
                             <field name="name" string="" nolabel="1" class="fs-1 fw-bold" />
-                            <field name="tags_ids" widget="many2many_tags" />
+                            <field name="tags_ids" widget="many2many_tags"
+                                options="{'color_field':'color','no_edit_color':True}" />
                         </group>
                     </group>
                     <group>
@@ -64,7 +71,8 @@
                     </group>
                     <group>
                         <group>
-                            <field name="property_type_id" />
+                            <field name="property_type_id"
+                                options="{'no_create':true,'no_open':true}" />
                         </group>
                         <group>
                             <field name="total_area" />
@@ -89,8 +97,10 @@
                                 <group>
                                     <field name="property_type_id" />
                                     <field name="garden" string="Garden" />
-                                    <field name="garden_area" string="Garden Area (sqm)" />
-                                    <field name="garden_orientation" string="Garden Orientation" />
+                                    <field name="garden_area" string="Garden Area (sqm)"
+                                        invisible="garden==False" />
+                                    <field name="garden_orientation" string="Garden Orientation"
+                                        invisible="garden==False" />
                                     <field name="active" string="Active" />
                                     <field name="state" string="Status" />
                                 </group>
@@ -124,6 +134,13 @@
                 <filter string="State (New or Offer Received)" name="state"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}" />
+                <separator />
+                <filter name="available" string="Available"
+                    domain="[('state','not in',['sold','cancelled'])]"
+                    context="{'search_default_available':True}" />
+                <separator />
+                <field name="living_area" string="Living Area Greater than"
+                    filter_domain="[('living_area','>=',self)]" />
             </search>
         </field>
     </record>
