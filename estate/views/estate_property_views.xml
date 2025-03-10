@@ -48,7 +48,9 @@
                         statusbar_visible="new, offer_received, offer_accepted, sold, cancle"/>
                 </header>
                 <sheet>
-                    <field name="image" widget='image' class="oe_avatar" options="{'zoom': true, 'zoom_delay': 1000}"/>
+                    <div class="float-end">
+                        <field name="image" widget='image' class="oe_avatar" options="{'zoom': true, 'zoom_delay': 1000}"/>
+                    </div>
                     <group>
                         <h1>
                             <field name="name" string="Property Name" required="1"/>

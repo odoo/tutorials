@@ -75,7 +75,6 @@ class estateProperty(models.Model):
         default=lambda self: self.env.company,
         string="Company",
     )
-    invoice_id = fields.Integer(string="Inoive_id", default=0)
     image = fields.Image()
 
     #constraint
@@ -124,7 +123,6 @@ class estateProperty(models.Model):
         for property in self:
             if property.state == "cancelled":
                 raise UserError("A cancelled property cannot be set as sold.")
-            property.state = "sold"
             if self.buyer_id.email:
                 template=self.env.ref('estate.email_template_property_sold')
                 template.send_mail(self.id,)
