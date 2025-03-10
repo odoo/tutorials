@@ -9,10 +9,6 @@ patch(ProductScreen.prototype, {
 
     async sendToPick() {
         const currentOrder = this.pos.get_order();
-        if (!currentOrder) {
-            this.notification.add(_t("No active order found!"), { type: "warning" });
-            return;
-        }
         if (!currentOrder?.select_shipping_date) {
             const today = new Date().toISOString().split("T")[0];
             currentOrder.select_shipping_date = today;
