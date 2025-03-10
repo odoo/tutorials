@@ -35,7 +35,6 @@
         <div class="container mt-5">
             <h2>Create an Offer for <t t-esc="property_details.name" /></h2>
             <form t-att-action="'/properties/%d/offer/submit' % property_details.id" method="post">
-                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                 <div class="mb-3">
                     <label class="form-label">Your Name</label>
                     <input type="text" class="form-control" t-att-value="partner_name" readonly="True"/>
