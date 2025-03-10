@@ -75,7 +75,11 @@ class estatePropertyOffer(models.Model):
         for vals in vals_list:
             property = self.env["estate.property"].browse(vals["property_id"])
             if property.state == 'sold':
-              raise UserError("You cannot create an offer for a sold property.")
+                raise UserError("You cannot create an offer for a sold property.")
+            if property.expected_price > vals['price']:
+                raise ValidationError(
+                    "You cannot create an offer lower than expected price."
+                )
             for offer in property.offer_ids:
                 if offer.price > vals["price"]:
                     raise UserError("The offer must be higher than the existing offer")

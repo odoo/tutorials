@@ -3,61 +3,81 @@
     <template id="property_listing" name="Property Listing">
         <t t-call="website.layout">
             <div class="container my-5">
-                <h1 class="text-center">
-                    Available Properties
-                </h1>
-                <div class="row d-flex justify-content-end mb-4">
-                    <div class="col-md-4">
-                        <input type="date" id="filter_date" class="form-control" />
+                <form action="/properties" method="get" class="mb-4">
+                    <div class="row">
+                        <!-- Status Filter -->
+                        <div class="col-md-2">
+                            <label class="form-label">Status</label>
+                            <select name="status" class="form-control">
+                                <option value="all" t-att-selected="request.params.get('status') == 'all'">All</option>
+                                <option value="new" t-att-selected="request.params.get('status') == 'new'">New</option>
+                                <option value="offer_received" t-att-selected="request.params.get('status') == 'offer_received'">Offer Received</option>
+                            </select>
+                        </div>
+                        <!-- Min Price -->
+                        <div class="col-md-2">
+                            <label class="form-label">Min Price</label>
+                            <input type="number" name="min_price" class="form-control" placeholder="Min Price" t-att-value="request.params.get('min_price')"/>
+                        </div>
+                        <!-- Max Price -->
+                        <div class="col-md-2">
+                            <label class="form-label">Max Price</label>
+                            <input type="number" name="max_price" class="form-control" placeholder="Max Price" t-att-value="request.params.get('max_price')"/>
+                        </div>
+                        <!-- Available After  -->
+                        <div class="col-md-2">
+                            <label class="form-label">Available After</label>
+                            <input type="date" name="listed_after" class="form-control" placeholder="Avilable After" t-att-value="request.params.get('listed_after')"/>
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        </div>
                     </div>
-                    <div class="col-md-2">
-                        <button id="filter_button" class="btn btn-primary">
-                            Available After</button>
-                    </div>
-                </div>
+                </form>
                 <div class="row">
-                    <div class="col-md-12 text-center mb-4">
-                        <a href="/properties" class="btn btn-primary">View All Properties</a>
-                    </div>
-                    <t t-foreach="properties" t-as="property">
-                        <div class="col-md-4 mb-4">
-                            <div class="card h-100">
-                                <t t-if="property.image">
-                                    <img
-                                        t-att-src="'data:image/png;base64,%s' % property.image.decode()"
-                                        class="card-img-top" />
-                                </t>
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <t t-esc="property.name" />
-                                    </h5>
-                                    <p class="card-text">
-                                        <t t-esc="property.description" />
-                                    </p>
-                                    <a t-att-href="'/property/%s' % property.id"
-                                        class="btn btn-primary">
-                                        View Property
-                                    </a>
-                                </div>
-                                <div class="card-footer">
-                                    <small class="text-muted"> Price: <t
-                                            t-esc="property.expected_price" />
-                                    </small>
+                    <t t-if="properties">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <div class="ratio ratio-4x3">
+                                        <t t-if="property.image">
+                                            <img t-att-src="image_data_uri(property.image)"
+                                                class="card-img-top object-fit-cover"
+                                                alt="Property Image"/>
+                                        </t>
+                                        <t t-else="">
+                                            <img t-att-src="'/estate/static/src/img/default.png'"
+                                                class="card-img-top object-fit-cover"
+                                                alt="Default Property Image"/>
+                                        </t>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-esc="property.name"/>
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>Price:</strong>
+                                            <t t-esc="property.expected_price"/>₹
+                                        </p>
+                                        <a t-att-href="'/property/%d' % property.id" class="btn btn-outline-primary">
+                                            <i class="fa fa-info-circle"></i> View Details
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <div class="container text-center h-100 w-100">
+                            <h2 class="mt-0">No properties found matching your criteria.</h2>
                         </div>
                     </t>
                 </div>
-                <t t-call="website.pager" t-set="pager" />
+                <div class="d-flex justify-content-center my-3">
+                    <t t-call="website.pager"/>
+                </div>
             </div>
-            <script>
-                document.getElementById("filter_button").addEventListener("click", function() {
-                let selectedDate = document.getElementById("filter_date").value;
-                if (selectedDate) {
-                window.location.href = "/properties?listed_after=" + selectedDate;
-                }
-                });
-            </script>
         </t>
     </template>
 </odoo>

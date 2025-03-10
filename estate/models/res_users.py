@@ -9,3 +9,4 @@ class resUsers(models.Model):
         string="Properties",
         domain=[("state", "in", ["new", "offer_received"])]
     )
+    

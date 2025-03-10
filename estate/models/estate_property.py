@@ -49,7 +49,7 @@ class estateProperty(models.Model):
         copy=False,
         default="new",
         tracking=True
-        )
+    )
     property_type_id = fields.Many2one(
         "estate.property.type", 
         string="Property Type"
@@ -61,7 +61,7 @@ class estateProperty(models.Model):
     salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
-    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", readonly=True)
     # Add the One2many field to store the related offers
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     # Computed field for total_area
@@ -76,7 +76,7 @@ class estateProperty(models.Model):
         string="Company",
     )
     invoice_id = fields.Integer(string="Inoive_id", default=0)
-    image = fields.Image(string="Property Image")
+    image = fields.Image()
 
     #constraint
     _sql_constraints = [
@@ -126,7 +126,7 @@ class estateProperty(models.Model):
                 raise UserError("A cancelled property cannot be set as sold.")
             property.state = "sold"
             if self.buyer_id.email:
-                template=self.env.ref('email_template_property_sold')
+                template=self.env.ref('estate.email_template_property_sold')
                 template.send_mail(self.id,)
             message = "Property {} has been sold to ' {}'".format(property.name,property.buyer_id.name)
             property.message_post(body=message)
@@ -149,3 +149,4 @@ class estateProperty(models.Model):
         for record in self:
             if record.state not in ["New", "Cancelled"]:
                 raise exceptions.UserError("You cannot delete a property unless its state is 'New' or 'Cancelled'.")                 
+                

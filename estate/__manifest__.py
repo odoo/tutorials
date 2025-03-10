@@ -3,11 +3,7 @@
     "version": "1.8",
     "category": "Real Estate/Brokerage", 
     "summary": "Track leads and close opportunities",
-    "depends": [
-        "base",
-        "mail",
-        "website",
-    ],
+    "depends": ["mail", "website"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
@@ -23,6 +19,7 @@
         "views/property_detail.xml",
         "views/property_listing.xml",
         "views/res_users_views.xml",
+        "views/res_config_settings_views.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",

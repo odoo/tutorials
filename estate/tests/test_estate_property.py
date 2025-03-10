@@ -52,3 +52,4 @@ class EstateTestCase(TransactionCase):
         self.offer.status = 'accepted'  # Simulate offer acceptance
         self.property.set_sold()
         self.assertEqual(self.property.state, 'sold')
+        
