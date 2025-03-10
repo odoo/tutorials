@@ -42,35 +42,41 @@ class CoatationPriceWizard(models.TransientModel):
         required=True,
     )
 
-    # def _create_activity_for_expired_quotation(self):
-    #     """
-    #     Creates an activity to remind the user about the expired quotation.
-    #     This activity will be linked to the related partner (customer) of the quotation.
-    #     """
-    #     print("CREATING ACTIVITY!!!!!!!!!!")
-    #     # Create an activity (e.g., a todo task) for the expired quotation
-    #     activity_type = self.env["mail.activity.type"].search(
-    #         [("id", "=", "4")], limit=1
-    #     )
+    def _create_activity_for_expired_quotation(self,coatation_line):
+        """
+        Creates an activity to remind the user about the expired quotation.
+        This activity will be linked to the related partner (customer) of the quotation.
+        """
+        print("CREATING ACTIVITY!!!!!!!!!!")
+        # Create an activity (e.g., a todo task) for the expired quotation
+        activity_type = self.env["mail.activity.type"].search(
+            [("id", "=", "4")], limit=1
+        )
 
-    #     if not activity_type:
-    #         raise ValidationError("No 'To Do' activity type found.")
+        if not activity_type:
+            raise ValidationError("No 'To Do' activity type found.")
 
-    #     # Create the activity linked to the partner (customer)
-    #     self.env["mail.activity"].create(
-    #         {
-    #             "summary": " Finalize quotation",
-    #             "activity_type_id": activity_type.id,
-    #             "res_model_id": self.env["ir.model"]._get_id("sale.order"),
-    #             "res_id": self.id,  # Customer related to the quotation
-    #             "date_deadline": self.coation_ids.date_to,  # You can adjust this date based on your business logic
-    #             "user_id": self.env.user.id,  # Activity assigned to the current user
-    #             "res_name":self.order_line_id.order_id.name,
-    #         }
-    #     )
-    #     print(
-    #         "Activity created for quotation."
-    #     )
+        # Create the activity linked to the partner (customer)
+        created_reminder = self.env["mail.activity"].search([("note",'=',coatation_line.coation_id.name)])
+        print(created_reminder)
+        if not created_reminder:
+            self.env["mail.activity"].create(
+                {
+                    "summary": " Finalize quotation",
+                    "activity_type_id": activity_type.id,
+                    "res_model_id": self.env["ir.model"]._get_id("sale.order"),
+                    "res_id": self.order_line_id.order_id.id,  
+                    "date_deadline": coatation_line.coation_id.date_to,  
+                    "user_id": self.env.user.id, 
+                    "res_name":self.order_line_id.order_id.name,
+                    "note":coatation_line.coation_id.name
+                }
+            )
+            print(
+                "Activity created for quotation."
+            )
+        else:
+            print("reminder has already been created!!!")
 
     @api.model_create_multi
     def default_get(self, fields):
@@ -205,7 +211,7 @@ class CoatationPriceWizard(models.TransientModel):
             # Match the product in the sales order line with the correct coatation line
             selected_price = None
             selected_coation_id = None  # Initialize the selected coation ID to None
-
+            Reminder_created = False
             for line in self.coation_lines_ids:
                 if line.product_id == self.order_line_id.product_id:
                     # If the product in the coatation line matches the order line's product
@@ -213,8 +219,10 @@ class CoatationPriceWizard(models.TransientModel):
                     selected_coation_id = (
                         line.coation_id.id
                     )  # Get the corresponding coatation_id
+                    if not Reminder_created:
+                        self._create_activity_for_expired_quotation(line)
+                        Reminder_created = True
                     break  # Exit once the matching product is found
-
             # If no matching coatation line is found, fall back to a default price or raise an error
             if not selected_price:
                 return False  # Could also handle this with a fallback price or raise an error

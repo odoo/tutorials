@@ -105,8 +105,8 @@ class SaleOrder(models.Model):
                             coatation_line.coation_id.state,
                         )
 
-                    if recommended_price:
-                        self._create_activity_for_expired_quotation(coatation_line)
+                    # if recommended_price:
+                    #     self._create_activity_for_expired_quotation(coatation_line)
 
     @api.onchange("partner_id")
     def _onchange_partner_id(self):

@@ -1,0 +1,104 @@
+<odoo>
+    <template id="report_coatations">
+        <t t-foreach="docs" t-as="coation">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-if="coation.state == 'active'">
+                        <div class="page">
+                            <div>
+                            <span><img t-attf-src="/logo.png?company={{ coation.partner_id.id }}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt=" coation.partner_id.name"/></span>
+                            </div>
+                            <hr/>
+                                <div>
+                                    <strong>Coation Number:</strong>
+                                    <span t-field="coation.name"/>
+                                </div>
+                                <div>
+                                    <strong>Vendor ID:</strong>
+                                     <span t-field="coation.partner_id.id"/>
+                                </div>
+                                <div>
+                                     <strong>Vendor Name:</strong>
+                                     <span t-field="coation.partner_id.name"/>
+                                </div>
+                                
+                                <div>
+                                     <strong>Coatation expiry date:</strong>
+                                     <span t-field="coation.date_to"/>
+                                </div>
+
+                                <div>
+                                     <strong>Client ID:</strong>
+                                     <span t-field="coation.client_id.id"/>
+                                </div>
+
+                                <div>
+                                     <strong>Client Name:</strong>
+                                     <span t-field="coation.client_id.name"/>
+                                </div>
+
+                                <div>
+                                    <strong>Will expire this week?: </strong>
+                                    <t t-if="coation.Will_expire_Within_a_Week">
+                                        Yes
+                                    </t>
+                                    <t t-else="">
+                                        No
+                                    </t>
+                                </div>
+                                
+                                <div>
+                                <t t-set="sale_line" t-value="coation.mapped('sale_order_line_ids')"/>
+                                    <t t-foreach="sale_line" t-as="line">
+                    
+                                                <div> 
+                                                    <strong>Sales person name:</strong>
+                                                    <span t-field="line.order_id.user_id"/>
+                                                
+                                                </div>
+
+                                                <div>
+                                                    <strong>Referenced by:</strong>
+                                                    <span t-field="line.order_id.name"/>
+                                                </div>
+                                                
+                                                <div>
+                                                    <div>
+                                                        <strong>Product:</strong>
+                                                        <span t-field="line.name"/>
+                                                    </div>
+                                            <t t-foreach="coation.coation_lines_ids" t-as="coation_line">
+                                                   <t t-if="coation_line.product_id.id == line.product_id.id">
+                                                        <div>
+                                                            <strong>Authorized usage:</strong>
+                                                            <span t-esc="coation_line.max_qty - coation_line.min_qty"/>
+                                                        </div>
+
+                                                            <div>
+                                                            <strong>Total usage:</strong>
+                                                            <span t-field="coation_line.consumed"/>
+                                                        </div>
+                                                    </t>
+                                            </t>
+                                                </div>
+                                          
+                                 
+                                    </t> 
+            
+                                </div>
+                                
+                            <t t-if="coation.state">
+                                <div>
+                                <strong>Status: </strong>
+                                <span t-field="coation.state"/>
+                                </div>
+                            </t>
+                            <t t-if="coation.coation_lines_ids">
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

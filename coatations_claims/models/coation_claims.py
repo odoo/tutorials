@@ -34,7 +34,9 @@ class CoationsClaims(models.Model):
         store=True,
     )
     coation_lines_ids = fields.One2many("coatations.lines", "coation_id")
-    sale_order_ids = fields.Many2many("sale.order")
+    sale_order_ids = fields.Many2many("sale.order", "coation_sale_m2m")
+    sale_order_line_ids = fields.One2many("sale.order.line", "coation_ids")
+    Will_expire_Within_a_Week = fields.Boolean(compute="_compute_expiry")
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -95,3 +97,12 @@ class CoationsClaims(models.Model):
             else:
                 record.state = "expired"
                 record.write({"state": record.state})
+
+    @api.depends("date_to")
+    def _compute_expiry(self):
+        for record in self:
+            today = fields.Date.today()
+            if (record.date_to - today).days <= 7:
+                record.Will_expire_Within_a_Week = True
+            else:
+                record.Will_expire_Within_a_Week = False
