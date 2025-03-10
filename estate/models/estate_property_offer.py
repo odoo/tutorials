@@ -4,7 +4,7 @@ from odoo import api,fields,models
 from odoo.exceptions import UserError 
 
 
-class estatePropertyOffer(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer"
     _order = "price desc"
@@ -19,6 +19,12 @@ class estatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True, string="Property" )
     validity = fields.Integer(string="Validity(Days)",default="7")
     date_deadline = fields.Date(string="Deadline",compute="_compute_date_deadline",inverse="_inverse_date_deadline",store=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+        related="property_id.property_type_id",
+        store=True
+    )
 
     #sql constraints
     _sql_constraints = [
@@ -49,7 +55,7 @@ class estatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
-            record.property_id.status = "sold"
+            record.property_id.status = "offer_accepted"
         return True
 
     def action_refuse_offer(self):
