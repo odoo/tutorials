@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="inherit_stock_valuation_layer_tree" model="ir.ui.view">
+        <field name="name">stock.valuation.layer.list.inherit</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.stock_valuation_layer_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="attributes">
+                <attribute name="class">text-muted</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='value']" position="attributes">
+                <attribute name="decoration-danger">value &lt; 0</attribute>
+                <attribute name="decoration-success">value &gt; 0</attribute>
+                <attribute name="class">fw-bold</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='reference']" position="attributes">
+                <attribute name="decoration-muted">1</attribute>
+                <attribute name="decoration-danger">is_scrap</attribute>
+                <attribute name="decoration-success">code == 'incoming'</attribute>
+                <attribute name="decoration-info">code == 'outgoing'</attribute>
+                <attribute name="decoration-warning">is_inventory</attribute>
+                <attribute name="decoration-primary">code == 'mrp_operation'</attribute>
+                <attribute name="class">fw-bold</attribute> 
+            </xpath>
+        </field>
+    </record>
+</odoo>
