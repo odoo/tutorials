@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_order_line_inherit" model="ir.ui.view">
+            <field name="name">sale.order.line.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//form//notebook//page//field[@name='order_line']/list/field[@name='product_uom_qty']" position="before">
+                    <button name="%(action_price_distribution_wizard)d" type="action" icon="fa-share-alt" class="btn btn-icon btn-secondary" title="Distribute Cost"/>
+                </xpath>
+                <xpath expr="//form//notebook//page//field[@name='order_line']/list/field[@name='price_subtotal']" position="before">
+                    <field name="distributed_price" />
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
