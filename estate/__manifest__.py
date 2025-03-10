@@ -2,8 +2,8 @@
     'name': 'Real Estate',
     'version': '1.0',
     'summary': 'Real Estate Management Module',
-    'author': 'Your Name',
-    'category': 'Sales',
+    'author': 'chirag Gami(chga)',
+    'category': 'Brokerage',
     'depends': ['base'],
     'license':'LGPL-3',
     'data': [
@@ -17,5 +17,4 @@
     ],
     'installable': True,  # This is required!
     'application': True,
-    'auto-install': False,
 }

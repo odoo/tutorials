@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero # type: ignore
 class EstateProperty(models.Model):
     _name = 'estate.property'  # Database table name
     _description = 'Real Estate Property'
+    _order = 'id desc'
 
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text(string="Description")
@@ -32,6 +33,8 @@ class EstateProperty(models.Model):
         default="new",
         copy=False,
         required=True,
+        compute="_compute_state_offer_received",
+        store=True,
     )
     
 
@@ -55,6 +58,12 @@ class EstateProperty(models.Model):
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store=True)
 
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True)
+
+     # property constraits
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive."),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive.")
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -81,12 +90,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("A canceled property cannot be sold!")
-            acceptOffer = False
-            for offer in record.offer_ids:
-                if offer.status == "accepted":
-                    acceptOffer = True
-                    break
-            if not acceptOffer:
+            elif record.state != "offer_accepted":
                 raise UserError("Accept any offer before sold!")
             record.state = "sold"
         return True
@@ -98,12 +102,6 @@ class EstateProperty(models.Model):
                 raise UserError("A sold property cannot be canceled!")
             record.state = "cancelled"
         return True
-
-    # property constraits
-    _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive."),
-        ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive.")
-    ]
 
     # define constrains for selling price not less than 90% of expected price
     @api.constrains("selling_price", "expected_price")
@@ -119,3 +117,12 @@ class EstateProperty(models.Model):
                 raise models.ValidationError(
                     "The selling price cannot be lower than 90% of the expected price!"
                 )
+            
+    # add dependency to change state when offer received
+    @api.depends("offer_ids")
+    def _compute_state_offer_received(self):
+        for record in self:
+            if record.offer_ids:
+                record.state = "offer_received"
+            else:
+                record.state = "new"
