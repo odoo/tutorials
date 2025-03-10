@@ -12,7 +12,7 @@ class estatePropertyOffer(models.Model):
     status = fields.Selection([
         ("accepted", "Accepted"),
         ("refused", "Refused"),
-    ], string="Status", default="refused", required=True)
+    ], string="Status")
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(string="Validity (Days)", default=7)
@@ -66,7 +66,7 @@ class estatePropertyOffer(models.Model):
             if offer.property_id.state == "sold":
                 raise UserError("You cannot refuse the offer on sold properties.")
             offer.status = "refused"    
-            offer.property_id.state = "new"
+            offer.property_id.state = "offer_received"
             offer.property_id.selling_price = False
             offer.property_id.buyer_id = False
 

@@ -12,9 +12,7 @@ class EstatePropertyOffer(models.Model):
             return super().create(vals_list)
         property_id = vals_list[0].get('property_id')
         if not property_id:
-            raise ValidationError("Property reference is missing.")
-        if property.auction_end_time < fields.datetime.now():
-            raise ValidationError("Offer can't created after auction end.")    
+            raise ValidationError("Property reference is missing.")    
         property = self.env['estate.property'].browse(property_id)
         for vals in vals_list:
             if property.state == 'sold':
@@ -26,5 +24,7 @@ class EstatePropertyOffer(models.Model):
                         "You cannot create an offer lower than expected price."
                     )
         if property.sell_type == 'auction':
+            if property.auction_end_time < fields.datetime.now():
+                raise ValidationError("Offer can't created after auction end.")
             return models.Model.create(self, vals_list)            
         return super().create(vals_list)
