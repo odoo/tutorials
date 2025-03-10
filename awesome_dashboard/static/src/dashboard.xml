@@ -2,10 +2,30 @@
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
-                <t t-set-slot="layout-buttons">
-                    <button type="button" class="btn btn-primary" t-on-click="opoenCustomers">Customers</button>
-                    <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
-                </t>
+            <t t-set-slot="layout-buttons">
+                <button type="button" class="btn btn-primary" t-on-click="opoenCustomers">Customers</button>
+                <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <DashboardItem size="2">
+                <p>Number of new orders this month </p>
+                <h1 class="text-center text-success" t-esc="result.data.nb_new_orders"/>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <p>Total amount of new orders this month </p>
+                <h1 class="text-center text-success" t-esc="result.data.total_amount"/>
+            </DashboardItem>
+            <DashboardItem size="2">
+                 <p>Average amount of t-shirt ordered this month </p>
+                 <h1 class="text-center text-success" t-esc="result.data.average_quantity"/>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <p>Number of cancelled orders this month</p>
+                <h1 class="text-center text-success" t-esc="result.data.nb_cancelled_orders"/>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <p>Average time for an order to go from 'new' to 'sent' or 'cancelled' </p>
+                <h1 class="text-center text-success" t-esc="result.data.average_time"/>
+            </DashboardItem>
         </Layout>
     </t>
 </templates>
