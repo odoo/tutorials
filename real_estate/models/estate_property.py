@@ -1,4 +1,6 @@
-from odoo import models, fields ,api
+from odoo import models, fields, api
+from odoo.exceptions import UserError  # यह लाइन जोड़ें
+
 from datetime import date
 
 class EstateProperty(models.Model):
@@ -21,6 +23,20 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store=True)
 
+    status = fields.Selection([
+        ('accepted', 'Accepted'),
+        ('refused', 'Refused'),
+    ], string="Status", default="accepted")
+
+    state = fields.Selection([
+    ('new', 'New'),
+    ('offer_received', 'Offer Received'),
+    ('offer_accepted', 'Offer Accepted'),
+    ('sold', 'Sold'),
+    ('canceled', 'Canceled')  # यह एंट्री होनी चाहिए
+], string="Status", default="new")
+
+
 
     garden_orientation = fields.Selection([
         ('north', 'North'),
@@ -33,10 +49,7 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-
-
-
+   
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -58,3 +71,18 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+  
+    
+    def action_cancel(self):
+        """Cancels the property if not sold"""
+        if self.state == 'sold':
+            raise UserError("You cannot cancel a sold property.")
+        self.state = 'cancelled'
+
+    def action_sold(self):
+        """Marks the property as sold if not cancelled"""
+        if self.state == 'cancelled':
+            raise UserError("You cannot sell a cancelled property.")
+        if not self.buyer_id or not self.selling_price:
+            raise UserError("Buyer and Selling Price must be set before marking as sold.")
+        self.state = 'sold'
