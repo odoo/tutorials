@@ -6,7 +6,7 @@
     ],
     "data": [
         "security/ir.model.access.csv",
-        "wizard/order_warranty_wizard.xml",
+        "wizard/order_wizard_view.xml",
         "views/product_template_view.xml",
         "views/warranty_configration.xml",
         "views/warranty_configration_menu.xml",

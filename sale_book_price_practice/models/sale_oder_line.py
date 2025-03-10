@@ -5,7 +5,7 @@ class SaleOrderLine(models.Model):
     _inherit = "sale.order.line"
 
     book_price = fields.Float(
-        "Book Price", compute="_compute_book_price", default=0, store=True
+        "Book Price", compute="_compute_book_price",
     )
 
     @api.depends("pricelist_item_id")

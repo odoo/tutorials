@@ -5,7 +5,6 @@
         <field name="res_model">order.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
-        <field name="context">{'default_sale_order_id' : active_id}</field>
     </record>
 
     <record id="warranty_wizard_form_view" model="ir.ui.view">
@@ -17,18 +16,18 @@
                     <field name="order_line_ids" options="{'no_create': true}">
                         <list editable="bottom" create="false">
                             <field name="product_template_id" />
-                            <field name="year"/>
-                            <field name="enddate"/>
-                            <field name="order_line_id" column_invisible="1"/>
+                            <field name="year" />
+                            <field name="end_date" />
+                            <field name="order_line_id" column_invisible="1" />
                         </list>
                     </field>
                     <footer>
-                    <button name="action_add_warranty" type="object"
-                        string="Add Warranty" class="btn-primary" />
-                    <button string="Cancel" class="btn-secondary" special="cancel" />
-                </footer>
+                        <button name="action_add_warranty" type="object"
+                            string="Add Warranty" class="btn-primary" />
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
                 </sheet>
             </form>
-        </field> 
+        </field>
     </record>
 </odoo>

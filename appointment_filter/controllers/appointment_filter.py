@@ -1,10 +1,8 @@
-from odoo import http
 from odoo.addons.website_appointment.controllers.appointment import WebsiteAppointment
 from odoo.http import request
 
 
 class AppointmentFilterController(WebsiteAppointment):
-    @classmethod
     def _appointments_base_domain(
         cls,
         filter_appointment_type_ids,

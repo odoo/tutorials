@@ -9,6 +9,7 @@
                     string="Add Warranty"
                     type="action"
                     name="%(action_open_warranty_wizard)d"
+                    invisible="not order_line"
                 />
             </xpath>
         </field>

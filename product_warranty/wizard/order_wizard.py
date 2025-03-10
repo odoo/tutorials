@@ -1,4 +1,4 @@
-from odoo import api, models, fields
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -13,10 +13,8 @@ class OrderWizard(models.TransientModel):
     @api.model
     def default_get(self, fields_list):
         res = super(OrderWizard, self).default_get(fields_list)
-        oder_lines = self.env["sale.order"].browse(
-            self.env.context.get("default_sale_order_id")
-        )
-        filter_oder_lines = oder_lines.order_line.filtered(
+        order_lines = self.env["sale.order"].browse(self.env.context.get("active_id"))
+        filter_oder_lines = order_lines.order_line.filtered(
             lambda l: l.product_template_id.is_warranty_available
         )
         order_lines = []
@@ -41,10 +39,13 @@ class OrderWizard(models.TransientModel):
             if line.year:
                 self.env["sale.order.line"].create(
                     {
-                        "product_template_id" : line.year.product_template_id,
-                        "price_unit" : (line.order_line_id.price_unit * line.year.percentage) / 100,
-                        "name": f"Warranty for {line.order_line_id.name} (Ends: {line.enddate})", 
-                        "order_id" : line.order_line_id.order_id.id,
-                        "connected_order_line_id" : line.order_line_id.id,
+                        "product_template_id": line.year.product_template_id,
+                        "price_unit": (
+                            line.order_line_id.price_unit * line.year.percentage
+                        )
+                        / 100,
+                        "name": f"Warranty for {line.order_line_id.name} (Ends: {line.end_date})",
+                        "order_id": line.order_line_id.order_id.id,
+                        "connected_order_line_id": line.order_line_id.id,
                     }
                 )
