@@ -13,8 +13,8 @@ class WarrantryWizard(models.TransientModel):
     )
 
     @api.model
-    def default_get(self, fields):
-        res = super().default_get(fields)
+    def default_get(self, fields_list):
+        res = super().default_get(fields_list)
         active_id = self.env.context.get("active_id")
         if not active_id:
             return res
@@ -31,7 +31,7 @@ class WarrantryWizard(models.TransientModel):
                 and not line.product_warranty_line_id
             ):
                 existing_warranty = order.order_line.filtered(
-                    lambda l: l.product_warranty_line_id == line
+                    lambda ln: ln.product_warranty_line_id == line
                 )
                 warranty_config = self.env["warranty.configuration"].search(
                     [("product_id", "=", existing_warranty.product_id.id)], limit=1
@@ -40,9 +40,7 @@ class WarrantryWizard(models.TransientModel):
                     {
                         "order_line_id": line.id,
                         "product_id": line.product_id.id,
-                        "warranty_configuration_id": warranty_config.id
-                        if warranty_config
-                        else False,
+                        "warranty_configuration_id": warranty_config.id if warranty_config else False,
                     }
                 )
 
@@ -85,7 +83,7 @@ class WarrantryWizard(models.TransientModel):
             }
             if existing_warranty:
                 existing_warranty.write(warranty_vals)  # Update existing warranty line
-            else:
+            elif line.warranty_configuration_id.product_id.id:
                 self.env["sale.order.line"].create(
                     warranty_vals
                 )  # Create new warranty line
@@ -96,10 +94,10 @@ class WarrantyLineWizard(models.TransientModel):
     _description = "Warranty Line for Wizard"
 
     wizard_id = fields.Many2one("warranty.wizard", string="Warranty Wizard")
-    product_id = fields.Many2one("product.product", string="Product", required=True)
+    product_id = fields.Many2one("product.product", string="Product")
     order_line_id = fields.Many2one("sale.order.line", required=True)
     warranty_configuration_id = fields.Many2one(
-        "warranty.configuration", string="Warranty Configuration", required=True
+        "warranty.configuration", string="Warranty Configuration"
     )
     end_date = fields.Date(
         string="End Date", compute="_compute_end_date", store=True, readonly=True

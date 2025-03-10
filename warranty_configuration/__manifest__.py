@@ -16,5 +16,4 @@
         "views/sale_menus.xml",
     ],
     "installable": True,
-    "application": False,
 }
