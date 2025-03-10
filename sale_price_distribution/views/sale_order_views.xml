@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<record id="view_order_form_inherit_distribution" model="ir.ui.view">
+    <field name="name">sale.order.line.distribution.icon</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+        <!-- Place the icon/button in a suitable location -->
+        <xpath expr="//field[@name='product_template_id']" position="after">
+            <button name="action_distribute_cost"
+                    type="object"
+                    class="btn btn-sm btn-secondary"
+                    icon="fa-share-alt"
+                    title="Distribute Price"/>
+        </xpath>
+         <xpath expr="//field[@name='price_total'][@invisible='is_downpayment']" position="after">
+            <field name="distributed_cost" widget="badge" string="Distributed Cost"/>
+        </xpath>
+    </field>
+</record>
+</odoo>

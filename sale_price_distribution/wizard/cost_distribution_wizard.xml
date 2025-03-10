@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="cost_distribution_wizard" model="ir.ui.view">
+        <field name="name">cost.distribution.wizard.form</field>
+        <field name="model">cost.distribution.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group style="text-align: right;">
+                        <field name="order_line_cost" readonly="1"/>
+                    </group>
+                    <field name="order_line_ids" invisible="price_subtotal == 0">
+                        <list editable="bottom">
+                            <field name="product_id" readonly="1" />
+                            <field name="price_subtotal" string="Current Cost" readonly="1" />
+                            <field name="distributed_cost" />
+                        </list>
+                    </field>
+                    <footer>
+                        <button string="Distribute" type="object" name="distribute_cost" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
