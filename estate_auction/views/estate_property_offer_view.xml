@@ -8,11 +8,11 @@
         <field name="arch" type="xml">
              <xpath expr="//button[@name='action_accept']" position="replace">
                 <button name="action_accept" type="object" string="Accept" 
-                    class="fa-check" invisible="(status in ['accepted','refused']) or (is_auction_offer_field == True)"/>       
+                    class="fa-check" invisible="(status in ['accepted','refused']) or (is_auction_available == True)"/>       
             </xpath>
             <xpath expr="//button[@name='action_refuse']" position="replace">
                 <button name="action_refuse" type="object" string="Refuse" 
-                    class="fa-check" invisible="(status in ['accepted','refused']) or (is_auction_offer_field == True)"/>       
+                    class="fa-check" invisible="(status in ['accepted','refused']) or (is_auction_available == True)"/>       
             </xpath> 
         </field> 
     </record>

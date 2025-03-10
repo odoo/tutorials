@@ -4,7 +4,7 @@
   'depends' : ['base', 'estate'],
   'category' : 'RealEstate/Auction',
   'author' : "BHPR",
-  'description' : "",
+  'description' : "A real estate app with auction functionality.",
   'data' : [
         'views/estate_property_view.xml',
         'views/estate_property_offer_view.xml',
@@ -13,13 +13,12 @@
         'data/email_template.xml'
    ],
    'assets' : {
-     
-       'web.assets_backend' : [
-
-            'estate_auction/static/src/components/AuctionStateSelection/**/*',
-           
-       ]
-
+          'web.assets_backend': [
+            'estate_auction/static/src/components/auction_state_selection/**/*',
+        ],
+          'web.assets_frontend': [
+            'estate_auction/static/src/timer_widgets/**/*.js',
+        ]
    },
    'license' : 'LGPL-3',
    'auto_install' : True,

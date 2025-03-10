@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { _t } from "@web/core/l10n/translation";
 import {
     StateSelectionField,
@@ -7,13 +5,12 @@ import {
 } from "@web/views/fields/state_selection/state_selection_field";
 import { useCommand } from "@web/core/commands/command_hook";
 import { formatSelection } from "@web/views/fields/formatters";
-
 import { registry } from "@web/core/registry";
 import { useState } from "@odoo/owl";
 
 
 export class AuctionStateSelection extends StateSelectionField {
-    static template = "estate_auction.AuctionStateSelection";
+    static template = "estate.AuctionStateSelection";
 
     static props = {
         ...stateSelectionField.component.props,
@@ -27,21 +24,21 @@ export class AuctionStateSelection extends StateSelectionField {
         });
 
         this.icons = {
-            "template": "fa fa-lg fa-circle me-2",
-            "auction": "fa fa-lg fa-exclamation-circle me-2",
-            "sold": "fa fa-lg fa-circle me-2"
+            "template": "o_status",
+            "auction": "fa fa-lg fa-exclamation-circle",
+            "done": "fa fa-lg fa-circle",
         };
         this.colorIcons = {
             "template": "text-dark",
-            "auction": "o_status_changes_requested text-warning",
-            "sold": "text-success o_status_green",
+            "auction": "o_status_changes_requested",
+            "done": "text-success",
         };
         this.colorButton = {
             "template": "btn-outline-secondary",
             "auction": "btn-outline-warning",
-            "sold": "btn-outline-success",
+            "done": "btn-outline-success",
         };
-        if (this.props.viewType !== 'form') {
+        if (this.props.viewType != 'form') {
             super.setup();
         } else {
             const commandName = _t("Set auction state as...");
@@ -74,16 +71,15 @@ export class AuctionStateSelection extends StateSelectionField {
 
     get options() {
         const labels = new Map(super.options);
-        const states = ["canceled", "sold"];
+        const states = ["canceled", "done"];
         const currentState = this.props.record.data[this.props.name];
-        if (currentState !== "waiting") {
+        if (currentState != "waiting") {
             states.unshift("template", "auction");
         }
         return states.map((state) => [state, labels.get(state)]);
     }
 
     get availableOptions() {
-        // overrided because we need the currentOption in the dropdown as well
         return this.options;
     }
 
@@ -109,10 +105,6 @@ export class AuctionStateSelection extends StateSelectionField {
         return this.colorIcons[value] || "";
     }
 
-    /**
-     * determine if a single click will trigger the toggleState() method
-     * which will switch the state from auction to sold.
-     */
     get isToggleMode() {
         return this.props.isToggleMode;
     }
@@ -122,19 +114,19 @@ export class AuctionStateSelection extends StateSelectionField {
     }
 
     async toggleState() {
-        const toggleVal = this.currentValue === "sold" ? "auction" : "sold";
+        const toggleVal = this.currentValue == "done" ? "auction" : "done";
         await this.updateRecord(toggleVal);
     }
 
     getDropdownPosition() {
-        if (this.isView(['activity', 'kanban', 'list', 'calendar']) || this.env.isSmall) {
+        if (this.isView(['kanban', 'list']) || this.env.isSmall) {
             return '';
         }
         return 'bottom-end';
     }
 
     getTogglerClass(currentValue) {
-        if (this.isView(['activity', 'kanban', 'list', 'calendar']) || this.env.isSmall) {
+        if (this.isView(['kanban', 'list']) || this.env.isSmall) {
             return 'btn btn-link d-flex p-0';
         }
         return 'o_state_button btn rounded-pill ' + this.colorButton[currentValue];

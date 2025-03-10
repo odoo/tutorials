@@ -1,39 +1,60 @@
-<odoo>
-    <data noupdate="1">
-        <record id="email_template_offer_accepted" model="mail.template">
-            <field name="name">Offer Accepted Notification</field>
-            <field name="model_id" ref="model_estate_property"/>
-            <field name="subject">Congratulations! Your offer has been accepted</field>
-            <field name="email_from">${object.company_id.email or 'noreply@yourcompany.com'}</field>
-            <field name="email_to">${object.buyer_id.email}</field>
-            <field name="body_html">
-                <![CDATA[
-                <p>Hello <strong>${object.buyer_id.name}</strong>,</p>
-                <p>We are pleased to inform you that your offer of <strong>${object.selling_price}</strong> has been accepted for the property <strong>${object.name}</strong>.</p>
-                <p>Our team will reach out to you soon for the next steps.</p>
-                <p>Best regards,<br/>
-                <strong>${object.company_id.name}</strong></p>
-                ]]>
-            </field>
-        </record>
-    </data> 
+<odoo noupdate="1">
+    <record id="email_template_offer_accepted" model="mail.template">
+        <field name="name">Property Sold Notification</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="email_from">{{object.salesperson_id.email}}</field>
+        <field name="email_to">{{object.buyer_id.email}}</field>
+        <field name="subject">Your Property Purchase: {{object.name}}</field>
+        <field name="body_html" type="html">
+            <tr>
+                <td style="min-width: 590px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                        <tr>
+                            <td valign="top" style="font-size: 13px;">
+                                <div>
+                                    <p>Dear <t t-out="object.buyer_id.name or 'Valued Customer'"/>,</p>
 
-     <data noupdate="1">
-        <record id="email_template_offer_rejected" model="mail.template">
-            <field name="name">Offer Rejected Notification</field>
-            <field name="model_id" ref="model_estate_property"/>
-            <field name="subject">Your offer has not been accepted</field>
-            <field name="email_from">${object.company_id.email or 'noreply@yourcompany.com'}</field>
-            <field name="email_to">${object.buyer_id.email}</field>
-            <field name="body_html">
-                <![CDATA[
-                <p>Hello <strong>${object.buyer_id.name}</strong>,</p>
-                <p>Unfortunately, your offer of <strong>${object.selling_price}</strong> for the property <strong>${object.name}</strong> was not accepted.</p>
-                <p>We appreciate your interest, and we hope to have you participate in future auctions.</p>
-                <p>Best regards,<br/>
-                <strong>${object.company_id.name}</strong></p>
-                ]]>
-            </field>
-        </record>
-    </data>
+                                    <p>Congratulations! We are pleased to inform you that the property <strong><t t-out="object.name"/></strong> has been successfully sold to you.</p>
+
+                                    <p>Thank you for your trust in <strong><t t-out="object.company_id.name or 'Our Company'"/></strong>. If you have any further inquiries, feel free to contact us.</p>
+
+                                    <p>Best regards,<br/>
+                                    <strong><t t-out="object.company_id.name or 'The Real Estate Team'"/></strong></p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </field>
+    </record>
+
+    <record id="email_template_offer_rejected" model="mail.template">
+        <field name="name">Property Not sold Notification</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="email_from">{{object.salesperson_id.email}}</field>
+        <field name="subject">Your Property Auction Bid: {{object.name}}</field>
+        <field name="body_html" type="html">
+            <tr>
+                <td style="min-width: 590px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                        <tr>
+                            <td valign="top" style="font-size: 13px;">
+                                <div>
+                                    <p>Dear <t t-out="'Valued Customer'"/>,</p>
+
+                                    <p>Sorry!! We are not pleased to inform you that the property <strong><t t-out="object.name"/></strong> has not been sold to you.</p>
+
+                                    <p>Thank you for your trust in <strong><t t-out="object.company_id.name or 'Our Company'"/></strong>. If you have any further inquiries, feel free to contact us.</p>
+
+                                    <p>Best regards,<br/>
+                                    <strong><t t-out="object.company_id.name or 'The Real Estate Team'"/></strong></p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </field>
+    </record>
 </odoo>

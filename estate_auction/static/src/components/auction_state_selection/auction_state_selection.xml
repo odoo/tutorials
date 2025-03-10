@@ -1,6 +1,6 @@
-<templates xml:space="preserve">
-    <t t-name="estate_auction.AuctionStateSelection" t-inherit="web.StateSelectionField" t-inherit-mode="primary">
-
+<templates>
+    <t t-name="estate.AuctionStateSelection" t-inherit="web.StateSelectionField" t-inherit-mode="primary">
+        <!-- Readonly button -->
         <xpath expr="//t[@t-if='props.readonly']/button" position="attributes">
             <attribute name="tabindex">-1</attribute>
         </xpath>
@@ -11,24 +11,24 @@
             <attribute name="style">cursor: default;</attribute>
             <attribute name="t-att-title">label</attribute>
         </xpath>
-
+        <!-- Waiting state button -->
         <xpath expr="//t[@t-if='props.readonly']" position="after">
-            <t t-elif="currentValue == 'waiting' and isView(['activity', 'kanban', 'list', 'calendar'])">
+            <t t-elif="currentValue == 'waiting' and isView(['kanban', 'list'])">
                 <button class="d-flex align-items-center btn fw-normal p-0 justify-content-center " title="This auction is waiting for approval" t-att-class="{'o_task_state_list_view': isView(['list'])}">
                     <i class="fa fa-lg fa-hourglass-o text-info"></i>
                 </button>
             </t>
         </xpath>
-
+        <!-- The toggle mark as sold button -->
         <xpath expr="//t[@t-if='props.readonly']" position="after">
             <t t-elif="isToggleMode and currentValue == 'auction'">
-                <button t-if="isView(['activity', 'kanban', 'list', 'calendar']) or this.env.isSmall"
+                <button t-if="isView(['kanban', 'list']) or this.env.isSmall"
                         class="d-flex align-items-center btn fw-normal p-0"
                         tabindex="-1"
                         t-att-class="{'o_task_state_list_view': isView(['list'])}"
                         t-on-click.stop="toggleState"
                 >
-                    <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }} {{ ['sold', 'canceled'].includes(currentValue)}}"></i>
+                    <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }} {{ ['sold', 'canceled'].includes(currentValue) and isView(['activity', 'kanban']) ? 'opacity-50' : '' }}"></i>
                 </button>
                 <button t-else="" class="o_state_button btn oe_highlight rounded-pill" style="white-space: nowrap;" tabindex="-1"
                     t-attf-class="#{currentValue == 'sold' ? 'btn-success' : 'btn-outline-primary'}"
@@ -52,11 +52,11 @@
             </t>
         </xpath>
 
-
+        <!-- Normal dropdown mode toggle button (displayed on the card/record by default) -->
         <xpath expr="//Dropdown/button/div" position="replace">
-            <div t-if="isView(['activity', 'kanban', 'list', 'calendar']) or this.env.isSmall" class="d-flex align-items-center" t-att-class="{'o_task_state_list_view': isView(['list'])}" t-att-title="label">
+            <div t-if="isView(['kanban', 'list']) or this.env.isSmall" class="d-flex align-items-center" t-att-class="{'o_task_state_list_view': isView(['list'])}" t-att-title="label">
                 <i t-if="currentValue == 'waiting'" t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}" style="color: #4A4F59;"/>
-                <i t-else="" t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }} {{ ['sold', 'canceled'].includes(currentValue)}}"/>
+                <i t-else="" t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }} {{ ['sold', 'canceled'].includes(currentValue) and isView(['activity', 'kanban']) ? 'opacity-50' : '' }}"/>
             </div>
             <div t-else="" class="d-flex align-items-center">
                 <t t-if="currentValue == 'waiting'">
@@ -73,7 +73,7 @@
                 </t>
             </div>
         </xpath>
-
+        <!-- Tooltip for the dropdown toggler -->
         <xpath expr="//Dropdown" position="attributes">
             <attribute name="position">`${ getDropdownPosition() }`</attribute>
             <attribute name="menuClass" separator=" + " add="' auction_state_selection_menu'"></attribute>
@@ -83,7 +83,8 @@
             <attribute name="class" remove="p-0" add="shadow-none" separator=" "/>
             <attribute name="t-att-class">getTogglerClass(currentValue)</attribute>
         </xpath>
-
+        <!-- Dropdown divider -->
+        <!-- Approval mode dropdown button (class)-->
         <xpath expr="//DropdownItem/span[1]" position="attributes">
             <attribute name="t-attf-class" separator=" " add="{{ stateIcon(option[0]) }}" remove="o_status"></attribute>
         </xpath>

@@ -1,13 +1,13 @@
 from odoo import http
 from odoo.http import request, Controller, route
-from odoo.addons.estate.controllers.main import EstatePropertyController  # Import parent controller
+from odoo.addons.estate.controllers.main import EstatePropertyController
 
 
 class EstatePropertyControllerInherit(EstatePropertyController):
 
     @route(['/properties', '/properties/page/<int:page>'], type='http', auth="public", website=True)
     def list_properties(self, page=1, **kwargs):
-        response = super().list_properties(page, **kwargs)  # Calls parent method
+        response = super().list_properties(page, **kwargs)
 
         selected_auction_type = kwargs.get('auction_type')
         if selected_auction_type:

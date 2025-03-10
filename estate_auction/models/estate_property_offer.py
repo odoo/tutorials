@@ -5,26 +5,23 @@ class EstatePropertyOffer(models.Model):
 
     _inherit='estate.property.offer'
 
-    is_auction_offer_field = fields.Boolean(compute='_compute_is_auction_offer')
+    is_auction_available = fields.Boolean(compute='_compute_is_auction')
 
-    def _compute_is_auction_offer(self):
+    def _compute_is_auction(self):
         for record in self:
-            record.is_auction_offer_field = record.property_id.auction_type == 'auction'
-    
+            record.is_auction_available =record.property_id.selling_method == 'auction'
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             property_id = vals.get('property_id')
             new_offer = vals.get('price')
             if property_id:
-                property = self.env['estate.property'].browse(property_id)
-
-                if property.selling_type == 'regular':
+                property = self.env['estate.property'].browse(property_id) 
+                if property.selling_method == 'regular':
                     return super().create(vals_list)
                 else:
-                    if new_offer < property.expected_price:
-                        raise UserError("Auction offers must be at least the expected price.")
-
+                    if property.expected_price > float(new_offer):
+                        raise UserError(f"Offer must be higher then expected price {property.expected_price}")
                 property.state = 'offer_received'
-
         return models.Model.create(self,vals_list) 
