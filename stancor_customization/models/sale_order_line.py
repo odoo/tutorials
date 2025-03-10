@@ -38,5 +38,15 @@ class SaleOrderLine(models.Model):
         self.product_uom_qty = self.s_quantity * multiplier
         self.computed_price_unit = base_price * multiplier
         self.price_unit = self.computed_price_unit
+
+    def _prepare_invoice_line(self, **optional_values):
+        """Ensure that invoice quantity is picked from S. Quantity when invoice policy is 'Ordered Quantity'"""
+        invoice_line_vals = super()._prepare_invoice_line(**optional_values)
+
+        if self.product_id.invoice_policy == 'order':  
+            invoice_line_vals['quantity'] = self.s_quantity  
+
+        return invoice_line_vals
+
         
             

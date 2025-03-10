@@ -9,8 +9,8 @@
     'category': 'Product',
     'version': '0.1',
     'depends': ['sale_management', 'stock', 'account'],
+    'license': 'LGPL-3',
     'data': [
-        # 'security/ir.model.access.csv',
         'views/product_template_form_view.xml',
         'views/sale_order_line_view.xml',
         'views/view_picking_form.xml',
