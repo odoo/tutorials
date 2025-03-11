@@ -8,6 +8,7 @@ class property(models.Model):
     _description = 'property'
 
     name = fields.Char(string="Property Name", required=True)
+    image = fields.Char(string="Img")
     property_type_id = fields.Many2one("estate.property.type",  string="Property Type")
     property_tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids= fields.One2many("estate.property.offer", "property_id", string="Property Offers")
@@ -45,7 +46,6 @@ class property(models.Model):
    
     @api.constrains('selling_price')
     def check_selling_price(self):
-        print("Hello", self.selling_price)
         if self.selling_price!=False:
             if self.selling_price < (0.90*self.expected_price):
                 raise ValidationError("The selling price cannot be less than 90% of expected price")
@@ -55,6 +55,8 @@ class property(models.Model):
         if len(self.offer_ids):
             if self.status=="new":
                 self.status="offer_received"
+        else:
+            self.status="new"
     
     @api.depends("living_area","garden_area")
     def _compute_total_area(self):

@@ -4,7 +4,13 @@
     'depends': ['base'],
     'author': "Rishav Shah (sris)",
     'category': 'Estate',
-    'description': """    Real Estate module v1   """,
+    'description': """    
+        A module for managing real estate properties, including:
+        - Property listings with various details.
+        - Offers management with constraints and computed fields.
+        - Property types and tags.
+        - Security rules for user access.
+      """,
     'installable':True,
     'application':True,
     'auto_install': True,
@@ -16,5 +22,12 @@
         'views/estate_property_tag_views.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+    ],
+    'demo': [
+        'demo/res_user_demo.xml',
+        'demo/estate_property_type_demo.xml',
+        'demo/estate_property_tag_demo.xml',
+        'demo/estate_property_demo.xml',
+        'demo/estate_property_offer_demo.xml',
     ],
 }
