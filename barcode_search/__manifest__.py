@@ -8,8 +8,11 @@
     'assets': {
         'web.assets_backend': [
             'barcode_search/static/src/js/sale_order_catalog_service.js',
+            'barcode_search/static/src/js/product_data_load.js',
+            'barcode_search/static/src/js/kanban_record.js',
         ],
     },
     'license': 'LGPL-3',
     'installable': True,
 }
+
