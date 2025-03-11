@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Offers -->
+    <record id="property_offer_1" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_1"/>
+        <field name="price" eval="520000"/>
+        <field name="partner_id" ref="res_partner_1"/>
+        <field name="validity" eval="10"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_2" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_2"/>
+        <field name="price" eval="1450000"/>
+        <field name="partner_id" ref="res_partner_2"/>
+        <field name="validity" eval="15"/>
+        <!-- <field name="status">'refused'</field> -->
+    </record>
+
+    <record id="property_offer_3" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_3"/>
+        <field name="price" eval="2100000"/>
+        <field name="partner_id" ref="res_partner_3"/>
+        <field name="validity" eval="20"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_4" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_4"/>
+        <field name="price" eval="700000"/>
+        <field name="partner_id" ref="res_partner_4"/>
+        <field name="validity" eval="12"/>
+        <!-- <field name="status">'refused'</field> -->
+    </record>
+
+    <record id="property_offer_5" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_5"/>
+        <field name="price" eval="950000"/>
+        <field name="partner_id" ref="res_partner_5"/>
+        <field name="validity" eval="14"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_6" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_6"/>
+        <field name="price" eval="630000"/>
+        <field name="partner_id" ref="res_partner_6"/>
+        <field name="validity" eval="8"/>
+        <!-- <field name="status">'refused'</field> -->
+    </record>
+
+    <record id="property_offer_7" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_7"/>
+        <field name="price" eval="820000"/>
+        <field name="partner_id" ref="res_partner_7"/>
+        <field name="validity" eval="18"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_8" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_8"/>
+        <field name="price" eval="500000"/>
+        <field name="partner_id" ref="res_partner_8"/>
+        <field name="validity" eval="9"/>
+        <!-- <field name="status">'refused'</field> -->
+    </record>
+
+    <record id="property_offer_9" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_9"/>
+        <field name="price" eval="720000"/>
+        <field name="partner_id" ref="res_partner_9"/>
+        <field name="validity" eval="11"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_10" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_1"/>
+        <field name="price" eval="1320000"/>
+        <field name="partner_id" ref="res_partner_8"/>
+        <field name="validity" eval="25"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_11" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_3"/>
+        <field name="price" eval="780000"/>
+        <field name="partner_id" ref="res_partner_1"/>
+        <field name="validity" eval="13"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_12" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_2"/>
+        <field name="price" eval="550000"/>
+        <field name="partner_id" ref="res_partner_2"/>
+        <field name="validity" eval="10"/>
+        <!-- <field name="status">'refused'</field> -->
+    </record>
+
+    <record id="property_offer_13" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_3"/>
+        <field name="price" eval="960000"/>
+        <field name="partner_id" ref="res_partner_3"/>
+        <field name="validity" eval="16"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_14" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_4"/>
+        <field name="price" eval="610000"/>
+        <field name="partner_id" ref="res_partner_4"/>
+        <field name="validity" eval="12"/>
+        <!-- <field name="status">'refused'</field> -->
+    </record>
+
+    <record id="property_offer_15" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_6"/>
+        <field name="price" eval="820000"/>
+        <field name="partner_id" ref="res_partner_5"/>
+        <field name="validity" eval="15"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_16" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_6"/>
+        <field name="price" eval="730000"/>
+        <field name="partner_id" ref="res_partner_6"/>
+        <field name="validity" eval="14"/>
+        <!-- <field name="status">'refused'</field> -->
+    </record>
+
+    <record id="property_offer_17" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_1"/>
+        <field name="price" eval="1050000"/>
+        <field name="partner_id" ref="res_partner_7"/>
+        <field name="validity" eval="22"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_18" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_8"/>
+        <field name="price" eval="590000"/>
+        <field name="partner_id" ref="res_partner_8"/>
+        <field name="validity" eval="8"/>
+        <!-- <field name="status">'refused'</field> -->
+    </record>
+
+    <record id="property_offer_19" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_9"/>
+        <field name="price" eval="970000"/>
+        <field name="partner_id" ref="res_partner_9"/>
+        <field name="validity" eval="17"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+
+    <record id="property_offer_20" model="estate.property.offer">
+        <field name="property_id" ref="property_demo_9"/>
+        <field name="price" eval="1290000"/>
+        <field name="partner_id" ref="res_partner_2"/>
+        <field name="validity" eval="24"/>
+        <!-- <field name="status">'accepted'</field> -->
+    </record>
+</odoo>

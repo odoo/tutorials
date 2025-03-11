@@ -21,6 +21,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Has Garage")
     garden = fields.Boolean(string="Has Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
+    image = fields.Binary("Property Image")
     
     garden_orientation = fields.Selection(
         [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],

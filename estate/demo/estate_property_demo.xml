@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Properties -->
+    <record id="property_demo_1" model="estate.property">
+        <field name="name">Modern Apartment in City Center</field>
+        <field name="description">A spacious apartment with modern amenities.</field>
+        <field name="postcode">12345</field>
+        <field name="expected_price">500000</field>
+        <field name="living_area">120</field>
+        <field name="facades">2</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="False"/>
+        <field name="property_type_id" ref="property_type_apartment"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_luxury'), ref('property_tag_furnished')])]"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="image" type="base64" file="estate/static/src/img/img_1.jpeg"/>
+    </record>
+
+    <record id="property_demo_2" model="estate.property">
+        <field name="name">Luxury Beachfront Villa</field>
+        <field name="description">A stunning villa by the sea.</field>
+        <field name="postcode">67890</field>
+        <field name="expected_price">1500000</field>
+        <field name="living_area">350</field>
+        <field name="facades">4</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">100</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="property_type_villa"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_luxury')])]"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="image" type="base64" file="estate/static/src/img/img_3.jpeg"/>
+    </record>
+
+    <record id="property_demo_3" model="estate.property">
+        <field name="name">Penthouse with Skyline View</field>
+        <field name="description">A luxurious penthouse overlooking the city.</field>
+        <field name="postcode">23456</field>
+        <field name="expected_price">2000000</field>
+        <field name="living_area">400</field>
+        <field name="facades">3</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="False"/>
+        <field name="property_type_id" ref="property_type_penthouse"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_luxury'), ref('property_tag_furnished')])]"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="image" type="base64" file="estate/static/src/img/img_4.jpeg"/>
+    </record>
+
+    <record id="property_demo_4" model="estate.property">
+        <field name="name">Cozy Bungalow in Suburbs</field>
+        <field name="description">A charming bungalow with a big backyard.</field>
+        <field name="postcode">34567</field>
+        <field name="expected_price">750000</field>
+        <field name="living_area">220</field>
+        <field name="facades">2</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">80</field>
+        <field name="garden_orientation">east</field>
+        <field name="property_type_id" ref="property_type_bungalow"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_affordable'), ref('property_tag_new')])]"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="image" type="base64" file="estate/static/src/img/img_5.jpeg"/>
+    </record>
+
+    <record id="property_demo_5" model="estate.property">
+        <field name="name">Elegant Downtown Loft</field>
+        <field name="description">A sleek and stylish loft in the heart of downtown.</field>
+        <field name="postcode">56789</field>
+        <field name="expected_price">600000</field>
+        <field name="living_area">140</field>
+        <field name="facades">1</field>
+        <field name="garage" eval="False"/>
+        <field name="garden" eval="False"/>
+        <field name="property_type_id" ref="property_type_apartment"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_new')])]"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="image" type="base64" file="estate/static/src/img/img_6.jpeg"/>
+    </record>
+
+    <record id="property_demo_6" model="estate.property">
+        <field name="name">Spacious Country Home</field>
+        <field name="description">A peaceful home with scenic surroundings.</field>
+        <field name="postcode">78901</field>
+        <field name="expected_price">850000</field>
+        <field name="living_area">300</field>
+        <field name="facades">2</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">150</field>
+        <field name="garden_orientation">west</field>
+        <field name="property_type_id" ref="property_type_bungalow"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_affordable')])]"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="image" type="base64" file="estate/static/src/img/img_7.jpeg"/>
+    </record>
+
+    <record id="property_demo_7" model="estate.property">
+        <field name="name">Ultra-Modern Smart Home</field>
+        <field name="description">A cutting-edge smart home with high-tech features.</field>
+        <field name="postcode">89012</field>
+        <field name="expected_price">1250000</field>
+        <field name="living_area">270</field>
+        <field name="facades">3</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">120</field>
+        <field name="garden_orientation">north</field>
+        <field name="property_type_id" ref="property_type_villa"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_luxury'), ref('property_tag_new')])]"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="image" type="base64" file="estate/static/src/img/img_8.jpeg"/>
+    </record>
+
+    <record id="property_demo_8" model="estate.property">
+        <field name="name">Rustic Mountain Cabin</field>
+        <field name="description">A cozy retreat in the mountains.</field>
+        <field name="postcode">90123</field>
+        <field name="expected_price">450000</field>
+        <field name="living_area">180</field>
+        <field name="facades">2</field>
+        <field name="garage" eval="False"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">90</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="property_type_bungalow"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_furnished')])]"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="image" type="base64" file="estate/static/src/img/img_9.jpeg"/>
+    </record>
+
+    <record id="property_demo_9" model="estate.property">
+        <field name="name">Seaside Cottage</field>
+        <field name="description">A charming cottage near the ocean.</field>
+        <field name="postcode">34512</field>
+        <field name="expected_price">550000</field>
+        <field name="living_area">160</field>
+        <field name="facades">2</field>
+        <field name="garage" eval="False"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">100</field>
+        <field name="garden_orientation">east</field>
+        <field name="property_type_id" ref="property_type_bungalow"/>
+        <field name="tag_ids" eval="[(6, 0, [ref('property_tag_affordable')])]"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="image" type="base64" file="estate/static/src/img/img_10.jpeg"/>
+    </record>
+</odoo>

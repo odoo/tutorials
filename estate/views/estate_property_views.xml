@@ -26,7 +26,7 @@
         </field>
     </record>
 
-    <!-- form view for disply singal property -->
+    <!-- form view for display singal property -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -41,10 +41,15 @@
 
                 <sheet>
                     <group>
-                        <h1>
-                            <field name="name"/>
-                        </h1>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <group>
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </group>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar"/>
+                        </group>
                     </group>
                     <group>
                         <group>
@@ -58,6 +63,7 @@
                             <field name="selling_price"/>
                         </group>
                     </group>
+                    
                     <notebook>
                         <page string="Description">
                             <group>
