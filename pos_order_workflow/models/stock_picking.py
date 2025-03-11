@@ -1,5 +1,5 @@
 from odoo import api, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 
 
 class StockPicking(models.Model):
@@ -22,9 +22,8 @@ class StockPicking(models.Model):
                 with self.env.cr.savepoint():
                     existing_picking._action_done()
                 return existing_picking
-            except (UserError, ValidationError):
-                pass
-                return existing_picking
+            except Exception as e:
+                  raise UserError(f"This order already has existing picking: {e}")
         #Check if stock moves already exist for this order
         existing_moves = self.env['stock.move'].search([
             ('origin', '=', pos_order.name),
