@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate='1'>
+    <record id="seq_estate_property" model="ir.sequence">
+        <field name="name">Property</field>
+        <field name="code">estate.property</field>
+        <field name="prefix">EP/</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>
