@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_data1" model="estate.property">
+        <field name="name">Luxury Villa</field>
+        <field name="image" type="base64" file="estate/static/src/img/1.jpeg"/>
+        <field name="status">offer_received</field>
+        <field name="expected_price">500000</field>
+        <field name="postcode">60006</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">350</field>
+        <field name="facades">3</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">200</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_ids" ref="estate_property_type_villa"/>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_1')), (4, ref('estate_tag_3'))]"/> 
+    </record>
+
+    <record id="estate_property_data2" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="image" type="base64" file="estate/static/src/img/2.jpeg"/>
+        <field name="status">offer_accepted</field>
+        <field name="expected_price">350000</field>
+        <field name="postcode">60006</field>
+        <field name="selling_price">340000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">120</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">0</field>
+        <field name="property_ids" ref="estate_property_type_apartment"/>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_2')), (4, ref('estate_tag_7'))]"/>
+    </record>
+
+    <record id="estate_property_data3" model="estate.property">
+        <field name="name">Suburban House</field>
+        <field name="image" type="base64" file="estate/static/src/img/3.jpeg"/>
+        <field name="status">sold</field>
+        <field name="expected_price">250000</field>
+        <field name="selling_price">240000</field>
+        <field name="bedrooms">4</field>
+        <field name="postcode">90009</field>
+        <field name="living_area">180</field>
+        <field name="facades">2</field>
+        <field name="garage">0</field>
+        <field name="garden">1</field>
+        <field name="garden_area">50</field>
+        <field name="garden_orientation">north</field>
+        <field name="property_ids" ref="estate_property_type_house"/>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_9')), (4, ref('estate_tag_8'))]"/>
+    </record>
+
+    <record id="estate_property_data4" model="estate.property">
+        <field name="name">Beachside Condo</field>
+        <field name="image" type="base64" file="estate/static/src/img/4.jpeg"/>
+        <field name="status">offer_received</field>
+        <field name="expected_price">700000</field>
+        <field name="selling_price">0</field>
+        <field name="bedrooms">2</field>
+        <field name="postcode">11011</field>
+        <field name="living_area">100</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">0</field>
+        <field name="property_ids" ref="estate_property_type_condo"/>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_4'))]"/>
+    </record>
+
+    <record id="estate_property_data5" model="estate.property">
+        <field name="name">Country Bungalow</field>
+        <field name="image" type="base64" file="estate/static/src/img/5.jpeg"/>
+        <field name="status">offer_accepted</field>
+        <field name="expected_price">450000</field>
+        <field name="selling_price">440000</field>
+        <field name="postcode">13013</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">150</field>
+        <field name="facades">2</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">100</field>
+        <field name="garden_orientation">east</field>
+        <field name="property_ids" ref="estate_property_type_bungalow"/>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_5')), (4, ref('estate_tag_3'))]"/>
+    </record>
+
+    <record id="estate_property_data6" model="estate.property">
+        <field name="name">Modern House</field>
+        <field name="image" type="base64" file="estate/static/src/img/6.jpeg"/>
+        <field name="postcode">60006</field>
+        <field name="expected_price">1250000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">150</field>
+        <field name="facades">3</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">180</field>
+        <field name="garden_orientation">south</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_2')), (4, ref('estate_tag_7'))]"/>
+        <field name="property_ids" ref="estate_property_type_house"/>
+    </record>
+
+    <record id="estate_property_data7" model="estate.property">
+        <field name="name">Bungalow by the Beach</field>
+        <field name="image" type="base64" file="estate/static/src/img/7.jpeg"/>
+        <field name="postcode">70007</field>
+        <field name="expected_price">1800000</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">200</field>
+        <field name="facades">2</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">250</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_4')), (4, ref('estate_tag_5'))]"/>
+        <field name="property_ids" ref="estate_property_type_bungalow"/>
+    </record>
+
+    <record id="estate_property_data8" model="estate.property">
+        <field name="name">Modern Penthouse</field>
+        <field name="image" type="base64" file="estate/static/src/img/8.jpeg"/>
+        <field name="postcode">80008</field>
+        <field name="expected_price">2500000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">180</field>
+        <field name="facades">2</field>
+        <field name="garage">1</field>
+        <field name="garden">0</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_10')), (4, ref('estate_tag_2'))]"/>
+        <field name="property_ids" ref="estate_property_type_flat"/>
+    </record>
+
+    <record id="estate_property_data9" model="estate.property">
+        <field name="name">Suburban House</field>
+        <field name="image" type="base64" file="estate/static/src/img/9.jpeg"/>
+        <field name="postcode">90009</field>
+        <field name="expected_price">700000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">120</field>
+        <field name="facades">2</field>
+        <field name="garage">0</field>
+        <field name="garden">0</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_6'))]"/>
+        <field name="property_ids" ref="estate_property_type_house"/>
+    </record>
+
+    <record id="estate_property_data10" model="estate.property">
+        <field name="name">House in the Countryside</field>
+        <field name="image" type="base64" file="estate/static/src/img/10.jpeg"/>
+        <field name="postcode">10010</field>
+        <field name="expected_price">1200000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">250</field>
+        <field name="facades">3</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">300</field>
+        <field name="garden_orientation">west</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_8')), (4, ref('estate_tag_9'))]"/>
+        <field name="property_ids" ref="estate_property_type_house"/>
+    </record>
+
+    <record id="estate_property_data11" model="estate.property">
+        <field name="name">Contemporary House</field>
+        <field name="image" type="base64" file="estate/static/src/img/11.jpeg"/>
+        <field name="postcode">11011</field>
+        <field name="expected_price">950000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">140</field>
+        <field name="facades">2</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">180</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_5')), (4, ref('estate_tag_10'))]"/>
+        <field name="property_ids" ref="estate_property_type_house"/>
+    </record>
+
+    <record id="estate_property_data12" model="estate.property">
+        <field name="name">Spacious Villa</field>
+        <field name="image" type="base64" file="estate/static/src/img/12.jpeg"/>
+        <field name="postcode">12012</field>
+        <field name="expected_price">2300000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">350</field>
+        <field name="facades">4</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">400</field>
+        <field name="garden_orientation">west</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_2')), (4, ref('estate_tag_6'))]"/>
+        <field name="property_ids" ref="estate_property_type_house"/>
+    </record>
+
+    <record id="estate_property_data13" model="estate.property">
+        <field name="name">Cozy Cottage</field>
+        <field name="image" type="base64" file="estate/static/src/img/13.jpeg"/>
+        <field name="postcode">13013</field>
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">80</field>
+        <field name="facades">1</field>
+        <field name="garage">0</field>
+        <field name="garden">1</field>
+        <field name="garden_area">120</field>
+        <field name="garden_orientation">south</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_4'))]"/>
+        <field name="property_ids" ref="estate_property_type_bungalow"/>
+    </record>
+
+    <record id="estate_property_data14" model="estate.property">
+        <field name="name">Penthouse with Sea View</field>
+        <field name="image" type="base64" file="estate/static/src/img/14.jpeg"/>
+        <field name="postcode">14014</field>
+        <field name="expected_price">2000000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">170</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">0</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_8')), (4, ref('estate_tag_6'))]"/>
+        <field name="property_ids" ref="estate_property_type_flat"/>
+    </record>
+
+    <record id="estate_property_data15" model="estate.property">
+        <field name="name">Family Home in Suburbs</field>
+        <field name="image" type="base64" file="estate/static/src/img/15.jpeg"/>
+        <field name="postcode">15015</field>
+        <field name="expected_price">900000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">140</field>
+        <field name="facades">2</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">180</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">new</field>
+        <field name="tags_ids" eval="[(4, ref('estate_tag_7')), (4, ref('estate_tag_9'))]"/>
+        <field name="property_ids" ref="estate_property_type_house"/>
+    </record>
+</odoo>
+

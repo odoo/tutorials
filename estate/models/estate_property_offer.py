@@ -3,7 +3,6 @@ from dateutil.relativedelta import relativedelta
 from datetime import date
 from odoo.exceptions import UserError
 
-
 class estate_Property_Offer(models.Model):
     _name = "estate.property.offer"
     _description = "relevent offers"
@@ -12,7 +11,7 @@ class estate_Property_Offer(models.Model):
     price = fields.Float("Price")
     status = fields.Selection([('accepted','Accepted'),('refused','Refused')],copy=False)
     partner_id = fields.Many2one("res.partner",required=True, string="Partner")
-    property_id = fields.Many2one("estate.properties", required=True)
+    property_id = fields.Many2one("estate.property", required=True)
     validity =fields.Integer("Validity (days)",default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
     property_type_id = fields.Many2one(related = "property_id.property_ids", store = True)
@@ -35,7 +34,7 @@ class estate_Property_Offer(models.Model):
             raise UserError("Another offer is already accepted")            
         else:
             self.status = "accepted"
-            self.property_id.status = "offer accepted"
+            self.property_id.status = "offer_accepted"
             self.property_id.buyer_id = self.partner_id
             self.property_id.selling_price = self.price
 
@@ -47,6 +46,3 @@ class estate_Property_Offer(models.Model):
         self.status = "refused"
         self.property_id.selling_price = 0
         self.property_id.buyer_id = False
-
-
-

@@ -4,26 +4,27 @@ from odoo.exceptions import UserError
 from odoo.tools import float_utils
 
 
-class estate_Properties(models.Model):
-    _name = "estate.properties"
-    _description = "Information of Properties"
+class estate_property(models.Model):
+    _name = "estate.property"
+    _description = "Information of property"
     _order = "id desc"
 
     name = fields.Char(required=True, string="Title")
-    description = fields.Text()
-    Postcode = fields.Char("PostCode")
+    description = fields.Text("Description")
+    image = fields.Binary(" ")
+    postcode = fields.Char("PostCode")
     date_avaibility = fields.Date(string = "Available From", copy = False, default = fields.Date.today() + relativedelta(months=+3))
     expected_price = fields.Float(string = "Expected Price")
     selling_price = fields.Float(copy=False)
-    Bedrooms = fields.Integer()
+    bedrooms = fields.Integer("Bedrooms")
     living_area = fields.Integer(string = "Living Area (sqm)")
-    facades = fields.Integer("Is Facades Available")
+    facades = fields.Integer("Facades")
     garage = fields.Boolean("Is Garage Available")
     garden = fields.Boolean("Is Garden Available")
     garden_area = fields.Integer(string = "Garden Area (sqm)")
     garden_orientation = fields.Selection([('north','North'),('south' , 'South'),('east','East'),('west','West')],string = "Garden Orientation")
     active = fields.Boolean('Active', default=True)
-    status = fields.Selection([('new','New'),('offer recieved' , 'Offer Recieved'),('offer accepted','Offer Accepted'),('sold','Sold'),('cancelled','Cancelled')], default="new")
+    status = fields.Selection([('new','New'),('offer_received' , 'Offer Recieved'),('offer_accepted','Offer Accepted'),('sold','Sold'),('cancelled','Cancelled')], default="new")
     property_ids = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one("res.partner", copy=False)
     sales_person_ids = fields.Many2one("res.users", string="Salesman", default = lambda self: self.env.user)
@@ -36,8 +37,6 @@ class estate_Properties(models.Model):
         ('expected_price', 'CHECK(expected_price > 0)','The expected price must be strictly positive.'),
         ('selling_price', 'CHECK(selling_price >= 0)','The selling price must be strictly positive.')
     ]
-
-
 
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
@@ -52,7 +51,7 @@ class estate_Properties(models.Model):
     @api.onchange("best_offer")
     def _onchange_best_offer(self):
         if self.best_offer > 0:
-            self.status="offer recieved"
+            self.status="offer_received"
 
     @api.onchange("garden")
     def _onchange_garden(self):
