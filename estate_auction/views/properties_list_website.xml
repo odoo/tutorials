@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_list_template" inherit_id="estate.properties_list_website">
+        <xpath expr="//form/input[@id='property_search']" position="after">
+            <div class="d-flex ">
+                <select name="property_sale_type" id="property_sale_type" class="form-select w-auto">
+                    <option value="">All</option>
+                    <option value="auction" >Auction</option>
+                    <option value="regular" >Regular</option>
+                </select>
+            </div>
+        </xpath>
+        <xpath expr="//form" position="attributes">
+            <attribute name="class">d-flex gap-2 w-50 mb-3 flex-column flex-sm-row</attribute>
+        </xpath>
+    </template>
+    
+    <template id="property_details_website" inherit_id="estate.property_details_website">
+        <xpath expr="//div/div/div[2]/h2" position="before">
+            <t t-if="property.auction_end_time and property.auction_state != 'template'">
+                <div class="d-flex flex-column justify-content-start align-items-end">
+                    <span id="auction-timer" class="badge bg-danger text-white px-3 py-2 fs-6" t-att-data-auction-end-time="property.auction_end_time">
+                        Loading...
+                    </span>
+                    <span class="fw-semibold px-3">Time left to Bid</span>
+                </div>                
+            </t>
+        </xpath>
+        <xpath expr="//div/div/div/div/ul" position="inside">
+            <t t-set="existing_offer" t-value="request.env['estate.property.offer'].search([
+                    ('property_id', '=', property.id),
+                    ('partner_id', '=', request.env.user.partner_id.id)
+                ], limit=1)"
+            />
+            <t t-if="property.auction_state == 'auction'">
+                <div class="p-2">
+                    <a t-att-href="'/property/%s/offer' % property.id" class="btn btn-primary">
+                         <t t-if="existing_offer">View Offer</t>
+                        <t t-else="">Create Offer</t>
+                    </a>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

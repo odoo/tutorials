@@ -1,0 +1,57 @@
+<odoo>
+    <record id="mail_template_offer_accepted" model="mail.template">
+        <field name="name">Offer Accepted Notification</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="email_from">{{ (object.env.user.email or 'noreply@yourcompany.com') }}</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="subject">Your Offer for Property is Accepted!</field>
+        <field name="body_html" type="html">
+            <div class="container py-4">
+                <p class="fs-4 fw-bold text-primary">
+                    Dear <strong><t t-out="object.partner_id.name"/></strong>,
+                </p>
+                <p class="fs-5">
+                    🎉 <strong>Congratulations! </strong> Your offer of 
+                    <strong class="text-success"><t t-out="object.price"/> INR</strong> for the property 
+                    <strong class="text-success"><t t-out="object.property_id.name"/></strong> has been accepted.
+                </p>
+                <p class="fs-6">
+                    We will contact you soon with further details.
+                </p>
+                <p class="fs-5 fw-bold mt-4">
+                    Best Regards,<br/>
+                    <strong class="text-info"><t t-out="object.property_id.salesperson_id.name"/></strong><br/>
+                    <em class="text-muted">Your Real Estate Team</em>
+                </p>
+            </div>            
+        </field>
+    </record>
+
+    <record id="mail_template_offer_refused" model="mail.template">
+        <field name="name">Offer Rejected Notification</field>
+        <field name="model_id" ref="estate.model_estate_property_offer"/>
+        <field name="email_from">{{ (object.env.user.email or 'noreply@yourcompany.com') }}</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="subject">Your Offer for Property is Rejected!</field>
+        <field name="body_html" type="html">
+            <div class="container py-4">
+                <p class="fs-4 fw-bold text-primary">
+                    Dear <strong><t t-out="object.partner_id.name"/></strong>,
+                </p>
+                <p class="fs-5">
+                    <strong>Unfortunately! </strong> Your offer of 
+                    <strong class="text-info"><t t-out="object.price"/> INR</strong> for the property 
+                    <strong class="text-info"><t t-out="object.property_id.name"/></strong> has been rejected.
+                </p>
+                <p class="fs-6">
+                    If you are interested in another Properties, Feel free to contact us for more details.
+                </p>
+                <p class="fs-5 fw-bold mt-4">
+                    Best Regards,<br/>
+                    <strong class="text-info"><t t-out="object.property_id.salesperson_id.name"/></strong><br/>
+                    <em class="text-muted">Your Real Estate Team</em>
+                </p>
+            </div>            
+        </field>
+    </record>
+</odoo>
