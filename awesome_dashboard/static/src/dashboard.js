@@ -7,16 +7,17 @@ import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 import { rpc } from "@web/core/network/rpc"
 import { DashboardItem } from "./dashboarditem/dashboarditem";
-
+import { PieChart } from "./pie_chart/pie_chart";
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem }
+    static components = { Layout, DashboardItem, PieChart }
 
     setup(){
-        this.result = useState({data: null})
-        this.action = useService("action")
+        this.statistic_service = useService("awesome_dashboard.statistics");
+        this.result = useState({data: null});
+        this.action = useService("action");
         onWillStart(async()=>{
-            this.result.data = await rpc("/awesome_dashboard/statistics")
+            this.result.data = await this.statistic_service.loadStatistics();
         })
     }
 

@@ -26,6 +26,10 @@
                 <p>Average time for an order to go from 'new' to 'sent' or 'cancelled' </p>
                 <h1 class="text-center text-success" t-esc="result.data.average_time"/>
             </DashboardItem>
+            <br/>
+            <DashboardItem >
+                <PieChart data="result.data.orders_by_size"/>
+            </DashboardItem>
         </Layout>
     </t>
 </templates>
