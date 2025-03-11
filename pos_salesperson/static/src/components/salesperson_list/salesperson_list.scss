@@ -1,0 +1,54 @@
+.salesperson-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.salesperson-card {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    border: 2px solid transparent;
+
+    &.active {
+        background-color: $o-component-active-bg;
+        border-color: $o-component-active-border;
+    }
+}
+
+.salesperson-item {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    button {
+        border: none;
+        background-color: transparent;
+        color: $o-main-link-color;
+        .fa-times {
+            display: none;
+        }
+
+        .fa-check {
+            display: inline;
+        }
+
+        &:hover {
+            .fa-times {
+                display: inline;
+            }
+
+            .fa-check {
+                display: none;
+            }
+        }
+    }
+}
+
+.active {
+    border: 2px solid light;
+}
