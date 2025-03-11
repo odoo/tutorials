@@ -2,9 +2,18 @@
 <odoo>
     <!-- Action for Property Types -->
     <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Estate Property</field>
+        <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_view_offers" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <!-- <field name="domain">[("property_type_id", "=", active_id)]</field> -->
+        <field name="domain">[("property_id.property_type_id", "=", active_id)]</field>
+        <field name="context">{}</field>
     </record>
 
     <!-- List View for Property Types -->
@@ -28,15 +37,12 @@
                 <sheet>
                     <h1>
                         <field name="name" />
-                    </h1>
+                    </h1>                    
                     <!-- Stat Button Section -->
                     <div class="oe_button_box" name="button_box">
-                        <button name="action_view_offers"
-                                type="object"
-                                icon="fa-money"
-                                string="Offers"
-                                class="oe_stat_button">
-                            <field name="offer_count" widget="statinfo"/>
+                        <button class="oe_stat_button" name="%(estate.action_view_offers)d"
+                            type="action" icon="fa-star">
+                            <field string="Offers" name="offer_count" widget="statinfo" />
                         </button>
                     </div>
                     <notebook>

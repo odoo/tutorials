@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -8,13 +8,16 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(string="Name", required=True)
     property_ids = fields.One2many("estate.property", "property_type_id", string="Properties")
+    # offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Offers")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    sequence = fields.Integer("Sequence", default=10)
 
     offer_count = fields.Integer(
         string="Offer Count",
         compute="_compute_offer_count"
     )
 
-    sequence = fields.Integer("Sequence", default=10)
     _sql_constraints = [
         ('unique_type_name', 'UNIQUE(name)', 'The property type name must be unique.')
     ]
@@ -25,12 +28,7 @@ class EstatePropertyType(models.Model):
                 ('property_id.property_type_id', '=', record.id)
             ])
 
-    def action_view_offers(self):
-        return {
-            'name': 'Offers',
-            'type': 'ir.actions.act_window',
-            'res_model': 'estate.property.offer',
-            'view_mode': 'list,form',
-            'domain': [('property_id.property_type_id', '=', self.id)],
-            'context': {'default_property_id.property_type_id': self.id},
-        }
+    # @api.depends("offer_ids")
+    # def _compute_offer_count(self):
+    #     for record in self:
+    #         record.offer_count = len(record.offer_ids)    ##(why this code is not running and above code is running !!)

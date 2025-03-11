@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="esate_property_action" model="ir.actions.act_window">
+    <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
@@ -14,7 +14,12 @@
             <list string="Estate Property"
                 decoration-success="state in ('offer_received', 'offer_accepted')"
                 decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'"
-                editable="bottom" open_form_view="open">
+            >
+                <header>
+                    <button name="new" type="object" string="New" class="oe_highlight" />
+                    <button name="action_cancel" type="object" string="Cancel" class="oe_highlight" />
+                    <button name="action_sold" type="object" string="Sold" class="oe_highlight" />
+                </header>
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="tag_type_ids" widget="many2many_tags" string="Tags"
@@ -117,7 +122,6 @@
                     help="Show only available properties" />
                 <field name="living_area" string="Living Area"
                     filter_domain="[('living_area', '>=', self)]" />
-
                 <field name="name" string="Title" />
                 <field name="postcode" string="Postcode" />
                 <field name="bedrooms" string="Bedrooms" />

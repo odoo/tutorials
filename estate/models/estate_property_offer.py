@@ -20,7 +20,7 @@ class EstatePropertyOffer(models.Model):
 )   # if I set ondelete = "set null" then why it is not taking and giving error -- 
     #The m2o field property_id of model estate.property.offer is required but declares its ondelete policy as being 'set null'. 
     # Only 'restrict' and 'cascade' make sense
-
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     status = fields.Selection([
         ('accepted', 'Accepted'),
         ('refused', 'Refused')
@@ -45,7 +45,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.property_id.selling_price:
                 raise UserError("An offer has already been accepted for this property!")
-
             record.status = 'accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
@@ -56,17 +55,16 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
 
-    @api.model
-    def create(self, vals):
-        property_obj = self.env['estate.property'].browse(vals['property_id'])
-
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list :
+            property_obj = self.env['estate.property'].browse(vals['property_id'])
         # Check if the offer is lower than the existing highest offer
-        existing_offers = property_obj.mapped('offer_ids.price')
-        if existing_offers and vals['price'] < max(existing_offers):
-            raise exceptions.UserError("You cannot create an offer lower than an existing offer.")
-
+            existing_offers = property_obj.mapped("offer_ids.price")
+            if existing_offers and vals['price'] < max(existing_offers):
+                raise exceptions.UserError("You cannot create an offer lower than an existing offer.")
         # Set property state to 'Offer Received'
-        if property_obj.state == 'new':
-            property_obj.state = 'offer_received'
+            if property_obj.state == 'new':
+                property_obj.state = 'offer_received'
 
-        return super().create(vals)
+        return super().create(vals_list)
