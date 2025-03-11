@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class estatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Show offer given by buyer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -17,6 +18,13 @@ class estatePropertyOffer(models.Model):
     property_id = fields.Many2one(
         "estate.property", required=True
     )  # Many2one use for One2many
+
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True,
+    )
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(

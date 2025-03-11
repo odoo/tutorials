@@ -14,6 +14,7 @@
                 <sheet>
                     <group>
                         <field name="name" />
+                        <field name="color" widget="color_picker" /> <!--for tag color-->
                     </group>
                 </sheet>
             </form>
@@ -24,7 +25,7 @@
         <field name="name">estate.property.tags.view </field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Estate Property Tags">
+            <list string="Estate Property Tags" editable="top" multi_edit="1" open_form_view="True" default_order="name"> <!-- order from UI-->
                 <field name="name" />
             </list>
         </field>
