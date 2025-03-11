@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="vendor_portal_template" name="Vendor Portal">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h2 class="text-center mb-4">Vendor Portal</h2>
+                <form method="get" action="/vendor-portal">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <select class="form-control" name="country_id" id="country_id">
+                                <option value="" t-att-selected="not selected_country and 'selected' or None">Select Vendor's Country</option>
+                                <t t-foreach="countries" t-as="country">
+                                    <option t-att-value="country.id" t-att-selected="str(country.id) == (selected_country or '') and 'selected' or None">
+                                        <t t-esc="country.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <div>
+                            <select class="form-control" name="vendor_id" id="vendor_id">
+                                <option value="" t-att-selected="not selected_vendor and 'selected' or None">Select Vendor</option>
+                                <t t-foreach="vendors" t-as="vendor">
+                                    <option t-att-value="vendor.id" t-att-selected="str(vendor.id) == (selected_vendor or '') and 'selected' or None">
+                                        <t t-esc="vendor.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <div>
+                            <select class="form-control" name="category_id" id="category_id">
+                                <option value="" t-att-selected="not selected_category and 'selected' or None">Select Product Category</option>
+                                <t t-foreach="categories" t-as="cat">
+                                    <option t-att-value="cat.id" t-att-selected="str(cat.id) == (selected_category or '') and 'selected' or None">
+                                        <t t-esc="cat.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <div>
+                            <select class="form-control" name="product_id" id="product_id">
+                                <option value="" t-att-selected="not selected_product and 'selected' or None">Select Product</option>
+                                <t t-foreach="products" t-as="prod">
+                                    <option t-att-value="prod.id" t-att-selected="str(prod.id) == (selected_product or '') and 'selected' or None">
+                                        <t t-esc="prod.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+
+                </form>
+
+                <div class="mt-5">
+                    <h4>Search Results</h4>
+                    <div>
+                        <t t-if="filtered_products">
+                            <ul>
+                                <t t-foreach="filtered_products" t-as="p">
+                                    <li>
+                                        <strong>
+                                            <t t-esc="p.name"/>
+                                        </strong>
+                                        <br/>
+                                        <span>
+                                            <t t-esc="p.description_sale or ''"/>
+                                        </span>
+                                    </li>
+                                </t>
+                            </ul>
+                        </t>
+                        <t t-else="">
+                            <p>No products found.</p>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

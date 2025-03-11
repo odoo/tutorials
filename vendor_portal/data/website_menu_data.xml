@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="website_menu_vendor_portal" model="website.menu">
+        <field name="name">Vendor Portal</field>
+        <field name="url">/vendor-portal</field>
+    </record>
+
+</odoo>
