@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Root Menu -->
+    <menuitem id="estate_menu_root" 
+        name="Real Estate" 
+        web_icon="estate,static/description/icon.png" 
+        sequence="1"/>
+
+    <!-- First Level Menu -->
+    <menuitem 
+        id="estate_menu_management" 
+        name="Management" 
+        parent="estate_menu_root" 
+        sequence="2"/>
+    <!-- Action Menu -->
+    <menuitem 
+        id="estate_menu_properties" 
+        name="Properties" 
+        parent="estate_menu_management"
+        action="estate_property_action" 
+        sequence="3"/>
+
+    <!-- Settings Menu -->
+    <menuitem 
+        id="estate_menu_config" 
+        name="Configuration" 
+        parent="estate_menu_root" 
+        sequence="10"/>
+    <!--Action Menu for Setting-->
+    <menuitem 
+        id="estate_menu_settings" 
+        name="Settings" 
+        parent="estate_menu_config"
+        action="action_estate_config_settings" 
+        sequence="4"/>
+    <!-- Action Menu for Property Types -->
+    <menuitem 
+        id="estate_menu_property_type" 
+        name="Property Types" 
+        parent="estate_menu_config"
+        action="estate_property_type_action" 
+        sequence="5"/>
+    <!-- Action Menu for Property Tag -->
+    <menuitem 
+        id="estate_menu_property_tag" 
+        name="Property Tags" 
+        parent="estate_menu_config"
+        action="estate_property_tag_action" 
+        sequence="6"/>
+</odoo>

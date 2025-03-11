@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--Action for Property Invoices (for stat button)-->
+    <record id="estate_property_type_action_invoices" model="ir.actions.act_window">
+        <field name="name">Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('estate_property_id', '=', active_id)]</field>
+    </record>
+</odoo>
