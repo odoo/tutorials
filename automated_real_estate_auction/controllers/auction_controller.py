@@ -39,11 +39,9 @@ class EstateAuctionController(EstateController):
 
      @http.route(['/estate_property/properties'], type='http', auth="public", website=True)
      def list_properties(self, page=1, domain=None, **kwargs):
-        response = super().list_properties(page=page, domain=domain, **kwargs)
+        response = super().list_properties(page=page, **kwargs)
         sell_type = kwargs.get("sell_type")
-        domain = domain or []
-        if sell_type:
-            domain.append(('sell_type', '=', sell_type))
-        properties = request.env['estate.property'].search(domain)
-        response.qcontext.update({'properties': properties})
+        properties = response.qcontext.get('properties', request.env['estate.property'])
+        filtered_properties = properties.filtered(lambda p: p.sell_type == sell_type)
+        response.qcontext.update({'properties': filtered_properties})
         return response
