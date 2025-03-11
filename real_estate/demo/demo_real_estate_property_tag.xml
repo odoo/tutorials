@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="real_estate_tag_data1" model="real.estate.property.tag">
+        <field name="name">Rural</field>
+        <field name="color">1</field>
+    </record>
+    <record id="real_estate_tag_data2" model="real.estate.property.tag">
+        <field name="name">Mountain View</field>
+        <field name="color">2</field>
+    </record>
+    <record id="real_estate_tag_data3" model="real.estate.property.tag">
+        <field name="name">Suburban</field>
+        <field name="color">3</field>
+    </record>
+    <record id="real_estate_tag_data4" model="real.estate.property.tag">
+        <field name="name">Furnished</field>
+        <field name="color">4</field>
+    </record>
+    <record id="real_estate_tag_data5" model="real.estate.property.tag">
+        <field name="name">Ready to Move</field>
+        <field name="color">5</field>
+    </record>
+    <record id="real_estate_tag_data6" model="real.estate.property.tag">
+        <field name="name">Air Conditioning</field>
+        <field name="color">6</field>
+    </record>
+    <record id="real_estate_tag_data7" model="real.estate.property.tag">
+        <field name="name">Fixed Price</field>
+        <field name="color">7</field>
+    </record>
+    <record id="real_estate_tag_data8" model="real.estate.property.tag">
+        <field name="name">Negotiable</field>
+        <field name="color">8</field>
+    </record>
+    <record id="real_estate_tag_data9" model="real.estate.property.tag">
+        <field name="name">Luxury Property</field>
+        <field name="color">9</field>
+    </record>
+    <record id="real_estate_tag_data10" model="real.estate.property.tag">
+        <field name="name">Property Sold</field>
+        <field name="color">10</field>
+    </record>
+    <record id="real_estate_tag_data11" model="real.estate.property.tag">
+        <field name="name">Property Cancelled</field>
+        <field name="color">11</field>
+    </record>
+</odoo>

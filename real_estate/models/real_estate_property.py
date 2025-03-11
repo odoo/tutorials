@@ -8,6 +8,7 @@ class RealEstate(models.Model):
     _order = "id desc"
 
     name = fields.Char(string = 'Title', required = True)
+    image = fields.Binary("")
     description = fields.Text(string = 'Description')
     postcode = fields.Char(string = 'Postcode')
     date_availability = fields.Date(string = 'Available From', copy = False, default = fields.Datetime.now() + relativedelta(months=3))
