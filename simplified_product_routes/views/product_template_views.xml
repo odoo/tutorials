@@ -19,6 +19,11 @@
                     <i class="fa fa-info-circle"/> Routes will be automatically managed based on product configuration.
                 </div>
             </xpath>
+
+            <!-- Hides Dropship Subcontractor route -->
+            <xpath expr="//field[@name='route_ids']" position="attributes">
+                <attribute name="domain">[('product_selectable', '=', True), ('id', '!=', %(mrp_subcontracting_dropshipping.route_subcontracting_dropshipping)d)]</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>

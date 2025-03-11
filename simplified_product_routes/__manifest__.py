@@ -1,5 +1,5 @@
 {
-    'name': 'Simplified Product Routes',
+    'name': "Simplified Product Routes",
     'version': '1.0',
     'summary': 'Simplifies route configuration for products',
     'description': """
@@ -17,7 +17,5 @@
         'data/default_route_data.xml',
     ],
     'installable': True,
-    'application': False,
-    'auto_install': False,
     'license': 'LGPL-3',
 }

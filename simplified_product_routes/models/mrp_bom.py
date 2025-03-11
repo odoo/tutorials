@@ -3,7 +3,7 @@ from odoo import api, fields, models
 
 class MrpBom(models.Model):
     """Extends mrp.bom to automatically update routes on product templates
-    
+
     This extension ensures that whenever BOMs are created, modified, or deleted,
     the routes on associated products are automatically updated to maintain
     consistency with the manufacturing configuration.
@@ -37,7 +37,7 @@ class MrpBom(models.Model):
         result = super(MrpBom, self).write(vals)
         
         # Update routes if type changed or lines changed
-        if 'type' in vals or 'bom_line_ids' in vals:
+        if 'bom_line_ids' in vals or 'type' in vals:
             product_templates = self.mapped('product_tmpl_id')
             product_templates.read(['route_ids'])
             for bom in self:
