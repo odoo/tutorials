@@ -15,7 +15,7 @@
         <field name="model">estate.tags</field>
         <field name="arch" type="xml">
             <list>
-                <field name="name" />
+                <field name="name"/>
             </list>
         </field>
     </record>
@@ -29,8 +29,8 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name" />
-                        <field name="color" widget="color_picker" />
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
                     </group>
                 </sheet>
             </form>
@@ -42,7 +42,7 @@
         <field name="model">estate.tags</field>
         <field name="arch" type="xml">
             <search string="Search Tags">
-                <field name="name" string="Name" />
+                <field name="name" string="Name"/>
             </search>
         </field>
     </record>

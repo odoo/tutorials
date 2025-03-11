@@ -87,6 +87,14 @@ class EstateProperty(models.Model):
                     "The offer price can't be less than 90`%` of the expected price."
                 )
 
+    @api.ondelete(at_uninstall=False)
+    def _check_state(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise ValidationError(
+                    "Can't delete property unless in New or Cancelled state!"
+                )
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden == True:
@@ -107,17 +115,17 @@ class EstateProperty(models.Model):
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     def action_set_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("You cannot mark a cancelled property as sold.")
-            record.state = "sold"
-            record.active = False
+        # for record in self:
+        if self.state == "cancelled":
+            raise UserError("You cannot mark a cancelled property as sold.")
+        self.state = "sold"
+        self.active = False
         return True
 
     def action_set_cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("You cannot mark a sold property as cancelled.")
-            record.state = "cancelled"
-            record.active = False
+        # for record in self:
+        if self.state == "sold":
+            raise UserError("You cannot mark a sold property as cancelled.")
+        self.state = "cancelled"
+        self.active = False
         return True

@@ -30,26 +30,17 @@ class EstatePropertyOffer(models.Model):
         ("positive_offer_price", "CHECK(price>0)", "Offer Price should be positive.")
     ]
 
-    @api.model_create_multi
-    def create(self, vals_list):
-        offers = super().create(vals_list)
-        for offer in offers:
-            if offer.property_id.state == "new":
-                offer.property_id.state = "offer_received"
-
-        return offers
-
-    @api.onchange("status")
-    def change_of_status(self):
-        for record in self:
-            other_accepted_offers = record.property_id.offer_ids.filtered(
-                lambda o: o.status == "accepted"
-            )
-            print("check", other_accepted_offers.partner_id.name)
-            if other_accepted_offers.partner_id.name == record.partner_id.name:
-                record.property_id.state = "offer_received"
-                record.property_id.selling_price = 0
-                record.property_id.buyer = False
+    @api.model
+    def create(self, vals):
+        property = self.env["estate.property"].browse(vals.get("property_id"))
+        existing_offers = self.search(
+            [("property_id", "=", property.id)], order="price desc", limit=1
+        )
+        if existing_offers and vals.get("price") <= existing_offers.price:
+            raise ValidationError("Can't  make offer lesser than existing ones!")
+        if property.state == "new":
+            property.state = "offer_received"
+        return super(EstatePropertyOffer, self).create(vals)
 
     @api.depends("validity")
     def _compute_deadline(self):

@@ -8,17 +8,17 @@
         <field name="arch" type="xml">
             <list editable="top" open_form_view="True" decoration-success="status=='accepted'"
                 decoration-danger="status=='refused'">
-                <field name="partner_id" string="Partner" />
-                <field name="price" />
+                <field name="partner_id" string="Partner"/>
+                <field name="price"/>
                 <button name="action_set_accept_offer" string="" type="object"
                     icon="fa-check" title="Accept Offer"
-                    invisible="status in ['accepted','refused']" />
+                    invisible="status in ['accepted','refused']"/>
                 <button name="action_set_refuse_offer" string="" type="object"
                     icon="fa-close" title="Refuse Offer"
-                    invisible="status in ['accepted','refused']" />
-                <field name="validity" />
-                <field name="deadline" />
-                <!-- <field name="status" string="Status" /> -->
+                    invisible="status in ['accepted','refused']"/>
+                <field name="validity"/>
+                <field name="deadline"/>
+                <!-- <field name="status" string="Status"/> -->
             </list>
         </field>
     </record>
@@ -31,12 +31,12 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="partner_id" />
-                        <field name="price" />
-                        <field name="validity" />
-                        <field name="deadline" />
-                        <field name="property_type_id" />
-                        <field name="status" />
+                        <field name="partner_id"/>
+                        <field name="price"/>
+                        <field name="validity"/>
+                        <field name="deadline"/>
+                        <field name="property_type_id"/>
+                        <field name="status"/>
                     </group>
                 </sheet>
             </form>
