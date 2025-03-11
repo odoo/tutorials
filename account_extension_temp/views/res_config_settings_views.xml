@@ -1,0 +1,19 @@
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.account.extension.temp</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='account']/block[@name='audit_trail_setting_container']" position="after">
+                <block title="Indian Integration" name="account_indian_integration_setting_container" groups="account.group_account_user">
+                        <group>
+                        <setting string="Import - Export" id="account_import_export_setting"
+                                help="Enable this feature to apply custom duty on import/export transactions, including Bill of Entry and Shipping Bills">
+                            <field name="module_account_import_export_duty" />
+                        </setting>
+                        </group>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>
