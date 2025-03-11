@@ -51,7 +51,8 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Estate Property Type" default_order="sequence, name"> <!-- order from UI-->
-                <field name="sequence" widget="handle" /> <!--manual Ordering-->
+                <field name="sequence" widget="handle" /> <!--manual
+                Ordering-->
                 <field name="name" />
             </list>
         </field>

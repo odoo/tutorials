@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class estatePropertyOffer(models.Model):
@@ -73,3 +73,24 @@ class estatePropertyOffer(models.Model):
             "Offer Price must be strictly postitive",
         )
     ]
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get("property_id")
+        if property_id:
+            property_record = self.env["estate.property"].browse(property_id)
+
+            if property_record.state not in ["offer_accepted", "sold"]:
+                property_record.state = "offer_received"
+
+            existing_offer = self.env["estate.property.offer"].search(
+                [("property_id", "=", property_id)], order="price desc", limit=1
+            )
+
+            if existing_offer and vals.get("price") <= existing_offer.price:
+                raise ValidationError(
+                    "Offer Price must be greater than the existing offer of %.2f."
+                    % existing_offer.price
+                )
+
+        return super().create(vals)

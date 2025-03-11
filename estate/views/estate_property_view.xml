@@ -75,8 +75,8 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" invisible="garden==False" />
-                                <field name="garden_orientation" invisible="garden==False" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                             </group>
                         </page>
                         <page name="Other Info">
@@ -87,8 +87,7 @@
                         </page>
                         <page name="Offers">
                             <group>
-                                <field name="offer_ids"
-                                    readonly="state in ['offer_accepted', 'sold', 'cancelled']"> <!--One2many -->
+                                <field name="offer_ids"> <!--One2many -->
                                     <list decoration-success="status == 'Accepted'"
                                         decoration-danger="status=='Refused'" editable="top"
                                         open_form_view="True">

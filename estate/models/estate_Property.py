@@ -61,9 +61,22 @@ class EstateModel(models.Model):
         compute="_compute_best_price", string="Best Price", store=True
     )
 
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price must be strictly positive.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0 or state!='sold')",
+            "Selling Price must be Positive",
+        ),
+    ]
+
     @api.depends("living_area", "garden_area", "garden")
     def _compute_total_area(self):
-        for record in self:
+        for record in self:  # loop in compute and list view multiedit
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
@@ -81,29 +94,14 @@ class EstateModel(models.Model):
             self.garden_orientation = ""
 
     def action_cancel_property(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("Sold Property cannot be cancelled.")
-            record.state = "cancelled"
+        if self.state == "sold":
+            raise UserError("Sold Property cannot be cancelled.")
+        self.state = "cancelled"
 
     def action_set_sold_property(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled Property cannot be Sold")
-            record.state = "sold"
-
-    _sql_constraints = [
-        (
-            "check_expected_price",
-            "CHECK(expected_price > 0)",
-            "Expected price must be strictly positive.",
-        ),
-        (
-            "check_selling_price",
-            "CHECK(selling_price >= 0 or state!='sold')",
-            "Selling Price must be Positive",
-        ),
-    ]
+        if self.state == "cancelled":
+            raise UserError("Cancelled Property cannot be Sold")
+        self.state = "sold"
 
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
@@ -121,3 +119,9 @@ class EstateModel(models.Model):
                 raise ValidationError(
                     "Selling Price cannot be lower than 90% of expected price"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(f"Cannot delete property in state {record.state}.")
