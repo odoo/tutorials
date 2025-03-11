@@ -16,12 +16,11 @@ class EstatePropertyOffer(models.Model):
             ('accepted', "Accepted"),
             ('refused', "Refused")
         ],
-        copy=False
+        copy=False,
+        tracking=True
     )
-    amount = fields.Float(string="Offer Amount")
     partner_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
-    salesperson_id = fields.Many2one('res.partner', string="Salesperson")
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute='_compute_date_deadline', inverse='_inverse_date_deadline')
     property_type_id = fields.Many2one(
@@ -35,18 +34,15 @@ class EstatePropertyOffer(models.Model):
     ]
 
     @api.model_create_multi
-    def create(self, vals):
-        result = super(EstatePropertyOffer, self).create(vals)
+    def create(self, vals_list):
+        result = super(EstatePropertyOffer, self).create(vals_list)
         # Ensure the offer amount is higher than existing offers
-        for offer in result:
+        for offer, vals in zip(result, vals_list):
             property_id = offer.property_id.id
-            offer_amount = offer.amount
-            existing_offers = self.env['estate.property.offer'].search([('property_id', '=', property_id)])
             if offer.property_id.state == 'new':
                offer.property_id.state = 'offer_received'
-            for existing_offer in existing_offers:
-                if existing_offer.amount > offer_amount:
-                    raise UserError(f"Offer amount must be higher than the existing offer of {existing_offer.amount}.")
+            elif offer.property_id.best_price > vals.get('price'):
+                    raise UserError(f"Offer amount must be higher than the existing offer of {offer.property_id.best_price}.")
         return result
 
     @api.depends('create_date', 'validity')

@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from odoo import api, exceptions, fields, models
 
 
@@ -59,9 +61,13 @@ class EstateProperty(models.Model):
             ('auction_end_time', '<=', fields.Datetime.now()),
             ('state', '=', 'offer_received')
         ])
-        for property in properties:  
-          property.stage = 'sold'
-          property.offer_ids
+        for property in properties: 
+          if property.highest_bidder:
+              highest_offer = property.offer_ids.filtered(lambda o: o.partner_id == property.highest_bidder)[0] 
+              property.stage = 'sold'
+              highest_offer.action_accept()
+          else:
+              property.stage = 'template'
 
     def action_open_invoices(self):
       """Open related invoices."""

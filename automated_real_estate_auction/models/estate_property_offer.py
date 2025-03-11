@@ -21,9 +21,8 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         res = super(EstatePropertyOffer, self).action_accept()
         for offer in self:
-            if offer.property_id.sell_type == 'auction' and offer.property_id.stage in ['template', 'sold']:
+            if offer.property_id.sell_type == 'auction' and offer.property_id.stage in ['auction']:
                 raise exceptions.UserError("Property cannot be sold or accepted during the auction process.")
-
             offer.property_id.update({
                 'stage': 'template'
             })
@@ -34,12 +33,12 @@ class EstatePropertyOffer(models.Model):
                 message_type="comment",
                 subtype_xmlid="mail.mt_comment"
             )
-            other_offers = self.search([
+            offers_rejected = self.search([
                 ('property_id', '=', offer.property_id.id),
-                ('id', '!=', offer.id)
+                ('status', '=', 'refused')
             ])
             #Notify rejected bidders
-            for rejected_offer in other_offers:
+            for rejected_offer in offers_rejected:
                 rejected_offer.partner_id.message_post(
                     body=f"Unfortunately, your offer of {rejected_offer.price} for {rejected_offer.property_id.name} was not accepted.",
                     subject="Your Offer Was Not Accepted",
