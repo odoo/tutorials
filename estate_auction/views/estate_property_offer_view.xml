@@ -6,7 +6,7 @@
         <field name="model">estate.property.offer</field>
         <field name="inherit_id" ref="estate.estate_property_offer_view_list" />
         <field name="arch" type="xml">
-             <xpath expr="//button[@name='action_accept']" position="replace">
+            <xpath expr="//button[@name='action_accept']" position="replace">
                 <button name="action_accept" type="object" string="Accept" 
                     class="fa-check" invisible="(status in ['accepted','refused']) or (is_auction_available == True)"/>       
             </xpath>

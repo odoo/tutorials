@@ -17,7 +17,6 @@
     <template id="inherit_estate_property_detail_template"
         inherit_id="estate.estate_property_detail_template">
         <xpath expr="//ul[@class='list-unstyled']" position="after">
-           
             <div class="alert alert-info col-md-10 m-3" t-if="property_details.auction_end_time">
                     <strong t-if="property_details.state not in ['offer_accepted', 'sold']">Auction Ends In:</strong>
                     <div t-att-data-auction_end_time="property_details.auction_end_time" class="js_auction_timer"></div>

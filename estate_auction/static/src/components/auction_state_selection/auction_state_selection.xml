@@ -51,7 +51,6 @@
                 </button>
             </t>
         </xpath>
-
         <!-- Normal dropdown mode toggle button (displayed on the card/record by default) -->
         <xpath expr="//Dropdown/button/div" position="replace">
             <div t-if="isView(['kanban', 'list']) or this.env.isSmall" class="d-flex align-items-center" t-att-class="{'o_task_state_list_view': isView(['list'])}" t-att-title="label">

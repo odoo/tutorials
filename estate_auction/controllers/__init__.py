@@ -1,1 +1,1 @@
-from . import estate_website_inherit
+from . import main

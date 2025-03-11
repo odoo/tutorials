@@ -1,7 +1,7 @@
 {
   'name' : "Estate Auction",
   'version' : '1.0',
-  'depends' : ['base', 'estate'],
+  'depends' : ['estate'],
   'category' : 'RealEstate/Auction',
   'author' : "BHPR",
   'description' : "A real estate app with auction functionality.",
@@ -21,6 +21,5 @@
         ]
    },
    'license' : 'LGPL-3',
-   'auto_install' : True,
-   'application' : True,
+   'auto_install' : True
 }

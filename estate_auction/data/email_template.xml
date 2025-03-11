@@ -13,13 +13,7 @@
                             <td valign="top" style="font-size: 13px;">
                                 <div>
                                     <p>Dear <t t-out="object.buyer_id.name or 'Valued Customer'"/>,</p>
-
                                     <p>Congratulations! We are pleased to inform you that the property <strong><t t-out="object.name"/></strong> has been successfully sold to you.</p>
-
-                                    <p>Thank you for your trust in <strong><t t-out="object.company_id.name or 'Our Company'"/></strong>. If you have any further inquiries, feel free to contact us.</p>
-
-                                    <p>Best regards,<br/>
-                                    <strong><t t-out="object.company_id.name or 'The Real Estate Team'"/></strong></p>
                                 </div>
                             </td>
                         </tr>
@@ -42,13 +36,7 @@
                             <td valign="top" style="font-size: 13px;">
                                 <div>
                                     <p>Dear <t t-out="'Valued Customer'"/>,</p>
-
                                     <p>Sorry!! We are not pleased to inform you that the property <strong><t t-out="object.name"/></strong> has not been sold to you.</p>
-
-                                    <p>Thank you for your trust in <strong><t t-out="object.company_id.name or 'Our Company'"/></strong>. If you have any further inquiries, feel free to contact us.</p>
-
-                                    <p>Best regards,<br/>
-                                    <strong><t t-out="object.company_id.name or 'The Real Estate Team'"/></strong></p>
                                 </div>
                             </td>
                         </tr>
