@@ -5,7 +5,7 @@ from odoo import models, fields, api
 
 
 class StockQaunt(models.Model):
-    _inherit="stock.qaunt"
+    _inherit="stock.quant"
 
     quantity_mtr = fields.Float(
         string="Quantity (MTR)",
@@ -23,5 +23,6 @@ class StockQaunt(models.Model):
         for quant in self:
             wt_per_mt = quant.product_id.wt_per_mt or 1 
             wt_per_pc = quant.product_id.wt_per_pc or 1
+            print(wt_per_mt,wt_per_pc)
             quant.quantity_mtr = quant.inventory_quantity_auto_apply / wt_per_mt
             quant.quantity_pcs = quant.inventory_quantity_auto_apply / wt_per_pc

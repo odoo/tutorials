@@ -14,6 +14,8 @@
         'views/product_template_form_view.xml',
         'views/sale_order_line_view.xml',
         'views/view_picking_form.xml',
+        'views/report_stockinventory.xml',
+        'views/view_mrp_production_form.xml',
     ],
 }
 

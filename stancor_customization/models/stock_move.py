@@ -10,7 +10,6 @@ class StockMove(models.Model):
     s_quantity = fields.Float(
         string="S. Quantity",
         compute="_compute_s_quantity",
-        # related="sale_line_id.s_quantity",
         store=True
     )
     s_unit = fields.Selection(
