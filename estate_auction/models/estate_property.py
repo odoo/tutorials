@@ -120,7 +120,8 @@ class EstateProperty(models.Model):
 
         for property in auction_properties:
             if property.offer_ids:
-                property.highest_offer.action_accept()
+                highest_offer = property.offer_ids.filtered(lambda offer: offer.price == property.highest_offer)
+                highest_offer.action_accept()
 
                 property.write({
                     'auction_stage': 'done'
