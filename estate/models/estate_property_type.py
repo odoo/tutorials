@@ -1,5 +1,6 @@
 from odoo import fields,models # type: ignore
 
+
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "estate property type"
@@ -18,13 +19,3 @@ class EstatePropertyType(models.Model):
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
-
-    def action_view_offers(self):
-        return {
-            'name': 'Offers',
-            'type': 'ir.actions.act_window',
-            'res_model': 'estate.property.offer',
-            'view_mode': 'list,form',
-            'domain': [('property_id.property_type_id', '=', self.id)],
-            'context': {'default_property_id.property_type_id': self.id},
-        }        

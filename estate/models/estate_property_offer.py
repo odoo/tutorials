@@ -1,6 +1,6 @@
 # type: ignore
 from datetime import timedelta
-from odoo import api,fields,models 
+from odoo import api,exceptions,fields,models 
 from odoo.exceptions import UserError 
 
 
@@ -47,7 +47,6 @@ class EstatePropertyOffer(models.Model):
 
     #logic for offer accepted or refused
     def action_accept_offer(self):
-        """Accept an offer and update the property."""
         for record in self:
             if record.property_id.selling_price:
                 raise UserError("This property already has an accepted offer!")
@@ -57,9 +56,22 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.property_id.status = "offer_accepted"
         return True
-
+    
+    #Refuse an offer.
     def action_refuse_offer(self):
-        """Refuse an offer."""
         for record in self:
             record.status = "refused"
         return True
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals.get('property_id'))
+            if property:
+                property.status = 'offer_received'
+
+            # Logic for the creation greater offer than previous
+            existing_offers = property.mapped('offer_ids.price')
+            if existing_offers and vals['price'] < max(existing_offers):
+                raise exceptions.UserError("You cannot create an offer with a lower price than an existing offer.")
+        return super().create(vals_list)

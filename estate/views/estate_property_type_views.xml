@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    
+    <!-- This is the action for stat button-->
+    <record id="action_property_type_offers" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_id.property_type_id', '=', active_id)]</field>
+        <field name="context">{'default_property_id.property_type_id': active_id}</field>
+    </record>
+
     <!-- This is the action for Property Type -->
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
@@ -15,9 +25,9 @@
             <form string="Property Type">
                 <sheet>
                     <!-- Stat Button Section -->
-                    <div class="oe_button_box" name="button_box">
-                        <button name="action_view_offers"
-                            type="object"
+                     <div class="oe_button_box" name="button_box">
+                        <button name="%(action_property_type_offers)d"
+                            type="action"
                             icon="fa-money"
                             string="Offers"
                             class="oe_stat_button">

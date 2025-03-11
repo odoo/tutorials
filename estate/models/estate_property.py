@@ -1,5 +1,5 @@
 # type: ignore
-from odoo import api,fields, models  
+from odoo import api,exceptions,fields, models  
 from datetime import date, timedelta
 from odoo.exceptions import UserError,ValidationError 
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -112,19 +112,17 @@ class EstateProperty(models.Model):
     
     #logic for sold and cancel
     def action_set_sold(self):
-        """Mark the property as Sold."""
-        for record in self:
-            if record.status == "cancelled":
-                raise UserError("A cancelled property cannot be sold!")
-            record.status = "sold"
+        """Mark the property as Sold.""" 
+        if self.status == "cancelled":
+            raise UserError("A cancelled property cannot be sold!")
+        self.status = "sold"
         return True
 
     def action_set_cancelled(self):
         """Mark the property as Cancelled."""
-        for record in self:
-            if record.status == "sold":
-                raise UserError("A sold property cannot be cancelled!")
-            record.status = "cancelled"
+        if self.status == "sold":
+            raise UserError("A sold property cannot be cancelled!")
+        self.status = "cancelled"
         return True
     
     #python constrains for advanced checks
@@ -136,3 +134,10 @@ class EstateProperty(models.Model):
                 min_acceptable_price = record.expected_price * 0.9
                 if float_compare(record.selling_price, min_acceptable_price, precision_digits=2) == -1:
                     raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+
+    #logic for ondelete any property
+    @api.ondelete(at_uninstall=False)
+    def _check_state_on_delete(self):
+        for property in self:
+            if property.status not in ['new','cancelled']:
+                raise exceptions.UserError("You can only delete properties that are in 'New' or 'Canceled' state.")
