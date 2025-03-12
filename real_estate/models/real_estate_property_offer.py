@@ -1,6 +1,7 @@
 from odoo import fields, models, api, exceptions
 from dateutil.relativedelta import relativedelta
 from datetime import date
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class RealEstatePropertyOffer(models.Model):
     _name = 'real.estate.property.offer'
@@ -52,3 +53,14 @@ class RealEstatePropertyOffer(models.Model):
     def action_property_offer_reject(self):
         self.status = 'refused'
         return
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['real.estate.property'].browse(vals['property_id'])
+            if not float_is_zero(property_id.best_price, 2):
+                if float_compare(property_id.best_price, vals['price'], 2) == 1:
+                    raise exceptions.UserError(f"Offer must be higher than {property_id.best_price:.2f}")
+            if property_id.status == 'new':
+                property_id.status = 'offer_received'
+            return super().create(vals)

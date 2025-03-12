@@ -111,9 +111,7 @@ class RealEstate(models.Model):
                 if(float_compare((record.expected_price * 0.9), (record.selling_price), 2) == 1):
                     raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
-    @api.constrains('offer_ids')
-    def _onchange_property_status_to_offer_received(self):
-        if self.offer_ids:
-            if self.status == 'new':
-                self.status = 'offer_received'
-        return
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_cancel_new(self):
+        if any(record.status in ('offer_received', 'offer_accepted', 'sold') for record in self):
+            raise exceptions.UserError("Only new and cancelled properties can be deleted.")
