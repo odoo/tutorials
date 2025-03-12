@@ -22,16 +22,14 @@
             <xpath expr="//button[@name='action_cancel']" position="before">
                 <button name="start_property_auction" type="object" string="Start Auction" class="btn-primary" invisible="state == 'sold'"/>
             </xpath>
-            <xpath expr="//sheet//field[@name='name']" position="after">
+            <xpath expr="//sheet/h1" position="after">
                 <div class="d-flex align-items-center">
                     <field name="sell_type" widget="radio" options="{'horizontal': true}"/>
                 </div>
             </xpath>
-            <xpath expr="//sheet//field[@name='image_1920']" position="before">
-                <div class="oe_title pe-0">
-                    <div class="o_state_container" invisible="sell_type != 'auction'">
-                        <field name="stage" widget="property_stage_selection" class="o_task_state_widget"/>
-                    </div>
+            <xpath expr="//sheet/h1" position="before">
+                <div class="d-flex justify-content-between align-items-center w-100" invisible="sell_type != 'auction'">
+                    <field name="stage" widget="property_stage_selection" class="o_task_state_widget"/>
                 </div>
             </xpath>
             <xpath expr="//notebook/page[1]/div/group" position="after">

@@ -7,7 +7,7 @@
                 <!-- Countdown Timer -->
                 <h4>Auction Ends In:</h4>
                 <div id="remaining_auction_time" class="auction-timer">Loading...</div>
-                <div class="col-md-6">
+                <div class="col-md-6" t-if="property.auction_end_time and property.stage == 'auction'">
                     <a t-att-href="'/auction/property/%d' % property.id" class="btn btn-primary">
                         <i class="fa fa-gavel"></i> Create Offer
                     </a>
@@ -70,7 +70,7 @@
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Sell Type:</label>
                     <select name="sell_type" class="form-select">
-                        <option value="">All</option>
+                        <option value="all" t-att-selected="request.httprequest.args.get('sell_type') == 'all'">All</option>
                         <option value="auction" t-att-selected="request.httprequest.args.get('sell_type') == 'auction'">
                           Auction
                         </option>
