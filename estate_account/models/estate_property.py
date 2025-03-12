@@ -7,14 +7,8 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self):
+        result = super().action_set_sold()
         for property in self:
-            if property.state == "cancelled":
-                raise UserError("You cannot mark a cancelled property as sold.")
-            if property.state != "offer_accepted":
-                raise UserError(
-                    "Property must be in 'Offer Accepted' state before selling."
-                )
-
             journal = self.env["account.journal"].search(
                 [("type", "=", "sale")], limit=1
             )
@@ -26,6 +20,13 @@ class EstateProperty(models.Model):
                 "move_type": "out_invoice",
                 "journal_id": journal.id,
                 "invoice_line_ids": [
+                    Command.create(
+                        {
+                            "name": "Property",
+                            "quantity": 1,
+                            "price_unit": property.selling_price,
+                        }
+                    ),
                     Command.create(
                         {
                             "name": "Service Fee (6%)",
@@ -44,5 +45,4 @@ class EstateProperty(models.Model):
             }
 
             invoice = self.env["account.move"].create(invoice_vals)
-            property.state = "sold"
-            return invoice
+            return result

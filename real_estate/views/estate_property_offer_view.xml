@@ -18,7 +18,6 @@
                     invisible="status in ['accepted','refused']"/>
                 <field name="validity"/>
                 <field name="deadline"/>
-                <!-- <field name="status" string="Status"/> -->
             </list>
         </field>
     </record>

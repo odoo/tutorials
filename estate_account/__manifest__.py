@@ -2,11 +2,9 @@
 {
     "name": "Estate Account",
     "description": "Link module between account and real estate module.",
-    "depends": ["real_estate", "account"],
-    "data": [
-        "views/estate_account_invoice_views.xml",
-        "views/estate_account_menu.xml",
-    ],
+    "depends": ["base","real_estate", "account"],
+    "data": [],
     "version": "1.0",
+    "auto_install":True,
     "license": "LGPL-3",
 }

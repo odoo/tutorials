@@ -104,7 +104,7 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.depends("living_area", "garden", "garden_area")
+    @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -115,7 +115,6 @@ class EstateProperty(models.Model):
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     def action_set_sold(self):
-        # for record in self:
         if self.state == "cancelled":
             raise UserError("You cannot mark a cancelled property as sold.")
         self.state = "sold"
@@ -123,7 +122,6 @@ class EstateProperty(models.Model):
         return True
 
     def action_set_cancel(self):
-        # for record in self:
         if self.state == "sold":
             raise UserError("You cannot mark a sold property as cancelled.")
         self.state = "cancelled"
