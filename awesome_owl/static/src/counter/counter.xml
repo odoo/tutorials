@@ -1,0 +1,6 @@
+<t t-name="awesome_owl.counter">
+    <div class="m-2 p-2 border d-inline-block">
+        <span class="me-2">Counter: <t t-esc="state.value"/></span>
+        <button class="btn btn-primary m-2 p-2 border d-inline-block" t-on-click="increment">Increment</button>
+    </div>
+</t>
