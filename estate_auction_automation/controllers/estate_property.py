@@ -7,42 +7,22 @@ class EstatePropertyController(EstatePropertyController):
     
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
     def list_properties(self, page=1, **kwargs):
-        min_price = kwargs.get('min_price')
-        max_price = kwargs.get('max_price')
-        property_type = kwargs.get('property_type')
-        property_sell_type = kwargs.get('property_sell_type')
+        response = super().list_properties(page, **kwargs)
 
-        domain = ['|', ('stage', '=', 'new'), ('stage', '=', 'offer_received')]
+        domain = response.qcontext.get('domain', [])
+        
+        if 'property_sell_type' in kwargs:
+            domain.append(('property_sell_type', '=', kwargs['property_sell_type']))
 
-        if min_price:
-            domain.append(('expected_price', '>=', float(min_price)))
-        if max_price:
-            domain.append(('expected_price', '<=', float(max_price)))
-        if property_type:
-            domain.append(('property_type_id.name', '=', property_type))
-        if property_sell_type:
-            domain.append(('property_sell_type', '=', property_sell_type))
-        
-        properties_per_page = 3
-        total_properties = request.env['estate.property'].sudo().search_count(domain)
-        
         properties = request.env['estate.property'].sudo().search(
-            domain, limit=properties_per_page, offset=(page - 1) * properties_per_page
+            domain, limit=3, offset=(page - 1) * 3
         )
 
-        filter_query = {key: val or '' for key, val in kwargs.items()}
-        pager = request.website.pager(
-            url='/properties',
-            url_args=filter_query,
-            total=total_properties,
-            page=page,
-            step=properties_per_page
-        )
-
-        return request.render('estate.website_property_listing_template', {
+        response.qcontext.update({
             'properties': properties,
-            'pager': pager,
         })
+
+        return response
 
     @http.route('/make-offer/<int:property_id>', type='http', auth="user", website=True)
     def make_offer(self, property_id, **kwargs):

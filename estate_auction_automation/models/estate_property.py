@@ -10,6 +10,11 @@ class Estateproperty(models.Model):
             ('regular', "Regular")
         ], string="Selling Type", copy=False, default='regular')
     auction_end_time = fields.Datetime(string="End Date")
+    highest_bidder = fields.Many2one(
+        related='highest_offer.partner_id',
+        string="Highest Bidder",
+        copy=False,
+        readonly=True)
     state = fields.Selection([
         ('01_template', "Template"),
         ('02_auction', "Auction"),
@@ -22,10 +27,10 @@ class Estateproperty(models.Model):
     invoice_ids = fields.One2many(comodel_name='account.move', inverse_name='property_id', string="Invoices")
 
     # compute fields
-    highest_bidder = fields.Many2one(
-        comodel_name='res.partner',
-        compute='_compute_highest_bidder',
-        string="Highest Bidder",
+    highest_offer = fields.One2many(
+        comodel_name='estate.property.offer',
+        compute='_compute_highest_offer',
+        string="Highest Offer",
         copy=False,
         readonly=True)
     invoice_count = fields.Integer(string="Total Invoices", compute='_compute_invoice_count')
@@ -35,10 +40,9 @@ class Estateproperty(models.Model):
     # -------------------------------------------------------------------------
 
     @api.depends('offer_ids.price')
-    def _compute_highest_bidder(self):
+    def _compute_highest_offer(self):
         for property in self:
-            highest_offer = max(property.offer_ids, key=lambda offer: offer.price, default=None)
-            property.highest_bidder = highest_offer.partner_id if highest_offer else False
+            property.highest_offer = max(property.offer_ids, key=lambda offer: offer.price, default=None)
 
     @api.depends('invoice_ids')
     def _compute_invoice_count(self):
@@ -83,12 +87,9 @@ class Estateproperty(models.Model):
         ])
 
         for property in properties:
-            highest_offer = property.offer_ids.sorted(key=lambda o: o.price, reverse=True)
 
-            if highest_offer:  # Ensure there is at least one offer
-                highest_offer = highest_offer[0]  # Get the highest bid
-                highest_offer.action_accept()
-
+            if property.highest_offer:  # Ensure there is at least one offer
+                property.highest_offer.action_accept()
                 property.state = '03_offer_accepted'
             else:
                 property.state = '01_template'
