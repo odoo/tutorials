@@ -10,7 +10,8 @@ class EstatePropertyOffer(models.Model):
 
     price = fields.Float(string="Offer Price", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
-    validity_date = fields.Date(string="Validity Date", compute="_compute_validity_date", inverse="_inverse_validity_date", store=True)
+    validity_date = fields.Date(string="Validity Date", compute="_compute_validity_date", inverse="_inverse_validity_date", store=True) # used store because assuming we have filter of validity date then it will directly take from db, otherwise it have to calculate each time.
+    # store = true, not needed when it uses for only display, (not for sorting or searching) at that time we can ignore it.
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one(
     'estate.property', 

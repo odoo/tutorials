@@ -108,13 +108,15 @@ class EstateProperty(models.Model):
         # Cancels the property and prevents selling it later.        
         if self.state == 'sold':
             raise UserError("A sold property cannot be canceled.")
-            self.state = 'cancelled'
+        self.state = 'cancelled'
+        return True
 
     def action_sold(self):
         # Marks the property as sold and prevents canceling it later.        
         if self.state == 'cancelled':
             raise UserError("Canceled properties cannot be sold.")
-            self.state = 'sold'
+        self.state = 'sold'
+        return True
     
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
