@@ -3,6 +3,9 @@ import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component{
     static template = "awesome_dashboard.PieChart"
+    static props = {
+        data: Object 
+    }
 
     setup(){
         this.canvasRef = useRef("canvasRef")
@@ -27,9 +30,5 @@ export class PieChart extends Component{
                 ]
             }
         });
-    }
-
-    static props = {
-        data: Object
     }
 }
