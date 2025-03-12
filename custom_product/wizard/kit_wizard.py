@@ -1,64 +1,133 @@
-from odoo import fields,models,api
+from odoo import fields, models, api, Command
+from odoo.exceptions import UserError
+
 
 class KitWizard(models.TransientModel):
-    _name="kit.wizard"
-    _description="Kit Wizard"
+    _name = "kit.wizard"
+    _description = "Kit Wizard"
 
-    product_id = fields.Many2one('product.product',string="Kit Product",required=True)  # refers to main product , (its product.product)
-    component_ids = fields.One2many("kit.wizard.line", "wizard_id", string="Sub Products") 
-    # one product has many sub products so one2many, this componet refer/contains sub-products for perticular parent product.
+    sale_order_line_id = fields.Many2one(
+        "sale.order.line", string="Sale Order Line", required=True
+    )
+    product_id = fields.Many2one("product.product", string="Kit Product", required=True)
+    component_ids = fields.One2many(
+        "kit.wizard.line", "wizard_id", string="Sub Products"
+    )
 
     @api.model
-    def default_get(self,fields):
-        res = super().default_get(fields)
-        context = self.env.context
-
-        sale_order_line_id = context.get("active_id") # gives you just int. id of order line from which wizard btn is selected
-
+    def default_get(self, fields_list):
+        """Pre-fill the wizard with existing sub-products or default kit components."""
+        res = super().default_get(fields_list)
+        sale_order_line_id = self.env.context.get("default_sale_order_line_id")
         if not sale_order_line_id:
             return res
-        
-        sale_order_line = self.env['sale.order.line'].browse(sale_order_line_id)  # gives you record-set releted to that order line. 
 
-        """
-        ex. sale_order_line_id gives you record id=25,
-        at 25 lets say you have record
-        product_id:10,
-        name:lapto,
-        ...
-        you browse gives you that.
-        """
+        sale_order_line = self.env["sale.order.line"].browse(sale_order_line_id)
+        components = []
 
-        if sale_order_line.product_id.product_tmpl_id.is_kit:
-            components = []
-            for kit_product in sale_order_line.product_id.product_tmpl_id.kit_product_ids:
-                """
-                # here product_id will give you id of product.product , and for accesing the sub product you need many2many field named kit_product_ids determine
-                in product.template , so for that we'll access the product_tmpl_id and from that we will go thorugh all sub products.
-                """
-                components.append((0,0 ,{
-                    "product_id" : kit_product.id,  #product.product id->subproduct_id
-                    "quantity" : 1.0,
-                    "price" : kit_product.lst_price,
-                }))
-            
-            res.update({
-                "product_id":sale_order_line.product_id.id,  # initilize the main product with which button is selected and wizard is opened (in ex.Floor painitng)
-                "component_ids":components              # determine order lines of wizard
-            })
+        # Load existing sub-products if available
+        if sale_order_line.kit_component_ids:
+            for component in sale_order_line.kit_component_ids:
+                components.append(
+                    Command.create(
+                        {
+                            "product_id": component.product_id.id,
+                            "quantity": component.product_uom_qty,
+                            "price": component.price_unit,
+                            "order_line_id": component.id,  # Store existing line ID
+                        }
+                    )
+                )
+        # Otherwise, generate from product template
+        elif sale_order_line.product_id.is_kit:
+            for kit_product in sale_order_line.product_id.kit_product_ids:
+                components.append(
+                    Command.create(
+                        {
+                            "product_id": kit_product.id,
+                            "quantity": 1.0,
+                            "price": kit_product.lst_price,
+                        }
+                    )
+                )
+                print(components)
+
+        res.update(
+            {
+                "product_id": sale_order_line.product_id.id,  # Main kit product
+                "component_ids": components,  # Load sub-products using Command.create
+            }
+        )
         return res
 
-    def action_confirm(self):   
-        print("Kit Wizard Confimed")
+    def action_confirm(self):
+        """Confirm the selection of sub-products and update sale order lines."""
+        sale_order_line_id = self.sale_order_line_id.id
+
+        if not sale_order_line_id:
+            return {"type": "ir.actions.act_window_close"}
+
+        sale_order_line = self.env["sale.order.line"].browse(sale_order_line_id)
+        sale_order = sale_order_line.order_id
+
+        existing_components = {
+            line.product_id.id: line for line in sale_order_line.kit_component_ids
+        }
+        updated_components = []
+
+        for sub_product in self.component_ids:
+            if sub_product.product_id.id in existing_components:
+                # Update existing component
+                updated_components.append(
+                    Command.update(
+                        existing_components[sub_product.product_id.id].id,
+                        {
+                            "product_uom_qty": sub_product.quantity,
+                            "price_unit": sub_product.price,
+                        },
+                    )
+                )
+            else:
+                # Add new component
+                updated_components.append(
+                    Command.create(
+                        {
+                            "product_id": sub_product.product_id.id,
+                            "price_unit": 0.0,
+                            "product_uom_qty": sub_product.quantity,
+                            "order_id": sale_order_line.order_id.id,
+                            "product_uom": sub_product.product_id.uom_id.id,
+                            "name": sub_product.product_id.name or "Kit Component",
+                            "parent_line_id": sale_order_line.id,  # Link to main kit line
+                        }
+                    )
+                )
+
+        if updated_components:
+            sale_order_line.write({"kit_component_ids": updated_components})
+
+        # Update kit price (sum of all sub-products)
+        kit_price = sum(sub.quantity * sub.price for sub in self.component_ids)
+        sale_order_line.write({"price_unit": kit_price})
+
+        return True
 
 
 class KitWizardLine(models.TransientModel):
-    _name="kit.wizard.line"
+    _name = "kit.wizard.line"
     _description = "Kit Wizard Line"
 
-    wizard_id = fields.Many2one("kit.wizard",string="Wizard",required=True,ondelete="cascade")
-
-    #-------------component_ids fields--------------------------------------------------------
-    product_id = fields.Many2one("product.product",string = "Component" ) 
-    quantity = fields.Float(string="Quantity",default=1.0)
+    wizard_id = fields.Many2one(
+        "kit.wizard", string="Wizard", required=True, ondelete="cascade"
+    )
+    product_id = fields.Many2one("product.product", required=True, string="Component")
+    quantity = fields.Float(string="Quantity", default=1.0)
     price = fields.Float(string="Price")
+    order_line_id = fields.Many2one("sale.order.line", string="Existing Order Line")
+
+    @api.model_create_multi
+    def create(self, vals):
+        print("INSIDE OVERRIDE CREATE")
+        print(self.wizard_id)
+        print(vals)
+        return super().create(vals)
