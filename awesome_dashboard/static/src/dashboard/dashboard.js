@@ -5,9 +5,9 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
-import { rpc } from "@web/core/network/rpc"
 import { DashboardItem } from "./dashboarditem/dashboarditem";
 import { PieChart } from "./pie_chart/pie_chart";
+
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, DashboardItem, PieChart }
@@ -16,9 +16,7 @@ class AwesomeDashboard extends Component {
         this.statistic_service = useService("awesome_dashboard.statistics");
         this.result = useState({data: null});
         this.action = useService("action");
-        onWillStart(async()=>{
-            this.result.data = await this.statistic_service.loadStatistics();
-        })
+        this.result.data = this.statistic_service.stats;
     }
 
     opoenCustomers(){
@@ -36,4 +34,4 @@ class AwesomeDashboard extends Component {
     }
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("awesome_dashboard.dashboard", AwesomeDashboard);
