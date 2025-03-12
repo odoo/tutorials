@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_view_form" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.event.sale</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='order_lines']//list//field[@name='name']" position="after">
+                <button name="%(action_modular_type_wizard)d" 
+                     title="Set Modular Type"
+                    type="action" class="oe_highlight" icon="fa-flask"
+                    invisible = "not has_modular_types" />
+            </xpath>
+  
+        </field>
+    </record>
+</odoo>

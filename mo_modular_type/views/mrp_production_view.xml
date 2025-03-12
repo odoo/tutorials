@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="mrp_production_form_view_modular_type" model="ir.ui.view">
+        <field name="name">mrp.production.inherited.form.modular_type</field>
+        <field name="model">mrp.production</field>
+        <field name="priority">32</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='components']//field[@name='move_raw_ids']//list//field[@name='product_id']" position="after">
+                <field name="modular_type_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
