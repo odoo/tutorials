@@ -24,9 +24,10 @@ export const barcodeScannerService = {
             if (product) {
                 console.log("✅ Found Product - ID:", product.id, "Name:", product.name);
                 notification.add(`Product: ${product.name} (ID: ${product.id})`, { type: "success" });
+                console.log("activeKanbanRecords",activeKanbanRecords)
 
-                const kanbanRecord = activeKanbanRecords.get(product.id); // ✅ Get the right Kanban record
-
+                const kanbanRecord = activeKanbanRecords.get(product.id);
+                console.log(kanbanRecord)
                 if (kanbanRecord) {
                     console.log("🎯 Calling addProductFromBarcode() for Product ID:", product.id);
                     kanbanRecord.addProductFromBarcode();

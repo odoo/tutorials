@@ -16,9 +16,7 @@ patch(ProductCatalogKanbanRecord.prototype, {
         } else {
             console.warn("⚠️ Could not register Kanban Record. Missing product ID.");
         }
-
         // console.log(this.props.record.productCatalogData);
-
     },
 
     addProductFromBarcode(qty = 1) {

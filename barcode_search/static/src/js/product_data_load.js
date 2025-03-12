@@ -9,7 +9,7 @@ export const productDataLoadService = {
 
         try {
             window.productData = await orm.call("product.product", "search_read", [[], ["id", "name", "barcode"]]);
-            console.log("✅ Catalog Data Loaded:", window.productData);
+            console.log("✅ Product Data Loaded:", window.productData);
         } catch (error) {
             console.error("❌ Error loading catalog data:", error);
         }
