@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_bill_of_entry_wizard" model="ir.ui.view">
+        <field name="name">bill.of.entry.wizard.form</field>
+        <field name="model">bill.of.entry.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bill of Entry">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="journal_entry_no" readonly="1"/>
+                            <field name="journal_entry_date" readonly="1"/>
+                            <field name="journal_id" readonly="1"/>
+                            <field name="custom_currency_rate"/>
+                            <field name="company_currency_id" readonly="1" column_invisible="True"/>
+                        </group>
+                        <group>
+                            <field name="reference" readonly="1"/>
+                            <field name="bill_of_entry_no"/>
+                            <field name="bill_of_entry_date"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Bill of Entry Details">
+                            <field name="line_ids">
+                                <list editable="top" create="0">
+                                    <field name="product_id" readonly="1" force_save="1"/>
+                                    <field name="quantity" readonly="1" column_invisible="True"/>
+                                    <field name="price_unit_foreign" column_invisible="True"/>
+                                    <field name="assessable_value" readonly="1"/>
+                                    <field name="custom_duty"/>
+                                    <field name="taxable_amount" readonly="1"/>
+                                    <field name="tax_id" readonly="1"/>
+                                    <field name="tax_amount" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <footer>
+                        <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+                        <button string="Discard" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

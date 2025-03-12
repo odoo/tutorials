@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_vendor_bill_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.bill.of.entry</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <div class="oe_button_box" position="inside">
+                <button type="object" class="oe_stat_button" name="action_open_bill_of_entry_wizard" icon="fa-file-text" invisible="not show_bill_of_entry">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Bill of Entry</span>
+                    </div>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>
