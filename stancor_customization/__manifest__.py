@@ -7,8 +7,8 @@
     'author': "Odoo",
     'website': "https://www.odoo.com",
     'category': 'Product',
-    'version': '0.1',
-    'depends': ['sale_management', 'stock', 'account'],
+    'version': '1.0',
+    'depends': ['sale_management', 'stock', 'account', 'mrp'],
     'license': 'LGPL-3',
     'data': [
         'views/product_template_form_view.xml',
@@ -18,4 +18,3 @@
         'views/view_mrp_production_form.xml',
     ],
 }
-

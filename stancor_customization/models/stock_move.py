@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class StockMove(models.Model):
@@ -13,10 +13,6 @@ class StockMove(models.Model):
         store=True
     )
     s_unit = fields.Selection(
-        selection=[("kg", "Kg"),
-                   ("mtrs", "Mtrs."),
-                   ("pcs", "PCs."),],
-        string="S. Unit",
         related="sale_line_id.s_unit",
         store=True
     )
@@ -29,7 +25,6 @@ class StockMove(models.Model):
             if move.sale_line_id and move.sale_line_id.product_id:
                 wt_per_mt = move.sale_line_id.product_id.wt_per_mt or 1
                 wt_per_pc = move.sale_line_id.product_id.wt_per_pc or 1
-
                 if move.s_unit == 'mtrs':
                     move.s_quantity = move.quantity / wt_per_mt
                 elif move.s_unit == 'pcs':
@@ -49,9 +44,10 @@ class StockMove(models.Model):
 
     def _update_qty_delivered(self):
         for move in self.filtered(lambda m: m.state == 'done' and m.sale_line_id):
-            move.sale_line_id.qty_delivered += move.s_quantity
+            move.sale_line_id.qty_delivered 
 
     def _action_done(self, **kwargs):
         res = super()._action_done(**kwargs)
         self._update_qty_delivered()  
         return res
+    
