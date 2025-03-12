@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todolist">
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white text-center">
+                <h3 class="m-0">Todo List</h3>
+            </div>
+            <div class="card-body">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Add a new task..." aria-label="Todo" t-on-keyup="addTodo" t-ref="todoInput"/>
+                </div>
+                <div class="list-group">
+                    <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                        <div class="list-group-item">
+                            <TodoItem todo="todo" removeTodo="removeTodo"/>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
