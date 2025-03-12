@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>    
+    <template
+        id="product_price_inherit_one_time_sale"
+        inherit_id="website_sale.product_price">
+        <xpath expr="//div[@itemprop='offers']" position="attributes">
+            <attribute name="t-attf-class" add="w-75" separator=" "/>
+        </xpath>
+
+        <xpath expr="//select[@name='plan_id']" position="replace">
+            <t t-if="combination_info['accept_one_time_product'] and combination_info['subscription_pricing_select']">
+                <div class="d-flex flex-column gap-2">
+                    <div t-if="not combination_info['has_one_time_purchase']" class="card regular-delivery-purchase">
+                        <div class="card-body p-2">
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="delivery"
+                                    id="regular_delivery"
+                                    t-att-checked="not combination_info['has_one_time_purchase']"/>
+                                <label class="w-100 form-check-label" for="regular_delivery">
+                                    <div class="w-100 d-flex justify-content-between">
+                                        <span>With Regular Delivery</span>
+                                        <div class="d-flex flex-column align-items-end">
+                                            <div class="d-flex gap-2">
+                                                <span
+                                                    style="text-decoration: line-through; white-space: nowrap;" class="text-danger oe_sale_price ms-1 h5">
+                                                    <span>
+                                                        <t t-esc="combination_info['currency'].symbol"/>
+                                                        <t t-esc="combination_info['list_price']"/>
+                                                    </span>
+                                                </span>
+                                                <span class="oe_price ms-1 h4" style="white-space: nowrap;">
+                                                    <t t-esc="combination_info['currency'].symbol"/>
+                                                    <span class="selected_price"/>
+                                                </span>
+                                            </div>
+                                            <div class="w-100 d-flex justify-content-end">
+                                                <span class="discount text-success border border-success px-2 py-0 rounded"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="w-100 d-flex justify-content-start align-items-center gap-2">
+                                        <span>Delivery every:</span>
+                                        <select
+                                            name="plan_id"
+                                            class="w-auto form-select plan_select fs-5"
+                                            required="1"
+                                            t-nocache="1">
+                                            <t t-foreach="combination_info['pricings']" t-as="pricing">
+                                                <option
+                                                    t-if="pricing['plan_id']"
+                                                    t-att-value="pricing['plan_id']"
+                                                    t-att-disabled="not pricing['can_be_added']"
+                                                    t-att-data-selected-price="pricing['price_value']"
+                                                    t-att-data-discount="pricing['discount']"
+                                                    t-att-selected="pricing['plan_id'] == combination_info['subscription_default_pricing_plan_id']">
+                                                    <t t-esc="pricing['table_name']"/>
+                                                </option>
+                                            </t>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div t-else="">
+                        <p class="alert alert-warning">
+                            You cannot mix subscription plan with one time purchases in the same order.
+                        </p>
+                    </div>
+                    <div class="card one-time-purchase">
+                        <div class="card-body p-2">
+                            <div class="form-check">
+                                <input
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="delivery"
+                                    id="one_time_purchase"
+                                    t-att-checked="combination_info['has_one_time_purchase']"/>
+                                <label class="w-100 form-check-label" for="one_time_purchase">
+                                    <div class="w-100 d-flex justify-content-between">
+                                        <span>One-Time Purchase</span>
+                                        <span
+                                            class="one_time_purchase"
+                                            t-att-data-select-price="combination_info['list_price']">
+                                            <t t-esc="combination_info['currency'].symbol"/>
+                                            <t t-esc="combination_info['list_price']"/>
+                                        </span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+            <t t-elif="combination_info['subscription_pricing_select']">
+                <t t-if="not combination_info['has_one_time_purchase']">
+                    <select name="plan_id" class="form-select plan_select fs-5" required="1" t-nocache="1">
+                        <t t-foreach="combination_info['pricings']" t-as="pricing">
+                            <option
+                                t-att-value="pricing['plan_id']"
+                                t-att-disabled="not pricing['can_be_added']"
+                                t-att-selected="pricing['plan_id'] == combination_info['subscription_default_pricing_plan_id']">
+                                <t t-esc="pricing['price']"/>
+                            </option>
+                        </t>
+                    </select>
+                </t>
+                <t t-else="">
+                    <p class="alert alert-warning">
+                        You cannot mix subscription plan with one time purchases in the same order.
+                    </p>
+                </t>
+            </t>
+        </xpath>
+    </template>
+
+    <template
+        id="product_inherit_one_time_sale"
+        inherit_id="website_sale.product">
+        <xpath expr="//div/t/h5[1]" position="replace">
+            <t t-if="combination_info['product_type'] == 'consu'">
+                <div class="w-100 my-2">
+                    <h5>GOODS</h5>
+                </div>
+            </t>
+            <t t-else="">
+                <h5>Pricing</h5>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="pricing_table_inherit_one_time_sale" inherit_id="website_sale_subscription.pricing_table">
+        <xpath expr="//tr/td[3]" position="replace">
+            <t t-if="combination_info['product_type'] == 'consu'">
+                <td t-attf-class="w-25 text-muted pe-0 text-end {{hide_border_bottom_classes}}">
+                    <span t-if="pricing['discount']" class="text-success border border-success px-2 py-1 rounded">
+                        <t t-esc="pricing['discount']"/>
+                    </span>
+                </td>
+            </t>
+            <t t-else="">
+                <td t-attf-class="text-muted pe-0 text-end {{hide_border_bottom_classes}}"
+                    t-esc="pricing['to_minimum_billing_period']"/>
+            </t>
+        </xpath>
+    </template>
+</odoo>
