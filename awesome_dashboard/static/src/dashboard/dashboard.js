@@ -5,18 +5,23 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
-import { DashboardItem } from "./dashboarditem/dashboarditem";
-import { PieChart } from "./pie_chart/pie_chart";
+import { DashboardItem } from "./components/dashboarditem/dashboarditem";
+import { Settings } from "./settings/settings";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart }
+    static components = { Layout, DashboardItem }
 
     setup(){
         this.statistic_service = useService("awesome_dashboard.statistics");
         this.result = useState({data: null});
         this.action = useService("action");
         this.result.data = this.statistic_service.stats;
+        this.items = registry.category("awesome_dashboard").getAll();
+        this.state = useState({ showDialog: false });
+        this.dialog = useService("dialog");
+        const storedHiddenItems = JSON.parse(localStorage.getItem('hiddenDashboardItems')) || []
+        this.hiddenItems = useState(new Set(storedHiddenItems))
     }
 
     opoenCustomers(){
@@ -31,6 +36,19 @@ class AwesomeDashboard extends Component {
             res_model: 'crm.lead',
             views: [[false,'list'],[false,'form']]
         })
+    }
+
+    openSettings(){
+        this.dialog.add(Settings,{
+            onDone : (hiddenItems)=>{
+                this.hiddenItems.clear();
+                hiddenItems.forEach(id => this.hiddenItems.add(id));
+            }
+        });
+    }
+
+    get selectedItems(){
+        return Object.values(this.items.filter(item => !this.hiddenItems.has(item.id)))
     }
 }
 
