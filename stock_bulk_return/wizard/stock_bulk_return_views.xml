@@ -1,0 +1,63 @@
+<odoo>
+    <record id="stock_bulk_return_view_form" model="ir.ui.view">
+        <field name="name">stock.bulk.return.form</field>
+        <field name="model">stock.bulk.return</field>
+        <field name="arch" type="xml">
+            <form string="Bulk Return">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="picking_type_id" widget="many2one_barcode"/>
+                            <label for="partner_id" invisible="picking_type_id"/>
+                            <label for="partner_id" string="Customer" invisible="not picking_type_id or picking_type_code == 'outgoing'"/>
+                            <label for="partner_id" string="Vendor" invisible="not picking_type_id or picking_type_code == 'incoming'"/>
+                            <field name="partner_id" nolabel="1"/>
+                            <field name="location_src_id" widget="many2one_barcode" required="True" invisible="picking_type_code == 'incoming'"/>
+                            <field name="location_dest_id" widget="many2one_barcode" required="True" invisible="picking_type_code == 'outgoing'"/>
+                            <field name="date_order_after"/>
+                            <field name="date_picking_after"/>
+                        </group>
+                        <group class="border-start border-primary">
+                            <field name="_barcode_scanned" widget="barcode_handler" nolabel="1" class="fa fa-barcode"/>
+                            <span>Scan barcode to input:</span>
+                            <ul class="d-block">
+                                <li>Operation Type</li>
+                                <li>Delivery/Receipt</li>
+                                <li>Lot/Serial No.</li>
+                                <li>Product</li>
+                            </ul>
+                        </group>
+                    </group>
+                    <div invisible="not picking_type_id or not partner_id">
+                        <label for="bulk_return_line_ids" class="mt-2 fs-3"/>
+                        <field name="bulk_return_line_ids" nolabel="1">
+                            <list editable="bottom" decoration-warning="not move_id">
+                                <field name="product_id" domain="[('type', '=', 'consu')]"/>
+                                <field name="lot_id" domain="[('product_id', '=', product_id)]" required="product_tracking in ['lot', 'serial']"/>
+                                <field name="picking_id" string="Delivery" column_invisible="parent.picking_type_code == 'outgoing'" domain="[('state', '=', 'done'), ('partner_id', '=', parent.partner_id), ('date_done', '>=', parent.date_picking_after), ('picking_type_code', '=', 'outgoing')]"/>
+                                <field name="picking_id" string="Receipt" column_invisible="parent.picking_type_code == 'incoming'" domain="[('state', '=', 'done'), ('partner_id', '=', parent.partner_id), ('date_done', '>=', parent.date_picking_after), ('picking_type_code', '=', 'incoming')]"/>
+                                <field name="max_return_qty"/>
+                                <field name="return_qty" decoration-danger="max_return_qty and (return_qty &lt;= 0 or return_qty &gt; max_return_qty)"/>
+                                <field name="uom_id"/>
+                                <field name="sale_order_id" column_invisible="parent.picking_type_code == 'outgoing'"/>
+                                <field name="purchase_order_id" column_invisible="parent.picking_type_code == 'incoming'"/>
+                            </list>
+                        </field>
+                    </div>
+                </sheet>
+                <footer>
+                    <button string="Create Return" type="object" name="action_confirm" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_stock_bulk_return" model="ir.actions.act_window">
+        <field name="name">Bulk Return</field>
+        <field name="res_model">stock.bulk.return</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="stock_bulk_return_view_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>
