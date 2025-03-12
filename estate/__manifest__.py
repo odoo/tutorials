@@ -13,6 +13,7 @@
         "views/estate_property_tags_view.xml",
         "views/estate_menus.xml",
         "views/res_users_view.xml",
+        "data/estate.property.type.csv",
     ],
     "application": True,
     "license": "AGPL-3",

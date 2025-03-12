@@ -49,7 +49,6 @@ class EstateModel(models.Model):
         "res.users",
         string="SalesPerson",
         index=True,  # for index in database
-        tracking=True,  # changes to this field -> to be logged in chatter
         default=lambda self: self.env.user,
     )
 
