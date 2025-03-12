@@ -48,10 +48,10 @@ class estate_property(models.Model):
         for record in self:   
             record.best_offer = max(record.offer_ids.mapped('price'), default=0)
 
-    @api.onchange("best_offer")
-    def _onchange_best_offer(self):
-        if self.best_offer > 0:
-            self.status="offer_received"
+    # @api.onchange("best_offer")
+    # def _onchange_best_offer(self):
+    #     if self.best_offer > 0:
+    #         self.status="offer_received"    
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -84,3 +84,10 @@ class estate_property(models.Model):
             if self.selling_price != 0:
                 if float_utils.float_compare(self.selling_price,0.9*self.expected_price,precision_digits=2)<=0:
                     raise UserError("selling price must be grater than 90 percent of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_status_unsupported(self):
+        for record in self:
+            if record.status not in ['new', 'cancelled']:
+                raise UserError("You can't delete a property which is not in new or cancelled status.")
+        return super().unlink()

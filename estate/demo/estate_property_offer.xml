@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_offer_1" model="estate.property.offer">
-        <field name="price">450000</field>
+        <field name="price">400000</field>
         <field name="partner_id" ref="res_partner_10"/>
         <field name="property_id" ref="estate_property_data1"/>
         <field name="validity">10</field>
     </record>
 
     <record id="estate_offer_2" model="estate.property.offer">
-        <field name="price">400000</field>
+        <field name="price">450000</field>
         <field name="partner_id" ref="res_partner_11"/>
         <field name="property_id" ref="estate_property_data1"/>
         <field name="validity">7</field>
@@ -31,14 +31,14 @@
     </record>
 
     <record id="estate_offer_5" model="estate.property.offer">
-        <field name="price">690000</field>
+        <field name="price">650000</field>
         <field name="partner_id" ref="res_partner_14"/>
         <field name="property_id" ref="estate_property_data4"/>
         <field name="validity">10</field>
     </record>
 
     <record id="estate_offer_6" model="estate.property.offer">
-        <field name="price">650000</field>
+        <field name="price">690000</field>
         <field name="partner_id" ref="res_partner_15"/>
         <field name="property_id" ref="estate_property_data4"/>
         <field name="validity">7</field>
