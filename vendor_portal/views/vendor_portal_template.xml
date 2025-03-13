@@ -111,10 +111,45 @@
                                         <t t-else="">
                                             <p>No vendor offers for this product.</p>
                                         </t>
-                                        <div class="my-auto">
-                                            <button name="action_name" type="object" class="btn btn-primary">
-                                                Create Purchase
-                                            </button>
+                                        <button type="button" class="btn btn-primary mt-auto" data-bs-toggle="modal" t-att-data-bs-target="'#purchaseModal-%s' % p.id">
+                                            Create Purchase
+                                        </button>
+                                        <div class="modal fade" t-att-id="'purchaseModal-%s' % p.id" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalLabel">Create Purchase Order</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="post" action="/create-purchase-order">
+                                                            <div class="mb-3">
+                                                                <strong>
+                                                                    <label class="form-label">Product:</label>
+                                                                </strong>
+                                                                <t t-esc="p.name"/>
+                                                            </div>
+                                                            <input type="hidden" name="product_id" t-att-value="p.id"/>
+                                                            <div class="mb-3">
+                                                                <strong>
+                                                                    <label class="form-label">Select Vendor:</label>
+                                                                </strong>
+                                                                <select class="form-control" name="vendor_id">
+                                                                    <t t-foreach="p.seller_ids" t-as="seller">
+                                                                        <option t-att-value="seller.partner_id.id">
+                                                                            <t t-esc="seller.partner_id.name"/>
+                                                                        </option>
+                                                                    </t>
+                                                                </select>
+                                                            </div>
+                                                            <div class="d-flex align-items-center justify-content-end gap-3">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary">Submit Purchase Order</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
