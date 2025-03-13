@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template id="multi_Warehouse_stock.QtyAtDateExtension" xml:space="preserve">
+
+    <t t-name="multi_Warehouse_stock.QtyAtDatePopover" t-inherit="sale_stock.QtyAtDatePopover" t-inherit-mode="extension">
+        <xpath expr="//div[@class='p-2']" position="attributes">
+            <attribute name="class">p-3 border rounded bg-white shadow</attribute>
+        </xpath>
+
+        <xpath expr="//h6" position="replace">
+            <h6 class="mb-2 text-muted">Availability</h6>
+        </xpath>
+
+        <!-- Available Stock section -->
+        <xpath expr="//tr[td/strong[text()='Available']]" position="replace">
+            <tr>
+                <td class="fw-bold">Available</td>
+                <td class="ps-4">
+                    <div class="d-flex justify-content-between" t-foreach="Object.entries(props.calcData.available_qty)" t-as="warehouse" t-key="warehouse[0]">
+                        <span class="fw-bold"><t t-out="warehouse[0]"/> - </span>
+                        <t t-out="warehouse[1]"/> Units
+                    </div>
+                </td>
+            </tr>
+        </xpath>
+
+        <!-- Forecasted Stock section -->
+        <xpath expr="//tr[td/strong[text()='Forecasted Stock']]" position="replace">
+            <tr>
+                <td><strong>Forecasted Stock</strong><br/><small>On <span t-out="props.calcData.delivery_date"/></small></td>
+
+                <td class="ps-4">
+                    <div class="d-flex justify-content-between" t-foreach="Object.entries(props.calcData.forecast_qty)" t-as="warehouse" t-key="warehouse[0]">
+                        <span class="fw-bold"><t t-out="warehouse[0]"/> - </span>
+                        <t t-out="warehouse[1]"/> Units
+                    </div>
+                </td>
+            </tr>
+        </xpath>
+    </t>
+
+</template>

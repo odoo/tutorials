@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <menuitem id="multi_warehouse_sale_order_menu_root" name="Multi Warehouse Sale Order" web_icon="multi_warehouse_sale_order,static/description/icon.png" />
+
+</odoo>
