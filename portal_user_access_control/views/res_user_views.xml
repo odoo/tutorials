@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_users_form" model="ir.ui.view">
+        <field name="name">portal.user.view.form.inherit.res.user</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Portal Access Rights" name="portal_access_rights" invisible="is_portal_user == False">
+                    <group>
+                        <group string="SALES">
+                            <field name="portal_access_so" string="Show Sales Orders"/>
+                            <field name="portal_access_quotes" string="Show Quotations"/>
+                        </group>
+                        <group string="PURCHASE">
+                            <field name="portal_access_rfq" string="Show Request for Quotations"/>
+                            <field name="portal_access_po" string="Show Purchase Orders"/>
+                        </group>
+                    </group>
+                    <group >
+                        <group string="ACCOUNTING">
+                            <field name="portal_access_invoices" string="Show Invoices &amp; Bills"/>
+                        </group>
+                        <group string="PROJECTS">
+                            <field name="portal_access_projects" string="Show Projects"/>
+                            <field name="portal_access_tasks" string="Show Tasks"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

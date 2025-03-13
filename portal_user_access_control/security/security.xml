@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_portal_user_access" model="ir.module.category">
+        <field name="name">Portal User Access Control</field>
+    </record>
+
+    <record id="sales_order_group" model="res.groups">
+        <field name="name">Sales Order Group</field>
+        <field name="category_id" ref="module_category_portal_user_access" />
+    </record>
+
+    <record id="quotetion" model="res.groups">
+        <field name="name">Quotation Group</field>
+        <field name="category_id" ref="module_category_portal_user_access" />
+    </record>
+
+    <record id="rfq" model="res.groups">
+        <field name="name">RFQ Group</field>
+        <field name="category_id" ref="module_category_portal_user_access" />
+    </record>
+
+    <record id="purchase_order" model="res.groups">
+        <field name="name">Purchase Order Group</field>
+        <field name="category_id" ref="module_category_portal_user_access" />
+    </record>
+
+    <record id="invoices" model="res.groups">
+        <field name="name">Invoices Group</field>
+        <field name="category_id" ref="module_category_portal_user_access" />
+    </record>
+
+    <record id="projects" model="res.groups">
+        <field name="name">Project Group</field>
+        <field name="category_id" ref="module_category_portal_user_access" />
+    </record>
+
+    <record id="tasks" model="res.groups">
+        <field name="name">Tasks Group</field>
+        <field name="category_id" ref="module_category_portal_user_access" />
+    </record>
+</odoo>

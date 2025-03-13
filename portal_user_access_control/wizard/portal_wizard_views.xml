@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="wizard_view" model="ir.ui.view">
+        <field name="name">Grant portal access</field>
+        <field name="model">portal.wizard</field>
+        <field name="inherit_id" ref="portal.wizard_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='email']" position="after">
+                <field name="sales_order" string="SO"/>
+                <field name="quotetion" string="Quotes"/>
+                <field name="rfq" string="RFQ"/>
+                <field name="purchase_order" string="PO"/>
+                <field name="invoices" string="Invoices"/>
+                <field name="projects" string="Projects"/>
+                <field name="tasks" string="Tasks"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
