@@ -17,7 +17,9 @@ class EstateModel(models.Model):
         copy=False,
     )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
+    selling_price = fields.Float(
+        "Selling Price", copy=False
+    )  # remove readonly=True for demo data
     bedrooms = fields.Integer("Number of Bedrooms", default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
