@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from odoo import api, fields, models
 
 
@@ -36,6 +34,7 @@ class SalePriceHistoryWizard(models.TransientModel):
 
         res['history_line_ids'] = history_lines
         return res
+
 
 class SalePriceHistoryLine(models.TransientModel):
     _name = 'sale.price.history.line'

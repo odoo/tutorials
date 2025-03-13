@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from odoo import api, fields, models
 
 
@@ -13,7 +11,7 @@ class ProductTemplate(models.Model):
         help='Gross Profit Margin for this product',
     )
 
-    @api.depends('list_price','standard_price')
+    @api.depends('list_price', 'standard_price')
     def _gross_profit_margin(self):
         for product in self:
             if product.list_price:
@@ -27,4 +25,4 @@ class ProductTemplate(models.Model):
     def _inverse_gross_profit_margin(self):
         for product in self:
             if product.gross_profit_margin:
-                product.list_price = (product.standard_price*product.gross_profit_margin) + product.standard_price
+                product.list_price = (product.standard_price * product.gross_profit_margin) + product.standard_price

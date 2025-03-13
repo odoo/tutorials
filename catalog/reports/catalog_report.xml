@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="report_catalog_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <div style="display: flex; flex-direction: column; page-break-inside: avoid;">
+                    <t t-foreach="doc['category_ids']" t-as="id">
+                        <t t-set="bg_color" t-value="doc['catalog_info'][id].get('color', ['#FFFFFF'])[0]" />
+                        <t t-set="text_color" t-value="'white' if doc['catalog_info'][id].get('color') and doc['catalog_info'][id]['color'][0] else 'black'" />
+                        <div t-attf-style="width: 100%; background-color: {{ bg_color }};
+                                        color: {{ text_color }}; font-weight: bold; text-align: center; font-size: 16px;
+                                        border: 5px solid {{ bg_color }}; box-sizing: border-box;">
+                            <t t-esc="doc['catalog_info'][id]['category_name'] or 'Uncategorized'"/>
+                        </div>
+                        <div t-attf-style="width: 100%; border: 5px solid {{ doc['catalog_info'][id]['color'][0] }};
+                                        box-sizing: border-box;">
+                            <div t-attf-style="display: table; width: 100%; table-layout: fixed;
+                                                background-color: {{ doc['catalog_info'][id]['color'][1] }};">
+                                <t t-foreach="doc['catalog_info'][id]['products']" t-as="product_info">
+                                    <div t-if="product_info['id'] not in doc['remove_ids']"
+                                        t-attf-style="display: inline-block; width: 125px; height: 150px;
+                                                    vertical-align: top; text-align: center;">
+                                        <t t-foreach="doc['fields_order']" t-as="field">
+                                            <t t-if="field == 'image_1920'">
+                                                <img t-if="product_info['image_1920']"
+                                                    t-att-src="image_data_uri(product_info['image_1920'])"
+                                                    style="max-height: 80px; max-width: 80%; border-radius: 5px;
+                                                            display: block; margin: 5px auto;"
+                                                    alt="Product Image"/>
+                                            </t>
+                                            <t t-if="field != 'image_1920' and field not in ['categ_id', 'id']">
+                                                <p style="margin: 2px 0; color: #222; font-weight: 600;
+                                                        word-wrap: break-word; font-size: 11px;">
+                                                    <t t-out="product_info[field]"/>
+                                                </p>
+                                            </t>
+                                        </t>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+    <record id="print_catalog_action" model="ir.actions.report">
+        <field name="name">Print Product Catalog</field>
+        <field name="model">catalog</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">catalog.report_catalog_template</field>
+        <field name="report_file">catalog.report_catalog_template</field>
+        <field name="print_report_name">'Product Catalog - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_catalog"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

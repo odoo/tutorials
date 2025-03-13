@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="catalog.SearchPanel" t-inherit="web.SearchPanel.Category" t-inherit-mode="extension">
+    <xpath expr="//div[@class='o_search_panel_label d-flex align-items-center overflow-hidden w-100 cursor-pointer mb-0']" position="after">
+        <input type="checkbox"
+            t-if="value.childrenIds.length === 0
+                    and typeof value.id === 'number'
+                    and this.env.searchModel.globalContext.active_model === 'catalog'"
+            t-attf-id="catalog_checkbox_{{ value.id }}"
+            t-att-data-category-id="value.id"
+            class="catalog-category-checkbox"
+            t-on-click="onCategoryCheckboxClick"
+            t-att-checked="checkedCategories.has(value.id)"/>
+    </xpath>
+    </t>
+</templates>

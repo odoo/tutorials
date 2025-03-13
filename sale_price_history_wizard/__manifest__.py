@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 {
     "name": 'Sales Price History',
     "summary": "Adds a button to display the last five sales prices of a product for a selected customer.",

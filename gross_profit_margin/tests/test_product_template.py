@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from odoo.tests.common import TransactionCase
 from odoo.tests import tagged
 
@@ -33,4 +31,3 @@ class TestProductProduct(TransactionCase):
         self.product._inverse_gross_profit_margin()
         expected_lst_price = (self.product.standard_price * 0.3) + self.product.standard_price
         self.assertAlmostEqual(self.product.lst_price, expected_lst_price, places=2)
-
