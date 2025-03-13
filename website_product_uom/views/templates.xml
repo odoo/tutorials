@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_products_item" inherit_id="website_sale.products_item">
+        <xpath expr="//a[hasclass('oe_product_image_link', 'd-block', 'position-relative')]" position="attributes">
+            <attribute name="data-tooltip-position">top</attribute>
+            <attribute name="t-att-data-tooltip">'Sold in: ' + product.website_uom_id.name if request.env.user.has_group('uom.group_uom') else ''</attribute>
+        </xpath>
+    </template>
+
+    <template id="product_quantity" inherit_id="website_sale.product">
+        <xpath expr="//input[@name='add_qty']" position="attributes">
+            <attribute name="t-att-value">
+                "%g" % (product.website_uom_id.ratio if product.website_uom_id.category_id.name == 'Unit' else product.website_uom_id.factor)
+                if request.env.user.has_group('uom.group_uom') else 1
+            </attribute>
+            <attribute name="t-att-readonly">'readonly' if request.env.user.has_group('uom.group_uom') else None</attribute>
+            <attribute name="t-att-data-uom-ratio">
+                (product.website_uom_id.ratio if product.website_uom_id.category_id.name == 'Unit' else product.website_uom_id.factor)
+                if request.env.user.has_group('uom.group_uom') else 1
+            </attribute>
+            <attribute name="t-att-data-min">product.website_uom_id.factor if request.env.user.has_group('uom.group_uom') else 1</attribute>
+            <attribute name="t-att-style">"width: 80px !important; max-width: 80px; text-align: center;"</attribute>
+        </xpath>
+    </template>
+
+    <template id="cart_quantity" inherit_id="website_sale.cart_lines">
+        <xpath expr="//input[hasclass('js_quantity')]" position="attributes">
+            <attribute name="t-att-readonly">'readonly' if request.env.user.has_group('uom.group_uom') else None</attribute>
+            <attribute name="t-att-data-uom-ratio">
+                (line.product_id.website_uom_id.ratio if line.product_id.website_uom_id.category_id.name == 'Unit' else line.product_id.website_uom_id.factor)
+                if request.env.user.has_group('uom.group_uom') else 1
+            </attribute>
+            <attribute name="t-att-style">"width: 80px !important; max-width: 80px; text-align: center;"</attribute>
+        </xpath>
+    </template>
+
+    <template id="cart_quantity_float" inherit_id="website_sale.checkout_layout">
+        <xpath expr="//td[@name='website_sale_cart_summary_product_name']/h6/t[1]" position="replace">
+            <t t-out="line.product_uom_qty" />
+        </xpath>
+    </template>
+</odoo>
