@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="approval_category_view_form_inherit" model="ir.ui.view">
+        <field name="name">approval.category.view.form.inherit</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <group position="replace">
+                    <group>
+                       <group>
+                            <field name="description"/>
+                            <field name="approval_type" invisible="1"/>
+                            <field name="automated_sequence"/>
+                            <field name="sequence_code" invisible="not automated_sequence" required="automated_sequence"/>
+                            <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>
+                        </group>
+                        <group>
+                            <field name="is_sales_approval"/>
+                            <field name="from_amount"/>
+                            <field name="to_amount"/>
+                            <field name="currency_id"/>
+                        </group>
+                    </group>
+                </group>
+
+        </field>
+    </record>
+</odoo>

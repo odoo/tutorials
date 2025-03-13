@@ -1,0 +1,12 @@
+<odoo>
+    <record id="approval_request_view_form_inherit" model="ir.ui.view">
+        <field name="name">approval.request.view.form</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_open_sale_order" type="object" icon="fa-file-text-o" string="Sales Quotation" invisible="sale_order_id == False" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
