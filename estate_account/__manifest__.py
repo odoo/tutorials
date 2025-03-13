@@ -4,16 +4,11 @@
     'depends': ['base','real_estate','account'],
     'author': "Rishav Shah (sris)",
     'category': 'Estate Account',
+    'icon':'/estate_account/static/src/img/estate_account_icon.png',
     'description': """    
-        Estate Account
+        Estate Account module used for invoicing
       """,
     'installable':True,
     'application':True,
-    'auto_install': True,
     'license':'LGPL-3',
-    'data': [
-        
-        
-    ],
-    
 }

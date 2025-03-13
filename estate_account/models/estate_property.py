@@ -1,13 +1,11 @@
-from odoo import api, models, Command
+from odoo import Command, models
 
-class property(models.Model):
+class EstateProperty(models.Model):
     _inherit = 'estate.property' 
     
     def set_sold(self):
-        # print("Hello child property sold")
         empty_move=self.env['account.move'].create({
-            # 'name':self.name,
-            'partner_id': self.buyer_user_id.id,
+            'partner_id': self.buyer_id.id,
             'move_type':'out_invoice',
             'invoice_line_ids':[
                 Command.create({

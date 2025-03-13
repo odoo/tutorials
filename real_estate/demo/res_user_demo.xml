@@ -9,7 +9,6 @@
             <field name="country_id" ref="base.us"/>
             <field name="title" ref="base.res_partner_title_miss"/>
         </record>
-
         <record id="res_partner_11" model="res.partner">
             <field name="name">Douglas Fletcher</field>
             <field name="email">douglas.fletcher51@example.com</field>
@@ -21,7 +20,6 @@
             <field name="zip">94523</field>
             <field name="title" ref="base.res_partner_title_mister"/>
         </record>
-
         <record id="res_partner_12" model="res.partner">
             <field name="name">Art Factory</field>
             <field name="email">artfactory@test.com</field>
@@ -31,7 +29,6 @@
             <field name="country_id" ref="base.us"/>
             <field name="is_company" eval="True"/>
         </record>
-
         <record id="res_partner_15" model="res.partner">
             <field name="name">Jack Mathew</field>
             <field name="email">jack@test.com</field>
@@ -40,7 +37,6 @@
             <field name="zip">4567</field>
             <field name="function">Artist</field>
         </record>
-
         <record id="res_partner_16" model="res.partner">
             <field name="name">ARCHER ART PRIVATE LIMITED</field>
             <field name="email">aap@test.com</field>

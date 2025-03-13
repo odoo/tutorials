@@ -4,6 +4,7 @@
     'depends': ['base'],
     'author': "Rishav Shah (sris)",
     'category': 'Estate',
+    'icon':'/real_estate/static/src/img/real_estate_icon.png',
     'description': """    
         A module for managing real estate properties, including:
         - Property listings with various details.
@@ -13,7 +14,6 @@
       """,
     'installable':True,
     'application':True,
-    'auto_install': True,
     'license':'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
