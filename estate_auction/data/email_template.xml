@@ -1,0 +1,17 @@
+<odoo>
+    <data noupdate="1">
+        <record id="email_template_property_offer_notification" model="mail.template">
+            <field name="name">Property Offer Notification</field>
+            <field name="model_id" ref="estate.model_estate_property_offer" />
+            <field name="subject">Auction for {{object.property_id.name}} just ended</field>
+            <field name="email_from">no-reply@example.com</field>
+            <field name="email_to">{{(object.partner_id.email or '')}}</field>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Dear <t t-out="object.partner_id.name"/>,</p>
+                    <p><t t-out="ctx.get('message', 'We have an update regarding your offer.')"/></p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>

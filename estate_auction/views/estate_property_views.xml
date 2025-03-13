@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form.inherit.estate.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button type="object" class="oe_stat_button" name="action_open_invoice" string="Invoice" icon="fa-file-text-o" />
+                </div>
+            </xpath>
+
+            <xpath expr="//button[@name='action_mark_property_sold']" position="before">
+                <button name="action_start_auction" type="object" invisible="state in ['sold', 'cancelled'] or sale_mode == 'regular' or auction_state != 'template'" class="btn-primary">Start Auction</button>
+            </xpath>
+
+            <xpath expr="//div[label[@for='name']]" position="replace">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div class="w-25">
+                        <label for="name"/>
+                        <h1><field name="name" string="Title" /></h1>
+                        <field name="sale_mode" widget="radio" options="{'horizontal': True}" readonly="sale_mode == 'auction' and auction_state != 'template'" invisible="state in ['sold', 'cancelled']" />
+                    </div>
+                    <field name="auction_state" widget="auction_state_selection" invisible="sale_mode == 'regular'" />
+                </div>
+            </xpath>
+
+            <xpath expr="//page[1]/group/group" position="after">
+                <group string="Auction Details" invisible="sale_mode == 'regular'">
+                    <field name="auction_end_time" readonly="sale_mode == 'auction' and auction_state != 'template'" />
+                    <field name="auction_highest_offer" />
+                    <field name="auction_highest_bidder" />
+                </group>
+            </xpath>
+
+            <xpath expr="//field[@name='offer_ids']" position="attributes">
+                <attribute name="readonly">state == 'offer_accepted' or state == 'sold' or state == 'cancelled' or sale_mode == 'auction'</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban.inherit.estate.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban" />
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='card']/div[2]" position="attributes">
+                <attribute name="class" add="mt-3 d-flex justify-content-between align-items-start"/>
+            </xpath>
+
+            <xpath expr="//t[@t-name='card']/div[2]/field[@name='name']" position="after">
+                <field name="auction_state" widget="auction_state_selection"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

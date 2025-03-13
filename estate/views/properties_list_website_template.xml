@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="properties_list_website" name="Property Listing">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-end mt-4">
+                <h2>Properties</h2>
+                <form method="GET" action="/properties" class="d-flex gap-2 w-50 mb-3">
+                    <input type="date" id="listed_after" name="listed_after" class="form-control"/>
+                    <input type="text" id="property_search" name="property_search" placeholder="Search property" class="form-control" />
+                    <button type="submit" class="btn btn-primary w-50">Search</button>
+                </form>
+                </div>
+                <div class="row mt-3">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                            <a t-att-href="'/property/' + str(property.id)"
+                                class="text-decoration-none">
+                                <div class="card">
+                                    <t t-if="property.property_image">
+                                        <img
+                                            t-att-src="image_data_uri(property.property_image)"
+                                            class="card-img-top"
+                                            alt="Property Image"
+                                            style="height: 200px; object-fit: cover;" />
+                                    </t>
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary fw-bold"
+                                            t-field="property.name" />
+                                        <p class="card-text text-muted"
+                                            t-field="property.description" />
+                                        <p class="card-text">
+                                            <strong>Status:</strong>
+                                            <span t-field="property.state" />
+                                        </p>
+                                        <p class="card-text">
+                                            <strong>Price:</strong> 
+                                            <span
+                                                t-field="property.expected_price" /> INR </p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </t>
+
+                    <t t-if="not properties">
+                        <div class="text-center mt-4">
+                            <h4 class="text-muted">No properties found. Try adjusting your filters.</h4>
+                        </div>
+                    </t>
+                </div>
+
+                <t t-if="properties">
+                    <div class="d-flex justify-content-center mt-2 mb-3">
+                        <t t-call="website.pager" />
+                    </div>                    
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_details_website" name="Single Property Details">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h2 class="text-center mb-4" t-field="property.name" />
+                <div class="row">
+                    <div class="col-lg-6 col-md-12 mb-4">
+                        <div class="card shadow-lg border-light rounded">
+                            <t t-if="property.property_image">
+                                <img t-att-src="image_data_uri(property.property_image)" 
+                                    class="card-img-top" 
+                                    alt="Property Image"
+                                    style="object-fit: cover;" />
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card border-light rounded">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary fw-bold" t-field="property.name" />
+                                <p class="card-text">
+                                    <strong>Price:</strong> 
+                                <span t-field="property.expected_price" />
+                                    INR </p>
+
+                                <p class="card-text text-muted" t-field="property.description" />
+
+                                <p class="card-text">
+                                    <strong>Status:</strong>
+                                    <span t-field="property.state" class="badge bg-info"></span>
+                                </p>
+
+                                <p class="card-text">
+                                    <strong>Type:</strong>
+                                    <span t-field="property.property_type_id.name" />
+                                </p>
+
+                                <p class="card-text">
+                                    <strong>Bedrooms:</strong>
+                                    <span t-field="property.bedrooms" />
+                                </p>
+
+                                <t t-if="property.garden">
+                                    <p class="card-text">
+                                        <strong>Garden Area:</strong> 
+                                    <span
+                                            t-field="property.garden_area" /> sqm </p>
+                                    <p class="card-text">
+                                        <strong>Garden Orientation:</strong>
+                                        <span t-field="property.garden_orientation" />
+                                    </p>
+                                </t>
+
+                                <p class="card-text">
+                                    <strong>Available From:</strong>
+                                    <span t-field="property.date_availability" />
+                                </p>
+
+                                <a href="/properties" class="btn btn-secondary w-100 mt-2">Back to
+                                    Listings</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
