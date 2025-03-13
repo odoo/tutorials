@@ -2,7 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button string="Customers" t-on-click="showCustomers" class="btn btn-primary m-2">
+                    Customers
+                </button>
+                <button string="Leads" t-on-click="showLeads" class="btn btn-primary m-2">
+                    Leads
+                </button>
+            </t>
+            <div class="d-flex gap-3 flex-wrap m-2">
+                <DashboardItem title="'Average amount of t-shirt by order this month.'" statNumber="res.average_quantity"/>
+                <DashboardItem title="'Average time for an order to go from \'new\' to \'sent\' or \'cancelled\'. '" statNumber="res.average_time" size="2"/>
+                <DashboardItem title="'Number of new orders this month.'" statNumber="res.nb_new_orders"/>
+                <DashboardItem title="'Number of cancelled orders this month.'" statNumber="res.nb_cancelled_orders"/>
+                <DashboardItem title="'Total amount of new orders this month.'" statNumber="res.total_amount"/>
+            </div>
+        </Layout>
     </t>
 
 </templates>

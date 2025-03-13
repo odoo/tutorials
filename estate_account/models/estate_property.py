@@ -1,0 +1,27 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import Command, models
+
+class EstateProperty(models.Model):
+    _inherit = 'estate.property'
+
+    def action_sold(self):
+        for property in self:
+            property.check_access('write')
+            self.env['account.move'].sudo().create({
+                'partner_id': property.partner_id.id,
+                'move_type': 'out_invoice',
+                'invoice_line_ids': [
+                    Command.create({
+                            'name': property.name,
+                            'quantity': 1,
+                            'price_unit': property.selling_price*0.6
+                    }),
+                    Command.create({
+                            'name': "Administratvive Fees",
+                            'quantity': 1,
+                            'price_unit': 100
+                    })
+                ]
+            })
+        return super().action_sold()

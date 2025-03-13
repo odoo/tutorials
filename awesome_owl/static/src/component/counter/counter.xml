@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.counter">
+        <div class="container d-flex  flex-column align-items-center mt-4 p-4 border rounded shadow" style="max-width: 300px;">
+            <h3 class="mb-3">Counter: <t t-out="state.value"/></h3>
+            <button class="btn btn-outline-primary text-white bg-primary" type="button" t-on-click="increment">
+                Increment
+            </button>
+        </div>
+    </t>
+    
+</templates>
