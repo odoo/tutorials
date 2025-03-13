@@ -6,10 +6,11 @@ class WarrantyConfigurationWizard(models.TransientModel):
     _name = "warranty.configuration.wizard"
     _description = "Warranty Configuration Wizard"
 
-    name = fields.Char(string="Name")
+    name = fields.Char(string="Name") 
+    order_id = fields.Many2one('sale.order')
     order_line_id = fields.Many2one(
         "sale.order.line",
-        domain="[('order_id', '=', context.get('active_id')), ('product_id.is_warranty_available', '=', True)]",
+        domain="[('order_id', '=', order_id), ('product_id.is_warranty_available', '=', True)]",
     )
     product_id = fields.Many2one(
         comodel_name="product.product",
@@ -27,11 +28,11 @@ class WarrantyConfigurationWizard(models.TransientModel):
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)
-        sale_order_id = self.env.context.get("active_id")
-        if sale_order_id:
-            sale_order = self.env["sale.order"].browse(sale_order_id)
+        order_id = self.env.context.get("default_order_id")
+        if order_id:
+            sale_order= self.env['sale.order'].browse(order_id)
             sale_order_lines = sale_order.order_line.filtered(
-                lambda l: l.product_id.is_warranty_available
+                lambda ln: ln.product_id.is_warranty_available
             )
             if sale_order_lines:
                 defaults["order_line_id"] = sale_order_lines[0].id
@@ -45,16 +46,12 @@ class WarrantyConfigurationWizard(models.TransientModel):
             )
 
     def action_add_warranty(self):
-        sale_order_id = self.env.context.get("active_id")
-        sale_order = (
-            self.env["sale.order"].browse(sale_order_id) if sale_order_id else None
-        )
         warranty_price = (
             self.warranty_id.percentage / 100
         ) * self.product_id.list_price
         warranty_product = self.warranty_id.product_id
         warranty_description = f"Warranty for {self.product_id.name} - {self.warranty_id.name} (Ends: {self.end_date})"
-        existing_warranty_line = sale_order.order_line.filtered(
+        existing_warranty_line = self.order_id.order_line.filtered(
             lambda line: line.linked_order_line_id == self.order_line_id
         )
         if existing_warranty_line:
@@ -68,7 +65,7 @@ class WarrantyConfigurationWizard(models.TransientModel):
         else:
             self.env["sale.order.line"].create(
                 {
-                    "order_id": sale_order.id,
+                    "order_id": self.order_id.id,
                     "product_id": warranty_product.product_variant_id.id,
                     "name": warranty_description,
                     "product_uom_qty": 1,

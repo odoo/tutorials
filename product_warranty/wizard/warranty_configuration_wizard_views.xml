@@ -21,7 +21,7 @@
         <field name="name">Warranty Configuration Wizard</field>
         <field name="res_model">warranty.configuration.wizard</field>
         <field name="view_id" ref="warranty_configuration_wizard_form"/>
-        <field name="context">{'active_id': active_id}</field>
+        <field name="context">{'default_order_id': active_id}</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
