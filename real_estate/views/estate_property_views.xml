@@ -35,8 +35,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="set_sold" type="object" string="SOLD" />
-                    <button name="set_cancel" type="object" string="CANCEL"/>
+                    <button name="set_sold" type="object" string="SOLD" invisible="status in ('sold','cancelled')"/>
+                    <button name="set_cancel" type="object" string="CANCEL" invisible="status in ('sold','cancelled')"/>
                     <field name="status"  widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
