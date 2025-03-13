@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_account_payment_register_form_inherit" model="ir.ui.view">
+        <field name="name">account.payment.register.form</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group2']/field[@name='communication']" position="attributes">
+                <attribute name="invisible">single_payment</attribute>
+            </xpath>
+            <xpath expr="//group[@name='group2']/div/field[@name='amount']" position="attributes">
+                <attribute name="readonly">not single_payment</attribute>
+            </xpath>
+            <xpath expr="//group[@name='group2']" position="after">
+                    <field name="payment_lines_ids" invisible="single_payment">
+                        <list editable="bottom" create="false">
+                            <!-- invisible Fields -->
+                            <field name="memo_id" column_invisible="True"/>
+                            <field name="balance_amount" column_invisible="True"/>
+
+                            <field name="partner_id"/>
+                            <field name="name"/>
+                            <field name="invoice_date"/>
+                            <field name="amount_residual" sum="Total"/>
+                            <field name="payment_amount" sum="Total"/>
+                        </list>
+                    </field>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
