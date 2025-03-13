@@ -34,13 +34,11 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
-        store=True
     )
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",
         related="property_id.property_type_id",
-        store=True
     )
 
     #sql constraints
@@ -52,8 +50,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
-            for record in self:
-              record.date_deadline = (record.create_date or fields.Date.today()) + timedelta(days=record.validity)
+            record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -65,13 +62,15 @@ class EstatePropertyOffer(models.Model):
     #logic for offer accepted or refused
     def action_accept_offer(self):
         for record in self:
-            if record.property_id.selling_price:
+            if record.property_id.status == 'offer_accepted':
                 raise UserError("This property already has an accepted offer!")
 
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             record.property_id.status = "offer_accepted"
+            other_offers = record.property_id.offer_ids.filtered(lambda o: o.id != record.id)
+            other_offers.write({'status': 'refused'})
         return True
     
     #Refuse an offer.

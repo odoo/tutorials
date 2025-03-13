@@ -3,3 +3,5 @@ estate.access_estate_property,Access Estate Property,estate.model_estate_propert
 estate.access_estate_property_type,Access Estate Property Type,estate.model_estate_property_type,base.group_user,1,1,1,1
 estate.access_estate_property_tag,Access Estate Property Tag,estate.model_estate_property_tag,base.group_user,1,1,1,1
 estate.access_estate_property_offer,Access Estate Property Offer,estate.model_estate_property_offer,base.group_user,1,1,1,1
+
+

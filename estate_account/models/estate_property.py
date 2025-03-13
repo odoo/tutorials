@@ -2,14 +2,12 @@
 from odoo import Command,exceptions,models
 
 
-
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self):
         print("Estate Account: action_sold method overridden!") # debug for correctly calling this action
         if self.buyer_id:
-            try:
                 invoice = self.env['account.move'].create({
                     'partner_id': self.buyer_id.id,
                     'move_type': 'out_invoice',
@@ -28,8 +26,6 @@ class EstateProperty(models.Model):
                     ],
                 })
                 print(f"Invoice Created: {invoice.name}")
-            except Exception as e:
-                raise exceptions.UserError(f"Error creating invoice: {e}")
         else:
             raise exceptions.UserError("Buyer not set. Cannot create invoice.")
         return super().action_set_sold()

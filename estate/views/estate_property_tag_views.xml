@@ -13,6 +13,7 @@
         <field name="arch" type="xml">
             <list editable="bottom">
                 <field name="name" string="Tags" />
+                <field name="color" widget="color_picker"/>
             </list>
         </field>
     </record>
@@ -27,6 +28,7 @@
                     <h1>
                         <field name="name" placeholder="eg : cozy" />
                     </h1>
+                     <field name="color" widget="color_picker"/>  
                 </sheet>
             </form>
         </field>

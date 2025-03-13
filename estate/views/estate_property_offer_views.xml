@@ -16,7 +16,6 @@
                     invisible="status in ('accepted','refused')" />
                 <button name="action_refuse_offer" type="object" icon="fa-times" title="Refuse"
                     invisible="status in ('accepted','refused')" />
-                <!-- <field name="status" invisible="0" /> -->
             </list>
         </field>
     </record>

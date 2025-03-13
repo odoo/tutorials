@@ -34,7 +34,7 @@
                             <field name="offer_count" widget="statinfo" />
                         </button>
                     </div>
-                    <h1 class="mb32">
+                    <h1>
                         <field name="name" />
                     </h1>
                     <notebook>

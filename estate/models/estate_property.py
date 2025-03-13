@@ -5,7 +5,6 @@ from odoo.exceptions import UserError,ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
-
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Description"
@@ -15,7 +14,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True,string="Title")
     description = fields.Text(string="Description of Property")
     postcode = fields.Char(string="Postcode")
-    create_date = fields.Date(
+    date_availability = fields.Date(
         default=lambda self: fields.date.today() + timedelta(days=90),
         string="Available From",
         copy=False
@@ -57,7 +56,6 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",
-        required=True,
     )
     buyer_id = fields.Many2one(
         "res.partner",

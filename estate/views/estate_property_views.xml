@@ -25,7 +25,7 @@
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="create_date" optional="hide" />
+                <field name="date_availability" optional="hide" />
             </list>
         </field>
     </record>
@@ -46,7 +46,7 @@
                         statusbar_visible="new,offer_received,offer_accepted,sold,cancelled " />
                 </header>
                 <sheet>
-                    <h1 class="mb32">
+                    <h1 class="mb-2">
                         <field name="name" placeholder="Enter property name..." />
                     </h1>
                     <group>
@@ -57,7 +57,7 @@
                             <field name="property_type_id" widget="many2one"
                                 options="{'no_create': True, 'no_create_edit': True}" />
                             <field name="postcode" />
-                            <field name="create_date" />
+                            <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
@@ -66,8 +66,6 @@
                         </group>
                     </group>
                     <notebook>
-
-                        <!-- this is description field-->
                         <page string="description">
                             <group>
                                 <field name="description" />
@@ -81,14 +79,10 @@
                                 <field name="total_area" readonly="1" />
                             </group>
                         </page>
-
-                        <!-- this is the offer view-->
                         <page string="offers">
                             <field name="offer_ids"
                                 readonly="status in ('offer_accepted', 'sold', 'cancelled')" />
                         </page>
-
-                        <!-- this is the other info field-->
                         <page string="Other Info">
                             <group>
                                 <field name="salesperson_id" string="Salesperson" />
@@ -112,7 +106,7 @@
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="create_date" />
+                <field name="date_availability" />
                 <field name="status" />
 
                 <!-- filters-->
@@ -132,18 +126,18 @@
         </field>
     </record>
 
-    <!-- this a kanban view of properties-->
+    <!-- this a kanban view -->
     <record id="estate_property_kanban_view" model="ir.ui.view">
         <field name="name">estate.property.kanban.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml"> 
-            <kanban default_group_by="property_type_id" records_dragabble="0">
+            <kanban default_group_by="property_type_id" group_create="0" records_draggable="false">
             <field name="status" invisible="1" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div>
+                        <div class="mb-2">
                             <h3>
-                                <field name="name" />
+                                <field name="name"/>
                             </h3>
                             <div>
                                 <span>Expected Price: </span>

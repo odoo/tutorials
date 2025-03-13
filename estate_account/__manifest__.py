@@ -9,6 +9,6 @@
     'depends': ['estate', 'account'],
     'data': [],
     'installable': True,
-    'application': False,
+    'application': True,
     'auto_install': False,
 }
