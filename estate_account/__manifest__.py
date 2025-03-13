@@ -2,7 +2,7 @@
 {
     "name": "Estate Account",
     "description": "Link module between account and real estate module.",
-    "depends": ["base","real_estate", "account"],
+    "depends": ["real_estate", "account"],
     "data": [],
     "version": "1.0",
     "auto_install":True,
