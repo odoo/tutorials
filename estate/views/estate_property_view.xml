@@ -15,23 +15,23 @@
             <list string="Estate Properties"
                 decoration-success="state in ['offer_received', 'offer_accepted']"
                 decoration-bf="state=='offer_accepted'" decoration-muted="state == 'sold'">
-                <field name="name" />
+                <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags"
-                    options="{'color_field':'color', 'no_edit_color':True}" />
-                <field name="property_type_id" />
-                <field name="postcode" />
-                <field name="date_availability" optional="True" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="facades" />
-                <field name="garage" />
-                <field name="garden" />
-                <field name="garden_area" />
-                <field name="garden_orientation" />
-                <field name="state" />
-                <field name="active" />
+                    options="{'color_field':'color', 'no_edit_color':True}"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="date_availability" optional="True"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <field name="garage"/>
+                <field name="garden"/>
+                <field name="garden_area"/>
+                <field name="garden_orientation"/>
+                <field name="state"/>
+                <field name="active"/>
             </list>
         </field>
     </record>
@@ -43,76 +43,76 @@
             <form string="Estate Property">
                 <header class="py-2 px-2">
                     <button name="action_cancel_property" type="object" string="Cancel"
-                        invisible="state=='sold'" class="btn btn-danger" />
+                        invisible="state=='sold'" class="btn btn-danger"/>
                     <button name="action_set_sold_property" type="object" string="Sold"
-                        invisible="state in ['sold','cancelled']" class="btn btn-success" />
+                        invisible="state in ['sold','cancelled']" class="btn btn-success"/>
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_accepted,sold" />
+                        statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <group class="bg-light p-3 rounded">
                         <group>
-                            <field name="name" colspan="3" class="py-2" />
+                            <field name="name" colspan="3" class="py-2"/>
                             <field name="tag_ids" widget="many2many_tags"
-                                options="{'color_field':'color', 'no_edit_color':True}" />
-                            <field name="property_type_id" options="{'no_create': True}" />
+                                options="{'color_field':'color', 'no_edit_color':True}"/>
+                            <field name="property_type_id" options="{'no_create': True}"/>
                         </group>
                         <group>
-                            <field name="description" colspan="2" class="py-1 rounded" />
-                            <field class="py-2" name="postcode" />
-                            <field name="date_availability" />
+                            <field name="description" colspan="2" class="py-1 rounded"/>
+                            <field class="py-2" name="postcode"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="expected_price" class="py-1" />
-                            <field name="selling_price" class="py-1" />
-                            <field name="total_area" readonly="1" class="py-1 rounded" />
-                            <field name="best_price" readonly="1" class="py-1 rounded" />
+                            <field name="expected_price" class="py-1"/>
+                            <field name="selling_price" class="py-1"/>
+                            <field name="total_area" readonly="1" class="py-1 rounded"/>
+                            <field name="best_price" readonly="1" class="py-1 rounded"/>
                         </group>
                         <group>
-                            <field name="state" class="py-1" />
-                            <field name="active" class="py-1" />
+                            <field name="state" class="py-1"/>
+                            <field name="active" class="py-1"/>
                         </group>
                     </group>
 
                     <notebook>
                         <page name="Description" class="bg-light p-2">
                             <group>
-                                <field name="living_area" />
-                                <field name="bedrooms" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
+                                <field name="living_area"/>
+                                <field name="bedrooms"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
                                 <field name="garden_area" invisible="not garden"
-                                    class="py-1 rounded" />
+                                    class="py-1 rounded"/>
                                 <field name="garden_orientation" invisible="not garden"
-                                    class="py-1 rounded" />
+                                    class="py-1 rounded"/>
                             </group>
                         </page>
                         <page name="Other Info" class="bg-light p-2">
                             <group>
-                                <field name="buyer_id" class="py-1" />
-                                <field name="salesperson_id" class="py-1" />
+                                <field name="buyer_id" class="py-1"/>
+                                <field name="salesperson_id" class="py-1"/>
                             </group>
                         </page>
                         <page name="Offers" class="bg-light p-2">
                             <group>
-                                <field name="offer_ids"> <!--One2many -->
+                                <field name="offer_ids" nolabel="1"> <!--One2many -->
                                     <list decoration-success="status == 'Accepted'"
                                         decoration-danger="status=='Refused'" editable="top"
-                                        open_form_view="True">
-                                        <field name="price" class="py-1" />
-                                        <field name="partner_id" class="py-1" />
-                                        <field name="validity" class="py-1" />
-                                        <field name="date_deadline" class="py-1" />
+                                        open_form_view="True" >
+                                        <field name="price" class="py-1"/>
+                                        <field name="partner_id" class="py-1"/>
+                                        <field name="validity" class="py-1"/>
+                                        <field name="date_deadline" class="py-1"/>
                                         <button name="action_accepted" type="object" string="Accept"
                                             icon="fa-check"
                                             invisible="status in ['Accepted','Refused']"
-                                            class="btn btn-success" />
+                                            class="btn btn-success"/>
                                         <button name="action_refused" type="object" string="Refuse"
                                             icon="fa-times"
                                             invisible="status in ['Accepted','Refused']"
-                                            class="btn btn-danger" />
-                                        <field name="status" class="py-1" />
+                                            class="btn btn-danger"/>
+                                        <field name="status" class="py-1"/>
                                     </list>
                                 </field>
                             </group>
@@ -128,18 +128,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Search">
-                <field name="name" />
-                <separator />
+                <field name="name"/>
+                <separator/>
                 <filter string="Filter on state" name="state"
-                    domain="['|',('state','=','new'),('state','=','Offer Received')]" />
-                <separator />
+                    domain="['|',('state','=','new'),('state','=','Offer Received')]"/>
+                <separator/>
                 <filter string="Available" name="available"
-                    domain="[('state', 'not in', ['sold', 'cancelled'])]" />
-                <separator />
-                <filter string="postcode" name="postcode" context="{'group_by':'postcode'}" />
-                <separator />
+                    domain="[('state', 'not in', ['sold', 'cancelled'])]"/>
+                <separator/>
+                <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                <separator/>
                 <field name="living_area" string="Living Area"
-                    filter_domain="[('living_area', '>=', self)]" />
+                    filter_domain="[('living_area', '>=', self)]"/>
             </search>
         </field>
     </record>
@@ -149,27 +149,27 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban>
-                <field name="state" />
+                <field name="state"/>
                 <template>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card">
-                            <field class="fw-bold fs-1" name="name" />
+                            <field class="fw-bold fs-1" name="name"/>
                             <div class="fw-bold fs-3">
                                 <label class="col-form-label" for="expected_price">Expected Price: </label>
-                                <field name="expected_price" />
+                                <field name="expected_price"/>
                             </div>
                             <div class="fw-bolder fs-3"
                                 t-if="record.state.raw_value == 'offer_received'">
                                 <label class="col-form-label" for="best_price">Best Price: </label>
-                                <field name="best_price" />
+                                <field name="best_price"/>
                             </div>
                             <div class="fw-bold fs-3"
                                 t-if="record.state.raw_value == 'offer_accepted'">
                                 <label class="col-form-label" for="selling_price">Selling Price: </label>
-                                <field name="selling_price" />
+                                <field name="selling_price"/>
                             </div>
                             <field name="tag_ids" widget="many2many_tags"
-                                options="{'color_field':'color', 'no_edit_color':True}" />
+                                options="{'color_field':'color', 'no_edit_color':True}"/>
                         </div>
                     </t>
                 </template>

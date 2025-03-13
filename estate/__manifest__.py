@@ -15,7 +15,10 @@
         "views/res_users_view.xml",
         "data/estate.property.type.csv",
         "demo/estate_property_demo.xml",
+        "demo/estate_property_offer_demo.xml",
+        "security/security.xml",
     ],
+    "category":"Real Estate/Brokerage",
     "application": True,
     "license": "AGPL-3",
 }

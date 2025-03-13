@@ -13,9 +13,7 @@ class estatePropertyType(models.Model):
         "estate.property.offer", "property_type_id", string="Offers"
     )
 
-    offer_count = fields.Integer(
-        string="Offer Count", compute="_compute_offer_count", store=True
-    )
+    offer_count = fields.Integer(string="Offer Count", compute="_compute_offer_count")
 
     _sql_constraints = [("unique_type_name", "UNIQUE(name)", "Type must be Unique")]
 

@@ -27,7 +27,7 @@ class EstateModel(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        [("north", "North"), ("east", "East"), ("south", "South"), ("west", "West")],
+        [("north", "North"), ("east", "East"), ("south", "South"), ("west", "West"), ('south', 'South')],
         string="Garden Orientation",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
