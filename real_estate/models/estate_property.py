@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate"
+    _order = "id desc"   
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -17,13 +18,13 @@ class EstateProperty(models.Model):
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
-    garage = fields.Boolean()
     garden = fields.Boolean()
+    garage = fields.Boolean()
     garden_area = fields.Integer()
-    Active = fields.Boolean(default=False)
+    
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Offer Price",  store=True)
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
 
     garden_orientation = fields.Selection(
         selection=[('north', 'North'), ('south', 'South'),('east', 'East'),('west','West')],
@@ -36,8 +37,7 @@ class EstateProperty(models.Model):
     ('sold', 'Sold'),
     ('cancelled', 'Cancelled')  
 ], string="Status", default="new")
-
-
+    
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesperson" , default=lambda self: self.env.user)
     tag_id = fields.Many2many("estate.property.tag", string="Tags")
@@ -48,7 +48,7 @@ class EstateProperty(models.Model):
     best_price= fields.Float(compute="_compute_best_price", readonly=True, default= 0.0)
 
     _sql_constraints = [
-        ('check_selling_price', 'CHECK(selling_price > 0 && state = accept)', 'A property selling price must be positive'),
+        ('check_selling_price', 'CHECK(selling_price > 0 )', 'A property selling price must be positive'),
         ('check_expected_price', 'CHECK(expected_price > 0 )', 'A property expected price must be strictly positive')
     ]
 
@@ -89,3 +89,12 @@ class EstateProperty(models.Model):
             self.state = "cancelled"
         else:
             raise UserError("Sold properties cannot be set as cancelled")
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You can only delete properties that are 'New' or 'Cancelled'.")    
+
+    
+    

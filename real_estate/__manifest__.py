@@ -2,6 +2,7 @@
     'name': "Real Estate",
     'version': '1.0',
     'depends': ['base'],
+    'license':'LGPL-3',
     'author': "Ajay Karma",
     'category': 'sales',
     'description': "Real_estate_app",
@@ -10,10 +11,11 @@
     'auto-install': True,
     'data': [
         'security/ir.model.access.csv',
-        'views/estate_property.xml',
-        'views/estate_property_type.xml',
         'views/estate_property_tag.xml',
         'views/estate_property_offer.xml',
+        'views/estate_property_type.xml',
+        'views/estate_property.xml',
+        "views/res_users_view.xml",
         'views/estate_menus.xml',
     ],
 }

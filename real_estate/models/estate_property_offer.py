@@ -7,6 +7,8 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer"
+    _order = "price desc"
+
 
     property_id = fields.Many2one("estate.property", string="Property", required=True, ondelete="cascade")
     price = fields.Float(string="Price", required=True)
@@ -24,8 +26,12 @@ class EstatePropertyOffer(models.Model):
     validity= fields.Integer(string="Valid", default=7)
     date_deadline= fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline",string="Offer Deadline ", default=date.today()+relativedelta(days=7))
 
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", related="property_id.property_type_id",
+        store=True,
+        readonly=True)
+
     _sql_constraints = [
-        ('check_price', 'CHECK(price > )',
+        ('check_price', 'CHECK(price > 0 )',
          'An offer price must be strictly positive')
     ]
 
@@ -53,7 +59,28 @@ class EstatePropertyOffer(models.Model):
     def refuse_offer(self):
         for record in self:
             record.state = "refused"
-            record.property_id.selling_price=0
-            record.property_id.buyer_id=False
 
         return True
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+      
+        if not isinstance(vals_list, list):
+            vals_list = [vals_list]
+
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            offer_price = vals.get("price")
+
+            if property_id:
+                property = self.env["estate.property"].browse(property_id)
+                existing_offer_price = max(property.offer_ids.mapped("price"), default=0)
+
+                if offer_price < existing_offer_price:
+                    raise UserError("Offer price must be higher than existing offers!")
+
+                property.state = "offer_received"
+
+        return super().create(vals_list)
+
+    
