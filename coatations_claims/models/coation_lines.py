@@ -6,6 +6,9 @@ class CoationsLines(models.Model):
     _name = "coatations.lines"
     _description = "List of all coatations"
 
+    # =====================================
+    # Field Definitions
+    # =====================================
     product_id = fields.Many2one("product.product")
     coatation_unit_price = fields.Float()
     max_qty = fields.Integer()
@@ -14,9 +17,9 @@ class CoationsLines(models.Model):
     recommended_sp = fields.Float(
         help="Keep 0 to apply last coatation selling price if not available set the price accordingly."
     )
-    consumed = fields.Integer(compute="_compute_consumed", readonly=True)
+    consumed = fields.Integer(compute="_compute_consumed", store=True, default=0)
     status = fields.Selection(
-        string="state",
+        string="State",
         selection=[("active", "Active"), ("expired", "Expired")],
         required=True,
         compute="_compute_state",
@@ -27,12 +30,14 @@ class CoationsLines(models.Model):
     claim = fields.Boolean()
     coation_id = fields.Many2one("coatations.claims")
     internal_reference = fields.Char(compute="_compute_internal_reference", store=True)
-    sale_order_ids = fields.Many2many("sale.order")
     last_applied_price = fields.Float(
         compute="_compute_last_applied_price", store=True
     )  # Computed field for last applied price
     name = fields.Char()
 
+    # =====================================
+    # SQL Constraints
+    # =====================================
     _sql_constraints = [
         # Ensuring max_qty is positive
         (
@@ -84,6 +89,9 @@ class CoationsLines(models.Model):
         ),
     ]
 
+    # =====================================
+    # Activity Handling Methods
+    # =====================================
     def _set_last_sales_order_price(self):
         """Set the last applied sales order price for the product."""
         if not self.product_id or not self.coation_id:
@@ -113,6 +121,9 @@ class CoationsLines(models.Model):
             if self.recommended_sp == 0 or not self.recommended_sp:
                 self.recommended_sp = last_unit_price
 
+    # =====================================
+    # Initialization Methods
+    # =====================================
     @api.model_create_multi
     def create(self, vals_list):
         """Create method override to handle initial setup of last applied price on creation."""
@@ -120,6 +131,9 @@ class CoationsLines(models.Model):
             vals["name"] = "Recommended selling price:" + str(vals["recommended_sp"])
         return super(CoationsLines, self).create(vals_list)
 
+    # =====================================
+    # Validation Methods
+    # =====================================
     @api.constrains("product_id", "coation_id")
     def _check_unique_product_for_coation(self):
         """
@@ -147,6 +161,9 @@ class CoationsLines(models.Model):
                     " Each product must be unique within a coatation."
                 )
 
+    # =====================================
+    # Computation Methods
+    # =====================================
     @api.depends("product_id")
     def _compute_last_applied_price(self):
         """Computes the last applied price based on the product_id."""
@@ -161,7 +178,7 @@ class CoationsLines(models.Model):
             else:
                 self.internal_reference = ""
 
-    @api.depends("sale_order_ids.order_line.product_uom_qty")
+    @api.depends("coation_id.sale_order_line_ids.order_id.state")
     def _compute_consumed(self):
         for record in self:
             if record.status == "expired":
@@ -183,44 +200,19 @@ class CoationsLines(models.Model):
 
                 # Assign the computed consumed value
                 record.consumed = total_consumed
-                record.write({"consumed": total_consumed})
-                # print(
-                #     f"Consumed for {record.product_id.name} and client {record.coation_id.client_id.name}: {total_consumed}"
-                # )
 
-    @api.depends("consumed", "coation_id.state")
+    @api.depends("consumed", "coation_id.state", "coation_id.reseller_id")
     def _compute_state(self):
-        print("computing coatation line state!!")
         for record in self:
-            if not isinstance(record.id, models.NewId):
-                if record.coation_id.state != "expired":
-                    print("Parent coatation id coation_line line:187")
-                    print(record.coation_id.state)
-                    if record.status == "expired":
+            if record.coation_id.state != "expired":
+                if record.status == "expired":
+                    continue  # Skip processing for expired records
+                if record.consumed != 0 and record.max_qty != 0:
+                    if record.consumed >= record.max_qty:
                         record.status = "expired"
-                        continue  # Skip processing for expired records
-                    # Check if consumed is properly initialized
-                    if record.consumed != 0 and record.max_qty != 0:
-                        print(
-                            "calculating consumed and max quantity coation_line line:194"
-                        )
-                        print(record.consumed)
-                        print(record.max_qty)
-                        if record.consumed >= record.max_qty:
-                            print("setting status")
-                            record.status = "expired"
-                            record.write({"status": record.status})
-                        else:
-                            record.status = "active"
-                            record.write({"status": record.status})
                     else:
                         record.status = "active"
-                        record.write({"status": record.status})
-                        # Explicitly write the changes to the database
                 else:
-                    print("setting line status to expired")
-                    record.status = "expired"
-                    record.write({"status": record.status})
+                    record.status = "active"
             else:
-                record.status = "active"
-                record.write({"status": record.status})
+                record.status = "expired"

@@ -10,12 +10,12 @@
         <field name="model">coatations.claims</field>
         <field name="arch" type='xml'>
             <list>
-                <field name="name"/>
-                <field name="client_id"/>
-                <field name="state"/>
-               
+                <field name="name" />
+                <field name="client_id" />
+                <field name="state" />
+
             </list>
-            
+
         </field>
     </record>
 
@@ -25,39 +25,61 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="new,active,expired"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,active,expired" />
                 </header>
                 <sheet>
                     <group>
-                        <h1><field name="name"/></h1>
-                        <field name="partner_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'supplier', 'show_vat': True}" placeholder="Name, TIN, Email, or Reference" string="Supplier"/>
-                        <field name="reseller_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'reseller', 'show_vat': True}" placeholder="Name, TIN, Email, or Reference" string="Reseller"/>
-                        <field name="client_id" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" placeholder="Type to find a Client..." string="Client"/>
-                        <field name="date_from"/>
-                        <field name="date_to"/>
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                        <field name="partner_id" widget="res_partner_many2one"
+                            context="{'res_partner_search_mode': 'supplier', 'show_vat': True}"
+                            placeholder="Name, TIN, Email, or Reference" string="Supplier" />
+                        <field name="reseller_id" widget="res_partner_many2one"
+                            context="{'res_partner_search_mode': 'reseller', 'show_vat': True}"
+                            placeholder="Name, TIN, Email, or Reference" string="Reseller" />
+                        <field name="client_id" widget="res_partner_many2one"
+                            context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}"
+                            placeholder="Type to find a Client..." string="Client" />
+                        <field name="date_from" />
+                        <field name="date_to" />
+                        <field name="impeding_extension" />
                     </group>
                     <notebook>
                         <page string="Product info">
-                        <field name="coation_lines_ids">
-                            <list editable="bottom" open_form_view="True">
-                                <field name="id"/>
-                                <field name="internal_reference" string="Internal reference"/>
-                                <field name="product_id"/>
-                                <field name="coatation_unit_price"/>
-                                <field name="max_qty"/>
-                                <field name="min_qty"/>
-                                <field name="recommended_sp"/>
-                                <field name="last_applied_price"/>
-                                <field name="consumed"/>
-                                <field name="qty_per_order"/>
-                                <field name="status"/>
-                                <field name="claim"/>
-                            </list>
-                        </field>    
+                            <field name="coation_lines_ids">
+                                <list editable="bottom" open_form_view="True">
+                                    <field name="id" />
+                                    <field name="internal_reference" string="Internal reference" />
+                                    <field name="product_id" />
+                                    <field name="coatation_unit_price" />
+                                    <field name="max_qty" />
+                                    <field name="min_qty" />
+                                    <field name="recommended_sp" />
+                                    <field name="last_applied_price" />
+                                    <field name="consumed" />
+                                    <field name="qty_per_order" />
+                                    <field name="status" />
+                                    <field name="claim" />
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="coatations_claims_view_search" model="ir.ui.view">
+        <field name="name">coatations.claims.view.search</field>
+        <field name="model">coatations.claims</field>
+        <field name="arch" type="xml">
+            <search string="Search Coatations">
+                <field name="client_id" string="Search by client" />
+                <field name="partner_id" string="Search by supplier" />
+                <filter string="Impeding extension" name="impeding_extension"
+                    domain="[('impeding_extension', '=', True)]" />
+            </search>
         </field>
     </record>
 </odoo>

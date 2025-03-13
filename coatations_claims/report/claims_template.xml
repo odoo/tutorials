@@ -1,0 +1,119 @@
+<odoo>
+    <template id="claims_report">
+        <t t-foreach="docs" t-as="coation">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-if="coation.coation_lines_ids">
+                        <div class="page">
+                            <div>
+                                <span><img t-attf-src="/logo.png?company={{ coation.partner_id.id }}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="coation.partner_id.name"/></span>
+                            </div>
+                            <hr/>
+                            <div>
+                                <strong>Coation Number:</strong>
+                                <span t-field="coation.name"/>
+                            </div>
+                            <div>
+                                <strong>Supplier ID:</strong>
+                                <span t-field="coation.partner_id.id"/>
+                            </div>
+                            <div>
+                                <strong>Supplier Name:</strong>
+                                <span t-field="coation.partner_id.name"/>
+                            </div>
+                            <div>
+                                <strong>Expiry Date:</strong>
+                                <span t-field="coation.date_to"/>
+                            </div>
+                            <div>
+                                <strong>Client ID:</strong>
+                                <span t-field="coation.client_id.id"/>
+                            </div>
+                            <div>
+                                <strong>Client Name:</strong>
+                                <span t-field="coation.client_id.name"/>
+                            </div>
+                            <div>
+                                <strong>Coatation Created Date:</strong>
+                                <span t-field="coation.create_date"/>
+                            </div>
+                            <div>
+                                <strong>Will Expire This Week?:</strong>
+                                <t t-if="coation.will_expire_within_a_Week">
+                                    Yes
+                                </t>
+                                <t t-else="">
+                                    No
+                                </t>
+                            </div>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Quantity Invoiced</th>
+                                        <th>Unit Purchased Price</th>
+                                        <th>Unit Coatation Price</th>
+                                        <th>Unit Price to be Claimed</th>
+                                        <th>Resulting Claims per Product</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="total_claims" t-value="0"/>
+                                    <t t-foreach="coation.coation_lines_ids" t-as="coation_line">
+                                        <t t-if="coation_line.claim">
+                                        <tr>
+                                            <td>
+                                                <span t-field="coation_line.product_id.name"/>
+                                            </td>
+                                            <td>
+                                                <!-- Access quantity_invoiced from sale_order_line_ids -->
+                                                <t t-set="quantity_invoiced" t-value="sum(coation.sale_order_line_ids.mapped('invoice_lines.quantity'))"/>
+                                                <span t-esc="quantity_invoiced"/>
+
+                                                
+                                            </td>
+                                            <td>
+                                                <!-- Access unit_purchase_price from the related product -->
+                                                <t t-set="unit_purchase_price" t-value="coation.sale_order_line_ids.product_id.standard_price"/>
+                                                <span t-esc="unit_purchase_price"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="coation_line.coatation_unit_price"/>
+                                            </td>
+                                            <td>
+                                                <!-- Calculate Unit Price to be Claimed (unit_purchase_price - coatation_unit_price) -->
+                                                <t t-set="unit_price_claimed" t-value="unit_purchase_price - coation_line.coatation_unit_price"/>
+                                                <span t-esc="unit_price_claimed"/>
+                                            </td>
+                                            <td>
+                                                <!-- Calculate Resulting Claims per Product (quantity_invoiced * unit_price_claimed) -->
+                                                <t t-set="result_claims" t-value="quantity_invoiced * unit_price_claimed"/>
+                                                <span t-esc="result_claims"/>
+                                                <t t-set="total_claims" t-value="total_claims + result_claims"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    </t>
+                                </tbody>
+                            </table>
+
+                            <!-- Display the total claims to be refunded -->
+                            <div>
+                                <strong>Total Claims to be Refunded:</strong>
+                                <span t-esc="total_claims"/>
+                            </div>
+
+                            <t t-if="coation.state">
+                                <div>
+                                    <strong>Status:</strong>
+                                    <span t-field="coation.state"/>
+                                </div>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

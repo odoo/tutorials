@@ -12,7 +12,7 @@
             <xpath expr="//page[@name='order_lines']//list//field[@name='price_tax']" position="after">
                  <field name="type_of_price"/>    
                  <field name="coation_ids" decoration-danger="type_of_price == 'regular'"/>
-                 <button name="%(action_coation_price_wizard)d" type='action' string="Select Price" invisible="state in ['sale','sent']" />
+                 <button name="%(action_coation_price_wizard)d" type='action' string="Select Price" invisible="state in ['sale','sent']"/>
             </xpath>
         </field>
     </record>

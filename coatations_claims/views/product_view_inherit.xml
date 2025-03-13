@@ -1,0 +1,16 @@
+<odoo>
+    <template id="product_view_inherit" inherit_id="website_sale.product">
+        <xpath expr='//div[@id="product_details"]' position="inside">
+            <div>
+                <!-- Button that will trigger the price retrieval -->
+                <button type="button" class="btn btn-primary" id="get_price_button">
+                    Get Price
+                </button>
+
+                <select id="price_select">
+                    <option value="">Select Price</option>
+                </select>
+            </div>
+        </xpath>
+    </template>
+</odoo>

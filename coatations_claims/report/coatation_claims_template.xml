@@ -15,11 +15,11 @@
                                 </div>
                                 <div>
                                     <strong>Vendor ID:</strong>
-                                     <span t-field="coation.partner_id.id"/>
+                                     <span t-field="coation.reseller_id.id"/>
                                 </div>
                                 <div>
                                      <strong>Vendor Name:</strong>
-                                     <span t-field="coation.partner_id.name"/>
+                                     <span t-field="coation.reseller_id.name"/>
                                 </div>
                                 
                                 <div>
@@ -36,10 +36,13 @@
                                      <strong>Client Name:</strong>
                                      <span t-field="coation.client_id.name"/>
                                 </div>
-
+                                <div>
+                                    <strong>Coatation create date:</strong>
+                                      <span t-field="coation.create_date"/>
+                                </div>
                                 <div>
                                     <strong>Will expire this week?: </strong>
-                                    <t t-if="coation.Will_expire_Within_a_Week">
+                                    <t t-if="coation.will_expire_within_a_Week">
                                         Yes
                                     </t>
                                     <t t-else="">

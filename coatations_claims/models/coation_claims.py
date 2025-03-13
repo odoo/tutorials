@@ -8,6 +8,10 @@ from odoo.exceptions import ValidationError
 class CoationsClaims(models.Model):
     _name = "coatations.claims"
     _description = "List of all coations"
+
+    # =====================================
+    # Field Definitions
+    # =====================================
     name = fields.Char(
         string="Order Reference",
         required=True,
@@ -27,17 +31,23 @@ class CoationsClaims(models.Model):
         default=lambda self: fields.Datetime.today() + relativedelta(months=3),
     )
     state = fields.Selection(
-        string="state",
+        string="State",
         selection=[("new", "New"), ("active", "Active"), ("expired", "Expired")],
         default="new",
         compute="_compute_state",
-        store=True,
+        readonly=False,
     )
     coation_lines_ids = fields.One2many("coatations.lines", "coation_id")
-    sale_order_ids = fields.Many2many("sale.order", "coation_sale_m2m")
     sale_order_line_ids = fields.One2many("sale.order.line", "coation_ids")
-    Will_expire_Within_a_Week = fields.Boolean(compute="_compute_expiry")
+    will_expire_within_a_Week = fields.Boolean(compute="_compute_expiry")
+    create_date = fields.Date(
+        default=lambda self: fields.Datetime.today(), readonly=True, store=True
+    )
+    impeding_extension = fields.Boolean()
 
+    # =====================================
+    # Initialization Methods
+    # =====================================
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -47,6 +57,9 @@ class CoationsClaims(models.Model):
                 vals["name"] = f"COT/{year}/{sequence}"
         return super(CoationsClaims, self).create(vals)
 
+    # =====================================
+    # Validation Methods
+    # =====================================
     @api.constrains("date_from", "date_to")
     def _check_date_range(self):
         for record in self:
@@ -56,23 +69,21 @@ class CoationsClaims(models.Model):
                         "The 'Date To' cannot be earlier than 'Date From'. Please correct the dates."
                     )
 
+    # =====================================
+    # Computation Methods
+    # =====================================
     @api.depends("coation_lines_ids.status", "date_to", "coation_lines_ids.consumed")
     def _compute_state(self):
         for record in self:
             # Flag to track the state of the lines
             has_active = False
             has_expired = False
-            # print("STATE IS UPDATATING!!!!")
 
             # Loop through the coation_lines_ids to check the status
             for line in record.coation_lines_ids:
                 if line.status == "active":
-                    print("coation_claims line 68: is active")
-                    # print(line.status)
                     has_active = True
                 elif line.status == "expired":
-                    print("coation_claims line 72: has expired")
-                    # print(line.status)
                     has_expired = True
 
             # Get today's date using fields.Date.today() since 'date_to' is a Date field
@@ -80,29 +91,20 @@ class CoationsClaims(models.Model):
 
             # Compute the state based on today's date and the line statuses
             if today < record.date_to:
-                print("coation_claims line 81: Entering if statements!")
                 if not (has_active or has_expired):
                     record.state = "new"
                 elif has_active:
                     record.state = "active"
-                    record.write(
-                        {"state": record.state}
-                    )  # to write in database before reload
                 elif has_expired:
-                    print("coation_claims line 82: Entering expired statement")
                     record.state = "expired"
-                    record.write(
-                        {"state": record.state}
-                    )  # to write in database before reload
             else:
                 record.state = "expired"
-                record.write({"state": record.state})
 
     @api.depends("date_to")
     def _compute_expiry(self):
         for record in self:
             today = fields.Date.today()
             if (record.date_to - today).days <= 7:
-                record.Will_expire_Within_a_Week = True
+                record.will_expire_within_a_Week = True
             else:
-                record.Will_expire_Within_a_Week = False
+                record.will_expire_within_a_Week = False
