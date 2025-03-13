@@ -1,5 +1,6 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 from datetime import timedelta
+from odoo.exceptions import UserError 
 
 
 class EstatePropertyOffer(models.Model):
@@ -51,3 +52,20 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ("check_offer_price", "CHECK(price > 0)", "The offer price must be strictly positive.")
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_obj = self.env["estate.property"].browse(vals['property_id'])
+
+            offer_price = vals['price']
+            max_price = 0
+            for offer_id in property_obj.offer_ids:
+                current_price = self.env["estate.property.offer"].browse(offer_id.id).price
+                if current_price > max_price:
+                    max_price = current_price
+            if max_price > offer_price:
+                raise exceptions.UserError("You cannot create an offer lower than an existing offer.")
+            
+            property_obj.state = 'offer_received'
+        return super(EstatePropertyOffer, self).create(vals)

@@ -1,8 +1,8 @@
-from odoo import models, fields, api # type: ignore
-from odoo.exceptions import UserError # type: ignore
+from odoo import models, fields, api, exceptions 
+from odoo.exceptions import UserError 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-from odoo.tools.float_utils import float_compare, float_is_zero # type: ignore
+from odoo.tools.float_utils import float_compare, float_is_zero 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'  # Database table name
@@ -120,10 +120,18 @@ class EstateProperty(models.Model):
                 )
             
     # add dependency to change state when offer received
-    @api.depends("offer_ids")
-    def _compute_state_offer_received(self):
-        for record in self:
-            if record.offer_ids:
-                record.state = "offer_received"
-            else:
-                record.state = "new"
+    # @api.depends("offer_ids")
+    # def _compute_state_offer_received(self):
+    #     for record in self:
+    #         if record.offer_ids:
+    #             record.state = "offer_received"
+    #         else:
+    #             record.state = "new"
+
+    
+    @api.ondelete(at_uninstall=False)
+    def _check_property_state(self): #check condition first when property delete
+        for property in self:
+            if property.state not in ['new', 'cancelled']:
+                raise exceptions.UserError("You cannot delete a property that is not in 'New' or 'Cancelled' state.")
+            
