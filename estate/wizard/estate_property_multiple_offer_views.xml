@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_multiple_offer_form_view" model="ir.ui.view">
+        <field name="name">estate.property.multiple.offer.form</field>
+        <field name="model">estate.property.multiple.offer</field>
+        <field name="arch" type="xml">
+            <form string="Create Multiple Offer">
+                <group>
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                </group>
+                <footer>
+                    <button string="Make an Offer" type="object" name="action_add_multiple_offers" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

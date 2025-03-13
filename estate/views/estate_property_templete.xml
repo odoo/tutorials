@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate_property_template">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h1 class="text-bold mb-4">Available Properties</h1>
+                <form method="get" action="/properties" class="mb-4 row">
+                    <div class="w-full d-flex justify-content-between gap-3">
+                        <div class="w-100">
+                            <label for="listed_date" class="form-label">Date</label>
+                            <input type="date" id="listed_date" name="listed_date" class="form-control" t-att-value="listed_date or ''"/>
+                        </div>
+                        <div class="w-100">
+                            <label for="min_price" class="form-label">Min Price</label>
+                            <input type="number" id="min_price" name="min_price" class="form-control" t-att-value="min_price or ''"/>
+                        </div>
+                        <div class="w-100">
+                            <label for="max_price" class="form-label">Max Price</label>
+                            <input type="number" id="max_price" name="max_price" class="form-control" t-att-value="max_price or ''"/>
+                        </div>
+                        <div class="w-100 d-flex align-items-end" id="filter-apply-btn">
+                            <button type="submit" class="btn btn-primary w-100">Apply Filter</button>
+                        </div>
+                    </div>
+                </form>
+
+                <t t-if="properties">
+                    <div class="row g-4">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-md-4">
+                                <div class="card border-0 shadow-sm rounded-3 h-100 d-flex flex-column">
+                                    <div class="card-img-container position-relative">
+                                        <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
+                                            class="card-img-top rounded-top" alt="Property Image" style="object-fit: cover; height: 200px;" />
+                                    </div>
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title text-truncate" style="font-size: 1.25rem; font-weight: 600;">
+                                            <t t-esc="property.name" />
+                                        </h5>
+                                        <p class="text-muted flex-grow-1" style="font-size: 0.875rem;">
+                                            <t t-esc="property.description" />
+                                        </p>
+                                        <div class="d-flex justify-content-between align-items-center mt-auto">
+                                            <a t-att-href="'/property/' + str(property.id)" class="btn btn-info fw-bold">View Details</a>
+                                            <span class="fw-bold text-primary fs-5">₹ <t t-esc="property.expected_price" /></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                    <div t-if="pager" class="d-flex justify-content-center mt-4">
+                        <t t-call="website.pager" />
+                    </div>
+                </t>
+                <t t-else="">
+                    <p class="text-center text-muted mt-4">No properties available at the moment.</p>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_details_template">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5 p-5 bg-light rounded-3 shadow-lg">
+                <div class="row g-4 align-items-start">
+                    <div class="col-lg-6">
+                        <div class="card border-0 shadow-sm">
+                            <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/property_image'"
+                                class="card-img-top rounded-3" alt="Property Image"
+                                style="object-fit: cover; height: 400px;" />
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <h1 class="fw-bold mb-3 text-dark" style="font-size: 2rem;">
+                            <t t-esc="property.name"/>
+                        </h1>
+
+                        <div class="mb-3">
+                            <span class="fs-4 fw-bold text-primary">
+                                ₹ <t t-esc="property.expected_price"/>
+                            </span>
+                        </div>
+
+                        <p class="text-muted mb-4" style="font-size: 1.1rem;">
+                            <t t-esc="property.description"/>
+                        </p>
+
+                        <div class="row g-3">
+                            <t t-if="property.property_type_id">
+                                <div class="col-md-6">
+                                    <strong>Property Type:</strong>
+                                    <t t-esc="property.property_type_id.name"/>
+                                </div>
+                            </t>
+                            <div class="col-md-6">
+                                <strong>Bedrooms:</strong>
+                                <t t-esc="property.bedrooms"/>
+                            </div>
+                            <t t-if="property.living_area > 0">
+                                <div class="col-md-6">
+                                    <strong>Living Area:</strong>
+                                    <t t-esc="property.living_area"/> sqm
+                                </div>
+                            </t>
+                            <t t-if="property.garden_area > 0">
+                                <div class="col-md-6">
+                                    <strong>Garden Area:</strong>
+                                    <t t-esc="property.garden_area"/> sqm
+                                </div>
+                            </t>
+                            <div class="col-md-6">
+                                <strong>State:</strong>
+                                <t t-esc="property.state"/>
+                            </div>
+                            <t t-if="property.postcode">
+                                <div class="col-md-6">
+                                    <strong>Postcode:</strong>
+                                    <t t-esc="property.postcode"/>
+                                </div>
+                            </t>
+                            <div class="col-md-6">
+                                <strong>Available From:</strong>
+                                <t t-esc="property.date_availability"/>
+                            </div>
+                            <t t-if="property.best_price > 0">
+                                <div class="col-md-6">
+                                    <strong>Best Price:</strong> ₹ <t t-esc="property.best_price"/>
+                                </div>
+                            </t>
+                            <t t-if="property.selling_price > 0">
+                                <div class="col-md-6">
+                                    <strong>Selling Price:</strong> ₹ <t t-esc="property.selling_price"/>
+                                </div>
+                            </t>
+                        </div>
+                        <t t-if="property.property_tag_ids">
+                            <div class="mt-3">
+                                <strong>Property Tags:</strong>
+                                <t t-foreach="property.property_tag_ids" t-as="tag">
+                                    <span class="badge bg-info text-dark me-2 p-2">
+                                        <t t-esc="tag.name"/>
+                                    </span>
+                                </t>
+                            </div>
+                        </t>
+                        <a href="mailto:krge@odoo.com" class="btn btn-success btn-lg mt-4 w-100 text-uppercase fw-bold" style="transition: background-color 0.3s ease, transform 0.3s ease;">
+                            Contact Agent
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu" />
+    </record>
+</odoo>
