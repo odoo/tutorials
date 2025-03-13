@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.dashboardItem">
+        <div class="card" t-attf-style="width: {{props.size*18}}rem;">
+            <div class="card-body">
+                <h5 class="h5 fw-semibold text-dark mb-2">
+                    <t t-out="props.title"/>
+                </h5>
+                <p class="display-6 fw-bold text-primary mb-3">
+                    <t t-out="props.statNumber"/>
+                </p>
+                <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+
+</templates>
