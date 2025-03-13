@@ -8,3 +8,9 @@ patch(ControlButtons, {
         SelectSalespersonButton,
     },
 });
+
+patch(ControlButtons.prototype, {
+    get salesperson() {
+        return this.pos.get_order()?.getSalesperson();
+    },
+});

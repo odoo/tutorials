@@ -1,7 +1,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="pos_salesperson_selector.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
         <xpath expr="//button[@t-if='!props.showRemainingButtons and !ui.isSmall and props.onClickMore']" position="before">
-            <SelectSalespersonButton/>
+            <SelectSalespersonButton salesperson="salesperson"/>
         </xpath>
     </t>
 </templates>

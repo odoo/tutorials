@@ -5,28 +5,31 @@ import { SelectionPopup } from "@point_of_sale/app/utils/input_popups/selection_
 
 patch(PosStore.prototype, {
     async SelectSalesperson() {
-        this.dialog = this.env.services.dialog;
         const currentOrder = this.pos.get_order();
-
         if (!currentOrder) {
             console.warn("No active order found.");
             return;
         }
+
         const salesperson_list = this.pos.models['hr.employee'].map((person) => ({
             id: person.id,
             item: person,
             label: person.name,
+            isSelected: currentOrder.getSalesperson()?.id === person.id || false
         }));
 
-        const currentSalesperson = await makeAwaitable(this.dialog, SelectionPopup, {
+        const currentSalesperson = await makeAwaitable(this.pos.dialog, SelectionPopup, {
             title: "Select A SalesPerson",
             list: salesperson_list,
         });
-
+        
         if (currentSalesperson) {
-            this.props.salesperson = currentSalesperson;
-            currentOrder.salesperson_id = currentSalesperson;
-            this.render();
+            const existing_salesperson = currentOrder.getSalesperson();
+            if (!(existing_salesperson?.id === currentSalesperson?.id)) {
+                currentOrder.setSalesperson(currentSalesperson);      
+            } else {
+                currentOrder.setSalesperson(false);
+            }
         }
     },
 });
