@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
+    referrer = fields.Boolean(string='Referrer', default=False)
     referred_by = fields.Many2one(
         'res.partner',
         string='Referred By',
@@ -16,7 +18,6 @@ class ResPartner(models.Model):
         selection=[
             ('editable', 'Editable'),
             ('locked', 'Locked'),
-            ('is_admin', 'Is Admin'),
         ],
         compute='_compute_referral_status'
     )
@@ -30,6 +31,17 @@ class ResPartner(models.Model):
                 record.referral_status = 'locked'
             else:
                 record.referral_status = 'editable'
+
+            if record.id and record.referred_by:
+                record.referred_by.referrer = True
+
+    @api.constrains('referred_by')
+    def _check_referrer_not_referred(self):
+        for record in self:
+            if record.referred_by and record.referrer:
+                raise ValidationError("A referrer cannot be referred by another person.")
+            if record.referred_by == record:
+                raise ValidationError("A person cannot refer themselves.")
 
     @api.onchange('company_type')
     def _onchange_company_type(self):

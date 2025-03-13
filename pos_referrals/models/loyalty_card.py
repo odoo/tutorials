@@ -17,15 +17,14 @@ class LoyaltyCardReferral(models.Model):
         customer = self.env["res.partner"].browse(partner_id)
         if not customer or not customer.referred_by:
             return False
-        referrer = customer.referred_by
         expiry_date = fields.Date.today() + timedelta(days=90)
         reward_amount = order_amount * 0.10
         gift_card = self.create({
-            "partner_id": referrer.id,
+            "partner_id": customer.referred_by.id,
             "expiration_date": expiry_date,
             "points": reward_amount,
             "program_id": referral_program.id,
             "referrer_id": customer.id,
             "active": True,
         })
-        return gift_card.id
+        return True
