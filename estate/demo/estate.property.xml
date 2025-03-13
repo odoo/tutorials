@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="demo_property_villa" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1"/>
+        <field name="postcode">236767</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">12000</field>
+        <!-- <field name="selling_price">12000</field> -->
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">100000</field>
+        <!-- <field name="garden_orientation">South</field> -->
+    </record>
+
+    <record id="demo_property_trailer_home" model="estate.property">
+        <field name="name">Trailer Home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1"/>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">0</field>
+        <field name="garden">1</field>
+        <field name="garden_area">100000</field>
+    </record>
+
+    <record id="new_property" model="estate.property">
+        <field name="name">Luxury Villa</field>
+        <field name="state">new</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1"/>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">500000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">0</field>
+        <field name="garden">1</field>
+        <field name="garden_area">100000</field>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'partner_id': ref('base.res_partner_1'),
+                'price': 5500000,
+                'validity_date': (datetime.now() + timedelta(days=14)).date()
+            }),
+            Command.create({
+                'partner_id': ref('base.res_partner_2'),
+                'price': 5600000,
+                'validity_date': (datetime.now() + timedelta(days=14)).date()
+            })
+        ]"/>
+    </record>
+</odoo>

@@ -23,21 +23,18 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     tag_type_ids = fields.Many2many("estate.property.tag", string="Property Tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store=True) #Stores computed values in the database for faster access.
+    best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store="True") #Stores computed values in the database for faster access.
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True)
     price = fields.Float(string="Offer Price", required=True, default=0.0)
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     seller_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     # Read-Only 
-    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
-    # offer_received = fields.Boolean(string="Offer Received", default=False)
-
+    selling_price = fields.Float(string="Selling Price")
     availability_date = fields.Date(
         string="Availability Date",
         default=lambda self: datetime.today() + timedelta(days=90), #3 months
         copy=False
     )
-
     facades = fields.Integer()
     garage = fields.Boolean()
     bedrooms = fields.Integer(string="Bedrooms", default=2)    
@@ -47,7 +44,6 @@ class EstateProperty(models.Model):
     expected_price = fields.Float(required=True)
     selling_price = fields.Float() 
     living_area=fields.Integer()
-    # living_area = fields.Float(string="Living Area", store=True, index=True)
     # State Field with Selection
     state = fields.Selection([
         ('new', "New"),

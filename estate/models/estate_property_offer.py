@@ -42,19 +42,23 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.validity_date - record.create_date.date()).days
 
     def action_accept(self):
-        # Accept an offer and update property state accordingly.
         for record in self:
-            if record.property_id.selling_price:
-                raise UserError("An offer has already been accepted for this property!")
-            record.status = 'accepted'
+            if record.property_id.state == "offer_accepted":
+                raise UserError("You can only accept offer ones.")
             record.property_id.selling_price = record.price
+            record.property_id.state = "offer_accepted"
             record.property_id.buyer_id = record.partner_id
-            record.property_id.state = 'offer_accepted'  # Update property state
+            record.status = "accepted"
+        return True
 
     def action_refuse(self):
-        # Refuse an offer.
         for record in self:
-            record.status = 'refused'
+            if record.status == "accepted":
+                record.property_id.selling_price = 0
+                record.property_id.state = "offer_received"
+                record.property_id.buyer_id = False
+        record.status = "refused"
+        return True
 
     @api.model_create_multi
     def create(self, vals_list):
