@@ -10,7 +10,7 @@
     "assets": {
         "web.assets_backend": [
             "custom_barcode_handling/static/src/**/*",
-        ]
+        ],
     },
     'license': 'AGPL-3',
     "installable": True,
