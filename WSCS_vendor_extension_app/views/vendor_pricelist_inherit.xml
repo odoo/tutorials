@@ -1,0 +1,42 @@
+<odoo>
+    <record id="product_supplierinfo_tree_view" model="ir.ui.view">
+        <field name="name">product.supplierinfo.list</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list/field[@name='product_tmpl_id']"  position="after">
+                <field name="qty_per_case"/>
+                <field name="cases_per_container"/>
+            </xpath>
+            <xpath expr="//list/field[@name='price']"  position="after">
+                <field name="price_per_1000"/>
+                <field name="incoterm_id"/>
+                <field name="product_status_id" invisible="True"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_product_supplierinfo_search" model="ir.ui.view">
+        <field name="name">product.supplierinfo.search.inherit</field>
+        <field name="model">product.supplierinfo</field>
+        <field name="inherit_id" ref="product.product_supplierinfo_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='active']" position="after">
+                <filter name="product_status_active"
+                        string="Status: Active"
+                        domain="[('product_status_id.name', '=', 'Active')]"/>
+                <filter name="product_status_pricing"
+                        string="Status: Pricing"
+                        domain="[('product_status_id.name', '=', 'Pricing')]"/>
+                <filter name="product_status_dormant"
+                        string="Status: Dormant"
+                        domain="[('product_status_id.name', '=', 'Dormant')]"/>
+                <filter name="product_status_npd"
+                        string="Status: NPD"
+                        domain="[('product_status_id.name', '=', 'NPD')]"/>
+                <filter name="product_status_archived"
+                        string="Status: Archived"
+                        domain="[('product_status_id.name', '=', 'Archived')]"/>
+            </xpath>
+       </field>
+    </record>
+</odoo>
