@@ -148,6 +148,7 @@
         <field name="postcode">10001</field>
         <field name="date_availability">2025-04-15</field>
         <field name="expected_price">350000</field>
+        <field name="selling_price">350000</field>
         <field name="bedrooms">2</field>
         <field name="living_area">85</field>
         <field name="facades">1</field>
@@ -157,6 +158,7 @@
         <field name="garden_orientation">north</field>
         <field name="status">offer_accepted</field>
         <field name="active">1</field>
+        <field name='partner_id' ref="res_partner_13" />
         <field name="property_type_id" ref="real_estate_type_data1" />
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="tag_ids" eval="[(4, ref('real_estate_tag_data2')), (4, ref('real_estate_tag_data3')), (4, ref('real_estate_tag_data5'))]"/>
@@ -169,6 +171,7 @@
         <field name="postcode">10001</field>
         <field name="date_availability">2025-04-15</field>
         <field name="expected_price">350000</field>
+        <field name="selling_price">360000</field>
         <field name="bedrooms">2</field>
         <field name="living_area">70</field>
         <field name="facades">1</field>
@@ -178,6 +181,7 @@
         <field name="garden_orientation">north</field>
         <field name="status">offer_accepted</field>
         <field name="active">1</field>
+        <field name='partner_id' ref="res_partner_13" />
         <field name="property_type_id" ref="real_estate_type_data2" />
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="tag_ids" eval="[(4, ref('real_estate_tag_data4')), (4, ref('real_estate_tag_data7')), (4, ref('real_estate_tag_data1'))]"/>
@@ -190,6 +194,7 @@
         <field name="postcode">10001</field>
         <field name="date_availability">2025-04-15</field>
         <field name="expected_price">350000</field>
+        <field name="selling_price">345000</field>
         <field name="bedrooms">2</field>
         <field name="living_area">90</field>
         <field name="facades">1</field>
@@ -197,6 +202,7 @@
         <field name="garden_orientation">north</field>
         <field name="status">sold</field>
         <field name="active">1</field>
+        <field name='partner_id' ref="res_partner_12" />
         <field name="property_type_id" ref="real_estate_type_data1" />
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="tag_ids" eval="[(4, ref('real_estate_tag_data5')), (4, ref('real_estate_tag_data7')), (4, ref('real_estate_tag_data8')), (4, ref('real_estate_tag_data10'))]"/>

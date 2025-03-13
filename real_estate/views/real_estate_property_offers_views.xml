@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
     <data>
+        <!-- Offers action with domain for filter -->
         <record id="real_estate_property_offer_action" model="ir.actions.act_window">
             <field name="name">Property Offer Action</field>
             <field name="res_model">real.estate.property.offer</field>

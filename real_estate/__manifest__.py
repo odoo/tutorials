@@ -10,7 +10,7 @@
         'views/real_estate_property_offers_views.xml',
         'views/real_estate_property_category_views.xml',
         'views/real_estate_property_tags_views.xml',
-        'views/inherit_res_user.xml',
+        'views/res_user.xml',
         'views/real_estate_menus.xml',
     ],
     'demo': [

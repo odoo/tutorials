@@ -111,6 +111,7 @@ class RealEstate(models.Model):
                 if(float_compare((record.expected_price * 0.9), (record.selling_price), 2) == 1):
                     raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
+    #Overriding delete method to prevent deletion of some property
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_cancel_new(self):
         if any(record.status in ('offer_received', 'offer_accepted', 'sold') for record in self):
