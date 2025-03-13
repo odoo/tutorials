@@ -11,6 +11,5 @@ class AccountMoveLine(models.Model):
     def _onchange_sale_line(self):
         for line in self:
             if line.sale_line_ids:
-                sale_order = line.sale_line_ids.order_id
-                if sale_order and sale_order.invoice_policy == 'order':  
+                if line.sale_line_ids.order_id and line.sale_line_ids.order_id.invoice_policy == 'order':
                     line.quantity = line.sale_line_ids.s_quantity

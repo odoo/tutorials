@@ -26,13 +26,13 @@ class MrpProduction(models.Model):
     def _compute_s_unit(self):
         for record in self:
             sale_order = record.procurement_group_id.sale_id
-            source_mo = record.procurement_group_id.mrp_production_ids[:1]  
+            source_mo = record.procurement_group_id.mrp_production_ids[:1]
             if sale_order and sale_order.order_line:
                 record.s_unit = sale_order.order_line[0].s_unit
             elif source_mo:
                 record.s_unit = source_mo.s_unit
             else:
-                record.s_unit = False  
+                record.s_unit = False
 
     @api.depends('product_id', 'product_qty', 's_unit')
     def _compute_s_quantity(self):

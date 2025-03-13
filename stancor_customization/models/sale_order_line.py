@@ -15,7 +15,6 @@ class SaleOrderLine(models.Model):
                    ("pcs", "PCs."),],
         default="mtrs",
     )
-    computed_price_unit = fields.Float(string="Computed Price", store=False)
 
     @api.onchange("s_quantity", "s_unit", "product_id")
     def _onchange_s_unit(self):
@@ -24,7 +23,6 @@ class SaleOrderLine(models.Model):
         
         wt_per_mt = self.product_id.wt_per_mt or 0.0
         wt_per_pc = self.product_id.wt_per_pc or 0.0
-        base_price = self.product_id.lst_price
         unit_multipliers = {
             "mtrs": wt_per_mt,
             "pcs": wt_per_pc,
@@ -32,12 +30,10 @@ class SaleOrderLine(models.Model):
         }
         multiplier = unit_multipliers.get(self.s_unit, 1)
         self.product_uom_qty = self.s_quantity * multiplier
-        self.computed_price_unit = base_price * multiplier
-        self.price_unit = self.computed_price_unit
+        self.price_unit = self.product_id.lst_price * multiplier
 
     def _prepare_invoice_line(self, **optional_values):
         invoice_line_vals = super()._prepare_invoice_line(**optional_values)
         if self.product_id.invoice_policy == 'order':  
-            invoice_line_vals['quantity'] = self.s_quantity  
+            invoice_line_vals['quantity'] = self.s_quantity
         return invoice_line_vals
-    

@@ -25,4 +25,3 @@ class StockQaunt(models.Model):
             wt_per_pc = quant.product_id.wt_per_pc or 1
             quant.quantity_mtr = quant.inventory_quantity_auto_apply / wt_per_mt
             quant.quantity_pcs = quant.inventory_quantity_auto_apply / wt_per_pc
-            

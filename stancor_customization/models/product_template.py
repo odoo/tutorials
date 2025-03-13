@@ -9,4 +9,3 @@ class ProductTemplate(models.Model):
 
     wt_per_mt = fields.Float(string="Wt./Mtr.")
     wt_per_pc = fields.Float(string="Wt./PCs.")
-    

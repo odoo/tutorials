@@ -30,7 +30,7 @@ class StockMove(models.Model):
                 elif move.s_unit == 'pcs':
                     move.s_quantity = move.quantity / wt_per_pc
                 else:  # 'kg'
-                    move.s_quantity = move.quantity  
+                    move.s_quantity = move.quantity
 
     @api.onchange('quantity')
     def _onchange_quantity(self):
@@ -39,7 +39,7 @@ class StockMove(models.Model):
     def _create_backorder(self):
         backorders = super()._create_backorder()
         for backorder in backorders:
-            backorder._compute_s_quantity()  
+            backorder._compute_s_quantity()
         return backorders
 
     def _update_qty_delivered(self):
@@ -48,6 +48,5 @@ class StockMove(models.Model):
 
     def _action_done(self, **kwargs):
         res = super()._action_done(**kwargs)
-        self._update_qty_delivered()  
+        self._update_qty_delivered()
         return res
-    
