@@ -3,7 +3,7 @@
     <record id="estate_property_data1" model="estate.property">
         <field name="name">Luxury Villa</field>
         <field name="image" type="base64" file="estate/static/src/img/1.jpeg"/>
-        <field name="status">offer_received</field>
+        <!-- <field name="status">offer_received</field> -->
         <field name="expected_price">500000</field>
         <field name="postcode">60006</field>
         <field name="selling_price">0</field>
@@ -22,12 +22,13 @@
     <record id="estate_property_data2" model="estate.property">
         <field name="name">Modern Apartment</field>
         <field name="image" type="base64" file="estate/static/src/img/2.jpeg"/>
-        <field name="status">offer_accepted</field>
+        <!-- <field name="status">offer_accepted</field> -->
         <field name="expected_price">350000</field>
         <field name="postcode">60006</field>
         <field name="sales_person_ids" ref="base.user_admin" />
-        <field name="selling_price">340000</field>
+        <field name="selling_price">0</field>
         <field name="bedrooms">3</field>
+        <field name="buyer_id" ref="res_partner_13"/>
         <field name="living_area">120</field>
         <field name="facades">1</field>
         <field name="garage">1</field>
@@ -39,14 +40,15 @@
     <record id="estate_property_data3" model="estate.property">
         <field name="name">Suburban House</field>
         <field name="image" type="base64" file="estate/static/src/img/3.jpeg"/>
-        <field name="status">sold</field>
+        <!-- <field name="status">offer_accepted</field> -->
         <field name="expected_price">250000</field>
-        <field name="selling_price">240000</field>
+        <field name="selling_price">0</field>
         <field name="sales_person_ids" ref="base.user_admin" />
         <field name="bedrooms">4</field>
         <field name="postcode">90009</field>
         <field name="living_area">180</field>
         <field name="facades">2</field>
+        <field name="buyer_id" ref="res_partner_13"/>
         <field name="garage">0</field>
         <field name="garden">1</field>
         <field name="garden_area">50</field>
@@ -58,7 +60,7 @@
     <record id="estate_property_data4" model="estate.property">
         <field name="name">Beachside Condo</field>
         <field name="image" type="base64" file="estate/static/src/img/4.jpeg"/>
-        <field name="status">offer_received</field>
+        <!-- <field name="status">offer_received</field> -->
         <field name="expected_price">700000</field>
         <field name="selling_price">0</field>
         <field name="sales_person_ids" ref="base.user_admin" />
@@ -75,9 +77,10 @@
     <record id="estate_property_data5" model="estate.property">
         <field name="name">Country Bungalow</field>
         <field name="image" type="base64" file="estate/static/src/img/5.jpeg"/>
-        <field name="status">offer_accepted</field>
+        <!-- <field name="status">offer_accepted</field> -->
         <field name="expected_price">450000</field>
-        <field name="selling_price">440000</field>
+        <field name="selling_price">0</field>
+        <field name="buyer_id" ref="res_partner_13"/>
         <field name="postcode">13013</field>
         <field name="sales_person_ids" ref="base.user_admin" />
         <field name="bedrooms">4</field>
@@ -104,7 +107,7 @@
         <field name="garden">1</field>
         <field name="garden_area">180</field>
         <field name="garden_orientation">south</field>
-        <field name="status">new</field>
+        <field name="status">offer_received</field>
         <field name="tags_ids" eval="[(4, ref('estate_tag_2')), (4, ref('estate_tag_7'))]"/>
         <field name="property_ids" ref="estate_property_type_house"/>
     </record>
@@ -122,7 +125,7 @@
         <field name="garden">1</field>
         <field name="garden_area">250</field>
         <field name="garden_orientation">north</field>
-        <field name="status">new</field>
+        <field name="status">offer_accepted</field>
         <field name="tags_ids" eval="[(4, ref('estate_tag_4')), (4, ref('estate_tag_5'))]"/>
         <field name="property_ids" ref="estate_property_type_bungalow"/>
     </record>
@@ -210,7 +213,7 @@
         <field name="garden_orientation">west</field>
         <field name="status">new</field>
         <field name="tags_ids" eval="[(4, ref('estate_tag_2')), (4, ref('estate_tag_6'))]"/>
-        <field name="property_ids" ref="estate_property_type_house"/>
+        <field name="property_ids" ref="estate_property_type_villa"/>
     </record>
 
     <record id="estate_property_data13" model="estate.property">
@@ -262,7 +265,7 @@
         <field name="garden_orientation">north</field>
         <field name="status">new</field>
         <field name="tags_ids" eval="[(4, ref('estate_tag_7')), (4, ref('estate_tag_9'))]"/>
-        <field name="property_ids" ref="estate_property_type_house"/>
+        <field name="property_ids" ref="estate_property_type_bungalow"/>
     </record>
 </odoo>
 

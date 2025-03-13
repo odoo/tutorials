@@ -23,6 +23,7 @@
         'demo/estate_property_type.xml',
         'demo/estate_partners.xml',
         'demo/estate_property.xml',
-        'demo/estate_property_offer.xml'
+        'demo/estate_property_offer.xml',
+        'demo/estate_sold_property.xml'
     ]  
 }

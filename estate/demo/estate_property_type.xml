@@ -2,25 +2,31 @@
 <odoo>
     <record id="estate_property_type_house" model="estate.property.type">
         <field name="name">House</field>
+        <field name="sequence">1</field>
     </record>
 
     <record id="estate_property_type_flat" model="estate.property.type">
         <field name="name">Flat</field>
+        <field name="sequence">4</field>
     </record>
 
     <record id="estate_property_type_bungalow" model="estate.property.type">
         <field name="name">Bungalow</field>
+        <field name="sequence">3</field>
     </record>
 
     <record id="estate_property_type_villa" model="estate.property.type">
         <field name="name">Villa</field>
+        <field name="sequence">2</field>
     </record>
 
     <record id="estate_property_type_apartment" model="estate.property.type">
         <field name="name">Apartment</field>
+        <field name="sequence">6</field>
     </record>
 
     <record id="estate_property_type_condo" model="estate.property.type">
         <field name="name">Condo</field>
+        <field name="sequence">5</field>
     </record>
 </odoo>

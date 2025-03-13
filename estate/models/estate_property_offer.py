@@ -57,5 +57,5 @@ class estate_Property_Offer(models.Model):
                 highest_offer = max(existing_offers, key=lambda o: o.price)
                 if offer_price < highest_offer.price:
                     raise UserError(f"The offer price must be higher than the existing accepted offer of {highest_offer.price}.")
-                property_id.status = "offer_received"
+        property_id.status = "offer_received"
         return super().create(vals_list)

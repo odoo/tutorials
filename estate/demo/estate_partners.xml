@@ -31,7 +31,7 @@
     </record>
 
     <record id="res_partner_13" model="res.partner">
-        <field name="name">Sarah Connor</field>
+        <field name="name">Vraj Shah</field>
         <field name="email">sarah.connor45@example.com</field>
         <field name="mobile">(346)-872-1935</field>
         <field name="city">Los Angeles</field>
