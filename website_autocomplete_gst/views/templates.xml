@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="website_sale_address_inherit" inherit_id="website_sale.address" name="Address Management">
+        <xpath expr='//t[@t-if="website._display_partner_b2b_fields()"]' position="replace">
+        </xpath>
+    </template>
+    <template id="website_sale_billing_address_row_inherit" inherit_id="website_sale.billing_address_row">
+        <xpath expr="//div[@id='billing_address_row']" position="replace">
+            <div id="billing_address_row" class="mb-3">
+                <h4 class="text-uppercase small fs-6 fw-bold mt-3">
+                    <t groups="!account.group_delivery_invoice_address">Your address</t>
+                </h4>
+                <t groups="account.group_delivery_invoice_address">
+                    <t t-set="has_delivery" t-value="order._has_deliverable_products()"/>
+                    <div t-if="has_delivery" class="form-check form-switch mt-2 mb-3">
+                        <label id="use_vat_number_label">
+                            <input type="checkbox" id="use_vat_number" class="form-check-input" t-att-checked="use_vat_number"/>
+ want tax credit
+                        </label>
+                    </div>
+                </t>
+                <t t-set="tax_credit_enable" groups="!account.group_delivery_invoice_address" t-value="True"/>
+                <t t-set="tax_credit_enable" groups="account.group_delivery_invoice_address" t-value="False"/>
+                <div id="tax_credit_container" t-attf-class="{{'d-none' if use_vat_number and has_delivery else ''}}" t-att-data-tax-credit-enable="tax_credit_enable">
+                    <label>
+            VAT
+                        <input type="text" id="o_vat" name="vat" t-att-value="vat" class="form-control"/>
+                    </label>
+                    <label>
+            Company Name
+                        <input type="text" id="o_company_name" name="name" autocomplete="organization" class="form-control"/>
+                    </label>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
