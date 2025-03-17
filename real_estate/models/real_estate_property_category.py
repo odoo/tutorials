@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import api, fields, models
 
 class RealEstateCategory(models.Model):
     _name = "real.estate.property.category"

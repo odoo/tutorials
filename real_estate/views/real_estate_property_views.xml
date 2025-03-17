@@ -38,12 +38,14 @@
                         <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                     </header>
                     <sheet>
-                        <group>
-                            <h1 class="mb32">
-                                <field name="name" />
-                            </h1>
-                        </group>
+                        <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" invisible="status not in('cancelled')"/>
+                        <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="status not in('sold')"/>
                         <field name="image" widget="image" class="oe_avatar" />
+                        <div class="oe_title mb-3">
+                            <h1>
+                                <field name="name" placeholder="e.g. Cozy Apartment" />
+                            </h1>
+                        </div>
                         <group>
                             <group>
                                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
@@ -115,21 +117,30 @@
                 <kanban string="Property Kanban" default_group_by="property_type_id" records_draggable="false" group_create="false">
                     <field name="status" />
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div>
-                                <field name="name" class="fw-bolder mb-1" />
-                                <div class="mb-1">
-                                    <span>Expected Price: </span><field name="expected_price" />
+                                <!-- <field name="name" class="fw-bolder mb-1" /> -->
+                                <div class="row mb4" style="min-height: 60px;">
+                                    <div class="col-8">
+                                        <field name="name" class="fw-bolder" />
+                                        <div class="mb-1">
+                                            <span>Expected Price: $ </span>
+                                            <field name="expected_price" />
+                                        </div>
+                                        <div class="mb-1" t-if="record.status.raw_value == 'offer_received'">
+                                            <span>Best Price: $ </span>
+                                            <field name="best_price" />
+                                        </div>
+                                        <div class="mb-1" t-if="record.status.raw_value == 'offer_accepted' | record.status.raw_value == 'sold'">
+                                            <span>Selling Price: $ </span>
+                                            <field name="selling_price" />
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <field name="image" widget="image" />
+                                    </div>
                                 </div>
-                                <div class="mb-1" t-if="record.status.raw_value == 'offer_received'">
-                                    <span>Best Price: </span><field name="best_price" />
-                                </div>
-                                <div class="mb-1" t-if="record.status.raw_value == 'offer_accepted' | record.status.raw_value == 'sold'">
-                                    <span>Selling Price: </span><field name="selling_price" />
-                                </div>
-                                <div>
-                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
-                                </div>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                             </div>
                         </t>
                     </templates>

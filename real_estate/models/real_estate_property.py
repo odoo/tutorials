@@ -1,4 +1,4 @@
-from odoo import fields, models, api, exceptions
+from odoo import api, exceptions, fields, models
 from dateutil.relativedelta import relativedelta
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -39,7 +39,7 @@ class RealEstate(models.Model):
         ],
         default = 'new',
         string = 'Status',
-        copy = False
+        copy = False,
     )
     active = fields.Boolean(string = "Active", default = True)
     property_type_id = fields.Many2one('real.estate.property.category', string = "Property Type")
@@ -99,8 +99,12 @@ class RealEstate(models.Model):
             raise exceptions.UserError("Sold properties cannot be cancelled.")
         else:
             self.status = 'cancelled'
-            for offer in self.offer_ids:
-                offer.status = 'refused'
+            is_accepted_offers = self.offer_ids.filtered(lambda x: x.status == 'accepted')
+            if is_accepted_offers:
+                is_accepted_offers.status = 'refused'
+            else:
+                for offer in self.offer_ids:
+                    offer.status = 'refused'
         return
 
     #Python constraint to check that selling price is 90% of expected

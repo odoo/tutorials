@@ -1,5 +1,4 @@
-from odoo import fields, models, Command
-from datetime import datetime
+from odoo import Command, fields, models
 
 class RealEstatePropertyAccount(models.Model):
     _inherit = 'real.estate.property'
@@ -9,9 +8,15 @@ class RealEstatePropertyAccount(models.Model):
         moves = self.env['account.move'].create({
             'move_type': 'out_invoice',
             'partner_id': self.partner_id.id,
+            'journal_id': self.env['account.journal'].search([('type', '=', 'sale')], limit=1).id,
             'invoice_line_ids': [
                 Command.create({
                     'name': self.name,
+                    'quantity': 1.0,
+                    'price_unit': self.selling_price,
+                }),
+                Command.create({
+                    'name': '6% of selling price',
                     'quantity': 1.0,
                     'price_unit': (self.selling_price * 0.06),
                 }),

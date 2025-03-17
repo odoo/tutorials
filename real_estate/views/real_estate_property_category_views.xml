@@ -33,7 +33,7 @@
                         </div>
                         <group>
                             <h1>
-                                <field name="name" />
+                                <field name="name" placeholder="e.g. Residential" />
                             </h1>
                         </group>
                         <notebook>

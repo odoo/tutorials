@@ -1,4 +1,4 @@
-from odoo import fields, models, api, exceptions
+from odoo import api, exceptions, fields, models
 from dateutil.relativedelta import relativedelta
 from datetime import date
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -24,7 +24,8 @@ class RealEstatePropertyOffer(models.Model):
 
     #Sql constraints to check price
     _sql_constraints = [
-        ('check_offers_price', 'CHECK(price >= 0)', 'A property offer price must be strictly positive')
+        ('check_offers_price', 'CHECK(price > 0)', 'A property offer price must be strictly positive'),
+        ('check_validity', 'CHECK(validity >= 0)', 'The deadline date must not be in the past')
     ]
 
     #date_deadline is automatically calculated 
@@ -64,4 +65,4 @@ class RealEstatePropertyOffer(models.Model):
                     raise exceptions.UserError(f"Offer must be higher than {property_id.best_price:.2f}")
             if property_id.status == 'new':
                 property_id.status = 'offer_received'
-            return super().create(vals)
+        return super().create(vals_list)
