@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sale_order_view_last_product_sold" model="ir.ui.view">
+        <field name="name">sale.order.view.last.product.sold</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list//field[@name='product_id']" position="attributes">
+                <attribute name="context">{
+                    'partner_id': parent.partner_id,
+                    'quantity': product_uom_qty,
+                    'pricelist': parent.pricelist_id,
+                    'uom': product_uom,
+                    'company_id': parent.company_id,
+                    'default_lst_price': price_unit,
+                    'order_type': 'sale'
+                }</attribute>
+            </xpath>
+            <xpath expr="//list//field[@name='product_template_id']" position="attributes">
+                <attribute name="context">{
+                    'partner_id': parent.partner_id,
+                    'quantity': product_uom_qty,
+                    'pricelist': parent.pricelist_id,
+                    'uom': product_uom,
+                    'company_id': parent.company_id,
+                    'default_lst_price': price_unit,
+                    'order_type': 'sale'
+                }</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
