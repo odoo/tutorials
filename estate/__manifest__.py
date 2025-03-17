@@ -7,13 +7,16 @@
     'depends': ['base'],
     'license':'LGPL-3',
     'data': [
-        # Add your XML/CSV files if any
         'security/ir.model.access.csv',
+        "report/estate_property_offer_templates.xml",
+        "report/estate_res_user_offer_templates.xml",
+        "report/estate_property_sold_offer_templates.xml",
+        "report/estate_property_report_action.xml",
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_views.xml',
-        'views/estate_reUser_views.xml',
+        'views/estate_res_user_views.xml',
         'views/estate_menus.xml',
     ],
     'demo': [
@@ -23,6 +26,6 @@
         'demo/estate_property_demo.xml',
         'demo/estate_property_offer_demo.xml',
     ],
-    'installable': True,  # This is required!
+    'installable': True,
     'application': True,
 }

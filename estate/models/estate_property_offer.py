@@ -1,7 +1,5 @@
 from odoo import models, fields, api, exceptions
 from datetime import timedelta
-from odoo.exceptions import UserError 
-
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -20,6 +18,11 @@ class EstatePropertyOffer(models.Model):
 
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+
+    _sql_constraints = [
+        ("check_offer_price", "CHECK(price > 0)", "The offer price must be strictly positive."),
+        ("check_validity", "CHECK(validity >= 0)", "The validity(deadline) must be strictly positive."),
+    ]
 
     # set validity and date deadline dependent eachother and fill automatically
     @api.depends("create_date", "validity", "date_deadline")
@@ -43,29 +46,23 @@ class EstatePropertyOffer(models.Model):
             for offer in record.property_id.offer_ids:
                 if offer != record:
                     offer.status = "refused"
+        return True
     
     def action_refuse_offer(self):
         for record in self:
             record.status = "refused"
-    
-    # constraints for offer 
-    _sql_constraints = [
-        ("check_offer_price", "CHECK(price > 0)", "The offer price must be strictly positive.")
-    ]
+        return True
 
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             property_obj = self.env["estate.property"].browse(vals['property_id'])
-
-            offer_price = vals['price']
-            max_price = 0
-            for offer_id in property_obj.offer_ids:
-                current_price = self.env["estate.property.offer"].browse(offer_id.id).price
-                if current_price > max_price:
-                    max_price = current_price
-            if max_price > offer_price:
+            offer_prices = property_obj.offer_ids.mapped('price') # list of all existing offer price
+            max_price = max(offer_prices , default=0)  # fatch max price from price list and if null then 0
+            offer_price = vals['price']   # price of offer which try to create
+            if offer_price < max_price:
                 raise exceptions.UserError("You cannot create an offer lower than an existing offer.")
             
-            property_obj.state = 'offer_received'
-        return super(EstatePropertyOffer, self).create(vals)
+            property_obj.write({"state": "offer_received"})
+        return super().create(vals_list)
+    

@@ -1,4 +1,4 @@
-from odoo import models, fields, api, exceptions 
+from odoo import api,exceptions,fields, models 
 from odoo.exceptions import UserError 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -91,6 +91,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("A canceled property cannot be sold!")
+            elif record.state == "new":
+                raise UserError("Offer not available for this property!")
             elif record.state != "offer_accepted":
                 raise UserError("Accept any offer before sold!")
             record.state = "sold"
@@ -99,8 +101,11 @@ class EstateProperty(models.Model):
     # action for property cancelled button
     def action_do_cencelled(self):
         for record in self:
-            if record.state == "sold":
+            if record.state == "sold":  # sold offer cannot cancelled
                 raise UserError("A sold property cannot be canceled!")
+            #refuse all offers before cancel property
+            for offer in record.offer_ids:
+                offer.status = "refused"
             record.state = "cancelled"
         return True
 
@@ -119,19 +124,10 @@ class EstateProperty(models.Model):
                     "The selling price cannot be lower than 90% of the expected price!"
                 )
             
-    # add dependency to change state when offer received
-    # @api.depends("offer_ids")
-    # def _compute_state_offer_received(self):
-    #     for record in self:
-    #         if record.offer_ids:
-    #             record.state = "offer_received"
-    #         else:
-    #             record.state = "new"
-
-    
-    @api.ondelete(at_uninstall=False)
-    def _check_property_state(self): #check condition first when property delete
+    # delete property only if in stage new and cancelled
+    def unlink(self):
         for property in self:
-            if property.state not in ['new', 'cancelled']:
+            if property.state not in ['new' , 'cancelled']:
                 raise exceptions.UserError("You cannot delete a property that is not in 'New' or 'Cancelled' state.")
-            
+        return super().unlink()
+    
