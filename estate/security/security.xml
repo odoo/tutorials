@@ -4,32 +4,14 @@
         <record id="estate_group_user" model="res.groups">
             <field name="name">Agent</field>
             <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+            <field name="users" eval="[(4, ref('base.default_user'))]"/>
         </record>
 
         <record id="estate_group_manager" model="res.groups">
             <field name="name">Manager</field>
             <field name="category_id" ref="base.module_category_real_estate_brokerage" />
             <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
-        </record>
-
-        <record id="estate_manager_group_access" model="ir.model.access">
-            <field name="name">estate.manager.group.access</field>
-            <field name="model_id" ref="base.model_res_partner" />
-            <field name="group_id" ref="estate_group_manager" />
-            <field name="perm_read" eval="1" />
-            <field name="perm_write" eval="1" />
-            <field name="perm_create" eval="1" />
-            <field name="perm_unlink" eval="1" />
-        </record>
-
-        <record id="estate_manager_group_access_property" model="ir.model.access">
-            <field name="name">estate.manager.group.access.property</field>
-            <field name="model_id" ref="estate.model_estate_property" />
-            <field name="group_id" ref="estate_group_manager" />
-            <field name="perm_read" eval="1" />
-            <field name="perm_write" eval="1" />
-            <field name="perm_create" eval="1" />
-            <field name="perm_unlink" eval="1" />
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
     </data>
 </odoo>

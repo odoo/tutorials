@@ -49,9 +49,9 @@
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
             <field name="property_type_id" ref="residential"/>
-            <field name="offer_ids"
+            <!-- <field name="offer_ids"
                 eval="[Command.create({'price':180000, 'partner_id':ref('base.res_partner_1'), 'validity':14}),
-         Command.create({'price':190000, 'partner_id':ref('base.res_partner_2'), 'validity':14})]"/>
+         Command.create({'price':190000, 'partner_id':ref('base.res_partner_2'), 'validity':14})]"/> -->
         </record>
     </data>
 </odoo>

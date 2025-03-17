@@ -6,6 +6,7 @@
     """,
     "depends": ["base"],
     "data": [
+        "security/security.xml",
         "security/ir.model.access.csv",
         "views/estate_property_view.xml",
         "views/estate_property_offer_view.xml",
@@ -16,9 +17,9 @@
         "data/estate.property.type.csv",
         "demo/estate_property_demo.xml",
         "demo/estate_property_offer_demo.xml",
-        "security/security.xml",
     ],
-    "category":"Real Estate/Brokerage",
+    "category": "Real Estate/Brokerage",
     "application": True,
     "license": "AGPL-3",
 }
+        
