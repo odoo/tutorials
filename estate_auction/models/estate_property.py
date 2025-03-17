@@ -1,6 +1,7 @@
+from datetime import datetime
+
 from odoo import api, Command, fields, models
 from odoo.exceptions import UserError
-from datetime import datetime
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
@@ -15,11 +16,11 @@ class EstateProperty(models.Model):
     )
 
     auction_state = fields.Selection([
-        ('template', 'Template'),
-        ('auction', 'Auction'),
-        ('done', 'Done')
+        ('template', "Template"),
+        ('auction', "Auction"),
+        ('done', "Done")
     ],
-    string='Auction State',
+    string="Auction State",
     default='template',
     required=True
     )
@@ -45,7 +46,7 @@ class EstateProperty(models.Model):
             if(datetime.now() > property.auction_end_date):
                 property.auction_state = 'done'
                 if property.offer_ids:
-                    highest_offer = max(property.offer_ids, key=lambda offer:offer.price)
+                    highest_offer = next(filter(lambda offer: offer.price == property.auction_highest_offer, property.offer_ids), None)
                     template = self.env.ref('estate_auction.auction_result_email_template')
                     property.write({
                         'buyer_id' : highest_offer.partner_id,
@@ -62,7 +63,6 @@ class EstateProperty(models.Model):
             if not record.auction_end_date:
                 raise UserError("Please Enter Auction End Date First")
             record.auction_state = 'auction'
-
 
     def action_sold(self):
         invoice = super().action_sold()
