@@ -1,0 +1,146 @@
+<odoo>
+    <record id="hr_contract_form_in_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.form.in.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="l10n_in_hr_payroll.hr_contract_form_in_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[field[@name='l10n_in_driver_salay']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[field[@name='l10n_in_provident_fund']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//group[@name='salary_info']" position="inside">
+                <group name="salary_componensts" string="Salary Components" invisible="country_code != 'IN'">
+                    <label for="l10n_in_basic_salary" />
+                    <div class="o_row mw-80" name="l10n_in_basic_salary">
+                        <field name="l10n_in_basic_salary"/>
+                        <div>₹ / month</div>
+                        <field name="l10n_in_basic_salary_percent" groups="base.group_no_one"/>
+                        <div groups="base.group_no_one">%</div>
+                    </div>
+
+                    <label for="l10n_in_house_rent_allowance" />
+                    <div class="o_row mw-80" name="l10n_in_house_rent_allowance">
+                        <field name="l10n_in_house_rent_allowance"/>
+                        <div class="mb-2">₹ / month</div>
+                        <field name="l10n_in_house_rent_allowance_percent" groups="base.group_no_one"/>
+                        <div groups="base.group_no_one">%</div>
+                    </div>
+
+                    <label for="l10n_in_standard_allowance" />
+                    <div class="o_row mw-80" name="l10n_in_standard_allowance">
+                        <field name="l10n_in_standard_allowance"/>
+                        <div class="mb-2">₹ / month</div>
+                        <field name="l10n_in_standard_allowance_percent" groups="base.group_no_one"/>
+                        <div groups="base.group_no_one">%</div>
+                    </div>
+
+                    <label for="l10n_in_performance_bonus" />
+                    <div class="o_row mw-80" name="l10n_in_performance_bonus">
+                        <field name="l10n_in_performance_bonus"/>
+                        <div class="mb-2">₹ / month</div>
+                        <field name="l10n_in_performance_bonus_percent" groups="base.group_no_one"/>
+                        <div groups="base.group_no_one">%</div>
+                    </div>
+
+                    <label for="l10n_in_leave_travel_allowance" />
+                    <div class="o_row mw-80" name="l10n_in_leave_travel_allowance">
+                        <field name="l10n_in_leave_travel_allowance"/>
+                        <div class="mb-2">₹ / month</div>
+                        <field name="l10n_in_leave_travel_allowance_percent" groups="base.group_no_one"/>
+                        <div groups="base.group_no_one">%</div>
+                    </div>
+
+                    <label for="l10n_in_leave_allowance" />
+                    <div class="o_row mw-80" name="l10n_in_leave_allowance">
+                        <field name="l10n_in_leave_allowance"/>
+                        <div class="mb-2">₹ / month</div>
+                        <field name="l10n_in_leave_allowance_percent" groups="base.group_no_one"/>
+                        <div groups="base.group_no_one">%</div>
+                    </div>
+
+                    <label for="l10n_in_leave_days" />
+                    <div class="o_row mw-80" name="l10n_in_leave_days">
+                        <field name="l10n_in_leave_days"/>
+                        <div class="mb-2">days / month</div>
+                    </div>
+
+                    <label for="l10n_in_gratuity" />
+                    <div class="o_row mw-80" name="l10n_in_gratuity">
+                        <field name="l10n_in_gratuity"/>
+                        <div class="mb-2">₹ / month</div>
+                        <field name="l10n_in_gratuity_percent" groups="base.group_no_one"/>
+                        <div groups="base.group_no_one">%</div>
+                    </div>
+
+                    <label for="l10n_in_supplementary_allowance" />
+                    <div class="o_row mw-80" name="l10n_in_supplementary_allowance">
+                        <field name="l10n_in_supplementary_allowance"/>
+                        <div class="mb-2">₹ / month</div>
+                        <field name="l10n_in_supplementary_allowance_percent" groups="base.group_no_one"/>
+                        <div groups="base.group_no_one">%</div>
+                    </div>
+                </group>
+                <div id="deductions_container" invisible="country_code != 'IN'">
+                    <group name="tax_deductions" string="Tax Deductions">
+                        <label for="l10n_in_tds"/>
+                        <div class="d-flex gap-3">
+                            <field name="l10n_in_tds"/>
+                            <button name="%(l10n_in_hr_payroll.action_tds_calculation)d" string="TDS Calculator" type="action" class="w-75 btn btn-secondary"/>
+                        </div>
+                    </group>
+                    <group name="other_deductions" string="Other Deductions">
+                        <label for="l10n_in_pf_employee_contribution" string="PF Employee Contribution" />
+                        <div class="o_row mw-60" name="l10n_in_pf_employee_contribution">
+                            <field name="l10n_in_pf_employee_contribution"/>
+                            <div class="mb-2">%</div>
+                        </div>
+
+                        <label for="l10n_in_pf_employer_contribution" string="PF Employer Contribution" />
+                        <div class="o_row mw-60" name="l10n_in_pf_employer_contribution">
+                            <field name="l10n_in_pf_employer_contribution"/>
+                            <div class="mb-2">%</div>
+                        </div>
+
+                        <label for="l10n_in_professional_tax"/>
+                        <div class="o_row mw-60" name="l10n_in_professional_tax">
+                            <field name="l10n_in_professional_tax"/>
+                            <div class="mb-2">₹ / month</div>
+                        </div>
+
+                        <label for="l10n_in_esic_employee_contribution" string="ESIC Employee Contribution" />
+                        <div class="o_row mw-60" name="l10n_in_esic_employee_contribution">
+                            <field name="l10n_in_esic_employee_contribution"/>
+                            <div class="mb-2">%</div>
+                        </div>
+
+                        <label for="l10n_in_esic_employer_contribution" string="ESIC Employer Contribution" />
+                        <div class="o_row mw-60" name="l10n_in_esic_employer_contribution">
+                            <field name="l10n_in_esic_employer_contribution"/>
+                            <div class="mb-2">%</div>
+                        </div>
+
+                        <label for="l10n_in_lwf_employee_contribution" string="LWF Employee Contribution" />
+                        <div class="o_row mw-60" name="l10n_in_lwf_employee_contribution">
+                            <field name="l10n_in_lwf_employee_contribution"/>
+                            <div class="mb-2">₹ / month</div>
+                        </div>
+
+                        <label for="l10n_in_lwf_employer_contribution" string="LWF Employer Contribution" />
+                        <div class="o_row mw-60" name="l10n_in_lwf_employer_contribution">
+                            <field name="l10n_in_lwf_employer_contribution"/>
+                            <div class="mb-2">₹ / month</div>
+                        </div>
+
+                        <label for="l10n_in_other_deduction" />
+                        <div class="o_row mw-60" name="l10n_in_other_deduction">
+                            <field name="l10n_in_other_deduction"/>
+                            <div class="mb-2">₹ / month</div>
+                        </div>
+                    </group>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

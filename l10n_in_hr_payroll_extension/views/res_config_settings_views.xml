@@ -1,0 +1,163 @@
+<odoo>
+    <record id="res_config_settings_view_form_inherited" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherited.l10n_in_hr_payroll</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="l10n_in_hr_payroll.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='hr_payroll_accountant']" position="inside">
+                <setting string="Organisation Tax Details"
+                    help="PAN and TAN number's details, used to generate the TDS reports"
+                    invisible="company_country_code != 'IN'">
+                    <field name="l10n_in_org_tax_details" />
+                    <group class="mt16" invisible="not l10n_in_org_tax_details">
+                        <field name="l10n_in_org_pan_number" />
+                        <field name="l10n_in_org_tan_number" />
+                        <field name="l10n_in_org_tds_circle" />
+                    </group>
+                </setting>
+            </xpath>
+            <xpath expr="//div[@id='l10n_in_hr_payroll']" position="after">
+                <div class="row o_settings_container" invisible="company_country_code != 'IN'">
+                    <div class="col-lg-6 col-12 o_setting_box" id="epf_section">
+                        <div class="o_setting_left_pane">
+                            <field name="l10n_in_is_provident_fund" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="l10n_in_is_provident_fund"
+                                string="Employee's Provident Fund" />
+                            <group class="mt16" invisible="not l10n_in_is_provident_fund">
+                                <field name="l10n_in_employer_identification" />
+
+                                <label for="l10n_in_pf_employee_contribution"/>
+                                <div class="o_row">
+                                    <field name="l10n_in_pf_employee_contribution" />
+                                    <div>%</div>
+                                </div>
+
+                                <label for="l10n_in_pf_employer_contribution"/>
+                                <div class="o_row">
+                                    <field name="l10n_in_pf_employer_contribution" />
+                                    <div>%</div>
+                                </div>
+                            </group>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 o_setting_box" id="esic_section">
+                        <div class="o_setting_left_pane">
+                            <field name="l10n_in_is_esic" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="l10n_in_is_esic"
+                                string="Employee's State Insurance Corporation" />
+                            <group class="mt16" invisible="not l10n_in_is_esic">
+                                <field name="l10n_in_esic_ip" />
+
+                                <label for="l10n_in_esic_employee_contribution"/>
+                                <div class="o_row">
+                                    <field name="l10n_in_esic_employee_contribution" />
+                                    <div>%</div>
+                                </div>
+
+                                <label for="l10n_in_esic_employer_contribution"/>
+                                <div class="o_row">
+                                    <field name="l10n_in_esic_employer_contribution" />
+                                    <div>%</div>
+                                </div>
+                            </group>
+                        </div>
+                    </div>
+                </div>
+                <div class="row o_settings_container" invisible="company_country_code != 'IN'">
+                    <div class="col-lg-6 col-12 o_setting_box" id="pt_section">
+                        <div class="o_setting_left_pane">
+                            <field name="l10n_in_is_professional_tax" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="l10n_in_is_professional_tax" string="Professional Tax" />
+                            <group class="mt16" invisible="not l10n_in_is_professional_tax">
+                                <field name="l10n_in_professional_tax_number" />
+                            </group>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 o_setting_box" id="lwf_section">
+                        <div class="o_setting_left_pane">
+                            <field name="l10n_in_is_lwf" />
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="l10n_in_is_lwf" string="Labour Welfare Fund" />
+                            <group class="mt16" invisible="not l10n_in_is_lwf">
+                                <label for="l10n_in_lwf_employee_contribution"/>
+                                <div class="o_row mw-80">
+                                    <field name="l10n_in_lwf_employee_contribution" />
+                                    <div>₹</div>
+                                </div>
+
+                                <label for="l10n_in_lwf_employer_contribution"/>
+                                <div class="o_row mw-80">
+                                    <field name="l10n_in_lwf_employer_contribution" />
+                                    <div>₹</div>
+                                </div>
+                            </group>
+                        </div>
+                    </div>
+                </div>
+                <div class="row o_settings_container" id="salary_components_section" invisible="company_country_code != 'IN'">
+                    <div class="col-lg-8 col-12 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <span class="fw-bold fs-4">Salary Components</span>
+                            <group name="l10n_in_salary_components" class="mt16">
+                                <label for="default_l10n_in_basic_salary_percent"/>
+                                <div class="o_row mw-80" name="default_l10n_in_basic_salary_percent">
+                                    <field name="default_l10n_in_basic_salary_percent" nolabel="1"/>
+                                    <div>%</div>
+                                </div>
+
+                                <label for="default_l10n_in_house_rent_allowance_percent" />
+                                <div class="o_row mw-80" name="default_l10n_in_house_rent_allowance_percent">
+                                    <field name="default_l10n_in_house_rent_allowance_percent" nolabel="1"/>
+                                    <div class="mb-2">%</div>
+                                </div>
+
+                                <label for="default_l10n_in_standard_allowance" />
+                                <div class="o_row mw-80" name="default_l10n_in_standard_allowance">
+                                    <field name="default_l10n_in_standard_allowance" nolabel="1"/>
+                                    <div class="mb-2">%</div>
+                                </div>
+
+                                <label for="default_l10n_in_performance_bonus_percent" />
+                                <div class="o_row mw-80" name="default_l10n_in_performance_bonus_percent">
+                                    <field name="default_l10n_in_performance_bonus_percent" nolabel="1"/>
+                                    <div class="mb-2">%</div>
+                                </div>
+
+                                <label for="default_l10n_in_leave_travel_allowance_percent" />
+                                <div class="o_row mw-80" name="default_l10n_in_leave_travel_allowance_percent">
+                                    <field name="default_l10n_in_leave_travel_allowance_percent" nolabel="1"/>
+                                    <div class="mb-2">₹ / month</div>
+                                </div>
+
+                                <label for="default_l10n_in_leave_days" />
+                                <div class="o_row mw-80" name="default_l10n_in_leave_days">
+                                    <field name="default_l10n_in_leave_days" nolabel="1"/>
+                                    <div class="mb-2">days / month</div>
+                                </div>
+
+                                <label for="default_l10n_in_gratuity" />
+                                <div class="o_row mw-80" name="default_l10n_in_gratuity">
+                                    <field name="default_l10n_in_gratuity" nolabel="1"/>
+                                    <div class="mb-2">₹ / month</div>
+                                </div>
+
+                                <label for="default_l10n_in_supplementary_allowance" />
+                                <div class="o_row mw-80" name="default_l10n_in_supplementary_allowance">
+                                    <field name="default_l10n_in_supplementary_allowance" nolabel="1"/>
+                                    <div class="mb-2">₹ / month</div>
+                                </div>
+                            </group>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
