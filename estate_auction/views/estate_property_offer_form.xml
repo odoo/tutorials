@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_offer_form" name="Property Offer Form">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="mb-0">Add Offer for <t t-out="property.name"/></h3>
+                    </div>
+                    <div class="card-body">
+                        <form t-attf-action="/estate/property/#{property.id}/offer/submit" method="post" >
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div>
+                                <label for="partner_id" class="form-label">Name</label>
+                                <select id="partner_id" name="partner_id" required="required" class="form-select" t-att-value="partner.id">
+                                    <option t-att-value="partner.id" t-att-selected="true"><t t-out="partner.name"/></option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="amount" class="form-label">Amount</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" id="amount" name="amount" class="form-control" required="required"/>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <a t-attf-href="/property/#{property.id}" class="btn btn-secondary">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_offer_confirmation" name="Property Offer Confirmation">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <i class="fa fa-check-circle text-success fa-4x mb-3"></i>
+                        <h2 class="mb-3">Congratulations!</h2>
+                        <p class="lead">Your offer has been successfully placed. We will notify you of the results as soon as the auction concludes.</p>
+                        <div class="mt-4">
+                            <a t-attf-href="/property/#{property.id}" class="btn btn-primary">Return to Property</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='property_type_id']" position="before">
+                <field name="sale_type" widget="radio" options="{'horizontal': true}" readonly="status != 'new' or auction_started"/>
+            </xpath>
+            <xpath expr="//group[@name='name']" position="inside">
+                <div>
+                    <group style="float: right; margin-right: 10px;" invisible="sale_type != 'auction'">
+                        <h2><field name="auction_status" widget="auction_status_selection_form" class="o_task_state_widget" /></h2>
+                    </group>
+                </div>
+            </xpath>
+            <xpath expr="//button[@name='action_property_sold']" position="before">
+                <button name="action_start_auction" type="object" string="Start Auction" class="btn-primary"
+                        invisible="sale_type != 'auction' or status in ['sold', 'cancelled'] or auction_started"/>
+                <button string="Auction Started" class="btn-secondary"
+                        invisible="sale_type != 'auction' or status in ['sold', 'cancelled'] or not auction_started" disabled="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_property_sold']" position="attributes">
+                <attribute name="invisible">sale_type == 'auction'</attribute>
+            </xpath>
+            <xpath expr="//group[@name='description']" position="inside">
+                <group string="Auction Details" invisible="sale_type != 'auction'">
+                    <field name="auction_end_time" readonly="status == 'sold'"/>
+                    <field name="highest_offer" readonly="1"/>
+                    <field name="highest_bidder_id" readonly="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='offer_ids']" position="attributes">
+                <attribute name="readonly">status in ['offer_accepted', 'sold', 'cancelled'] or sale_type == 'auction' and not auction_started</attribute>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+               <div class="oe_button_box" name="button_box">
+                    <button name="action_generate_invoice" type="object" class="oe_stat_button" invisible="status != 'sold'">
+                        <div class="o_stat_info">
+                            <span class="o_stat_value" style="font-size: 14px;">
+                                <span class="fa fa-file-text me-1" style="font-size: 18px;"/>
+                                Invoice
+                            </span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+            <field name="name">estate.property.kanban.inherited</field>
+            <field name="model">estate.property</field>
+            <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@t-if='record.selling_price.raw_value']" position="after">
+                <progressbar field="auction_status" colors='{"sold": "success", "auction": "warning", "template": "info"}' invisible="sale_type != 'auction'"/>
+                    <div class="d-flex justify-content-end">
+                        <field name="auction_status" widget="auction_status_selection" invisible="sale_type != 'auction'"/>
+                    </div>
+                </xpath>
+            </field>
+    </record>
+</odoo>

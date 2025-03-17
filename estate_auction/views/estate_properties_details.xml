@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_details_extension" inherit_id="estate.property_details_template">
+        <xpath expr="//div[hasclass('d-none', 'd-lg-block')]" position="inside">
+            <t t-if="property.sale_type == 'auction' and property.auction_started">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h1 class="property-title"><t t-out="time_left"/></h1>
+                    <h4><span id="auction-timer" class="text-danger fw-bold"></span></h4>
+                </div>
+                <script t-if="property.auction_end_time">
+                    const timerElement = document.getElementById("auction-timer");
+                    if (timerElement) {
+                        const endTime = Date.parse("<t t-esc='property.auction_end_time.isoformat()'/>"+"Z");
+                        function updateCountdown() {
+                            const timeLeft = endTime - Date.now();
+                            if (timeLeft &gt; 0) {
+                                const days = Math.floor(timeLeft / 86400000);
+                                const hours = Math.floor((timeLeft % 86400000) / 3600000);
+                                const minutes = Math.floor((timeLeft % 3600000) / 60000);
+                                const seconds = Math.floor((timeLeft % 60000) / 1000);
+                                timerElement.innerText = `${days}d ${hours}h ${minutes}m ${seconds}s left`;
+                            } else {
+                                timerElement.innerText = "Auction Ended";
+                                timerElement.classList.add("text-muted");
+                                clearInterval(interval);
+                            }
+                        }
+                        updateCountdown();
+                        const interval = setInterval(updateCountdown, 1000);
+                    }
+                </script>
+                <div class="mt-3 mb-3 d-flex justify-content-end" t-if="property.auction_started and property.auction_status == 'auction'">
+                    <a t-attf-href="/estate/property/#{property.id}/offer" class="btn btn-primary">
+                        <i class="fa fa-gavel me-1"></i> Place Bid
+                    </a>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
