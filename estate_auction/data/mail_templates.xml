@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Email template for accepted offers -->
+    <record id="email_template_offer_accepted" model="mail.template">
+        <field name="name">Property Offer: Accepted</field>
+        <field name="model_id" ref="estate_auction.model_estate_property_offer"/>
+        <field name="subject">Congratulations! Your offer for ${object.property_id.name} has been accepted</field>
+        <field name="email_to">${object.partner_id.email}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear ${object.partner_id.name},
+                    <br/><br/>
+                    We are pleased to inform you that your offer of <strong>${format_amount(object.price, object.company_id.currency_id)}</strong> for the property <strong>${object.property_id.name}</strong> has been accepted.
+                    <br/><br/>
+                    Our team will contact you shortly to proceed with the next steps.
+                    <br/><br/>
+                    Thank you for your interest in our properties.
+                    <br/><br/>
+                    Best regards,
+                    <br/>
+                    The Real Estate Team
+                </p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- Email template for rejected offers -->
+    <record id="email_template_offer_rejected" model="mail.template">
+        <field name="name">Property Offer: Rejected</field>
+        <field name="model_id" ref="estate_auction.model_estate_property_offer"/>
+        <field name="subject">Update on your offer for ${object.property_id.name}</field>
+        <field name="email_to">${object.partner_id.email}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear ${object.partner_id.name},
+                    <br/><br/>
+                    We regret to inform you that your offer of <strong>${format_amount(object.price, object.company_id.currency_id)}</strong> for the property <strong>${object.property_id.name}</strong> has not been accepted.
+                    <br/><br/>
+                    We appreciate your interest in our properties and encourage you to explore other listings on our website.
+                    <br/><br/>
+                    Thank you for your understanding.
+                    <br/><br/>
+                    Best regards,
+                    <br/>
+                    The Real Estate Team
+                </p>
+            </div>
+        </field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>
