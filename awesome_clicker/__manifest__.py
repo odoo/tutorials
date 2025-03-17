@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# some not so great changes to make a first commit
 {
     'name': "Awesome Clicker",
 
