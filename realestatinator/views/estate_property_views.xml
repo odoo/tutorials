@@ -1,8 +1,82 @@
 <?xml version="1.0"?>
 <odoo>
 	<record id="estate_property_model_action" model="ir.actions.act_window">
-	    <field name="name">Estate Property Model Action</field>
-	    <field name="res_model">estate_property</field>
-	    <field name="view_mode">kanban,form</field>
+		<field name="name">Estate Property Model Action</field>
+		<field name="res_model">estate_property</field>
+		<field name="view_mode">list,form</field>
+	</record>
+	<record id="estate_property_model_list" model="ir.ui.view">
+		<field name="name">estate_property_list</field>
+		<field name="model">estate_property</field>
+		<field name="arch" type="xml">
+			<list string='Properties'>
+				<field name='name'/>
+				<field name='postcode'/>
+				<field name='bedrooms'/>
+				<field name='living_area'/>
+				<field name='expected_price'/>
+				<field name='selling_price'/>
+				<field name='date_availability'/>
+			</list>
+		</field>
+	</record>
+	<record id='estate_property_model_form' model='ir.ui.view'>
+		<field name="name">estate_property_list</field>
+		<field name="model">estate_property</field>
+		<field name="arch" type="xml">
+			<form>
+				<h1><field name='name'/></h1>
+				<group>
+					<group>
+						<field name='postcode'/>
+						<field name='date_availability'/>
+					</group>
+					<group>
+						<field name='expected_price'/>
+						<field name='selling_price'/>
+					</group>
+					
+				</group>
+				<notebook>
+					<page string='Description'>
+						<group>
+							<field name='description'/>
+							<field name='bedrooms'/>
+							<field name='living_area'/>
+							<field name='facades'/>
+							<field name='garden'/>
+							<field name='garage'/>
+							<field name='garden_area'/>
+							<field name='garden_orientation'/>
+						</group>
+					</page>
+					<page string='Other'>
+						<group>
+							<field name='state'/>
+							<field name='active'/>
+						</group>
+					</page>
+				</notebook>
+			</form>
+		</field>
+	</record>
+	<record id="estate_property_model_search" model="ir.ui.view">
+		<field name="name">estate_property_list</field>
+		<field name="model">estate_property</field>
+		<field name="arch" type="xml">
+			<search string='Search Properties'>
+				<field name='name'/>
+				<field name='postcode'/>
+				<field name='bedrooms'/>
+				<field name='living_area'/>
+				<field name='expected_price'/>
+				<field name='facades'/>
+				<separator/>
+				<filter string="Include archived" name="archived" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
+				<filter string="Available Properties" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+				<separator/>
+				<filter string='Postcode' name='postcode' context="{'group_by':'postcode', 'residual_visible':True}"/>
+			</search>
+		</field>
 	</record>
 </odoo>
