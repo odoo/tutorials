@@ -20,15 +20,31 @@ class ProductPricelistItem(models.Model):
 
     @api.model
     def _get_first_suitable_recurring_pricing(self, product, plan=None, pricelist=None):
-        """ Get a suitable pricing for given product and pricelist.
-        Note: model method
-        """
+        """ Get a suitable pricing for given product and pricelist."""
         product_sudo = product.sudo()
         is_product_template = product_sudo._name == "product.template"
         available_pricings = product_sudo.subscription_pricelist_rule_ids
         first_pricing = self.env['product.pricelist.item']
         for pricing in available_pricings:
             if plan and pricing.plan_id != plan:
+                continue
+            if pricing.pricelist_id == pricelist and (is_product_template or pricing._applies_to(product_sudo)):
+                return pricing
+            if not first_pricing and pricing.pricelist_id and (is_product_template or pricing._applies_to(product_sudo)):
+                # If price list and current pricing is not part of it,
+                # We store the first one to return if not pricing matching the price list is found.
+                first_pricing = pricing
+        return first_pricing
+
+    @api.model
+    def _get_first_suitable_rental_pricing(self, product, recurrence_id=None, pricelist=None):
+        """ Get a suitable pricing for given product and pricelist."""
+        product_sudo = product.sudo()
+        is_product_template = product_sudo._name == "product.template"
+        available_pricings = product_sudo.rental_pricelist_rule_ids
+        first_pricing = self.env['product.pricelist.item']
+        for pricing in available_pricings:
+            if recurrence_id and pricing.recurrence_id != recurrence_id:
                 continue
             if pricing.pricelist_id == pricelist and (is_product_template or pricing._applies_to(product_sudo)):
                 return pricing
@@ -92,6 +108,7 @@ class ProductPricelistItem(models.Model):
         """ Check whether current pricing applies to given product.
         :param product.product product:
         :return: true if current pricing is applicable for given product, else otherwise.
+        :rtype: bool
         """
         self.ensure_one()
         return (
@@ -132,12 +149,21 @@ class ProductPricelistItem(models.Model):
         if self.compute_price == 'fixed':
             price = convert(self.fixed_price)
         elif self.compute_price == 'percentage':
-            base_price = self._compute_base_price(product, quantity, uom, date, currency, plan_id=plan_id) if plan_id \
-                    else self._compute_base_price(product, quantity, uom, date, currency)
+            if plan_id:
+                base_price = self._compute_base_price(product, quantity, uom, date, currency, plan_id=plan_id)
+            elif start_date and end_date:
+                base_price = self._compute_base_price(product, quantity, uom, date, currency, recurrence_id=self.recurrence_id)
+            else:
+                base_price = self._compute_base_price(product, quantity, uom, date, currency)
             price = (base_price - (base_price * (self.percent_price / 100))) or 0.0
         elif self.compute_price == 'formula':
-            base_price = self._compute_base_price(product, quantity, uom, date, currency, plan_id=plan_id) if plan_id \
-                    else self._compute_base_price(product, quantity, uom, date, currency)
+            if plan_id:
+                base_price = self._compute_base_price(product, quantity, uom, date, currency, plan_id=plan_id)
+            elif start_date and end_date:
+                base_price = self._compute_base_price(product, quantity, uom, date, currency, recurrence_id=self.recurrence_id)
+            else:
+                base_price = self._compute_base_price(product, quantity, uom, date, currency)
+                
             # complete formula
             price_limit = base_price
             price = (base_price - (base_price * (self.price_discount / 100))) or 0.0
@@ -158,11 +184,21 @@ class ProductPricelistItem(models.Model):
         return price
 
     def _compute_base_price(self, product, quantity, uom, date, currency, plan_id=None, recurrence_id=None):
+        """override method to compute base price for subscription and rental products."""
         currency.ensure_one()
         if plan_id and product.recurring_invoice:
             rule_base = self.base or 'list_price'
             if rule_base == 'pricelist' and self.base_pricelist_id:
                 price = self._get_first_suitable_recurring_pricing(product, plan_id, self.base_pricelist_id)._compute_price(product, quantity, uom, date)
+                src_currency = self.base_pricelist_id.currency_id
+                if src_currency != currency:
+                    price = src_currency._convert(price, currency, self.env.company, date, round=False)
+                return price
+        elif recurrence_id and product.rent_ok:
+            rule_base = self.base or 'list_price'
+            if rule_base == 'pricelist' and self.base_pricelist_id:
+                breakpoint()
+                price = self._get_first_suitable_rental_pricing(product, recurrence_id, self.base_pricelist_id)._compute_price(product, quantity, uom, date)
                 src_currency = self.base_pricelist_id.currency_id
                 if src_currency != currency:
                     price = src_currency._convert(price, currency, self.env.company, date, round=False)

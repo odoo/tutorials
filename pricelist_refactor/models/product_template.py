@@ -1,4 +1,13 @@
+import math
 from odoo import fields, models
+
+PERIOD_RATIO = {
+    'hour': 1,
+    'day': 24,
+    'week': 24 * 7,
+    'month': 24 * 31,
+    'year': 24 * 31 * 12,
+}
 
 
 class ProductTemplate(models.Model):
@@ -17,30 +26,29 @@ class ProductTemplate(models.Model):
         ]
     )
     subscription_pricelist_rule_ids = fields.One2many(
-        string="Pricelist Rules",
+        string="Subscription Pricelist Rules",
         comodel_name='product.pricelist.item',
         inverse_name='product_tmpl_id',
         domain=lambda self: [
             '|',
             ('product_tmpl_id', 'in', self.ids),
             ('product_id', 'in', self.product_variant_ids.ids),
-            ('plan_id', '!=', None)
+            ('plan_id', '!=', False)
         ]
     )
     rental_pricelist_rule_ids = fields.One2many(
-        string="Pricelist Rules",
+        string="Rental Pricelist Rules",
         comodel_name='product.pricelist.item',
         inverse_name='product_tmpl_id',
         domain=lambda self: [
             '|',
             ('product_tmpl_id', 'in', self.ids),
             ('product_id', 'in', self.product_variant_ids.ids),
-            ('recurrence_id', '!=', None)
+            ('recurrence_id', '!=', False)
         ]
     )
     
-    default_rent_unit = fields.Many2one(comodel_name='sale.temporal.unit', string="Default Sale Unit")
-    default_rent_price = fields.Monetary(string="Price")
+    default_rent_unit = fields.Many2one(comodel_name='sale.temporal.recurrence', string="Default Sale Unit")
 
     def _get_best_pricing_rule(self, quantity, date, product=False, start_date=False, end_date=False, **kwargs):
         """ Return the best pricing rule for the given duration.
@@ -75,3 +83,10 @@ class ProductTemplate(models.Model):
             if price < min_price:
                 min_price, best_pricing_rule = price, pricing
         return best_pricing_rule
+
+    def _compute_rental_default(self, duration, unit):
+        """computing default rental price when no rule is avilable for rental product"""
+        if duration <= 0:
+            return self.list_price
+        converted_duration = math.ceil(duration / self.default_rent_unit.duration)
+        return self.list_price * converted_duration

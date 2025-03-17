@@ -6,6 +6,11 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
     def _get_pricelist_price(self):
+        """Compute the price given by the pricelist for the given line information.
+
+        :return: the product sales price in the order currency (without taxes)
+        :rtype: float
+        """
         self.ensure_one()
         self.product_id.ensure_one()
         if self.product_template_id.rent_ok:
@@ -22,34 +27,29 @@ class SaleOrderLine(models.Model):
             )
         elif self.product_template_id.recurring_invoice:
             if self.order_id.plan_id and self.order_id.pricelist_id:
-                return self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
-                    self.product_id, 
-                    self.order_id.plan_id,
-                    self.pricelist_id
-                )._compute_price(
-                    product=self.product_id.with_context(**self._get_product_price_context()),
-                    quantity=self.product_uom_qty or 1.0,
-                    uom=self.product_uom,
-                    date=self.order_id.date_order,
-                    plan_id=self.order_id.plan_id
+                pricing_item = self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
+                    self.product_id, self.order_id.plan_id, self.pricelist_id
                 )
-            return self.pricelist_item_id._compute_price(
-                product=self.product_id.with_context(**self._get_product_price_context()),
-                quantity=self.product_uom_qty or 1.0,
-                uom=self.product_uom,
-                date=self.order_id.date_order,
-                currency=self.currency_id,
+            else:
+                pricing_item = self.pricelist_item_id
+            return pricing_item._compute_price(
+                self.product_id.with_context(**self._get_product_price_context()),
+                self.product_uom_qty or 1.0,
+                self.product_uom,
+                self.order_id.date_order,
+                self.currency_id,
+                self.order_id.plan_id
             )
         else:
             return self.pricelist_item_id._compute_price(
-                product=self.product_id.with_context(**self._get_product_price_context()),
-                quantity=self.product_uom_qty or 1.0,
-                uom=self.product_uom,
-                date=self.order_id.date_order,
-                currency=self.currency_id,
+                self.product_id.with_context(**self._get_product_price_context()),
+                self.product_uom_qty or 1.0,
+                self.product_uom,
+                self.order_id.date_order,
+                self.currency_id,
             )
 
-    @api.depends('order_id.subscription_state', 'order_id.start_date')
+    @api.depends('order_id.subscription_state', 'order_id.start_date', 'order_id.rental_start_date', 'order_id.rental_return_date')
     def _compute_discount(self):
         """ For upsells : this method compute the prorata ratio for upselling when the current and possibly future
                         period have already been invoiced.

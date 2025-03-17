@@ -3,23 +3,44 @@
     <record id="product_template_view_form_recurring" model="ir.ui.view">
         <field name="name">sale.subscription.product.template.form.inherit</field>
         <field name="model">product.template</field>
-        <field name="inherit_id" ref="sale.product_template_form_view"/>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <page name="sales" position="after">
-                <page string="Prices" name="prices" invisible="not sale_ok or recurring_invoice">
+                <page
+                    string="Pricing"
+                    name="sales_price"
+                    groups="product.group_product_pricelist"
+                    invisible="not sale_ok or recurring_invoice or rent_ok"
+                >
+                    <group class="d-flex">
+                        <field name="list_price" class="oe_inline" string="Sales Price" widget='monetary' options="{'currency_field': 'currency_id'}" optional="show" decoration-muted="not sale_ok"/>
+                        <span
+                            name="uom_span"
+                            groups="uom.group_uom"
+                            invisible="type == 'combo'"
+                        >
+                            per
+                            <field
+                                name="uom_id"
+                                class="oe_inline" style="max-width:136px"
+                                options="{'no_create': True}"
+                            />
+                        </span>
+                    </group>
                     <field
                         name="pricelist_rule_ids"
                         context="{
                             'default_product_tmpl_id': id,
                             'default_compute_price': 'percentage',
+                            'form_view_ref': 'pricelist_refactor.product_pricelist_item_product_template_form_view'
                         }"
                     >
                         <list>
                             <field name="pricelist_id"/>
-                            <field name="name" string="Applied On"/>
+                            <field name="product_id"/>
                             <field name="price"/>
+                            <field name="name" string="Applied On" optional="hide"/>
                             <field name="min_quantity"/>
-                            <field name="plan_id"/>
                             <field name="date_start" optional="hide"/>
                             <field name="date_end" optional="hide"/>
                             <field name="company_id" groups="base.group_multi_company" optional="hide"/>
@@ -32,7 +53,7 @@
                 </page>
             </page>
             <page name="subscription_pricing" position="replace">
-                <page string="Prices" name="subscription_pricing" invisible="not recurring_invoice">
+                <page string="Pricing" name="subscription_pricing" invisible="not recurring_invoice or rent_ok">
                     <field
                         name="subscription_pricelist_rule_ids"
                         context="{
@@ -40,22 +61,69 @@
                             'default_compute_price': 'percentage',
                             'form_view_ref': 'pricelist_refactor.product_pricelist_item_sale_subscription_view'
                         }"
-                        domain="[('plan_id', '=', None)]"
                     >
                         <list>
+                            <field name="plan_id"/>
                             <field name="pricelist_id"/>
-                            <field name="name" string="Applied On"/>
                             <field name="price"/>
                             <field name="min_quantity"/>
                             <field name="date_start" optional="hide"/>
                             <field name="date_end" optional="hide"/>
                             <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                            <field name="name" string="Applied On" column_invisible="1"/>
                             <field name="base" column_invisible="True"/>
                             <field name="applied_on" column_invisible="True"/>
                             <field name="price_discount" column_invisible="True"/>
                             <field name="compute_price" column_invisible="True"/>
                         </list>
                     </field>
+                </page>
+            </page>
+            <page name="pricing" position="replace">
+                <page string="Pricing" name="rental_pricing" invisible="not rent_ok">
+                    <group class="d-flex">
+                        <field name="list_price" class="oe_inline" string="Sales Price" widget='monetary' options="{'currency_field': 'currency_id'}" optional="show" decoration-muted="not sale_ok"/>
+                        <span
+                            name="default_rent_unit_span"
+                            invisible="type == 'combo'"
+                        >
+                            per
+                            <field
+                                name="default_rent_unit"
+                                class="oe_inline" style="max-width:136px"
+                                options="{'no_create': True}"
+                            />
+                        </span>
+                    </group>
+                    <field
+                        name="subscription_pricelist_rule_ids"
+                        groups="product.group_product_variant"
+                        context="{
+                            'default_product_tmpl_id': id,
+                            'default_compute_price': 'percentage',
+                            'form_view_ref': 'pricelist_refactor.product_pricelist_item_sale_rental_view'
+                        }"
+                    >
+                        <list>
+                            <field name="recurrence_id"/>
+                            <field name="pricelist_id"/>
+                            <field name="price"/>
+                            <field name="min_quantity"/>
+                            <field name="date_start" optional="hide"/>
+                            <field name="date_end" optional="hide"/>
+                            <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                            <field name="name" string="Applied On" column_invisible="True"/>
+                            <field name="base" column_invisible="True"/>
+                            <field name="applied_on" column_invisible="True"/>
+                            <field name="price_discount" column_invisible="True"/>
+                            <field name="compute_price" column_invisible="True"/>
+                        </list>
+                    </field>
+                    <group string="Reservations" name="extra_rental" invisible="not rent_ok">
+                        <field name="extra_hourly" widget="monetary"/>
+                        <field name="extra_daily" widget="monetary"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
                 </page>
             </page>
         </field>
