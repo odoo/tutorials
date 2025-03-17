@@ -1,0 +1,18 @@
+                                           Table "public.estate_property"
+      Column      |            Type             | Collation | Nullable |                   Default                   
+------------------+-----------------------------+-----------+----------+---------------------------------------------
+ id               | integer                     |           | not null | nextval('estate_property_id_seq'::regclass)
+ number_of_months | integer                     |           | not null | 
+ sequence         | integer                     |           |          | 
+ create_uid       | integer                     |           |          | 
+ write_uid        | integer                     |           |          | 
+ name             | jsonb                       |           | not null | 
+ active           | boolean                     |           |          | 
+ create_date      | timestamp without time zone |           |          | 
+ write_date       | timestamp without time zone |           |          | 
+Indexes:
+    "estate_property_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "estate_property_create_uid_fkey" FOREIGN KEY (create_uid) REFERENCES res_users(id) ON DELETE SET NULL
+    "estate_property_write_uid_fkey" FOREIGN KEY (write_uid) REFERENCES res_users(id) ON DELETE SET NULL
+
