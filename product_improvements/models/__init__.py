@@ -1,1 +1,2 @@
-from . import product_form_improvement
+from . import product_product
+from . import product_template

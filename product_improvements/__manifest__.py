@@ -1,8 +1,8 @@
 {
     "name": "Product Improvements",
-    "depends": ["stock", "product"],  
+    "depends": ["stock"],
     "data": [
-        'views/product_view_improvement.xml',
+        'views/product_views.xml',
     ],
     "license": "LGPL-3",
     "application": True,
