@@ -13,7 +13,7 @@ class MrpBom(models.Model):
     @api.model
     def create(self, vals):
         """Override create to update routes on associated products"""
-        bom = super(MrpBom, self).create(vals)
+        bom = super().create(vals)
         # Update routes for the product
         if bom.product_tmpl_id:
             bom.product_tmpl_id._update_routes_based_on_config()
@@ -34,7 +34,7 @@ class MrpBom(models.Model):
             for bom in self:
                 old_lines[bom.id] = bom.bom_line_ids.mapped('product_id.product_tmpl_id')
         
-        result = super(MrpBom, self).write(vals)
+        result = super().write(vals)
         
         # Update routes if type changed or lines changed
         if 'bom_line_ids' in vals or 'type' in vals:
@@ -70,7 +70,7 @@ class MrpBom(models.Model):
             if bom.type == 'subcontract':
                 subcontract_components |= bom.bom_line_ids.mapped('product_id.product_tmpl_id')
         
-        result = super(MrpBom, self).unlink()
+        result = super().unlink()
         
         # Update routes for affected products
         for product in products_to_update:

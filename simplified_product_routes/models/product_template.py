@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, Command, fields, models
 
 
 class ProductTemplate(models.Model):
@@ -7,43 +7,12 @@ class ProductTemplate(models.Model):
     has_bom = fields.Boolean(string="Has Bills of Materials", compute='_compute_has_bom', store=True)
 
     @api.model
-    def _get_buy_route(self):
-        buy_route = self.env.ref('purchase_stock.route_warehouse0_buy', raise_if_not_found=False)
-        if not buy_route:
-            buy_route = self.env['stock.route'].search([('name', '=', 'Buy')], limit=1)
-        return buy_route
-
-    @api.model
-    def _get_manufacture_route(self):
-        manufacture_route = self.env.ref('mrp.route_warehouse0_manufacture', raise_if_not_found=False)
-        if not manufacture_route:
-            manufacture_route = self.env['stock.route'].search([('name', '=', 'Manufacture')], limit=1)
-        return manufacture_route
-
-    @api.model
-    def _get_subcontract_route(self):
-        subcontract_route = self.env.ref('mrp_subcontracting.route_resupply_subcontractor_mto', raise_if_not_found=False)
-        if not subcontract_route:
-            subcontract_route = self.env['stock.route'].search(
-                [('name', '=', 'Resupply Subcontractor on Order')], limit=1
-            )
-        return subcontract_route
-
-    @api.model
-    def _get_dropship_route(self):
-        dropship_route = self.env.ref('purchase_stock.route_warehouse0_dropship', raise_if_not_found=False)
-        if not dropship_route:
-            dropship_route = self.env['stock.route'].search([('name', '=', 'Dropship')], limit=1)
-        return dropship_route
-
-    @api.model
-    def _get_dropship_subcontractor_route(self):
-        dropship_subcontractor_route = self.env.ref('mrp_subcontracting_dropshipping.route_subcontracting_dropshipping', raise_if_not_found=False)
-        if not dropship_subcontractor_route:
-            dropship_subcontractor_route = self.env['stock.route'].search(
-                [('name', '=', 'Dropship Subcontractor on Order')], limit=1
-            )
-        return dropship_subcontractor_route
+    def _get_route(self, xml_id, route_name):
+        """Generic method to get a route by xml_id or name"""
+        route = self.env.ref(xml_id, raise_if_not_found=False)
+        if not route:
+            route = self.env['stock.route'].search([('name', '=', route_name)], limit=1)
+        return route
 
     @api.depends('bom_ids')
     def _compute_has_bom(self):
@@ -53,29 +22,29 @@ class ProductTemplate(models.Model):
     @api.onchange('purchase_ok')
     def _onchange_purchase_ok(self):
         """Automatically handle buy route when purchase option changes"""
-        buy_route = self._get_buy_route()
+        buy_route = self._get_route('purchase_stock.route_warehouse0_buy', 'Buy')
         if not buy_route:
             return
 
         if self.purchase_ok:
             # Only add if not already in the routes
             if buy_route.id not in self.route_ids.ids:
-                self.route_ids = [(4, buy_route.id, 0)]
+                self.route_ids = [Command.link(buy_route.id)]
         else:
             # Remove from routes
             if buy_route.id in self.route_ids.ids:
-                self.route_ids = [(3, buy_route.id, 0)]
+                self.route_ids = [Command.unlink(buy_route.id)]
 
     @api.model
     def create(self, vals):
         """Override create to automatically manage routes"""
-        product = super(ProductTemplate, self).create(vals)
+        product = super().create(vals)
         product._update_routes_based_on_config()
         return product
 
     def write(self, vals):
         """Override write to automatically manage routes"""
-        result = super(ProductTemplate, self).write(vals)
+        result = super().write(vals)
         if any(field in vals for field in ['purchase_ok', 'route_ids']):
             self._update_routes_based_on_config()
         return result
@@ -99,9 +68,8 @@ class ProductTemplate(models.Model):
         """
         self.ensure_one()
 
-        dropship_route = self._get_dropship_route()
-        dropship_subcontractor_route = self._get_dropship_subcontractor_route()
-
+        dropship_route = self._get_route('stock_dropshipping.route_drop_shipping', 'Dropship')
+        dropship_subcontractor_route = self._get_route('mrp_subcontracting_dropshipping.route_subcontracting_dropshipping', 'Dropship Subcontractor on Order')
         if not dropship_route or not dropship_subcontractor_route:
             return []
 
@@ -115,10 +83,10 @@ class ProductTemplate(models.Model):
         if is_subcontract_component and dropship_enabled:
             # Add dropship subcontractor route if not already present
             if dropship_subcontractor_route.id not in self.route_ids.ids:
-                route_commands.append((4, dropship_subcontractor_route.id, 0))
+                route_commands.append(Command.link(dropship_subcontractor_route.id))
         elif dropship_subcontractor_route.id in self.route_ids.ids:
             # Remove dropship subcontractor route if not needed
-            route_commands.append((3, dropship_subcontractor_route.id, 0))
+            route_commands.append(Command.unlink(dropship_subcontractor_route.id))
 
         return route_commands
 
@@ -132,24 +100,24 @@ class ProductTemplate(models.Model):
 
         It will add or remove routes as needed without user intervention.
         """
-        buy_route = self._get_buy_route()
-        manufacture_route = self._get_manufacture_route()
-        subcontract_route = self._get_subcontract_route()
+        buy_route = self._get_route('purchase_stock.route_warehouse0_buy', 'Buy')
+        manufacture_route = self._get_route('mrp.route_warehouse0_manufacture', 'Manufacture')
+        subcontract_route = self._get_route('mrp_subcontracting.route_resupply_subcontractor_mto', 'Resupply Subcontractor on Order')
 
         for product in self:
             route_commands = []
             
             # Handle Buy route
             if product.purchase_ok and buy_route and buy_route.id not in product.route_ids.ids:
-                route_commands.append((4, buy_route.id, 0))
+                route_commands.append(Command.link(buy_route.id))
             elif not product.purchase_ok and buy_route and buy_route.id in product.route_ids.ids:
-                route_commands.append((3, buy_route.id, 0))
+                route_commands.append(Command.unlink(buy_route.id))
             
             # Handle Manufacture route
             if product.has_bom and manufacture_route and manufacture_route.id not in product.route_ids.ids:
-                route_commands.append((4, manufacture_route.id, 0))
+                route_commands.append(Command.link(manufacture_route.id))
             elif not product.has_bom and manufacture_route and manufacture_route.id in product.route_ids.ids:
-                route_commands.append((3, manufacture_route.id, 0))
+                route_commands.append(Command.unlink(manufacture_route.id))
             
             # Handle Subcontract route (components used in subcontracting BoMs)  
             is_subcontract_component = False
@@ -157,9 +125,9 @@ class ProductTemplate(models.Model):
                 is_subcontract_component = self._is_subcontract_component()
             
             if is_subcontract_component and subcontract_route.id not in product.route_ids.ids:
-                route_commands.append((4, subcontract_route.id, 0))
+                route_commands.append(Command.link(subcontract_route.id))
             elif not is_subcontract_component and subcontract_route.id in product.route_ids.ids:
-                route_commands.append((3, subcontract_route.id, 0))
+                route_commands.append(Command.unlink(subcontract_route.id))
             
             # Handle Dropship routes
             dropship_commands = product._handle_dropship_routes()
