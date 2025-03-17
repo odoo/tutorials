@@ -15,9 +15,9 @@ class SaleOrderLine(models.Model):
             })
             if self.product_id.uom_id != self.product_uom:
                 res['sale_uom'] = {
-                'display_name': self.product_uom.display_name,
-                'id': self.product_uom.id,
-            }
+                    'display_name': self.product_uom.display_name,
+                    'id': self.product_uom.id,
+                }
             return res
         else:
             return res

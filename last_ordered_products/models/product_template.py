@@ -20,7 +20,7 @@ class ProductTemplate(models.Model):
         elif self.env.context.get('active_model') == 'purchase.order.line':
             partner_id = self.env['purchase.order'].browse(self.env.context.get('order_id')).partner_id.id
             order_type = 'purchase'
-        elif self.env.context.get('active_model') == 'account.journal':            
+        elif self.env.context.get('active_model') == 'account.journal':
             active_id = self.env.context.get('active_id')
             if active_id:
                 order_type = self.env['account.journal'].browse(active_id).type
@@ -30,7 +30,10 @@ class ProductTemplate(models.Model):
             order_type = self.env.context.get('order_type')
 
         if not partner_id:
-            self.last_date_str = False
+            for record in self:
+                record.last_order_time = False
+                record.last_date_str = False
+            return
 
         last_ordered_products = {}
 
@@ -43,30 +46,29 @@ class ProductTemplate(models.Model):
             last_date = last_ordered_products.get(record.id)
 
             record.last_order_time = last_date if last_date else False
-            record.last_date_str = self._get_time_ago_string(record.last_order_time)
+            record.last_date_str = self._get_time_ago_string(last_date) if last_date else False
 
     def _get_last_sold_products(self, partner_id):
         '''Fetch products last sold to the given customer'''
 
-        sale_orders = self.env['sale.order'].search([('partner_id', '=', partner_id)])
-
-        if not sale_orders:
-            return {}
-
         sale_order_lines = self.env['sale.order.line'].search([
-            ('order_id', 'in', sale_orders.ids)
+            ('order_id.partner_id', '=', partner_id)
         ])
+
+        if not sale_order_lines:
+            return {}
 
         invoices = self.env['account.move'].search([
             ('partner_id', '=', partner_id),
-            ('invoice_origin', 'in', sale_orders.mapped('name'))
+            ('invoice_origin', 'in', sale_order_lines.order_id.mapped('name'))
         ])
 
         last_sale_ordered_products = {}
-        for inv in invoices:
-            for sol in sale_order_lines.filtered(lambda line: line.order_id.name == inv.invoice_origin):
+        invoice_dates = {inv.invoice_origin: inv.create_date for inv in invoices}
+        for sol in sale_order_lines:
+            last_date = invoice_dates.get(sol.order_id.name)
+            if last_date:
                 product_id = sol.product_id.product_tmpl_id.id
-                last_date = inv.create_date
                 if product_id not in last_sale_ordered_products or last_date > last_sale_ordered_products[product_id]:
                     last_sale_ordered_products[product_id] = last_date
 
@@ -75,25 +77,24 @@ class ProductTemplate(models.Model):
     def _get_last_purchased_products(self, partner_id):
         '''Fetch products last purchased to the given vendor'''
 
-        purchase_orders = self.env['purchase.order'].search([('partner_id', '=', partner_id)])
-
-        if not purchase_orders:
-            return {}
-
         purchase_order_line = self.env['purchase.order.line'].search([
-            ('order_id', 'in', purchase_orders.ids)
+            ('order_id.partner_id', '=', partner_id)
         ])
+
+        if not purchase_order_line:
+            return {}
 
         invoices = self.env['account.move'].search([
             ('partner_id', '=', partner_id),
-            ('invoice_origin', 'in', purchase_orders.mapped('name'))
+            ('invoice_origin', 'in', purchase_order_line.order_id.mapped('name'))
         ])
 
         last_purchased_order_products = {}
-        for inv in invoices:
-            for sol in purchase_order_line.filtered(lambda line: line.order_id.name == inv.invoice_origin):
+        invoice_dates = {inv.invoice_origin: inv.create_date for inv in invoices}
+        for sol in purchase_order_line:
+            last_date = invoice_dates.get(sol.order_id.name)
+            if last_date:
                 product_id = sol.product_id.product_tmpl_id.id
-                last_date = inv.create_date
                 if product_id not in last_purchased_order_products or last_date > last_purchased_order_products[product_id]:
                     last_purchased_order_products[product_id] = last_date
 
