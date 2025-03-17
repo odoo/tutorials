@@ -1,0 +1,93 @@
+<odoo>
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+              
+                     <div>
+                        <t t-if="property.company_id.logo">
+                            <img t-att-src="'data:image/png;base64,%s' % property.company_id.logo.decode('utf-8')" 
+                                 style="max-width: 200px; max-height: 200px;" />
+                        </t>
+                        <p t-field="property.company_id.name" />
+                        <p>
+                            <strong>Address:</strong>
+                            <span t-field="property.company_id.street" />
+                            <span t-field="property.company_id.city" />
+                        </p>
+                        <p>
+                            <strong>Email:</strong>
+                            <span t-field="property.company_id.email" />
+                        </p>
+                        <p>
+                            <strong>Phone:</strong>
+                            <span t-field="property.company_id.phone" />
+                        </p>
+                        <br/>
+                    
+                    </div>
+                    <div class="page">
+                        <div>
+                            <h2>
+                                <span t-field="property.name" />
+                            </h2>
+
+                            <p>
+                                <strong>Salesman:</strong>
+                                <span t-field="property.salesperson_id" />
+                            </p>
+                            <p>
+                                <strong>Expected Price:</strong>
+                                <span t-field="property.expected_price" />
+                            </p>
+                            <p>
+                                <strong>Status:</strong>
+                                <span t-field="property.state" />
+                            </p>
+                        </div>
+
+                        <t t-if="property.offer_ids">
+                            <table class="table">
+                                <thead> 
+                                <hr/>
+                                    <tr>
+                                        <th style="font-weight: bold;">Price</th>
+                                        <th style="font-weight: bold;">Partner</th>
+                                        <th style="font-weight: bold;"> Validity (days)</th>
+                                        <th style="font-weight: bold;">Deadline</th>
+                                        <th style="font-weight: bold;">State</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="property.offer_ids" t-as="offer">
+                                        <td>
+                                            <span t-field="offer.price" />
+                                        </td>
+                                        <td>
+                                            <span t-field="offer.partner_id" />
+                                        </td>
+                                        <td>
+                                            <span t-field="offer.validity" />
+                                        </td>
+                                        <td>
+                                            <span t-field="offer.date_deadline" />
+                                        </td>
+                                        <td>
+                                            <span t-field="offer.state" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <p class="text-muted">
+                                <i>No offers yet for this property.</i>
+                            </p>
+                        </t>
+                    </div>
+               
+            </t>
+        </t>
+        </t>
+    </template>
+</odoo>

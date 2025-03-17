@@ -14,8 +14,17 @@
         'views/estate_property_tag.xml',
         'views/estate_property_offer.xml',
         'views/estate_property_type.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
         'views/estate_property.xml',
         "views/res_users_view.xml",
         'views/estate_menus.xml',
+    ],
+    'demo':[
+        'demo/estate_property_tag.xml',
+        'demo/estate_property_type.xml',
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml',
+
     ],
 }

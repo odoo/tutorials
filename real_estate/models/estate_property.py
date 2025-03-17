@@ -10,6 +10,7 @@ class EstateProperty(models.Model):
     _order = "id desc"   
 
     name = fields.Char(required=True)
+    image = fields.Binary()
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(default=lambda self: date.today() + relativedelta(months=3), copy=False)
@@ -25,6 +26,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Offer Price",  store=True)
     active = fields.Boolean(default=True)
+    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
 
     garden_orientation = fields.Selection(
         selection=[('north', 'North'), ('south', 'South'),('east', 'East'),('west','West')],
@@ -77,16 +79,17 @@ class EstateProperty(models.Model):
             self.garden_area=False
             self.garden_orientation=False
 
-    def mark_sold(self):
+    def action_sold(self):
         if self.state != "cancelled":
             self.state = "sold"
         else:
             raise UserError("Cancelled properties cannot be set as Sold")
         return True
 
-    def mark_cancel(self):
+    def action_cancel(self):
         if self.state != "sold":
             self.state = "cancelled"
+            self.offer_ids.state = "refused"
         else:
             raise UserError("Sold properties cannot be set as cancelled")
 

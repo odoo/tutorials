@@ -49,6 +49,7 @@ class EstatePropertyOffer(models.Model):
     def accept_offer(self):
         for record in self:
             record.state = "accepted"
+            record.property_id.state = "offer_accepted"
             record.property_id.selling_price=record.price
             record.property_id.buyer_id=record.partner_id
 
@@ -64,9 +65,6 @@ class EstatePropertyOffer(models.Model):
     
     @api.model_create_multi
     def create(self, vals_list):
-      
-        if not isinstance(vals_list, list):
-            vals_list = [vals_list]
 
         for vals in vals_list:
             property_id = vals.get("property_id")
@@ -74,6 +72,10 @@ class EstatePropertyOffer(models.Model):
 
             if property_id:
                 property = self.env["estate.property"].browse(property_id)
+
+                if property.state == "offer_accepted":
+                    raise UserError("Cannot make new offers. The property already has an accepted offer.")
+
                 existing_offer_price = max(property.offer_ids.mapped("price"), default=0)
 
                 if offer_price < existing_offer_price:
@@ -82,5 +84,3 @@ class EstatePropertyOffer(models.Model):
                 property.state = "offer_received"
 
         return super().create(vals_list)
-
-    
