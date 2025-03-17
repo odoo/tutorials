@@ -15,20 +15,24 @@ class SaleOrderLine(models.Model):
             line.is_kit_product = line.product_id.product_tmpl_id.is_kit
 
     def _update_main_product_price(self):
-        """ Recalculates the price of the main product when a sub-product is deleted. """
+        """ Recalculate the main product's price correctly when a sub-product is deleted. """
         for sub_product in self:
             if sub_product.parent_line_id:
                 main_product_line = sub_product.parent_line_id
                 
-                # Get remaining sub-products
-                remaining_sub_products = main_product_line.kit_subproduct_ids
+                # Fetch the existing main product price (store it if not already stored)
+                if not main_product_line._origin.price_unit:
+                    main_product_line.price_unit = sum(sub.product_id.lst_price * sub.product_uom_qty for sub in main_product_line.kit_subproduct_ids)
                 
-                # Fetch correct prices from `product_id.lst_price` instead of sale order line prices
-                new_price = sum(sub.product_id.lst_price * sub.product_uom_qty for sub in remaining_sub_products)
+                # Subtract only the deleted sub-product's price
+                new_price = main_product_line.price_unit - (sub_product.product_id.lst_price * sub_product.product_uom_qty)
                 
+                # Ensure price doesn't go negative
+                new_price = max(new_price, 0)
+
                 # Update the main kit product's price
                 main_product_line.write({"price_unit": new_price})
-
+                
     def unlink(self):
         """ Override unlink method to trigger price recalculation when sub-products are deleted. """
         for line in self:
@@ -59,4 +63,3 @@ class SaleOrderLine(models.Model):
             "target": "new",
             "context": {"default_sale_order_line_id": self.id},
         }
-   
