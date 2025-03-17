@@ -109,5 +109,4 @@ class VendorPortal(http.Controller):
                 }
             )
 
-        return request.redirect("/vendor-portal")
-    
+        return request.redirect("/vendor-portal?success=1")
