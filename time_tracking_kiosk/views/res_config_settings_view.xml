@@ -1,0 +1,19 @@
+<odoo>
+    <record id="view_res_config_settings_timesheet" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.timesheet</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_timesheet.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='hr_timesheet']/block[1]" position="before">
+                <block title="Timesheet Settings">
+                    <setting name="max_work_hours_per_day_setting" help="Set the maximum allowed work hours per day">
+                        <field name="max_work_hours_per_day" />
+                    </setting>
+                    <setting name="pm_email_template_setting" help="Select an email template for PM notifications">
+                        <field name="pm_notification_template_id" />
+                    </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>

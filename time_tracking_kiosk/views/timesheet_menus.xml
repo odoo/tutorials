@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="menu_timesheet_kiosk_root" 
+              name="Timesheet Kiosk" 
+              web_icon="time_tracking_kiosk,static/description/icon.png"/>
+
+    <menuitem id="menu_timesheet_kiosk_mode"
+              name="Kiosk Mode"
+              parent="menu_timesheet_kiosk_root"
+              action="time_tracking_kiosk_action"/> 
+</odoo>

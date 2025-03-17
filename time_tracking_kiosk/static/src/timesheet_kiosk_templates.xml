@@ -1,0 +1,106 @@
+<templates xml:space="preserve">
+    <t t-name="time_tracking_kiosk.KioskMainScreen">
+        <div class="kiosk-container d-flex flex-column align-items-center justify-content-center vh-100 p-5">
+            <div class="card shadow p-4 rounded-lg kiosk-card">
+                <!-- Scan Screen -->
+                <div t-attf-class="screen-container {{ state.screen === 'scan' ? 'active' : 'hidden' }}">
+                    <h1 class="text-center mb-4">Timesheet Kiosk</h1>
+                    <div class="my-5 text-center" t-on-click="openMobileScanner">
+                        <div class="o_barcode_tap_to_scan m-auto mw-50 cursor-pointer">
+                            <img src="/stock_barcode/static/img/barcode.png" alt="Barcode" class="my-1" />
+                            <div class="o_stock_barcode_laser" />
+                        </div>
+                        <div class="o_stock_mobile_barcode text-primary fw-bold">Scan or tap</div>
+                    </div>
+                    <div class="mb-3 text-center">
+                        <input type="text" 
+                            t-model="state.employeeId" 
+                            class="form-control form-control-lg text-center border-primary o_kiosk_input" 
+                            placeholder="Scan / Enter Employee ID" />
+                    </div>
+                    <div class="d-grid mb-3">
+                        <button class="btn btn-primary btn-lg o_kiosk_button" t-on-click="onScanBadge">Find Employee</button>
+                    </div>
+                </div>
+                <!-- Projects Screen -->
+                <div t-attf-class="screen-container {{ state.screen === 'projects' ? 'active' : 'hidden' }}">
+                    <t t-if="state.employee">
+                        <div class="text-center mb-4">
+                            <div class="employee-avatar">
+                                <img t-att-src="'data:image/png;base64,' + state.employee.avatar_1920" alt="Employee Avatar" />
+                            </div>
+                            <h2 class="mt-3 fw-bold" t-out="state.employee.name" />
+                        </div>
+                        <!-- Project Dropdown -->
+                        <div class="mb-3">
+                            <select class="form-select form-select-lg border-primary o_kiosk_input"
+                                 t-model="state.currentProject" 
+                                 t-on-change="onProjectChange">
+                                <option value="">Select Project</option>
+                                <t t-foreach="state.employee.assigned_projects || []" t-as="project" t-key="project.id">
+                                    <option t-att-value="project.id" t-out="project.name" />
+                                </t>
+                            </select>
+                        </div>
+                        <!-- Task Dropdown -->
+                        <t t-if="state.currentProject">
+                            <div class="mb-3">
+                                <select class="form-select form-select-lg border-primary o_kiosk_input"
+                                     t-model="state.currentTask"
+                                     t-on-change="onTaskChange">
+                                    <option value="">Select Task</option>
+                                    <t t-foreach="state.currentProject.tasks || []" t-as="task" t-key="task.id">
+                                        <option t-att-value="task.id" t-out="task.name" />
+                                    </t>
+                                </select>
+                            </div>
+                        </t>
+                        <!-- Start Timer and Back Buttons -->
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <button class="btn btn-success btn-lg o_kiosk_button"
+                                 t-on-click="startTimer" 
+                                 t-att-disabled="!state.currentProject or !state.currentTask">
+                                Start Timer
+                            </button>
+                            <button class="btn btn-secondary btn-lg o_kiosk_button-lg" t-on-click="backToMainScreen">Back</button>
+                        </div>
+                    </t>
+                </div>
+                <!-- Timer Screen -->
+                <div t-attf-class="screen-container {{ state.screen === 'timer' ? 'active' : 'hidden' }}">
+                    <div class="text-center">
+                        <h1 class="mb-4">Tracking Time</h1>
+                        <t t-if="state.employee">
+                            <div class="text-center mb-4">
+                                <div class="employee-avatar">
+                                    <img t-att-src="'data:image/png;base64,' + state.employee.avatar_1920" alt="Employee Avatar" />
+                                </div>
+                                <h2 class="mt-3" t-out="state.employee.name" />
+                            </div>
+                        </t>
+                        <t t-if="state.currentProject and state.currentTask">
+                            <div class="mb-3">
+                                <select class="form-select form-select-lg border-primary o_kiosk_input" t-att-disabled="1">
+                                    <option t-out="state.currentProject.name" />
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <select class="form-select form-select-lg border-primary o_kiosk_input" t-att-disabled="1">
+                                    <option t-out="state.currentTask.name" />
+                                </select>
+                            </div>
+                        </t>
+                        <h2 class="mt-4 fw-bold text-success" t-out="state.elapsedTime" />
+                        <div class="mt-2 mb-4 text-muted">
+                            Started at: <span t-out="state.timerStartTime ? formatTime(state.timerStartTime) : ''" />
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button class="btn btn-danger btn-lg o_kiosk_button mb-2" t-on-click="stopTimer">Stop Timer</button>
+                            <button class="btn btn-secondary btn-lg o_kiosk_button-lg" t-on-click="backToMainScreen">Back</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

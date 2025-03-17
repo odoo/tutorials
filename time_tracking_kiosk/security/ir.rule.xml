@@ -1,0 +1,8 @@
+<odoo>
+    <record id="rule_project_task_portal_user_assignment" model="ir.rule">
+        <field name="name">Allow Portal Users to be Assigned to Tasks</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+        <field name="domain_force">[('user_ids', 'in', user.id)]</field>
+    </record>
+</odoo>

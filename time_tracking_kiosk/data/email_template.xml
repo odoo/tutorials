@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="email_template_pm_notification" model="mail.template">
+        <field name="name">Employee Recorded Work Hours</field>
+        <field name="model_id" ref="model_account_analytic_line"/>
+        <field name="partner_to">{{object.task_id.project_id.user_id.partner_id.id}}</field>
+        <field name="subject">Employee Recorded Work Hours</field>
+        <field name="body_html" type="html">
+            <p>Dear <t t-out="object.task_id.project_id.user_id.name" /></p>
+            <p>The following employee has recorded work hours:</p>
+            <ul>
+                <li><strong>Employee:</strong> <t t-out="object.employee_id.name" /></li>
+                <li><strong>Worked Hours:</strong> <t t-out="object.unit_amount" /></li>
+            </ul>
+            <p>Please review the timesheet.</p>
+            <p>Best regards,</p>
+            <p>Your HR Team</p>
+        </field>
+    </record>
+</odoo>

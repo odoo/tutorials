@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_project_task_user,project.task.user,project.model_project_task,base.group_user,1,1,0,0
+access_project_project_user,project.project.user,project.model_project_project,base.group_user,1,0,0,0
+access_account_analytic_line_user,account.analytic.line.user,analytic.model_account_analytic_line,base.group_user,1,1,1,0
