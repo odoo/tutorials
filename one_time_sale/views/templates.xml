@@ -4,7 +4,7 @@
         id="product_price_inherit_one_time_sale"
         inherit_id="website_sale.product_price">
         <xpath expr="//div[@itemprop='offers']" position="attributes">
-            <attribute name="t-attf-class" add="w-75" separator=" "/>
+            <attribute name="t-attf-class" add="w-100 w-md-75" separator=" "/>
         </xpath>
 
         <xpath expr="//select[@name='plan_id']" position="replace">

@@ -61,15 +61,19 @@ class ProductTemplate(models.Model):
         return res
 
     def _is_add_to_cart_possible(self, parent_combination=None):
-        """Prevent adding subscription product if the cart has a one-time purchase product."""
+        """Check whether adding the product to the cart is possible."""
         website = request and request.website
         sale_order = website and website.sale_get_order()
 
         if not sale_order:
             return super()._is_add_to_cart_possible(parent_combination)
 
-        # hide service & combo purchase options, if the one time goods(consumable) product has been added to sale order
-        if self.recurring_invoice and self.has_one_time_purchase(sale_order) and self.type != 'consu':
+        # Prevent adding a subscription product if a one-time purchase is in the cart
+        if (
+            self.recurring_invoice
+            and self.has_one_time_purchase(sale_order)
+            and (self.type != 'consu' or not self.accept_one_time)
+        ):
             return False
 
         return super()._is_add_to_cart_possible(parent_combination)

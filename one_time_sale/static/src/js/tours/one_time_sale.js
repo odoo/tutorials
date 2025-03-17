@@ -1,9 +1,8 @@
-/** @odoo-module **/
 "use_strict";
 
+import { markup } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
-import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add("one_time_sale_tour", {
     url: "/odoo",
@@ -68,6 +67,12 @@ registry.category("web_tour.tours").add("one_time_sale_tour", {
             run: "edit 10",
         },
         {
+            trigger: ".o_form_button_save",
+            content: _t("Save your progress for one-time purchase product creation."),
+            tooltipPosition: "bottom",
+            run: "click",
+        },
+        {
             trigger: "a.nav-link[name='sales']",
             content: _t("Let's allow subscription product to be sale/purchase for one time too."),
             tooltipPosition: "bottom",
@@ -84,10 +89,6 @@ registry.category("web_tour.tours").add("one_time_sale_tour", {
             content: _t("Let's add a pricing with a recurrence"),
             tooltipPosition: "right",
             run: "click",
-        },
-        {
-            isActive: ["auto"],
-            trigger: ".o_form_editable",
         },
         {
             trigger: ".o_field_x2many_list_row_add > a",

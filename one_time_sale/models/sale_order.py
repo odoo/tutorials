@@ -29,16 +29,12 @@ class SaleOrder(models.Model):
                 elif order_line:
                     # Update existing line
                     update_values = self._prepare_order_line_update_values(order_line, quantity, **kwargs)
-                    update_values['price_unit'] = product.list_price
                     if update_values:
                         self._update_cart_line_values(order_line, update_values)
                 elif quantity > 0:
                     # Create new line
                     order_line_values = self._prepare_order_line_values(product_id, quantity, **kwargs)
-                    order_line_values['price_unit'] = product.list_price
                     order_line = self.env['sale.order.line'].sudo().create(order_line_values)
                 return order_line
         
         return super()._cart_update_order_line(product_id, quantity, order_line, **kwargs)
-
-    

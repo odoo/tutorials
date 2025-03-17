@@ -25,6 +25,16 @@ class TestProductTemplate(TransactionCase):
                 Command.create({'plan_id': cls.plan_yearly.id, 'price': 16}),
             ],
         })
+        cls.subscription_product = cls.env['product.product'].create({
+            'name': 'Recurring Consumable',
+            'recurring_invoice': True,
+            'type': 'consu',
+            'list_price': 200.0,
+            'product_subscription_pricing_ids': [
+                Command.create({'plan_id': cls.plan_monthly.id, 'price': 6}),
+                Command.create({'plan_id': cls.plan_yearly.id, 'price': 16}),
+            ],
+        })
 
     def test_has_one_time_purchase(self):
         """Test if has_one_time_purchase correctly detects a one-time product in the cart."""
@@ -36,4 +46,16 @@ class TestProductTemplate(TransactionCase):
         self.assertTrue(
             self.env['product.template'].has_one_time_purchase(sale_order),
             "Sale order should be identified as containing a one-time purchase."
+        )
+
+    def test_has_one_time_purchase_without_one_time_purchase(self):
+        """Test if has_one_time_purchase correctly detects a one-time product is not in the cart."""
+        self.sale_order = self.env['sale.order'].create({'partner_id': self.partner.id})
+
+        # Add a subscription product to the order
+        self.sale_order._cart_update_order_line(self.subscription_product.id, 1, self.env['sale.order.line'])
+
+        self.assertFalse(
+            self.env['product.template'].has_one_time_purchase(self.sale_order),
+            "Sale order should be identified as not containing a one-time purchase product."
         )

@@ -1,20 +1,15 @@
-/** @odoo-module **/
 "use_strict";
 
+import { markup } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
-import { markup } from "@odoo/owl";
 
 registry.category("web_tour.tours").add("one_time_sale_website_tour", {
     url: "/shop",
     sequence: 252,
     rainbowManMessage: () => markup(
-        _t("<b>Congratulations</b>, you have successfully purchase subscription product for one time sale.")),
+        _t("<b>Congratulations</b>, you have successfully purchase subscription product just for one time.")),
     steps: () => [
-        {
-            isActive: ["auto"],
-            trigger: ":iframe .js_sale",
-        },
         {
             trigger: ".input-group[role='search'] > input",
             content: _t("Search your one time purchase allowed subscription product by name."),
@@ -40,7 +35,7 @@ registry.category("web_tour.tours").add("one_time_sale_website_tour", {
             run: "click",
         },
         {
-            trigger: ".o_wsale_my_cart",
+            trigger: ".o_wsale_my_cart > a",
             content: _t("Let's see the cart if it is perfectly added."),
             tooltipPosition: "bottom",
             run: "click",
@@ -50,6 +45,11 @@ registry.category("web_tour.tours").add("one_time_sale_website_tour", {
             content: _t("Click to remove the product from the cart."),
             tooltipPosition: "bottom",
             run: "click",
+        },
+        {
+            content: "Wait until the configurator is finished",
+            trigger: ".oe_website_sale",
+            timeout: 3000,
         },
         {
             trigger: ".nav-link[href='/shop']",
@@ -70,7 +70,7 @@ registry.category("web_tour.tours").add("one_time_sale_website_tour", {
             run: "click",
         },
         {
-            trigger: ".one-time-purchase > div",
+            trigger: "#one_time_purchase",
             content: _t("Select option to purchase this subscription product for just one time."),
             tooltipPosition: "left",
             run: "click",
@@ -82,7 +82,7 @@ registry.category("web_tour.tours").add("one_time_sale_website_tour", {
             run: "click",
         },
         {
-            trigger: ".o_wsale_my_cart",
+            trigger: ".o_wsale_my_cart > a",
             content: _t("Let's see the cart if it is perfectly added."),
             tooltipPosition: "bottom",
             run: "click",
