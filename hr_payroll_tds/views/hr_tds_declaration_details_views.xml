@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_menu_tds_declaration_list_view" model="ir.ui.view">
+        <field name="name">hr.tds.dclaration.list.view</field>
+        <field name="model">hr.tds.declaration.details</field>
+        <field name="arch" type="xml">
+            <list string="TDS Declaration Details">
+                <field name="employee_id" />
+                <field name="tds_declaration_id" />
+                <field name="contract_id" optional="hide" />
+                <field name="financial_year" />
+                <field name="tax_regime" />
+                <field name="total_income" />
+                <field name="total_tax_to_pay" />
+                <field name="other_income_source" optional="hide" />
+                <field name="other_allowance" optional="hide" />
+                <field name="health_education_cess" optional="hide" />
+                <field name="standard_deduction" optional="hide" />
+                <field name="state" />
+            </list>
+        </field>
+    </record>
+
+    <record id="hr_menu_tds_declaration_form_view" model="ir.ui.view">
+        <field name="name">hr.tds.dclaration.form.view</field>
+        <field name="model">hr.tds.declaration.details</field>
+        <field name="arch" type="xml">
+            <form string="TDS Declaration Details">
+                <header>
+                    <button string="Confirm" name="action_tds_declaration_confirm" type="object" invisible="state != 'new'" class="btn-primary" />
+                    <button string="Approve" name="action_tds_declaration_approve" type="object" invisible="state != 'verify'" class="btn-primary" />
+                    <button string="Cancel" name="action_tds_declaration_cancel" type="object" invisible="state == 'cancel'" />
+                    <button string="Print" name="action_print_tds_declaration" type="object" />
+                    <field name="state" widget="statusbar" statusbar_visible="new, verify, approve" />
+                </header>
+                <sheet>
+                    <div class="row justify-content-between position-relative w-100 m-0">
+                        <div class="oe_title mw-75 ps-0 pe-2" name="title">
+                            <h1 class="d-flex flex-row align-items-center">
+                                <field name="employee_id" placeholder="Employee" readonly="state not in ('new')" />
+                            </h1>
+                        </div>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="contract_id" required="1" readonly="state not in ('new')" />
+                            <field name="tds_declaration_id" />
+                            <field name="financial_year" />
+                            <label for="start_date" string="Period" />
+                            <div>
+                                <field name="start_date" class="oe_inline" readonly="state not in ('new')" />
+                                -<field name="end_date" class="oe_inline" readonly="state not in ('new')" />
+                            </div>
+                        </group>
+                        <group>
+                            <field name="tax_regime" required="1" />
+                            <field name="age_category" required="1" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="TDS Calculation">
+                            <field name="currency_id" invisible="1" />
+                            <group>
+                                <field name="total_income" />
+                                <field name="standard_deduction" />
+                                <field name="taxable_amount" />
+                                <field name="tax_on_taxable_amount" />
+                                <field name="rebate" />
+                                <field name="total_tax_on_income" />
+                                <field name="surcharge" />
+                                <field name="health_education_cess" />
+                                <field name="total_tax_to_pay" />
+                                <field name="monthly_tds" />
+                            </group>
+                        </page>
+                        <page string="Other Deduction">
+                            <group string="Particulars">
+                                <field name="other_income_source" />
+                                <field name="other_allowance" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Search view of declaration details  -->
+    <record id="hr_tds_declaration_details_search" model="ir.ui.view">
+        <field name="name">hr.tds.declaration.search</field>
+        <field name="model">hr.tds.declaration.details</field>
+        <field name="arch" type="xml">
+            <search string="TDS Declaration Search">
+                <!-- Filters -->
+                <field name="employee_id" string="Employee" />
+                <filter name="new" string="New" domain="[('state', '=', 'new')]" />
+                <filter name="verify" string="Confirm" domain="[('state', '=', 'verify')]" />
+                <filter name="approve" string="Approve" domain="[('state', '=', 'approve')]" />
+                <field name="financial_year" />
+                <separator />
+                <!-- Group By -->
+                <group string="Group By">
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}" />
+                    <filter string="Financial Year" name="group_financial_year" context="{'group_by': 'financial_year'}" />
+                    <filter string="Tax Regime" name="group_tax_regime" context="{'group_by': 'tax_regime'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- TDS Declaration stat button on employee form. -->
+    <record id="hr_employee_form_view_tds_declaration" model="ir.ui.view">
+        <field name="name">hr.employee.form.view.tds,decalration</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+        <field name="arch" type="xml">
+            <data>
+                <div name="button_box" position="inside">
+                    <button name="action_open_related_tds_declaration" type="object" icon="fa-book" class="oe_stat_button">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">TDS Declarations</span>
+                        </div>
+                    </button>
+                </div>
+            </data>
+        </field>
+    </record>
+
+</odoo>

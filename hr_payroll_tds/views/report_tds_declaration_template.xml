@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_tax_declaration">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <h5 id="tax_declaration_name">
+                    <span t-out="o.name"/>
+                </h5>
+                <div id="employee_info">
+                    <table class="table table-sm table-borderless">
+                        <thead class="o_black_border">
+                            <tr>
+                                <th>Employee Information</th>
+                                <th>Contract Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div id="employee_name">
+                                        <strong class="me-2">Name:</strong>
+                                        <span t-out="o.employee_id.name"/>
+                                    </div>
+                                    <div id="employee_id">
+                                        <strong class="me-2">TDS Delaration:</strong>
+                                        <span t-field="o.tds_declaration_id"/>
+                                    </div>
+                                    <div id="employee_department">
+                                        <strong class="me-2">Department:</strong>
+                                        <span t-out="o.employee_id.department_id.name"/>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div id="contract">
+                                        <strong class="me-2">Contract:</strong>
+                                        <span t-out="o.contract_id.name"/>
+                                    </div>
+                                    <div id="financial_year">
+                                        <strong class="me-2">Financial Year:</strong>
+                                        <span t-out="o.financial_year"/>
+                                    </div>
+                                    <div id="status">
+                                        <strong class="me-2">Status:</strong>
+                                        <span t-field="o.state"/>
+                                    </div>
+                                    <div id="tax_regime">
+                                        <strong class="me-2">Tax Regime:</strong>
+                                        <span t-field="o.tax_regime"/>
+                                    </div>
+                                    <div id="age_category">
+                                        <strong class="me-2">Category (Age):</strong>
+                                        <span t-field="o.age_category"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div id="tax_details">
+                    <h3>Tax Declarations</h3>
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                            <tr>
+                                <td><strong>Total Income (Yearly):</strong></td>
+                                <td t-if="o.total_income and o.total_income &gt; 0">
+                                    <span t-field="o.total_income" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Standard Deduction:</strong></td>
+                                <td t-if="o.standard_deduction and o.standard_deduction &gt; 0">
+                                    <span t-field="o.standard_deduction" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Taxable Amount:</strong></td>
+                                <td t-if="o.taxable_amount and o.taxable_amount &gt; 0">
+                                    <span t-field="o.taxable_amount" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Tax on Taxable Amount:</strong></td>
+                                <td t-if="o.tax_on_taxable_amount and o.tax_on_taxable_amount &gt; 0">
+                                    <span t-field="o.tax_on_taxable_amount" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rebate Under Section 87A:</strong></td>
+                                <td t-if="o.rebate and o.rebate &gt; 0">
+                                    <span t-field="o.rebate" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Tax on Income:</strong></td>
+                                <td t-if="o.total_tax_on_income and o.total_tax_on_income &gt; 0">
+                                    <span t-field="o.total_tax_on_income" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Surcharge:</strong></td>
+                                <td t-if="o.surcharge and o.surcharge &gt; 0">
+                                    <span t-field="o.surcharge" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Health and Education Cess:</strong></td>
+                                <td t-if="o.health_education_cess and o.health_education_cess &gt; 0">
+                                    <span t-field="o.health_education_cess" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Tax to be Paid:</strong></td>
+                                <td t-if="o.total_tax_to_pay and o.total_tax_to_pay &gt; 0">
+                                    <span t-field="o.total_tax_to_pay" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Monthly TDS Payable:</strong></td>
+                                <td t-if="o.monthly_tds and o.monthly_tds &gt; 0">
+                                    <span t-field="o.monthly_tds" t-options="{'widget': 'monetary'}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_tax_declaration_lang">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-set="o" t-value="o.with_context(lang=(o.employee_id.lang or o.env.lang))"/>
+                <t t-call="hr_payroll_tds.report_tax_declaration" t-lang="o.env.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>
