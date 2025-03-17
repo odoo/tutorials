@@ -37,7 +37,6 @@ class EstateProperty(models.Model):
         readonly=True,
         copy=False
     )
-    active = fields.Boolean(string="Active", default=True)
     total_area= fields.Float(compute="_compute_total_area", readonly=True, copy=False)
     best_price= fields.Float(compute="_compute_best_price", readonly=True, default= 0.0)
 

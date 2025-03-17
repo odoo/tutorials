@@ -20,8 +20,8 @@ class EstatePropertyOffer(models.Model):
     property_type_id= fields.Many2one("estate.property.type", string="Property Type Id", related="property_id.property_type_id", store=True)
 
     _sql_constraints = [
-        ('check_price', 'CHECK(price > 0 )',
-         'The offer price should be positive and greater than 0.')
+        ('check_price', 'CHECK(price > 0 )','The offer price should be positive and greater than 0.'),
+        ('check_validity', 'CHECK(validity > 0 )','The validity cannot be negative.')
     ]
 
     @api.model_create_multi

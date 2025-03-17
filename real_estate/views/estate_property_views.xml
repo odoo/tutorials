@@ -21,7 +21,6 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="active"/>
                 <field name="date_availability" optional="hide"/>
             </list>
         </field>
@@ -37,12 +36,20 @@
                     <field name="status"  widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
+                    <!-- ADD STAT BUTTON -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(report_real_estate_offer)d"
+                                string="Print"
+                                type="action"
+                                icon="fa-print">
+                        </button>
+                    </div>
                     <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="status not in('sold')"/>
                     <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" invisible="status not in('cancelled')"/>
                     <group>
                         <group>
                             <h1>
-                                <field name="name" placeholder="Name"/>
+                                <field name="name" placeholder="Property Name"/>
                             </h1>
                         </group>
                         <group>
@@ -77,13 +84,11 @@
                                     <field name="garden_area" invisible="not garden"/>
                                     <field name="total_area"/>
                                     <field name="garden_orientation" invisible="not garden"/>
-                                    <field name="status"/>
-                                    <field name="active"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Offer">
-                            <field name="offer_ids" readonly="status in ('offer_accepted','sold','cancelled')"/>     
+                            <field name="offer_ids" readonly="status in ('offer_accepted','sold','cancelled')" />     
                         </page>
                         <page string="Other Info">
                             <group>
@@ -105,23 +110,36 @@
                 <field name="status"/>
                 <templates>
                     <t t-name="card">
-                        <div>
-                            <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="status not in('sold')"/>
-                            <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" invisible="status not in('cancelled')"/>
-                                <field class="fw-bolder" name="name"/>
-                                <div>
-                                    <text>Expected Price: </text>
-                                    <field name="expected_price"/>
+                        <div class="d-flex flex-column p-2" >
+                            <t t-if="record.status.raw_value == 'sold'">
+                                <widget name="web_ribbon" title="Sold" bg_color="bg-success"  style="z-index: 1;"/>
+                            </t>
+                            <t t-if="record.status.raw_value == 'cancelled'" >
+                                <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" style="z-index: 1;"/>
+                            </t>
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div class="me-2">
+                                    <strong class="fw-bolder">
+                                        <field name="name"/>
+                                    </strong>
+                                    <div>
+                                        <text>Expected Price: </text>
+                                        <field name="expected_price"/>
+                                    </div>
+                                    <div t-if="record.status.raw_value == 'offer_received'">
+                                        <text>Best Offer: </text>
+                                        <field name="best_price"/>
+                                    </div>
+                                    <div t-if="record.status.raw_value == 'offer_accepted'">
+                                        <text>Selling Price: </text>
+                                        <field name="selling_price"/>
+                                    </div>
+                                    <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                                 </div>
-                                <div t-if="record.status.raw_value == 'offer_received'"  >
-                                    <text>Best Offer:  </text>
-                                    <field name="best_price"/>
+                                <div class="d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; overflow: hidden; ">
+                                    <field name="image" string="" widget="image" class="oe_avatar" style="width: 100%; height: 100%;"/>
                                 </div>
-                                <div t-if="record.status.raw_value == 'offer_accepted'"  >
-                                    <text>Selling Price:  </text>
-                                    <field name="selling_price"/>
-                                </div>
-                                <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            </div>
                         </div>
                     </t>
                 </templates>
@@ -140,9 +158,10 @@
                 <field name="living_area" string="Living Area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades" string="Facades"  />
                 <separator/>
-                <filter string="Available" name="available" domain="[('active', '=', True)]"></filter>
-                <filter string="Unavailable" name="unavailable" domain="[('active', '=', False)]"/>
-                <filter string="New or Received" name="status" domain="['|',('status', '=', 'new'),('status', '=', 'offer_received')]"/>
+                <filter string="Available" name="available" domain="[('status', 'not in', ['sold', 'cancelled'])]"/>
+                <filter string="Unavailable" name="unavailable" domain="[('status', 'in', ['sold', 'cancelled'])]"/>
+                <filter string="Sold Properties" name="status" domain="[('status', '=', 'sold')]"/>
+                <filter string="New or Offer Received" name="status" domain="['|',('status', '=', 'new'),('status', '=', 'offer_received')]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
