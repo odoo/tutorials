@@ -32,16 +32,14 @@ class SaleOrderAddWarranty(models.TransientModel):
         sale_order_lines = []
         warranty_lines = self.warranty_line_ids.filtered(lambda w: w.warranty_id)
         for line in warranty_lines:
-            sale_order_lines.append(
-                {
-                    "product_id": line.warranty_id.product_id.id,
-                    "order_id": self.sale_order_id.id,
-                    "name": f" Extended Warranty, \n End Date: {line.end_date}",
-                    "price_unit": line.sale_order_line_id.price_unit * line.warranty_id.percentage / 100,
-                    "product_uom_qty": line.sale_order_line_id.product_uom_qty,
-                    "warranty_linked_with_product_id": line.sale_order_line_id.id,
-                    "sequence": line.sale_order_line_id.sequence
-                }
-            )
-        if sale_order_lines:
-            self.env["sale.order.line"].create(sale_order_lines)
+            warranty_order_line = self.env["sale.order.line"].create({
+                "product_id": line.warranty_id.product_id.id,
+                "order_id": self.sale_order_id.id,
+                "name": f"Extended Warranty, \n End Date: {line.end_date}",
+                "price_unit": line.sale_order_line_id.product_id.list_price * line.warranty_id.percentage / 100,
+                "product_uom_qty": line.sale_order_line_id.product_uom_qty,
+                "warranty_linked_with_product_id": line.sale_order_line_id.id,
+                "sequence": line.sale_order_line_id.sequence,
+            })
+            if line.sale_order_line_id.tax_id:
+                warranty_order_line.tax_id = [(6, 0, line.sale_order_line_id.tax_id.ids)]

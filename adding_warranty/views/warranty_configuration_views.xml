@@ -21,6 +21,7 @@
             <list string="Warranty configuration list view" editable="bottom">
                 <field name="name" />
                 <field name="product_id" />
+                <field name="period_type"/>
                 <field name="period" />
                 <field name="percentage" />
             </list>

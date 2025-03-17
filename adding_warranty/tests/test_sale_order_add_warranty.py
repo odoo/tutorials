@@ -95,10 +95,7 @@ class TestAddingWarranty(TransactionCase):
             msg="Warranty price should be correctly calculated.",
         )
 
-        print("test_add_warranty_to_sale_order ran successfully")
-
     def test_warranty_button_visibility(self):
-        """Test visibility of the warranty button based on sale order lines"""
 
         if hasattr(self.sale_order, "show_warranty_button"):
             self.assertTrue(
@@ -114,4 +111,3 @@ class TestAddingWarranty(TransactionCase):
                 self.sale_order.show_warranty_button,
                 "Warranty button should be hidden when no warranty products exist.",
             )
-        print("test_warranty_button_visibility ran successfully")

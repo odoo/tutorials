@@ -8,6 +8,7 @@
       <xpath expr="//page[@name='sales']/group[@name='sale']/group[@name='extra_info']"
         position="inside">
         <field name="is_warranty_available" />
+        <field name="warranty_id" />
       </xpath>
     </field>
   </record>
