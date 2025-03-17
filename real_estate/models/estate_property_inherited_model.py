@@ -1,4 +1,4 @@
-from odoo import api,fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyInheritedMode(models.Model):
@@ -7,4 +7,3 @@ class EstatePropertyInheritedMode(models.Model):
     property_ids = fields.One2many(
         "estate.property", "salesperson", domain=[("state", "not in", ["cancelled"])]
     )
-

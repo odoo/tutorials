@@ -29,26 +29,26 @@
         <field name="garage">False</field>
         <field name="property_type_id" ref="residential"/>
     </record>
-    <!-- <data noupdate="1">
-    <record id="estate_property_data_3" model="estate.property">
-        <field name="name">Luxury Villa</field>
-        <field name="description">A luxurious villa!</field>
-        <field name="state">new</field>
-        <field name="postcode">54321</field>
-        <field name="date_availability">2025-01-01</field>
-        <field name="expected_price">1000000</field>
-        <field name="bedrooms">5</field>
-        <field name="living_area">1000</field>
-        <field name="facades">4</field>
-        <field name="garage">True</field>
-        <field name="garden">True</field>
-         <field name="garden_area">100000</field>
-        <field name="garden_orientation">south</field>
-        <field name="property_type_id" ref="residential"/>
-        <field name="offer_ids" eval="[
+    <data noupdate="1">
+        <record id="estate_property_data_3" model="estate.property">
+            <field name="name">Luxury Villa</field>
+            <field name="description">A luxurious villa!</field>
+            <field name="state">new</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">2025-01-01</field>
+            <field name="expected_price">1000000</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">1000</field>
+            <field name="facades">4</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">100000</field>
+            <field name="garden_orientation">south</field>
+            <field name="property_type_id" ref="residential"/>
+            <!-- <field name="offer_ids" eval="[
         Command.create({'price':1020000001,'validity':10,'partner_id':ref('base.res_partner_3')}),
         Command.create({'price':1220000001,'validity':10,'partner_id':ref('base.res_partner_5')})
-        ]"/>
-    </record>
-    </data> -->
+        ]"/> -->
+        </record>
+    </data>
 </odoo>
