@@ -39,7 +39,7 @@
                 </div>
             </xpath>
             <xpath expr="//button[@name='action_sold']" position="attributes">
-                <attribute name="invisible">selling_mode == 'auction' or state in ['sold', 'cancelled']</attribute>
+                <attribute name="invisible">selling_mode == 'auction' and state != 'offer_accepted' or state in ['sold', 'cancelled']</attribute>
             </xpath>
         </field>
     </record>

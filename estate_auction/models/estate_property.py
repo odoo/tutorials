@@ -79,8 +79,7 @@ class EstateProperty(models.Model):
 
         # Log the invoice creation with property link
         self.message_post(
-                body=_(("Invoice created and linked to property: <a href='#' data-oe-model='account.move' data-oe-id='%s'>%s</a>") % 
-                (invoice.id, invoice.name))
+                body=_(("Invoice created with Id:%s and linked to this property") % (invoice.id))
             )
         return invoice
 
