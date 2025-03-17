@@ -1,0 +1,23 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Odoo",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/odoo/GitHub/odoo/odoo/odoo-bin",
+            "args": [
+                "--addons-path=/home/odoo/GitHub/odoo/odoo/addons,/home/odoo/GitHub/odoo/enterprise/,/home/odoo/GitHub/odoo/tutorials/",
+                "-d", "rd-demo",
+                "-u", "estate",
+                "--dev", "xml"
+            ],
+            "console": "integratedTerminal",
+            "justMyCode": false
+        }
+        
+    ]
+}

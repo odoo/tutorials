@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="property_type_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Type">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="property_offer_ids"/>
+                <field name="property_offer_count"/>
+            </list>
+        </field>
+    </record>
+</odoo>
