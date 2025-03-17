@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="display" className="'o_dashboard h-100 p-3'">

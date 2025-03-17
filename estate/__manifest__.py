@@ -4,7 +4,7 @@
     'category': 'Real Estate/Brokerage',
     'summary': 'Manage real estate advertisements and offers',
     'author': 'Khushi',
-    'depends': ['base', 'web', 'mail','website'],
+    'depends': ['base', 'web', 'mail', 'website'],
     'data': [
         'views/estate_action.xml',
         'views/res_config_settings_views.xml',

@@ -1,4 +1,3 @@
-from copy import error
 from datetime import timedelta
 from odoo import api, models, fields, exceptions
 
@@ -54,13 +53,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accepted(self):
         for record in self:
-            if any(
-                offer.status == "accepted" for offer in record.property_id.offer_ids
-            ):
-                raise exceptions.UserError(error)
-            if record.property_id.offer_ids.filtered(
-                lambda offer: offer.status == "accepted"
-            ):
+            if any(offer.status == "accepted" for offer in record.property_id.offer_ids):
                 raise exceptions.UserError(
                     "Only one offer can be accepted for a property."
                 )
@@ -68,7 +61,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = "offer_accepted"
-            return True
+        return True
 
     def action_refused(self):
         for record in self:
@@ -93,6 +86,7 @@ class EstatePropertyOffer(models.Model):
                 raise exceptions.ValidationError(
                     f"The offer must be higher than {property.best_offer:.2f}."
                 )
+
             property.state = "offer_received"
 
-        return super(EstatePropertyOffer, self).create(vals_list)
+        return super().create(vals_list)

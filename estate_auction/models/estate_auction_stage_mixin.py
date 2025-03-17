@@ -1,5 +1,6 @@
-from odoo import models, fields, api, _
+from odoo import models, fields, _
 from odoo.exceptions import UserError
+
 
 class EstateAuctionStageMixin(models.AbstractModel):
     _name = "estate.auction.stage.mixin"
@@ -12,7 +13,7 @@ class EstateAuctionStageMixin(models.AbstractModel):
         tracking=True,
     )
     auction_stage_selection = fields.Many2one(
-        "estate.auction.stage", 
+        "estate.auction.stage",
         string="Auction Stage",
         default=lambda self: self.env["estate.auction.stage"].search([], limit=1)
     )

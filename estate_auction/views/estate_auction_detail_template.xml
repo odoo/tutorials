@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="auction_property_details_template" inherit_id="estate.property_details_template">
-        
-        <!-- Remove Listed Badge -->
         <xpath expr="//span[contains(@class, 'badge bg-secondary')]" position="replace">
-            <span></span> <!-- Empty span to remove existing badge -->
+            <span></span>
         </xpath>
-
-        <!-- Insert Auction Timer Badge -->
         <xpath expr="//div[contains(@class, 'bg-light rounded-3 p-3 mb-4 shadow-sm')]/div" position="inside">
             <t t-if="property.sale_type == 'auction'">
                 <span id="auction-timer"
@@ -18,8 +14,6 @@
                 </span>
             </t>
         </xpath>
-
-        <!-- Insert JavaScript to Update Auction Timer Every Second -->
         <xpath expr="//div[last()]" position="after">
             <script type="text/javascript">
             <![CDATA[

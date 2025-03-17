@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class EstateSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
@@ -20,7 +21,7 @@ class EstateSettings(models.TransientModel):
 
     def set_values(self):
         """Save the setting and install the module if enabled."""
-        super(EstateSettings, self).set_values()
+        super().set_values()
         self.env['ir.config_parameter'].sudo().set_param(
             "estate.automated_auction", self.automated_auction
         )

@@ -4,9 +4,9 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 class EstatePropertyAuction(models.Model):
-    _inherit = ["estate.property", "estate.auction.stage.mixin", "estate.property.auction.invoice.mixin"]
-    _name = "estate.property"
+    _inherit = "estate.property"
     _description = "Estate Property Auction"
 
     sale_type = fields.Selection(
@@ -16,7 +16,7 @@ class EstatePropertyAuction(models.Model):
         default="regular",
     )
 
-    auction_end_time = fields.Datetime(string="Auction End Time", required=False)
+    auction_end_time = fields.Datetime(string="Auction End Time")
     currency_id = fields.Many2one(
         "res.currency",
         string="Currency",
@@ -29,11 +29,15 @@ class EstatePropertyAuction(models.Model):
     highest_bidder = fields.Many2one(
         "res.partner", string="Highest Bidder", readonly=True
     )
+    auction_stage = fields.Selection([
+        ('template', 'Template'),
+        ('auction', 'Auction'),
+        ('sold', 'Sold'),
+    ], string='Auction Stage', default='template')
 
     is_auction = fields.Boolean(
         string="Is Auction", compute="_compute_is_auction", store=True
     )
-
     auction_remaining_time = fields.Char(
         string="Remaining Time", compute="_compute_remaining_time", store=True
     )
@@ -71,10 +75,14 @@ class EstatePropertyAuction(models.Model):
     def _compute_highest_offer(self):
         """Compute the highest offer and set the highest bidder."""
         for record in self:
-            highest_offer_value = max(record.offer_ids.mapped("price"), default=0.0)
-            highest_bid = record.offer_ids.filtered(lambda o: o.price == highest_offer_value)
-            record.highest_offer = highest_offer_value
-            record.highest_bidder = highest_bid.partner_id if highest_bid else False
+            if record.offer_ids:
+                highest_offer = max(record.offer_ids.mapped("price"), default=0.0)
+                top_offer = record.offer_ids.filtered(lambda o: o.price == highest_offer)
+                record.highest_offer = highest_offer
+                record.highest_bidder = top_offer.partner_id if top_offer else False
+            else:
+                record.highest_offer = 0.0
+                record.highest_bidder = False
 
     @api.depends("auction_end_time")
     def _compute_remaining_time(self):
@@ -84,74 +92,74 @@ class EstatePropertyAuction(models.Model):
                 record.auction_remaining_time = "Auction End Time Not Set"
             else:
                 now = fields.Datetime.now()
-                remaining_time = record.auction_end_time - now
-                if remaining_time.total_seconds() <= 0:
+                remaining = record.auction_end_time - now
+                if remaining.total_seconds() <= 0:
                     record.auction_remaining_time = "Auction Ended"
                 else:
-                    days = remaining_time.days
-                    hours, remainder = divmod(remaining_time.seconds, 3600)
-                    minutes, seconds = divmod(remainder, 60)
-                    record.auction_remaining_time = (
-                        f"{days}d {hours}h {minutes}m {seconds}s left"
-                        if days > 0
-                        else (
-                            f"{hours}h {minutes}m {seconds}s left"
-                            if hours > 0
-                            else f"{minutes}m {seconds}s left"
-                        )
-                    )
+                    days = remaining.days
+                    hours, rem = divmod(remaining.seconds, 3600)
+                    minutes, seconds = divmod(rem, 60)
+                    if days > 0:
+                        record.auction_remaining_time = f"{days}d {hours}h {minutes}m {seconds}s left"
+                    elif hours > 0:
+                        record.auction_remaining_time = f"{hours}h {minutes}m {seconds}s left"
+                    else:
+                        record.auction_remaining_time = f"{minutes}m {seconds}s left"
 
     def _auto_accept_highest_offer(self):
-        """
-        Process expired auctions: auto-accept the highest offer and notify all bidders.
-        """
+        """Process expired auctions: auto-accept the highest offer and notify all bidders."""
         _logger.info("Starting _auto_accept_highest_offer process")
-        expired_auctions = self.search([
+        expired = self.search([
             ('auction_end_time', '<', fields.Datetime.now()),
             ('auction_stage', '=', 'auction'),
-            ('state', 'in', ['new', 'offer_received'])
+            ('state', 'in', ['new', 'offer_received']),
         ])
-        _logger.info("Found %s expired auctions", len(expired_auctions))
-        for prop in expired_auctions:
-            _logger.info("Processing property ID %s with state '%s' and auction_stage '%s'", prop.id, prop.state, prop.auction_stage)
-            # Change sale type to regular to mark the end of the auction process
+        _logger.info("Found %s expired auctions", len(expired))
+
+        for prop in expired:
+            _logger.info(
+                "Processing property ID %s with state '%s' and auction_stage '%s'",
+                prop.id, prop.state, prop.auction_stage,
+            )
+
             prop.sale_type = 'regular'
-            highest_offer = prop.offer_ids.sorted(key=lambda r: r.price, reverse=True)[:1]
-            # Use the corrected email template external ID (assuming your module is estate_auction)
-            template = self.env.ref('estate_auction.mail_template_auction_result')
-            if highest_offer:
-                highest = highest_offer[0]
-                _logger.info("Highest offer for property ID %s is %s from partner %s", prop.id, highest.price, highest.partner_id.id)
+            top_offer = prop.offer_ids.sorted(key=lambda r: r.price, reverse=True)[:1]
+
+            template = self.env.ref('estate_auction.mail_template_auction_result', raise_if_not_found=False)
+
+            if top_offer:
+                offer = top_offer[0]
+                _logger.info(
+                    "Highest offer for property ID %s is %s from partner %s",
+                    prop.id, offer.price, offer.partner_id.id
+                )
                 prop.write({
                     'auction_stage': 'sold',
                     'state': 'sold',
-                    'selling_price': highest.price,
-                    'buyer_id': highest.partner_id.id,
-                    'highest_bidder': highest.partner_id.id,
+                    'selling_price': offer.price,
+                    'buyer_id': offer.partner_id.id,
+                    'highest_bidder': offer.partner_id.id,
                 })
             else:
                 _logger.info("No offers found for property ID %s", prop.id)
+
             for offer in prop.offer_ids:
-                offer_status = 'accepted' if highest_offer and offer.id == highest_offer[0].id else 'refused'
-                offer.write({'status': offer_status})
-                _logger.info("Sending email for offer ID %s: status set to %s", offer.id, offer_status)
-                template.send_mail(offer.id, force_send=True)
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'reload',
-        }
+                is_top = top_offer and offer.id == top_offer[0].id
+                offer.write({'status': 'accepted' if is_top else 'refused'})
+                _logger.info("Sending email for offer ID %s: status %s", offer.id, offer.status)
+                if template:
+                    template.send_mail(offer.id, force_send=True)
+
+        return {'type': 'ir.actions.client', 'tag': 'reload'}
 
     def _track_running_auctions(self):
-        """
-        Update or track auctions that are currently running.
-        """
-        for prop in self.search([('auction_stage', '=', 'auction')]):
+        """Update or track auctions that are currently running."""
+        running = self.search([('auction_stage', '=', 'auction')])
+        for prop in running:
             prop._compute_remaining_time()
 
     def _process_auctions(self):
-        """
-        Combine auction tracking and finalization into a single cron job execution.
-        """
+        """Combine auction tracking and finalization into a single cron job execution."""
         _logger.info("Starting _process_auctions")
         self._track_running_auctions()
         self._auto_accept_highest_offer()

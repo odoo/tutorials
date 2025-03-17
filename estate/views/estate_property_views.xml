@@ -25,6 +25,7 @@
                 <field name="expected_price" width="100%" />
                 <field name="selling_price" />
                 <field name="date_availability" optional="hide" />
+                <field name="state" invisible="1" />
             </list>
         </field>
     </record>
@@ -93,7 +94,7 @@
                             <field name="expected_price" />
                             <field name="best_offer" readonly="1" />
                             <field name="selling_price" />
-                            <field name="state" readonly="1"/>
+                            <field name="state" />
                         </group>
                     </group>
                     <group>
@@ -144,7 +145,7 @@
                         </page>
                     </notebook>
                 </sheet>
-                <chatter/>
+                <chatter />
             </form>
         </field>
     </record>

@@ -1,11 +1,9 @@
-# -*- coding: utf-8 -*-
-
 {
     'name': 'Real Estate Auction',
     'version': '1.0',
     'category': 'Real Estate',
     'sequence': 15,
-    'depends': ['estate','estate_account','website'],
+    'depends': ['estate', 'estate_account', 'website'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_auction_views.xml',
@@ -18,7 +16,6 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'estate_auction/static/src/css/auction_stage.css',
             'estate_auction/static/src/js/auction_stage.js'
         ],
     },

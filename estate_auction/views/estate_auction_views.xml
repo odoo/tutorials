@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data>
-
-        <!-- Inherit Estate Property Form View -->
         <record id="view_estate_property_form_inherit_auction" model="ir.ui.view">
             <field name="name">estate.property.form.inherit.auction</field>
             <field name="model">estate.property</field>
             <field name="inherit_id" ref="estate.view_estate_property_form" />
             <field name="arch" type="xml">
-
                 <xpath expr="//header/button[@name='action_cancel']" position="before">
                     <button name="action_start_auction" type="object" string="Start Auction"
                         class="btn-primary" invisible="not is_auction" />
                 </xpath>
-
                 <xpath expr="//div[hasclass('oe_title')]" position="before">
                     <div class="auction-stage-selector d-flex justify-content-end"
                         invisible="not is_auction">
@@ -30,8 +26,6 @@
                             </span>
                         </button>
                     </div>
-
-                    <!-- Auction Stage Selection Modal -->
                     <div class="modal fade" id="auctionStageModal" tabindex="-1"
                         aria-labelledby="auctionStageModalLabel" aria-hidden="true" role="dialog">
                         <div class="modal-dialog">
@@ -62,14 +56,11 @@
                         </div>
                     </div>
                 </xpath>
-                
                 <xpath expr="//div[@class='oe_title']" position="after">
                     <div style="display: flex; gap: 10px; align-items: center;">
                         <field name="sale_type" widget="radio" options="{'horizontal': true}" />
                     </div>
                 </xpath>
-
-                <!-- Locate the Description tab correctly and insert Auction Details -->
                 <xpath expr="//page[.//field[@name='description']]/group" position="inside">
                     <group invisible="not is_auction">
                         <separator string="Auction Details" />

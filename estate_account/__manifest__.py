@@ -5,8 +5,8 @@
     'category': 'Accounting',
     'summary': 'Link Real Estate with Accounting',
     'depends': ['estate', 'account'],
-    'data' : [
-        'reports/estate_property_templates.xml'
+    'data': [
+        'reports/estate_property_templates.xml',
     ],
     'installable': True,
     'application': False,

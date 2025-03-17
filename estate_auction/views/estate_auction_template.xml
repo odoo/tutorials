@@ -1,19 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="property_listing_template_inherit" inherit_id="estate.property_listing_template">
-
         <xpath expr="//div[contains(@class, 'property-item')]" position="attributes">
             <attribute name="t-att-data-auction">'true' if property.auction_stage == 'auction' else
                 'false'</attribute>
             <attribute name="t-att-data-price">property.expected_price</attribute>
         </xpath>
         <xpath expr="//button[@id='filter-btn']" position="after">
-            <!-- Auction Filter Button -->
             <div class="filter">
                 <button class="btn btn-outline-dark px-4 rounded-pill" id="auction-filter-btn">
                     <i class="fa fa-gavel me-2"></i> Auction </button>
-
-
                 <div id="price-filter-panel margin-top: 10px;" style="display: contents;">
                     <input type="number" id="min-price" placeholder="Min Price" class="form-control"
                         style="display: inline-block; width: 20%;margin-left: 2%;" />
@@ -35,13 +31,11 @@
                     const applyPriceBtn = document.getElementById("apply-price-filter-btn");
                     const propertyItems = document.querySelectorAll(".property-item");
 
-                    // State for filters
                     let auctionActive = false;
                     let minPrice = 0;
                     let maxPrice = Infinity;
 
                     function applyFilters() {
-                        // Get updated price values
                         let minPriceValue = minPriceInput.value.trim();
                         let maxPriceValue = maxPriceInput.value.trim();
 
@@ -55,23 +49,16 @@
                             const price = priceAttr ? parseFloat(priceAttr) : 0; // Ensure it's a valid number
 
                             let showItem = true;
-
-                            // Apply Auction filter
                             if (auctionActive &amp;&amp; !isAuction) {
                                 showItem = false;
                             }
 
-                            // Apply Price filter
                             if (price &lt; minPrice || price &gt; maxPrice) {
                                 showItem = false;
                             }
-
-                            // Apply final visibility
                             item.style.display = showItem ? "block" : "none";
                         });
                     }
-
-                    // Auction Filter Button - Toggle Auction Filter
                     auctionFilterBtn.addEventListener("click", function () {
                         auctionActive = !auctionActive; // toggle
                         auctionFilterBtn.classList.toggle("active", auctionActive);
@@ -80,8 +67,6 @@
 
                         applyFilters(); // Apply filters immediately
                     });
-
-                    // Apply filters when clicking the "Apply" button
                     applyPriceBtn.addEventListener("click", applyFilters);
                 });
 

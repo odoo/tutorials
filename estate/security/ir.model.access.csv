@@ -11,4 +11,3 @@ estate_offer_user,estate.property.offer.user,estate.model_estate_property_offer,
 "id_estate_property_offer_admin","Estate Property Offer: Admin Access","model_estate_property_offer","base.group_system",1,1,1,1
 "id_estate_property_tag_admin","Estate Property Tag: Admin Access","model_estate_property_tag","base.group_system",1,1,1,1
 "id_estate_property_type_admin","Estate Property Type: Admin Access","model_estate_property_type","base.group_system",1,1,1,1
-

@@ -7,12 +7,14 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _inherit = ["mail.thread", "mail.activity.mixin","website.published.mixin"]
+    _inherit = ["mail.thread", "mail.activity.mixin", "website.published.mixin"]
     _order = "id desc"
+
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
     ]
+
     name = fields.Char(required=True)
     image = fields.Binary("Image")
     description = fields.Text()
@@ -64,6 +66,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped("price"), default=0)
 
+    @api.depends("offer_ids.status")
+    def _compute_has_accepted_offer(self):
+        """Check if any offer has been accepted for the property."""
+        for record in self:
+            record.has_accepted_offer = any(offer.status == 'accepted' for offer in record.offer_ids)
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -72,7 +80,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-    
+
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
@@ -91,20 +99,15 @@ class EstateProperty(models.Model):
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
         for record in self:
-            if float_compare(record.selling_price, 0, precision_rounding=0.01) > 0:  # Selling price is not zero
+            if float_compare(record.selling_price, 0, precision_rounding=0.01) > 0:
                 minimum_price = record.expected_price * 0.9
                 if float_compare(record.selling_price, minimum_price, precision_rounding=0.01) < 0:
                     raise ValidationError(
                         "The selling price cannot be lower than 90% of the expected price."
                     )
+
     @api.ondelete(at_uninstall=False)
     def _check_state_on_delete(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError(_("You can only delete properties in the 'New' or 'Cancelled' state."))
-
-    @api.depends("offer_ids.status")
-    def _compute_has_accepted_offer(self):
-        """Check if any offer has been accepted for the property."""
-        for record in self:
-            record.has_accepted_offer = any(offer.status == 'accepted' for offer in record.offer_ids)
