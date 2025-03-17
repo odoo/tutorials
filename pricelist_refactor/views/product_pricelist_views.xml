@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_pricelist_view" model="ir.ui.view">
+        <field name="name">sale.subscription.product.pricelist.form.inherit</field>
+        <field name="model">product.pricelist</field>
+        <field name="inherit_id" ref="product.product_pricelist_view"/>
+        <field name="arch" type="xml">
+            <page name="product_subscription_pricing_ids" position="replace">
+                <page name="product_subscription_pricelist_ids" string="Recurring prices">
+                    <field name="product_subscription_pricelist_ids"
+                           nolabel="1"
+                           context="{'form_view_ref': 'pricelist_refactor.sale_subscription_product_pricelist_item_form_view'}">
+                         <list string="Subscription Pricelist Rules">
+                            <field name="product_tmpl_id" column_invisible="True"/>
+                            <field name="name" string="Apply on"/>
+                            <field name="plan_id"/>
+                            <field name="price" string="Price"/>
+                            <field name="min_quantity" optional="hide"/>
+                            <field name="base" column_invisible="True"/>
+                            <field name="applied_on" column_invisible="True"/>
+                            <field name="price_discount" column_invisible="True"/>
+                            <field name="compute_price" column_invisible="True"/>
+                        </list>
+                    </field>
+                </page>
+            </page>
+            <page name="pricelist_rules" position="attributes">
+                <attribute name="string">Sales prices</attribute>
+            </page>
+            <page name="product_pricing_ids" position="replace">
+                <page name="rental_pricelist_ids" string="Rental prices">
+                    <field name="rental_pricelist_ids"
+                           nolabel="1"
+                           context="{'form_view_ref': 'pricelist_refactor.rental_product_pricelist_item_form_view'}">
+                         <list string="Subscription Pricelist Rules">
+                            <field name="product_tmpl_id" column_invisible="True"/>
+                            <field name="name" string="Apply on"/>
+                            <field name="recurrence_id"/>
+                            <field name="price" string="Price"/>
+                            <field name="min_quantity" optional="hide"/>
+                            <field name="base" column_invisible="True"/>
+                            <field name="applied_on" column_invisible="True"/>
+                            <field name="price_discount" column_invisible="True"/>
+                            <field name="compute_price" column_invisible="True"/>
+                        </list>
+                    </field>
+                </page>
+            </page>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_view_form_recurring" model="ir.ui.view">
+        <field name="name">sale.subscription.product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="sale.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <page name="sales" position="after">
+                <page string="Prices" name="prices" invisible="not sale_ok or recurring_invoice">
+                    <field
+                        name="pricelist_rule_ids"
+                        context="{
+                            'default_product_tmpl_id': id,
+                            'default_compute_price': 'percentage',
+                        }"
+                    >
+                        <list>
+                            <field name="pricelist_id"/>
+                            <field name="name" string="Applied On"/>
+                            <field name="price"/>
+                            <field name="min_quantity"/>
+                            <field name="plan_id"/>
+                            <field name="date_start" optional="hide"/>
+                            <field name="date_end" optional="hide"/>
+                            <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                            <field name="base" column_invisible="True"/>
+                            <field name="applied_on" column_invisible="True"/>
+                            <field name="price_discount" column_invisible="True"/>
+                            <field name="compute_price" column_invisible="True"/>
+                        </list>
+                    </field>
+                </page>
+            </page>
+            <page name="subscription_pricing" position="replace">
+                <page string="Prices" name="subscription_pricing" invisible="not recurring_invoice">
+                    <field
+                        name="subscription_pricelist_rule_ids"
+                        context="{
+                            'default_product_tmpl_id': id,
+                            'default_compute_price': 'percentage',
+                            'form_view_ref': 'pricelist_refactor.product_pricelist_item_sale_subscription_view'
+                        }"
+                        domain="[('plan_id', '=', None)]"
+                    >
+                        <list>
+                            <field name="pricelist_id"/>
+                            <field name="name" string="Applied On"/>
+                            <field name="price"/>
+                            <field name="min_quantity"/>
+                            <field name="date_start" optional="hide"/>
+                            <field name="date_end" optional="hide"/>
+                            <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                            <field name="base" column_invisible="True"/>
+                            <field name="applied_on" column_invisible="True"/>
+                            <field name="price_discount" column_invisible="True"/>
+                            <field name="compute_price" column_invisible="True"/>
+                        </list>
+                    </field>
+                </page>
+            </page>
+        </field>
+    </record>
+</odoo>

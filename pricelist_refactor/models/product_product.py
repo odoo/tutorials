@@ -1,0 +1,14 @@
+from odoo import models
+
+
+class ProductProduct(models.Model):
+    _inherit = "product.product"
+
+
+    def _get_best_pricing_rule(self, quantity, date, **kwargs):
+        """Return the best pricing rule for the given duration.
+
+        :return: least expensive pricing rule for given duration
+        :rtype: product.pricelist.item
+        """
+        return self.product_tmpl_id._get_best_pricing_rule(quantity, date, product=self, **kwargs)
