@@ -1,7 +1,8 @@
 {
     'name': 'Real Estate',
     'category': 'Tutorials/RealEstate',
-    'version': '0.1',
+    'icon': '/estate/static/src/img/estate.png',
+    'version': '1.0',
     'application': True,
     'installable': True,
     'license': 'LGPL-3',
@@ -16,14 +17,15 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_menus.xml',
-        'views/res_user.xml'
+        'views/res_user.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
     ],  
     'demo': [
         'demo/estate_property_tag.xml',
         'demo/estate_property_type.xml',
         'demo/estate_partners.xml',
         'demo/estate_property.xml',
-        'demo/estate_property_offer.xml',
-        'demo/estate_sold_property.xml'
+        'demo/estate_property_offer.xml'
     ]  
 }

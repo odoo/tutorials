@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="estate.report_estate_property">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <t t-call="estate.estate_properties" />
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate.estate_salesman">
+        <t t-foreach="docs" t-as="salesman">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <br/> <br/>
+                        <div>
+                        <h2>
+                            <strong>Salesman: </strong>
+                            <span t-field="salesman.name" />
+                        </h2><br/> <br/>
+                        </div>
+                        <t t-set="properties" t-value="salesman.mapped('property_ids')" />
+                        <t t-foreach="properties" t-as="property">
+                            <t t-call="estate.estate_properties2" />
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate_properties">
+        <h3>
+            <span t-field="property.name"/>
+        </h3>
+        <div>
+            <strong>Salesman: </strong>
+            <span t-field="property.sales_person_ids" />
+        </div>
+        <div>
+            <strong>Expected Price: </strong>
+            <span t-field="property.expected_price"/>
+        </div>
+        <div>
+            <strong>Status: </strong>
+            <span t-field="property.status"/>
+        </div>
+        <t t-if="property.offer_ids">
+            <t t-call="estate.estate_property_offers_table" />
+        </t>
+        <t t-else="">
+            <h4> There are no offers yet. </h4> <br/> <br/>
+        </t>
+    </template>
+
+    <template id="estate_properties2">
+        <h3>
+            <span t-field="property.name"/>
+        </h3>
+        <div>
+            <strong>Expected Price: </strong>
+            <span t-field="property.expected_price"/>
+        </div>
+        <div>
+            <strong>Status: </strong>
+            <span t-field="property.status"/>
+        </div>
+        <t t-if="property.offer_ids">
+            <t t-call="estate.estate_property_offers_table" />
+        </t>
+        <t t-else="">
+            <h4> There are no offers yet. </h4> <br/> <br/>
+        </t>
+    </template>
+
+    <template id="estate.estate_property_offers_table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>validity(days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                <tr t-foreach="offers" t-as="offer">
+                    <td>
+                        <span t-field="offer.price"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.partner_id"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.validity"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.date_deadline"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.status"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table> <br/> <br/>
+    </template>
+
+     <template id="estate_property_invoiced"
+        inherit_id="estate.estate_property_offers_table">
+        <xpath expr="//table" position="before">
+            <t t-if="property.status == 'invoiced'">
+                <h5><strong>
+                    !!!Invoice has already been created!!!
+                </strong></h5>
+            </t>
+        </xpath>
+    </template>
+
+
+</odoo>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

@@ -1,14 +1,17 @@
 from odoo import fields, models, Command
+from odoo.exceptions import UserError
 
 class estate_property(models.Model):
     _inherit = "estate.property"
+
+    status = fields.Selection(selection_add=[("invoiced", "Invoiced")])
 
     def action_sold(self):
         empty_move = self.env['account.move'].create({
             'move_type': 'out_invoice',
             'partner_id': self.buyer_id.id, 
+            "invoice_origin": self.name,
             'date': fields.Date.today(), 
-            # 'state': 'cancel',  
             'invoice_line_ids': [
                 Command.create({
                     'name': self.name,
@@ -30,8 +33,8 @@ class estate_property(models.Model):
                 }),
             ]
         })
-
-        print("empty_move-------------------------",empty_move)
-
-        # empty_move.action_post()
-        return super().action_sold()
+        if self.status == "offer_accepted":
+            self.status = "invoiced"
+        else:
+            raise UserError("Accept an offer first.")
+        # return super().action_sold()

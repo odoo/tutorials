@@ -1,7 +1,7 @@
 {
     'name': 'Estate Account',
     'category': 'Tutorials/estate_account',
-    'version': '0.1',
+    'version': '1.0',
     'application': True,
     'installable': True,
     'license': 'LGPL-3',
