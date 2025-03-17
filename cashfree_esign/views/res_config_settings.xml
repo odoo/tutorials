@@ -1,0 +1,16 @@
+<odoo>
+  <record id="res_config_settings_view_form_inherit_sign_aadhar" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.sign.aadhar</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="55"/>
+        <field name="inherit_id" ref="sign.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+          <xpath expr="//app[@name='sign']/block[@name='sign']/setting[5]" position="inside">
+            <setting id="esign_enabled"
+              help="Sign your important documents using Aadhaar eSign">
+                <field name="module_cashfree_esign" />
+            </setting>
+          </xpath>
+        </field>
+  </record>
+</odoo>

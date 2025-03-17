@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="cashfree_esign.MobileAadharDialog">
+        <Dialog>
+            <t t-set-slot="header">
+                <h4 class="modal-title">Please submit the details to proceed to the <strong>Cashfree Aadhaar eSign</strong> portal for signing process</h4>
+            </t>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Mobile Number</label>
+                    <input type="text" class="form-control" t-model="state.mobile" placeholder="Enter Mobile Number"/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Aadhaar last 4 Number</label>
+                    <input type="text" class="form-control" t-model="state.aadhaar" placeholder="Enter Aadhaar Number"/>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+                <button class="btn btn-primary" t-on-click="submitForm">Submit</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

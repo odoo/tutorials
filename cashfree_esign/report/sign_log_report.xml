@@ -1,0 +1,19 @@
+<odoo>
+    <template id="sign_request_logs_user_inherit" inherit_id="sign.sign_request_logs_user">
+        <xpath expr="//thead/tr/th[@id='participants_email_verification']" position="after">
+            <t t-if="o.sudo().request_item_ids.filtered(lambda sri: sri.role_id.auth_method == 'aadhar_esign')">
+                 <th id="participants_authentication" class="text-start">Authentication Type</th>
+            </t>
+        </xpath>
+        <xpath expr="//tbody/t/tr/td[hasclass('text-center')]" position="after">
+            <td>
+                <t t-if="sri.role_id.auth_method == 'aadhar_esign'">
+                  <span t-field="sri.partner_id.name">John Smith</span>
+                  <span> on </span>
+                  <span t-field="sri.signing_date">31-03-2025</span>
+                  <span>(Aadhar) eSign</span>
+                </t>
+            </td>
+        </xpath>
+    </template>
+</odoo>
