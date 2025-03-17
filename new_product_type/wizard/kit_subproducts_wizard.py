@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, Command, fields, models
 
 
 class KitSubproductWizard(models.TransientModel):
@@ -14,7 +14,7 @@ class KitSubproductWizard(models.TransientModel):
         subproduct_line_ids = self.env['kit.subproduct.wizard.line'].with_context(
             kit_configuration_id=self.id, active_id=sale_order_line_id
         )._prepare_subproduct_lines()
-        return [(6, 0, subproduct_line_ids.ids)]
+        return [Command.set(subproduct_line_ids.ids)]
 
     def action_apply_configuration(self):
         sale_order_line = self.env['sale.order.line'].browse(self.env.context.get('active_id'))
