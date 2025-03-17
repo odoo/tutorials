@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="stamp_tour" model="web_tour.tour">
+        <field name="name">sign_template_stamp_creation_tour</field>
+        <field name="sequence">150</field>
+        <field name="rainbow_man_message">Congratulations, you stamp your first document!</field>
+    </record>
+</odoo>

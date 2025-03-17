@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="sign_stamp.signItemExtension" t-inherit="sign.signItem" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if='readonly']" position="inside">
+            <t t-if="type == 'stamp'" t-call="sign_stamp.stampSignItem"/>
+        </xpath>
+        <xpath expr="//t[@t-if='!readonly']" position="inside">
+             <button t-if="type == 'stamp'"
+                     t-att-title="role"
+                     t-attf-class="{{classes}} o_sign_sign_item text-center"
+                     style="color:#757575;"
+                     t-att-style="style"
+                     t-att-data-signature="value">
+                <span class="o_sign_helper"/>
+                <img t-if="frame_value" t-att-src="frame_value" alt="Frame"/>
+                <img t-if="value" t-att-src="value" alt="Signature"/>
+                <t t-if="!value">
+                    <span class="o_placeholder ps-0 fs-6" >
+                        <t t-esc="placeholder"/>
+                    </span>
+                </t>
+            </button>
+        </xpath>
+    </t>
+
+    <div t-name="sign_stamp.stampSignItem"
+         t-att-title="role"
+         t-attf-class="{{classes}} o_sign_sign_item"
+         t-att-data-id="id"
+         t-att-style="style"
+         t-att-data-stamp="value">
+        <div class="sign_item_body">
+                <span t-if="value" class="o_sign_helper"/>
+                <img t-if="frame_value" t-att-src="frame_value" alt="Frame" class="o_sign_frame"/>
+                <img t-if="value" t-att-src="value" alt="Signature"/>
+                <t t-if="!value">
+                    <span class="o_placeholder ps-0 d-flex justify-content-center align-items-center" style="font-size:20px">
+                        <t t-esc="placeholder"/>
+                    </span>
+                </t>
+                <t t-if="editMode" t-call="sign.signItemConfiguration"/>
+        </div>
+    </div>
+</templates>

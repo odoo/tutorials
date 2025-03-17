@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="sign_stamp.signItemTypesSidebarExtension" t-inherit="sign.signItemTypesSidebar" t-inherit-mode="extension">
+        <xpath expr="//t[@t-set='icon_type']" position="replace">
+            <t t-set="icon_type" t-value="{
+                'signature': 'fa-pencil-square-o',
+                'initial': 'fa-pencil-square-o',
+                'text': 'fa-font',
+                'textarea': 'fa-bars',
+                'checkbox': 'fa-check-square-o',
+                'selection': 'fa-dot-circle-o',
+                'stamp' : 'fa-certificate'
+            }"/>
+        </xpath>
+    </t>
+</templates>

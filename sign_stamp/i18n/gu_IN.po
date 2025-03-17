@@ -1,0 +1,209 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* sign_stamp
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-18 13:15+0000\n"
+"PO-Revision-Date: 2025-03-18 13:15+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/name_and_signature.xml:0
+msgid ""
+") format(\"woff\");\n"
+"                        font-weight: normal;\n"
+"                        font-style: normal;\n"
+"                    }"
+msgstr ""
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/name_and_signature.xml:0
+msgid ""
+"@font-face {\n"
+"                        font-family: \"font\";\n"
+"                        src: url(data:font/ttf;base64,"
+msgstr ""
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Address"
+msgstr "સરનામું"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid ""
+"By clicking Adopt & Sign, I agree that the chosen signature/initials will be"
+" a valid electronic representation of my hand-written signature/initials for"
+" all purposes when it is used on documents, including legally binding "
+"contracts."
+msgstr "એડપ્ટ એન્ડ સાઇન પર ક્લિક કરીને, હું સંમત છું કે પસંદ કરેલ હસ્તાક્ષર/આદ્યાક્ષરો મારા હસ્તલિખિત હસ્તાક્ષર/આદ્યાક્ષરોનું માન્ય ઇલેક્ટ્રોનિક પ્રતિનિધિત્વ હશે, જ્યારે તેનો ઉપયોગ દસ્તાવેજો પર કરવામાં આવશે, જેમાં કાયદેસર રીતે બંધનકર્તા કરારોનો પણ સમાવેશ થાય છે."
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Cancel"
+msgstr "રદ કરો"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "City"
+msgstr "શહેર"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Company"
+msgstr "કંપની"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Country"
+msgstr "દેશ"
+
+#. module: sign_stamp
+#: model:ir.model.fields,field_description:sign_stamp.field_res_users__sign_stamp
+msgid "Digital Signature"
+msgstr "ડિજિટલ હસ્તાક્ષર"
+
+#. module: sign_stamp
+#: model:ir.model.fields,field_description:sign_stamp.field_res_users__sign_stamp_frame
+msgid "Digital Signature Frame"
+msgstr ""
+
+#. module: sign_stamp
+#. odoo-python
+#: code:addons/sign_stamp/models/sign_request.py:0
+msgid "ERROR: Invalid PDF file!"
+msgstr "ભૂલ: અમાન્ય PDF ફાઇલ!"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/components/sign_request/sign_items.xml:0
+msgid "Frame"
+msgstr ""
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Logo"
+msgstr ""
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Sign"
+msgstr "સહી"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Sign all"
+msgstr "બધા પર સહી કરો"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/components/sign_request/sign_items.xml:0
+msgid "Signature"
+msgstr "સહી"
+
+#. module: sign_stamp
+#: model:ir.model,name:sign_stamp.model_sign_item_type
+msgid "Signature Item Type"
+msgstr ""
+
+#. module: sign_stamp
+#: model:ir.model,name:sign_stamp.model_sign_request
+msgid "Signature Request"
+msgstr "સહી વિનંતી"
+
+#. module: sign_stamp
+#: model:ir.model,name:sign_stamp.model_sign_request_item
+msgid "Signature Request Item"
+msgstr "સહી વિનંતી આઇટમ"
+
+#. module: sign_stamp
+#: model:ir.model.fields.selection,name:sign_stamp.selection__sign_item_type__item_type__stamp
+msgid "Stamp"
+msgstr "સ્ટેમ્પ"
+
+#. module: sign_stamp
+#. odoo-python
+#: code:addons/sign_stamp/models/sign_request.py:0
+msgid ""
+"The completed document cannot be created because the sign request is not "
+"fully signed"
+msgstr ""
+
+#. module: sign_stamp
+#. odoo-python
+#: code:addons/sign_stamp/models/sign_request.py:0
+msgid ""
+"There was an issue downloading your document. Please contact an "
+"administrator."
+msgstr "પૂર્ણ થયેલ દસ્તાવેજ બનાવી શકાતો નથી કારણ કે સહી વિનંતી સંપૂર્ણપણે સહી થયેલ નથી."
+
+#. module: sign_stamp
+#: model:ir.model.fields,field_description:sign_stamp.field_sign_item_type__item_type
+msgid "Type"
+msgstr "પ્રકાર"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Type Address name to stamp"
+msgstr "સ્ટેમ્પ લગાવવા માટે સરનામાનું નામ લખો"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Type VAT number to stamp"
+msgstr "સ્ટેમ્પ લગાવવા માટે VAT નંબર લખો"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Type city name to stamp"
+msgstr "સ્ટેમ્પ પર શહેરનું નામ લખો"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Type company name to stamp"
+msgstr "સ્ટેમ્પ લગાવવા માટે કંપનીનું નામ લખો"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "Type country name to stamp"
+msgstr "સ્ટેમ્પ પર દેશનું નામ લખો"
+
+#. module: sign_stamp
+#: model:ir.model,name:sign_stamp.model_res_users
+msgid "User"
+msgstr "વપરાશકર્તા"
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/stamp_dialog.xml:0
+msgid "VAT Number"
+msgstr ""
+
+#. module: sign_stamp
+#. odoo-javascript
+#: code:addons/sign_stamp/static/src/dialogs/name_and_signature.xml:0
+msgid "VAT:"
+msgstr ""

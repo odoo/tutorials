@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="sign_stamp.sign_svg_stamp" name="SVG Stamp">
+        <svg t-att-width="width" t-att-height="height" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <style type="text/css">
+                    @font-face {
+                        font-family: "font";
+                        src: url(data:font/ttf;base64,<t t-esc="font"/>) format("woff");
+                        font-weight: normal;
+                        font-style: normal;
+                    }
+                </style>
+            </defs>
+
+            <image x="5%" y="15%" width="33%" height="60%" t-att-href="logo"/>
+
+            <text x="40%" y="30%" t-att-font-size="height * 1 / 5"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start">
+                <t t-esc="company"/>
+            </text>
+            <text x="40%" y="45%" t-att-font-size="height * 1 / 8"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start">
+                <t t-esc="address"/>
+            </text>
+            <text x="40%" y="58%" t-att-font-size="height * 1 / 8"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start">
+                <t t-esc="city"/>
+            </text>
+            <text x="40%" y="70%" t-att-font-size="height * 1 / 8"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start">
+                <t t-esc="country"/>
+            </text>
+            <text x="40%" y="82%" t-att-font-size="height * 1 / 8"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start">
+                VAT: <t t-esc="vat"/>
+            </text>
+        </svg>
+    </t>
+</templates>

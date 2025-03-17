@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="sign_stamp.LogoAndStampDialog">
+        <Dialog t-props="dialogProps">
+            <LogoAndStamp t-props="nameAndSignatureProps"/>
+            <div class="mt16 small">
+                By clicking Adopt &amp; Sign, I agree that the chosen signature/initials/stamp will
+                be a valid electronic representation of my hand-written signature/initials for all
+                purposes when it is used on documents, including legally binding contracts.
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary"
+                        t-if="props.onConfirmAll"
+                        t-on-click="props.onConfirmAll"
+                        t-att-disabled="footerState.buttonsDisabled">Sign all</button>
+                <button class="btn btn-secondary"
+                        t-on-click="props.onConfirm"
+                        t-att-disabled="footerState.buttonsDisabled">Sign</button>
+                <button class="btn btn-secondary"
+                        t-on-click="props.close">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+
+    <t t-name="sign_stamp.LogoAndStamp" t-inherit="sign.NameAndSignature" t-inherit-mode="primary">
+        <xpath expr="//div[@t-if='!props.noInputName']" position="after">
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label" t-att-for="'o_web_sign_name_input_' + htmlId">Company</label>
+                <input type="text"
+                       name="company"
+                       t-att-id="'o_web_sign_company_input_' + htmlId"
+                       class="o_web_sign_name_input form-control"
+                       t-ref="companyInput"
+                       t-on-input="onInputData"
+                       t-att-value="props.signature.company"
+                       placeholder="Type company name to stamp"
+                       required=""/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label" t-att-for="'o_web_sign_name_input_' + htmlId">Address</label>
+                <input type="text"
+                       name="address"
+                       t-att-id="'o_web_sign_address_input_' + htmlId"
+                       class="form-control"
+                       t-ref="addressInput"
+                       t-on-input="onInputData"
+                       t-att-value="props.signature.address"
+                       placeholder="Type Address name to stamp"
+                       required=""/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label" t-att-for="'o_web_sign_name_input_' + htmlId">City</label>
+                <input type="text"
+                       name="city"
+                       t-att-id="'o_web_sign_name_input_' + htmlId"
+                       class="form-control"
+                       t-ref="cityInput"
+                       t-on-input="onInputData"
+                       t-att-value="props.signature.city"
+                       placeholder="Type city name to stamp"
+                       required=""/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label" t-att-for="'o_web_sign_name_input_' + htmlId">Country</label>
+                <input type="text"
+                       name="country"
+                       t-att-id="'o_web_sign_name_input_' + htmlId"
+                       class="form-control"
+                       t-ref="countryInput"
+                       t-on-input="onInputData"
+                       t-att-value="props.signature.country"
+                       placeholder="Type country name to stamp"
+                       required=""/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label" t-att-for="'o_web_sign_name_input_' + htmlId">VAT Number</label>
+                <input type="text"
+                    name="vat"
+                    t-att-id="'o_web_sign_name_input_' + htmlId"
+                    class=" form-control"
+                    t-ref="vatInput"
+                    t-on-input="onInputData"
+                    t-att-value="props.signature.vat"
+                    placeholder="Type VAT number to stamp"
+                    required=""/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label" t-att-for="'o_web_sign_name_input_' + htmlId">Logo</label>
+                <input accept="image/*"
+                type="file" name="logo"
+                t-att-id="'o_web_sign_name_input_' + htmlId"
+                class=" form-control"
+                t-ref="logoInput"
+                t-on-input="onInputData"
+                required=""/>
+            </div>
+        </xpath>
+    </t>
+</templates>
