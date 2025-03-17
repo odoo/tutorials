@@ -8,13 +8,18 @@
     This module enables the sale and purchase of products with a one-time purchase option.
     """,
     'data': [
+        'data/one_time_sale_tour.xml',
         'views/product_views.xml',
         'views/templates.xml'
     ],
     'assets': {
         'web.assets_frontend': [
             'one_time_sale/static/src/**/*',
+            ('remove', 'one_time_sale/static/src/js/tours/one_time_sale.js')
+        ],
+        'web.assets_backend': [
+            'one_time_sale/static/src/js/tours/**',
         ]
     },
-    'license': 'LGPL-3'
+    'license': 'OEEL-1'
 }

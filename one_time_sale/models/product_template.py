@@ -27,9 +27,9 @@ class ProductTemplate(models.Model):
         """Pass additinal information to handle the one-time purchase."""
         res = super()._get_additionnal_combination_info(product_or_template, quantity, date, website)
 
+        pricings = res.get('pricings', [])
         # add discount per pricing plan if product is consumable product
-        if product_or_template.type == 'consu':
-            pricings = res.get('pricings', [])
+        if product_or_template.type == 'consu' and pricings:
             one_time_price = res.get('list_price', 0) if product_or_template.accept_one_time else 0
             # base_price as one_time_price if available otherwise maximum price from all subscription plans
             base_price = one_time_price or max((pricing['price_value'] for pricing in pricings), default=0)

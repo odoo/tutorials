@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="one_time_sale_tour" model="web_tour.tour">
+        <field name="name">one_time_sale_tour</field>
+        <field name="sequence">251</field>
+        <field name="rainbow_man_message">
+            <![CDATA[
+                <b>Congratulations</b>, you have successfully create subscription product for one time sale.
+            ]]>
+        </field>
+    </record>
+
+    <record id="one_time_sale_website_tour" model="web_tour.tour">
+        <field name="name">one_time_sale_website_tour</field>
+        <field name="sequence">252</field>
+        <field name="rainbow_man_message">
+            <![CDATA[
+                <b>Congratulations</b>, you have successfully purchase subscription product for one time sale.
+            ]]>
+        </field>
+    </record>
+</odoo>

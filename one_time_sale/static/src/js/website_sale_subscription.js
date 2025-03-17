@@ -6,12 +6,8 @@ WebsiteSale.include({
         this._super(...arguments);
 
         if (this._isSubscriptionPurchase($form)) {
-            const selectedPlan = $form.find("select.plan_select:visible").val() ||
-                                 $form.find("#add_to_cart").data("subscription-plan-id");
-
+            const selectedPlan = $form.find("select.plan_select:visible").val()
             this.rootProduct.plan_id = selectedPlan ? parseInt(selectedPlan) : undefined;
-        } else if (this._isOneTimePurchase($form)) {
-            delete this.rootProduct.plan_id;
         }
     },
 
@@ -22,10 +18,6 @@ WebsiteSale.include({
 
     _isSubscriptionPurchase($form) {
         return $form.find("#regular_delivery").prop("checked");
-    },
-
-    _isOneTimePurchase($form) {
-        return $form.find("#one_time_purchase").prop("checked");
     }
 });
 
