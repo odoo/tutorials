@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="congratulations_page" name="congratulations">
+        <t t-call="website.layout">
+            <div class="container card shadow mt-5 py-4 d-flex justify-content-center align-items-center">
+                <h2>Congratulations! </h2>
+                <h4 class="mt-4">Your offer has been successfully placed. We will notify you of the result as soon as the auction concludes.</h4>
+                <button id="back_to_properties" class="mt-4 btn btn-primary">Go Back To Properties</button>
+            </div>
+        </t>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let back_to_properties = document.getElementById("back_to_properties");
+
+                back_to_properties.addEventListener("click",function() {
+                    window.location.href = "/properties"
+                });
+            });
+        </script>
+    </template>
+</odoo>

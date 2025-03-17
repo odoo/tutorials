@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_listing_template" inherit_id="estate.property_listing_template">
+        <xpath expr="//button[@id='filter-btn']" position="after">
+            <button id="property_auction_btn" class="btn btn-outline-primary">Auction</button>
+        </xpath>
+        <xpath expr="//div[@id='property-list']/t/div" position="attributes">
+            <attribute name="t-att-data-selling-type">property.property_selling_way</attribute>
+        </xpath>
+        <xpath expr="//script" position="inside">
+            document.addEventListener("DOMContentLoaded", function() {
+                let property_auction = document.getElementById("property_auction_btn");
+                let propertyItems = document.querySelectorAll(".property-item");
+                let isAuctionFilterActive = false;
+
+                property_auction.addEventListener("click",function() {
+                    if(!isAuctionFilterActive)
+                    {
+                        document.getElementById('header_of_properties_page').innerHTML = "Properties in Auction";
+                        propertyItems.forEach(function(item) {
+                            let propertySellingType = item.getAttribute("data-selling-type");
+
+                            item.style.display = propertySellingType == "auction" ? "block" : "none";
+                            property_auction.classList.remove("btn-outline-primary");
+                            property_auction.classList.add("btn-primary", "text-white");
+                            isAuctionFilterActive = true;
+                        });
+                    }
+                    else{
+                        document.getElementById('header_of_properties_page').innerHTML = "Find Your Dream Property";
+                        propertyItems.forEach(function(item) {
+                            let propertySellingType = item.getAttribute("data-selling-type");
+
+                            item.style.display = propertySellingType == "auction" ? "block" : "block";
+                            property_auction.classList.remove("btn-primary", "text-white");
+                            property_auction.classList.add("btn-outline-primary");
+                            isAuctionFilterActive = false;
+                        })
+                    }
+                });
+            });
+        </xpath>
+    </template>
+</odoo>
