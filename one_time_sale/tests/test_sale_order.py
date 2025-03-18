@@ -1,6 +1,6 @@
-from odoo.exceptions import UserError
 from odoo.fields import Command
 from odoo.tests import tagged
+from odoo.exceptions import UserError
 
 from odoo.addons.sale.tests.common import SaleCommon
 
@@ -232,3 +232,60 @@ class TestSaleOrder(SaleCommon):
         updated_line = self.sale_order._cart_update_order_line(order_line.product_id.id, 5, order_line)
         self.assertEqual(updated_line.product_uom_qty, 5, "Quantity should be updated correctly.")
         self.assertEqual(updated_line.price_unit, 50, "One-time product price should remain unchanged.")
+
+    def test_sale_order_without_plan_is_not_subscription(self):
+        """Ensure a sale order with a one-time purchase product is NOT considered a subscription."""
+
+        self.env['sale.order.line'].create({
+            'order_id': self.sale_order.id,
+            'product_id': self.product_one_time.id,
+        })
+
+        self.sale_order._compute_subscription_state()
+        self.assertFalse(
+            self.sale_order.subscription_state,
+            "Sale order should NOT be a subscription when it has only a one-time product."
+        )
+
+
+    def test_sale_order_becomes_subscription_when_plan_is_applied(self):
+        """Test that applying a plan to a sale order converts it into a subscription order."""
+
+        self.env['sale.order.line'].create({
+            'order_id': self.sale_order.id,
+            'product_id': self.product_one_time.id,
+        })
+
+        # Initially, it should not be a subscription order
+        self.sale_order._compute_subscription_state()
+        self.assertFalse(
+            self.sale_order.subscription_state,
+            "Sale order should NOT be a subscription before applying a plan."
+        )
+
+        # Apply a subscription plan
+        self.sale_order.plan_id = self.plan_monthly
+        self.sale_order._compute_subscription_state()
+        self.assertTrue(
+            self.sale_order.subscription_state,
+            "Sale order should become a subscription after applying a plan."
+        )
+
+
+    def test_recurring_total_updates_when_plan_is_applied(self):
+        """Verify that the recurring total updates correctly after a subscription plan is applied."""
+
+        self.env['sale.order.line'].create({
+            'order_id': self.sale_order.id,
+            'product_id': self.product_recurring2.id,
+        })
+
+        # Apply a subscription plan
+        self.sale_order.plan_id = self.plan_monthly
+        self.sale_order._compute_subscription_state()
+
+        self.assertEqual(
+            self.sale_order.recurring_total,
+            6.0,
+            "The recurring total should update to match the subscription plan's price."
+        )
