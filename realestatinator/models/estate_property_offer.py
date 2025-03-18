@@ -1,6 +1,6 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
-class EstatePropertyTags(models.Model):
+class EstatePropertyOffer(models.Model):
 	_name = 'estate.property.offer'
 	_description = 'estate property offer'
 
@@ -24,3 +24,18 @@ class EstatePropertyTags(models.Model):
 		for record in self:
 			delta = record.date_deadline - record.creation_date
 			record.validity = delta.days
+
+	def refuse_offer(self):
+		for record in self:
+			if record.status == 'accepted':
+				record.property_id.selling_price = 0
+				record.property_id.buyer = None
+			record.status = 'refused'
+
+	def accept_offer(self):
+		for record in self:
+			if record.property_id.selling_price != 0:
+				raise exceptions.UserError('An offer as already been accepted for this property.')
+			record.status = 'accepted'
+			record.property_id.selling_price = record.price
+			record.property_id.buyer = record.partner_id

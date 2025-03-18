@@ -12,6 +12,8 @@
 			<list string="Offers">
 				<field name="price"/>
 				<field name="partner_id"/>
+				<button name="accept_offer" type="object" icon="fa-check"/>
+				<button name="refuse_offer" type="object" icon="fa-times"/>
 				<field name="status"/>
 				<field name="date_deadline"/>
 				<field name="validity"/>
