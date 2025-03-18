@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_custom_duty_view_move_form" model="ir.ui.view">
+        <field name="name">account.import.export.duty.view.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form//button[@name='button_draft']" position="after">
+                <button name="action_open_bill_of_entry_wizard"
+                    type="object"
+                    class="oe_highlight"
+                    string="Bill of Entry"
+                    invisible="state != 'posted' or l10n_in_gst_treatment not in ['overseas','special_economic_zone','deemed_export'] or move_type != 'in_invoice'"
+                    icon="fa-download"
+                />
+            </xpath>
+            <xpath expr="//form/sheet/div[@name='button_box']/button" position="after">
+                <button type="action" class="oe_stat_button"
+                    invisible="not custom_duty_journal_entry_id"
+                    name="account.action_move_journal_line"
+                    context="{'search_default_ref' : name}"
+                    icon="fa-book">
+                    <span name='property_invoices' widget='statinfo'>Journal Entry</span>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
