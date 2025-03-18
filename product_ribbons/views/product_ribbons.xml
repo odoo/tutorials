@@ -7,9 +7,9 @@
             <xpath expr="//field[@name='position']" position="after">
                 <field name="style"/>
                 <field name="assign"/>
-                <div invisible="name != 'New'" class="o_row">
+                <div invisible="assign != 'new'" class="o_row">
                     <span>For</span>
-                    <field name="show_after_days" class="oe_inline" nolabel="1"/>
+                    <field name="show_period" style="max-width: 2rem;" nolabel="1"/>
                     <span>days after publication</span>
                 </div>
             </xpath>
