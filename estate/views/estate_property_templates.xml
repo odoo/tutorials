@@ -1,26 +1,21 @@
 <odoo>
-    <record id="estate.property_listing_action" model="ir.actions.act_url">
-        <field name="name">Available Properties</field>
-        <field name="type">ir.actions.act_url</field>
-        <field name="url">/properties</field>
-        <field name="target">self</field>
-    </record>
-
-    <template id="property_lising_nav" name="Real Estate Properties" inherit_id="website.template_header_default">
-        <xpath expr="//t[@t-call='website.navbar_nav']" position="inside">
-            <a class="nav-item nav-link" href="/properties">Properties</a>
-        </xpath>
-    </template>
-
     <template id="property_listing_home_page" name="Home Page">
         <t t-call="website.layout">
             <t t-set="title">Elite Estate Hub - Your Dream Home Awaits</t>
 
             <!-- Hero Section -->
-            <section class="hero-section text-center text-white d-flex align-items-center" style="background: url('/estate/static/img/hero_image.jpeg') no-repeat center center/cover; height: 90vh;">
-                <div class="container">
-                    <h1 class="display-4 fw-bold text-white">Your Journey Starts Here</h1>
-                    <p class="lead text-white">Find your dream home with ease. Browse exclusive properties, connect with experts, and make informed decisions.</p>
+            <section class="hero-section text-center text-white d-flex align-items-center o_animate o_animate_on_scroll o_animate_out o_anim_fade_in o_anim_from_bottom" 
+                     style="background: url('/estate/static/img/hero_home_page.jpg') no-repeat center center/cover; height: 90vh; --wanim-intensity: 75;"
+                     data-scroll-zone-start="25" data-scroll-zone-end="75" >
+                <div class="container o_animate o_animate_on_scroll o_animate_out o_anim_fade_in o_anim_from_top" 
+                     data-scroll-zone-start="25" data-scroll-zone-end="100" style="--wanim-intensity: 100;">
+                    <h1 class="display-4 fw-bold text-white">
+                        Your Journey Starts Here
+                    </h1>
+                    <p class="lead text-white">
+                        Find your dream home with ease. Browse exclusive properties, 
+                        connect with experts, and make informed decisions.
+                    </p>
                     <a href="/properties" class="btn btn-primary btn-lg mt-3">Explore Properties</a>
                 </div>
             </section>
@@ -29,7 +24,8 @@
             <section class="about-us py-5">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-md-6">
+                        <div class="col-md-6 o_animate o_anim_fade_in o_animate_both_scroll o_anim_from_side" 
+                             style="--wanim-intensity: 100; animation-duration: 2s; animation-delay: 0.5s;">
                             <img src="/estate/static/img/about_us.jpeg" class="img-fluid rounded" alt="About Us" />
                         </div>
                         <div class="col-md-6">
@@ -44,7 +40,8 @@
                             Our platform ensures verified listings, transparent transactions, and expert 
                             insights, making property decisions easier and more informed. With a dedicated 
                             team of professionals and advanced technology, we simplify the complexities of 
-                            real estate while maximizing value for buyers and sellers alike. At <strong>Elite Estate Hub</strong>, 
+                            real estate while maximizing value for buyers and sellers alike. 
+                            At <strong>Elite Estate Hub</strong>, 
                             we believe in turning real estate aspirations into reality—hassle-free and with complete peace of mind.
                             </p>
                         </div>
@@ -61,15 +58,19 @@
                         <t t-foreach="request.env['estate.property'].sudo().search([('is_published', '=', True)], limit=3)" t-as="property">
                             <div class="col-md-4">
                                 <div class="card shadow-sm">
-                                    <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" class="card-img-top" alt="Property Image" />
+                                    <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" 
+                                         class="card-img-top" 
+                                         alt="Property Image" />
                                     <div class="card-body">
                                         <h5 class="card-title">
                                             <t t-esc="property.name"/>
                                         </h5>
                                         <p class="card-text">
                                             <t t-esc="property.description[:100]"/>
-...</p>
-                                        <a t-att-href="'/property/details?property_id=%s' % property.id" class="btn btn-primary">View Details</a>
+                                            ...
+                                        </p>
+                                        <a t-att-href="'/property/details/%s' % property.id" 
+                                           class="btn btn-primary">View Details</a>
                                     </div>
                                 </div>
                             </div>
@@ -132,15 +133,139 @@
                 </div>
             </section>
 
+            <!-- Contact Section -->
+            <section class="contact-section py-5 text-white text-center" style="background: #003366;">
+                <div class="container">
+                    <h2 class="fw-bold">Get in Touch</h2>
+                    <p>Have questions? Contact us today and let's discuss your real estate needs.</p>
+                    <a href="/contactus" class="btn btn-light btn-lg">Contact Us</a>
+                </div>
+            </section>
+
+        </t>
+
+    </template>
+
+    <template id="property_listing_about_us_page" name="About Us">
+        <t t-call="website.layout">
+            <t t-set="title">About Us | Elite Estate Hub</t>
+            <!-- Hero Section -->
+            <section class="hero-section text-center text-white d-flex align-items-center justify-content-center position-relative"
+                    style="background: url('/estate/static/img/hero_about_us_page_temp.jpg') no-repeat center center/cover; height: 75vh;">
+                <div class="overlay"></div>
+                <div class="container position-relative z-index-2">
+                    <h1 class="display-3 fw-bold text-white">Know More About Us</h1>
+                    <p class="lead text-white">
+                        Shaping the future of real estate with trust and innovation.
+                    </p>
+                </div>
+            </section>
+
+            <!-- About the Company Section -->
+            <section class="about-company py-5 bg-light">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 order-lg-2">
+                            <img src="/estate/static/img/about_us.jpeg" 
+                                 class="img-fluid rounded shadow" 
+                                 alt="About Us" />
+                        </div>
+                        <div class="col-lg-6 order-lg-1">
+                            <h2 class="fw-bold text-primary">Who We Are</h2>
+                            <p class="text-muted fs-5">
+                                At <strong>Elite Estate Hub</strong>, we are revolutionizing the real estate experience 
+                                by seamlessly combining industry expertise with cutting-edge technology. Whether you're 
+                                buying, selling, or investing, we prioritize a smooth, transparent, and stress-free journey 
+                                tailored to your needs.
+                            </p>
+                            <p class="text-muted fs-5">
+                                With <strong>verified listings, seasoned agents, and a customer-first approach</strong>, 
+                                we are committed to making every real estate decision effortless and rewarding. Trust us 
+                                to guide you towards the perfect property with confidence and clarity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mission & Vision Section -->
+            <section class="mission-vision py-5 text-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="p-4 bg-white shadow rounded">
+                                <h4 class="fw-bold text-primary">Our Mission</h4>
+                                <p class="text-muted">
+                                    To revolutionize real estate by leveraging technology, transparency, 
+                                    and a customer centric approach ensuring seamless, secure, and efficient 
+                                    property transactions for everyone.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-4 bg-white shadow rounded">
+                                <h4 class="fw-bold text-primary">Our Vision</h4>
+                                <p class="text-muted">
+                                    To be the <span class="fw-bold">most trusted and innovative</span> 
+                                    real estate platform, empowering individuals and businesses with 
+                                    data-driven insights, personalized experiences, and effortless 
+                                    property decisions that enhance lives
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Client Success Stories Section -->
+            <section class="client-success py-5 bg-light text-center">
+                <div class="container">
+                    <h2 class="fw-bold text-primary">Client Success Stories</h2>
+                    <p class="text-muted fs-5">
+                        See how we have helped clients achieve their real estate dreams.
+                    </p>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <div class="p-4 bg-white shadow rounded">
+                                <h5 class="fw-bold">Sarah and David</h5>
+                                <p class="text-muted">
+                                    "Elite Estate Hub made finding our dream home an absolute
+                                     pleasure. Their expert guidance, seamless process, and 
+                                     unwavering support turned what could have been a stressful 
+                                     journey into an exciting and hassle-free experience!"
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="p-4 bg-white shadow rounded">
+                                <h5 class="fw-bold">Michael J.</h5>
+                                <p class="text-muted">
+                                    "As a first-time investor, I had many uncertainties, but 
+                                    Elite Estate Hub's knowledgeable agents walked me through 
+                                    every step. Their insights and professional approach helped 
+                                    me make a confident investment decision—one of the best 
+                                    choices I've ever made!"
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Meet the Team Section -->
             <section class="our-team py-5 text-center">
                 <div class="container">
-                    <h2 class="fw-bold">Meet Our Team</h2>
-                    <p>Our dedicated professionals bring years of experience in real estate to help you find the perfect property.</p>
-                    <div class="row mt-4">
+                    <h2 class="fw-bold text-primary">Meet Our Team</h2>
+                    <p class="text-muted fs-5">
+                        Experienced professionals dedicated to helping you find your dream property.
+                    </p>
+                    <div class="row justify-content-center mt-4">
                         <t t-foreach="request.env['res.users'].sudo().search([], limit=4)" t-as="agent">
                             <div class="col-md-3">
-                                <div class="card shadow-sm">
-                                    <img t-att-src="'/web/image/res.users/' + str(agent.id) + '/image_1920'" class="card-img-top" alt="Agent" />
+                                <div class="card team-card border-0 shadow-sm text-center">
+                                    <img t-att-src="'/web/image/res.users/' + str(agent.id) + '/image_256'" 
+                                        class="card-img-top rounded-circle team-img" 
+                                        alt="Agent" />
                                     <div class="card-body">
                                         <h5 class="fw-bold">
                                             <t t-esc="agent.name"/>
@@ -162,9 +287,7 @@
                     <a href="/contactus" class="btn btn-light btn-lg">Contact Us</a>
                 </div>
             </section>
-
         </t>
-
     </template>
 
     <template id="property_listing_template" name="Available Properties">
@@ -179,11 +302,14 @@
                             <div class="card property-card shadow-lg border-0 overflow-hidden">
                                 <!-- Property Image -->
                                 <div class="position-relative">
-                                    <img t-if="property.image" t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" class="card-img-top img-fluid property-image" alt="Property Image" />
+                                    <img t-if="property.image"
+                                         t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')"
+                                         class="card-img-top img-fluid property-image"
+                                         alt="Property Image" />
 
                                     <!-- Price Tag -->
                                     <span class="badge bg-primary position-absolute top-0 end-0 m-2 p-2 fs-6">
-                                        $                                        <t t-out="property.expected_price"/>
+                                        $ <t t-out="property.expected_price"/>
                                     </span>
                                 </div>
 
@@ -219,7 +345,8 @@
                                     </div>
 
                                     <!-- View Details Button -->
-                                    <a t-att-href="'/property/details?property_id=' + str(property.id)" class="btn btn-primary w-100 mt-3 d-flex justify-content-center align-items-center">
+                                    <a t-att-href="'/property/details/' + str(property.id)"
+                                       class="btn btn-primary w-100 mt-3 d-flex justify-content-center align-items-center">
                                         View Details <i class="fa fa-arrow-right ms-2"></i>
                                     </a>
                                 </div>
@@ -272,7 +399,10 @@
                     <div class="col-lg-6">
                         <div class="card shadow-lg border-0 rounded-4">
                             <t t-if="property.image">
-                                <img t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" class="card-img-top rounded-4" alt="Property Image" style="max-height: 400px; object-fit: cover;"/>
+                                <img t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')"
+                                     class="card-img-top rounded-4"
+                                     alt="Property Image"
+                                     style="max-height: 400px; object-fit: cover;"/>
                             </t>
                             <div class="card-body text-center">
                                 <h3 class="text-primary fw-bold" t-out="property.name"/>
