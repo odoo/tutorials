@@ -24,10 +24,16 @@ class SaleOrderInherit(models.Model):
 
         if order_line:
             # Increase the quantity if the product is already in the order
-            order_line.product_uom_qty += 1
+            first_line = order_line[0] #get the first line if there exists multiple products within a line
+            first_line.product_uom_qty += 1
         else:
             # Create a new sale order line with the scanned product
-            new_line = self.env['sale.order.line'].create({
+            #why use new instead of create? I have used new here because when I used create it used to create a bug whenever I cancelled the button and hit reload it used to fetch the saved database items.
+            #What used to happen create->stored in database->cancel changes to remove products-> reload page -> fetched data from database->products appear again.
+            #What happens after new->stored locally(unsaved not in database)->cancel remove products->reload page->fetch data from database(which is empty because create does not save it)->unsaved products dont appear anymore.
+            
+            
+            new_line = self.env['sale.order.line'].new({
                 'order_id': self._origin.id,  # Use the original Sale Order ID (from _origin)
                 'product_id': product.id,
                 'product_uom_qty': 1,  # Start with a quantity of 1
@@ -35,9 +41,11 @@ class SaleOrderInherit(models.Model):
             })
 
             # Add the new line to the sale order dynamically
+            #i.e when I scan this adds the product lines in real time instead of refresh of the page.
             self.write({
                 'order_line': [(4, new_line.id)]  # This adds the new line dynamically to the order
             })
             print("inside else statement!")
 
         print("Sales order line updated with product:", product.name)
+
