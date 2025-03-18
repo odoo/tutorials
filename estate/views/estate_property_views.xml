@@ -12,6 +12,7 @@
                 <field name="expected_price" string="Expected Price"/>
                 <field name="selling_price" string="Selling Price"/>
                 <field name="date_availability" string="Available From"/>
+                <field name="property_type_id" string="Type"/>
             </list>
         </field>
     </record>
@@ -27,13 +28,13 @@
                 <field name="bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facedes"/>
+                <field name="property_type_id" string="Type"/>
 
                 <filter name="filter_state_available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
 
                 <filter string="Postcode" name="groupby_postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
-
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
@@ -46,16 +47,17 @@
                         <h1><field name="name"/></h1>
                     </div>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags" string=""/>
+                    </group>
+                     <separator/>
+                    <group>
                         <group>
+                            <field name="property_type_id" string="Property Type"/>
                             <field name="postcode"/>
-                        </group>
-                        <group>
                             <field name="expected_price" string="Expected Price"/>
                         </group>
                         <group>
                             <field name="date_availability" string="Available From"/>
-                        </group>
-                        <group>
                             <field name="selling_price" string="Selling Price"/>
                         </group>
                     </group>
@@ -75,7 +77,6 @@
                 </sheet>
             </form>
         </field>
-
     </record>
 
     <record id="estate_property_action" model="ir.actions.act_window">
