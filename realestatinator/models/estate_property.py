@@ -3,7 +3,7 @@ from odoo import api, exceptions, fields, models
 class EstatePropery(models.Model):
 	_name = 'estate_property'
 	_description = 'real estate property'
-	_order = 'sequence'
+	_order = 'id desc'
 	_sql_constraints = [
 		('check_expected_price_positive', 'CHECK (0 < expected_price)', 'Check that the expected price is strictly positive'),
 		
@@ -80,6 +80,7 @@ class EstatePropery(models.Model):
 				raise exceptions.UserError('This property cannot be cancelled because it has already been sold.')
 				
 			record.state = 'cancelled'
+			record.active = False
 	
 	def mark_sold(self):
 		for record in self:
@@ -91,10 +92,10 @@ class EstatePropery(models.Model):
 				raise exceptions.UserError('This property cannot be sold because it has already been cancelled.')
 				
 			record.state = 'sold'
+			record.active = False
 
 	@api.constrains('selling_price')
 	def _check_selling_price(self):
-		print('\n\nconstraint\n\n')
 		for record in self:
 			if record.state not in ['offer_accepted', 'sold']:
 				return
