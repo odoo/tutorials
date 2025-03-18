@@ -22,10 +22,13 @@ class EstateWebsite(http.Controller):
 
     @http.route('/', type='http', auth='public', website=True, methods=['GET'])
     def render_homepage(self):
-        """Renders the homepage."""
-        return request.render('estate.property_listing_home_page', {})
+        Properties = request.env['estate.property'].sudo().search([('is_published', '=', True)], limit=3)
+        Agents = request.env['res.users'].sudo().search([], limit=4)
+        return request.render('estate.property_listing_home_page', {
+            'Properties': Properties,
+            'Agents': Agents,
+        })
 
     @http.route('/aboutus', type='http', auth='public', website=True, methods=['GET'])
     def render_about_us_page(self):
-        """Renders the About Us page."""
         return request.render('estate.property_listing_about_us_page', {})

@@ -1,4 +1,13 @@
 <odoo>
+
+    <template id="property_listing_nav_bar" name="vendor_portal.home" inherit_id="website.template_header_default">
+        <xpath expr="//t[@t-call='website.navbar_nav']" position="inside">
+                <a class="nav-item nav-link" href="/aboutus">About Us</a>
+                <a class="nav-item nav-link" href="/properties">Properties</a>
+                <a class="nav-item nav-link" href="/contactus">Contact Us</a>
+        </xpath>
+    </template>
+
     <template id="property_listing_home_page" name="Home Page">
         <t t-call="website.layout">
             <t t-set="title">Elite Estate Hub - Your Dream Home Awaits</t>
@@ -12,7 +21,7 @@
                     <h1 class="display-4 fw-bold text-white">
                         Your Journey Starts Here
                     </h1>
-                    <p class="lead text-white">
+                    <p class="lead text-white fw-semibold">
                         Find your dream home with ease. Browse exclusive properties, 
                         connect with experts, and make informed decisions.
                     </p>
@@ -24,7 +33,7 @@
             <section class="about-us py-5">
                 <div class="container">
                     <div class="row align-items-center">
-                        <div class="col-md-6 o_animate o_anim_fade_in o_animate_both_scroll o_anim_from_side" 
+                        <div class="col-md-6 o_animate o_anim_fade_in o_animate_both_scroll o_anim_from_side"
                              style="--wanim-intensity: 100; animation-duration: 2s; animation-delay: 0.5s;">
                             <img src="/estate/static/img/about_us.jpeg" class="img-fluid rounded" alt="About Us" />
                         </div>
@@ -55,11 +64,11 @@
                     <h2 class="fw-bold">Featured Properties</h2>
                     <p>Discover the most exclusive listings carefully selected for you.</p>
                     <div class="row mt-4">
-                        <t t-foreach="request.env['estate.property'].sudo().search([('is_published', '=', True)], limit=3)" t-as="property">
+                        <t t-foreach="Properties" t-as="property">
                             <div class="col-md-4">
                                 <div class="card shadow-sm">
-                                    <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" 
-                                         class="card-img-top" 
+                                    <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'"
+                                         class="card-img-top"
                                          alt="Property Image" />
                                     <div class="card-body">
                                         <h5 class="card-title">
@@ -69,7 +78,7 @@
                                             <t t-esc="property.description[:100]"/>
                                             ...
                                         </p>
-                                        <a t-att-href="'/property/details/%s' % property.id" 
+                                        <a t-att-href="'/property/details/%s' % property.id"
                                            class="btn btn-primary">View Details</a>
                                     </div>
                                 </div>
@@ -150,12 +159,13 @@
         <t t-call="website.layout">
             <t t-set="title">About Us | Elite Estate Hub</t>
             <!-- Hero Section -->
-            <section class="hero-section text-center text-white d-flex align-items-center justify-content-center position-relative"
+            <section class="hero-section text-center d-flex align-items-center justify-content-center position-relative"
                     style="background: url('/estate/static/img/hero_about_us_page_temp.jpg') no-repeat center center/cover; height: 75vh;">
                 <div class="overlay"></div>
                 <div class="container position-relative z-index-2">
                     <h1 class="display-3 fw-bold text-white">Know More About Us</h1>
-                    <p class="lead text-white">
+                    <br />
+                    <p class="lead fw-semibold text-white">
                         Shaping the future of real estate with trust and innovation.
                     </p>
                 </div>
@@ -166,8 +176,8 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 order-lg-2">
-                            <img src="/estate/static/img/about_us.jpeg" 
-                                 class="img-fluid rounded shadow" 
+                            <img src="/estate/static/img/about_us.jpeg"
+                                 class="img-fluid rounded shadow"
                                  alt="About Us" />
                         </div>
                         <div class="col-lg-6 order-lg-1">
@@ -251,7 +261,7 @@
                     </div>
                 </div>
             </section>
-            
+
             <!-- Meet the Team Section -->
             <section class="our-team py-5 text-center">
                 <div class="container">
@@ -260,11 +270,11 @@
                         Experienced professionals dedicated to helping you find your dream property.
                     </p>
                     <div class="row justify-content-center mt-4">
-                        <t t-foreach="request.env['res.users'].sudo().search([], limit=4)" t-as="agent">
+                        <t t-foreach="Agents" t-as="agent">
                             <div class="col-md-3">
                                 <div class="card team-card border-0 shadow-sm text-center">
-                                    <img t-att-src="'/web/image/res.users/' + str(agent.id) + '/image_256'" 
-                                        class="card-img-top rounded-circle team-img" 
+                                    <img t-att-src="'/web/image/res.users/' + str(agent.id) + '/image_256'"
+                                        class="card-img-top rounded-circle team-img"
                                         alt="Agent" />
                                     <div class="card-body">
                                         <h5 class="fw-bold">
