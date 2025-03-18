@@ -8,7 +8,7 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float()
     status = fields.Selection([('accept', 'Accept'), ('refused', 'Refused')], copy = False)
     partner_id = fields.Many2one('res.partner', string = "Partner", required = True)
-    property_id = fields.Many2one('estate_property', string = 'Property', required = True)
+    property_id = fields.Many2one('estate.property', string = 'Property', required = True)
 
     validity = fields.Integer(string = "Validity", default = 7)
     date_deadline = fields.Date(compute = "_compute_deadline", inverse = "_inverse_deadline", string = "Deadline")

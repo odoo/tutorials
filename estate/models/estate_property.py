@@ -2,25 +2,25 @@ from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "My Estate Property"
 
-    name = fields.Char(required = True)
-    postcode = fields.Char()
-    date_availability = fields.Date(copy = False, default = fields.Date.today() + relativedelta(months = 3))
-    expected_price = fields.Float(required = True)
-    selling_price = fields.Float(readonly = True, copy = False)
-    bedrooms = fields.Integer(default = 2)
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
-    garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    active = fields.Boolean(default = True)
+    name = fields.Char(required = True, string = "Name")
+    postcode = fields.Char(string = "Postcode")
+    date_availability = fields.Date(copy = False, default = fields.Date.today() + relativedelta(months = 3), string = "Available From")
+    expected_price = fields.Float(required = True, string = "Expected Price")
+    selling_price = fields.Float(readonly = True, copy = False, string = "Selling Price")
+    bedrooms = fields.Integer(default = 2, string = "Bedrooms")
+    living_area = fields.Integer(string = "Living Area")
+    facades = fields.Integer(string = "Facades")
+    garage = fields.Boolean(string = "Garage")
+    garden = fields.Boolean(string = "Garden")
+    garden_area = fields.Integer(string = "Garden Area")
+    garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')], string = "Garden Orientation")
+    active = fields.Boolean(default = True, string = "Active")
     state = fields.Selection([('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
-                             required = True, copy = False, default = 'new')
-    description = fields.Char("Description.", default = "This is it.", readonly = True)
+                             required = True, copy = False, default = 'new', string = "State")
+    description = fields.Char("Description.", default = "Description of a house.", readonly = True)
 
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     salesman = fields.Many2one('res.users', string='Salesperson', index=True, default=lambda self: self.env.user)
