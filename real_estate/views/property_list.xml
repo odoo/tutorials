@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="property_list_template">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="row mt-5 mb-5">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-3 mb-3">
+                            <div class="card" style="width: 18rem;">
+                                <img t-if="property['image']" class="card-img-top" t-att-src="image_data_uri(property['image'])" alt="property['name']" />
+                                <img t-else="" class="card-img-top" src="real_estate/static/src/images/card-default.svg" alt="property['name']" />
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-out="property['name']"/>
+                                    </h5>
+                                    <p class="card-text">
+                                        <strong>Type: </strong>
+                                        <t t-out="property['type']"/>
+                                    </p>
+                                    <a t-att-href="'/property/' + str(property['id'])" class="btn btn-primary">View Property</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
+

@@ -17,6 +17,8 @@
         'views/real_estate_menus.xml',
         'report/user_property_templates.xml',
         'report/user_property_reports.xml',
+        'views/property_list.xml',
+        'views/property_view.xml',
     ],
     'demo': [
         'demo/demo_real_estate_partner.xml',
