@@ -37,11 +37,10 @@ class MrpProduction(models.Model):
     @api.depends('product_id', 'product_qty', 's_unit')
     def _compute_s_quantity(self):
         for record in self:
-            wt_per_mt = record.product_id.wt_per_mt if record.product_id.wt_per_mt else 1
-            wt_per_pc = record.product_id.wt_per_pc if record.product_id.wt_per_pc else 1
-            if record.s_unit == "mtrs":
-                record.s_quantity = record.product_qty / wt_per_mt
-            elif record.s_unit == "pcs":
-                record.s_quantity = record.product_qty / wt_per_pc
-            else:
-                record.s_quantity = 0
+            wt_per_mt = record.product_id.wt_per_mt or 1
+            wt_per_pc = record.product_id.wt_per_pc or 1
+            unit_multipliers = {
+                "mtrs": wt_per_mt,
+                "pcs": wt_per_pc
+            }
+            record.s_quantity = record.product_qty / unit_multipliers.get(record.s_unit, float('inf')) if record.s_unit else 0

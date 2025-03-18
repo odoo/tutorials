@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//field[@name='product_description_variants']" position="after">
                 <field name="s_unit"/>
-                <field name="s_quantity" invisible="s_unit in (False, '')" />
+                <field name="s_quantity" invisible="s_unit in (False, '')"/>
             </xpath>
         </field>
     </record>

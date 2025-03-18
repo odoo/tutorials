@@ -9,7 +9,6 @@ class AccountMoveLine(models.Model):
 
     @api.onchange('sale_line_ids')
     def _onchange_sale_line(self):
-        for line in self:
-            if line.sale_line_ids:
-                if line.sale_line_ids.order_id and line.sale_line_ids.order_id.invoice_policy == 'order':
-                    line.quantity = line.sale_line_ids.s_quantity
+        if self.sale_line_ids:
+            if self.sale_line_ids.order_id and self.sale_line_ids.order_id.invoice_policy == 'order':
+                self.quantity = self.sale_line_ids.s_quantity

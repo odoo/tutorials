@@ -25,12 +25,12 @@ class StockMove(models.Model):
             if move.sale_line_id and move.sale_line_id.product_id:
                 wt_per_mt = move.sale_line_id.product_id.wt_per_mt or 1
                 wt_per_pc = move.sale_line_id.product_id.wt_per_pc or 1
-                if move.s_unit == 'mtrs':
-                    move.s_quantity = move.quantity / wt_per_mt
-                elif move.s_unit == 'pcs':
-                    move.s_quantity = move.quantity / wt_per_pc
-                else:  # 'kg'
-                    move.s_quantity = move.quantity
+                unit_multipliers = {
+                    "mtrs": wt_per_mt,
+                    "pcs": wt_per_pc,
+                    "kg": 1  
+                }
+                move.s_quantity = move.quantity / unit_multipliers.get(move.s_unit, 1)
 
     @api.onchange('quantity')
     def _onchange_quantity(self):
