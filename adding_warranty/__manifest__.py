@@ -1,8 +1,5 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 {
-    "name": "Sale Product Warranty",
+    "name": "Sale Warranty",
     "summary": "Adds configurable warranties for products in sales.",
     "description": """
         Enhance Odoo by adding a warranty feature that allows users to configure and select extended
@@ -13,7 +10,7 @@
     "author": "Khushi",
     "category": "Sales",
     "version": "1.0",
-    "depends": ["sale_management"],
+    "depends": ["sale_management", "product"],
     "data": [
         "security/ir.model.access.csv",
         "views/warranty_configuration_views.xml",
@@ -23,6 +20,7 @@
         "wizard/sale_order_add_warranty_views.xml",
     ],
     "installable": True,
+    "auto-installable":True,
     "application": False,
     "license": "LGPL-3"
 }

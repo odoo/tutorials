@@ -1,7 +1,4 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
-from odoo import api, Command, fields, models
+from odoo import api, Command, fields, models, _
 
 
 class SaleOrderAddWarranty(models.TransientModel):
@@ -14,12 +11,11 @@ class SaleOrderAddWarranty(models.TransientModel):
     @api.model
     def default_get(self, fields_list):
         res = super().default_get(fields_list)
-        sale_order = self.env["sale.order"].browse(self.env.context.get("active_id"))
+        sale_order = self.env["sale.order"].browse(self.env.context.get("default_sale_order_id"))
 
         warranty_lines = []
         for line in sale_order.order_line:
-            has_warranty = (self.env["sale.order.line"].search_count([("warranty_linked_with_product_id", "=", line.id)]) > 0)
-            if line.product_id.is_warranty_available and not has_warranty:
+            if line.product_id.is_warranty_available and not line.warranty_line_id:
                 warranty_lines.append({"product_id": line.product_id.id, "sale_order_line_id": line.id})
 
         res.update({
@@ -29,17 +25,19 @@ class SaleOrderAddWarranty(models.TransientModel):
         return res
 
     def action_add_warranty(self):
-        sale_order_lines = []
         warranty_lines = self.warranty_line_ids.filtered(lambda w: w.warranty_id)
-        for line in warranty_lines:
-            warranty_order_line = self.env["sale.order.line"].create({
+        sale_order_lines = [
+            {
                 "product_id": line.warranty_id.product_id.id,
                 "order_id": self.sale_order_id.id,
-                "name": f"Extended Warranty, \n End Date: {line.end_date}",
+                "name": _(f"Extended Warranty, \n End Date: {line.end_date}"),
                 "price_unit": line.sale_order_line_id.product_id.list_price * line.warranty_id.percentage / 100,
                 "product_uom_qty": line.sale_order_line_id.product_uom_qty,
-                "warranty_linked_with_product_id": line.sale_order_line_id.id,
+                "warranty_line_id": line.sale_order_line_id.id,
                 "sequence": line.sale_order_line_id.sequence,
-            })
-            if line.sale_order_line_id.tax_id:
-                warranty_order_line.tax_id = [(6, 0, line.sale_order_line_id.tax_id.ids)]
+                "tax_id": [(6, 0, line.sale_order_line_id.tax_id.ids)] if line.sale_order_line_id.tax_id else [],
+            }
+            for line in warranty_lines
+        ]
+        if sale_order_lines:
+            self.env["sale.order.line"].create(sale_order_lines)
