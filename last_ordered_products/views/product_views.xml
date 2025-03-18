@@ -27,6 +27,7 @@
             
             <field name="product_template_attribute_value_ids" position="after">
                 <span invisible="not last_date_str"><field name="last_date_str"/> ago</span>
+                <span invisible="true"><field name="last_order_time"/></span>
             </field>
         </field>
     </record>

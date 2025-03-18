@@ -8,5 +8,3 @@ export class ProductCatalogLastOrderOrderLine extends ProductCatalogOrderLine {
         uom: Object,
     };
 }
-
-

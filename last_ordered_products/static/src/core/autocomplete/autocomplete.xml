@@ -3,7 +3,7 @@
     <t t-name="last_ordered_products.OrderedProductsAutoComplete" t-inherit="web.AutoComplete" t-inherit-mode="extension">
         <xpath expr="//t[@t-esc='option.label']" position="replace">
             <t t-if="option.time_str">
-                <div class="d-flex justify-content-between text-success">
+                <div class="d-flex justify-content-between">
                     <span><t t-esc="option.label" /></span>
                     <span><t t-esc="option.time_str" /></span>
                 </div>
