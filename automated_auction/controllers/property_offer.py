@@ -19,7 +19,7 @@ class EstatePropertyOfferContoller(Controller):
 
         offer_amount = float(post.get('offer_amount', 0))
         if offer_amount <= property_details.expected_price:
-            raise UserError(_("Price must be greater than expected price"))
+            raise UserError(_("Price must be greater than or equal to expected price"))
 
         # Create the offer in the estate.property.offer model
         request.env['estate.property.offer'].sudo().create({
