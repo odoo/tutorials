@@ -1,6 +1,6 @@
 # type: ignore
 from datetime import timedelta
-from odoo import api,exceptions,fields,models 
+from odoo import api, exceptions, fields, models 
 from odoo.exceptions import UserError 
 
 
@@ -61,23 +61,20 @@ class EstatePropertyOffer(models.Model):
 
     #logic for offer accepted or refused
     def action_accept_offer(self):
-        for record in self:
-            if record.property_id.status == 'offer_accepted':
+        if self.property_id.status == 'offer_accepted':
                 raise UserError("This property already has an accepted offer!")
 
-            record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.status = "offer_accepted"
-            other_offers = record.property_id.offer_ids.filtered(lambda o: o.id != record.id)
-            other_offers.write({'status': 'refused'})
-        return True
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.status = "offer_accepted"
+        other_offers = self.property_id.offer_ids.filtered(lambda o: o.id != self.id)
+        other_offers.write({'status': 'refused'})
     
     #Refuse an offer.
     def action_refuse_offer(self):
-        for record in self:
-            record.status = "refused"
-        return True
+         self.status = "refused"
+        
     
     @api.model_create_multi
     def create(self, vals_list):

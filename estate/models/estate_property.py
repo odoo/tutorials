@@ -1,6 +1,6 @@
 # type: ignore
-from odoo import api,exceptions,fields, models  
 from datetime import date, timedelta
+from odoo import api, exceptions, fields, models  
 from odoo.exceptions import UserError,ValidationError 
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -8,9 +8,9 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Description"
+    _inherit = 'mail.thread'
     _order = "id desc"
 
-    # Database fields for PostgreSQL
     name = fields.Char(required=True,string="Title")
     description = fields.Text(string="Description of Property")
     postcode = fields.Char(string="Postcode")
@@ -51,8 +51,6 @@ class EstateProperty(models.Model):
         copy=False
     )
     active = fields.Boolean(string="Active", default=True)
-
-    # Many2one Fields
     property_type_id = fields.Many2one(
         "estate.property.type",
         string="Property Type",
@@ -66,20 +64,20 @@ class EstateProperty(models.Model):
         string="Salesperson",
         default=lambda self: self.env.user
     )
-
-    # Many2many fields
     tag_ids = fields.Many2many(
        "estate.property.tag",
        string="Property Tags"
     )
-
-    #One2many fields
     offer_ids = fields.One2many(
         "estate.property.offer", "property_id",
         string="Offers"
     )
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
-
+    company_id = fields.Many2one(
+        "res.company",
+        required=True,
+        default=lambda self: self.env.company
+    )
     #sql constraints
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
@@ -110,14 +108,12 @@ class EstateProperty(models.Model):
     
     #logic for sold and cancel
     def action_set_sold(self):
-        """Mark the property as Sold.""" 
         if self.status == "cancelled":
             raise UserError("A cancelled property cannot be sold!")
         self.status = "sold"
         return True
 
     def action_set_cancelled(self):
-        """Mark the property as Cancelled."""
         if self.status == "sold":
             raise UserError("A sold property cannot be cancelled!")
         self.status = "cancelled"

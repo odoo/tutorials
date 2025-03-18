@@ -3,22 +3,22 @@
     <record id="estate_users_form_inherit" model="ir.ui.view">
         <field name="name">res.users.form.inherit.estate</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <!-- Add a new notebook page for properties -->
             <xpath expr="//notebook" position="inside">
                 <page string="Properties">
                     <field name="property_ids">
                         <list>
-                            <field name="name" />
-                            <field name="property_type_id" />
-                            <field name="postcode" />
+                            <field name="name"/>
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
                             <field name="tag_ids" widget="many2many_tags" string="Tags"
-                                options="{'color_field': 'color'}" />
-                            <field name="bedrooms" />
-                            <field name="living_area" />
-                            <field name="expected_price" />
-                            <field name="selling_price" />
+                                options="{'color_field': 'color'}"/>
+                            <field name="bedrooms"/>
+                            <field name="living_area"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
                         </list>
                     </field>
                 </page>

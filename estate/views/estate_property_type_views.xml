@@ -31,20 +31,20 @@
                             icon="fa-money"
                             string="Offers"
                             class="oe_stat_button">
-                            <field name="offer_count" widget="statinfo" />
+                            <field name="offer_count" widget="statinfo"/>
                         </button>
                     </div>
                     <h1>
-                        <field name="name" />
+                        <field name="name"/>
                     </h1>
                     <notebook>
                         <page string="Properties">
                             <div>
                                 <field name="property_ids">
                                     <list>
-                                        <field name="name" />
-                                        <field name="expected_price" />
-                                        <field name="status" />
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="status"/>
                                     </list>
                                 </field>
                             </div>
@@ -61,8 +61,8 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list default_order="sequence">
-                <field name="sequence" widget="handle" />
-                <field name="name" string="Property Types" />
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Property Types"/>
             </list>
         </field>
     </record>
