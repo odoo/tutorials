@@ -6,50 +6,221 @@
         <field name="target">self</field>
     </record>
 
+    <template id="property_lising_nav" name="Real Estate Properties" inherit_id="website.template_header_default">
+        <xpath expr="//t[@t-call='website.navbar_nav']" position="inside">
+            <a class="nav-item nav-link" href="/properties">Properties</a>
+        </xpath>
+    </template>
+
+    <template id="property_listing_home_page" name="Home Page">
+        <t t-call="website.layout">
+            <t t-set="title">Elite Estate Hub - Your Dream Home Awaits</t>
+
+            <!-- Hero Section -->
+            <section class="hero-section text-center text-white d-flex align-items-center" style="background: url('/estate/static/img/hero_image.jpeg') no-repeat center center/cover; height: 90vh;">
+                <div class="container">
+                    <h1 class="display-4 fw-bold text-white">Your Journey Starts Here</h1>
+                    <p class="lead text-white">Find your dream home with ease. Browse exclusive properties, connect with experts, and make informed decisions.</p>
+                    <a href="/properties" class="btn btn-primary btn-lg mt-3">Explore Properties</a>
+                </div>
+            </section>
+
+            <!-- About Us Section -->
+            <section class="about-us py-5">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <img src="/estate/static/img/about_us.jpeg" class="img-fluid rounded" alt="About Us" />
+                        </div>
+                        <div class="col-md-6">
+                            <h2 class="fw-bold">About Us</h2>
+                            <p>At <strong>Elite Estate Hub</strong>, 
+                            We redefine real estate by offering cutting-edge tools, expert guidance, 
+                            and a seamless buying or selling experience. Whether you're searching 
+                            for your dream home, a lucrative investment, or a commercial space, 
+                            we provide personalized solutions tailored to your needs. 
+                            </p>
+                            <p>
+                            Our platform ensures verified listings, transparent transactions, and expert 
+                            insights, making property decisions easier and more informed. With a dedicated 
+                            team of professionals and advanced technology, we simplify the complexities of 
+                            real estate while maximizing value for buyers and sellers alike. At <strong>Elite Estate Hub</strong>, 
+                            we believe in turning real estate aspirations into reality—hassle-free and with complete peace of mind.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Featured Properties Section -->
+            <section class="featured-properties py-5 bg-light">
+                <div class="container text-center">
+                    <h2 class="fw-bold">Featured Properties</h2>
+                    <p>Discover the most exclusive listings carefully selected for you.</p>
+                    <div class="row mt-4">
+                        <t t-foreach="request.env['estate.property'].sudo().search([('is_published', '=', True)], limit=3)" t-as="property">
+                            <div class="col-md-4">
+                                <div class="card shadow-sm">
+                                    <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" class="card-img-top" alt="Property Image" />
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-esc="property.name"/>
+                                        </h5>
+                                        <p class="card-text">
+                                            <t t-esc="property.description[:100]"/>
+...</p>
+                                        <a t-att-href="'/property/details?property_id=%s' % property.id" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Why Choose Us Section -->
+            <section class="why-choose-us py-5">
+                <div class="container text-center">
+                    <h2 class="fw-bold">Why Choose Us?</h2>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white shadow rounded">
+                                <h4 class="fw-bold">Expert Guidance</h4>
+                                <p>Our professionals provide personalized assistance to help you make informed real estate decisions.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white shadow rounded">
+                                <h4 class="fw-bold">Exclusive Listings</h4>
+                                <p>Get access to premium properties that match your lifestyle and investment needs.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white shadow rounded">
+                                <h4 class="fw-bold">Seamless Experience</h4>
+                                <p>From searching to closing deals, we ensure a smooth and stress-free process for our clients.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials Section -->
+            <section class="testimonials py-5 bg-light">
+                <div class="container text-center">
+                    <h2 class="fw-bold">What Our Clients Say</h2>
+                    <div class="row mt-4">
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white shadow rounded">
+                                <p>"Elite Estate Hub made my home-buying experience effortless. Highly recommended!"</p>
+                                <h5 class="fw-bold">- John Doe</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white shadow rounded">
+                                <p>"Great service, expert agents, and smooth transactions. I'm very satisfied!"</p>
+                                <h5 class="fw-bold">- Sarah Williams</h5>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-4 bg-white shadow rounded">
+                                <p>"Finding the perfect home was never this easy. Thanks to Elite Estate Hub!"</p>
+                                <h5 class="fw-bold">- Mark Smith</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="our-team py-5 text-center">
+                <div class="container">
+                    <h2 class="fw-bold">Meet Our Team</h2>
+                    <p>Our dedicated professionals bring years of experience in real estate to help you find the perfect property.</p>
+                    <div class="row mt-4">
+                        <t t-foreach="request.env['res.users'].sudo().search([], limit=4)" t-as="agent">
+                            <div class="col-md-3">
+                                <div class="card shadow-sm">
+                                    <img t-att-src="'/web/image/res.users/' + str(agent.id) + '/image_1920'" class="card-img-top" alt="Agent" />
+                                    <div class="card-body">
+                                        <h5 class="fw-bold">
+                                            <t t-esc="agent.name"/>
+                                        </h5>
+                                        <p class="text-muted">Real Estate Expert</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section class="contact-section py-5 text-white text-center" style="background: #003366;">
+                <div class="container">
+                    <h2 class="fw-bold">Get in Touch</h2>
+                    <p>Have questions? Contact us today and let's discuss your real estate needs.</p>
+                    <a href="/contactus" class="btn btn-light btn-lg">Contact Us</a>
+                </div>
+            </section>
+
+        </t>
+
+    </template>
+
     <template id="property_listing_template" name="Available Properties">
         <t t-call="website.layout">
-            <div class="container mt-4">
-                <h2 class="text-center">
-                    Avalible Properites
+            <div class="container mt-5">
+                <h2 class="text-center text-uppercase text-primary fw-bold mb-4">
+                    Available Properties
                 </h2>
-                <div class="row">
+                <div class="row g-4 mb-4">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-md-4">
-                            <div class="card mb-4">
+                            <div class="card property-card shadow-lg border-0 overflow-hidden">
+                                <!-- Property Image -->
+                                <div class="position-relative">
+                                    <img t-if="property.image" t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" class="card-img-top img-fluid property-image" alt="Property Image" />
+
+                                    <!-- Price Tag -->
+                                    <span class="badge bg-primary position-absolute top-0 end-0 m-2 p-2 fs-6">
+                                        $                                        <t t-out="property.expected_price"/>
+                                    </span>
+                                </div>
+
                                 <div class="card-body">
-                                    <img t-if="property.image" t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" class="img-fluid rounded mb-3" alt="Property Image" style="max-height: 200px; width: 100%; object-fit: cover;" />
+                                    <h4 class="text-dark fw-bold">
+                                        <t t-out="property.name"/>
+                                    </h4>
+                                    <p class="text-muted small">
+                                        <t t-out="property.description"/>
+                                    </p>
 
-                                    <h4 t-out="property.name" class="text-primary"/>
-                                    <p class="text-muted" t-out="property.description"/>
-                                    <p>
-                                        <strong>Bedrooms:</strong>
-                                        <t t-out="property.bedrooms"/>
-                                    </p>
-                                    <p>
-                                        <strong>Living Area:</strong>
-                                        <t t-out="property.living_area"/>
-                                        ft²
-                                    </p>
-                                    <p>
-                                        <strong>Facades:</strong>
-                                        <t t-out="property.facades"/>
-                                    </p>
-                                    <p t-if="property.garage">
-                                        <strong>Garage:</strong> Yes</p>
-                                    <p t-if="property.garden">
-                                        <strong>Garden:</strong> Yes 
-                                        (Area: <t t-out="property.garden_area"/> ft²)
-                                    </p>
-                                    <p>
-                                        <strong>Total Area:</strong>
-                                        <t t-out="property.total_area"/> ft²
-                                    </p>
-                                    <strong>Price: $<t t-out="property.expected_price"/>
-                                    </strong>
-                                    <br/>
+                                    <div class="row text-muted small">
+                                        <div class="col-6">
+                                            <strong>🛏 Bedrooms:</strong>
+                                            <t t-out="property.bedrooms"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong>📏 Living Area:</strong>
+                                            <t t-out="property.living_area"/> ft²</div>
+                                        <div class="col-6">
+                                            <strong>🏠 Facades:</strong>
+                                            <t t-out="property.facades"/>
+                                        </div>
+                                        <div class="col-6" t-if="property.garage">
+                                            <strong>🚗 Garage:</strong> Yes</div>
+                                        <div class="col-6" t-if="property.garden">
+                                            <strong>🌳 Garden:</strong> Yes
+                                            (<t t-out="property.garden_area"/> ft²)
+                                        </div>
+                                        <div class="col-12">
+                                            <strong>📐 Total Area:</strong>
+                                            <t t-out="property.total_area"/> ft²</div>
+                                    </div>
 
-                                    <a t-att-href="'/property/details?property_id=' + str(property.id)" class="btn btn-primary mt-2">
-                                        View Details
+                                    <!-- View Details Button -->
+                                    <a t-att-href="'/property/details?property_id=' + str(property.id)" class="btn btn-primary w-100 mt-3 d-flex justify-content-center align-items-center">
+                                        View Details <i class="fa fa-arrow-right ms-2"></i>
                                     </a>
                                 </div>
                             </div>
@@ -57,6 +228,23 @@
                     </t>
                 </div>
             </div>
+
+            <!-- Custom CSS -->
+            <style>
+                .property-card {
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    border-radius: 10px;
+                }
+                .property-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+                }
+                .property-image {
+                    height: 200px;
+                    object-fit: cover;
+                    border-radius: 10px 10px 0 0;
+                }
+            </style>
         </t>
     </template>
 
@@ -64,133 +252,158 @@
         <t t-call="website.layout">
             <t t-set="title">Property Details</t>
             <div class="container mt-5">
-                <div class="row">
-                    <!-- Image Section -->
-                    <div class="col-lg-5">
-                        <div class="card shadow-sm">
-                            <img t-if="property.image" t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" class="card-img-top rounded" alt="Property Image" style="max-height: 350px; object-fit: cover;"/>
-                            <div class="card-body">
-                                <h3 class="text-center text-primary" t-out="property.name"/>
+                <!-- Breadcrumb Navigation -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb bg-light p-3 rounded shadow-sm">
+                        <li class="breadcrumb-item">
+                            <a href="/">🏠 Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="/properties">🏡 Properties</a>
+                        </li>
+                        <li class="breadcrumb-item active text-primary fw-bold" aria-current="page">
+                            <t t-out="property.name"/>
+                        </li>
+                    </ol>
+                </nav>
+
+                <div class="row g-4">
+                    <!-- Property Image & Gallery -->
+                    <div class="col-lg-6">
+                        <div class="card shadow-lg border-0 rounded-4">
+                            <t t-if="property.image">
+                                <img t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" class="card-img-top rounded-4" alt="Property Image" style="max-height: 400px; object-fit: cover;"/>
+                            </t>
+                            <div class="card-body text-center">
+                                <h3 class="text-primary fw-bold" t-out="property.name"/>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-lg-7">
-                        <div class="card shadow-sm p-4">
-                            <h4 class="mb-3 text-success">Property Information</h4>
-                            <ul class="list-unstyled">
-                                <h4 class="mt-4 text-success">Tags</h4>
-                                <div class="d-flex flex-wrap gap-2">
-                                    <t t-foreach="property.property_tag_ids" t-as="tag">
-                                        <span class="badge bg-secondary" t-out="tag.name"/>
-                                    </t>
-                                </div>
-
-                                <h4 class="mt-4 text-success">Description</h4>
-                                <p class="text-muted" t-out="property.description"/>
-                                <li>
-                                    <strong>Property Type:</strong>
+                    <!-- Property Details -->
+                    <div class="col-lg-6">
+                        <div class="card shadow-lg p-4 border-0 rounded-4">
+                            <h4 class="mb-3 text-success fw-bold">🏡 Property Information</h4>
+                            <div class="d-flex flex-column gap-2">
+                                <p>
+                                    <strong>🏠 Type:</strong>
                                     <t t-out="property.property_type_id.name"/>
-                                </li>
-                                <li>
-                                    <strong>Salesperson:</strong>
-                                    <t t-out="property.user_id.name"/>
-                                </li>
-                                <li>
-                                    <strong>Company:</strong>
-                                    <t t-out="property.company_id.name"/>
-                                </li>
-                                <li>
-                                    <strong>Partner:</strong>
-                                    <t t-out="property.partner_id.name"/>
-                                </li>
-                                <li>
-                                    <strong>Postal Code:</strong>
-                                    <t t-out="property.postcode"/>
-                                </li>
-                                <li>
-                                    <strong>Availability Date:</strong>
-                                    <t t-out="property.date_availability"/>
-                                </li>
-                            </ul>
-
-                            <h4 class="mt-4 text-success">Pricing</h4>
-                            <ul class="list-unstyled">
-                                <li>
-                                    <strong>Expected Price:</strong>
-                                    <span class="text-primary">
-                                        $ <t t-out="property.expected_price"/>
-                                    </span>
-                                </li>
-                                <li>
-                                    <strong>Best Offer:</strong>
-                                    <span class="text-danger">
-                                        $ <t t-out="property.best_price"/>
-                                    </span>
-                                </li>
-                            </ul>
-
-                            <h4 class="mt-4 text-success">Property Features</h4>
-                            <div class="d-flex flex-wrap gap-2">
-                                <ul class="list-unstyled">
-                                <li>
-                                    <strong>
-                                        State: <t t-out="property.state"/>
-                                    </strong>
-                                </li>
-                                <li>
-                                    <strong>
-                                        Bedrooms: <t t-out="property.bedrooms"/>
-                                    </strong>
-                                </li>
-                                <li>
-                                    <strong>
-                                        Living Area: <t t-out="property.living_area"/> ft²
-                                    </strong>
-                                </li>
-                                <li>
-                                    <strong>
-                                        Facades: <t t-out="property.facades"/>
-                                    </strong>
-                                </li>
-                                <li>
-                                    <strong>
-                                        Garage: <t t-out="'Yes' if property.garage else 'No'"/>
-                                    </strong>
-                                </li>
-                                <li>
-                                    <strong>
-                                        Garden: <t t-out="'Yes' if property.garden else 'No'"/>
-                                    </strong>
-                                </li>
-                                <li>
-                                <t t-if="property.garden">
-                                    <ul class="list-unstyled mt-2">
-                                        <li>
-                                            <strong>Garden Area:</strong>
-                                            <t t-out="property.garden_area"/> ft²
-                                        </li>
-                                        <li>
-                                            <strong>Garden Orientation:</strong>
-                                            <t t-out="property.garden_orientation"/>
-                                        </li>
-                                    </ul>
-                                </t>
-                                </li>
-                                <li>
-                                <p class="mt-4">
-                                    <strong>Total Area:</strong>
-                                    <t t-out="property.total_area"/> ft²
                                 </p>
-                                </li>
-                                </ul>
+                                <p>
+                                    <strong>👨‍💼 Salesperson:</strong>
+                                    <t t-out="property.user_id.name"/>
+                                </p>
+                                <p>
+                                    <strong>🏢 Company:</strong>
+                                    <t t-out="property.company_id.name"/>
+                                </p>
+                                <p>
+                                    <strong>🤝 Partner:</strong>
+                                    <t t-out="property.partner_id.name"/>
+                                </p>
+                                <p>
+                                    <strong>📍 Postal Code:</strong>
+                                    <t t-out="property.postcode"/>
+                                </p>
+                                <p>
+                                    <strong>📅 Availability Date:</strong>
+                                    <t t-out="property.date_availability"/>
+                                </p>
                             </div>
 
-                            <div class="text-center mt-4">
-                                <a href="/properties" class="btn btn-outline-primary btn-lg">← Back to Listings</a>
+                            <h4 class="mt-4 text-success fw-bold">🏷️ Tags</h4>
+                            <div class="d-flex flex-wrap gap-2">
+                                <t t-foreach="property.property_tag_ids" t-as="tag">
+                                    <span class="badge bg-primary text-white px-3 py-2 rounded-pill" t-out="tag.name"/>
+                                </t>
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <!-- Property Description -->
+                <div class="card mt-4 shadow-lg p-4 border-0 rounded-4">
+                    <h4 class="text-success fw-bold">📝 Description</h4>
+                    <p class="text-muted fs-6" t-out="property.description"/>
+                </div>
+
+                <!-- Pricing Section -->
+                <div class="card mt-4 shadow-lg p-4 border-0 rounded-4">
+                    <h4 class="text-success fw-bold">💰 Pricing</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p>
+                                <strong>Expected Price:</strong>
+                                <span class="text-primary fs-5 fw-bold">
+                                $ <t t-out="property.expected_price"/>
+                                </span>
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>
+                                <strong>Best Offer:</strong>
+                                <span class="text-danger fs-5 fw-bold">
+                                $ <t t-out="property.best_price"/>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Features -->
+                <div class="card mt-4 shadow-lg p-4 border-0 rounded-4">
+                    <h4 class="text-success fw-bold">🏠 Property Features</h4>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <p>
+                                <strong>📍 State:</strong>
+                                <t t-out="property.state"/>
+                            </p>
+                            <p>
+                                <strong>🚗 Garage:</strong>
+                                <span class="text-success fw-bold" t-out="'Yes' if property.garage else 'No'"/>
+                            </p>
+                            <p>
+                                <strong>🌳 Garden:</strong>
+                                <span class="text-success fw-bold" t-out="'Yes' if property.garden else 'No'"/>
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <p>
+                                <strong>🛏️ Bedrooms:</strong>
+                                <t t-out="property.bedrooms"/>
+                            </p>
+                            <p>
+                                <strong>🏡 Facades:</strong>
+                                <t t-out="property.facades"/>
+                            </p>
+                            <t t-if="property.garden">
+                                <p>
+                                    <strong>🧭 Garden Orientation:</strong>
+                                    <t t-out="property.garden_orientation"/>
+                                </p>
+                            </t>
+                        </div>
+                        <div class="col-md-4">
+                            <p>
+                                <strong>📏 Total Area:</strong>
+                                <t t-out="property.total_area"/> ft²</p>
+                            <p>
+                                <strong>🏠 Living Area:</strong>
+                                <t t-out="property.living_area"/> ft²</p>
+                            <t t-if="property.garden">
+                                <p>
+                                    <strong>🌿 Garden Area:</strong>
+                                    <t t-out="property.garden_area"/> ft²</p>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-5">
+                    <a href="/properties" class="btn btn-lg btn-primary rounded-pill mb-2 px-5 py-3 shadow-sm">
+                        ← Back to Listings
+                    </a>
                 </div>
             </div>
         </t>

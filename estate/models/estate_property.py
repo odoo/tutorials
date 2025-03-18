@@ -56,12 +56,12 @@ class EstateProperty(models.Model):
         compute="_compute_best_price"
     )
     selling_price = fields.Float(
-        string="Selling Price", 
-        readonly=True, 
+        string="Selling Price",
+        readonly=True,
         copy=False
     )
 
-    image = fields.Image(string="Image")
+    image = fields.Image()
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (feet²)")
     facades = fields.Integer(string="Facades")
@@ -124,7 +124,7 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def check_selling_price(self):
         if any(
-            property.selling_price < 
+            property.selling_price <
             (property.expected_price * 0.90) for property in self
         ):
             raise ValidationError(
