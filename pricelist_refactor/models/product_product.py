@@ -2,9 +2,9 @@ from odoo import models
 
 
 class ProductProduct(models.Model):
-    _inherit = "product.product"
+    _inherit = 'product.product'
 
-    def _get_best_pricing_rule(self, quantity, date, **kwargs):
+    def _get_best_pricing_rule(self, quantity=None, date=None, **kwargs):
         """Return the best pricing rule for the given duration.
 
         :return: least expensive pricing rule for given duration

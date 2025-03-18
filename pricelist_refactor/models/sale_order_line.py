@@ -18,7 +18,6 @@ class SaleOrderLine(models.Model):
             return self.order_id.pricelist_id._get_product_price(
                 self.product_id.with_context(**self._get_product_price_context()),
                 self.product_uom_qty or 1.0,
-                order_id=self.order_id,
                 currency=self.currency_id,
                 uom=self.product_uom,
                 date=self.order_id.date_order or fields.Date.today(),
@@ -27,12 +26,12 @@ class SaleOrderLine(models.Model):
             )
         elif self.product_template_id.recurring_invoice:
             if self.order_id.plan_id and self.order_id.pricelist_id:
-                pricing_item = self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
+                pricelist_item_id = self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
                     self.product_id, self.order_id.plan_id, self.pricelist_id
                 )
             else:
-                pricing_item = self.pricelist_item_id
-            return pricing_item._compute_price(
+                pricelist_item_id = self.pricelist_item_id
+            return pricelist_item_id._compute_price(
                 self.product_id.with_context(**self._get_product_price_context()),
                 self.product_uom_qty or 1.0,
                 self.product_uom,
@@ -40,14 +39,13 @@ class SaleOrderLine(models.Model):
                 self.currency_id,
                 self.order_id.plan_id
             )
-        else:
-            return self.pricelist_item_id._compute_price(
-                self.product_id.with_context(**self._get_product_price_context()),
-                self.product_uom_qty or 1.0,
-                self.product_uom,
-                self.order_id.date_order,
-                self.currency_id,
-            )
+        return self.pricelist_item_id._compute_price(
+            self.product_id.with_context(**self._get_product_price_context()),
+            self.product_uom_qty or 1.0,
+            self.product_uom,
+            self.order_id.date_order,
+            self.currency_id,
+        )
 
     @api.depends('order_id.subscription_state', 'order_id.start_date', 'order_id.rental_start_date', 'order_id.rental_return_date')
     def _compute_discount(self):
@@ -122,11 +120,9 @@ class SaleOrderLine(models.Model):
                 # therefore, the pricelist didn't apply any discount/change
                 # to the existing sales price.
                 continue
-
             line = line.with_company(line.company_id)
             pricelist_price = line._get_pricelist_price()
             base_price = line._get_pricelist_price_before_discount()
-
             if base_price != 0:  # Avoid division by zero
                 discount = (base_price - pricelist_price) / base_price * 100
                 if (discount > 0 and base_price > 0) or (discount < 0 and base_price < 0):
@@ -144,5 +140,37 @@ class SaleOrderLine(models.Model):
                     quantity=line.product_uom_qty or 1.0,
                     uom=line.product_uom,
                     date=line.order_id.date_order,
-                    plan_id=line.order_id.plan_id
+                    plan_id=line.order_id.plan_id,
+                    start_date=line.start_date,
+                    end_date=line.return_date,
                 )
+
+    def _get_pricelist_price_before_discount(self):
+        """Compute the price used as base for the pricelist price computation.
+
+        :return: the product sales price in the order currency (without taxes)
+        :rtype: float
+        """
+        self.ensure_one()
+        self.product_id.ensure_one()
+        converted_duration = None
+        recurrence_id = None
+        plan_id = None
+        if self.start_date and self.return_date:
+            duration_vals = self.pricelist_item_id._compute_duration_vals(self.start_date, self.return_date)
+            duration = self.pricelist_item_id and duration_vals[self.pricelist_item_id.recurrence_id.unit or 'day'] or 0
+            converted_duration = duration
+            recurrence_id=self.pricelist_item_id.recurrence_id
+        elif self.order_id.plan_id:
+            plan_id = self.order_id.plan_id
+        return self.pricelist_item_id._compute_price_before_discount(
+            product=self.product_id.with_context(**self._get_product_price_context()),
+            quantity=self.product_uom_qty or 1.0,
+            uom=self.product_uom,
+            date=self.order_id.date_order,
+            currency=self.currency_id,
+            plan_id=plan_id,
+            converted_duration=converted_duration,
+            recurrence_id=recurrence_id
+        )
+        return super()._get_pricelist_price_before_discount()

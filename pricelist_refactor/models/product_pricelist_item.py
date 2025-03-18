@@ -14,9 +14,9 @@ PERIOD_RATIO = {
 class ProductPricelistItem(models.Model):
     _inherit = 'product.pricelist.item'
 
-    active = fields.Boolean("Active", default=True)
-    plan_id = fields.Many2one('sale.subscription.plan', string="Recurring Plan")
-    recurrence_id = fields.Many2one('sale.temporal.recurrence', string="Renting Period")
+    active = fields.Boolean(string="Active", default=True)
+    plan_id = fields.Many2one(comodel_name='sale.subscription.plan', string="Recurring Plan")
+    recurrence_id = fields.Many2one(comodel_name='sale.temporal.recurrence', string="Renting Period")
 
     @api.model
     def _get_first_suitable_recurring_pricing(self, product, plan=None, pricelist=None):
@@ -54,18 +54,18 @@ class ProductPricelistItem(models.Model):
                 first_pricing = pricing
         return first_pricing
 
-    def _compute_price_rental(self, duration, unit, product, quantity, date, start_date, end_date, **kwargs):
+    def _compute_price_rental(self, duration, unit, product, quantity, date, start_date, end_date, uom=None, **kwargs):
         """Compute price based on the duration and unit."""
         self.ensure_one()
         if duration <= 0 or self.recurrence_id.duration <= 0:
-            return self._compute_price(product, quantity, kwargs.get("uom"), date, start_date=start_date, end_date=end_date)
+            return self._compute_price(product, quantity, uom, date)
         if unit != self.recurrence_id.unit:
             converted_duration = math.ceil(
                 (duration * PERIOD_RATIO[unit]) / (self.recurrence_id.duration * PERIOD_RATIO[self.recurrence_id.unit])
             )
         else:
             converted_duration = math.ceil(duration / self.recurrence_id.duration)
-        return self._compute_price(product, quantity, kwargs.get("uom"), date, start_date=start_date, end_date=end_date) * converted_duration
+        return self._compute_price(product, quantity, uom, date, converted_duration=converted_duration)
 
     @api.model
     def _compute_duration_vals(self, start_date, end_date):
@@ -117,7 +117,7 @@ class ProductPricelistItem(models.Model):
                 self.applied_on == "1_product"
                 or product == self.product_id))
 
-    def _compute_price(self, product, quantity, uom, date, currency=None, plan_id=None, start_date=None, end_date=None, *kwargs):
+    def _compute_price(self, product, quantity, uom, date, currency=None, plan_id=None, converted_duration=None, *kwargs):
         """Compute the unit price of a product in the context of a pricelist application.
 
         Note: self and self.ensure_one()
@@ -134,7 +134,6 @@ class ProductPricelistItem(models.Model):
         """
         self and self.ensure_one()  # self is at most one record
         product.ensure_one()
-        uom.ensure_one()
 
         currency = currency or self.currency_id or self.env.company.currency_id
         currency.ensure_one()
@@ -147,19 +146,22 @@ class ProductPricelistItem(models.Model):
         else:
             convert = lambda p: p
         if self.compute_price == 'fixed':
-            price = convert(self.fixed_price)
+            if converted_duration:
+                price = convert(self.fixed_price * converted_duration)
+            else:
+                price = convert(self.fixed_price)
         elif self.compute_price == 'percentage':
             if plan_id:
                 base_price = self._compute_base_price(product, quantity, uom, date, currency, plan_id=plan_id)
-            elif start_date and end_date:
-                base_price = self._compute_base_price(product, quantity, uom, date, currency, recurrence_id=self.recurrence_id)
+            elif converted_duration:
+                base_price = self._compute_base_price(product, quantity, uom, date, currency, recurrence_id=self.recurrence_id, converted_duration=converted_duration)
             else:
                 base_price = self._compute_base_price(product, quantity, uom, date, currency)
             price = (base_price - (base_price * (self.percent_price / 100))) or 0.0
         elif self.compute_price == 'formula':
             if plan_id:
                 base_price = self._compute_base_price(product, quantity, uom, date, currency, plan_id=plan_id)
-            elif start_date and end_date:
+            elif converted_duration:
                 base_price = self._compute_base_price(product, quantity, uom, date, currency, recurrence_id=self.recurrence_id)
             else:
                 base_price = self._compute_base_price(product, quantity, uom, date, currency)
@@ -183,7 +185,7 @@ class ProductPricelistItem(models.Model):
 
         return price
 
-    def _compute_base_price(self, product, quantity, uom, date, currency, plan_id=None, recurrence_id=None):
+    def _compute_base_price(self, product, quantity, uom, date, currency, plan_id=None, recurrence_id=None, converted_duration=None):
         """override method to compute base price for subscription and rental products."""
         currency.ensure_one()
         if plan_id and product.recurring_invoice:
@@ -197,10 +199,11 @@ class ProductPricelistItem(models.Model):
         elif recurrence_id and product.rent_ok:
             rule_base = self.base or 'list_price'
             if rule_base == 'pricelist' and self.base_pricelist_id:
-                breakpoint()
                 price = self._get_first_suitable_rental_pricing(product, recurrence_id, self.base_pricelist_id)._compute_price(product, quantity, uom, date)
                 src_currency = self.base_pricelist_id.currency_id
                 if src_currency != currency:
                     price = src_currency._convert(price, currency, self.env.company, date, round=False)
+                if converted_duration:
+                    return price*converted_duration
                 return price
         return super()._compute_base_price(product, quantity, uom, date, currency)

@@ -96,7 +96,7 @@
                         </span>
                     </group>
                     <field
-                        name="subscription_pricelist_rule_ids"
+                        name="rental_pricelist_rule_ids"
                         groups="product.group_product_variant"
                         context="{
                             'default_product_tmpl_id': id,

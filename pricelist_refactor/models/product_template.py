@@ -50,7 +50,7 @@ class ProductTemplate(models.Model):
     
     default_rent_unit = fields.Many2one(comodel_name='sale.temporal.recurrence', string="Default Sale Unit")
 
-    def _get_best_pricing_rule(self, quantity, date, product=False, start_date=False, end_date=False, **kwargs):
+    def _get_best_pricing_rule(self, quantity, date, uom=None, product=False, start_date=False, end_date=False, **kwargs):
         """ Return the best pricing rule for the given duration.
 
         :param ProductProduct product: a product recordset (containing at most one record)
@@ -67,21 +67,21 @@ class ProductTemplate(models.Model):
         company = kwargs.get('company', self.env.company)
         duration_dict = self.env['product.pricelist.item']._compute_duration_vals(start_date, end_date)
         min_price = float("inf")  # positive infinity
-        available_pricings = self.env['product.pricelist.item']._get_suitable_pricings(
+        available_pricelist_ids = self.env['product.pricelist.item']._get_suitable_pricings(
             product or self, pricelist=pricelist
         )
-        for pricing in available_pricings:
-            unit = pricing.recurrence_id.unit
-            price = pricing._compute_price_rental(duration_dict[unit], unit, product, quantity, date, start_date, end_date, uom=kwargs.get("uom"),base_price=kwargs.get("base_price"))
-            if pricing.currency_id != currency:
-                price = pricing.currency_id._convert(
+        for pricelist_id in available_pricelist_ids:
+            unit = pricelist_id.recurrence_id.unit
+            price = pricelist_id._compute_price_rental(duration_dict[unit], unit, product, quantity, date, start_date, end_date, uom=uom)
+            if pricelist_id.currency_id != currency:
+                price = pricelist_id.currency_id._convert(
                     from_amount=price,
                     to_currency=currency,
                     company=company,
                     date=fields.Date.today(),
                 )
             if price < min_price:
-                min_price, best_pricing_rule = price, pricing
+                min_price, best_pricing_rule = price, pricelist_id
         return best_pricing_rule
 
     def _compute_rental_default(self, duration, unit):

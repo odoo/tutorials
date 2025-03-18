@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -16,4 +16,4 @@ class ResConfigSettings(models.TransientModel):
                 ('name', '=', 'sale_subscription'),
                 ('state', '=', 'installed')
             ]):
-                raise UserError(_("Pricelists are required for Sale Subscription. You cannot disable them."))
+                raise UserError("Pricelists are required for Sale Subscription. You cannot disable them.")

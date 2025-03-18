@@ -2,7 +2,7 @@
     'name': 'Pricelist Refactor',
     'version': '1.0',
     'category': 'sale_management',
-    'depends': ['sale_subscription', 'sale_renting'],
+    'depends': ['sale_subscription', 'sale_renting', 'product'],
     'description': """
         Refactors the pricelist functionality for rental and subscription products, introducing discount and 
         formula-based pricing rules.
