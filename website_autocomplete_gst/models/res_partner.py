@@ -14,6 +14,7 @@ class ResPartner(models.Model):
             return {
                 'name': company_data.get('name'),
                 'company_type': 'company',
+                'partner_gid': partner_gid,
                 'street': company_data.get('street'),
                 'street2': company_data.get('street2'),
                 'city': company_data.get('city'),

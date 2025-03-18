@@ -13,15 +13,15 @@
                 <t groups="account.group_delivery_invoice_address">
                     <t t-set="has_delivery" t-value="order._has_deliverable_products()"/>
                     <div t-if="has_delivery" class="form-check form-switch mt-2 mb-3">
-                        <label id="use_vat_number_label">
-                            <input type="checkbox" id="use_vat_number" class="form-check-input" t-att-checked="use_vat_number"/>
+                        <label id="want_tax_credit_label">
+                            <input type="checkbox" id="want_tax_credit" class="form-check-input" t-att-checked="want_tax_credit"/>
  want tax credit
                         </label>
                     </div>
                 </t>
                 <t t-set="tax_credit_enable" groups="!account.group_delivery_invoice_address" t-value="True"/>
                 <t t-set="tax_credit_enable" groups="account.group_delivery_invoice_address" t-value="False"/>
-                <div id="tax_credit_container" t-attf-class="{{'d-none' if use_vat_number and has_delivery else ''}}" t-att-data-tax-credit-enable="tax_credit_enable">
+                <div id="tax_credit_container" t-attf-class="{{'d-none' if not want_tax_credit and has_delivery else ''}}" t-att-data-tax-credit-enable="tax_credit_enable">
                     <label>
             VAT
                         <input type="text" id="o_vat" name="vat" t-att-value="vat" class="form-control"/>
