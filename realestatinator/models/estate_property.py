@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 class EstatePropery(models.Model):
 	_name = 'estate_property'
@@ -23,7 +23,7 @@ class EstatePropery(models.Model):
 		('S', 'South'), 
 		('E', 'East'), 
 		('W', 'West')
-	], default='N')
+	])
 	active = fields.Boolean('Active', default=False)	
 	state = fields.Selection(string='State', selection=[
 		('new', 'New'),
@@ -37,3 +37,31 @@ class EstatePropery(models.Model):
 	sales_person = fields.Many2one('res.users', string='Sales Person', default=lambda self: self.env.user)
 	tag_ids = fields.Many2many('estate.property.tags', string='Tags')
 	offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
+	total_area = fields.Integer('Total Area', readonly=True, compute='_compute_total_area')
+	best_price = fields.Float('Best Offer', compute='_compute_best_price')
+
+	@api.depends('living_area', 'garden_area')
+	def _compute_total_area(self):
+		for line in self:
+			line.total_area = line.living_area + line.garden_area
+
+	@api.depends('offer_ids.price')
+	def _compute_best_price(self):
+		for record in self:
+			prices = [0] + record.offer_ids.mapped('price')
+			record.best_price = max(prices)
+
+	@api.onchange('garden')
+	def _set_garden_properties(self):
+		for record in self:
+			# record.garden_orientation = 'N' if record.garden else ''
+			# record.garden_area = 10 if record.garden else 0
+
+			if record.garden:
+				if record.garden_orientation not in ['N', 'E', 'W', 'S']:
+					record.garden_orientation = 'N'
+				if record.garden_area == 0:
+					record.garden_area = 10
+			else:
+				record.garden_orientation = ''
+				record.garden_area = 0
