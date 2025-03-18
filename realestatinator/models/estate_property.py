@@ -6,8 +6,8 @@ class EstatePropery(models.Model):
 	_order = 'sequence'
 
 	sequence = fields.Integer('Sequence', default=0)
-	name = fields.Char('Name', required=True)
-	description = fields.Text('Postcode')
+	name = fields.Char('Title', required=True)
+	description = fields.Text('Description')
 	postcode = fields.Char('Postcode')
 	date_availability = fields.Date('Available Date', copy=False, default=fields.Date.add(fields.Date.today(), months=+3))
 	expected_price = fields.Float('Expected Price')
@@ -23,7 +23,7 @@ class EstatePropery(models.Model):
 		('S', 'South'), 
 		('E', 'East'), 
 		('W', 'West')
-	])
+	], default='N')
 	active = fields.Boolean('Active', default=False)	
 	state = fields.Selection(string='State', selection=[
 		('new', 'New'),
@@ -32,4 +32,8 @@ class EstatePropery(models.Model):
 		('sold', 'Sold'),
 		('cancelled', 'Cancelled')
 	], default='new')
-
+	property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+	buyer = fields.Many2one('res.partner', string='Buyer', copy=False)
+	sales_person = fields.Many2one('res.users', string='Sales Person', default=lambda self: self.env.user)
+	tag_ids = fields.Many2many('estate.property.tags', string='Tags')
+	offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')

@@ -11,6 +11,8 @@
 		<field name="arch" type="xml">
 			<list string='Properties'>
 				<field name='name'/>
+				<field name='property_type_id'/>
+				<field name='tag_ids' widget="many2many_tags"/>
 				<field name='postcode'/>
 				<field name='bedrooms'/>
 				<field name='living_area'/>
@@ -26,6 +28,7 @@
 		<field name="arch" type="xml">
 			<form>
 				<h1><field name='name'/></h1>
+				<field name='tag_ids' widget="many2many_tags"/>
 				<group>
 					<group>
 						<field name='postcode'/>
@@ -41,6 +44,7 @@
 					<page string='Description'>
 						<group>
 							<field name='description'/>
+							<field name='property_type_id'/>
 							<field name='bedrooms'/>
 							<field name='living_area'/>
 							<field name='facades'/>
@@ -50,8 +54,13 @@
 							<field name='garden_orientation'/>
 						</group>
 					</page>
+					<page string='Offers'>
+						<field name='offer_ids'/>
+					</page>
 					<page string='Other'>
 						<group>
+							<field name='buyer'/>
+							<field name='sales_person'/>
 							<field name='state'/>
 							<field name='active'/>
 						</group>
@@ -71,11 +80,13 @@
 				<field name='living_area'/>
 				<field name='expected_price'/>
 				<field name='facades'/>
+				<field name='tag_ids'/>
 				<separator/>
 				<filter string="Include archived" name="archived" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
 				<filter string="Available Properties" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
 				<separator/>
 				<filter string='Postcode' name='postcode' context="{'group_by':'postcode', 'residual_visible':True}"/>
+				<filter string='Property Type' name='property_type_id' context="{'group_by':'property_type_id', 'residual_visible':True}"/>
 			</search>
 		</field>
 	</record>
