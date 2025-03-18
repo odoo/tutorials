@@ -21,3 +21,11 @@ class EstateProperty(models.Model):
     state = fields.Selection([('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
                              required = True, copy = False, default = 'new')
     description = fields.Char("Description.", default = "This is it.", readonly = True)
+
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    salesman = fields.Many2one('res.users', string='Salesperson', index=True, default=lambda self: self.env.user)
+    buyer = fields.Many2one('res.partner', string='Buyer', index=True, copy = False)
+
+    tag_ids = fields.Many2many('estate.property.tag', string = 'Property Tags')
+    offer = fields.One2many('estate.property.offer', 'property_id', string = 'Offers')
+

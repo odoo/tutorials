@@ -11,8 +11,9 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
-                <filter string="Archived" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]"/>
-                <filter string="Provider" name="postcode" context="{'group_by':'postcode'}"/>
+                <separator/>
+                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]"/>
+                <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
     </record>
@@ -22,10 +23,12 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Test">
-                <sheet>
+                <sheet>        
+                    <h1><field name="name"/></h1>
+                    <field name="tag_ids" widget = "many2many_tags"/>
                     <group>
                         <group>
-                            <field name="name"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability" string = "Available from"/>
                         </group>
@@ -45,6 +48,15 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name = "offer"/>
+                        </page>
+                        <page string="Other Infos">
+                            <group>
+                                <field name = "salesman"/>
+                                <field name = "buyer"/>
                             </group>
                         </page>
                     </notebook>
