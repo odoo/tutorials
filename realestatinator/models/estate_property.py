@@ -4,6 +4,11 @@ class EstatePropery(models.Model):
 	_name = 'estate_property'
 	_description = 'real estate property'
 	_order = 'sequence'
+	_sql_constraints = [
+		('check_expected_price_positive', 'CHECK (0 < expected_price)', 'Check that the expected price is strictly positive'),
+		
+	]
+
 
 	sequence = fields.Integer('Sequence', default=0)
 	name = fields.Char('Title', required=True)
@@ -86,3 +91,12 @@ class EstatePropery(models.Model):
 				raise exceptions.UserError('This property cannot be sold because it has already been cancelled.')
 				
 			record.state = 'sold'
+
+	@api.constrains('selling_price')
+	def _check_selling_price(self):
+		print('\n\nconstraint\n\n')
+		for record in self:
+			if record.state not in ['offer_accepted', 'sold']:
+				return
+			if record.selling_price < 0.9 * record.expected_price:
+				raise exceptions.ValidationError('Selling price must be at least 90% of expected price.')

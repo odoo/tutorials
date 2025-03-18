@@ -3,7 +3,9 @@ from odoo import api, exceptions, fields, models
 class EstatePropertyOffer(models.Model):
 	_name = 'estate.property.offer'
 	_description = 'estate property offer'
-
+	_sql_constraints = [
+		('check_offer_price_positive', 'CHECK (0 < price)', 'Check that the offer price is strictly positive.'),
+	]
 	creation_date = fields.Date('Creation Date', default=fields.Date.today())
 	price = fields.Float('Price')
 	status = fields.Selection(string='Status', selection=[
@@ -28,7 +30,8 @@ class EstatePropertyOffer(models.Model):
 	def refuse_offer(self):
 		for record in self:
 			if record.status == 'accepted':
-				record.property_id.selling_price = 0
+				record.property_id.state = 'offer_received'
+				record.property_id.selling_price = 0 
 				record.property_id.buyer = None
 			record.status = 'refused'
 
@@ -36,6 +39,7 @@ class EstatePropertyOffer(models.Model):
 		for record in self:
 			if record.property_id.selling_price != 0:
 				raise exceptions.UserError('An offer as already been accepted for this property.')
+			record.property_id.state = 'offer_accepted'
 			record.status = 'accepted'
 			record.property_id.selling_price = record.price
 			record.property_id.buyer = record.partner_id
