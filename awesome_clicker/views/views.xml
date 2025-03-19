@@ -1,0 +1,10 @@
+<!-- <?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record model="ir.actions.client" id="clicker">
+        <field name="name">Clicker Game</field>
+        <field name="tag">awesome_clicker.dashboard_action</field>
+    </record>
+
+    <menuitem name="Awesome Dashboard" id="awesome_dashboard.menu_root" groups="base.group_user" web_icon="awesome_dashboard,static/description/icon.png"/>
+    <menuitem name="Dashboard" id="awesome_dashboard.dashboard_menu" parent="awesome_dashboard.menu_root" action="awesome_dashboard.dashboard" sequence="1"/>
+</odoo> -->

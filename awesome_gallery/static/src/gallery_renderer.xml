@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_gallery.GalleryRenderer">
+        <div class="row">
+            <t t-foreach="props.model.records" t-as="record" t-key="record.id">
+                <div class="col-lg-2 px-2 d-flex">
+                    <GalleryImage
+                        model="props.model"
+                        record="record"
+                        onImageUpload="props.onImageUpload"
+                    />
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>
