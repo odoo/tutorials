@@ -1,0 +1,299 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* one_time_sale
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-19 05:00+0000\n"
+"PO-Revision-Date: 2025-03-19 10:38+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"<b>Congratulations</b>, you have successfully create subscription product "
+"for one time sale."
+msgstr ""
+"<b>Onnittelut</b>, olet onnistuneesti luonut tilaustuotteen kertamyyntiin."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid ""
+"<b>Congratulations</b>, you have successfully purchase subscription product "
+"just for one time."
+msgstr ""
+"<b>Onnittelut</b>, olet onnistuneesti ostanut tilaustuotteen vain yhden "
+"kerran."
+
+#. module: one_time_sale
+#: model_terms:web_tour.tour,rainbow_man_message:one_time_sale.one_time_sale_tour
+msgid ""
+"<span><b>Congratulations</b>, you have successfully create subscription "
+"product for one time sale.\n"
+"            \n"
+"        </span>"
+msgstr ""
+"<span><b>Onnittelut</b>, olet luonut onnistuneesti tilaustuotteen "
+"kertamyyntiin.\n"
+"            \n"
+"        </span>"
+
+#. module: one_time_sale
+#: model_terms:web_tour.tour,rainbow_man_message:one_time_sale.one_time_sale_website_tour
+msgid ""
+"<span><b>Congratulations</b>, you have successfully purchase subscription "
+"product just for one time.\n"
+"            \n"
+"        </span>"
+msgstr ""
+"<span><b>Onnittelut</b>, olet onnistuneesti ostanut tilaustuotteen vain "
+"yhden kerran.\n"
+"            \n"
+"         </span>"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid "<span>Delivery every:</span>"
+msgstr "<span>Toimitus joka päivä:</span>"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid "<span>One-Time Purchase</span>"
+msgstr "<span>Kertaostos</span>"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid "<span>With Regular Delivery</span>"
+msgstr "<span>Säännöllinen toimitus</span>"
+
+#. module: one_time_sale
+#: model:ir.model.fields,field_description:one_time_sale.field_product_product__accept_one_time
+#: model:ir.model.fields,field_description:one_time_sale.field_product_template__accept_one_time
+msgid "Accept One Time"
+msgstr "Hyväksy Kerran"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Add a new rule"
+msgstr "Lisää uusi sääntö"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"Add a recurring plan for this product, or create a new one with the desired "
+"recurrence \n"
+"                (e.g., Monthly)"
+msgstr ""
+"Lisää toistuva suunnitelma tälle tuotteelle tai luo uusi, jolla on haluttu "
+"toistuvuus \n"
+"               (esim. kuukausittain)"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Choose a product name.<br/><i>(e.g. Milk)</i>"
+msgstr "Valitse tuotteen nimi.<br/><i>(esim. Maito)</i>"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Click to add the product with your selected pricing plan."
+msgstr "Napsauta lisätäksesi tuotteen valitsemaasi hinnoitteluun."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Click to checkout."
+msgstr "Napsauta kassalle."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Click to remove the product from the cart."
+msgstr "Napsauta poistaaksesi tuotteen ostoskorista."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Create your first one time purchase allowed subscription product here"
+msgstr "Luo ensimmäinen kertaluontoinen tilaustuotteesi tästä"
+
+#. module: one_time_sale
+#: model:ir.model.fields,help:one_time_sale.field_product_product__accept_one_time
+#: model:ir.model.fields,help:one_time_sale.field_product_template__accept_one_time
+msgid "Enable the product to sale/purchase for one-time."
+msgstr "Ota tuote myyntiin/ostamiseen kertaluonteisesti."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Enter sales price for your product."
+msgstr "Syötä tuotteesi myyntihinta."
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_inherit_one_time_sale
+msgid "GOODS"
+msgstr "TAVARAT"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Go ahead and allow product to sell/purchase for one time too."
+msgstr "Anna tuotteen myydä/ostaa myös kerran."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Go ahead and click to open product."
+msgstr "Siirry eteenpäin ja avaa tuote napsauttamalla."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Go ahead and click to see product."
+msgstr "Siirry eteenpäin ja napsauta nähdäksesi tuotteen."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Go ahead and create a new product"
+msgstr "Mene eteenpäin ja luo uusi tuote"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Let's add a pricing with a recurrence"
+msgstr "Lisätään hinnoittelu, jossa on toistuvuus"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Let's add price for selected recurrence"
+msgstr "Lisätään hinta valitulle toistumiselle"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Let's add product for the one time purchase."
+msgstr "Lisätään tuote kertaostokseen."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Let's allow subscription product to be sale/purchase for one time too."
+msgstr "Annetaan tilaustuotteen olla myynnissä/ostettavissa myös kerran."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"Let's go to the catalog to create our first one time purchase allowed "
+"subscription product"
+msgstr ""
+"Siirrytään luetteloon luodaksesi ensimmäinen kertaostoksellinen "
+"tilaustuotteemme"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Let's see the cart if it is perfectly added."
+msgstr "Katsotaan kärryä, jos se on täydellisesti lisätty."
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_inherit_one_time_sale
+msgid "Pricing"
+msgstr "Hinnoittelu"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_product_template
+msgid "Product"
+msgstr "Tuote"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_sale_order
+msgid "Sales Order"
+msgstr "Myyntitilaus"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Myyntitilausrivi"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Save your created product."
+msgstr "Tallenna luomasi tuote."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Save your progress for one-time purchase product creation."
+msgstr "Tallenna edistymisesi kertaostosten luomista varten."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Search your one time purchase allowed subscription product by name."
+msgstr "Hae kertaostoksilla sallittua tilaustuotetta nimellä."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Select goods(consumable) as product type."
+msgstr "Valitse tuotetyypiksi tavarat (kulutustarvikkeet)."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Select option to purchase this subscription product for just one time."
+msgstr "Valitse vaihtoehto ostaaksesi tämän tilaustuotteen vain kerran."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid ""
+"Select the subscription plan if you want to purchase product with "
+"subscription."
+msgstr "Valitse tilaussuunnitelma, jos haluat ostaa tuotteen tilauksella."
+
+#. module: one_time_sale
+#: model:ir.model.fields,field_description:one_time_sale.field_sale_subscription_plan__sequence
+msgid "Sequence"
+msgstr "Järjestys"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_sale_subscription_plan
+msgid "Subscription Plan"
+msgstr "Kestotilaus"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"Want a one time sale of recurring product through subscription "
+"management? \n"
+"                Get started by clicking here"
+msgstr ""
+"Haluatko kertakaupan toistuvasta tuotteesta tilausten hallinnan kautta? \n"
+"               Aloita napsauttamalla tätä"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid ""
+"You cannot mix subscription plan with one time purchases in the same order."
+msgstr ""
+"Et voi yhdistää tilaussuunnitelmaa kertaostoksiin samassa tilauksessa."

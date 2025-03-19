@@ -1,0 +1,316 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* one_time_sale
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-18 13:09+0000\n"
+"PO-Revision-Date: 2025-03-18 18:49+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"<b>Congratulations</b>, you have successfully create subscription product "
+"for one time sale."
+msgstr ""
+"<b>Félicitations</b>, vous avez réussi à créer un produit d'abonnement pour "
+"une vente unique."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid ""
+"<b>Congratulations</b>, you have successfully purchase subscription product "
+"just for one time."
+msgstr ""
+"<b>Félicitations</b>, vous avez acheté avec succès un produit d'abonnement "
+"pour une seule fois."
+
+#. module: one_time_sale
+#: model_terms:web_tour.tour,rainbow_man_message:one_time_sale.one_time_sale_tour
+msgid ""
+"<span><b>Congratulations</b>, you have successfully create subscription "
+"product for one time sale.\n"
+"            \n"
+"        </span>"
+msgstr ""
+"<span><b>Félicitations</b>, vous avez créé avec succès un produit "
+"d'abonnement pour une vente unique.\n"
+"            \n"
+"        </span>"
+
+#. module: one_time_sale
+#: model_terms:web_tour.tour,rainbow_man_message:one_time_sale.one_time_sale_website_tour
+msgid ""
+"<span><b>Congratulations</b>, you have successfully purchase subscription "
+"product just for one time.\n"
+"            \n"
+"        </span>"
+msgstr ""
+"<span><b>Félicitations</b>, vous avez acheté avec succès un produit "
+"d'abonnement pour une seule fois.\n"
+"            \n"
+"        </span>"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid "<span>Delivery every:</span>"
+msgstr "<span>Livraison tous les :</span>"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid "<span>One-Time Purchase</span>"
+msgstr "<span>Achat unique</span>"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid "<span>With Regular Delivery</span>"
+msgstr "<span>Avec livraison régulière</span>"
+
+#. module: one_time_sale
+#: model:ir.model.fields,field_description:one_time_sale.field_product_product__accept_one_time
+#: model:ir.model.fields,field_description:one_time_sale.field_product_template__accept_one_time
+msgid "Accept One Time"
+msgstr "Accepter une seule fois"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Add a new rule"
+msgstr "Ajouter une nouvelle règle"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"Add a recurring plan for this product, or create a new one with the desired "
+"recurrence \n"
+"                (e.g., Monthly)"
+msgstr ""
+"Ajoutez un forfait récurrent pour ce produit ou créez-en un nouveau avec la "
+"récurrence souhaitée\n"
+"\t\t(par exemple, mensuel)."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Choose a product name.<br/><i>(e.g. Milk)</i>"
+msgstr "Choisissez un nom de produit.<br/><i>(par exemple, Lait)</i>"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Click to add the product with your selected pricing plan."
+msgstr ""
+"Cliquez pour ajouter le produit avec votre plan tarifaire sélectionné."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Click to checkout."
+msgstr "Cliquez pour payer."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Click to remove the product from the cart."
+msgstr "Cliquez pour supprimer le produit du panier."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Create your first one time purchase allowed subscription product here"
+msgstr "Créez votre premier produit d'abonnement autorisé à achat unique ici"
+
+#. module: one_time_sale
+#. odoo-python
+#: code:addons/one_time_sale/models/product_template.py:0
+#: model:ir.model.fields,help:one_time_sale.field_product_product__accept_one_time
+#: model:ir.model.fields,help:one_time_sale.field_product_template__accept_one_time
+msgid "Enable the product to sale/purchase for one-time."
+msgstr "Activer la vente/l'achat du produit une seule fois."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Enter sales price for your product."
+msgstr "Saisissez le prix de vente de votre produit."
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_inherit_one_time_sale
+msgid "GOODS"
+msgstr "MARCHANDISES"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Go ahead and allow product to sell/purchase for one time too."
+msgstr ""
+"Allez-y et autorisez le produit à être vendu/acheté une seule fois "
+"également."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Go ahead and click to open product."
+msgstr ""
+"Allez-y et cliquez pour ouvrir le produit. Allez-y et cliquez pour ouvrir "
+"le produit."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Go ahead and click to see product."
+msgstr "Allez-y et cliquez pour voir le produit."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Go ahead and create a new product"
+msgstr "Allez-y et créez un nouveau produit"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Let's add a pricing with a recurrence"
+msgstr "Ajoutons une tarification avec une récurrence"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Let's add price for selected recurrence"
+msgstr "Ajoutons une tarification avec une récurrence"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Let's add product for the one time purchase."
+msgstr "Ajoutons un produit pour l'achat unique."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Let's allow subscription product to be sale/purchase for one time too."
+msgstr ""
+"Permettons également aux produits d'abonnement d'être vendus/achetés une "
+"seule fois."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"Let's go to the catalog to create our first one time purchase allowed "
+"subscription product"
+msgstr ""
+"Permettons également aux produits d'abonnement d'être vendus/achetés une "
+"seule fois"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Let's see the cart if it is perfectly added."
+msgstr "Voyons voir si le panier est parfaitement ajouté."
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_inherit_one_time_sale
+msgid "Pricing"
+msgstr "Tarifs"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_product_template
+msgid "Product"
+msgstr "Produit"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_sale_order
+msgid "Sales Order"
+msgstr "Bon de commande"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de commande"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Save your created product."
+msgstr "Enregistrez votre produit créé."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Save your progress for one-time purchase product creation."
+msgstr ""
+"Enregistrez votre progression pour la création d'un produit à achat unique."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Search your one time purchase allowed subscription product by name."
+msgstr ""
+"Recherchez votre produit d'abonnement autorisé à achat unique par nom."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Select goods(consumable) as product type."
+msgstr "Sélectionnez les biens (consommables) comme type de produit."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Select option to purchase this subscription product for just one time."
+msgstr ""
+"Sélectionnez l'option pour acheter ce produit d'abonnement une seule fois."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid ""
+"Select the subscription plan if you want to purchase product with "
+"subscription."
+msgstr ""
+"Sélectionnez le plan d'abonnement si vous souhaitez acheter un produit avec "
+"abonnement."
+
+#. module: one_time_sale
+#: model:ir.model.fields,field_description:one_time_sale.field_sale_subscription_plan__sequence
+msgid "Sequence"
+msgstr "Séquence"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_sale_subscription_plan
+msgid "Subscription Plan"
+msgstr "Plan d'abonnement"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"Want a one time sale of recurring product through subscription "
+"management? \n"
+"                Get started by clicking here"
+msgstr ""
+"Vous souhaitez bénéficier d'une vente unique de produits récurrents via la "
+"gestion des abonnements? \n"
+"                Cliquez ici pour commencer"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid ""
+"You cannot mix subscription plan with one time purchases in the same order."
+msgstr ""
+"Vous ne pouvez pas mélanger un plan d'abonnement avec des achats uniques "
+"dans la même commande."

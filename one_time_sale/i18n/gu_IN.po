@@ -1,0 +1,294 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* one_time_sale
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-19 04:40+0000\n"
+"PO-Revision-Date: 2025-03-19 10:28+0530\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: gu_IN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.0.1\n"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"<b>Congratulations</b>, you have successfully create subscription product "
+"for one time sale."
+msgstr "<b>અભિનંદન</b>, તમે એક વખતના વેચાણ માટે સબ્સ્ક્રિપ્શન પ્રોડક્ટ સફળતાપૂર્વક બનાવી."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid ""
+"<b>Congratulations</b>, you have successfully purchase subscription product "
+"just for one time."
+msgstr "<b>અભિનંદન</b>, તમે ફક્ત એક જ વાર સબ્સ્ક્રિપ્શન પ્રોડક્ટ સફળતાપૂર્વક ખરીદી લીધી."
+
+#. module: one_time_sale
+#: model_terms:web_tour.tour,rainbow_man_message:one_time_sale.one_time_sale_tour
+msgid ""
+"<span><b>Congratulations</b>, you have successfully create subscription "
+"product for one time sale.\n"
+"            \n"
+"        </span>"
+msgstr ""
+"<span><b>અભિનંદન</b>, તમે એક વખતના વેચાણ માટે સબ્સ્ક્રિપ્શન પ્રોડક્ટ સફળતાપૂર્વક "
+"બનાવી.\n"
+"            \n"
+"        </span>"
+
+#. module: one_time_sale
+#: model_terms:web_tour.tour,rainbow_man_message:one_time_sale.one_time_sale_website_tour
+msgid ""
+"<span><b>Congratulations</b>, you have successfully purchase subscription "
+"product just for one time.\n"
+"            \n"
+"        </span>"
+msgstr ""
+"<span><b>અભિનંદન</b>, તમે ફક્ત એક જ વાર સબ્સ્ક્રિપ્શન પ્રોડક્ટ સફળતાપૂર્વક ખરીદી "
+"લીધી.\n"
+"            \n"
+"        </span>"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid "<span>Delivery every:</span>"
+msgstr "<span>ડિલિવરી દરેક:</span>"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid "<span>One-Time Purchase</span>"
+msgstr "<span>એકવાર ખરીદી</span>"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid "<span>With Regular Delivery</span>"
+msgstr "<span>નિયમિત ડિલિવરી સાથે</span>"
+
+#. module: one_time_sale
+#: model:ir.model.fields,field_description:one_time_sale.field_product_product__accept_one_time
+#: model:ir.model.fields,field_description:one_time_sale.field_product_template__accept_one_time
+msgid "Accept One Time"
+msgstr "એકવાર સ્વીકારો"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Add a new rule"
+msgstr "નવો નિયમ ઉમેરો"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"Add a recurring plan for this product, or create a new one with the desired "
+"recurrence \n"
+"                (e.g., Monthly)"
+msgstr ""
+"આ પ્રોડક્ટ માટે રિકરિંગ પ્લાન ઉમેરો, અથવા ઇચ્છિત રિકરેશન સાથે એક નવો પ્લાન બનાવો  \n"
+"               (દા.ત., માસિક)"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Choose a product name.<br/><i>(e.g. Milk)</i>"
+msgstr "ઉત્પાદનનું નામ પસંદ કરો.<br/><i>(દા.ત. દૂધ)</i>"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Click to add the product with your selected pricing plan."
+msgstr "તમારા પસંદ કરેલા ભાવ યોજના સાથે ઉત્પાદન ઉમેરવા માટે ક્લિક કરો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Click to checkout."
+msgstr "ચેકઆઉટ કરવા માટે ક્લિક કરો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Click to remove the product from the cart."
+msgstr "કાર્ટમાંથી ઉત્પાદન દૂર કરવા માટે ક્લિક કરો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Create your first one time purchase allowed subscription product here"
+msgstr "અહીં તમારી એક વાર ખરીદી માટે માન્ય સબ્સ્ક્રિપ્શન પ્રોડક્ટ બનાવો"
+
+#. module: one_time_sale
+#: model:ir.model.fields,help:one_time_sale.field_product_product__accept_one_time
+#: model:ir.model.fields,help:one_time_sale.field_product_template__accept_one_time
+msgid "Enable the product to sale/purchase for one-time."
+msgstr "ઉત્પાદનને એક વખત વેચાણ/ખરીદી માટે સક્ષમ બનાવો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Enter sales price for your product."
+msgstr "તમારા ઉત્પાદન માટે વેચાણ કિંમત દાખલ કરો."
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_inherit_one_time_sale
+msgid "GOODS"
+msgstr "ઉપભોજ્ય માલ"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Go ahead and allow product to sell/purchase for one time too."
+msgstr "આગળ વધો અને ઉત્પાદનને એક વખત માટે પણ વેચવા/ખરીદવાની મંજૂરી આપો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Go ahead and click to open product."
+msgstr "આગળ વધો અને ઉત્પાદન ખોલવા માટે ક્લિક કરો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Go ahead and click to see product."
+msgstr "આગળ વધો અને ઉત્પાદન જોવા માટે ક્લિક કરો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Go ahead and create a new product"
+msgstr "આગળ વધો અને એક નવું ઉત્પાદન બનાવો"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Let's add a pricing with a recurrence"
+msgstr "ચાલો પુનરાવર્તન સાથે કિંમત ઉમેરીએ"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Let's add price for selected recurrence"
+msgstr "ચાલો પસંદ કરેલા પુનરાવર્તન માટે કિંમત ઉમેરીએ"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Let's add product for the one time purchase."
+msgstr "ચાલો એક વખતની ખરીદી માટે ઉત્પાદન ઉમેરીએ."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Let's allow subscription product to be sale/purchase for one time too."
+msgstr "ચાલો સબ્સ્ક્રિપ્શન પ્રોડક્ટને એક વખત માટે વેચાણ/ખરીદીની મંજૂરી આપીએ."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"Let's go to the catalog to create our first one time purchase allowed "
+"subscription product"
+msgstr ""
+"ચાલો અમારી પહેલી વાર ખરીદી માટે માન્ય સબ્સ્ક્રિપ્શન પ્રોડક્ટ બનાવવા માટે કેટલોગ પર જઈએ"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Let's see the cart if it is perfectly added."
+msgstr "ચાલો જોઈએ કે કાર્ટ એ પ્રોડક્ટ સંપૂર્ણ રીતે ઉમેરાયેલ છે કે નહીં."
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_inherit_one_time_sale
+msgid "Pricing"
+msgstr "કિંમત નિર્ધારણ"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_product_template
+msgid "Product"
+msgstr "ઉત્પાદન"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_sale_order
+msgid "Sales Order"
+msgstr "વેચાણ ઓર્ડર"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "વેચાણ ઓર્ડર લાઇન"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Save your created product."
+msgstr "તમારા બનાવેલા ઉત્પાદનને સાચવો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Save your progress for one-time purchase product creation."
+msgstr "એક વખતની ખરીદી ઉત્પાદન રચના માટે તમારી પ્રગતિ સાચવો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Search your one time purchase allowed subscription product by name."
+msgstr "તમારા એક વખત ખરીદવાની મંજૂરી આપેલ સબ્સ્ક્રિપ્શન પ્રોડક્ટને નામ દ્વારા શોધો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid "Select goods(consumable) as product type."
+msgstr "ઉત્પાદન પ્રકાર તરીકે માલ (ઉપભોજ્ય) પસંદ કરો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid "Select option to purchase this subscription product for just one time."
+msgstr "આ સબ્સ્ક્રિપ્શન પ્રોડક્ટ ફક્ત એક જ વાર ખરીદવા માટે વિકલ્પ પસંદ કરો."
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale_website.js:0
+msgid ""
+"Select the subscription plan if you want to purchase product with "
+"subscription."
+msgstr ""
+"જો તમે સબ્સ્ક્રિપ્શન સાથે ઉત્પાદન ખરીદવા માંગતા હો, તો સબ્સ્ક્રિપ્શન પ્લાન પસંદ કરો."
+
+#. module: one_time_sale
+#: model:ir.model.fields,field_description:one_time_sale.field_sale_subscription_plan__sequence
+msgid "Sequence"
+msgstr "ક્માંક"
+
+#. module: one_time_sale
+#: model:ir.model,name:one_time_sale.model_sale_subscription_plan
+msgid "Subscription Plan"
+msgstr "સબ્સ્ક્રિપ્શન પ્લાન"
+
+#. module: one_time_sale
+#. odoo-javascript
+#: code:addons/one_time_sale/static/src/js/tours/one_time_sale.js:0
+msgid ""
+"Want a one time sale of recurring product through subscription "
+"management? \n"
+"                Get started by clicking here"
+msgstr ""
+"સબ્સ્ક્રિપ્શન મેનેજમેન્ટ દ્વારા રિકરિંગ પ્રોડક્ટનું એક વખતનું વેચાણ ઇચ્છો છો?  \n"
+"               અહીં ક્લિક કરીને શરૂઆત કરો"
+
+#. module: one_time_sale
+#: model_terms:ir.ui.view,arch_db:one_time_sale.product_price_inherit_one_time_sale
+msgid ""
+"You cannot mix subscription plan with one time purchases in the same order."
+msgstr "તમે એક જ વાર મા સબ્સ્ક્રિપ્શન પ્લાનને એક વખતની ખરીદી સાથે ભેળવી શકતા નથી."

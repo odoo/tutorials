@@ -20,13 +20,8 @@ class SaleOrder(models.Model):
         product = order_line.product_id if order_line.product_id.id else self.env['product.product'].browse(product_id)
 
         if product.recurring_invoice:
-            if not kwargs.get('plan_id'):
-                if order_line and quantity <= 0:
-                    # Remove zero or negative lines
-                    order_line.unlink()
-                    order_line = self.env['sale.order.line']
-                    self.plan_id = False
-                elif order_line:
+            if not kwargs.get('plan_id') and quantity > 0:
+                if order_line:
                     # Update existing line
                     update_values = self._prepare_order_line_update_values(order_line, quantity, **kwargs)
                     if update_values:
