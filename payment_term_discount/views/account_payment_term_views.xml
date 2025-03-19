@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_payment_term_form" model="ir.ui.view">
+        <field name="name">account.payment.term.form.inherit</field>
+        <field name="model">account.payment.term</field>
+        <field name="inherit_id" ref="account.view_payment_term_form"/>
+        <field name="arch" type="xml">
+            <sheet position="before">
+                <div class="alert alert-info" role="alert" invisible="early_payment_discount_ids or not early_discount">There are no early payment discounts to apply.</div>
+            </sheet>
+            <group position="replace">
+                <group >
+                    <field name="company_id" options="{'no_create': True}" class="w-25 me-10" groups="base.group_multi_company"/>
+                    <field name="early_discount"/>
+                </group>
+                <group>
+                    <field name="early_payment_discount_ids" invisible="not early_discount" class="w-50" nolabel="1">
+                        <list string="Early Discount Lines" editable="bottom" create="0">
+                            <field name="discount_percentage" string="Discount" nolabel="1"/>
+                            <field name="info_text1" nolabel="1"/>
+                            <field name="discount_days" nolabel="1"/>
+                            <field name="info_text2" nolabel="1"/>
+                            <field name="info_text3" nolabel="1"/>
+                            <field name="early_pay_discount_computation" nolabel="1"/>
+                        </list>
+                    </field>
+                </group>
+                <button name="action_add_early_payment_discount" type="object" string="+ Add" invisible="not early_discount"/>
+            </group>
+        </field>
+    </record>
+</odoo>
