@@ -21,14 +21,15 @@ class StockMove(models.Model):
     @api.depends('quantity', 's_unit', 'sale_line_id.product_id.wt_per_mt', 'sale_line_id.product_id.wt_per_pc')
     def _compute_s_quantity(self):
         for move in self:
-            move.s_quantity = 0  
-            if move.sale_line_id and move.sale_line_id.product_id:
-                wt_per_mt = move.sale_line_id.product_id.wt_per_mt or 1
-                wt_per_pc = move.sale_line_id.product_id.wt_per_pc or 1
+            move.s_quantity = 0
+            product = move.sale_line_id.product_id if move.sale_line_id else move.product_id
+            if product:
+                wt_per_mt = product.wt_per_mt or 1
+                wt_per_pc = product.wt_per_pc or 1
                 unit_multipliers = {
                     "mtrs": wt_per_mt,
                     "pcs": wt_per_pc,
-                    "kg": 1  
+                    "kg": 1
                 }
                 move.s_quantity = move.quantity / unit_multipliers.get(move.s_unit, 1)
 
@@ -44,7 +45,7 @@ class StockMove(models.Model):
 
     def _update_qty_delivered(self):
         for move in self.filtered(lambda m: m.state == 'done' and m.sale_line_id):
-            move.sale_line_id.qty_delivered 
+            move.sale_line_id.qty_delivered = move.quantity  
 
     def _action_done(self, **kwargs):
         res = super()._action_done(**kwargs)

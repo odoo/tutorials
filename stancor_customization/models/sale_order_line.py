@@ -14,6 +14,7 @@ class SaleOrderLine(models.Model):
                    ("mtrs", "Mtrs."),
                    ("pcs", "PCs."),],
         default="mtrs",
+        store=True
     )
 
     @api.onchange("s_quantity", "s_unit", "product_id")

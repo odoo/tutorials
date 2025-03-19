@@ -40,7 +40,8 @@ class MrpProduction(models.Model):
             wt_per_mt = record.product_id.wt_per_mt or 1
             wt_per_pc = record.product_id.wt_per_pc or 1
             unit_multipliers = {
-                "mtrs": wt_per_mt,
-                "pcs": wt_per_pc
+                "mtrs": wt_per_mt if wt_per_mt else 1,  
+                "pcs": wt_per_pc if wt_per_pc else 1
             }
-            record.s_quantity = record.product_qty / unit_multipliers.get(record.s_unit, float('inf')) if record.s_unit else 0
+            divisor = unit_multipliers.get(record.s_unit, 1)
+            record.s_quantity = record.product_qty / divisor if divisor else 0
