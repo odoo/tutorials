@@ -33,7 +33,7 @@ class estatePropertyOffer(models.Model):
         string="Deadline Date",
     )
 
-    @api.depends("create_date", "validity")
+    @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
             create_date = record.create_date or fields.Date.today()
@@ -47,24 +47,20 @@ class estatePropertyOffer(models.Model):
             )
 
     def action_accepted(self):
-        for record in self:
-            record.status = "Accepted"
-
-        if record.property_id.state == "offer_accepted":
+        if self.property_id.state == "offer_accepted":
             raise UserError("One Offer already Accepted, can'nt accept another offer")
 
-        record.property_id.selling_price = record.price
-        record.property_id.buyer_id = record.partner_id
-        record.property_id.state = "offer_accepted"
-        record.status = "Accepted"
+        self.status = "Accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.state = "offer_accepted"
 
     def action_refused(self):
-        for record in self:
-            if record.status == "Accepted":
-                record.property_id.selling_price = 0.0
-                record.property_id.buyer_id = False
-                record.property_id.state = "new"
-            record.status = "Refused"
+        if self.status == "Accepted":
+            self.property_id.selling_price = 0.0
+            self.property_id.buyer_id = False
+            self.property_id.state = "new"
+        self.status = "Refused"
 
     _sql_constraints = [
         (
@@ -74,23 +70,29 @@ class estatePropertyOffer(models.Model):
         )
     ]
 
-    @api.model
-    def create(self, vals):
-        property_id = vals.get("property_id")
-        if property_id:
-            property_record = self.env["estate.property"].browse(property_id)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            if property_id:
+                property_record = self.env["estate.property"].browse(property_id)
 
-            if property_record.state not in ["offer_accepted", "sold"]:
-                property_record.state = "offer_received"
+                if property_record.state not in ["offer_accepted", "sold"]:
+                    property_record.state = "offer_received"
 
-            existing_offer = self.env["estate.property.offer"].search(
-                [("property_id", "=", property_id)], order="price desc", limit=1
-            )
-
-            if existing_offer and vals.get("price") <= existing_offer.price:
-                raise ValidationError(
-                    "Offer Price must be greater than the existing offer of %.2f."
-                    % existing_offer.price
+                # Use domain to get the highest existing offer
+                existing_offer = self.env["estate.property.offer"].search(
+                    [
+                        ("property_id", "=", property_id),
+                        ("price", ">=", vals.get("price")),
+                    ],
+                    limit=1,
                 )
 
-        return super().create(vals)
+                if existing_offer:
+                    raise ValidationError(
+                        "Offer Price must be greater than the existing offer of %.2f."
+                        % existing_offer.price
+                    )
+
+        return super().create(vals_list)

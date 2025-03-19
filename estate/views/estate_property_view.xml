@@ -20,7 +20,7 @@
                     options="{'color_field':'color', 'no_edit_color':True}"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
-                <field name="date_availability" optional="True"/>
+                <field name="date_availability" optional="hidden"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="bedrooms"/>
@@ -92,6 +92,7 @@
                             <group>
                                 <field name="buyer_id" class="py-1"/>
                                 <field name="salesperson_id" class="py-1"/>
+                                <field name="company_id" class="py-1" options="{'no_create': True}"/>
                             </group>
                         </page>
                         <page name="Offers" class="bg-light p-2">
@@ -99,7 +100,7 @@
                                 <field name="offer_ids" nolabel="1"> <!--One2many -->
                                     <list decoration-success="status == 'Accepted'"
                                         decoration-danger="status=='Refused'" editable="top"
-                                        open_form_view="True" >
+                                        open_form_view="True">
                                         <field name="price" class="py-1"/>
                                         <field name="partner_id" class="py-1"/>
                                         <field name="validity" class="py-1"/>
@@ -119,6 +120,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>

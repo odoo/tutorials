@@ -1,19 +1,27 @@
 from odoo import Command, models
+from odoo.exceptions import UserError, AccessError
 
 
 class estateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold_property(self):
-        result = super().action_set_sold_property()
+        self.check_access("write")  # write access for sold action
 
-        self.env["account.move"].create(
+        result = super().action_set_sold_property()
+        print(" REACHED ".center(100, "="))
+
+        try:
+            self.env["account.move"].check_access_rights("create")
+        except AccessError:
+            raise UserError(
+                "You do not have the required permissions to create invoices."
+            )
+
+        self.env["account.move"].sudo().create(
             {
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",
-                "journal_id": self.env["account.journal"]
-                .search([("type", "=", "sale")], limit=1)
-                .id,
                 "invoice_line_ids": [
                     Command.create(
                         {

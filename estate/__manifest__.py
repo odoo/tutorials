@@ -4,7 +4,7 @@
     "description": """
   The Estate Module manages real estate properties, buyers, sellers, and offers efficiently.
     """,
-    "depends": ["base"],
+    "depends": ["base", "mail"],
     "data": [
         "security/security.xml",
         "security/ir.model.access.csv",
@@ -22,4 +22,4 @@
     "application": True,
     "license": "AGPL-3",
 }
-        
+

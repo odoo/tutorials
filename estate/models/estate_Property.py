@@ -7,6 +7,7 @@ class EstateModel(models.Model):
     _name = "estate.property"
     _description = "Estate model help save data"
     _order = "id desc"
+    _inherit = ["mail.thread"]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -27,7 +28,13 @@ class EstateModel(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        [("north", "North"), ("east", "East"), ("south", "South"), ("west", "West"), ('south', 'South')],
+        [
+            ("north", "North"),
+            ("east", "East"),
+            ("south", "South"),
+            ("west", "West"),
+            ("south", "South"),
+        ],
         string="Garden Orientation",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
@@ -46,7 +53,7 @@ class EstateModel(models.Model):
         required=True,
     )
 
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, tracking=True)
     salesperson_id = fields.Many2one(
         "res.users",
         string="SalesPerson",
@@ -62,6 +69,13 @@ class EstateModel(models.Model):
         compute="_compute_best_price", string="Best Price", store=True
     )
 
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.user.company_id,
+    )
+
     _sql_constraints = [
         (
             "check_expected_price",
@@ -75,9 +89,9 @@ class EstateModel(models.Model):
         ),
     ]
 
-    @api.depends("living_area", "garden_area", "garden")
+    @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        for record in self:  # loop in compute and list view multiedit
+        for record in self:  # loop in compute -> load more demo data or 2 or more duplicate data and list view multiedit
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")

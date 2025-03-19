@@ -7,7 +7,7 @@
             <menuitem id="estate_model_menu_action" action="estate_model_action"/>
         </menuitem>
         <!-- First Level Menu for Settings-->
-        <menuitem id="estate_property_type_first_level_menu" name="Settings">
+        <menuitem id="estate_property_type_first_level_menu" name="Settings" groups="estate_group_manager">
             <!-- Action Menu for Property Type -->
             <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"/>
             <!-- Action Menu for Property Tags -->
