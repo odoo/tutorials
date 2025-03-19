@@ -32,3 +32,7 @@ class EstateWebsite(http.Controller):
     @http.route('/aboutus', type='http', auth='public', website=True, methods=['GET'])
     def render_about_us_page(self):
         return request.render('estate.property_listing_about_us_page', {})
+
+    @http.route('/property_offer', type='http', auth='public', website=True, methods=['GET'])
+    def make_property_offer(self):
+        return request.render('estate.make_property_offer', {})
