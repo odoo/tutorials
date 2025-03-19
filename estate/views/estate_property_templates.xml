@@ -492,9 +492,8 @@
                         </div>
                         <div class="col-md-4 text-md-end text-center mt-md-0">
                             <a class="btn btn-lg btn-primary rounded-pill shadow-sm px-4 fw-normal"
-                               data-bs-toggle="modal" 
-                               data-bs-target="#makeOfferModal"
-                               t-att-model-property-id="property.id">
+                               data-bs-toggle="modal"
+                               data-bs-target="#makeOfferModal" >
                                 🏡 Make an Offer
                             </a>
                         </div>
@@ -559,64 +558,76 @@
             </div>
         </t>
         <t t-call="estate.make_property_offer" />
+
+        <sricpt type="text/javascipt" src="estate/static/src/property_offer_dialog.js" />
     </template>
 
     <template id="make_property_offer" name="Property Offer">
-        <div class="modal fade" id="makeOfferModal" tabindex="-1" aria-labelledby="makeOfferModalLabel" aria-hidden="true">
+        <div class="modal fade" id="makeOfferModal" tabindex="-1"
+             aria-labelledby="makeOfferModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="makeOfferModalLabel">Make an Offer</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" 
+                                data-bs-dismiss="modal" aria-label="Close">
+                        </button>
                     </div>
                     <div class="modal-body">
-                        <form id="offerForm">
-                            <t t-if="request.env.user and request.env.user.id != request.env.ref('base.public_user').id">
-                                <!-- Pre-fill user details if logged in -->
-                                <div class="mb-3">
-                                    <label for="userName" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="userName"
-                                           t-att-value="request.env.user.partner_id.name"
-                                           readonly="true"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="userEmail" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="userEmail"
-                                           t-att-value="request.env.user.partner_id.email"
-                                           readonly="true"/>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="userContact" class="form-label">Contact Number</label>
-                                    <input type="text" class="form-control" id="userContact"
-                                           t-att-value="request.env.user.partner_id.mobile or ''"
-                                           readonly="true"/>
-                                </div>
-                            </t>       
-                            <t t-else="">
-                                <!-- Show input fields if user is not logged in -->
-                                <div class="mb-3">
-                                    <label for="userName" class="form-label">Name</label>
-                                    <input type="text" class="form-control" id="userName" required="true" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="userEmail" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="userEmail" required="true" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="userContact" class="form-label">Contact Number</label>
-                                    <input type="text" class="form-control" id="userContact" required="true" />
-                                </div>
-                            </t>
+                        <form id="offerForm" action="/create_offer" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                            <div class="mb-3">
+                                <label for="propertyId" class="form-label">Property ID</label>
+                                <input type="number" class="form-control" id="propertyId"
+                                       name="propertyId" readonly="true" t-att-value="property.id" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="propertyName" class="form-label">Property Name</label>
+                                <input type="text" class="form-control" id="propertyName"
+                                       name="propertyName" readonly="true" t-att-value="property.name" />
+                            </div>
 
                             <div class="mb-3">
                                 <label for="offerPrice" class="form-label">Your Offer Price ($)</label>
-                                <input type="number" class="form-control" id="offerPrice" required="true" />
+                                <input type="number" class="form-control" id="offerPrice" 
+                                       name="offerPrice" required="true" />
                             </div>
+
                             <div class="mb-3">
                                 <label for="validityDays" class="form-label">Valid for (days)</label>
-                                <input type="number" class="form-control" id="validityDays" required="true" />
+                                <input type="number" class="form-control" id="validityDays" name="validityDays" required="true" />
                             </div>
-                            <input type="hidden" id="propertyId" t-att-value="property.id" />
+
+                            <t t-if="request.env.user and request.env.user.id != request.env.ref('base.public_user').id">
+                                <div class="mb-3">
+                                    <label for="userName" class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" id="userName" name="userName"
+                                           t-att-value="request.env.user.partner_id.name" readonly="true" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="userEmail" class="form-label">Your Email</label>
+                                    <input type="email" class="form-control" id="userEmail" name="userEmail"
+                                           t-att-value="request.env.user.partner_id.email" readonly="true" />
+                                </div>
+
+                                <input type="hidden" id="userId" name="userId" t-att-value="request.env.user.id"/>
+                            </t>
+
+                            <t t-else="">
+                                <div class="mb-3">
+                                    <label for="userName" class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" id="userName" name="userName" required="true" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="userEmail" class="form-label">Your Email</label>
+                                    <input type="email" class="form-control" id="userEmail" name="userEmail" required="true" />
+                                </div>
+                            </t>
+
                             <button type="submit" class="btn btn-primary">Submit Offer</button>
                         </form>
                     </div>
@@ -624,5 +635,4 @@
             </div>
         </div>
     </template>
-
 </odoo>

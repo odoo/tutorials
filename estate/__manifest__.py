@@ -26,5 +26,10 @@
         "demo/estate_property_demo.xml",
         "demo/estate_property_offer_demo.xml"
     ],
+    'assets': {
+        'web.assets_backend': [
+            "estate/static/src/property_offer_dialog.js",
+        ],
+    },
     'license': 'AGPL-3'
 }
