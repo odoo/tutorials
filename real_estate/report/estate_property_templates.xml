@@ -50,10 +50,10 @@
                         </td>
                         <td>
                             <span t-field="offer.validity"/>
-                            </td>
+                        </td>
                         <td>
                             <span t-field="offer.date_deadline"/> 
-                            </td>
+                        </td>
                         <td>
                         <span t-field="offer.status"/> 
                         </td>

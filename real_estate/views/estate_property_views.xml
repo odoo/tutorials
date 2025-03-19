@@ -36,7 +36,6 @@
                     <field name="status"  widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                    <!-- ADD STAT BUTTON -->
                     <div class="oe_button_box" name="button_box">
                         <button name="%(report_real_estate_offer)d"
                                 string="Print"

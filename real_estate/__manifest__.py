@@ -1,7 +1,7 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base','website'],
     'author': "Rishav Shah (sris)",
     'category': 'Estate',
     'icon':'/real_estate/static/src/img/real_estate_icon.png',
@@ -26,6 +26,7 @@
         'views/estate_property_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+        'views/website_property_template.xml',
     ],
     'demo': [
         'demo/res_user_demo.xml',
