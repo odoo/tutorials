@@ -29,24 +29,19 @@ class Property(models.Model):
         for record in self:
             highest_offer = max(record.offer_ids, key=lambda o: o.price, default=None)
             record.highest_offer_bidder = highest_offer.partner_id if highest_offer else False
-    
+
     def write(self, vals):
         '''Write method to prevent auction state update manually'''
-        breakpoint()
+        if self.env.context.get('bypass_write_check'):
+            return super().write(vals)
+
         new_auction_state = vals.get('auction_state')
         if new_auction_state:
             if self.state in ['offer_accepted', 'sold']:
                 raise UserError(_("You cannot change the state as the auction has ended"))
 
             if new_auction_state == 'in_auction':
-                if not self.end_time:
-                    raise UserError(_("Please select Auction End Time first"))
-                elif self.state in ['sold', 'offer_accepted']:
-                    raise UserError(_("You can not start auction for offer accepted or sold properties"))
-                elif self.auction_state == 'in_auction':
-                    raise UserError(_("Auction is already going on"))
-                elif self.auction_state == 'done':
-                    raise UserError(_("Auction ended already"))
+                self.with_context(bypass_write_check=True).action_start_auction() 
                 vals['auction_state'] = new_auction_state
             elif new_auction_state == 'done':
                 if self.state == 'new':
@@ -72,7 +67,7 @@ class Property(models.Model):
             raise UserError(_("Auction is already going on"))
         elif self.auction_state == 'done':
             raise UserError(_("Auction ended already"))
-        self.auction_state = 'in_auction'
+        self.with_context(bypass_write_check=True).write({'auction_state': 'in_auction'})
 
     def _auto_accept_property_offer(self):
         '''cron method to check auction ended or not and ended then set values'''
@@ -84,7 +79,7 @@ class Property(models.Model):
             for offer in property.offer_ids:
                 if offer.price == property.best_price and offer.partner_id == property.highest_offer_bidder:
                     offer.action_accepted()
-                    property.auction_state = 'done'
+                    property.with_context(bypass_write_check=True).write({'auction_state': 'done'})
                     break
             self.action_send_mail(property.id)
 
