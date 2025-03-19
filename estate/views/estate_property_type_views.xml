@@ -11,7 +11,6 @@
         <field name="name">Offers</field>
         <field name="res_model">estate.property.offer</field>
         <field name="view_mode">list</field>
-        <!-- <field name="domain">[("property_type_id", "=", active_id)]</field> -->
         <field name="domain">[("property_id.property_type_id", "=", active_id)]</field>
         <field name="context">{}</field>
     </record>
@@ -22,8 +21,8 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list default_order="sequence, name">
-                <field name="sequence" widget="handle" />
-                <field name="name" />
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
             </list>
         </field>
     </record>
@@ -36,22 +35,22 @@
             <form>
                 <sheet>
                     <h1>
-                        <field name="name" />
+                        <field name="name"/>
                     </h1>                    
                     <!-- Stat Button Section -->
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" name="%(estate.action_view_offers)d"
                             type="action" icon="fa-star">
-                            <field string="Offers" name="offer_count" widget="statinfo" />
+                            <field string="Offers" name="offer_count" widget="statinfo"/>
                         </button>
                     </div>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
                                 <list>
-                                    <field name="name" />
-                                    <field name="expected_price" />
-                                    <field name="state" />
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
                                 </list>
                             </field>
                         </page>

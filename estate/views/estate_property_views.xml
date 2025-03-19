@@ -7,6 +7,14 @@
         <field name="context">{'search_default_available': True}</field>
     </record>
 
+    <record id="mt_property_sold" model="mail.message.subtype">
+        <field name="name">Property Sold</field>
+        <field name="res_model">estate.propert y</field>
+        <field name="default" eval="True"/>
+        <field name="description">An estate property has been sold !</field>
+    </record>
+
+
     <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -15,8 +23,6 @@
                 decoration-success="state in ('offer_received', 'offer_accepted')"
                 decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
                 <header>
-                    <!-- <button name="new" type="object" string="New" class="oe_highlight" /> # no
-                    use as we have not make any action for new  -->
                     <button name="action_cancel" type="object" string="Cancel" class="oe_highlight"/>
                     <button name="action_sold" type="object" string="Sold" class="oe_highlight"/>
                 </header>
@@ -28,6 +34,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="selling_price"/>
+                <field name="company_id"/>
                 <field name="date_availability" optional="hide"/>
             </list>
         </field>
@@ -89,7 +96,6 @@
                         </page>
 
                         <page string="Offers">
-                            <!-- Offer Management -->
                             <group>
                                 <field name="offer_ids"
                                     readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
@@ -103,10 +109,33 @@
                             <group>
                                 <field name="seller_id" string="Salesman"/>
                                 <field name="buyer_id" string="Buyer"/>
+                                <field name="company_id"/>
                             </group>
                         </page>
+                        <!-- <page name="Offers">
+                            <group>
+                                <field name="offer_ids" nolabel="1">
+                                    <list decoration-danger="status == 'refused'"
+                                        decoration-success="status == 'accepted'"
+                                        string="Property Offers" open_form_view="True" editable="top">
+                                        <field name="price"/>
+                                        <field name="partner_id"/>
+                                        <button name="action_accept" type="object" icon="fa-check"
+                                            title="Accept"
+                                            invisible="status in ['accepted']"/>
+                                        <button name="action_refuse" type="object" icon="fa-times"
+                                            title="Refuse"
+                                            invisible="status in ['refused']"/>
+                                        <field name="validity"/>
+                                        <field name="validity_date"/>
+                                        <field name="status" readonly="1"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page> -->
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>
@@ -161,7 +190,7 @@
                                 </strong>
                                 <field
                                     name="expected_price"/> ₹ </div>
-                            
+
                             <!-- Best price only when an offer is received -->
                             <div t-if="record.state.raw_value == 'offer_received'">
                                 <strong>Best Offer : </strong>
@@ -172,8 +201,6 @@
                                 <strong>Selling Price : </strong>
                                 <field name="selling_price"/> ₹ </div>
 
-                            <!-- Display Tags -->
-                            <!-- remember t-esc and t-as , also t-esc is good to use for security reason instead of t-raw -->
                             <t>
                                 <field name="tag_type_ids" widget="many2many_tags"
                                     options="{'color_field':'color'}"/>

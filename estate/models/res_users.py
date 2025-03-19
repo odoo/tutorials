@@ -3,10 +3,9 @@ from odoo import fields, models
 
 class ResUsers(models.Model):
     _inherit = "res.users"
-    # property_ids=fields.One2many("estate.property","seller_id")
     property_ids = fields.One2many(
         "estate.property",  
-        "seller_id",        # Inverse field (Many2one in estate.property) (Links the seller (user) to multiple properties)
+        "seller_id",        
         string="Properties",
-        domain=[('state', '=', 'new')]  # Show only available properties
+        domain=[('state', '=', 'new')] 
     )

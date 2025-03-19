@@ -1,15 +1,16 @@
 from datetime import  datetime, timedelta # used to calculate date 
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+    _inherit = ['mail.thread']
     _description = "Estate Property"
     _order = "id desc" 
 
-    name = fields.Char(string="Name", required=True)
+    name = fields.Char(string="Name", required=True, tracking=True)
     sequence = fields.Integer("Sequence", default=1, help="Used to order property types. Lower is better.")
     description = fields.Text(string="Description")
     living_area = fields.Float(string="Living Area (sqm)")
@@ -25,9 +26,16 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store="True") #Stores computed values in the database for faster access.
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True)
-    price = fields.Float(string="Offer Price", required=True, default=0.0)
+    price = fields.Float(string="Offer Price", required=True, default=0.0, tracking=True)
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     seller_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        default=lambda self: self.env.company,
+        required=True
+    )
+
     # Read-Only 
     selling_price = fields.Float(string="Selling Price")
     availability_date = fields.Date(
@@ -51,7 +59,7 @@ class EstateProperty(models.Model):
         ('offer_accepted', "Offer Accepted"),
         ('sold', "Sold"),
         ('cancelled', "Cancelled"),
-    ], string="State", required=True, default='new', copy=False)
+    ], string="State", required=True, default='new', copy=False, tracking=True)
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
@@ -82,6 +90,13 @@ class EstateProperty(models.Model):
         for property in self:
             if property.state not in ['new', 'cancelled']:
                 raise exceptions.UserError("You can only delete properties that are 'New' or 'Cancelled'.")
+    
+    def _track_subtype(self, init_values):
+        """Trigger a notification when property is sold"""
+        self.ensure_one()
+        if 'state' in init_values and self.state == 'sold':
+            return self.env.ref('estate.mt_property_sold')
+        return super(EstateProperty, self)._track_subtype(init_values)
 
     # def action_cancel(self):
     #     # Cancels the property and prevents selling it later.

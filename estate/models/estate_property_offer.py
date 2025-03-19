@@ -1,5 +1,5 @@
 from datetime import date, datetime, timedelta
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -42,23 +42,23 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.validity_date - record.create_date.date()).days
 
     def action_accept(self):
-        for record in self:
-            if record.property_id.state == "offer_accepted":
-                raise UserError("You can only accept offer ones.")
-            record.property_id.selling_price = record.price
-            record.property_id.state = "offer_accepted"
-            record.property_id.buyer_id = record.partner_id
-            record.status = "accepted"
-        return True
+        if self.property_id.state == "offer_accepted":
+            raise UserError("You can only accept offer ones.")
+
+        self.property_id.selling_price = self.price
+        self.property_id.state = "offer_accepted"
+        self.property_id.buyer_id = self.partner_id
+        self.status = "accepted"
+        # return True
 
     def action_refuse(self):
-        for record in self:
-            if record.status == "accepted":
-                record.property_id.selling_price = 0
-                record.property_id.state = "offer_received"
-                record.property_id.buyer_id = False
-        record.status = "refused"
-        return True
+        if self.status == "accepted":
+            self.property_id.selling_price = 0
+            self.property_id.state = "offer_received"
+            self.property_id.buyer_id = False
+        
+        self.status = "refused"
+        # return True
 
     @api.model_create_multi
     def create(self, vals_list):

@@ -3,15 +3,15 @@
     <record id="res_users_view_form" model="ir.ui.view">
         <field name="name">Res_user_form_inherit</field>
         <field name="model">res.users</field>
-        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <xpath expr="//notebook" position="inside">
                 <page string="Properties">
                     <field name="property_ids">
                         <list>
-                            <field name="name" />
-                            <field name="expected_price" />
-                            <field name="state" />
+                            <field name="name"/>
+                            <field name="expected_price"/>
+                            <field name="state"/>
                         </list>
                     </field>
                 </page>

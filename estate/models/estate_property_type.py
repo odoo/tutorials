@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -22,13 +22,15 @@ class EstatePropertyType(models.Model):
         ('unique_type_name', 'UNIQUE(name)', 'The property type name must be unique.')
     ]
 
+    @api.depends('offer_ids.property_id.property_type_id')
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = self.env['estate.property.offer'].search_count([
                 ('property_id.property_type_id', '=', record.id)
             ])
 
-    # @api.depends("offer_ids")
+    # @api.depends("offer_ids","offer_ids.property_id")
     # def _compute_offer_count(self):
     #     for record in self:
-    #         record.offer_count = len(record.offer_ids)    ##(why this code is not running and above code is running !!)
+    #         record.offer_count = len(record.offer_ids)    
+    # ##(why this code is not running and above code is running !!)

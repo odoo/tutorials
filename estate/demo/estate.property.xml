@@ -47,7 +47,7 @@
         <field name="garage">0</field>
         <field name="garden">1</field>
         <field name="garden_area">100000</field>
-        <field name="offer_ids" eval="[
+        <!-- <field name="offer_ids" eval="[
             Command.create({
                 'partner_id': ref('base.res_partner_1'),
                 'price': 5500000,
@@ -58,6 +58,6 @@
                 'price': 5600000,
                 'validity_date': (datetime.now() + timedelta(days=14)).date()
             })
-        ]"/>
+        ]"/> -->
     </record>
 </odoo>

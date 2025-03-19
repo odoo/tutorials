@@ -21,13 +21,13 @@
         <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
     </record>
 
-    <function name="action_refuse" model="estate.property.offer">
-        <value eval="[ref('offer_1')]" />
+    <!-- <function name="action_refuse" model="estate.property.offer">
+        <value eval="[ref('offer_1')]"/>
     </function>
     <function name="action_refuse" model="estate.property.offer">
-        <value eval="[ref('offer_2')]" />
+        <value eval="[ref('offer_2')]"/>
     </function>
     <function name="action_accept" model="estate.property.offer">
-        <value eval="[ref('offer_3')]" />
-    </function>
+        <value eval="[ref('offer_3')]"/>
+    </function> -->
 </odoo>

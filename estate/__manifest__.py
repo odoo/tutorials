@@ -8,7 +8,7 @@
         menus for easy navigation and management.
     """,
     'license': 'LGPL-3',
-    'depends': ['base'],
+    'depends': ['base','mail'],
     'category': 'Real Estate/Brokerage',
     'data': [
         'security/security.xml',
