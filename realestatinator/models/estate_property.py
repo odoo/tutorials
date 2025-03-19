@@ -83,6 +83,7 @@ class EstatePropery(models.Model):
 			record.active = False
 	
 	def mark_sold(self):
+
 		for record in self:
 			if record.state == 'sold':
 				raise exceptions.UserError('This property is already sold.')
