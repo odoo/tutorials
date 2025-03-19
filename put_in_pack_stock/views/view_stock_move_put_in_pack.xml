@@ -1,0 +1,24 @@
+<odoo>
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='operations']//field[@name='quantity']" position="before">
+                <field name="put_in_pack_toggle" column_invisible="1"/>
+                <button 
+                    name="action_custom_put_in_pack"
+                    class="btn-secondary"
+                    string="Put in pack"
+                    type="object"
+                    invisible="put_in_pack_toggle != True"/>
+            </xpath>
+            <xpath expr="//page[@name='operations']//field[@name='product_packaging_id']" position="attributes">
+                <attribute name="column_invisible">parent.put_in_pack_toggle</attribute>
+            </xpath>
+            <xpath expr="//page[@name='operations']//button[@name='action_put_in_pack']" position="attributes">
+                <attribute name="invisible">state in ('draft', 'done', 'cancel') or put_in_pack_toggle</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
