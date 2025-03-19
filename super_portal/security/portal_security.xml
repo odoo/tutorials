@@ -1,0 +1,17 @@
+<odoo>
+    <record id="group_edit_portal_access" model="res.groups">
+        <field name="name">Edit Portal Access</field>
+        <field name="category_id" ref="base.module_category_usability"/>
+    </record>
+
+    <!-- Restrict Editing of Portal View -->
+    <record id="edit_portal_access_rule" model="ir.rule">
+        <field name="name">Restrict Portal Access Editing</field>
+        <field name="model_id" ref="portal.model_portal_wizard"/>
+        <field name="groups" eval="[(4, ref('super_portal.group_edit_portal_access'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+</odoo>

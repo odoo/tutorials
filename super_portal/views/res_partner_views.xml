@@ -1,0 +1,22 @@
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.view</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <!-- Ensure Parent Company field is visible & editable -->
+            <xpath expr="//field[@name='parent_id']" position="attributes">
+                <attribute name="invisible">not is_company</attribute>
+                <attribute name="readonly">not is_company</attribute>
+            </xpath>
+
+            <!-- Ensure Address Type (type) is editable and Text(Address) invisible -->
+            <xpath expr="//field[@name='type']" position="attributes">
+                <attribute name="invisible">False</attribute>
+            </xpath>
+            <xpath expr="//b[contains(text(), 'Address')]" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

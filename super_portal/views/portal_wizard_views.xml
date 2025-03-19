@@ -1,0 +1,27 @@
+<odoo>
+    <record id="wizard_view_inherit" model="ir.ui.view">
+        <field name="name">portal.wizard.view.inherit</field>
+        <field name="model">portal.wizard</field>
+        <field name="inherit_id" ref="portal.wizard_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_internal']" position="after">
+                <field name="can_edit" column_invisible="True"/>
+            </xpath>
+            <!-- Restrict Email Editing -->
+            <xpath expr="//field[@name='user_ids']/tree/field[@name='email']" position="attributes">
+                <attribute name="readonly">not can_edit</attribute>
+            </xpath>
+            
+            <!-- Hide "Grant Access," "Revoke Access," and "Re-Invite" Buttons for Unauthorized Users -->
+            <xpath expr="//button[@name='action_grant_access']" position="attributes">
+                <attribute name="groups">super_portal.group_edit_portal_access</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_revoke_access']" position="attributes">
+                <attribute name="groups">super_portal.group_edit_portal_access</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_invite_again']" position="attributes">
+                <attribute name="groups">super_portal.group_edit_portal_access</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
