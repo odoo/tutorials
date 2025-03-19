@@ -1,15 +1,14 @@
 from odoo import models, fields, api, Command
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, AccessError
+
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self):
-        result = super().action_set_sold()
+        self.check_access("write")
 
-        journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
-        if not journal:
-            raise UserError("No sales journal found!")
+        result = super().action_set_sold()
 
         if not self.buyer:
             raise UserError("No buyer is assigned to this property!")
@@ -17,14 +16,34 @@ class EstateProperty(models.Model):
         invoice_vals = {
             "partner_id": self.buyer.id,
             "move_type": "out_invoice",
-            "journal_id": journal.id,
             "invoice_line_ids": [
-                Command.create({"name": "Property", "quantity": 1, "price_unit": self.selling_price}),
-                Command.create({"name": "Service Fee (6%)", "quantity": 1, "price_unit": self.selling_price * 0.06}),
-                Command.create({"name": "Administrative Fee", "quantity": 1, "price_unit": 100.00}),
+                Command.create(
+                    {
+                        "name": "Property",
+                        "quantity": 1,
+                        "price_unit": self.selling_price,
+                    }
+                ),
+                Command.create(
+                    {
+                        "name": "Service Fee (6%)",
+                        "quantity": 1,
+                        "price_unit": self.selling_price * 0.06,
+                    }
+                ),
+                Command.create(
+                    {"name": "Administrative Fee", "quantity": 1, "price_unit": 100.00}
+                ),
             ],
         }
 
-        invoice = self.env["account.move"].create(invoice_vals)
-        
+        try:
+            self.env["account.move"].check_access_rights("create")
+        except AccessError:
+            raise UserError(
+                "You do not have the required permissions to create invoices."
+            )
+
+        self.env["account.move"].sudo().create(invoice_vals)
+
         return result

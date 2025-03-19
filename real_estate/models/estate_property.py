@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Model"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "id desc"
 
     name = fields.Char(required=True)
@@ -24,6 +25,12 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
+    )
     total_area = fields.Float(compute="_compute_total_area")
     garden_orientation = fields.Selection(
         [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
@@ -42,12 +49,15 @@ class EstateProperty(models.Model):
         string="Status",
         copy=False,
         default="new",
+        tracking=True,
     )
 
     property_type_id = fields.Many2one(
         "estate.property.type", string="Property Type", ondelete="cascade"
     )
-    buyer = fields.Many2one("res.partner", string="Buyer", ondelete="cascade")
+    buyer = fields.Many2one(
+        "res.partner", string="Buyer", ondelete="cascade", tracking=True
+    )
     salesperson = fields.Many2one(
         "res.users",
         string="Sales Person",
@@ -127,3 +137,10 @@ class EstateProperty(models.Model):
         self.state = "cancelled"
         self.active = False
         return True
+
+    def _track_subtype(self, init_values):
+        self.ensure_one()
+        if "state" in init_values and self.state == "offer_accepted":
+            print("=== STATE CHANGED TO OFFER ACCEPTED ===")
+            return self.env.ref("real_estate.mt_state_change")
+        return super()._track_subtype(init_values)

@@ -15,6 +15,19 @@
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
 
+        <record id="estate_exclusive_property" model="ir.rule">
+            <field name="name">Allow agent to see only property assigned to him.</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+            <field name="domain_force">['|', ('salesperson', '=', user.id), ('salesperson', '=',
+                False), ('company_id', '=', user.company_id.id)]</field>
+        </record>
+        <record id="estate_exclusive_property_manager" model="ir.rule">
+            <field name="name">Managers: See all properties</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+            <field name="domain_force">[]</field>
+        </record>
     </data>
 
 </odoo>

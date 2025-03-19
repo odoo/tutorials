@@ -216,10 +216,17 @@
                                     <label for="buyer" string="Saler"/>
                                     <field name="salesperson" class="oe_inline m-2"/>
                                 </div>
+                                <div>
+                                    <label for="company_id" string="Company"/>
+                                    <field name="company_id" class="oe_inline m-2"/>
+                                </div>
                             </div>
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True">
+                    <filed name="activity_ids" widget="mail_activity"/>
+                </chatter>
             </form>
         </field>
     </record>
