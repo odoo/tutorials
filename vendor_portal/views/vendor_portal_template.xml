@@ -10,6 +10,12 @@
                         <a href="/vendor-portal" class="btn-close" aria-label="Close"></a>
                     </div>
                 </t>
+                <t t-if="request.params.get('error') == '1'">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ❌ Invalid input data. Please enter valid product and vendor.
+                        <a href="/vendor-portal" class="btn-close" aria-label="Close"></a>
+                    </div>
+                </t>
                 <form method="get" action="/vendor-portal">
                     <div class="d-flex align-items-center justify-content-between">
                         <div>

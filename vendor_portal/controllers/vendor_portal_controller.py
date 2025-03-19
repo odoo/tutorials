@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from math import ceil
 from odoo import Command, http
 from odoo.http import request
-from math import ceil
 
 
 class VendorPortal(http.Controller):
 
-    @http.route("/vendor-portal", type="http", auth="public", website=True)
+    @http.route("/vendor-portal", type="http", auth="user", website=True)
     def vendor_portal(self, **kwargs):
         country_id = kwargs.get("country_id")
         vendor_id = kwargs.get("vendor_id")
@@ -28,12 +28,11 @@ class VendorPortal(http.Controller):
             domain.append(("id", "=", int(product_id)))
 
         ProductTemplate = request.env["product.template"]
-        all_products = ProductTemplate.search(domain or [])
+        all_products = ProductTemplate.search(domain)
         total_products = len(all_products)
         total_pages = ceil(total_products / page_size)
         start = (page - 1) * page_size
-        end = start + page_size
-        filtered_products = all_products[start:end]
+        filtered_products = all_products[start:start + page_size]
 
         return request.render(
             "vendor_portal.vendor_portal_template",
@@ -52,13 +51,14 @@ class VendorPortal(http.Controller):
             },
         )
 
-    @http.route(
-        "/create-purchase-order", type="http", auth="public", website=True, csrf=False
-    )
+    @http.route("/create-purchase-order", type="http", auth="user", website=True, csrf=False)
     def create_purchase_order(self, **post):
-        product_id = int(post.get("product_id"))
-        vendor_id = int(post.get("vendor_id"))
-        qty = float(post.get("product_qty", 1.0))
+        if not post.get("vendor_id") or not post.get("product_id"):
+            return request.redirect("/vendor-portal?error=1")
+        else:
+            product_id = int(post.get("product_id"))
+            vendor_id = int(post.get("vendor_id"))
+            qty = 1.0
 
         product = (
             request.env["product.product"]
@@ -67,7 +67,7 @@ class VendorPortal(http.Controller):
         )
 
         if not product or not vendor_id:
-            return request.redirect("/vendor-portal")
+            return request.redirect("/vendor-portal?error=1")
 
         vendor_price = next(
             (
@@ -94,9 +94,7 @@ class VendorPortal(http.Controller):
         }
 
         if existing_po:
-            existing_line = existing_po.order_line.filtered(
-                lambda line: line.product_id.id == product.id
-            )
+            existing_line = existing_po.order_line.filtered(lambda line: line.product_id.id == product.id)
             if existing_line:
                 existing_line.product_qty += qty
             else:
