@@ -11,13 +11,43 @@
                     string="Bill of Entry" type="object" data-hotkey="w"
                     invisible="l10n_journal_entry_custom_duty or state != 'posted' or l10n_in_gst_treatment not in ['overseas','special_economic_zone','deemed_export'] or move_type != 'in_invoice'" />
             </xpath>
-            <xpath expr="//div[@name='button_box']" position="inside">
+            <xpath
+                expr="//div[@name='button_box']" position="inside">
                 <button name="action_l10n_in_bill_of_entry" class="oe_stat_button" type="object"
                     icon="fa-list-alt" invisible="not l10n_journal_entry_custom_duty">
                     <div class="o_field_widget o_stat_info">
                         <span class="o_stat_text">Bill Of entry</span>
                     </div>
                 </button>
+            </xpath>
+            <xpath expr="//notebook/page[@id='aml_tab']" position="before">
+                <page string="Custom Duty Lines" invisible="not custom_duty_line_ids">
+                    <field name="custom_duty_line_ids" nolabel="1">
+                        <list create="false" delete="false">
+                            <field name="product_id" />
+                            <field name="quantity" column_invisible="1" />
+                            <field name="unit_price" column_invisible="1" />
+                            <field name="custom_currency_rate" column_invisible="1" />
+                            <field name="assessable_value" />
+                            <field name="custom_duty" />
+                            <field name="taxable_amount" />
+                            <field name="tax_ids" widget="many2many_tags" />
+                            <field name="tax_amount" />
+                            <field name="currency_id" column_invisible="1" />
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+            <xpath expr="//group[@id='header_left_group']" position="inside">
+                <field name="l10n_custom_currency_rate" invisible="not custom_duty_line_ids"
+                    readonly="1" />
+                <field name="l10n_bill_reference" invisible="not custom_duty_line_ids" readonly="1" />
+            </xpath>
+            <xpath expr="//group[@id='header_right_group']" position="inside">
+                <field name="l10n_bill_entry_number" invisible="not custom_duty_line_ids"
+                    readonly="1" />
+                <field name="l10n_bill_entry_date" invisible="not custom_duty_line_ids" readonly="1" />
+                <field name="l10n_port_code" invisible="not custom_duty_line_ids" readonly="1" />
             </xpath>
         </field>
     </record>

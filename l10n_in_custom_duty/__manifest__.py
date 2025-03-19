@@ -1,15 +1,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': "Custom Duty",
-    'website': "https://www.odoo.com/documentation/master/applications/finance/fiscal_localizations/india.html",
     'icon': "/account/static/description/l10n.png",
     'countries': ["in"],
     'version': "1.0",
     'description': "Import-Export Custom duty",
     'category': "Accounting/Localizations/Import Exports",
     'depends': [
-        "account_tax_python",
-        "base_vat",
         "account",
         "l10n_in"
     ],

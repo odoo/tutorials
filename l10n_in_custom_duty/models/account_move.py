@@ -3,37 +3,53 @@ from odoo.exceptions import UserError
 
 
 class AccountMove(models.Model):
-    _inherit = 'account.move'
+    _inherit = "account.move"
 
     l10n_journal_entry_custom_duty = fields.Many2one(
-        'account.move', readonly=True
+        "account.move", readonly=True
     )
+    l10n_custom_currency_rate = fields.Monetary(
+        string="Custom Currency Rate",
+        currency_field="currency_id",
+    )
+    l10n_bill_reference = fields.Char(string="Bill Reference")
+    l10n_bill_entry_number = fields.Char(string="Bill of Entry Number")
+    l10n_bill_entry_date = fields.Date(string="Bill of Entry Date")
+    l10n_port_code = fields.Char(string="Port Code")
+
+    custom_duty_line_ids = fields.One2many("account.move.custom.duty.line", "move_id", string="Custom Duty Lines")
 
     def action_l10n_in_custom_duty_wizard(self):
+        """Opens the Custom Duty Entry wizard for the current journal entry."""
         self.ensure_one()
-        if self.state != 'posted' or self.l10n_in_gst_treatment not in ['overseas', 'special_economic_zone', 'deemed_export']:
-            raise UserError(_('This action can only be performed on posted moves with overseas, special economic zone, or deemed export GST treatment.'))
+        if self.state != "posted" or self.l10n_in_gst_treatment not in [
+            "overseas",
+            "special_economic_zone",
+            "deemed_export"
+        ]:
+            raise UserError(_("This action can only be performed on posted moves with overseas, special economic zone, or deemed export GST treatment."))
         return {
-            'name': _('Custom Duty Entry'),
-            'type': 'ir.actions.act_window',
-            'view_mode': 'form',
-            'res_model': 'l10n_in.custom.duty.wizard',
-            'view_id': self.env.ref('l10n_in_custom_duty.bill_entry_wizard_view_form').id,
-            'target': 'new',
-            'context': {
-                'move_id': self.id
+            "name": _("Custom Duty Entry"),
+            "type": "ir.actions.act_window",
+            "view_mode": "form",
+            "res_model": "l10n_in.custom.duty.wizard",
+            "view_id": self.env.ref("l10n_in_custom_duty.bill_entry_wizard_view_form").id,
+            "target": "new",
+            "context": {
+                "move_id": self.id
             },
         }
 
     def action_l10n_in_bill_of_entry(self):
+        """Opens the Bill of Entry for the custom duty journal entry."""
         self.ensure_one()
         if not self.l10n_journal_entry_custom_duty:
-            raise UserError(_('No custom duty entry found for this move.'))
+            raise UserError(_("No custom duty entry found for this move."))
         return {
-            'name': _("Bill of Entry"),
-            'type': 'ir.actions.act_window',
-            'res_model': 'account.move',
-            'view_mode': 'form',
-            'view_id': self.env.ref('account.view_move_form').id,
-            'res_id': self.l10n_journal_entry_custom_duty.id,
+            "name": _("Bill of Entry"),
+            "type": "ir.actions.act_window",
+            "res_model": "account.move",
+            "view_mode": "form",
+            "view_id": self.env.ref("account.view_move_form").id,
+            "res_id": self.l10n_journal_entry_custom_duty.id,
         }

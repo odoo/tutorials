@@ -13,10 +13,10 @@
                             <field name="journal_entry_date" />
                             <field name="journal_id" />
                             <field name="custom_currency_rate"
-                                readonly='l10n_journal_entry_custom_duty' />
+                                readonly="l10n_journal_entry_custom_duty" />
                         </group>
                         <group>
-                            <field name="move_id" readonly='1' />
+                            <field name="move_id" readonly="1" />
                             <field name="bill_of_entry_number" />
                             <field name="bill_of_entry_date" />
                             <field name="port_code_id" />
@@ -24,8 +24,8 @@
                     </group>
                     <notebook>
                         <page string="Bill of Entry Details">
-                            <field name="line_ids" readonly='l10n_journal_entry_custom_duty'>
-                                <list editable="bottom" create='false'>
+                            <field name="line_ids" readonly="l10n_journal_entry_custom_duty">
+                                <list editable="bottom" create="false">
                                     <field name="product_id" />
                                     <field name="assessable_value" widget="monetary" />
                                     <field name="custom_duty" widget="monetary" />
@@ -50,7 +50,7 @@
                 </sheet>
                 <footer>
                     <div class="d-flex gap-1"
-                        invisible='l10n_journal_entry_custom_duty'>
+                        invisible="l10n_journal_entry_custom_duty">
                         <button type="object" name="action_create_and_post_journal_entry"
                             class="btn btn-primary o_form_button_save"> Confirm </button>
                         <button type="button" class="btn btn-secondary o_form_button_cancel"

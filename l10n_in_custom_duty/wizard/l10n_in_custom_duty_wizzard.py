@@ -1,7 +1,5 @@
 from odoo import api, fields, models, _ , Command
 from odoo.exceptions import UserError, ValidationError
-import logging
-_logger = logging.getLogger(__name__)
 
 
 class L10nInCustomDutyWizard(models.TransientModel):
@@ -19,28 +17,30 @@ class L10nInCustomDutyWizard(models.TransientModel):
     journal_entry_date = fields.Date(
         string="Journal Entry Date", default=fields.Date.context_today, readonly=True
     )
-    bill_of_entry_number = fields.Char(
-        string="Bill of Entry Number", related="move_id.l10n_in_shipping_bill_number"
-    )
     journal_id = fields.Many2one(
         "account.journal",
         string="Journal",
         readonly=True,
         default=lambda self: self.env.company.l10n_in_import_journal_id,
     )
+    bill_of_entry_number = fields.Char(
+        string="Bill of Entry Number", related="move_id.l10n_in_shipping_bill_number",
+        readonly=False
+    )
     bill_of_entry_date = fields.Date(
-        string="Bill of Entry Date", related="move_id.l10n_in_shipping_bill_date"
+        string="Bill of Entry Date", related="move_id.l10n_in_shipping_bill_date",
+        readonly=False
+    )
+    port_code_id = fields.Many2one(
+        "l10n_in.port.code", string="Port Code", related="move_id.l10n_in_shipping_port_code_id",
+        readonly=False
     )
     custom_currency_rate = fields.Monetary(
         string="Custom Currency Rate",
         currency_field="currency_id",
         default=1,
     )
-    port_code_id = fields.Many2one(
-        "l10n_in.port.code", string="Port Code", related="move_id.l10n_in_shipping_port_code_id"
-    )
     line_ids = fields.One2many("l10n_in.custom.duty.line", "wizard_id", string="Product Lines")
-
     total_custom_duty_and_additional_charges = fields.Monetary(
         string="Total Custom Duty and Additional Charges",
         currency_field="currency_id",
@@ -75,27 +75,43 @@ class L10nInCustomDutyWizard(models.TransientModel):
 
     @api.constrains("custom_currency_rate")
     def _check_positive_currency_rate(self):
+        """Ensures that the custom currency rate is always greater than zero."""
         for rec in self:
             if rec.custom_currency_rate <= 0:
                 raise ValidationError(_("Currency Rate must be greater than zero."))
 
     @api.depends("line_ids.custom_duty")
     def _compute_total_custom_duty_and_additional_charges(self):
+        """Computes the total custom duty and additional charges."""
         for rec in self:
             rec.total_custom_duty_and_additional_charges = sum(rec.line_ids.mapped("custom_duty"))
 
     @api.depends("line_ids.tax_amount")
     def _compute_total_tax_amount(self):
+        """Computes the total tax amount for the bill entry."""
         for rec in self:
             rec.total_tax_amount = sum(rec.line_ids.mapped("tax_amount"))
 
     @api.depends("total_custom_duty_and_additional_charges", "total_tax_amount")
     def _compute_total_amount_payable(self):
+        """Computes the total amount payable for the bill entry."""
         for rec in self:
             rec.total_amount_payable = (rec.total_custom_duty_and_additional_charges + rec.total_tax_amount)
 
     @api.model
     def default_get(self, fields_list):
+        """
+        Provides default values for the wizard, primarily for bill entry lines.
+
+        If there are no existing bill entry details for the `move_id`, it automatically creates them
+        based on related `account.move.line` records.
+
+        Context:
+            - `move_id`: The account move (bill) related to this entry.
+
+        Returns:
+            dict: Default values for the wizard.
+        """
         move_id = self._context.get("move_id")
         res = super().default_get(fields_list)
 
@@ -119,168 +135,95 @@ class L10nInCustomDutyWizard(models.TransientModel):
         return res
 
     def action_create_and_post_journal_entry(self):
+        """
+        Creates and posts a journal entry for the Bill of Entry.
+
+        - Ensures a journal entry does not already exist.
+        - Validates that at least one bill entry line exists.
+        - Ensures each product line has a custom duty or tax amount.
+        - Creates debit and credit journal entry lines based on duty and tax amounts.
+        - Posts the journal entry and links it to the account move.
+
+        Raises:
+            - `UserError`: If a journal entry already exists.
+            - `UserError`: If no bill entry lines exist.
+            - `UserError`: If no custom duty or tax is provided for any product line.
+        """
         for record in self:
             if record.l10n_journal_entry_custom_duty:
                 raise UserError(_("A journal entry has already been created for this Bill of Entry."))
             if not record.line_ids:
-                raise UserError(_("Journal Entry Can't be created without Bill Entry Line."))
-            if record.line_ids:
-                for line in record.line_ids:
-                    if not line.custom_duty and not line.tax_amount:
-                        raise UserError(_("Please enter Custom Duty or Tax Amount for each of product line."))
+                raise UserError(_("Journal Entry can't be created without Bill Entry Line."))
+            for line in record.line_ids:
+                if not line.custom_duty and not line.tax_amount:
+                    raise UserError(_("Please enter Custom Duty or Tax Amount for each product line."))
+            journal_entry_lines = [
+                Command.create({
+                    "name": "Custom Duty and Additional Charges",
+                    "partner_id": record.move_id.partner_id.id,
+                    "debit": record.total_custom_duty_and_additional_charges,
+                    "credit": 0.0,
+                    "account_id": record.l10n_in_import_custom_duty_account_id.id,
+                    "company_currency_id": record.currency_id.id,
+                    "amount_currency": record.total_custom_duty_and_additional_charges,
+                }),
+                Command.create({
+                    "name": "Total Payable Amount",
+                    "partner_id": record.move_id.partner_id.id,
+                    "debit": 0.0,
+                    "credit": record.total_amount_payable,
+                    "account_id": record.l10n_in_import_default_tax_account_id.id,
+                    "company_currency_id": record.currency_id.id,
+                    "amount_currency": -record.total_amount_payable,
+                }),
+            ]
+
+            custom_duty_entries = []
+            for custom_duty_line in record.line_ids:
+                custom_duty_entries.append((0, 0, {
+                    "move_id": record.move_id.id,
+                    "move_line_id": custom_duty_line.move_line_id.id,
+                    "custom_currency_rate": record.custom_currency_rate,
+                    "custom_duty": custom_duty_line.custom_duty,
+                    "taxable_amount": custom_duty_line.taxable_amount,
+                    "tax_ids": [(6, 0, custom_duty_line.tax_ids.ids)],
+                }))
+                for tax in custom_duty_line.tax_ids:
+                    debit_account = tax.invoice_repartition_line_ids.filtered(
+                        lambda line: line.repartition_type == "tax" and line.account_id
+                    ).account_id
+
+                    if not debit_account:
+                        raise UserError("No debit account found for tax")
+
+                    tax_amount = custom_duty_line.taxable_amount * (tax.amount / 100)
+                    journal_entry_lines.append(Command.create({
+                        "name": f"Tax: {tax.name}",
+                        "partner_id": record.move_id.partner_id.id,
+                        "debit": tax_amount,
+                        "credit": 0.0,
+                        "account_id": debit_account.id,
+                        "company_currency_id": record.currency_id.id,
+                        "amount_currency": tax_amount,
+                    }))
 
             journal_entry = self.env["account.move"].sudo().create({
                 "move_type": "entry",
                 "journal_id": record.journal_id.id,
                 "date": record.journal_entry_date,
                 "ref": record.move_id.name,
-                "line_ids": [
-                    Command.create({
-                        "name": "Custom Duty and Additional Charges",
-                        "partner_id": record.move_id.partner_id.id,
-                        "debit": record.total_custom_duty_and_additional_charges,
-                        "credit": 0.0,
-                        "account_id": record.l10n_in_import_custom_duty_account_id.id,
-                        "company_currency_id": record.currency_id.id,
-                        "amount_currency": record.total_custom_duty_and_additional_charges,
-                    }),
-                    Command.create({
-                        "name": "Total Tax Amount",
-                        "partner_id": record.move_id.partner_id.id,
-                        "debit": record.total_tax_amount,
-                        "credit": 0.0,
-                        "account_id": record.l10n_in_import_default_tax_account_id.id,
-                        "company_currency_id": record.currency_id.id,
-                        "amount_currency": record.total_tax_amount,
-                    }),
-                    Command.create({
-                        "name": "Total Payable Amount",
-                        "partner_id": record.move_id.partner_id.id,
-                        "debit": 0.0,
-                        "credit": record.total_amount_payable,
-                        "account_id": record.move_id.line_ids[0].account_id.id,
-                        "company_currency_id": record.currency_id.id,
-                        "amount_currency": -record.total_amount_payable,
-                    }),
-                ],
+                "l10n_custom_currency_rate": record.custom_currency_rate,
+                "l10n_bill_reference": record.move_id.name,
+                "l10n_bill_entry_number": record.bill_of_entry_number,
+                "l10n_bill_entry_date": record.bill_of_entry_date,
+                "l10n_port_code": record.port_code_id.code,
+                "line_ids": journal_entry_lines,
             })
-            # journal_entry = self.env["account.move"].sudo().create({
-            #     "move_type": "entry",
-            #     "journal_id": record.journal_id.id,
-            #     "date": record.journal_entry_date,
-            #     "ref": record.move_id.name,
-            #     "line_ids": [
-            #         Command.create({
-            #             "name": "Custom Duty and Additional Charges",
-            #             "partner_id": record.move_id.partner_id.id,
-            #             "debit": record.total_custom_duty_and_additional_charges,
-            #             "credit": 0.0,
-            #             "account_id": record.l10n_in_import_custom_duty_account_id.id,
-            #             "company_currency_id": record.currency_id.id,
-            #             "amount_currency": record.total_custom_duty_and_additional_charges,
-            #         }),
-
-            #         # Create tax lines dynamically based on applied taxes
-            #         *[
-            #             Command.create({
-            #                 "name": f"Tax: {tax.name}",
-            #                 "partner_id": record.move_id.partner_id.id,
-            #                 "debit": tax_line_amount,
-            #                 "credit": 0.0,
-            #                 "account_id": tax_repartition.account_id.id,  # Get tax account dynamically
-            #                 "company_currency_id": record.currency_id.id,
-            #                 "amount_currency": tax_line_amount,
-            #             })
-            #             for line in record.line_ids
-            #             for tax in line.tax_ids
-            #             for tax_repartition in tax.invoice_repartition_line_ids
-            #             if tax_repartition.account_id  # Ensure there is an account assigned
-            #             for tax_line_amount in [line.tax_amount / len(line.tax_ids) if line.tax_ids else 0.0]  # Split tax amount correctly
-            #         ],
-
-            #         Command.create({
-            #             "name": "Total Payable Amount",
-            #             "partner_id": record.move_id.partner_id.id,
-            #             "debit": 0.0,
-            #             "credit": record.total_amount_payable,
-            #             "account_id": record.move_id.line_ids[0].account_id.id,
-            #             "company_currency_id": record.currency_id.id,
-            #             "amount_currency": -record.total_amount_payable,
-            #         }),
-            #     ],
-            # })
+            print(custom_duty_entries)
+            journal_entry.write({"custom_duty_line_ids": custom_duty_entries})
 
             journal_entry.action_post()
             record.move_id.l10n_journal_entry_custom_duty = journal_entry.id
-    # def action_create_and_post_journal_entry(self):
-    #     for record in self:
-    #         if record.l10n_journal_entry_custom_duty:
-    #             raise UserError(_("A journal entry has already been created for this Bill of Entry."))
-    #         if not record.line_ids:
-    #             raise UserError(_("Journal Entry can't be created without Bill Entry Lines."))
-
-    #         # Ensure each line has either a custom duty or a tax amount
-    #         for line in record.line_ids:
-    #             if not line.custom_duty and not line.tax_amount:
-    #                 raise UserError(_("Please enter Custom Duty or Tax Amount for each product line."))
-
-    #         # Initialize journal entry lines
-    #         journal_entry_lines = [
-    #             Command.create({
-    #                 "name": "Custom Duty and Additional Charges",
-    #                 "partner_id": record.move_id.partner_id.id,
-    #                 "debit": record.total_custom_duty_and_additional_charges,
-    #                 "credit": 0.0,
-    #                 "account_id": record.l10n_in_import_custom_duty_account_id.id,
-    #                 "company_currency_id": record.currency_id.id,
-    #                 "amount_currency": record.total_custom_duty_and_additional_charges,
-    #             }),
-    #         ]
-
-    #         # Process tax lines dynamically
-    #         for line in record.line_ids:
-    #             for tax in line.tax_ids:
-    #                 # Filter only tax repartition lines that have an account assigned
-    #                 tax_repartition_lines = tax.invoice_repartition_line_ids.filtered(lambda r: r.account_id and r.repartition_type == 'tax')
-
-    #                 # If tax has valid repartition lines
-    #                 if tax_repartition_lines:
-    #                     # Distribute the tax amount correctly among all applicable taxes
-    #                     tax_amount = line.tax_amount / len(line.tax_ids) if line.tax_ids else 0.0
-
-    #                     for tax_repartition in tax_repartition_lines:
-    #                         journal_entry_lines.append(Command.create({
-    #                             "name": f"Tax: {tax.name}",
-    #                             "partner_id": record.move_id.partner_id.id,
-    #                             "debit": tax_amount,
-    #                             "credit": 0.0,
-    #                             "account_id": tax_repartition.account_id.id,  # Use correct tax account
-    #                             "company_currency_id": record.currency_id.id,
-    #                             "amount_currency": tax_amount,
-    #                         }))
-
-    #         # Add the payable line (credit side)
-    #         journal_entry_lines.append(Command.create({
-    #             "name": "Total Payable Amount",
-    #             "partner_id": record.move_id.partner_id.id,
-    #             "debit": 0.0,
-    #             "credit": record.total_amount_payable,
-    #             "account_id": record.move_id.line_ids[0].account_id.id,  # Use correct payable account
-    #             "company_currency_id": record.currency_id.id,
-    #             "amount_currency": -record.total_amount_payable,
-    #         }))
-
-    #         # Create the journal entry
-    #         journal_entry = self.env["account.move"].sudo().create({
-    #             "move_type": "entry",
-    #             "journal_id": record.journal_id.id,
-    #             "date": record.journal_entry_date,
-    #             "ref": record.move_id.name,
-    #             "line_ids": journal_entry_lines,
-    #         })
-
-    #         journal_entry.action_post()
-    #         record.move_id.l10n_journal_entry_custom_duty = journal_entry.id
 
 
 class L10nInCustomDutyLine(models.TransientModel):
@@ -331,6 +274,7 @@ class L10nInCustomDutyLine(models.TransientModel):
 
     @api.constrains("custom_duty", "tax_amount")
     def _check_positive_values(self):
+        """Ensure that the Custom Duty and Tax Amount fields are not negative."""
         for record in self:
             if record.custom_duty < 0:
                 raise ValidationError(_("Custom Duty cannot be negative."))
@@ -339,6 +283,7 @@ class L10nInCustomDutyLine(models.TransientModel):
 
     @api.depends("quantity", "unit_price", "wizard_id.custom_currency_rate")
     def _compute_assessable_value(self):
+        """Compute the assessable value for the custom duty calculation."""
         for record in self:
             record.assessable_value = (
                 record.quantity * record.unit_price * record.wizard_id.custom_currency_rate
@@ -346,11 +291,13 @@ class L10nInCustomDutyLine(models.TransientModel):
 
     @api.depends("assessable_value", "custom_duty")
     def _compute_taxable_amount(self):
+        """Compute the taxable amount by adding the assessable value and custom duty."""
         for record in self:
             record.taxable_amount = record.assessable_value + record.custom_duty
 
     @api.depends("taxable_amount", "tax_ids")
     def _compute_tax_amount(self):
+        """Compute the total tax amount based on the taxable amount and tax rates."""
         for record in self:
             if record.tax_ids:
                 tax_multiplier = sum(record.tax_ids.mapped("amount")) / 100
