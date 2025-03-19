@@ -1,4 +1,4 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, exceptions, fields, models, tools
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
@@ -66,3 +66,18 @@ class EstateProperty(models.Model):
             if self.state == "sold":
                 raise exceptions.UserError("Sold property cannot be cancelled.")
             self.state = "cancelled"
+
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price should be positive."),
+        ("check_selling_price", "CHECK(selling_price > 0)", "Selling price should be positive."),
+        ("check_offer_price", "CHECK(selling_price > 0)", "Selling price should be positive.")
+    ]
+
+    @api.constrains("expected_price", "sellling_price")
+    def _check_selling_price(self):
+        print("Entered the method.")
+        for record in self:
+            if 0 < record.selling_price < 0.9 * record.expected_price:
+                raise exceptions.ValidationError("Less than 90% of expected price.")
+    
+ 

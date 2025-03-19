@@ -5,8 +5,8 @@
             <menuitem id="test_model_menu_action" action="test_model_action"/>
         </menuitem>
         <menuitem id="test_menu_settings" name="Settings">
-            <menuitem id="test_menu_propertytypes" name="Property Types" action = "test_model_action_ptypes"/>
-            <menuitem id="test_menu_tags" name="Property Tags" action = "test_model_tags_action"/>
+            <menuitem id="test_menu_propertytypes" name="Property Types" action="test_model_ptypes_action"/>
+            <menuitem id="test_menu_tags" name="Property Tags" action="test_model_tags_action"/>
         </menuitem>
     </menuitem>
 </odoo>
