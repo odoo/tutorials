@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_import_export_custom_duty_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.account.base.import.export.custom.duty</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='india_localization']" position="inside">
+                <t groups="account.group_account_user">
+                    <setting string="Import-Export" help="Enable this feature to apply custom duty on import/export transactions, including Bill of Entry and Shipping Bills" company_dependent="1">
+                        <field name="l10n_in_custom_duty" class="oe_inline"/>
+                        <div class="content-group" invisible="not l10n_in_custom_duty">
+                            <p class="fw-bolder">Import</p>
+                            <div class="row mt8">
+                                <label for="l10n_in_custom_duty_import_journal_id" class="col-lg-5 o_light_label"/>
+                                <field name="l10n_in_custom_duty_import_journal_id" domain="[('type', '=', 'general'), ('active', '=', True)]"/>
+                            </div>
+                            <div class="row mt8">
+                                <label for="l10n_in_account_custom_duty_income_id" class="col-lg-5 o_light_label"/>
+                                <field name="l10n_in_account_custom_duty_income_id"/>
+                            </div>
+                            <div class="row mt8">
+                                <label for="l10n_in_import_default_tax_account" class="col-lg-5 o_light_label"/>
+                                <field name="l10n_in_import_default_tax_account"/>
+                            </div>
+
+                            <p class="fw-bolder mt-2">Export</p>
+                            <div class="row mt8">
+                                <label for="l10n_in_custom_duty_export_journal_id" class="col-lg-5 o_light_label"/>
+                                <field name="l10n_in_custom_duty_export_journal_id" domain="[('type', '=', 'general'), ('active', '=', True)]"/>
+                            </div>
+                            <div class="row mt8">
+                                <label for="l10n_in_account_custom_duty_expense_income_id" class="col-lg-5 o_light_label"/>
+                                <field name="l10n_in_account_custom_duty_expense_income_id"/>
+                            </div>
+                            <div class="row mt8">
+                                <label for="l10n_in_export_default_tax_account" class="col-lg-5 o_light_label"/>
+                                <field name="l10n_in_export_default_tax_account"/>
+                            </div>
+
+                            <p class="fw-bolder mt-2">Default Tax Account</p>
+                            <div class="row mt8">
+                                <label for="l10n_in_custom_duty_tax_payable_account_import" class="col-lg-5 o_light_label"/>
+                                <field name="l10n_in_custom_duty_tax_payable_account_import"/>
+                            </div>
+                        </div>
+                    </setting>
+                </t>
+            </xpath>
+        </field>
+    </record>
+</odoo>
