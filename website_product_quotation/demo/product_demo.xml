@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Products  -->
+        <record
+            id="product_product_A" model="product.template">
+            <field name="name">Product A</field>
+            <field name="attribute_line_ids"
+                eval="[(0, 0, { 'attribute_id': ref('product_attribute_sizew'), 'value_ids': [(6, 0, [ref('product_attribute_sizew_s')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_color'), 'value_ids': [(6, 0, [ref('product_attribute_color_white'), ref('product_attribute_color_black')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_fabric'), 'value_ids': [(6, 0, [ref('product_attribute_fabric_plastic'), ref('product_attribute_fabric_custom')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_print'), 'value_ids': [(6, 0, [ref('product_attribute_print_text'), ref('product_attribute_print_graphics'), ref('product_attribute_print_pattern'), ref('product_attribute_print_solid')])] })]"/>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/1.jpg"/>
+            <field name="website_published" eval="True"/>
+        </record>
+
+        <record
+            id="product_product_B" model="product.template">
+            <field name="name">Product B</field>
+            <field name="attribute_line_ids"
+                eval="[(0, 0, { 'attribute_id': ref('product_attribute_sizew'), 'value_ids': [(6, 0, [ref('product_attribute_sizew_s'),  ref('product_attribute_sizew_xl')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_color'), 'value_ids': [(6, 0, [ref('product_attribute_color_white'), ref('product_attribute_color_black'), ref('product_attribute_color_wood')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_fabric'), 'value_ids': [(6, 0, [ref('product_attribute_fabric_leather'), ref('product_attribute_fabric_custom')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_print'), 'value_ids': [(6, 0, [ref('product_attribute_print_text'), ref('product_attribute_print_graphics'), ref('product_attribute_print_pattern')])] })]"/>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/2.jpg"/>
+            <field name="website_published" eval="True"/>
+        </record>
+
+        <record
+            id="product_product_C" model="product.template">
+            <field name="name">Product C</field>
+            <field name="attribute_line_ids"
+                eval="[(0, 0, { 'attribute_id': ref('product_attribute_sizew'), 'value_ids': [(6, 0, [ref('product_attribute_sizew_s'),  ref('product_attribute_sizew_xl')])] }),
+                  (0, 0, { 'attribute_id': ref('product_attribute_color'), 'value_ids': [(6, 0, [ref('product_attribute_color_white'), ref('product_attribute_color_black'), ref('product_attribute_color_wood')])] }),
+                  (0, 0, { 'attribute_id': ref('product_attribute_fabric'), 'value_ids': [(6, 0, [ref('product_attribute_fabric_leather'), ref('product_attribute_fabric_custom')])] }),
+                  (0, 0, { 'attribute_id': ref('product_attribute_print'), 'value_ids': [(6, 0, [ref('product_attribute_print_text'), ref('product_attribute_print_graphics'), ref('product_attribute_print_pattern')])] })]"/>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/3.jpg"/>
+            <field name="website_published" eval="True"/>
+        </record>
+
+        <record
+            id="product_product_D" model="product.template">
+            <field name="name">Product D</field>
+            <field name="attribute_line_ids"
+                eval="[(0, 0, { 'attribute_id': ref('product_attribute_sizew'), 'value_ids': [(6, 0, [ref('product_attribute_sizew_s'), ref('product_attribute_sizew_m'), ref('product_attribute_sizew_l'), ref('product_attribute_sizew_xl')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_color'), 'value_ids': [(6, 0, [ref('product_attribute_color_white'), ref('product_attribute_color_black'), ref('product_attribute_color_wood')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_fabric'), 'value_ids': [(6, 0, [ref('product_attribute_fabric_plastic'), ref('product_attribute_fabric_leather'), ref('product_attribute_fabric_custom')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_print'), 'value_ids': [(6, 0, [ref('product_attribute_print_text'), ref('product_attribute_print_graphics'), ref('product_attribute_print_pattern'), ref('product_attribute_print_solid')])] })]"/>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/4.jpg"/>
+            <field name="website_published" eval="True"/>
+        </record>
+
+        <record
+            id="product_product_E" model="product.template">
+            <field name="name">Product E</field>
+            <field name="attribute_line_ids"
+                eval="[(0, 0, { 'attribute_id': ref('product_attribute_sizew'), 'value_ids': [(6, 0, [ref('product_attribute_sizew_s'), ref('product_attribute_sizew_m'), ref('product_attribute_sizew_l'), ref('product_attribute_sizew_xl')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_color'), 'value_ids': [(6, 0, [ref('product_attribute_color_white'), ref('product_attribute_color_black'), ref('product_attribute_color_wood')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_fabric'), 'value_ids': [(6, 0, [ref('product_attribute_fabric_plastic'), ref('product_attribute_fabric_leather'), ref('product_attribute_fabric_custom')])] }),]"/>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/5.jpg"/>
+            <field name="website_published" eval="True"/>
+        </record>
+
+        <record
+            id="product_product_F" model="product.template">
+            <field name="name">Product F</field>
+            <field name="attribute_line_ids"
+                eval="[(0, 0, { 'attribute_id': ref('product_attribute_sizew'), 'value_ids': [(6, 0, [ref('product_attribute_sizew_s'), ref('product_attribute_sizew_m'), ref('product_attribute_sizew_l'), ref('product_attribute_sizew_xl')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_color'), 'value_ids': [(6, 0, [ref('product_attribute_color_white'), ref('product_attribute_color_black'), ref('product_attribute_color_wood')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_fabric'), 'value_ids': [(6, 0, [ref('product_attribute_fabric_plastic'), ref('product_attribute_fabric_leather'), ref('product_attribute_fabric_custom')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_print'), 'value_ids': [(6, 0, [ref('product_attribute_print_text'), ref('product_attribute_print_graphics'), ref('product_attribute_print_pattern'), ref('product_attribute_print_solid')])] })]"/>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/6.jpg"/>
+            <field name="website_published" eval="True"/>
+        </record>
+
+        <record
+            id="product_product_G" model="product.template">
+            <field name="name">Product G</field>
+            <field name="attribute_line_ids"
+                eval="[(0, 0, { 'attribute_id': ref('product_attribute_sizew'), 'value_ids': [(6, 0, [ref('product_attribute_sizew_s'), ref('product_attribute_sizew_m'), ref('product_attribute_sizew_l'), ref('product_attribute_sizew_xl')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_color'), 'value_ids': [(6, 0, [ref('product_attribute_color_white'), ref('product_attribute_color_black'), ref('product_attribute_color_wood')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_fabric'), 'value_ids': [(6, 0, [ref('product_attribute_fabric_plastic'), ref('product_attribute_fabric_leather')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_print'), 'value_ids': [(6, 0, [ref('product_attribute_print_text'), ref('product_attribute_print_graphics'), ref('product_attribute_print_pattern'), ref('product_attribute_print_solid')])] })]"/>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/7.jpg"/>
+            <field name="website_published" eval="True"/>
+        </record>
+
+        <record
+            id="product_product_H" model="product.template">
+            <field name="name">Product H</field>
+            <field name="attribute_line_ids"
+                eval="[(0, 0, { 'attribute_id': ref('product_attribute_sizew'), 'value_ids': [(6, 0, [ref('product_attribute_sizew_s'), ref('product_attribute_sizew_m')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_color'), 'value_ids': [(6, 0, [ref('product_attribute_color_white'), ref('product_attribute_color_black'), ref('product_attribute_color_wood')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_fabric'), 'value_ids': [(6, 0, [ref('product_attribute_fabric_plastic'), ref('product_attribute_fabric_leather'), ref('product_attribute_fabric_custom')])] }),
+                      (0, 0, { 'attribute_id': ref('product_attribute_print'), 'value_ids': [(6, 0, [ref('product_attribute_print_text'), ref('product_attribute_print_graphics'), ref('product_attribute_print_solid')])] })]"/>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/8.jpg"/>
+            <field name="website_published" eval="True"/>
+        </record>
+
+        <!-- Extra Images -->
+        <record
+            id="website_product_quotation_image_9" model="product.image">
+            <field name="name">9.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/9.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_A"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_10" model="product.image">
+            <field name="name">10.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/10.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_A"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_11" model="product.image">
+            <field name="name">11.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/11.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_A"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_12" model="product.image">
+            <field name="name">12.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/12.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_B"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_13" model="product.image">
+            <field name="name">13.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/13.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_B"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_14" model="product.image">
+            <field name="name">14.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/14.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_C"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_15" model="product.image">
+            <field name="name">15.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/15.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_C"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_16" model="product.image">
+            <field name="name">16.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/16.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_D"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_17" model="product.image">
+            <field name="name">17.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/17.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_D"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_18" model="product.image">
+            <field name="name">18.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/18.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_D"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_19" model="product.image">
+            <field name="name">19.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/19.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_E"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_20" model="product.image">
+            <field name="name">20.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/20.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_E"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_21" model="product.image">
+            <field name="name">21.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/21.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_F"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_22" model="product.image">
+            <field name="name">22.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/22.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_F"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_23" model="product.image">
+            <field name="name">23.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/23.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_F"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_24" model="product.image">
+            <field name="name">24.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/24.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_G"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_25" model="product.image">
+            <field name="name">25.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/25.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_G"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_26" model="product.image">
+            <field name="name">26.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/26.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_G"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_27" model="product.image">
+            <field name="name">27.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/27.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_H"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_28" model="product.image">
+            <field name="name">28.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/28.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_H"/>
+        </record>
+
+        <record
+            id="website_product_quotation_image_29" model="product.image">
+            <field name="name">29.jpg</field>
+            <field name="image_1920" type="base64"
+                file="website_product_quotation/static/src/img/demo/29.jpg"/>
+            <field name="product_tmpl_id" ref="website_product_quotation.product_product_H"/>
+        </record>
+    </data>
+</odoo>
