@@ -112,36 +112,199 @@
         </table> <br/> <br/>
     </template>
 
-     <template id="estate_property_invoiced"
-        inherit_id="estate.estate_property_offers_table">
-        <xpath expr="//table" position="before">
-            <t t-if="property.status == 'invoiced'">
-                <h5><strong>
-                    !!!Invoice has already been created!!!
-                </strong></h5>
-            </t>
-        </xpath>
+    <template id="property_list_template">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 mt-5">
+                    <h1 class="fw-bold">Properties</h1>
+                </div>
+
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card border-light shadow-sm rounded h-100">
+                                <div class="card-img-container" style="position: relative; overflow: hidden; height: 200px;">
+                                    <img t-if="property.image" t-att-src="image_data_uri(property.image)" class="card-img-top w-100 h-100 object-cover" alt="Property Image"/>
+                                    <img t-else="" t-att-src="'/estate/static/img/default.png'" class="card-img-top w-100 h-100 object-cover" alt="Default Image"/>
+                                </div>
+                                
+                                <div class="card-body d-flex flex-column">
+                                    <h3 class="card-title fw-bold text-dark" t-out="property.name"/>
+                                    <p><strong>Tags:</strong> 
+                                        <t t-if="property.tags_ids">
+                                            <t t-foreach="property.tags_ids" t-as="tag">
+                                                <span t-attf-class="badge {{ 'text-bg-primary' if tag_index % 2 == 0 else 'text-bg-info' }}" t-out="tag.name" />
+                                            </t>
+                                        </t>
+                                        <t t-else="No Tags"/>
+                                    </p>
+
+                                    <p><strong>Expected Price:</strong> <t t-out="property.expected_price"/></p>
+
+                                    <p><strong>Type:</strong> <t t-out="property.property_ids.name"/></p>
+
+                                    <p><strong>Best Offer:</strong> 
+                                        <t t-if="property.best_offer">
+                                            Rs. <t t-out="property.best_offer"/>
+                                        </t>
+                                        <t t-else="No Offers Yet"/>
+                                    </p>
+
+                                    <div class="mt-auto">
+                                        <a t-att-href="'property/%s' % property.id" class="btn btn-primary btn-sm w-100">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="row mt-4 mb-3">
+                    <div class="col-12 d-flex justify-content-center">
+                        <t t-call="website.pager" t-set="pager" t-options="pager"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+
+
+    <template id="website_property_details">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row align-items-center">
+                    <div class="col-md-6 text-center">
+                        <img t-if="property.image" t-att-src="image_data_uri(property.image)" class="img-fluid rounded shadow" style="width: 100%; height: 500px; object-fit: cover;" alt="Property Image"/>
+                        <img t-else="" t-att-src="'/estate/static/img/default.png'" alt="Default Image" class="img-fluid rounded shadow" style="width: 100%; height: 450px; object-fit: cover;"/>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h1 class="fw-bold" t-out="property.name"/>
+                        <h3 class="text-primary">Rs. <t t-out="property.expected_price" /></h3>
+                        <p class="text-muted"><i class="fa fa-map-marker"></i> <t t-out="property.postcode" /></p>
+
+                        <div class="mt-3">
+                            <p><strong>Type:</strong> <t t-out="property.property_ids.name"/></p>
+                            <p><strong>Bedrooms:</strong> <t t-out="property.bedrooms"/></p>
+                            <p><strong>Garden:</strong> <t t-if="property.garden">Available</t><t t-else="">Not Available</t></p>
+                            <p><strong>Living Area:</strong> <t t-out="property.living_area"/> sqm</p>
+                            <p><strong>Facades:</strong> <t t-out="property.facades"/></p>
+                            <p><strong>Garage:</strong> <t t-if="property.garage">Available</t><t t-else="">Not Available</t></p>
+                            <p><strong>Best Offer:</strong> 
+                                <t t-if="property.best_offer">
+                                    Rs. <t t-out="property.best_offer"/>
+                                </t>
+                                <t t-else="No Offers Yet"/>
+                            </p>
+                            <p><strong>Sales Person:</strong> <t t-out="property.sales_person_ids.name"/></p>
+                            <p><strong>Tags:</strong> 
+                                <t t-if="property.tags_ids">
+                                    <t t-foreach="property.tags_ids" t-as="tag">
+                                        <span t-attf-class="badge {{ 'text-bg-primary' if tag_index % 2 == 0 else 'text-bg-info' }}" t-out="tag.name" />
+                                    </t>
+                                </t>
+                                <t t-else="No Tags"/>
+                            </p>
+                    <!-- <p><strong>Property Description:</strong> <t t-out="property.description" class="text-muted"/></p> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <h3 class="fw-bold">Property Description</h3>
+                    <p class="text-muted" t-out="property.description"/>
+                </div>
+
+                <!-- Offers Section with Make Offer Button -->
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h3 class="fw-bold">Offers</h3>
+                            <!-- Make an Offer Button -->
+                            <t t-if = "property.status != 'offer_accepted'">
+                                <a t-att-href="'/property/%s/offer' % property.id" class="btn btn-success">Make an Offer</a>
+                            </t>
+                        </div>
+
+                        <t t-if="property.offer_ids">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Buyer</th>
+                                        <th>Offer Price</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="property.offer_ids" t-as="offer">
+                                        <tr>
+                                            <td t-out="offer.partner_id.name"/>
+                                            <td>Rs. <t t-out="offer.price"/></td>
+                                            <td><t t-out="offer.status"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <p class="text-muted">No offers yet. Be the first to make an offer!</p>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="make_offer_template">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h2 class="fw-bold text-center mb-4">Make an Offer</h2>
+
+                <div class="row justify-content-center">
+                    <!-- Property Image -->
+                    <div class="col-md-6 text-center mb-4">
+                        <img t-if="property.image" t-att-src="image_data_uri(property.image)" 
+                            class="img-fluid rounded shadow" 
+                            style="width: 100%; height: 450px; object-fit: cover;" alt="Property Image"/>
+                        <img t-else="" t-att-src="'/estate/static/img/default.png'" 
+                            class="img-fluid rounded shadow" 
+                            style="width: 100%; height: 450px; object-fit: cover;" alt="Default Image"/>
+                    </div>
+
+                    <!-- Property Details & Offer Form -->
+                    <div class="col-md-6">
+                        <div class="card p-4 shadow-sm border-light">
+                            <h3 class="fw-bold text-center" t-out="property.name"/>
+                            <h4 class="text-primary text-center">Rs. <t t-out="property.expected_price"/></h4>
+                            <p class="text-muted text-center"><i class="fa fa-map-marker"></i> <t t-out="property.postcode"/></p>
+                            
+                            <!-- Offer Form -->
+                            <form action="/estate/submit" method="post" class="mt-4">
+                                <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Offer Price (Rs.)</label>
+                                    <input type="number" name="offer_price" class="form-control" placeholder="Enter your offer" required="" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Validity of Your Offer (Days)</label>
+                                    <input type="number" name="validity" class="form-control" placeholder="Enter validity period" required="" />
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100">Submit Offer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
     </template>
 
 
 </odoo>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  

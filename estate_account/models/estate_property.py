@@ -4,8 +4,6 @@ from odoo.exceptions import UserError
 class estate_property(models.Model):
     _inherit = "estate.property"
 
-    status = fields.Selection(selection_add=[("invoiced", "Invoiced")])
-
     def action_sold(self):
         empty_move = self.env['account.move'].create({
             'move_type': 'out_invoice',
@@ -33,8 +31,4 @@ class estate_property(models.Model):
                 }),
             ]
         })
-        if self.status == "offer_accepted":
-            self.status = "invoiced"
-        else:
-            raise UserError("Accept an offer first.")
-        # return super().action_sold()
+        return super().action_sold()

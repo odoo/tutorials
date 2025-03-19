@@ -86,11 +86,3 @@ class estate_property(models.Model):
         new_allocations = super().copy(default)
         new_allocations.status = 'new'
         return new_allocations
-    
-    def action_generate_estate_property_report(self):
-
-        report = self.env.ref('estate.estate_property_report')
-        if not report:
-            raise UserError("Report not found.")
-
-        return report.report_action(self)

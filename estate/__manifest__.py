@@ -8,7 +8,8 @@
     'license': 'LGPL-3',
     'summary': 'Help users with Real estate.',
     'depends': [
-        'base'
+        'base',
+        'website'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -18,6 +19,7 @@
         'views/estate_property_tag_views.xml',
         'views/estate_menus.xml',
         'views/res_user.xml',
+        'report/estate_website.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
     ],  
@@ -27,5 +29,6 @@
         'demo/estate_partners.xml',
         'demo/estate_property.xml',
         'demo/estate_property_offer.xml'
-    ]  
+    ],  
+    'controllers': ['controllers/estate_property_controller.py'],
 }

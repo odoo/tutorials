@@ -12,7 +12,7 @@
             <field name="name">property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Properties" decoration-success="status in ('offer_received' , 'offer_accepted')" decoration-bf="status == 'offer_accepted'"  decoration-muted="status == 'sold'">
+                <list string="Properties" decoration-success="status in ('offer_received' , 'offer_accepted')" decoration-bf="status == 'offer_accepted'" decoration-danger="status == 'cancelled'"  decoration-muted="status == 'sold'">
                     <field name="name" />
                     <field name="property_ids"/>
                     <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
@@ -59,9 +59,6 @@
                                     <text>Best Price:  </text>
                                     <field name="best_offer"/>
                                 </div>
-                                <!-- <div class="d-flex align-items-baseline mb-2">
-                                    <field name="sales_person_ids" class="fw-bolder fs-5 me-2"/>
-                                </div> -->
                             </div>
                         </t>
                     </templates>
@@ -78,12 +75,9 @@
                     <header>
                         <button name="action_sold" type="object" string="Sold" invisible = "status in ('sold','cancelled')" />
                         <button name="action_cancelled" type="object" string="Cancel" invisible = "status in ('sold','cancelled')"/>
-                        <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,invoiced"/>
+                        <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                     </header>
                     <sheet>
-                        <div class="oe_button_box" name="button_box">
-                            <button name="action_generate_estate_property_report" type="object" string="Generate Report" class="oe_stat_button"/>
-                        </div>
                         <div invisible="status !='sold'">
                             <widget name="web_ribbon" title="sold" bg_color="text-bg-success"/>
                         </div>
