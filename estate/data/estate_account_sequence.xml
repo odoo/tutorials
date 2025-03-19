@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="seq_estate_account" model="ir.sequence">
+            <field name="name">Estate Account Sequence</field>
+            <field name="code">estate.account</field>
+            <field name="prefix">INV/%(year)s/PROP</field>
+            <field name="padding">5</field>
+            <field name="number_increment">1</field>
+            <field name="number_next">1</field>
+        </record>
+    </data>
+</odoo>
