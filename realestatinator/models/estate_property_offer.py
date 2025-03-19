@@ -46,3 +46,11 @@ class EstatePropertyOffer(models.Model):
 			record.status = 'accepted'
 			record.property_id.selling_price = record.price
 			record.property_id.buyer = record.partner_id
+	@api.model
+	def create(self, vals):
+		estate_property = self.env['estate_property'].browse(vals["property_id"])
+		if vals["price"] < estate_property.best_price:
+			raise exceptions.UserError(f'Offer must be higher than the current best offer({estate_property.best_price})')
+		if estate_property.state == 'new':
+			estate_property.state = 'offer_received'
+		return super().create(vals)
