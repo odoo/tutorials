@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="property_list_template">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="row mt-5 mb-5">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-3">
+                            <div class="card" style="width: 18rem;">
+                                <img t-if="property['image']" class="card-img-top" t-att-src="image_data_uri(property['image'])" alt="Property Image" />
+                                <img t-else="" class="card-img-top" src="real_estate/static/src/images/card-default.svg" alt="Property Image" />
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-out="property['name']"/>
+                                    </h5>
+                                    <p class="card-text mb-1">
+                                        <strong>Type: </strong>
+                                        <t t-out="property['type']"/>
+                                    </p>
+                                    <div class="mb-2">
+                                        <span t-foreach="property['tags']" t-as="tag">
+                                            <span t-attf-class="badge {{ 'text-bg-primary' if tag_index % 2 == 0 else 'text-bg-info' }}" t-out="tag" />
+                                        </span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-8"><p class="mb-0">Expected price:</p><p class="mb-0 card-title pricing-card-title">$ <t t-out="property['expected_price']"/></p></div>
+                                        <div class="col-4 d-flex justify-content-end align-items-end"><a t-att-href="'/property/' + str(property['id'])" class="btn btn-primary">View</a></div>
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="row mt-4 mb-3">
+                    <div class="col-12 d-flex justify-content-center">
+                        <t t-call="website.pager" t-set="pager" t-options="pager"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

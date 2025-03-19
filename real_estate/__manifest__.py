@@ -2,7 +2,7 @@
     'name': 'My Real Estate',
     'license': 'LGPL-3',
     'icon': '/real_estate/static/src/images/real-estate-icon.png',
-    'depends': ['base'],
+    'depends': ['base', 'website'],
     'installable': True,
     'application': True,
     'data': [
@@ -17,8 +17,10 @@
         'views/real_estate_menus.xml',
         'report/user_property_templates.xml',
         'report/user_property_reports.xml',
-        'views/property_list.xml',
-        'views/property_view.xml',
+        'views/property_list_template.xml',
+        'views/property_view_template.xml',
+        'views/property_make_offer_template.xml',
+        'views/website_menu.xml',
     ],
     'demo': [
         'demo/demo_real_estate_partner.xml',

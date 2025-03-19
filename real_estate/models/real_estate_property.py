@@ -4,7 +4,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class RealEstate(models.Model):
     _name = "real.estate.property"
-    _description = 'Real State propperties'
+    _description = 'Real State properties'
     _order = "id desc"
 
     name = fields.Char(string = 'Title', required = True)

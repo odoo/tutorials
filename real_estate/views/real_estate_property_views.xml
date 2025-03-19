@@ -119,7 +119,6 @@
                     <templates>
                         <t t-name="card">
                             <div>
-                                <!-- <field name="name" class="fw-bolder mb-1" /> -->
                                 <div class="row mb4" style="min-height: 60px;">
                                     <div class="col-8">
                                         <field name="name" class="fw-bolder" />
