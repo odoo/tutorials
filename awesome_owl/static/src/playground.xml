@@ -2,9 +2,29 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+       <div class="m-3 d-inline-flex flex-column gap-2" >
+            <div class="border p-2 d-inline-flex flex-column gap-2">
+                <div class="d-flex flex-wrap gap-2">
+                    <Counter onChange.bind="incrementSum" />
+                    <Counter onChange.bind="incrementSum" />
+                </div>
+                <h4>The Sum is: <span t-esc="sum.value" class="fw-bold text-primary"/></h4>
+            </div>
+            
+            <div class="d-inline-flex mt-2 border flex-wrap">
+                <Card title="'Card 1'" >
+                    This is Default Slot
+                </Card>
+                <Card title="'Card 2'">
+                    <Counter />
+                </Card>
+                <Card />
+            </div>
+
+            <div class="mt-2 border p-2">
+                <TodoList />
+            </div>
+       </div>
     </t>
 
 </templates>

@@ -1,0 +1,55 @@
+<templates>
+    <t t-name="estate_auction.EstateAuctionStateSelection" t-inherit="web.StateSelectionField" t-inherit-mode="primary">
+        <!-- Readonly button -->
+        <xpath expr="//t[@t-if='props.readonly']/button" position="attributes">
+            <attribute name="tabindex">-1</attribute>
+            <attribute name="style">cursor: default;</attribute>
+            <attribute name="t-att-title">label</attribute>
+        </xpath>
+        <xpath expr="//t[@t-if='props.readonly']/button/span[1]" position="attributes">
+            <attribute name="t-attf-class">{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}</attribute>
+        </xpath>
+
+        <!-- Normal dropdown mode toggle button (displayed on the card/record by default) -->
+        <xpath expr="//Dropdown/button/div" position="replace">
+            <div t-if="isView(['kanban', 'list']) or this.env.isSmall"
+                 class="d-flex align-items-center"
+                 t-att-class="{'o_property_state_list_view': isView(['list'])}"
+                 t-att-title="label">
+                <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}"/>
+            </div>
+            <div t-else="" class="d-flex align-items-center">
+                <t t-if="currentValue != 'sold'">
+                    <span t-attf-class="o_status_label" t-out="label"/>
+                </t>
+                <t t-else="">
+                    <span class="o_status_label" t-out="label"/>
+                </t>
+            </div>
+        </xpath>
+
+        <!-- Tooltip for the dropdown toggler -->
+        <xpath expr="//Dropdown" position="attributes">
+            <attribute name="position">`${ getDropdownPosition() }`</attribute>
+            <attribute name="menuClass" separator=" + " add="' estate_auction_state_selection_menu'"></attribute>
+        </xpath>
+        <xpath expr="//Dropdown/button" position="attributes">
+            <attribute name="tooltip">''</attribute>
+            <attribute name="class" remove="p-0" add="shadow-none" separator=" "/>
+            <attribute name="t-att-class">getTogglerClass(currentValue)</attribute>
+        </xpath>
+
+         <!-- Dropdown divider -->
+         <xpath expr="//DropdownItem" position="before">
+            <div t-if="option[0] == 'sold'" role="separator" class="dropdown-divider"/>
+        </xpath>
+
+        <!-- Approval mode dropdown button (class)-->
+        <xpath expr="//DropdownItem/span[1]" position="attributes">
+            <attribute name="t-attf-class" separator=" " add="{{ stateIcon(option[0]) }}" remove="o_status"></attribute>
+        </xpath>
+        <xpath expr="//DropdownItem/span[2]" position="attributes">
+            <attribute name="t-attf-class">{{ statusColor(option[0]) }}</attribute>
+        </xpath>
+    </t>
+</templates>

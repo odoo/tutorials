@@ -1,0 +1,29 @@
+<odoo>
+    <record id="mail_template_property_sold" model="mail.template">
+        <field name="name">Property Sold Notification</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="email_from">{{ (object.env.user.email or 'noreply@yourcompany.com') }}</field>
+        <field name="email_to">{{ object.buyer_id.email }}</field>
+        <field name="subject">Your Property Purchase is Completed!</field>
+        <field name="body_html" type="html">
+            <div class="container py-4">
+                <p class="fs-4 fw-bold text-primary">
+                    Dear <strong><t t-out="object.buyer_id.name"/></strong>,
+                </p>
+                <p class="fs-5">
+                    🎉 <strong>Congratulations!</strong> The property 
+                    <strong class="text-info"><t t-out="object.name"/></strong> has been successfully sold to you.
+                </p>
+                <p class="fs-6">
+                    We are thrilled to have been part of this journey with you. Thank you for placing your trust in us.
+                    If you have any questions or need further assistance, feel free to reach out.
+                </p>
+                <p class="fs-5 fw-bold mt-4">
+                    Best Regards,<br/>
+                    <strong class="text-success"><t t-out="object.salesperson_id.name"/></strong><br/>
+                    <em class="text-muted">Your Real Estate Team</em>
+                </p>
+            </div>            
+        </field>
+    </record>
+</odoo>
