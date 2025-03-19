@@ -1,0 +1,87 @@
+<odoo>
+    <record id="action_bill_entry_wizard_view_form" model="ir.actions.act_window">
+        <field name="name">Bill of Entry</field>
+        <field name="res_model">bill.entry.wizard</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record id="bill_entry_wizard_view_form" model="ir.ui.view">
+        <field name="name">bill.entry.line.wizard.view.form</field>
+        <field name="model">bill.entry.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header class="modal-header" invisible="not custom_duty_journal_entry_id">`
+                    <button type="object" name="action_reverse_entry"
+                        class="btn btn-secondary"> Reverse Entry </button>
+                    <button type="object" name="button_draft_journal_entry"
+                        class="btn btn-secondary"> Reset to Draft </button>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="journal_entry_number" />
+                            <field name="journal_entry_date" />
+                            <field name="journal_id" />
+                            <field name="custom_currency_rate"
+                                readonly='custom_duty_journal_entry_id' />
+                        </group>
+                        <group>
+                            <field name="move_id" readonly='1' />
+                            <field name="bill_of_entry_number" />
+                            <field name="bill_of_entry_date" />
+                            <field name="port_code_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="bill_of_entry_details" string="Bill of Entry Details">
+                            <field name="line_ids" readonly='custom_duty_journal_entry_id'>
+                                <list editable="bottom" create='false'>
+                                    <field name="product_id" />
+                                    <field name="assessable_value" widget="monetary" />
+                                    <field name="custom_duty" widget="monetary" />
+                                    <field name="taxable_amount" widget="monetary"/>
+                                    <field name="tax_ids" widget="many2many_tags" />
+                                    <field name="tax_amount" widget="monetary" />
+                                    <field name="price_unit" column_invisible="1"/>
+                                    <field name="quantity" column_invisible="1"/>
+                                    <field name="move_line_id" column_invisible="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                            <group>
+                                <group class="oe_subtotal_footer">
+                                    <field name="total_custom_duty_and_additional_charges"
+                                        widget="monetary" readonly="1" />
+                                    <field name="total_tax_amount" widget="monetary" readonly="1" />
+                                    <field name="total_amount_payable" widget="monetary"
+                                        readonly="1" class="oe_subtotal_footer_separator" />
+                                    <field name="currency_id" invisible="1" />
+                                </group>
+                            </group>
+                        </page>
+                        <page name="bill_entry_journal_items" string="Journal Items"
+                            invisible='not custom_duty_journal_entry_id'>
+                            <field name="custom_duty_journal_entry_lines">
+                                <list readonly='1' edit="False" editable="bottom">
+                                    <field name="account_id" />
+                                    <field name="name" />
+                                    <field name="debit" widget="monetary" sum="Total Debit" />
+                                    <field name="credit" widget="monetary" sum="Total Credit" />
+                                    <field name="company_currency_id"  optional="hide" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                        <button type="object" name="action_confirm_post_journal_entry"
+                            class="btn btn-primary o_form_button_save"> Confirm 
+                        </button>
+                        <button type="button" class="btn btn-secondary o_form_button_cancel"
+                            special="cancel"> Cancel
+                        </button>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
