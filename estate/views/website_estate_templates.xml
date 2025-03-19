@@ -1,0 +1,215 @@
+<odoo>
+    <!-- add menu name Properties to navbar for routing to properties list -->
+    <record id="website_property_listing_menu" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+    
+    <!-- template for viewing properties list to website -->
+    <template id="property_list_template" name="Property List">
+        <t t-call="website.layout">
+            <div class="container-fluid my-5" style="width: 90%;">
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-3" style="width: 23%; margin: 1%;">
+                                <t t-call="estate.property_card_template"/>
+                        </div>
+                    </t>
+                </div>
+                <div class="row mt-4 mb-3">
+                    <div class="col-12 d-flex justify-content-center">
+                        <t t-call="website.pager" t-set="pager" t-options="pager"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- property card template -->
+    <template id="property_card_template" name="Property Card">
+            <div class="card shadow-sm border-0" style="padding: 1%; width: 100%">
+                <!-- Property Image -->
+                <div class="property-image" style="width: 100%; height: 250px; overflow: hidden;">
+                    <img t-if="property['image']" class="card-img-top" 
+                        t-att-src="image_data_uri(property['image'])" 
+                        alt="property['name']" 
+                        style="width: 100%; height: 100%; object-fit: cover;"/>
+                    <img t-else="" class="card-img-top" 
+                        src="real_estate/static/src/images/no_image.jpeg" 
+                        alt="property['name']" 
+                        style="width: 100%; height: 100%; object-fit: cover;"/>
+                </div>
+
+                <!-- Property Details -->
+                <div class="card-body">
+                    <h5>
+                        <p t-esc="property.name" 
+                        class="text-decoration-none text-dark fw-bold"/>
+                    </h5>
+                    <p><strong>Postcode:</strong> <span t-esc="property.postcode"/></p>
+                    <p><strong>Price:</strong> <span t-esc="property.expected_price"/></p> 
+                </div>
+                <div>
+                    <a t-att-href="'/properties/%s' % property.id" 
+                    class="btn btn-primary w-100">View Details</a>
+                </div>
+            </div>
+    </template>
+
+    <!-- property details template -->
+    <template id="property_detail_template" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container my-5 d-flex flex-column align-items-center justify-content-center" style="overflow: hidden;">
+                <!-- image container -->
+                <div class="image" style="width:100%;">
+                    <img t-if="property['image']" class="img-fluid mx-3" 
+                        t-att-src="image_data_uri(property['image'])" 
+                        t-att-alt="property.name" 
+                        style="width:100%; height:500px; object-fit: cover;"
+                    />
+                </div>
+                <!-- name and price -->
+                <div class="title w-100 px-4 mt-3 mx-3">
+                    <div class="name" style=" font-size: 34px; font-weight: bold; color:rgb(8, 57, 111);">
+                        <span t-esc="property.name"/>
+                    </div>
+                    <div class="price" style="font-size: 28px; font-weight: bold; color: #28a745;">
+                        ₹ <span t-esc="property.expected_price"/>
+                    </div>
+                </div>
+                <!-- overview -->
+                <div class="overview mt-4 p-4 border rounded bg-light" style="width:100%;">
+                    <h4 class="fw-bold mb-4" style="font-size: 30px">Overview</h4>
+                    <div class="row text-secondary d-flex flex-row flex-wrap align-items-center justify-content-right" style="width:100%;">
+                        <div class="col-md-3 d-flex flex-column align-items-center justify-content-center mb-2">
+                            <div class="mb-0"><strong>Property Type:</strong></div> 
+                            <div t-esc="property.property_type_id.name"/>
+                        </div>
+                        <div class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Postcode:</strong> </div>
+                            <div t-esc="property.postcode"/>
+                        </div>
+                        <div class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Bedrooms:</strong> </div>
+                            <div t-esc="property.bedrooms"/>
+                        </div>
+                        <div class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Facades:</strong> </div>
+                            <div t-esc="property.facades"/>
+                        </div>
+                        <div class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Availability:</strong> </div>
+                            <div t-esc="property.date_availability"/>
+                        </div>
+                        <div class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Living Area:</strong></div>
+                            <div><span t-esc="property.living_area"/> m²</div>
+                        </div>
+                        <div t-if="property.garage" class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Garage:</strong> </div>
+                            <div t-esc="property.garage and 'Yes' or 'No'"/>
+                        </div>
+                        <div t-if="property.garden" class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Garden:</strong> </div>
+                            <div t-esc="property.garden and 'Yes' or 'No'"/>
+                        </div>
+                        <div t-if="property.garden" class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Garden Area:</strong> </div>
+                            <div><span t-esc="property.garden_area"/> m²</div>
+                        </div>
+                        <div t-if="property.garden" class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Garden Orientation:</strong></div>
+                            <div t-esc="property.garden_orientation"/>
+                        </div>
+                        <div class="col-md-3 d-flex flex-column align-items-center justify-content-center my-3">
+                            <div class="mb-0"><strong>Total Area:</strong></div>
+                            <div><span t-esc="property.total_area"/> m²</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- description  -->
+                <div t-if="property.description" class="description mt-4 p-4 border rounded bg-light" style="width:100%;">
+                    <h4 class="fw-bold mb-4" style="font-size: 30px">Description</h4>
+                    <p class="text-secondary" style="font-size: 18px; line-height: 1.6;">
+                        <span t-esc="property.description"/>
+                    </p>
+                </div>
+                <!-- offer list -->
+                <div class="offers mt-4 p-4 border rounded bg-light" style="width:100%;">
+                    <h4 class="fw-bold mb-4 text-center" style="font-size: 30px">Offers</h4>
+                    <t t-if="property.offer_ids">
+                        <table class="table table-striped text-center">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th style="width: 10%;">Sr.No.</th>
+                                    <th style="width: 30%;">Offer Price (₹)</th>
+                                    <th style="width: 20%;">Date Deadline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="counter" t-value="1"/>
+                                <t t-foreach="property.offer_ids" t-as="offer">
+                                    <tr>
+                                        <td style="width: 10%; vertical-align: middle;"><span t-esc="counter"/></td>  <!-- Serial Number -->
+                                        <td style="width: 30%; vertical-align: middle;"><span t-esc="offer.price"/></td>
+                                        <td style="width: 20%; vertical-align: middle;"><span t-esc="offer.date_deadline"/></td>
+                                    </tr>
+                                    <t t-set="counter" t-value="counter + 1"/>
+                                </t>
+
+                                <!-- Checkbox to Show Form -->
+                                <tr>
+                                    <td colspan="3" class="text-center">
+                                        <input type="checkbox" class="btn-check" id="toggleOfferForm" autocomplete="off"/>
+                                        <label class="btn btn-outline-primary" for="toggleOfferForm">➕  Add New Offer</label>
+                                    </td>
+                                </tr>
+
+                                <!-- Form Row (Initially Hidden) -->
+                                <form t-att-action="'/properties/%s/make-offer' % property.id" method="post">
+                                    <tr id="offerFormRow" style="display: none;">
+                                        
+                                            <td style="width: 10%;"></td>
+                                            <td style="width: 30%;"><input type="number" name="offer_price" required="1" class="form-control" placeholder="Offer Price" style="text-align:center;"/></td>
+                                            <td style="width: 20%;"><input type="date" name="date_validity" required="1" class="form-control" placeholder="Date Deadline" style="text-align:center;"/></td>
+                                    </tr>
+
+                                    <!-- Submit Button Row -->
+                                    <tr id="submitRow" style="display: none;">
+                                        <td colspan="2"></td>  <!-- Skip first 3 columns -->
+                                        <td><button type="submit" class="btn btn-primary">Submit Offer</button></td>
+                                    </tr>
+                                </form>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-else="">
+                        <p class="text-center text-muted">No offers available.</p>
+                    </t>
+                </div>
+            </div>
+        </t>
+
+        <!-- script to handle checkbox for showing offer create form or not -->
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                let toggleCheckbox = document.getElementById("toggleOfferForm");
+                let offerFormRow = document.getElementById("offerFormRow");
+                let submitRow = document.getElementById("submitRow");
+
+                if (toggleCheckbox) {
+                    toggleCheckbox.addEventListener("change", function () {
+                        if (this.checked) {
+                            offerFormRow.style.display = "table-row";
+                            submitRow.style.display = "table-row";
+                        } else {
+                            offerFormRow.style.display = "none";
+                            submitRow.style.display = "none";
+                        }
+                    });
+                }
+            });
+        </script>
+    </template>
+</odoo>

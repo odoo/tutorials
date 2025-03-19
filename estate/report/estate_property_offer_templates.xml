@@ -6,11 +6,11 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Price</th>
-                        <th>Partner</th>
-                        <th>Validity</th>
-                        <th>Deadline</th>
-                        <th>Status</th>
+                        <th><strong>Price</strong></th>
+                        <th><strong>Partner</strong></th>
+                        <th><strong>Validity</strong></th>
+                        <th><strong>Deadline</strong></th>
+                        <th><strong>Status</strong></th>
                     </tr>
                 </thead>
                 <tbody>

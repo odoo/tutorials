@@ -116,7 +116,7 @@
 
     <record id="property_demo_8" model="estate.property">
         <field name="name">Rustic Mountain Cabin</field>
-        <field name="description">A cozy retreat in the mountains.</field>
+        <field name="description">This stunning modern home in Sargasan, Gandhinagar, boasts a contemporary design with a spacious layout perfect for modern living. The open-concept floorplan seamlessly blends living, dining, and kitchen areas, while large windows flood the space with natural light. Situated in a prime location, this property offers easy access to amenities and is a true gem for those seeking a blend of comfort and convenience. </field>
         <field name="postcode">90123</field>
         <field name="expected_price">450000</field>
         <field name="living_area">180</field>

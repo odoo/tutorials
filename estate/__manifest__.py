@@ -4,7 +4,7 @@
     'summary': 'Real Estate Management Module',
     'author': 'chirag Gami(chga)',
     'category': 'Brokerage',
-    'depends': ['base'],
+    'depends': ['base','website'],
     'license':'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
@@ -18,6 +18,8 @@
         'views/estate_property_views.xml',
         'views/estate_res_user_views.xml',
         'views/estate_menus.xml',
+        "views/website_estate_templates.xml",
+
     ],
     'demo': [
         'demo/estate_res_partner_demo.xml',
