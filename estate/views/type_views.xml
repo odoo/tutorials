@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<odoo>
+
+<!-- the list view -->
+ <record id="estate_type_view_list" model="ir.ui.view">
+    <field name="name">estate.type.view.list</field>
+    <field name="model">estate.property.types</field>
+    <field name="type">list</field>
+    <field name="arch" type="xml">
+
+        <list string="Tests">
+            <field name="sequence" widget="handle"/>
+            <field name="name"/>
+            <field name="property_type_id"/>
+            <field name = "properties" widget="many2many_tags"/>
+            <field name="offer_count"/>
+            
+        </list>
+    </field>
+ </record>
+
+<!-- the form view -->
+  <record id="estate_type_view_form" model="ir.ui.view">
+    <field name="name">estate.type.view.form</field>
+    <field name="model">estate.property.types</field>
+    <field name="type">form</field>
+    <field name="arch" type="xml">
+    <form string="Test">
+        <sheet>
+        <header>
+         <button name="%(estate_offer_view)d"
+                                string="Offers"
+                                type="action"
+                                icon="fa-industry"
+                                class="oe_stat_button">
+                                <field name="offer_count" widget="statinfo" />
+        </button>
+        </header>
+
+            <group>
+            <field name="name" />
+ 
+            <field name="property_type_id" />
+            <notebook>
+                <page string="Properties">
+                    <field name = "properties" >
+                        <list>
+                            <field name="name"/>
+                            <field name="expected_price"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
+
+                </page>
+            </notebook>
+
+             
+
+           
+            </group>
+        </sheet>
+    </form>
+    </field>
+ </record>
+
+<!-- search view -->
+ <record id="estate_type_view_search" model="ir.ui.view">
+    <field name="name">estate.type.view.search</field>
+    <field name="model">estate.property.types</field>
+    <field name="type">search</field>
+    <field name="arch" type="xml">
+
+        <search string="Tests">
+            <field name="name"/>
+            <field name="property_type_id"/>
+        </search>
+    </field>
+ </record>
+
+</odoo>
