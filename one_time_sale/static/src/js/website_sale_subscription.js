@@ -6,7 +6,7 @@ WebsiteSale.include({
         this._super(...arguments);
 
         if (this._isSubscriptionPurchase($form)) {
-            const selectedPlan = $form.find("select.plan_select:visible").val()
+            const selectedPlan = $form.find("select.plan_select").val()
             this.rootProduct.plan_id = selectedPlan ? parseInt(selectedPlan) : undefined;
         }
     },

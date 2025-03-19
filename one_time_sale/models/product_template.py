@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.tools import format_amount
 from odoo.http import request
 
@@ -77,3 +77,10 @@ class ProductTemplate(models.Model):
             return False
 
         return super()._is_add_to_cart_possible(parent_combination)
+
+    @api.onchange('type')
+    def _onchange_type(self):
+        super()._onchange_type()
+        if self.accept_one_time and self.type != 'consu':
+            self.accept_one_time = False
+        return {}
