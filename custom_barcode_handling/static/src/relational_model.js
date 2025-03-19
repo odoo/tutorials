@@ -17,41 +17,15 @@ export class CustomProductCatalogKanbanModel extends ProductCatalogKanbanModel {
         if (config.context.product_catalog_order_model && config.context.order_id) {
             const orderId = config.context.order_id;
             
-            const [addedProductIds, totalAll] = await Promise.all([
-                this.orm.searchRead(
-                    config.context.active_model,
-                    [['order_id', '=', orderId], ['product_id', '!=', false]],
-                    ['product_id'],
-                    { context: config.context }
-                ).then(lines => [...new Set(lines.map(line => line.product_id?.[0]))]),
-                this.orm.searchCount(config.resModel, config.domain)
-            ]);
+            const addedProductIds = await this.orm.searchRead(
+                config.context.active_model,
+                [["order_id", "=", orderId], ["product_id", "!=", false]],
+                ["product_id"],
+                { context: config.context }
+            ).then(lines => [...new Set(lines.map(line => line.product_id?.[0]))]);
 
-            if (addedProductIds.length > 0) {
-                const totalAdded = addedProductIds.length;
-                const start = config.offset;
-                const remainingLimit = Math.max(0, config.limit - Math.max(0, totalAdded - start));
-                const remainingOffset = Math.max(0, start - totalAdded);
-                
-                const [addedRecords, remainingRecords] = await Promise.all([
-                    start < totalAdded ? this.orm.webSearchRead(
-                        config.resModel,
-                        [...config.domain, ['id', 'in', addedProductIds]],
-                        { ...kwargs, offset: start, limit: config.limit }
-                    ).catch(() => ({ records: [], length: 0 })) : { records: [], length: 0 },
-                    
-                    remainingLimit > 0 ? this.orm.webSearchRead(
-                        config.resModel,
-                        [...config.domain, ['id', 'not in', addedProductIds]],
-                        { ...kwargs, offset: remainingOffset, limit: remainingLimit }
-                    ).catch(() => ({ records: [], length: 0 })) : { records: [], length: 0 }
-                ]);
-
-                return {
-                    records: [...(addedRecords.records || []), ...(remainingRecords.records || [])],
-                    length: totalAll
-                };
-            }
+            const newDomain = [...config.domain, ["id", "in", addedProductIds]];
+            return this.orm.webSearchRead(config.resModel, newDomain, kwargs);
         }
         return super._loadUngroupedList(config);
     }

@@ -11,8 +11,11 @@
         "web.assets_backend": [
             "custom_barcode_handling/static/src/**/*",
         ],
+        "web.assets_unit_tests": [
+            "custom_barcode_handling/static/tests/**/*",
+        ],
     },
-    'license': 'AGPL-3',
+    "license": "AGPL-3",
     "installable": True,
     "application": False,
     "auto_install": False,

@@ -1,7 +1,7 @@
 import { patch } from "@web/core/utils/patch";
 import { rpc } from "@web/core/network/rpc";
 import { useService, useBus } from "@web/core/utils/hooks";
-import { _t } from "@web/core/l10n/translation";  // Import the translation function
+import { _t } from "@web/core/l10n/translation";  
 import { ProductCatalogKanbanController } from "@product/product_catalog/kanban_controller";
 
 patch(ProductCatalogKanbanController.prototype, {
@@ -10,7 +10,6 @@ patch(ProductCatalogKanbanController.prototype, {
         this.orm = useService("orm");
         this.notification = useService("notification");
         this.barcodeService = useService("barcode");
-        console.log(this.props.context);
         useBus(this.barcodeService.bus, "barcode_scanned", (ev) => this._onBarcodeScannedHandler(ev.detail.barcode));
         this.resModel = this.props.context.product_catalog_order_model;
     },
@@ -23,7 +22,7 @@ patch(ProductCatalogKanbanController.prototype, {
             { limit: 1 }
         );
         if (!product) {
-            this.notification.add(_t("No product found with barcode: ") + barcode, { type: "danger" }); 
+            this.notification.add(_t("No product found with barcode: ") + barcode, { type: "danger" });
             return;
         }
 
