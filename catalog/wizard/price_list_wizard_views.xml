@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="price_list_wizard_form_view" model="ir.ui.view">
+        <field name="name">price.list.wizard.form.view</field>
+        <field name="model">price.list.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="list_ids">
+                        <list style="white-space: nowrap;">
+                            <field name="so_date" width="20px"/>
+                            <field name="price"/>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="price_list_wizard_action" model="ir.actions.act_window">
+        <field name="name">Price List</field>
+        <field name="res_model">price.list.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
