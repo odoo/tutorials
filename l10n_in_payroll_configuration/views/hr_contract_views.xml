@@ -1,0 +1,204 @@
+<odoo>
+    <record id="hr_contract_form_in_inherit_payroll_config" model="ir.ui.view">
+        <field name="name">hr.contract.form.in.inherit.l10n_in_payroll_configuration</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="l10n_in_hr_payroll.hr_contract_form_in_inherit"/>
+        <field name="arch" type="xml">
+        
+            <xpath expr="//group[field[@name='l10n_in_driver_salay']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[field[@name='l10n_in_medical_insurance']]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='salary_info']" position="inside">
+                <group colspan="2" invisible="country_code != 'IN'">
+                    <group string="Salary Components">
+                        <div class="mt-2">
+                            <div class="row mb-2">
+                                <label for="l10n_in_basic_salary" class="col-md-4 fw-bold"/>
+                                <div class="col-md-6 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <field name="l10n_in_basic_salary" style="width:160px;"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                    <div class="d-flex align-items-center ms-3" groups="base.group_no_one">
+                                        <field name="l10n_in_basic_salary_percent" style="width:80px;"/>
+                                        <span class="ms-2">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="l10n_in_hra" class="col-md-4 fw-bold"/>
+                                <div class="col-md-6 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <field name="l10n_in_hra" style="width:160px;"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                    <div class="d-flex align-items-center ms-3" groups="base.group_no_one">
+                                        <field name="l10n_in_hra_percent" style="width:80px;"/>
+                                        <span class="ms-2">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="l10n_in_std_allowance" class="col-md-4 fw-bold"/>
+                                <div class="col-md-6 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <field name="l10n_in_std_allowance" style="width:160px;"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                    <div class="d-flex align-items-center ms-3" groups="base.group_no_one">
+                                        <field name="l10n_in_std_allowance_percent" style="width:80px;"/>
+                                        <span class="ms-2">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="l10n_in_performance_bonus" class="col-md-4 fw-bold"/>
+                                <div class="col-md-6 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <field name="l10n_in_performance_bonus" style="width:160px;"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                    <div class="d-flex align-items-center ms-3" groups="base.group_no_one">
+                                        <field name="l10n_in_performance_bonus_percent" style="width:80px;"/>
+                                        <span class="ms-2">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="l10n_in_leave_travel_allowance" class="col-md-4 fw-bold"/>
+                                <div class="col-md-6 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <field name="l10n_in_leave_travel_allowance" style="width:160px;"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                    <div class="d-flex align-items-center ms-3" groups="base.group_no_one">
+                                        <field name="l10n_in_leave_travel_allowance_percent" style="width:80px;"/>
+                                        <span class="ms-2">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="l10n_in_leave_allowance" class="col-md-4 fw-bold"/>
+                                <div class="col-md-6 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <field name="l10n_in_leave_allowance" style="width:160px;"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                    <div class="d-flex align-items-center ms-3" groups="base.group_no_one">
+                                        <field name="l10n_in_leave_allowance_percent" style="width:80px;"/>
+                                        <span class="ms-2">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="l10n_in_leave_days" class="col-md-4 fw-bold"/>
+                                <div class="col-md-6 d-flex align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <field name="l10n_in_leave_days" style="width:160px;"/>
+                                        <span class="ms-2">Days</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="l10n_in_gratuity" class="col-md-4 fw-bold"/>
+                                <div class="col-md-6 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <field name="l10n_in_gratuity" style="width:160px;" string="Gratuity"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                    <div class="d-flex align-items-center ms-3" groups="base.group_no_one">
+                                        <field name="l10n_in_gratuity_percent" style="width:80px;"/>
+                                        <span class="ms-2">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label for="l10n_in_supplementary_allowance" class="col-md-4 fw-bold"/>
+                                <div class="col-md-6 d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <field name="l10n_in_supplementary_allowance" style="width:160px;"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                    <div class="d-flex align-items-center ms-3" groups="base.group_no_one">
+                                        <field name="l10n_in_supplementary_allowance_percent" style="width:80px;"/>
+                                        <span class="ms-2">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </group>
+                    <group>
+                        <group string="Tax Deductions" colspan="2">
+                            <label for="l10n_in_tds" string="TDS" class="fw-bold"/>
+                            <div class="d-flex gap-3">
+                                <field name="l10n_in_tds" class="oe_inline"/>
+                                <button name="%(l10n_in_hr_payroll.action_tds_calculation)d" string="TDS Calculator" type="action" class="btn btn-secondary w-75"/>
+                            </div>
+                        </group>
+                        <group string="Other Deductions" colspan="2">
+                            <div class="mt-2">
+                                <div class="row">
+                                    <label for="l10n_in_pf_employee_contribution" class="col-md-5 fw-bold"/>
+                                    <div class="col-md-6 d-flex align-items-center">
+                                        <field name="l10n_in_pf_employee_contribution" widget="percentage"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="l10n_in_pf_employer_contribution" class="col-md-5 fw-bold"/>
+                                    <div class="col-md-6 d-flex align-items-center">
+                                        <field name="l10n_in_pf_employer_contribution" widget="percentage"/>
+                                    </div>
+                                </div> 
+                                <div class="row">
+                                    <label for="l10n_in_professional_tax" class="col-md-5 fw-bold"/>
+                                    <div class="col-md-6 d-flex align-items-center">
+                                        <field name="l10n_in_professional_tax"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="l10n_in_esic_employee_contribution" class="col-md-5 fw-bold"/>
+                                    <div class="col-md-6 d-flex align-items-center">
+                                        <field name="l10n_in_esic_employee_contribution" widget="percentage"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="l10n_in_esic_employer_contribution" class="col-md-5 fw-bold"/>
+                                    <div class="col-md-6 d-flex align-items-center">
+                                        <field name="l10n_in_esic_employer_contribution" widget="percentage"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="l10n_in_lwf_employee_contribution" class="col-md-5 fw-bold"/>
+                                    <div class="col-md-6 d-flex align-items-center">
+                                        <field name="l10n_in_lwf_employee_contribution"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="l10n_in_lwf_employer_contribution" class="col-md-5 fw-bold"/>
+                                    <div class="col-md-6 d-flex align-items-center">
+                                        <field name="l10n_in_lwf_employer_contribution"/>
+                                        <span class="ms-2">/month</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="l10n_in_other_deduction" class="col-md-5 fw-bold"/>
+                                    <div class="col-md-6 d-inline-flex align-items-center">
+                                        <field name="l10n_in_other_deduction"/>
+                                        <span class="ms-1">/month</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </group>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
