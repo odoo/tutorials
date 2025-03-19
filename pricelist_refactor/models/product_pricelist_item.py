@@ -21,38 +21,42 @@ class ProductPricelistItem(models.Model):
     @api.model
     def _get_first_suitable_recurring_pricing(self, product, plan=None, pricelist=None):
         """ Get a suitable pricing for given product and pricelist."""
-        product_sudo = product.sudo()
+        product_sudo = product
         is_product_template = product_sudo._name == "product.template"
-        available_pricings = product_sudo.subscription_pricelist_rule_ids
-        first_pricing = self.env['product.pricelist.item']
-        for pricing in available_pricings:
-            if plan and pricing.plan_id != plan:
+        available_product_pricelist_item_ids = product_sudo.subscription_pricelist_rule_ids
+        first_pricelist_item_id = self.env['product.pricelist.item']
+        for product_pricelist_item_id in available_product_pricelist_item_ids:
+            if plan and product_pricelist_item_id.plan_id != plan:
                 continue
-            if pricing.pricelist_id == pricelist and (is_product_template or pricing._applies_to(product_sudo)):
-                return pricing
-            if not first_pricing and pricing.pricelist_id and (is_product_template or pricing._applies_to(product_sudo)):
+            if product_pricelist_item_id.pricelist_id == pricelist \
+                and (is_product_template or product_pricelist_item_id._applies_to(product_sudo)):
+                return product_pricelist_item_id
+            if not first_pricelist_item_id and product_pricelist_item_id.pricelist_id \
+                and (is_product_template or product_pricelist_item_id._applies_to(product_sudo)):
                 # If price list and current pricing is not part of it,
                 # We store the first one to return if not pricing matching the price list is found.
-                first_pricing = pricing
-        return first_pricing
+                first_pricelist_item_id = product_pricelist_item_id
+        return first_pricelist_item_id
 
     @api.model
     def _get_first_suitable_rental_pricing(self, product, recurrence_id=None, pricelist=None):
         """ Get a suitable pricing for given product and pricelist."""
         product_sudo = product.sudo()
         is_product_template = product_sudo._name == "product.template"
-        available_pricings = product_sudo.rental_pricelist_rule_ids
-        first_pricing = self.env['product.pricelist.item']
-        for pricing in available_pricings:
-            if recurrence_id and pricing.recurrence_id != recurrence_id:
+        available_product_pricelist_item_ids = product_sudo.rental_pricelist_rule_ids
+        first_pricelist_item_id = self.env['product.pricelist.item']
+        for product_pricelist_item_id in available_product_pricelist_item_ids:
+            if recurrence_id and product_pricelist_item_id.recurrence_id != recurrence_id:
                 continue
-            if pricing.pricelist_id == pricelist and (is_product_template or pricing._applies_to(product_sudo)):
-                return pricing
-            if not first_pricing and pricing.pricelist_id and (is_product_template or pricing._applies_to(product_sudo)):
+            if product_pricelist_item_id.pricelist_id == pricelist \
+                and (is_product_template or product_pricelist_item_id._applies_to(product_sudo)):
+                return product_pricelist_item_id
+            if not first_pricelist_item_id and product_pricelist_item_id.pricelist_id \
+                and (is_product_template or product_pricelist_item_id._applies_to(product_sudo)):
                 # If price list and current pricing is not part of it,
                 # We store the first one to return if not pricing matching the price list is found.
-                first_pricing = pricing
-        return first_pricing
+                first_pricelist_item_id = product_pricelist_item_id
+        return first_pricelist_item_id
 
     def _compute_price_rental(self, duration, unit, product, quantity, date, start_date, end_date, uom=None, **kwargs):
         """Compute price based on the duration and unit."""
@@ -191,7 +195,9 @@ class ProductPricelistItem(models.Model):
         if plan_id and product.recurring_invoice:
             rule_base = self.base or 'list_price'
             if rule_base == 'pricelist' and self.base_pricelist_id:
-                price = self._get_first_suitable_recurring_pricing(product, plan_id, self.base_pricelist_id)._compute_price(product, quantity, uom, date)
+                price = self._get_first_suitable_recurring_pricing(
+                    product, plan_id, self.base_pricelist_id
+                )._compute_price(product, quantity, uom, date)
                 src_currency = self.base_pricelist_id.currency_id
                 if src_currency != currency:
                     price = src_currency._convert(price, currency, self.env.company, date, round=False)
@@ -199,7 +205,9 @@ class ProductPricelistItem(models.Model):
         elif recurrence_id and product.rent_ok:
             rule_base = self.base or 'list_price'
             if rule_base == 'pricelist' and self.base_pricelist_id:
-                price = self._get_first_suitable_rental_pricing(product, recurrence_id, self.base_pricelist_id)._compute_price(product, quantity, uom, date)
+                price = self._get_first_suitable_rental_pricing(
+                    product, recurrence_id, self.base_pricelist_id
+                )._compute_price(product, quantity, uom, date)
                 src_currency = self.base_pricelist_id.currency_id
                 if src_currency != currency:
                     price = src_currency._convert(price, currency, self.env.company, date, round=False)

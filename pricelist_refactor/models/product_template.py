@@ -60,7 +60,7 @@ class ProductTemplate(models.Model):
         """
         self.ensure_one()
         best_pricing_rule = self.env['product.pricelist.item']
-        if not self.product_pricing_ids or not (start_date and end_date):
+        if not self.rental_pricelist_rule_ids or not (start_date and end_date):
             return best_pricing_rule
         pricelist = kwargs.get('pricelist', self.env['product.pricelist'])
         currency = kwargs.get('currency', self.currency_id)

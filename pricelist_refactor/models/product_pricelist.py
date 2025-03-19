@@ -29,7 +29,7 @@ class ProductPricelist(models.Model):
         ]
     )
 
-    rental_pricelist_ids = fields.One2many(
+    product_rental_pricelist_ids = fields.One2many(
         comodel_name='product.pricelist.item',
         inverse_name='pricelist_id',
         string="Rental Pricing Rules",
@@ -50,7 +50,6 @@ class ProductPricelist(models.Model):
         currency.ensure_one()
         if not products:
             return {}
-
         if not date:
             date = fields.Datetime.now()
         results = {}
@@ -80,7 +79,12 @@ class ProductPricelist(models.Model):
                     price, currency, self.env.company, date
                 ), pricelist_id.id
             elif product.recurring_invoice:
-                results[product.id] = self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(product, plan=plan_id, pricelist=self)._compute_price(product, quantity, uom, date, plan_id=plan_id), self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(product, plan=plan_id, pricelist=self).id
+                results[product.id] = self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
+                    product, plan=plan_id, pricelist=self
+                )._compute_price(product, quantity, uom, date, plan_id=plan_id), 
+                self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
+                    product, plan=plan_id, pricelist=self
+                ).id
         price_computed_products = self.env[products._name].browse(results.keys())
         return {
             **results,

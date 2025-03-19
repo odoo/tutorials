@@ -30,7 +30,7 @@
             </page>
             <page name="product_pricing_ids" position="replace">
                 <page name="rental_pricelist_ids" string="Rental prices">
-                    <field name="rental_pricelist_ids"
+                    <field name="product_rental_pricelist_ids"
                            nolabel="1"
                            context="{'form_view_ref': 'pricelist_refactor.rental_product_pricelist_item_form_view'}">
                          <list string="Subscription Pricelist Rules">
