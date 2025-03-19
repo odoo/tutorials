@@ -24,7 +24,6 @@ WebsiteSaleCheckout.include({
 
     async _fetchCompanyDetails() {
         const vat = this.$vatInput.val().trim();
-        const selectedDeliveryAddress = this._getSelectedAddress('delivery');
         if (!vat) {
             return;
         }
@@ -33,8 +32,7 @@ WebsiteSaleCheckout.include({
             if (result && result.name) {
                 console.log(result)
                 this.$companyNameInput.val(result.name);
-                console.log(selectedDeliveryAddress);
-                await this.updateAddress('billing', result.partner_gid);
+                await this.updateInvoiceAddress('billing', vat);                
             } else {
                 console.warn("No company found for this VAT");
             }
@@ -75,10 +73,6 @@ WebsiteSaleCheckout.include({
         this._enableMainButton();  // Try to enable the main button.
     },
 
-    async updateDeliveryAddress(selectedDeliveryAddress, result) {
-        await rpc('/shop/update_delivery_address', { selectedDeliveryAddress: selectedDeliveryAddress, result: result })
-    },
-
     async _toggleTaxCreditRow(ev) {
         const useTaxCredit = ev.target.checked;
         if (!useTaxCredit) {
@@ -91,6 +85,10 @@ WebsiteSaleCheckout.include({
         }
 
         this._enableMainButton();  // Try to enable the main button.
+    },
+
+    async updateInvoiceAddress(addressType, vat) {
+        await rpc('/shop/update_invoice_address', {address_type: addressType, vat: vat});
     },
 
     _isBillingAddressSelected() {

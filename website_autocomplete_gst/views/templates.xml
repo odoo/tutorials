@@ -22,14 +22,30 @@
                 <t t-set="tax_credit_enable" groups="!account.group_delivery_invoice_address" t-value="True"/>
                 <t t-set="tax_credit_enable" groups="account.group_delivery_invoice_address" t-value="False"/>
                 <div id="tax_credit_container" t-attf-class="{{'d-none' if not want_tax_credit and has_delivery else ''}}" t-att-data-tax-credit-enable="tax_credit_enable">
-                    <label>
-            VAT
+                    <label for="o_vat">
+                     <t t-out="vat_label"/>
                         <input type="text" id="o_vat" name="vat" t-att-value="vat" class="form-control"/>
                     </label>
                     <label>
             Company Name
                         <input type="text" id="o_company_name" name="name" autocomplete="organization" class="form-control"/>
                     </label>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="address_on_payment_inherit" inherit_id="website_sale.address_on_payment" name="Address on payment">
+        <xpath expr="//div[@class='card']" position="replace">
+            <div class="card">
+                <div class="card-body" id="delivery_and_billing">
+                    <a class="float-end no-decoration" href="/shop/checkout">
+                        <i class="fa fa-pencil me-1"/>
+Edit
+                    </a>
+                    <t>
+                        <b>Delivery: </b>
+                        <span t-out="order.partner_shipping_id" t-options="dict(widget='contact', fields=['address'], no_marker=True, separator=', ')" class="address-inline"/>
+                    </t>
                 </div>
             </div>
         </xpath>
