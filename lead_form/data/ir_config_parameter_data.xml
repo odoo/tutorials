@@ -1,0 +1,6 @@
+<odoo>
+    <record id="facebook_access_token_param" model="ir.config_parameter">
+        <field name="key">facebook_meta_access_token</field>
+        <field name="value"/>
+    </record>
+</odoo>

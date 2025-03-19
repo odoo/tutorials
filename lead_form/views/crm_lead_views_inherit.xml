@@ -1,0 +1,13 @@
+<odoo>
+    <record id="crm_lead_view_inherit_form" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.ads</field>
+        <field name="model">crm.lead</field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="after">
+                <field name="ads_source"/>
+                <field name="ads_lead_id" invisible="not ads_source"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
