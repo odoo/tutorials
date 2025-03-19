@@ -17,5 +17,6 @@
         'data/default_route_data.xml',
     ],
     'installable': True,
+    'post_init_hook': '_update_existing_products',
     'license': 'LGPL-3',
 }

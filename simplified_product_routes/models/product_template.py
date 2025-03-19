@@ -1,10 +1,10 @@
-from odoo import api, Command, fields, models
+from odoo import _, api, Command, fields, models
 
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
-    has_bom = fields.Boolean(string="Has Bills of Materials", compute='_compute_has_bom', store=True)
+    has_bom = fields.Boolean(string=_("Has Bills of Materials"), compute='_compute_has_bom', store=True)
 
     @api.model
     def _get_route(self, xml_id, route_name):
@@ -52,7 +52,7 @@ class ProductTemplate(models.Model):
     def _is_subcontract_component(self):
         """check if product is used as a component in any subcontracting BOM"""
         self.ensure_one()
-        boms = self.env['mrp.bom'].search([('type', '=', 'subcontract')])
+        boms = self.env['mrp.bom'].search([('type', '=', _('subcontract'))])
         for bom in boms:
             if bom.bom_line_ids.filtered(lambda bom_line: bom_line.product_id.product_tmpl_id.id == self.id):
                 return True
