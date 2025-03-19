@@ -1,0 +1,42 @@
+/** @odoo-module **/
+
+import { Component, onMounted, useRef, useState } from "@odoo/owl";
+
+import { TodoItem } from "./todo_item";
+
+export class TodoList extends Component {
+    static template = "awesome_owl.todo_list";
+    static components = { TodoItem };
+
+    static props = {}
+
+    setup() {
+        this.todos = useState([]);
+        this.count = 1;
+
+        this.input = useRef("todo_list_input");
+        onMounted(() => {
+           this.input.el.focus();
+        });
+    }
+
+    addItem(ev) {
+        if (ev.keyCode === 13 && ev.target.value !== "") {
+            this.todos.push({id: this.count++, description: ev.target.value, isCompleted: false});
+            ev.target.value = "";
+        }
+    }
+
+    onItemChange(id) {
+        let item = this.todos.find((item) => item.id === id);
+        item.isCompleted = !item.isCompleted;
+    }
+
+    onItemRemoval(id) {
+        const index = this.todos.findIndex((item) => item.id === id);
+        if (index >= 0) {
+            // remove the element at index from list
+            this.todos.splice(index, 1);
+        }
+    }
+}
