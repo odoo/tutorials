@@ -1,0 +1,47 @@
+<odoo>
+
+    <record id="view_sale_order_line_list_global_info" model="ir.ui.view">
+        <field name="name">sale.order.line.list.global.info</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <list default_group_by="product_category_id" create="false" delete="false">
+                <field name="product_category_id" string="Product Category"/>
+                <field name="attribute_ids" widget="many2many_tags" string="Attributes"/>
+                <field name="attribute_value_ids" widget="many2many_tags" string="Attribute Values"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_sale_order_global_info" model="ir.ui.view">
+        <field name="name">sale.order.global.info.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Global Info">
+                    <field name="order_line" context="{'list_view_ref': 'product_category_global_info.view_sale_order_line_list_global_info'}"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sale_order_global_info_search" model="ir.ui.view">
+        <field name="name">sale.order.global.info.search</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="group_by_product_category" context="{'group_by': 'product_category_id'}"/>
+            </search>
+        </field>
+    </record>
+    
+    <record id="sale_order_view_global_info" model="ir.actions.act_window">
+        <field name="name">Global Info</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_id" ref="view_sale_order_line_list_global_info"/>
+        <field name="search_view_id" ref="view_sale_order_global_info_search"/>
+        <field name="view_mode">list</field>
+        <field name="context">{'search_default_group_by_product_category': 1}</field>
+    </record>
+
+</odoo>
