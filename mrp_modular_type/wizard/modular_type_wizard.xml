@@ -19,7 +19,7 @@
                         <field name="modular_value_ids" nolabel="1" widget="one2many_list">
                             <list editable="bottom">
                                 <field name="modular_type_id"/>
-                                <field name="value"/>
+                                <field name="modular_quantity"/>
                             </list>
                         </field>
                     </group>
