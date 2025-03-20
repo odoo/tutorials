@@ -1,14 +1,11 @@
-from odoo import api, fields, models
+from odoo import models
 
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    vat_label = fields.Char(string='Tax ID Label', compute='_compute_vat_label')
-
-    @api.depends_context('company')
-    def _compute_vat_label(self):
-        self.vat_label = self.env.company.country_id.vat_label or ("VAT")
+    def _can_be_edited_by_current_customer(self, sale_order, address_type):
+        return sale_order, address_type
 
     def _get_company_details_from_vat(self, vat):
         company_details = self.read_by_vat(vat)

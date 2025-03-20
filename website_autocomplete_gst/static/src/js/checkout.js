@@ -1,4 +1,3 @@
-import { _t } from '@web/core/l10n/translation';
 import { rpc } from "@web/core/network/rpc";
 import publicWidget from '@web/legacy/js/public/public_widget';
 import WebsiteSaleCheckout from '@website_sale/js/checkout';
@@ -29,12 +28,12 @@ WebsiteSaleCheckout.include({
         }
         try {
             const result = await rpc("/shop/get_data", { vat: vat });
-            if (result && result.name) {
+            if (result) {
                 console.log(result)
                 this.$companyNameInput.val(result.name);
                 await this.updateInvoiceAddress('billing', vat);                
             } else {
-                console.warn("No company found for this VAT");
+                console.warn("Could not find any company registered to this VAT", {vat});
             }
         } catch (error) {
             console.error("Failed to fetch company details:", error);
@@ -92,9 +91,6 @@ WebsiteSaleCheckout.include({
     },
 
     _isBillingAddressSelected() {
-        const billingAddressSelected = Boolean(
-            this.el.querySelector('.card.bg-primary[data-address-type="billing"]')
-        );
-        return billingAddressSelected || this.want_tax_credit_toggle?.checked;
+        return this.want_tax_credit_toggle?.checked;
     },
 });
