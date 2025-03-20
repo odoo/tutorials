@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "My Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required = True, string = "Name")
     postcode = fields.Char(string = "Postcode")
@@ -22,7 +23,6 @@ class EstateProperty(models.Model):
                              required = True, copy = False, default = 'new', string = "Status")
     description = fields.Char("Description.", default = "Description of a house.", readonly = True)
 
-    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     salesman = fields.Many2one('res.users', string='Salesperson', index=True, default=lambda self: self.env.user)
     buyer = fields.Many2one('res.partner', string='Buyer', index=True, copy = False)
 
@@ -31,17 +31,18 @@ class EstateProperty(models.Model):
 
     total_area = fields.Float(compute = "_compute_area", string = "Total Area (sqm)")
 
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    best_price = fields.Integer(compute = "_compute_price", string = "Best Price")
+
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    best_price = fields.Integer(compute = "_compute_price", string = "Best Price")
 
     @api.depends("offer")
     def _compute_price(self):
         for record in self:
-            # record.best_price = max(record.offer.mapped('price'))
             record.best_price = 0
             for item in record.offer:
                 record.best_price = max(record.best_price, item.price)
@@ -79,5 +80,5 @@ class EstateProperty(models.Model):
         for record in self:
             if 0 < record.selling_price < 0.9 * record.expected_price:
                 raise exceptions.ValidationError("Less than 90% of expected price.")
+
     
- 
