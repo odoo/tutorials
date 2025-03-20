@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="email_template_fsm_reminder" model="mail.template">
+        <field name="name">Field Service: Reminder Email Scheduled</field>
+        <field name="model_id" ref="project.model_project_task"/>
+        <field name="subject">Reminder: Upcoming Service - {{ object.name }}</field>
+        <field name="use_default_to" eval="True"/>
+        <field name="description">Reminder email for scheduled field service tasks.</field>
+        <field name="body_html" type="html">
+<table border="0" cellpadding="0" cellspacing="0" style="padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;">
+    <tr>
+       <td align="center">
+            <table border="0" cellpadding="0" cellspacing="0" width="590" style="padding: 16px; background-color: white; color: #454748; border-collapse:separate;">
+                <tbody>
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="background-color: white; padding: 0px 8px; border-collapse:separate;">
+                                <tr>
+                                    <td valign="middle">
+                                        <t t-set="company" t-value="object.company_id or object.user_id.company_id or user.company_id"/>
+                                        <span style="font-size: 10px;">Field Service Reminder</span><br/>
+                                        <span style="font-size: 20px; font-weight: bold;" t-out="object.name or ''">Scheduled Service</span>
+                                    </td>
+                                    <td valign="middle" align="right" t-if="not company.uses_default_logo">
+                                        <img t-attf-src="/logo.png?company={{ company.id }}" style="width: 80px;" t-att-alt="company.name"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align:center;">
+                                        <hr width="100%" style="background-color:rgb(204,204,204); border:none; min-height:1px; margin:16px 0px;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="background-color: white; padding: 0px 8px;">
+                                <tr>
+                                    <td valign="top" style="font-size: 13px;">
+                                        <t t-set="date_begin" t-value="format_datetime(object.planned_date_begin, tz=object.partner_id.tz, lang_code=object.partner_id.lang)"/>
+                                        <t t-set="date_end" t-value="format_datetime(object.date_deadline, tz=object.partner_id.tz, lang_code=object.partner_id.lang)"/>
+
+                                        Hello <t t-out="object.partner_id.name or 'customer'">customer</t>,<br/><br/>
+
+                                        <t t-if="date_begin and date_end">
+                                            Your <t t-out="object.name or ''">service</t> is scheduled from:
+                                        </t>
+                                        <t t-else="">
+                                            Your <t t-out="object.name or ''">service</t> is scheduled.
+                                        </t>
+
+                                        <br/><br/>
+
+                                        <strong>Service Start Date &amp; Time:</strong><br/>
+                                        <t t-if="date_begin">Date: <t t-out="format_date(object.planned_date_begin)"/><br/></t>
+                                        <t t-if="date_begin">Time: <t t-out="format_time(object.planned_date_begin)"/><br/></t>
+                                        <br/>
+
+                                        <strong>Service End Date &amp; Time:</strong><br/>
+                                        <t t-if="date_end">Date: <t t-out="format_date(object.date_deadline)"/><br/></t>
+                                        <t t-if="date_end">Time: <t t-out="format_time(object.date_deadline)"/><br/></t>
+                                        <br/>
+
+                                        <strong>Preparatory Instructions:</strong><br/>
+                                        - Please ensure all trash bins are empty before the scheduled cleaning.<br/>
+                                        - Place the bins in an accessible location for our cleaning team.<br/>
+                                        - Avoid placing bins near vehicles or other obstacles.<br/>
+                                        - If possible, rinse the bins lightly before the scheduled cleaning to remove loose debris.<br/>
+
+                                        <br/>
+
+                                        If you need to reschedule, please contact us as soon as possible.<br/><br/>
+
+                                        <div style="margin: 16px 0px; text-align: center;">
+                                            <a t-attf-href="{{ object.get_portal_url() }}"
+                                               style="display: inline-block; padding: 10px 30px; text-decoration: none; background-color: #875A7B; color: #fff; border-radius: 5px;">
+                                                View Details
+                                            </a>
+                                        </div>
+
+                                        <br/>
+                                        Best regards,<br/>
+                                        <t t-if="user.signature">
+                                            <t t-out="user.signature or ''">--<br/>Mitchell Admin</t>
+                                        </t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align:center;">
+                                        <hr width="100%" style="background-color:rgb(204,204,204); border:none; min-height:1px; margin:16px 0px;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="min-width: 590px;">
+                            <table border="0" cellpadding="0" cellspacing="0" width="590" style="font-size: 11px; padding: 0px 8px;">
+                                <tr>
+                                    <td valign="middle" align="left">
+                                        <t t-out="company.name or ''">YourCompany</t>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td valign="middle" align="left" style="opacity: 0.7;">
+                                        <t t-if="company.phone">
+                                            <t t-out="company.phone or ''">+1 650-123-4567</t> |
+                                        </t>
+                                        <t t-if="company.email">
+                                            <a t-attf-href="'mailto:%s' % {{ company.email }}" style="text-decoration:none; color: #454748;"
+                                               t-out="company.email or ''">info@yourcompany.com</a> |
+                                        </t>
+                                        <t t-if="company.website">
+                                            <a t-attf-href="'%s' % {{ company.website }}" style="text-decoration:none; color: #454748;"
+                                               t-out="company.website or ''">http://www.example.com</a>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+        </field>
+        <field name="lang">{{ object.partner_id.lang }}</field>
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>
