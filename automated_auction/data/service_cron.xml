@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_auto_accept_offer" model="ir.cron">
+        <field name="name">Automated Auction: Accept Highest Offer If auction time is ended</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="model_id" ref="automated_auction.model_estate_property"/>
+        <field name="code">model._auto_accept_property_offer()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>

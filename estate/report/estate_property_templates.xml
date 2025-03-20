@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Subtemplate For Property Offer Table -->
+    <template id="estate_property_offers_template">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th><b>Price</b></th>
+                    <th><b>Partner</b></th>
+                    <th><b>Validity (Days)</b></th>
+                    <th><b>Deadline</b></th>
+                    <th><b>Status</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="offers" t-as="offer">
+                    <td><span t-esc="offer.price"/></td>
+                    <td><span t-esc="offer.partner_id.name"/></td>
+                    <td><span t-esc="offer.validity"/></td>
+                    <td><span t-esc="offer.date_deadline"/></td>
+                    <td><span t-esc="offer.status"/></td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <!-- Template For Property Report -->
+    <template id="estate_property_report_template">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Header Section -->
+                        <div>
+                            <t t-if="property.salesperson_id.company_id.logo_web">
+                                <img
+                                    t-att-src="image_data_uri(property.salesperson_id.company_id.logo_web)"
+                                    style="max-height: 80px;"
+                                />
+                            </t>
+                            <h2>
+                                <t t-esc="property.salesperson_id.company_id.name"/>
+                            </h2>
+                            <div class="mb-4">
+                                <t t-if="property.salesperson_id.company_id.partner_id.street">
+                                    <span t-esc="property.salesperson_id.company_id.partner_id.street"/><br/>
+                                </t>
+                                <t t-if="property.salesperson_id.company_id.partner_id.street2">
+                                    <span t-esc="property.salesperson_id.company_id.partner_id.street2"/><br/>
+                                </t>
+                                <span t-esc="property.salesperson_id.company_id.partner_id.city"/>
+                                <t t-if="property.salesperson_id.company_id.partner_id.state_id">
+                                    , <span t-esc="property.salesperson_id.company_id.partner_id.state_id.name"/>
+                                </t>
+                                <t t-if="property.salesperson_id.company_id.partner_id.zip">
+                                    , <span t-esc="property.salesperson_id.company_id.partner_id.zip"/>
+                                </t>
+                                <br/>
+                                <t t-if="property.salesperson_id.company_id.partner_id.country_id">
+                                    <span t-esc="property.salesperson_id.company_id.partner_id.country_id.name"/>
+                                </t>
+                            </div>
+                        </div>
+                        <hr/>
+
+                        <!-- Property Details Section -->
+                        <h2 class="mt-4">
+                            <t t-esc="property.name"/>
+                        </h2>
+                        <div>
+                            <p name="property_details">
+                                <b>Salesman: </b><span t-esc="property.salesperson_id.name"/><br/>
+                                <b>Expected Price: </b><span t-esc="property.expected_price"/><br/>
+                                <b>Status: </b><span t-esc="property.state"/>
+                            </p>
+                        </div>
+
+                        <!-- Offers Table Section -->
+                        <h3 class="mt-4">Offers</h3>
+                        <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                        <t t-if="offers">
+                            <t t-call="estate.estate_property_offers_template"/>
+                        </t>
+                        <t t-else="">
+                            <tr>
+                                <td colspan="5" class="text-center">No offers have been made yet :(</td>
+                            </tr>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Template For Res User Property Report -->
+    <template id="estate_property_res_users_properties">
+        <t t-foreach="docs" t-as="res_users">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div>
+                            <t t-if="res_users.company_id.logo_web">
+                                <img
+                                    t-att-src="image_data_uri(res_users.company_id.logo_web)"
+                                    class="img-fluid"
+                                    style="max-height: 80px;"
+                                />
+                            </t>
+                            <h2>
+                                <t t-esc="res_users.company_id.name"/>
+                            </h2>
+                            <div class="mb-4">
+                                <t t-if="res_users.company_id.partner_id.street">
+                                    <span t-esc="res_users.company_id.partner_id.street"/><br/>
+                                </t>
+                                <t t-if="res_users.company_id.partner_id.street2">
+                                    <span t-esc="res_users.company_id.partner_id.street2"/><br/>
+                                </t>
+                                <span t-esc="res_users.company_id.partner_id.city"/>
+                                <t t-if="res_users.company_id.partner_id.state_id">
+                                    , <span t-esc="res_users.company_id.partner_id.state_id.name"/>
+                                </t>
+                                <t t-if="res_users.company_id.partner_id.zip">
+                                    , <span t-esc="res_users.company_id.partner_id.zip"/>
+                                </t>
+                                <br/>
+                                <t t-if="res_users.company_id.partner_id.country_id">
+                                    <span t-esc="res_users.company_id.partner_id.country_id.name"/>
+                                </t>
+                            </div>
+                        </div>
+                        <h2 class="mt-4">
+                            <b>Salesman: </b><t t-esc="res_users.name"/>
+                        </h2>
+                        <div>
+                            <t t-set="properties" t-value="res_users.mapped('property_ids')"/>
+                            <t t-if="properties">
+                                <t t-foreach="properties" t-as="property">
+                                    <h3><b><span t-esc="property.name"></span></b></h3>
+                                    <b>Expected Price: </b><span t-esc="property.expected_price"/><br/>
+                                    <b>Status: </b><span t-esc="property.state"/>
+                                    <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                                    <t t-if="offers">
+                                        <t t-call="estate.estate_property_offers_template"/>
+                                    </t>
+                                    <t t-else="">
+                                        <tr>
+                                            <td colspan="5" class="text-center">No offers have been made yet :(</td>
+                                        </tr>
+                                    </t>
+                                </t>
+                            </t>
+                            <t t-else="">
+                                <span class="text-center">No Properties :(</span>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
