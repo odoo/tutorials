@@ -90,7 +90,15 @@
                 <sheet>
                     <group>
                         <div>
-                            <field name="name" nolabel="1" class="fs-1 fw-bold"/>
+                            <div class="row">
+                                <div class="col">
+                                    <field name="name" nolabel="1" class="fs-1 fw-bold"/>
+
+                                </div>
+                                <div class="col">
+                                    <field name="image" widget="image" class="oe_avatar"/>
+                                </div>
+                            </div>
                             <label for="tags_ids" string="Tags"/>
                             <field name="tags_ids" widget="many2many_tags" class="oe_inline m-2"
                                 options="{'no_create':True,'color_field':'color','no_edit_color':True}"/>

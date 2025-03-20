@@ -45,10 +45,10 @@
             <field name="garden_area">100000</field>
             <field name="garden_orientation">south</field>
             <field name="property_type_id" ref="residential"/>
-            <field name="offer_ids" eval="[
+            <!-- <field name="offer_ids" eval="[
         Command.create({'price':1020000001,'validity':10,'partner_id':ref('base.res_partner_3')}),
         Command.create({'price':1220000001,'validity':10,'partner_id':ref('base.res_partner_5')})
-        ]"/>
+        ]"/> -->
         </record>
     </data>
 </odoo>

@@ -67,6 +67,7 @@ class EstateProperty(models.Model):
     tags_ids = fields.Many2many("estate.tags", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string=" ")
     best_price = fields.Float(compute="_compute_best_price")
+    image = fields.Image(string="Property Image")
 
     _sql_constraints = [
         (

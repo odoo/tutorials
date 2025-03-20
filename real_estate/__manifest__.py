@@ -2,7 +2,7 @@
 {
     "name": "Real Estate",
     "description": "Publish, Rent, Buy properties on Estate",
-    "depends": ["base",'mail'],
+    "depends": ["base",'mail','website'],
     "category":"Real Estate/Brokerage",
     "data": [
         "security/security.xml", 
@@ -11,12 +11,15 @@
         "views/estate_property_tag_view.xml",
         "views/estate_property_type_view.xml",
         "data/estate_data.xml",
+        "data/estate_property_menu.xml",
         "data/estate.property.type.csv",
         "data/estate.tags.csv",
         "demo/estate.property.xml",
         "demo/estate.property.offer.xml",
         "views/estate_property_offer_view.xml",
         "views/estate_menus.xml",
+        "views/estate_property_details.xml",
+        "views/estate_property_template.xml",
         "views/res_users_view.xml"
     ],
     "version": "1.0",
