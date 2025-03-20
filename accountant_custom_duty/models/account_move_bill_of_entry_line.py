@@ -6,7 +6,7 @@ class AccountMoveBillOfEntryLine(models.Model):
     _description = "Bill of Entry Line"
 
     move_id = fields.Many2one("account.move", string="Journal Entry")
-    l10n_in_company_currency_id = fields.Many2one("res.currency", related="move_id.l10n_in_company_currency_id", string="Company Currency", readonly=True, default=lambda self: self.env.ref("base.INR"))
+    l10n_in_company_currency_id = fields.Many2one("res.currency", related="move_id.l10n_in_company_currency_id", string="Company Currency", readonly=True)
     account_id = fields.Many2one("account.account", string="Account")
     label = fields.Char(string="Label")
     debit = fields.Monetary(string="Debit", currency_field="l10n_in_company_currency_id")

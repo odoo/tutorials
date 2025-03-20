@@ -6,7 +6,7 @@ class AccountMoveLineWizard(models.TransientModel):
     _description = "Account Move Line Wizard"
 
     wizard_id = fields.Many2one("account.bill.of.entry.wizard", string="Wizard", required=True, ondelete="cascade")
-    l10n_in_company_currency_id = fields.Many2one("res.currency", related="wizard_id.l10n_in_company_currency_id", string="Company Currency", readonly=True, default=lambda self: self.env.company.currency_id.id)
+    l10n_in_company_currency_id = fields.Many2one("res.currency", related="wizard_id.l10n_in_company_currency_id", string="Company Currency", readonly=True)
     account_id = fields.Many2one("account.account", string="Account")
     label = fields.Char(string="Label")
     debit = fields.Monetary(string="Debit", currency_field="l10n_in_company_currency_id")

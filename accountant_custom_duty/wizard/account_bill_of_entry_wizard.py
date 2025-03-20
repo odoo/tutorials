@@ -1,4 +1,4 @@
-from odoo import api, Command, fields, models
+from odoo import api, fields, models
 
 
 class CustomWizard(models.TransientModel):
@@ -10,7 +10,7 @@ class CustomWizard(models.TransientModel):
     l10n_in_account_custom_duty_income_id = fields.Many2one(comodel_name="account.account", string="Separate account for income discount")
 
     l10n_in_import_default_tax_account = fields.Many2one("account.account", string="Journal Suspense Account", check_company=True)
-    l10n_in_custom_duty_tax_payable_account_import = fields.Many2one("account.account", string="Custom Duty Tax Payable Account", check_company=True)
+    l10n_in_custom_duty_tax_payable_account = fields.Many2one("account.account", string="Custom Duty Tax Payable Account", check_company=True)
 
     l10n_in_company_currency_id = fields.Many2one("res.currency", string="Company Currency ID", default=lambda self: self.env.ref("base.INR"))
     l10n_in_custom_currency_rate = fields.Monetary(string="Custom Currency Rate", currency_field="l10n_in_company_currency_id", default=1.0)
@@ -24,7 +24,7 @@ class CustomWizard(models.TransientModel):
     
     l10n_in_move_line_ids = fields.One2many("account.move.line.wizard", "wizard_id", string="Product Lines")
 
-    l10n_in_total_custom_duty = fields.Monetary(string="Total Custom Duty", compute="_compute_l10n_in_total_custom_duty", store=True, currency_field="l10n_in_company_currency_id")
+    l10n_in_total_custom_duty = fields.Monetary(string="Total Custom Duty + Additional Charges", compute="_compute_l10n_in_total_custom_duty", store=True, currency_field="l10n_in_company_currency_id")
 
     l10n_in_total_l10n_in_tax_amount = fields.Monetary(string="Total Tax Amount", compute="_compute_l10n_in_total_l10n_in_tax_amount", store=True, currency_field="l10n_in_company_currency_id")
 
@@ -80,7 +80,7 @@ class CustomWizard(models.TransientModel):
                 ),
                 (0,0,
                     {
-                        "account_id": wizard.env.company.l10n_in_custom_duty_tax_payable_account_import.id,
+                        "account_id": wizard.env.company.l10n_in_custom_duty_tax_payable_account.id,
                         "label": "Custom Duty Tax Payable Account",
                         "debit": 0.0,
                         "credit": wizard.l10n_in_total_amount_payable,
@@ -115,7 +115,7 @@ class CustomWizard(models.TransientModel):
         defaults["l10n_in_custom_duty_import_journal_id"] = (company.l10n_in_custom_duty_import_journal_id.id)
         defaults["l10n_in_account_custom_duty_income_id"] = (company.l10n_in_account_custom_duty_income_id.id)
         defaults["l10n_in_import_default_tax_account"] = (company.l10n_in_import_default_tax_account.id)
-        defaults["l10n_in_custom_duty_tax_payable_account_import"] = (company.l10n_in_custom_duty_tax_payable_account_import.id)
+        defaults["l10n_in_custom_duty_tax_payable_account"] = (company.l10n_in_custom_duty_tax_payable_account.id)
 
         move_id = self._context.get("default_move_id")
         if move_id:
@@ -175,7 +175,7 @@ class CustomWizard(models.TransientModel):
                     },
                 )
             )
-        move.write({"line_ids": line_ids})
+        move.write({"line_ids": line_ids, "company_currency_id": self.l10n_in_company_currency_id.id})
 
         bill_of_entry_line_ids = []
         for line in self.l10n_in_move_line_ids:
@@ -203,6 +203,5 @@ class CustomWizard(models.TransientModel):
             }
         )
         move.action_post()
-
         self.move_id.is_confirmed = True
         return {"type": "ir.actions.act_window_close"}

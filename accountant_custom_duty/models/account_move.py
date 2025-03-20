@@ -5,11 +5,12 @@ class AccountMove(models.Model):
     _inherit = "account.move"
 
     is_confirmed = fields.Boolean(string="Confirmed", default=False)
+    l10n_in_custom_duty = fields.Boolean(related="company_id.l10n_in_custom_duty", readonly=False)
     l10n_in_journal_entry_number = fields.Char(string="Journal Entry Number")
     l10n_in_company_currency_id = fields.Many2one("res.currency", string="Company Currency ID", default=lambda self: self.env.ref("base.INR"))
     l10n_in_custom_currency_rate = fields.Monetary(string="Custom Currency Rate", currency_field="l10n_in_company_currency_id")
     l10n_in_reference = fields.Char(string="Bill Number")
-    l10n_in_total_custom_duty = fields.Monetary(string="Total Custom Duty", currency_field="l10n_in_company_currency_id")
+    l10n_in_total_custom_duty = fields.Monetary(string="Total Custom Duty + Additional Charges", currency_field="l10n_in_company_currency_id")
     l10n_in_total_l10n_in_tax_amount = fields.Monetary(string="Total Tax Amount", currency_field="l10n_in_company_currency_id")
     l10n_in_total_amount_payable = fields.Monetary(string="Total Amount Payable", currency_field="l10n_in_company_currency_id")
 
@@ -29,7 +30,7 @@ class AccountMove(models.Model):
                 "default_l10n_in_custom_duty_import_journal_id": self.env.company.l10n_in_custom_duty_import_journal_id.id,
                 "default_l10n_in_account_custom_duty_income_id": self.env.company.l10n_in_account_custom_duty_income_id.id,
                 "default_l10n_in_import_default_tax_account": self.env.company.l10n_in_import_default_tax_account.id,
-                "default_l10n_in_custom_duty_tax_payable_account_import": self.env.company.l10n_in_custom_duty_tax_payable_account_import.id,
+                "default_l10n_in_custom_duty_tax_payable_account": self.env.company.l10n_in_custom_duty_tax_payable_account.id,
                 "default_l10n_in_shipping_bill_number": self.l10n_in_shipping_bill_number,
                 "default_l10n_in_shipping_bill_date": self.l10n_in_shipping_bill_date,
                 "default_l10n_in_shipping_port_code_id": self.l10n_in_shipping_port_code_id,

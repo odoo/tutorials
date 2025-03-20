@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="account.view_move_form"/>
         <field name="arch" type="xml">
             <xpath expr="//header" position="inside">
-                <button name="action_open_wizard" string="Bill of Entry" class="oe_highlight" type="object" invisible="is_confirmed or state != 'posted' or l10n_in_gst_treatment not in ['overseas','special_economic_zone','deemed_export'] or move_type != 'in_invoice'"/>
+                <button name="action_open_wizard" string="Bill of Entry" class="oe_highlight" type="object" invisible="not l10n_in_custom_duty or is_confirmed or state != 'posted' or l10n_in_gst_treatment not in ['overseas','special_economic_zone','deemed_export', 'in_invoice'] or move_type not in ('in_invoice', 'in_refund', 'in_receipt')"/>
             </xpath>
             <xpath expr="//sheet/div" position="inside">
                 <button type="object" class="oe_stat_button" name="action_move_journal_line_bill_of_entry" icon="fa-list" invisible="not is_confirmed">
@@ -45,9 +45,9 @@
 
             <xpath expr="//group[@id='header_left_group']" position="before">
                 <group invisible="not l10n_in_custom_currency_rate or move_type in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or state == 'draft'">
-                    <field name="name" string="Journal Entry Number"/>
+                    <field name="name" string="Journal Entry Number" readonly="1"/>
                     <field name="date" readonly="1"/>
-                    <field name="invoice_vendor_bill_id" nolabel="1" class="oe_edit_only" invisible="state != 'draft' or move_type != 'in_invoice'" domain="[('company_id', '=', company_id), ('partner_id','child_of', [partner_id]), ('move_type','=','in_invoice')]" placeholder="Select an old vendor bill" options="{'no_create': True}" context="{'show_total_amount': True}"/>
+                    <field name="invoice_vendor_bill_id" nolabel="1" invisible="state != 'draft' or move_type != 'in_invoice'"/>
                     <field name="journal_id" groups="account.group_account_readonly" options="{'no_create': True, 'no_open': True}" readonly="posted_before and name not in (False, '', '/')"/>
                     <field name="l10n_in_custom_currency_rate" readonly="1"/>
                     <field name="l10n_in_company_currency_id" invisible="1" />
@@ -55,9 +55,9 @@
                 </group>
                 <group invisible="not l10n_in_custom_currency_rate or move_type in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt') or state == 'draft'">
                     <field name="l10n_in_reference" readonly="1"/>
-                    <field name="l10n_in_shipping_bill_number"/>
-                    <field name="l10n_in_shipping_bill_date"/>
-                    <field name="l10n_in_shipping_port_code_id"/>
+                    <field name="l10n_in_shipping_bill_number" readonly="1"/>
+                    <field name="l10n_in_shipping_bill_date" readonly="1"/>
+                    <field name="l10n_in_shipping_port_code_id" readonly="1"/>
                 </group>
             </xpath>
             <xpath expr="//sheet/div[hasclass('oe_title')]" position="attributes">
