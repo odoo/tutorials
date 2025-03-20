@@ -4,7 +4,6 @@
         <xpath expr="//t[@t-call='website.navbar_nav']" position="inside">
                 <a class="nav-item nav-link" href="/aboutus">About Us</a>
                 <a class="nav-item nav-link" href="/properties">Properties</a>
-                <a class="nav-item nav-link" href="/contactus">Contact Us</a>
         </xpath>
     </template>
 
@@ -150,9 +149,7 @@
                     <a href="/contactus" class="btn btn-light btn-lg">Contact Us</a>
                 </div>
             </section>
-
         </t>
-
     </template>
 
     <template id="property_listing_about_us_page" name="About Us">
@@ -240,8 +237,8 @@
                                 <h5 class="fw-bold">Sarah and David</h5>
                                 <p class="text-muted">
                                     "Elite Estate Hub made finding our dream home an absolute
-                                     pleasure. Their expert guidance, seamless process, and 
-                                     unwavering support turned what could have been a stressful 
+                                     pleasure. Their expert guidance, seamless process, and
+                                     unwavering support turned what could have been a stressful
                                      journey into an exciting and hassle-free experience!"
                                 </p>
                             </div>
@@ -250,11 +247,11 @@
                             <div class="p-4 bg-white shadow rounded">
                                 <h5 class="fw-bold">Michael J.</h5>
                                 <p class="text-muted">
-                                    "As a first-time investor, I had many uncertainties, but 
-                                    Elite Estate Hub's knowledgeable agents walked me through 
-                                    every step. Their insights and professional approach helped 
-                                    me make a confident investment decision—one of the best 
-                                    choices I've ever made!"
+                                    "As a first-time investor, I had many uncertainties, but
+                                     Elite Estate Hub's knowledgeable agents walked me through
+                                     every step. Their insights and professional approach helped
+                                     me make a confident investment decision—one of the best
+                                     choices I've ever made!"
                                 </p>
                             </div>
                         </div>
@@ -280,7 +277,11 @@
                                         <h5 class="fw-bold">
                                             <t t-esc="agent.name"/>
                                         </h5>
-                                        <p class="text-muted">Real Estate Expert</p>
+                                        <p class="text-muted">
+                                            <t t-set="group_name" 
+                                               t-value="'Manager' if request.env.ref('estate.estate_group_manager') in agent.groups_id else 'Agent'"/>
+                                            <t t-esc="group_name"/>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
@@ -492,8 +493,10 @@
                         </div>
                         <div class="col-md-4 text-md-end text-center mt-md-0">
                             <a class="btn btn-lg btn-primary rounded-pill shadow-sm px-4 fw-normal"
+                               id="make_offer_primary_button"
                                data-bs-toggle="modal"
-                               data-bs-target="#makeOfferModal" >
+                               data-bs-target="#makeOfferModal"
+                               t-att-data-property-id="property.id" >
                                 🏡 Make an Offer
                             </a>
                         </div>
@@ -559,7 +562,7 @@
         </t>
         <t t-call="estate.make_property_offer" />
 
-        <sricpt type="text/javascipt" src="estate/static/src/property_offer_dialog.js" />
+        <script src="/estate/static/src/property_offer_dialog.js"></script>
     </template>
 
     <template id="make_property_offer" name="Property Offer">
@@ -569,29 +572,18 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="makeOfferModalLabel">Make an Offer</h5>
-                        <button type="button" class="btn-close" 
+                        <button type="button" class="btn-close"
                                 data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="offerForm" action="/create_offer" method="POST">
+                        <form action="/create_offer" method="POST">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-
-                            <div class="mb-3">
-                                <label for="propertyId" class="form-label">Property ID</label>
-                                <input type="number" class="form-control" id="propertyId"
-                                       name="propertyId" readonly="true" t-att-value="property.id" />
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="propertyName" class="form-label">Property Name</label>
-                                <input type="text" class="form-control" id="propertyName"
-                                       name="propertyName" readonly="true" t-att-value="property.name" />
-                            </div>
+                            <input type="hidden" name="property_id" id="modal-property-id" />
 
                             <div class="mb-3">
                                 <label for="offerPrice" class="form-label">Your Offer Price ($)</label>
-                                <input type="number" class="form-control" id="offerPrice" 
+                                <input type="number" class="form-control" id="offerPrice"
                                        name="offerPrice" required="true" />
                             </div>
 
@@ -612,8 +604,6 @@
                                     <input type="email" class="form-control" id="userEmail" name="userEmail"
                                            t-att-value="request.env.user.partner_id.email" readonly="true" />
                                 </div>
-
-                                <input type="hidden" id="userId" name="userId" t-att-value="request.env.user.id"/>
                             </t>
 
                             <t t-else="">
