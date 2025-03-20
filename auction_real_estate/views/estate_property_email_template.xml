@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <record id="email_template_offer_accept" model="mail.template">
+            <field name="name">Property offer accept template</field>
+            <field name="subject">Your Offer for {{object.property_id.name}} Has Been Accepted</field>
+            <field name="email_from">{{ object.property_id.salesperson_id.email }}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="model_id" ref="estate.model_estate_property_offer"/>
+            <field name="body_html" type="html">
+                <p>Congratulations! Your offer of <strong><t t-out="object.price"/></strong> for the property <strong><t t-out="object.property_id.name"/></strong> has been accepted.</p>
+            </field>
+        </record>
+        <record id="email_template_offer_refused" model="mail.template">
+            <field name="name">Property offer refused template</field>
+            <field name="subject">Your Offer for {{object.property_id.name}} Has Been Refused</field>
+            <field name="email_from">{{ object.property_id.salesperson_id.email }}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="model_id" ref="estate.model_estate_property_offer"/> 
+            <field name="body_html" type="html">
+                <p>Sorry to inform you that your offer of <strong><t t-out="object.price"/></strong> for the property <strong><t t-out="object.property_id.name"/></strong> has been refused.</p>
+            </field>
+        </record>
+    </data>
+</odoo>

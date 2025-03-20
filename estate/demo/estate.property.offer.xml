@@ -1,0 +1,23 @@
+<odoo>
+    <record id="offer1" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_big_villa_data"/>
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="offer2" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_big_villa_data"/>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="offer3" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate_property_big_villa_data"/>
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+    </record>
+    <function model="estate.property.offer" name="accept_offer">
+        <value eval="[ref('offer2')]"/>
+    </function>
+</odoo>
