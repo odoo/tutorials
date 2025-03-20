@@ -1,11 +1,13 @@
 {
     'name': 'My Real Estate',
     'license': 'LGPL-3',
+    'category': 'Real Estate/Brokerage',
     'icon': '/real_estate/static/src/images/real-estate-icon.png',
     'depends': ['base', 'website'],
     'installable': True,
     'application': True,
     'data': [
+        'security/real_estate_security.xml',
         'security/ir.model.access.csv',
         'report/real_estate_property_offer_templates.xml',
         'report/real_estate_property_offer_reports.xml',

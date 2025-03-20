@@ -44,11 +44,12 @@ class RealEstate(models.Model):
     active = fields.Boolean(string = "Active", default = True)
     property_type_id = fields.Many2one('real.estate.property.category', string = "Property Type")
     partner_id = fields.Many2one("res.partner", string = "Buyer", copy=False)
-    salesperson_id = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user)
+    salesperson_id = fields.Many2one("res.users", string = "Salesman")
     tag_ids = fields.Many2many('real.estate.property.tag', string = "Tag")
     offer_ids = fields.One2many('real.estate.property.offer', 'property_id', string = 'Offer', copy = False)
     total_area = fields.Float(compute = "_compute_total_area", string = "Total Area (sqm)", readonly = True)
     best_price = fields.Float(compute = "_compute_best_price", string = "Best Offer", readonly = True, default = 0, copy = False)
+    company_id = fields.Many2one('res.company', required=True, string = "Company", default = lambda self: self.env.company)
 
     #sql constraints to check that expected and selling price is not a negative number
     _sql_constraints = [

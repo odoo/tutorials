@@ -28,7 +28,6 @@
                                                 <input name="validity" type="number" class="form-control" required="required" placeholder="Enter validity of offer..." />
                                             </div>
                                             <input type="hidden" name="property_id" t-att-value="property['id']" />
-                                            <input type="hidden" name="partner_id" t-att-value="request.env.user.id" />
                                             <input type="hidden" name="best_price" t-att-value="property['best_offer']" />
                                             <div class="col-12">
                                                 <button type="submit" class="btn btn-primary">Make Offer</button>

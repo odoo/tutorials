@@ -3,7 +3,7 @@ from odoo.http import request
 from odoo.tools.float_utils import float_compare
 
 class PropertyLsitController(http.Controller):
-    @http.route(['/property', '/property/page/<int:page>'], auth='public', type='http', website=True)
+    @http.route(['/property', '/property/page/<int:page>'], auth='user', type='http', website=True)
     def get_property_list(self, page=1, **kwargs):
         page_size = 4
         offset = (int(page) - 1 ) * page_size
@@ -88,8 +88,8 @@ class PropertyLsitController(http.Controller):
             return request.not_found()
 
     @http.route('/submit_offer', auth='user', type='http', website=True, methods=['POST'])
-    def submit_offer_property(self, property_id, partner_id, best_price, price, validity, **kwargs):
-        if not property_id or not partner_id or not price or not validity:
+    def submit_offer_property(self, property_id, best_price, price, validity, **kwargs):
+        if not property_id or not price or not validity:
             return request.redirect('/property')
         
         if float_compare(float(best_price), float(price), 2) == 1:
@@ -105,7 +105,7 @@ class PropertyLsitController(http.Controller):
             'price': float(price),
             'validity': int(validity),
             'property_id': int(property_id),
-            'partner_id': int(partner_id),
+            'partner_id': request.env.user.partner_id.id,
         })
 
         if offer:
