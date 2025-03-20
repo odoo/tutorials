@@ -15,7 +15,7 @@
                     <label for="l10n_in_basic_salary" />
                     <div class="o_row mw-80" name="l10n_in_basic_salary">
                         <field name="l10n_in_basic_salary"/>
-                        <div>₹ / month</div>
+                        <div> / month</div>
                         <field name="l10n_in_basic_salary_percent" groups="base.group_no_one"/>
                         <div groups="base.group_no_one">%</div>
                     </div>
@@ -23,7 +23,7 @@
                     <label for="l10n_in_house_rent_allowance" />
                     <div class="o_row mw-80" name="l10n_in_house_rent_allowance">
                         <field name="l10n_in_house_rent_allowance"/>
-                        <div class="mb-2">₹ / month</div>
+                        <div class="mb-2"> / month</div>
                         <field name="l10n_in_house_rent_allowance_percent" groups="base.group_no_one"/>
                         <div groups="base.group_no_one">%</div>
                     </div>
@@ -31,7 +31,7 @@
                     <label for="l10n_in_standard_allowance" />
                     <div class="o_row mw-80" name="l10n_in_standard_allowance">
                         <field name="l10n_in_standard_allowance"/>
-                        <div class="mb-2">₹ / month</div>
+                        <div class="mb-2"> / month</div>
                         <field name="l10n_in_standard_allowance_percent" groups="base.group_no_one"/>
                         <div groups="base.group_no_one">%</div>
                     </div>
@@ -39,7 +39,7 @@
                     <label for="l10n_in_performance_bonus" />
                     <div class="o_row mw-80" name="l10n_in_performance_bonus">
                         <field name="l10n_in_performance_bonus"/>
-                        <div class="mb-2">₹ / month</div>
+                        <div class="mb-2"> / month</div>
                         <field name="l10n_in_performance_bonus_percent" groups="base.group_no_one"/>
                         <div groups="base.group_no_one">%</div>
                     </div>
@@ -47,7 +47,7 @@
                     <label for="l10n_in_leave_travel_allowance" />
                     <div class="o_row mw-80" name="l10n_in_leave_travel_allowance">
                         <field name="l10n_in_leave_travel_allowance"/>
-                        <div class="mb-2">₹ / month</div>
+                        <div class="mb-2"> / month</div>
                         <field name="l10n_in_leave_travel_allowance_percent" groups="base.group_no_one"/>
                         <div groups="base.group_no_one">%</div>
                     </div>
@@ -55,7 +55,7 @@
                     <label for="l10n_in_leave_allowance" />
                     <div class="o_row mw-80" name="l10n_in_leave_allowance">
                         <field name="l10n_in_leave_allowance"/>
-                        <div class="mb-2">₹ / month</div>
+                        <div class="mb-2"> / month</div>
                         <field name="l10n_in_leave_allowance_percent" groups="base.group_no_one"/>
                         <div groups="base.group_no_one">%</div>
                     </div>
@@ -69,7 +69,7 @@
                     <label for="l10n_in_gratuity" />
                     <div class="o_row mw-80" name="l10n_in_gratuity">
                         <field name="l10n_in_gratuity"/>
-                        <div class="mb-2">₹ / month</div>
+                        <div class="mb-2"> / month</div>
                         <field name="l10n_in_gratuity_percent" groups="base.group_no_one"/>
                         <div groups="base.group_no_one">%</div>
                     </div>
@@ -77,7 +77,7 @@
                     <label for="l10n_in_supplementary_allowance" />
                     <div class="o_row mw-80" name="l10n_in_supplementary_allowance">
                         <field name="l10n_in_supplementary_allowance"/>
-                        <div class="mb-2">₹ / month</div>
+                        <div class="mb-2"> / month</div>
                         <field name="l10n_in_supplementary_allowance_percent" groups="base.group_no_one"/>
                         <div groups="base.group_no_one">%</div>
                     </div>
@@ -106,7 +106,7 @@
                         <label for="l10n_in_professional_tax"/>
                         <div class="o_row mw-60" name="l10n_in_professional_tax">
                             <field name="l10n_in_professional_tax"/>
-                            <div class="mb-2">₹ / month</div>
+                            <div class="mb-2"> / month</div>
                         </div>
 
                         <label for="l10n_in_esic_employee_contribution" string="ESIC Employee Contribution" />
@@ -124,19 +124,19 @@
                         <label for="l10n_in_lwf_employee_contribution" string="LWF Employee Contribution" />
                         <div class="o_row mw-60" name="l10n_in_lwf_employee_contribution">
                             <field name="l10n_in_lwf_employee_contribution"/>
-                            <div class="mb-2">₹ / month</div>
+                            <div class="mb-2"> / month</div>
                         </div>
 
                         <label for="l10n_in_lwf_employer_contribution" string="LWF Employer Contribution" />
                         <div class="o_row mw-60" name="l10n_in_lwf_employer_contribution">
                             <field name="l10n_in_lwf_employer_contribution"/>
-                            <div class="mb-2">₹ / month</div>
+                            <div class="mb-2"> / month</div>
                         </div>
 
                         <label for="l10n_in_other_deduction" />
                         <div class="o_row mw-60" name="l10n_in_other_deduction">
                             <field name="l10n_in_other_deduction"/>
-                            <div class="mb-2">₹ / month</div>
+                            <div class="mb-2"> / month</div>
                         </div>
                     </group>
                 </div>

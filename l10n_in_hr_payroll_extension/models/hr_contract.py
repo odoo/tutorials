@@ -4,15 +4,15 @@ from odoo import api, fields, models
 class HrContract(models.Model):
     _inherit = 'hr.contract'
 
-    l10n_in_basic_salary = fields.Float(string="Basic Salary", help="Basic salary calculated from the wage", compute="_compute_l10n_in_basic_salary", inverse="_inverse_l10n_in_basic_salary")
-    l10n_in_house_rent_allowance = fields.Float(string="House Rent Allowance", compute="_compute_l10n_in_house_rent_allowance", inverse="_inverse_l10n_in_house_rent_allowance")
-    l10n_in_standard_allowance = fields.Float(string="Standard Allowance", default=4167)
-    l10n_in_performance_bonus = fields.Float(string="Performance Bonus", compute="_compute_l10n_in_performance_bonus", inverse="_inverse_l10n_in_performance_bonus")
-    l10n_in_leave_travel_allowance = fields.Float(string="Leave Travel Allowance", compute="_compute_l10n_in_leave_travel_allowance", inverse="_inverse_l10n_in_leave_travel_allowance")
-    l10n_in_leave_allowance = fields.Float(string="Leave Allowance", compute="_compute_leave_allowance", inverse="_inverse_leave_allowance")
+    l10n_in_basic_salary = fields.Monetary(string="Basic Salary", help="Basic salary calculated from the wage", compute="_compute_l10n_in_basic_salary", inverse="_inverse_l10n_in_basic_salary", currency_field="currency_id")
+    l10n_in_house_rent_allowance = fields.Monetary(string="House Rent Allowance", compute="_compute_l10n_in_house_rent_allowance", inverse="_inverse_l10n_in_house_rent_allowance", currency_field="currency_id")
+    l10n_in_standard_allowance = fields.Monetary(string="Standard Allowance", default=4167, currency_field="currency_id")
+    l10n_in_performance_bonus = fields.Monetary(string="Performance Bonus", compute="_compute_l10n_in_performance_bonus", inverse="_inverse_l10n_in_performance_bonus", currency_field="currency_id")
+    l10n_in_leave_travel_allowance = fields.Monetary(string="Leave Travel Allowance", compute="_compute_l10n_in_leave_travel_allowance", inverse="_inverse_l10n_in_leave_travel_allowance", currency_field="currency_id")
+    l10n_in_leave_allowance = fields.Monetary(string="Leave Allowance", compute="_compute_leave_allowance", inverse="_inverse_leave_allowance", currency_field="currency_id")
     l10n_in_leave_days = fields.Float(string="Leave Days", default=1)
-    l10n_in_gratuity = fields.Float(string="Gratuity", default=0)
-    l10n_in_supplementary_allowance = fields.Float(string="Supplementary Allowance", compute="_compute_l10n_in_supplementary_allowance", inverse="_inverse_l10n_in_supplementary_allowance", default=0)
+    l10n_in_gratuity = fields.Monetary(string="Gratuity", currency_field="currency_id")
+    l10n_in_supplementary_allowance = fields.Monetary(string="Supplementary Allowance", compute="_compute_l10n_in_supplementary_allowance", inverse="_inverse_l10n_in_supplementary_allowance", currency_field="currency_id")
 
     l10n_in_basic_salary_percent = fields.Float(string="Basic Salary Percentage", help="basic salary percentage of wage", default=50)
     l10n_in_house_rent_allowance_percent = fields.Float(string="House Rent Allowance Percentage", help="this is the percentage of basic salary", default=50)
@@ -24,14 +24,14 @@ class HrContract(models.Model):
     l10n_in_gratuity_percent = fields.Float(string="Gratuity Percentage", compute="_compute_l10n_in_gratuity_percent", inverse="_inverse_l10n_in_gratuity_percent")
     l10n_in_supplementary_allowance_percent = fields.Float(string="Supplementary Allowance Percentage")
 
-    l10n_in_pf_employee_contribution = fields.Float(related="company_id.l10n_in_pf_employee_contribution", readonly=False)
-    l10n_in_pf_employer_contribution = fields.Float(related="company_id.l10n_in_pf_employer_contribution", readonly=False)
-    l10n_in_professional_tax = fields.Float(string="Professional Tax", default=200)
-    l10n_in_esic_employee_contribution = fields.Float(related="company_id.l10n_in_esic_employee_contribution", readonly=False)
-    l10n_in_esic_employer_contribution = fields.Float(related="company_id.l10n_in_esic_employer_contribution", readonly=False)
-    l10n_in_lwf_employee_contribution = fields.Float(related="company_id.l10n_in_lwf_employee_contribution", readonly=False)
-    l10n_in_lwf_employer_contribution = fields.Float(related="company_id.l10n_in_lwf_employer_contribution", readonly=False)
-    l10n_in_other_deduction = fields.Float(string="Other Deduction")
+    l10n_in_pf_employee_contribution = fields.Float(string="Employee Contribution", default=12)
+    l10n_in_pf_employer_contribution = fields.Float(string="Employer Contribution", default=12)
+    l10n_in_professional_tax = fields.Monetary(string="Professional Tax", default=200)
+    l10n_in_esic_employee_contribution = fields.Float(string="Employee Contribution", default=0.75)
+    l10n_in_esic_employer_contribution = fields.Float(string="Employer Contribution", default=3.25)
+    l10n_in_lwf_employee_contribution = fields.Monetary(string="Employee Contribution", currency_field="currency_id", default=6)
+    l10n_in_lwf_employer_contribution = fields.Monetary(string="Employer Contribution", currency_field="currency_id", default=12)
+    l10n_in_other_deduction = fields.Monetary(string="Other Deduction", currency_field="currency_id")
 
     @api.depends("l10n_in_basic_salary_percent", "wage")
     def _compute_l10n_in_basic_salary(self):
@@ -76,12 +76,12 @@ class HrContract(models.Model):
 
     def _inverse_l10n_in_leave_travel_allowance(self):
         for record in self:
-            record.l10n_in_leave_travel_allowance_percent = record.l10n_in_leave_days * ((record.l10n_in_leave_allowance * 100) / record.wage if record.wage else 0)
+            record.l10n_in_leave_travel_allowance_percent = (record.l10n_in_leave_travel_allowance * 100) / record.l10n_in_basic_salary if record.l10n_in_basic_salary else 0
 
     @api.depends('wage', 'l10n_in_leave_allowance_per_day_percent', 'l10n_in_leave_days')
     def _compute_leave_allowance(self):
         for record in self:
-            record.l10n_in_leave_allowance = (record.wage * (record.l10n_in_leave_allowance_per_day_percent/100) * record.l10n_in_leave_days)
+            record.l10n_in_leave_allowance = (record.wage * (record.l10n_in_leave_allowance_per_day_percent / 100) * record.l10n_in_leave_days)
 
     def _inverse_leave_allowance(self):
         for record in self:
