@@ -1,0 +1,13 @@
+<odoo>
+    <record id="view_product_category_form_inherit" model="ir.ui.view">
+        <field name="name">product.category.form.inherit</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="stock.product_category_form_view_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='removal_strategy_id']" position="after">
+                    <field name="show_on_global_info"/>
+                    <field name="required_attribute_ids" widget="many2many_tags"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
