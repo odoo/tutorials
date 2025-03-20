@@ -35,6 +35,8 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.company,
         required=True
     )
+    image_url = fields.Char(string="Image URL")
+    image_upload = fields.Image(string="Upload Image") 
 
     # Read-Only 
     selling_price = fields.Float(string="Selling Price")

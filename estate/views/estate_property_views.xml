@@ -77,6 +77,8 @@
                             <field name="selling_price"/>
                             <field name="best_price" readonly="1"/>
                             <field name="total_area"/>
+                            <field name="image_upload"/>
+                            <field name="image_url"/>
                         </group>
                     </group>
                     <notebook>

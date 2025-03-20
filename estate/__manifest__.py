@@ -8,7 +8,7 @@
         menus for easy navigation and management.
     """,
     'license': 'LGPL-3',
-    'depends': ['base','mail'],
+    'depends': ['base','mail','website'],
     'category': 'Real Estate/Brokerage',
     'data': [
         'security/security.xml',
@@ -19,6 +19,9 @@
         'views/estate_property_offer_views.xml',
         'views/estate_property_menus.xml',
         'views/res_users_views.xml',
+        'views/estate_property_template.xml',
+        'views/website_menu.xml',
+        'views/estate_property_detail_template.xml',
         'data/estate.property.type.xml',
     ],
     'demo':[

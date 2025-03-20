@@ -8,14 +8,12 @@
         <field name="postcode">236767</field>
         <field name="date_availability">2020-02-02</field>
         <field name="expected_price">12000</field>
-        <!-- <field name="selling_price">12000</field> -->
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
         <field name="facades">4</field>
         <field name="garage">1</field>
         <field name="garden">1</field>
         <field name="garden_area">100000</field>
-        <!-- <field name="garden_orientation">South</field> -->
     </record>
 
     <record id="demo_property_trailer_home" model="estate.property">
@@ -32,6 +30,150 @@
         <field name="garage">0</field>
         <field name="garden">1</field>
         <field name="garden_area">100000</field>
+    </record>
+
+    <record id="demo_property_modern_apartment" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="state">new</field>
+        <field name="description">A sleek, modern apartment with a great view.</field>
+        <field name="property_type_id" ref="estate.estate_property_type_2"/>
+        <field name="postcode">110011</field>
+        <field name="date_availability">2024-12-15</field>
+        <field name="expected_price">80000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">120</field>
+        <field name="facades">2</field>
+        <field name="garage">1</field>
+        <field name="garden">0</field>
+        <field name="garden_area">0</field>
+    </record>
+
+    <record id="demo_property_penthouse" model="estate.property">
+        <field name="name">Luxury Penthouse</field>
+        <field name="state">offer_received</field>
+        <field name="description">A high-end penthouse with a rooftop pool.</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3"/>
+        <field name="postcode">560078</field>
+        <field name="date_availability">2025-06-01</field>
+        <field name="expected_price">150000</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">300</field>
+        <field name="facades">4</field>
+        <field name="garage">2</field>
+        <field name="garden">1</field>
+        <field name="garden_area">5000</field>
+    </record>
+
+    <record id="demo_property_cottage" model="estate.property">
+        <field name="name">Cozy Cottage</field>
+        <field name="state">offer_accepted</field>
+        <field name="description">A beautiful cottage in the countryside.</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3"/>
+        <field name="postcode">908765</field>
+        <field name="date_availability">2025-01-20</field>
+        <field name="expected_price">40000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">80</field>
+        <field name="facades">3</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">2000</field>
+    </record>
+
+    <record id="demo_property_beachfront_villa" model="estate.property">
+        <field name="name">Beachfront Villa</field>
+        <field name="state">sold</field>
+        <field name="description">A luxurious beachfront villa with an ocean view.</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3"/>
+        <field name="postcode">450001</field>
+        <field name="date_availability">2024-11-10</field>
+        <field name="expected_price">200000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">500</field>
+        <field name="facades">5</field>
+        <field name="garage">3</field>
+        <field name="garden">1</field>
+        <field name="garden_area">10000</field>
+    </record>
+
+    <record id="demo_property_loft" model="estate.property">
+        <field name="name">Urban Loft</field>
+        <field name="state">new</field>
+        <field name="description">A stylish loft in the city center.</field>
+        <field name="property_type_id" ref="estate.estate_property_type_2"/>
+        <field name="postcode">123456</field>
+        <field name="date_availability">2025-04-05</field>
+        <field name="expected_price">60000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">70</field>
+        <field name="facades">2</field>
+        <field name="garage">0</field>
+        <field name="garden">0</field>
+        <field name="garden_area">0</field>
+    </record>
+
+    <record id="demo_property_townhouse" model="estate.property">
+        <field name="name">Family Townhouse</field>
+        <field name="state">offer_received</field>
+        <field name="description">A spacious townhouse perfect for families.</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1"/>
+        <field name="postcode">789654</field>
+        <field name="date_availability">2025-03-10</field>
+        <field name="expected_price">90000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">150</field>
+        <field name="facades">3</field>
+        <field name="garage">2</field>
+        <field name="garden">1</field>
+        <field name="garden_area">3000</field>
+    </record>
+
+    <record id="demo_property_farmhouse" model="estate.property">
+        <field name="name">Countryside Farmhouse</field>
+        <field name="state">offer_accepted</field>
+        <field name="description">A peaceful farmhouse with large fields.</field>
+        <field name="property_type_id" ref="estate.estate_property_type_2"/>
+        <field name="postcode">303303</field>
+        <field name="date_availability">2025-02-15</field>
+        <field name="expected_price">50000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">180</field>
+        <field name="facades">3</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">50000</field>
+    </record>
+
+    <record id="demo_property_condo" model="estate.property">
+        <field name="name">Downtown Condo</field>
+        <field name="state">new</field>
+        <field name="description">A modern condo in a prime location.</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1"/>
+        <field name="postcode">400012</field>
+        <field name="date_availability">2025-08-01</field>
+        <field name="expected_price">75000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">110</field>
+        <field name="facades">2</field>
+        <field name="garage">1</field>
+        <field name="garden">0</field>
+        <field name="garden_area">0</field>
+    </record>
+
+    <record id="demo_property_lakeview_bungalow" model="estate.property">
+        <field name="name">Lakeview Bungalow</field>
+        <field name="state">cancelled</field>
+        <field name="description">A serene bungalow with a lake view.</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1"/>
+        <field name="postcode">606060</field>
+        <field name="date_availability">2024-10-20</field>
+        <field name="expected_price">125000</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">350</field>
+        <field name="facades">4</field>
+        <field name="garage">2</field>
+        <field name="garden">1</field>
+        <field name="garden_area">7000</field>
     </record>
 
     <record id="new_property" model="estate.property">
