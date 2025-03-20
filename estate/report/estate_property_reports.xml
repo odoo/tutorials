@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- report template-->
+    <template id="property_report">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <t t-call="estate.company_address"/>
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div>
+                            <strong>Salesperson:</strong>
+                            <span t-field="property.salesperson_id"/>
+                        </div>
+                        <t t-call="estate.report_property_offer"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Salesman template-->
+
+    <template id="salesman_property_report">
+        <t t-foreach="docs" t-as="salesman">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <t t-call="estate.company_address"/>
+                        <h2>
+                            <strong>Salesperson:</strong>
+                            <span t-field="salesman.name"/>
+                        </h2>
+                        <t t-if="salesman.property_ids">
+                            <t t-set="properties" t-value="salesman.mapped('property_ids')"/>
+                            <t t-foreach="properties" t-as="property">
+                                <h3>
+                                    <span t-field="property.name"/>
+                                </h3>
+                                <t t-call="estate.report_property_offer"/>
+                            </t>
+                        </t>
+                        <strong t-else=""> Salesman has no properties!</strong>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Sub template-->
+    <template id="report_property_offer">
+        <table class="table" t-if="property.offer_ids">
+            <div>
+                <strong>Expected Price:</strong>
+                <span t-field="property.expected_price"/>
+            </div>
+            <div>
+                <strong>Status:</strong>
+                <span t-field="property.status"/>
+            </div>
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>valadity (Days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                <tr t-foreach="offers" t-as="offer">
+                    <td>
+                        <span t-field="offer.price"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.partner_id"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.validity"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.date_deadline"/>
+                    </td>
+                    <td>
+                        <span t-field="offer.status"/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <strong t-else="">No offers have been made yet :(</strong>
+    </template>
+
+    <!-- Company Address-->
+    <template id="company_address">
+        <div class="mb-4">
+            <img t-att-src="image_data_uri(property.company_id.logo)" class="img-fluid" style="max-height: 80px;"/>
+            <hr style="border-top: 3px solid black; margin: 10px 0;"/>
+            <h3 t-field="property.company_id.name" class="mt-2"/>
+            <p>
+                <span t-field="property.company_id.street"/>
+                <t t-if="property.company_id.street2">
+                    , <span t-field="property.company_id.street2"/>
+                </t>
+                <br/>
+                <span t-field="property.company_id.city"/>
+                , <span t-field="property.company_id.state_id.name"/>
+                , <span t-field="property.company_id.zip"/>
+                <br/>
+                <span t-field="property.company_id.country_id.name"/>
+            </p>
+        </div>
+    </template>
+</odoo>

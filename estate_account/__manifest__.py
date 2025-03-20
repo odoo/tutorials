@@ -7,7 +7,9 @@
     'license': 'LGPL-3',
     'author': 'Your Name',
     'depends': ['estate', 'account'],
-    'data': [],
+    'data': [
+        'report/estate_property_report.xml',
+    ],
     'installable': True,
     'application': True,
     'auto_install': False,

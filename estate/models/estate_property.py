@@ -10,6 +10,10 @@ class EstateProperty(models.Model):
     _description = "Estate Description"
     _inherit = 'mail.thread'
     _order = "id desc"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.'),
+    ]
 
     name = fields.Char(required=True,string="Title")
     description = fields.Text(string="Description of Property")
@@ -48,7 +52,8 @@ class EstateProperty(models.Model):
         string="Status",
         required=True,
         default="new",
-        copy=False
+        copy=False,
+        tracking=True
     )
     active = fields.Boolean(string="Active", default=True)
     property_type_id = fields.Many2one(
@@ -62,7 +67,8 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one(
         "res.users",
         string="Salesperson",
-        default=lambda self: self.env.user
+        default=lambda self: self.env.user,
+        tracking=True
     )
     tag_ids = fields.Many2many(
        "estate.property.tag",
@@ -70,7 +76,8 @@ class EstateProperty(models.Model):
     )
     offer_ids = fields.One2many(
         "estate.property.offer", "property_id",
-        string="Offers"
+        string="Offers",
+        tracking=True
     )
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
     company_id = fields.Many2one(
@@ -78,11 +85,7 @@ class EstateProperty(models.Model):
         required=True,
         default=lambda self: self.env.company
     )
-    #sql constraints
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.'),
-    ]
+    property_image = fields.Binary()
 
     # Compute Total Area
     @api.depends("living_area", "garden_area")

@@ -44,20 +44,27 @@
                         class="btn-secondary"
                         invisible="status in ('sold', 'cancelled')"/>
                     <field name="status" widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled "/>
+                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
                 <sheet>
-                    <h1 class="mb-2">
-                        <field name="name" placeholder="Enter property name..."/>
-                    </h1>
+                    <group>         
+                        <h1 class="mb-2">
+                            <field name="name" placeholder="Enter property name..."/>
+                        </h1>
+                        <group>
+                            <aside>
+                            <field name="property_image" widget="image" class="oe_avatar"/>
+                        </aside>
+                        </group> 
+                   </group>
                     <group>
                         <group>
-                            <field name="status" />
+                            <field name="status"/>
                             <field name="tag_ids" widget="many2many_tags" string="Property tags"
                                 options="{'color_field': 'color'}"/>
                             <field name="property_type_id" widget="many2one"
                                 options="{'no_create': True, 'no_create_edit': True}"/>
-                            <field name="postcode" />
+                            <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
@@ -70,7 +77,7 @@
                         <page string="description">
                             <group>
                                 <field name="description"/>
-                                <field name="bedrooms" />
+                                <field name="bedrooms"/>
                                 <field name="living_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
@@ -137,24 +144,29 @@
             <field name="status" invisible="1"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="mb-2">
-                            <h3>
-                                <field name="name"/>
-                            </h3>
-                            <div>
-                                <span>Expected Price: </span>
-                                <field name="expected_price"/>
+                        <div class=" row mb-2">
+                            <div class="col-8">
+                                <h3>
+                                    <field name="name"/>
+                                </h3>
+                                <div>
+                                    <span>Expected Price: </span>
+                                    <field name="expected_price"/>
+                                </div>
+                                <div t-if="record.status.raw_value == 'offer_received'">
+                                    <span>Best Price: </span>
+                                    <field name="best_price"/>
+                                </div>
+                                <div t-if="record.status.raw_value == 'offer_accepted'">
+                                    <span>Selling Price : </span>
+                                    <field name="selling_price"/>
+                                </div>
+                                <field name="tag_ids" widget="many2many_tags" string="Tags"
+                                    options="{'color_field': 'color'}"/>
                             </div>
-                            <div t-if="record.status.raw_value == 'offer_received'">
-                                <span>Best Price: </span>
-                                <field name="best_price"/>
+                            <div class="col-4 text-end"> 
+                                <field name="property_image" widget="image"/>
                             </div>
-                            <div t-if="record.status.raw_value == 'offer_accepted'">
-                                <span>Selling Price : </span>
-                                <field name="selling_price"/>
-                            </div>
-                            <field name="tag_ids" widget="many2many_tags" string="Tags"
-                                options="{'color_field': 'color'}"/>
                         </div>
                     </t>
                 </templates>
