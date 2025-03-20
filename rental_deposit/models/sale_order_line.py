@@ -10,7 +10,7 @@ class SaleOrderLine(models.Model):
         """Create deposit lines automatically for products that require a deposit."""
         lines = super().create(vals_list)
 
-        deposit_product_id = self.env['ir.config_parameter'].sudo().get_param('rental_deposit.deposit_product_id')
+        deposit_product_id = self.env['ir.config_parameter'].get_param('rental_deposit.deposit_product_id')
         if not deposit_product_id:
             raise UserError(_("Please select deposit product from configuration"))
 
@@ -38,7 +38,7 @@ class SaleOrderLine(models.Model):
         """Update deposit lines when the main product quantity changes."""
         lines = super().write(vals_list)
 
-        deposit_product_id = self.env['ir.config_parameter'].sudo().get_param('rental_deposit.deposit_product_id')
+        deposit_product_id = self.env['ir.config_parameter'].get_param('rental_deposit.deposit_product_id')
         if not deposit_product_id:
             raise UserError(_("Please select a deposit product from configuration."))
 
