@@ -75,6 +75,7 @@ class EstateModel(models.Model):
         required=True,
         default=lambda self: self.env.user.company_id,
     )
+    image = fields.Image(string="Property Image")
 
     _sql_constraints = [
         (
