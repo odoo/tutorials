@@ -5,7 +5,6 @@ from odoo.osv import expression
 
 
 class Partner(models.Model):
-	_name = 'res.partner'
 	_inherit = 'res.partner'
 
 	

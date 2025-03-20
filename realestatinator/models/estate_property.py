@@ -1,7 +1,7 @@
 from odoo import api, exceptions, fields, models
 
 class EstatePropery(models.Model):
-	_name = 'estate_property'
+	_name = 'estate.property'
 	_description = 'real estate property'
 	_order = 'id desc'
 	_sql_constraints = [
@@ -10,26 +10,31 @@ class EstatePropery(models.Model):
 	]
 
 
-	sequence = fields.Integer('Sequence', default=0)
 	name = fields.Char('Title', required=True)
+	active = fields.Boolean('Active', default=False)	
+	bedrooms = fields.Integer('Bedrooms', default=2)
+	best_price = fields.Float('Best Offer', compute='_compute_best_price')
+	buyer = fields.Many2one('res.partner', string='Buyer', copy=False)
 	description = fields.Text('Description')
-	postcode = fields.Char('Postcode')
 	date_availability = fields.Date('Available Date', copy=False, default=fields.Date.add(fields.Date.today(), months=+3))
 	expected_price = fields.Float('Expected Price')
-	selling_price = fields.Float('Selling Price', readonly=True, copy=False)
-	bedrooms = fields.Integer('Bedrooms', default=2)
-	living_area = fields.Integer('Living Area')
 	facades = fields.Integer('Facades')
 	garage = fields.Boolean('Garage')
 	garden = fields.Boolean('Garden')
 	garden_area = fields.Integer('Garden Area')
 	garden_orientation = fields.Selection(string='Garden Orientation', selection=[
-		('N', 'North'), 
-		('S', 'South'), 
-		('E', 'East'), 
-		('W', 'West')
+		('north', 'North'), 
+		('south', 'South'), 
+		('east', 'East'), 
+		('west', 'West')
 	])
-	active = fields.Boolean('Active', default=False)	
+	living_area = fields.Integer('Living Area')
+	offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
+	postcode = fields.Char('Postcode')
+	property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+	sales_person = fields.Many2one('res.users', string='Sales Person', default=lambda self: self.env.user)
+	selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+	sequence = fields.Integer('Sequence', default=0)
 	state = fields.Selection(string='State', selection=[
 		('new', 'New'),
 		('offer_received', 'Offer Received'),
@@ -37,13 +42,8 @@ class EstatePropery(models.Model):
 		('sold', 'Sold'),
 		('cancelled', 'Cancelled')
 	], default='new')
-	property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-	buyer = fields.Many2one('res.partner', string='Buyer', copy=False)
-	sales_person = fields.Many2one('res.users', string='Sales Person', default=lambda self: self.env.user)
 	tag_ids = fields.Many2many('estate.property.tags', string='Tags')
-	offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
 	total_area = fields.Integer('Total Area', readonly=True, compute='_compute_total_area')
-	best_price = fields.Float('Best Offer', compute='_compute_best_price')
 
 	@api.depends('living_area', 'garden_area')
 	def _compute_total_area(self):
@@ -63,8 +63,8 @@ class EstatePropery(models.Model):
 			# record.garden_area = 10 if record.garden else 0
 
 			if record.garden:
-				if record.garden_orientation not in ['N', 'E', 'W', 'S']:
-					record.garden_orientation = 'N'
+				if record.garden_orientation not in ['north', 'east', 'west', 'south']:
+					record.garden_orientation = 'north'
 				if record.garden_area == 0:
 					record.garden_area = 10
 			else:

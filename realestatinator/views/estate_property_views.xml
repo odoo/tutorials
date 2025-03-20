@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <odoo>
 	<record id="estate_property_model_action" model="ir.actions.act_window">
-		<field name="name">Estate Property Model Action</field>
-		<field name="res_model">estate_property</field>
+		<field name="name">estate.property.model.action</field>
+		<field name="res_model">estate.property</field>
 		<field name="view_mode">kanban,list,form</field>
 		<field name="context">{'search_default_available': True}</field>
 	</record>
 	<record id="estate_property_view_kanban" model="ir.ui.view">
 		<field name='name'>estate.property.view.kanban</field>
-		<field name='model'>estate_property</field>
+		<field name='model'>estate.property</field>
 		<field name="arch" type="xml">
-			<kanban string='Properties' default_group_by='state' group_edit="True" groups_draggable="True" records_draggable="False" default_order="sequence">
+			<kanban string='Properties' default_group_by='state' group_edit="True" groups_draggable="True" records_draggable="False">
 				<templates>
 					<t t-name="card">
 						<div>
@@ -24,7 +24,7 @@
 								<field name='state' invisible="1"/>
 								<br/>
 							</t>
-							<t name='selling_price' t-if='record.state.raw_value == "offer_accepted" or record.state.raw_value == "sold"'>
+							<t name='selling_price' t-if='record.state.raw_value in ["offer_accepted", "sold"]'>
 								<label for='selling_price'>Selling Price : </label>
 								<field name='selling_price'/>
 								<field name='state' invisible="1"/>
@@ -36,12 +36,12 @@
 			</kanban>
 		</field>
 	</record>
-	<record id="estate_property_model_list" model="ir.ui.view">
-		<field name="name">estate_property_list</field>
-		<field name="model">estate_property</field>
+	<record id="estate_property_view_list" model="ir.ui.view">
+		<field name="name">estate.property.view.list</field>
+		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
 			<list string='Properties' 
-				decoration-success="state == 'offer_received' or state == 'offer_accepted'" 
+				decoration-success="state in ['offer_received', 'offer_accepted']" 
 				decoration-bf="state == 'offer_accepted'"
 				decoration-muted="state == 'sold' or state == 'cancelled'"
 			>
@@ -68,9 +68,9 @@
 					<page name='properties' string='properties'>
 						<field name='property_ids'>
 							<list string='Properties' 
-								decoration-success="state == 'offer_received' or state == 'offer_accepted'" 
+								decoration-success="state in ['offer_received', 'offer_accepted']" 
 								decoration-bf="state == 'offer_accepted'"
-								decoration-muted="state == 'sold' or state == 'cancelled'"
+								decoration-muted="state in ['sold', 'cancelled']"
 							>
 								<field name='name'/>
 								<field name='property_type_id' options="{'no_create': true}"/>
@@ -98,9 +98,9 @@
 				<page name='properties' string='properties'>
 					<field name='property_ids'>
 						<list string='Properties' 
-							decoration-success="state == 'offer_received' or state == 'offer_accepted'" 
+							decoration-success="state in ['offer_received', 'offer_accepted']" 
 							decoration-bf="state == 'offer_accepted'"
-							decoration-muted="state == 'sold' or state == 'cancelled'"
+							decoration-muted="state in ['sold', 'cancelled']"
 						>
 							<field name='name'/>
 							<field name='property_type_id' options="{'no_create': true}"/>
@@ -118,14 +118,14 @@
 			</xpath>
 		</field>
 	</record>
-	<record id='estate_property_model_form' model='ir.ui.view'>
-		<field name="name">estate_property_list</field>
-		<field name="model">estate_property</field>
+	<record id='estate_property_view_form' model='ir.ui.view'>
+		<field name="name">estate.property.view.form</field>
+		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
 			<form>
 				<header>
 					<button name='mark_sold' type='object' string='Sell' invisible="state != 'offer_accepted'"/>
-					<button name='mark_cancelled' type='object' string='Cancel' invisible="state == 'sold' or state == 'cancelled'"/>
+					<button name='mark_cancelled' type='object' string='Cancel' invisible="state in ['sold', 'cancelled']"/>
 					<field name='state' widget='statusbar' statusbar_visible='new, offer_received, offer_accepted, sold'/>
 				</header>
 				<h1><field name='name'/></h1>
@@ -158,7 +158,7 @@
 						</group>
 					</page>
 					<page string='Offers'>
-						<field name='offer_ids' readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'"/>
+						<field name='offer_ids' readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
 					</page>
 					<page string='Other'>
 						<group>
@@ -172,9 +172,9 @@
 			</form>
 		</field>
 	</record>
-	<record id="estate_property_model_search" model="ir.ui.view">
-		<field name="name">estate_property_list</field>
-		<field name="model">estate_property</field>
+	<record id="estate_property_view_search" model="ir.ui.view">
+		<field name="name">estate.property.view.search</field>
+		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
 			<search string='Search Properties'>
 				<field name='name'/>
@@ -187,7 +187,7 @@
 				<field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
 				<separator/>
 				<filter string="Include archived" name="archived" domain="['|', ('active', '=', True), ('active', '=', False)]"/>
-				<filter string="Available Properties" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+				<filter string="Available Properties" name="available" domain="['|', ('state', 'in', ['new', 'offer_received'])]"/>
 				<separator/>
 				<filter string='State' name='state' context="{'group_by':'state', 'residual_visible':True}"/>
 				<filter string='Postcode' name='postcode' context="{'group_by':'postcode', 'residual_visible':True}"/>

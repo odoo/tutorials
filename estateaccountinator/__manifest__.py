@@ -2,7 +2,7 @@
 	'name': 'estate-accountinator',
 	'description': 'Inator that helps you do accounting on real estate',
 	'category': 'Tutorials/Accountinator',
-	'author': 'Prout!',
+	'author': 'gato',
 	'depends': [
 		'realestatinator',
 		'account',
