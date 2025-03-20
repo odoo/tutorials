@@ -95,8 +95,8 @@ class PropertyOffer(models.Model):
         if highest_offer and vals_list['price'] <= highest_offer.price:
             raise UserError(_("The new offer must be higher than the existing offers."))
 
-        if property.state == 'new':
-            property.state = 'offer_received'
+            if property.state == 'new':
+                property.state = 'offer_received'
 
         return super(PropertyOffer, self).create(vals_list)
 

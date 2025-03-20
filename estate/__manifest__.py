@@ -24,7 +24,7 @@
 
         'views/estate_user/forms.xml',
 
-        'views/estate_property/views.xml',
+        'views/estate_property_views.xml',
     ],
     'demo': [
     ],
