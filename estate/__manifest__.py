@@ -2,6 +2,7 @@
     'name': 'Real Estate',
     'category': 'Tutorials/RealEstate',
     'icon': '/estate/static/src/img/estate.png',
+    'category': 'Real Estate/Brokerage',
     'version': '1.0',
     'application': True,
     'installable': True,
@@ -11,8 +12,14 @@
         'base',
         'website'
     ],
+    'demo': [
+        'demo/estate_property_tag.xml',
+        'demo/estate_property_type.xml',
+        'demo/estate_partners.xml',
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml'
+    ],  
     'data': [
-        'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
@@ -22,13 +29,8 @@
         'report/estate_website.xml',
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
-    ],  
-    'demo': [
-        'demo/estate_property_tag.xml',
-        'demo/estate_property_type.xml',
-        'demo/estate_partners.xml',
-        'demo/estate_property.xml',
-        'demo/estate_property_offer.xml'
+        'security/security.xml',
+        'security/ir.model.access.csv',
     ],  
     'controllers': ['controllers/estate_property_controller.py'],
 }

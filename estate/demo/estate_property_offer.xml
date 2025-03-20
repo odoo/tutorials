@@ -103,4 +103,3 @@
         <value eval="[ref('estate_offer_9')]"/>
     </function>
 </odoo>
-

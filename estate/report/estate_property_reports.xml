@@ -19,5 +19,4 @@
         <field name="binding_model_id" ref="base.model_res_users" />
         <field name="binding_type">report</field>
     </record>
-
 </odoo>

@@ -134,6 +134,7 @@
                                 <group>
                                     <field name="sales_person_ids" />
                                     <field name="buyer_id" />
+                                    <field name="company_id" />
                                 </group>
                             </page>
                         </notebook>

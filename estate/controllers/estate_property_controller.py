@@ -46,13 +46,11 @@ class EstatePropertyController(http.Controller):
         property = request.env['estate.property'].browse(property_id)
 
         if property.exists():
-            # Create an offer record
             request.env['estate.property.offer'].create({
                 'property_id': property_id,
-                'partner_id': request.env.user.partner_id.id,  # Links to the logged-in user
+                'partner_id': request.env.user.partner_id.id,
                 'price': offer_price,
                 'validity': int(post.get('validity'))
             })
 
         return request.redirect('/property/%s' %property_id)
-    

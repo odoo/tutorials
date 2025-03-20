@@ -4,11 +4,9 @@
         <field name="name">Luxury Villa</field>
         <field name="description">Discover a stunning property nestled in a prime location, offering modern amenities and elegant interiors. This home boasts spacious living areas, abundant natural light, and a thoughtfully designed layout. Perfect for families or investors, it provides comfort, convenience, and a touch of luxury. Don't miss the opportunity to own this exceptional property in a desirable neighborhood.</field>
         <field name="image" type="base64" file="estate/static/src/img/1.jpg"/>
-        <!-- <field name="status">offer_received</field> -->
         <field name="expected_price">500000</field>
         <field name="postcode">60006</field>
         <field name="selling_price">0</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="bedrooms">5</field>
         <field name="living_area">350</field>
         <field name="facades">3</field>
@@ -24,10 +22,8 @@
         <field name="name">Modern Apartment</field>
         <field name="description">Discover a stunning property nestled in a prime location, offering modern amenities and elegant interiors. This home boasts spacious living areas, abundant natural light, and a thoughtfully designed layout. Perfect for families or investors, it provides comfort, convenience, and a touch of luxury. Don't miss the opportunity to own this exceptional property in a desirable neighborhood.</field>
         <field name="image" type="base64" file="estate/static/src/img/2.jpg"/>
-        <!-- <field name="status">offer_accepted</field> -->
         <field name="expected_price">350000</field>
         <field name="postcode">60006</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="selling_price">0</field>
         <field name="bedrooms">3</field>
         <field name="buyer_id" ref="res_partner_13"/>
@@ -43,10 +39,8 @@
         <field name="name">Suburban House</field>
         <field name="description">Discover a stunning property nestled in a prime location, offering modern amenities and elegant interiors. This home boasts spacious living areas, abundant natural light, and a thoughtfully designed layout. Perfect for families or investors, it provides comfort, convenience, and a touch of luxury. Don't miss the opportunity to own this exceptional property in a desirable neighborhood.</field>
         <field name="image" type="base64" file="estate/static/src/img/3.jpg"/>
-        <!-- <field name="status">offer_accepted</field> -->
         <field name="expected_price">250000</field>
         <field name="selling_price">0</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="bedrooms">4</field>
         <field name="postcode">90009</field>
         <field name="living_area">180</field>
@@ -64,10 +58,8 @@
         <field name="name">Beachside Condo</field>
         <field name="description">Discover a stunning property nestled in a prime location, offering modern amenities and elegant interiors. This home boasts spacious living areas, abundant natural light, and a thoughtfully designed layout. Perfect for families or investors, it provides comfort, convenience, and a touch of luxury. Don't miss the opportunity to own this exceptional property in a desirable neighborhood.</field>
         <field name="image" type="base64" file="estate/static/src/img/4.jpg"/>
-        <!-- <field name="status">offer_received</field> -->
         <field name="expected_price">700000</field>
         <field name="selling_price">0</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="bedrooms">2</field>
         <field name="postcode">11011</field>
         <field name="living_area">100</field>
@@ -82,12 +74,10 @@
         <field name="name">Country Bungalow</field>
         <field name="description">Discover a stunning property nestled in a prime location, offering modern amenities and elegant interiors. This home boasts spacious living areas, abundant natural light, and a thoughtfully designed layout. Perfect for families or investors, it provides comfort, convenience, and a touch of luxury. Don't miss the opportunity to own this exceptional property in a desirable neighborhood.</field>
         <field name="image" type="base64" file="estate/static/src/img/5.jpg"/>
-        <!-- <field name="status">offer_accepted</field> -->
         <field name="expected_price">450000</field>
         <field name="selling_price">0</field>
         <field name="buyer_id" ref="res_partner_13"/>
         <field name="postcode">13013</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="bedrooms">4</field>
         <field name="living_area">150</field>
         <field name="facades">2</field>
@@ -106,7 +96,6 @@
         <field name="postcode">60006</field>
         <field name="expected_price">1250000</field>
         <field name="bedrooms">4</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="living_area">150</field>
         <field name="facades">3</field>
         <field name="garage">1</field>
@@ -125,7 +114,6 @@
         <field name="postcode">70007</field>
         <field name="expected_price">1800000</field>
         <field name="bedrooms">5</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="living_area">200</field>
         <field name="facades">2</field>
         <field name="garage">1</field>
@@ -145,7 +133,6 @@
         <field name="expected_price">2500000</field>
         <field name="bedrooms">3</field>
         <field name="living_area">180</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="facades">2</field>
         <field name="garage">1</field>
         <field name="garden">0</field>
@@ -164,7 +151,6 @@
         <field name="living_area">120</field>
         <field name="facades">2</field>
         <field name="garage">0</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="garden">0</field>
         <field name="status">new</field>
         <field name="tags_ids" eval="[(4, ref('estate_tag_6'))]"/>
@@ -180,7 +166,6 @@
         <field name="bedrooms">6</field>
         <field name="living_area">250</field>
         <field name="facades">3</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="garage">1</field>
         <field name="garden">1</field>
         <field name="garden_area">300</field>
@@ -199,7 +184,6 @@
         <field name="bedrooms">4</field>
         <field name="living_area">140</field>
         <field name="facades">2</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="garage">1</field>
         <field name="garden">1</field>
         <field name="garden_area">180</field>
@@ -217,7 +201,6 @@
         <field name="expected_price">2300000</field>
         <field name="bedrooms">6</field>
         <field name="living_area">350</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="facades">4</field>
         <field name="garage">1</field>
         <field name="garden">1</field>
@@ -235,7 +218,6 @@
         <field name="postcode">13013</field>
         <field name="expected_price">350000</field>
         <field name="bedrooms">2</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="living_area">80</field>
         <field name="facades">1</field>
         <field name="garage">0</field>
@@ -254,7 +236,6 @@
         <field name="postcode">14014</field>
         <field name="expected_price">2000000</field>
         <field name="bedrooms">3</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="living_area">170</field>
         <field name="facades">1</field>
         <field name="garage">1</field>
@@ -274,7 +255,6 @@
         <field name="living_area">140</field>
         <field name="facades">2</field>
         <field name="garage">1</field>
-        <field name="sales_person_ids" ref="base.user_admin" />
         <field name="garden">1</field>
         <field name="garden_area">180</field>
         <field name="garden_orientation">north</field>
@@ -283,4 +263,3 @@
         <field name="property_ids" ref="estate_property_type_bungalow"/>
     </record>
 </odoo>
-

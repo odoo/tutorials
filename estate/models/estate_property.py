@@ -26,7 +26,7 @@ class estate_property(models.Model):
     status = fields.Selection([('new','New'),('offer_received' , 'Offer Recieved'),('offer_accepted','Offer Accepted'),('sold','Sold'),('cancelled','Cancelled')], default="new")
     property_ids = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one("res.partner", copy=False)
-    sales_person_ids = fields.Many2one("res.users", string="Salesman", default = lambda self: self.env.user)
+    sales_person_ids = fields.Many2one("res.users", string="Salesman")
     tags_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many('estate.property.offer','property_id', string='Properties')
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total")
@@ -80,7 +80,6 @@ class estate_property(models.Model):
         for record in self:
             if record.status not in ['new', 'cancelled']:
                 raise UserError("You can't delete a property which is not in new or cancelled status.")
-        return super().unlink()
     
     def copy(self, default=None):
         new_allocations = super().copy(default)
