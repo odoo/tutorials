@@ -53,7 +53,15 @@ class Property(models.Model):
 
     total_area = fields.Float("Total area (sqm)", compute="_compute_area")
     best_price = fields.Float("Best price", compute="_compute_best_price")
-    
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_price(self):
+        for record in self:
+            if record.selling_price and record.expected_price and not tools.float_utils.float_is_zero(record.selling_price, precision_digits=2):
+                if record.selling_price < 0.9 * record.expected_price:
+                    raise exceptions.ValidationError(
+                        "The selling price cannot be lower than 90% of the expected price.")
+
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
         for record in self:
@@ -89,14 +97,8 @@ class Property(models.Model):
                 raise exceptions.UserError(
                     "Sold properties cannot be canceled.")
 
-    @api.constrains("expected_price", "selling_price")
-    def _check_price(self):
-        for record in self:
-            if record.selling_price and record.expected_price and not tools.float_utils.float_is_zero(record.selling_price, precision_digits=2):
-                if record.selling_price < 0.9 * record.expected_price:
-                    raise exceptions.ValidationError(
-                        "The selling price cannot be lower than 90% of the expected price.")
-                
+    def hello_seru(self):
+        print("I'm a conflict in your branch")
 
     @api.ondelete(at_uninstall=False)
     def _not_delete_if_not_new_or_canceled(self):
