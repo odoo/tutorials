@@ -49,12 +49,7 @@
                 </group>
 
                 <sheet>
-                    <div class="oe_button_box" name = "button_box">
-                        <button name="%(action_report_property_offers)d"
-                            string="Print Offers"
-                            type="action"
-                            class="oe_stat_button" />
-                    </div>
+            
                     <group>
                         <group>
                             <field name="name" placeholder="Name" />

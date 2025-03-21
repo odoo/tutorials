@@ -80,8 +80,12 @@ class EstateProperty(models.Model):
             self.garden_orientation=False
 
     def action_sold(self):
-        if self.state != "cancelled":
+        if self.state != "cancelled" and self.state == "offer_accepted" :
             self.state = "sold"
+
+        elif self.state != "offer_accepted":
+            raise UserError("without offer accept properties cannot be set as Sold")
+            
         else:
             raise UserError("Cancelled properties cannot be set as Sold")
         return True

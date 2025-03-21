@@ -21,7 +21,7 @@
                     icon="fa-check" invisible="state not in ('new')" />
                 <button name="refuse_offer" type="object" string="Refuse"
                     icon="fa-times" invisible="state not in ('new')" />
-                <field name="state" />
+    
             </list>
         </field>
     </record>

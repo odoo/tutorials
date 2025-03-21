@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_detailed" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row">
+
+                    <div class="col-md-12">
+                        <div class="card shadow-sm border-0 p-3">
+                            <div class="row align-items-center">
+                                <!-- Left: Image -->
+                                <div class="col-md-4">
+                                    <div class="position-relative">
+                                        <img t-if="property.image"
+                                            t-att-src="image_data_uri(property.image)"
+                                            class="img-fluid rounded"
+                                            style="width:100%; height:250px; object-fit:cover;" />
+                                        <span
+                                            class="badge badge-dark position-absolute bottom-0 end-0 p-2"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Right: Property Details -->
+                                <div class="col-md-8">
+                                    <h2 class="text-dark text-center">
+                                        <t t-esc="property.name" />
+                                    </h2>
+
+
+                                    <div class="d-flex align-items-center bg-light p-2 rounded mt-2">
+                                        <span class="me-4"><t t-esc="property.bedrooms or 'N/A'" />
+                                            Bedrooms</span>
+
+                                        <span class="me-4"><t t-esc="property.facades or 'N/A'" />
+                                            facades</span>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-4">
+                                            <small class="text-muted">living Area</small>
+                                            <h6 class="text-success"><t
+                                                    t-esc="property.living_area or 'N/A'" /> sqft</h6>
+                                        </div>
+
+                                        <div class="col-4">
+                                            <small class="text-muted">Price</small>
+                                            <h6 class="text-success">₹ <t
+                                                    t-esc="property.expected_price or 'N/A'" /></h6>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-4">
+                                            <small class="text-muted">garden</small>
+                                            <h6 class="text-success">
+                                                <t
+                                                    t-esc="property.garden or 'N/A'" />
+                                            </h6>
+                                        </div>
+                                        <div class="col-4">
+                                            <small class="text-muted">Status</small>
+                                            <h6 class="text-success">
+                                                <t
+                                                    t-esc="property.state or 'N/A'" />
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="border border-1 border-dark"></hr>
+                            <div class="col-12 text-center">
+                                <div
+                                    style="display: inline-block; min-width: 120px; min-height: 40px; padding: 5px 15px; border-radius: 50px; background-color: rgb(102, 64, 102); color: white; text-align: center; font-size: 16px; line-height: 30px;">
+                                    <h5 class="m-0">Description</h5>
+                                </div>
+                                
+                                <h6 class="text-center text-muted" style="margin: 15px 30px">
+                                    <t
+                                        t-esc="property.description or 'N/A'" />
+                                </h6>
+                            </div>
+                            <hr class="border border-1 border-dark"></hr>
+                            <div class="col-12 text-center">
+                                <div
+                                    style="display: inline-block; min-width: 120px; min-height: 40px; padding: 5px 15px; border-radius: 50px; background-color: rgb(102, 64, 102); color: white; text-align: center; font-size: 16px; line-height: 30px;">
+                                    <h5 class="m-0">Offer</h5>
+                                </div>
+                                <t t-if="property.offer_ids">
+                                    <table class="table">
+                                        <thead>
+                                            <hr />
+                                            <tr>
+                                                <th style="font-weight: bold;">Price</th>
+                                                <th style="font-weight: bold;">Partner</th>
+                                                <th style="font-weight: bold;"> Validity (days)</th>
+                                                <th style="font-weight: bold;">Deadline</th>
+                                                <th style="font-weight: bold;">State</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr t-foreach="property.offer_ids" t-as="offer">
+                                                <td>
+                                                    <span t-field="offer.price" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.partner_id" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.validity" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.date_deadline" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.state" />
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </t>
+                                <t t-else="">
+                                    <p class="text-muted text-center">
+                                        <i>No offers yet for this property.</i>
+                                    </p>
+                                </t>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

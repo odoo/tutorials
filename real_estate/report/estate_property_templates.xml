@@ -3,29 +3,7 @@
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
-              
-                     <div>
-                        <t t-if="property.company_id.logo">
-                            <img t-att-src="'data:image/png;base64,%s' % property.company_id.logo.decode('utf-8')" 
-                                 style="max-width: 200px; max-height: 200px;" />
-                        </t>
-                        <p t-field="property.company_id.name" />
-                        <p>
-                            <strong>Address:</strong>
-                            <span t-field="property.company_id.street" />
-                            <span t-field="property.company_id.city" />
-                        </p>
-                        <p>
-                            <strong>Email:</strong>
-                            <span t-field="property.company_id.email" />
-                        </p>
-                        <p>
-                            <strong>Phone:</strong>
-                            <span t-field="property.company_id.phone" />
-                        </p>
-                        <br/>
-                    
-                    </div>
+
                     <div class="page">
                         <div>
                             <h2>

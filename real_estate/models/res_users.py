@@ -12,4 +12,3 @@ class InheritResUsers(models.Model):
         domain=[('state' , 'in' ,['new'])]
     )
 
-    

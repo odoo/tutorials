@@ -13,7 +13,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True, ondelete="cascade")
     price = fields.Float(string="Price", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
-    date_deadline = fields.Date(string="Deadline", store=True)
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline",string="Deadline")
     state = fields.Selection([
         ('new', 'New'),
         ('accepted', 'Accepted'),
@@ -23,28 +23,26 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
 
-    validity= fields.Integer(string="Valid", default=7)
-    date_deadline= fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline",string="Offer Deadline ", default=date.today()+relativedelta(days=7))
-
     property_type_id = fields.Many2one("estate.property.type", string="Property Type", related="property_id.property_type_id",
         store=True,
         readonly=True)
 
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0 )',
-         'An offer price must be strictly positive')
+         'An offer price must be strictly positive'),
+          ('check_valid', 'CHECK(validity > 0 )',
+         'An validity must be strictly positive')
     ]
-
-    @api.depends("date_deadline")
-    def _inverse_date_deadline(self):
-        for record in self:
-            record.validity = (record.date_deadline-record.create_date.date()).days
-
 
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
-            record.date_deadline = record.create_date.date() + relativedelta(days=+(record.validity))
+            record.date_deadline = date.today() + relativedelta(days=(record.validity))
+
+    
+    def _inverse_date_deadline(self):
+        for record in self:
+            record.validity = (record.date_deadline-record.create_date.date()).days
 
     def accept_offer(self):
         for record in self:
@@ -84,3 +82,4 @@ class EstatePropertyOffer(models.Model):
                 property.state = "offer_received"
 
         return super().create(vals_list)
+        

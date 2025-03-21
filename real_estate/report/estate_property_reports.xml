@@ -5,6 +5,8 @@
     <field name="model">estate.property</field>
     <field name="report_type">qweb-pdf</field>
     <field name="report_name">real_estate.report_property_offers</field>
+    <field name="binding_model_id" ref="model_estate_property"/>
+    <field name="binding_type">report</field>
 </record>
 
 </odoo>

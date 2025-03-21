@@ -1,7 +1,7 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['base','website'],
     'license':'LGPL-3',
     'author': "Ajay Karma",
     'category': 'sales',
@@ -18,6 +18,9 @@
         'report/estate_property_reports.xml',
         'views/estate_property.xml',
         "views/res_users_view.xml",
+        "views/estate_website.xml",
+        'views/estate_property_template.xml',
+        "views/estate_property_detailed.xml",
         'views/estate_menus.xml',
     ],
     'demo':[
@@ -27,4 +30,6 @@
         'demo/estate_property_offer.xml',
 
     ],
+
 }
+
