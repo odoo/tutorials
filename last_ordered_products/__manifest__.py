@@ -8,6 +8,7 @@
     Show last ordered products for customers in sale order and for vendors in purchase order
     """,
     'data': [
+        'data/last_ordered_products_tour.xml',
         'views/account_move_form.xml',
         'views/sale_order_form.xml',
         'views/purchase_order_form.xml',
