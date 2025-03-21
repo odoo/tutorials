@@ -2,24 +2,24 @@ from odoo import models
 from odoo.exceptions import UserError, ValidationError
 
 
-class PurchaseOrderInherit(models.Model):
-    _name = "purchase.order"
-    _inherit = ["purchase.order", "barcodes.barcode_events_mixin"]
+class SaleOrderInherit(models.Model):
+    _name = "sale.order"
+    _inherit = ["sale.order", "barcodes.barcode_events_mixin"]
 
     def on_barcode_scanned(self, barcode):
         self.ensure_one()
-        print("Barcode scanned in Purchase Order:", barcode)
+        print("Barcode scanned in Sale Order:", barcode)
 
-        # Step 1: Validate if the purchase order exists (order_id should not be empty)
+        # Step 1: Validate if the sale order exists (order_id should not be empty)
         if not self._origin.id:
             raise UserError(
-                "Purchase Order is not created. Please create a purchase order first."
+                "Sale Order is not created. Please create a sale order first."
             )
 
-        # Step 2: Check if the purchase order state is 'cancel' or 'done', raise an error if so
-        if self.state in ["cancel", "done"]:
+        # Step 2: Check if the sale order state is 'cancel', raise an error if so
+        if self.state == "cancel":
             raise UserError(
-                "This purchase order is either canceled or locked. You cannot add any more products."
+                "This sale order is canceled. You cannot add any more products."
             )
 
         # Step 3: Try to find the product using the barcode
@@ -38,23 +38,21 @@ class PurchaseOrderInherit(models.Model):
             first_line = order_line[
                 0
             ]  # Get the first line if there are multiple lines for the same product
-            first_line.product_qty += 1
+            first_line.product_uom_qty += 1
         else:
-            # Create a new purchase order line with the scanned product
+            # Create a new sale order line instance with the scanned product
             new_line = self.env[
-                "purchase.order.line"
+                "sale.order.line"
             ].new(
                 {
-                    "order_id": self._origin.id,  # Use the original Purchase Order ID (from _origin)
+                    "order_id": self._origin.id,  # Use the original Sale Order ID (from _origin)
                     "product_id": product.id,
-                    "product_qty": 1,  # Start with a quantity of 1
+                    "product_uom_qty": 1,  # Start with a quantity of 1
                     "price_unit": product.list_price,  # Or another price field as needed
-                    "name": product.name,  # Set the mandatory 'name' field (description)
-                    "product_uom": product.uom_id.id,  # Set the valid unit of measure
                 }
             )
 
-            # Add the new line to the purchase order dynamically
+            # Add the new line to the sale order dynamically
             self.write(
                 {
                     "order_line": [
@@ -62,5 +60,6 @@ class PurchaseOrderInherit(models.Model):
                     ]  # This adds the new line dynamically to the order
                 }
             )
+            print("Inside else statement!")
 
-        print("Purchase order line updated with product:", product.name)
+        print("Sales order line updated with product:", product.name)
