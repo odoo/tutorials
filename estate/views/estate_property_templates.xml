@@ -7,6 +7,12 @@
         </xpath>
     </template>
 
+    <template id="property_listing_new_property" name="Create New Property" inherit_id="portal.user_dropdown">
+        <xpath expr="//a[@t-attf-href='/web/session/logout?redirect=/']" position="before">
+            <a class="dropdown-item ps-3" href="/create_new_property">List Property</a>
+        </xpath>
+    </template>
+
     <template id="property_listing_home_page" name="Home Page">
         <t t-call="website.layout">
             <t t-set="title">Elite Estate Hub - Your Dream Home Awaits</t>
@@ -278,9 +284,18 @@
                                             <t t-esc="agent.name"/>
                                         </h5>
                                         <p class="text-muted">
-                                            <t t-set="group_name" 
-                                               t-value="'Manager' if request.env.ref('estate.estate_group_manager') in agent.groups_id else 'Agent'"/>
-                                            <t t-esc="group_name"/>
+                                            <p class="text-muted">
+                                                <t t-if="agent.has_group('estate.estate_group_manager')">
+                                                    <t t-set="group_name" t-value="'Manager'" />
+                                                </t>
+                                                <t t-elif="agent.has_group('estate.estate_group_user')">
+                                                    <t t-set="group_name" t-value="'Agent'" />
+                                                </t>
+                                                <t t-else="">
+                                                    <t t-set="group_name" t-value="'User'" />
+                                                </t>
+                                                <t t-esc="group_name"/>
+                                            </p>
                                         </p>
                                     </div>
                                 </div>
@@ -625,4 +640,165 @@
             </div>
         </div>
     </template>
+
+    <template id="property_listing_create_new_property" name="Create New Property">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-3">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="card shadow-lg border-0 rounded-4">
+                            <div class="card-header bg-gradient text-primary text-center py-4"
+                                 style="background: linear-gradient(135deg, #007bff, #0056b3);">
+                                <h2 class="fw-bold mb-0">🏡 List Your Property</h2>
+                            </div>
+
+                            <div class="card-body p-4">
+                                <form id="propertyForm" action="/create_property" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                                    <div class="mb-3 text-center">
+                                        <label for="imageUpload" class="form-label fw-bold">Upload Property Image</label>
+                                        <input type="file" id="imageUpload" name="image" accept="image/"
+                                               class="form-control form-control-lg rounded-3" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="propertyName" class="form-label">Property Name</label>
+                                        <input type="text" id="propertyName" name="name" required="true"
+                                               class="form-control form-control-lg rounded-3" />
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="postcode" class="form-label">Postcode</label>
+                                        <input type="text" id="postcode" name="postcode" required="true"
+                                               class="form-control form-control-lg rounded-3" />
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="propertyTypes" class="form-label">Property Type</label>
+                                            <select id="propertyTypes" name="property_type_ids" required="true"
+                                                    class="form-select form-select-lg rounded-3">
+                                                <t t-foreach="property_types" t-as="ptype">
+                                                    <option t-att-value="ptype.id"><t t-esc="ptype.name"/></option>
+                                                </t>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-6">
+                                            <label for="propertyTags" class="form-label">Property Tags</label>
+                                            <select id="propertyTags" name="property_tag_ids"
+                                                class="form-select form-select-lg rounded-3">
+                                                <t t-foreach="property_tags" t-as="tag">
+                                                    <option t-att-value="tag.id"><t t-esc="tag.name"/></option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3 mt-3">
+                                        <label for="availabilityDate" class="form-label">Availability Date</label>
+                                        <input type="date" id="availabilityDate" name="date_availability"
+                                               class="form-control form-control-lg rounded-3" />
+                                    </div>
+
+                                    <div class="mb-3 mt-3">
+                                        <label for="expectedPrice" class="form-label">Expected Price ($)</label>
+                                        <input type="number" id="expectedPrice" name="expected_price" required="true"
+                                               class="form-control form-control-lg rounded-3" />
+                                    </div>
+
+                                    <div class="mb-3 mt-3">
+                                        <label for="description" class="form-label">Property Description</label>
+                                        <textarea id="description" name="description" rows="3"
+                                                  class="form-control form-control-lg rounded-3" ></textarea>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label for="bedrooms" class="form-label">Bedrooms</label>
+                                            <input type="number" id="bedrooms" name="bedrooms"
+                                                   class="form-control form-control-lg rounded-3" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="livingArea" class="form-label">Living Area (sqft)</label>
+                                            <input type="number" id="livingArea" name="living_area"
+                                                   class="form-control form-control-lg rounded-3" />
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="facades" class="form-label">Facades</label>
+                                            <input type="number" id="facades" name="facades"
+                                                   class="form-control form-control-lg rounded-3" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mt-3">
+                                        <div class="col-md-4">
+                                            <label for="garage" class="form-label">Garage</label>
+                                            <select class="form-select form-select-lg rounded-3" id="garage" name="garage">
+                                                <option value="False">No</option>
+                                                <option value="True">Yes</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label for="garden" class="form-label">Garden</label>
+                                            <select class="form-select form-select-lg rounded-3" id="garden" name="garden">
+                                                <option value="False">No</option>
+                                                <option value="True">Yes</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-4" id="gardenDetails" style="display: none;">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="garden_orientation" class="form-label">Orientation</label>
+                                                    <select name="garden_orientation" id="garden_orientation"
+                                                            class="form-select form-select-lg rounded-3">
+                                                        <option value="north">North</option>
+                                                        <option value="south">South</option>
+                                                        <option value="west">West</option>
+                                                        <option value="east">East</option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <label for="gardenArea" class="form-label">Area (sqft)</label>
+                                                    <input type="number" id="gardenArea" name="garden_area"
+                                                        class="form-control form-control-lg rounded-3" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-check form-switch mt-4">
+                                        <input class="form-check-input" type="checkbox" id="isPublished" name="is_published"/>
+                                        <label class="form-check-label fw-bold" for="isPublished">Publish Property</label>
+                                    </div>
+
+                                    <div class="text-center mt-4">
+                                        <button type="submit" class="btn btn-lg btn-success shadow-sm px-5 py-2 rounded-pill">
+                                            🏡 Submit Property
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const gardenSelect = document.getElementById("garden");
+                    const gardenDetails = document.getElementById("gardenDetails");
+
+                    gardenSelect.addEventListener("change", function() {
+                        gardenDetails.style.display = this.value === "True" ? "block" : "none";
+                    });
+                });
+            </script>
+        </t>
+    </template>
+
 </odoo>
