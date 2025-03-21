@@ -9,11 +9,10 @@
 
     <record id="mt_property_sold" model="mail.message.subtype">
         <field name="name">Property Sold</field>
-        <field name="res_model">estate.propert y</field>
+        <field name="res_model">estate.property</field>
         <field name="default" eval="True"/>
         <field name="description">An estate property has been sold !</field>
     </record>
-
 
     <record id="estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
@@ -202,7 +201,6 @@
                             <div t-if="record.state.raw_value == 'offer_accepted'">
                                 <strong>Selling Price : </strong>
                                 <field name="selling_price"/> ₹ </div>
-
                             <t>
                                 <field name="tag_type_ids" widget="many2many_tags"
                                     options="{'color_field':'color'}"/>

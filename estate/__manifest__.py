@@ -22,7 +22,12 @@
         'views/estate_property_template.xml',
         'views/website_menu.xml',
         'views/estate_property_detail_template.xml',
+        'wizard/estate_add_offer_wizard_view.xml',
+        'report/offer_table.xml',
+        'report/estate_property_reports.xml',
+        'report/estate_property_report_template.xml',
         'data/estate.property.type.xml',
+        'report/user_property_report.xml',
     ],
     'demo':[
         'demo/estate.property.xml',

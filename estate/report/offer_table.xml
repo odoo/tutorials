@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="offer_table">
+        <h4>Offers:</h4>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Offer Price</th>
+                    <th>Buyer</th>
+                    <th>Offer Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="offers" t-as="offer">
+                    <td><span t-field="offer.price" /></td>
+                    <td><span t-field="offer.partner_id.name" /></td>
+                    <td><span t-field="offer.create_date" /></td>
+                    <td><span t-field="offer.status" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+</odoo>
