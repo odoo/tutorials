@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Inherit properties -->
+    <record id="view_users_form_inherit_properties" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.properties</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Properties">
+                    <field name="property_ids" context="{'default_user_id': uid}">
+                        <list>
+                            <field name="name"/>
+                            <field name="state"/>
+                            <field name="expected_price"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
