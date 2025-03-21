@@ -6,8 +6,8 @@
                 <div class="row mt-5 mb-5">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-3">
-                            <div class="card" style="width: 18rem;">
-                                <img t-if="property['image']" class="card-img-top" t-att-src="image_data_uri(property['image'])" alt="Property Image" />
+                            <div class="card" style="width: 18rem;min-height:391px">
+                                <img t-if="property['image']" style="min-height:190px" class="card-img-top" t-att-src="image_data_uri(property['image'])" alt="Property Image" />
                                 <img t-else="" class="card-img-top" src="real_estate/static/src/images/card-default.svg" alt="Property Image" />
                                 <div class="card-body">
                                     <h5 class="card-title">
@@ -17,7 +17,7 @@
                                         <strong>Type: </strong>
                                         <t t-out="property['type']"/>
                                     </p>
-                                    <div class="mb-2">
+                                    <div class="mb-2" style="min-height:50px">
                                         <span t-foreach="property['tags']" t-as="tag">
                                             <span t-attf-class="badge {{ 'text-bg-primary' if tag_index % 2 == 0 else 'text-bg-info' }}" t-out="tag" />
                                         </span>

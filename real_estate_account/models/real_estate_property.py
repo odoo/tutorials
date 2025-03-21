@@ -7,8 +7,6 @@ class RealEstatePropertyAccount(models.Model):
     # Overriding sold method and generating invoice
     def action_property_sold(self):
         self.check_access('write')
-        
-        print(" reached ".center(100, '='))
 
         moves = self.env['account.move'].sudo().create({
             'move_type': 'out_invoice',

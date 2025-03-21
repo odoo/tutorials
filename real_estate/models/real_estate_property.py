@@ -4,6 +4,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class RealEstate(models.Model):
     _name = "real.estate.property"
+    _inherit = ['mail.thread']
     _description = 'Real State properties'
     _order = "id desc"
 
@@ -27,7 +28,7 @@ class RealEstate(models.Model):
             ('east', 'East'),
             ('west', 'West')
         ],
-        string = 'Garden Orientation'
+        string = 'Garden Orientation',
     )
     status = fields.Selection(
         [
@@ -76,7 +77,7 @@ class RealEstate(models.Model):
             self.garden_area = 10
             self.garden_orientation = 'north'
         else:
-            self.garden_area = ''
+            self.garden_area = 0
             self.garden_orientation = ''
 
     #method to sold property 
