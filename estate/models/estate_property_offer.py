@@ -6,6 +6,7 @@ import datetime
 class PropertyOffers(models.Model):
     _name = 'estate.property.offer'
     _description = 'Offers made by Buyers'
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(
@@ -18,6 +19,7 @@ class PropertyOffers(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id')
 
     _sql_constraints = [
         ('positive_offer_price', 'CHECK(price >= 0)', 'Offer price must be strictly positive')
@@ -51,8 +53,14 @@ class PropertyOffers(models.Model):
     def action_refuse(self):
         self.ensure_one()
         if self.partner_id == self.property_id.buyer_id:
-            self.property_id.state = 'offer_received'
             self.property_id.selling_price = 0
             self.property_id.buyer_id = None
+        self.property_id.state = 'offer_received'
         self.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        property_id = self.env['estate.property'].browse(vals['property_id'])
+        property_id.state = 'offer_received'
+        return super().create(vals)

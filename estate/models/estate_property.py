@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class PropertyModel(models.Model):
     _name = 'estate.property'
     _description = 'Real estate property model'
+    _order = 'sequence, id desc'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -32,9 +33,10 @@ class PropertyModel(models.Model):
     buyer_id = fields.Many2one('res.partner', string='Buyer')
     salesperson_id = fields.Many2one('res.users', string='Salesperson')
     tags_ids = fields.Many2many('estate.property.tag', string='Tags')
-    offer_ids = fields.One2many('estate.property.offer', 'property_id',string='Offers')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer(compute='_compute_total_area')
-    best_price = fields.Float(compute='_compute_best_price',copy=False)
+    best_price = fields.Float(compute='_compute_best_price', copy=False)
+    sequence = fields.Integer('Sequence', default=1)
 
     _sql_constraints = [
         ('positive_expected_price', 'CHECK(expected_price >= 0)', 'Expected price must be strictly positive'),
@@ -49,7 +51,6 @@ class PropertyModel(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            print(record.offer_ids)
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped('price'))
             else:
@@ -84,3 +85,9 @@ class PropertyModel(models.Model):
         for record in self:
             if record.selling_price < record.expected_price * 0.9:
                 raise ValidationError("The selling price must be greater than 90% of expected price!")
+
+    @api.ondelete(at_uninstall=True)
+    def _unlink_check_property_state(self):
+        for record in self:
+            if record.state not in ['new','canceled']:
+                raise ValidationError("Only new and canceled properties can be sold!")

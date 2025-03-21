@@ -8,10 +8,15 @@
     </record>
 
     <record id="estate_property_type_form" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
+        <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
+                <header>
+                    <button name="%(estate_property_offers_action)d" icon="fa-money" type="action">
+                        <field name="offer_count" widget="statinfo" string="Offers made" />
+                    </button>
+                </header>
                 <group>
                     <h1 class="mb32">
                         <field name="name" class="mb16"/>
