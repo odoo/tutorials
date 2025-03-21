@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="counter.counter">
+        <div class="p-3" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+            <p>COUNTER : <t t-esc="counter.value"/></p>
+            <button class="btn btn-primary" t-on-click="increment">Increment</button>
+        </div>
+    </t>
+
+</templates>
