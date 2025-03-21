@@ -15,6 +15,12 @@
             <list string="Estate Properties"
                 decoration-success="state in ['offer_received', 'offer_accepted']"
                 decoration-bf="state=='offer_accepted'" decoration-muted="state == 'sold'">
+                <header>
+                    <button name="%(estate.action_open_add_offer_wizard)d"
+                        string="Add Offer"
+                        type="action"
+                        class="btn-primary"/>
+                </header>
                 <field name="name"/>
                 <field name="tag_ids" widget="many2many_tags"
                     options="{'color_field':'color', 'no_edit_color':True}"/>

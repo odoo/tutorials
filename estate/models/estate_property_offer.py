@@ -59,7 +59,7 @@ class estatePropertyOffer(models.Model):
         if self.status == "Accepted":
             self.property_id.selling_price = 0.0
             self.property_id.buyer_id = False
-            self.property_id.state = "new"
+            self.property_id.state = "offer_received"
         self.status = "Refused"
 
     _sql_constraints = [

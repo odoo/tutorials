@@ -9,10 +9,9 @@ class estateProperty(models.Model):
         self.check_access("write")  # write access for sold action
 
         result = super().action_set_sold_property()
-        print(" REACHED ".center(100, "="))
 
         try:
-            self.env["account.move"].check_access_rights("create")
+            self.env["account.move"].check_access("create")
         except AccessError:
             raise UserError(
                 "You do not have the required permissions to create invoices."
