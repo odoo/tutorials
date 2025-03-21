@@ -15,6 +15,16 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string = "Validity", default = 7)
     date_deadline = fields.Date(compute = "_compute_deadline", inverse = "_inverse_deadline", string = "Deadline")
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if property.state == "new":
+                property.state = "received"
+            if vals['price'] <= property.best_price:
+                raise exceptions.ValidationError("Current offer price lower than existing offer prices.")
+        return super(EstatePropertyOffer, self).create(vals_list)
+
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for record in self:

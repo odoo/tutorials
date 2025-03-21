@@ -34,6 +34,11 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     best_price = fields.Integer(compute = "_compute_price", string = "Best Price")
 
+    @api.ondelete(at_uninstall = False)
+    def _unlink_if_new_cancelled(self):
+        if any(record.state not in {"new", "cancelled"} for record in self):
+            raise exceptions.UserError("Can only delete new or cancelled properties.")
+
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
         for record in self:
