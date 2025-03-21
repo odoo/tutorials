@@ -1,26 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 	<t t-name="card.card">
-		<style>
-			.card {
-				background-color: white;
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				width: 50%;
-				border-style: none;
-				border-thickness: 2px;
-				border-color: black;
-				border-radius: 25px; 
-				margin: auto;
-				padding: 2em;
-				transition: background-color ease-in-out 1s;
-			}
-			.card:hover {
-				background-color: #f2f2f2;
-			}
-		</style>
-		<div class="card">
+		<div class="card" t-on-click="() => {console.log(this.props)}">
 			<h5><t t-out="title"/></h5>
 			<p><t t-out="content"/></p> 
 		</div>

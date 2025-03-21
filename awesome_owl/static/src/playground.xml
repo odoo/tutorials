@@ -2,13 +2,47 @@
 <templates xml:space="preserve">
 
 	<t t-name="awesome_owl.playground">
+		<style>
+			.card {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				width: 50%;
+				border-style: none;
+				border-thickness: 2px;
+				border-color: black;
+				border-radius: 25px; 
+				margin: 1em auto;
+				padding: 2em;
+				transition: background-color ease-in-out 1s;
+			}
+			.card:hover {
+				background-color: #f2f2f2;
+			}
+			.todolist {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				padding: 2em;
+			}
+			.completed {
+				background-color: lightgreen;
+			}
+
+			.notcompleted {
+				background-color: tomato;
+			}
+		</style>
 		<div class="p-3">
-			<Counter/>
-			<Counter/>
+			<Counter onChange.bind="updateTotal"/>
+			<Counter onChange.bind="updateTotal"/>
+			<p>Total : <t t-esc="counter.value"/></p>
 			<Card title="'Really cool title.'" content="'I told you it was really cool!'"/>
-			<Card title="test_title" content="test_content"/>
+			<Card />
 			<Card title="'Actually, CAN you pass a function as a component?'" content="'No.'" ace="(obj) => {obj.content = 'Yes! But you need to call them inside the component.'}"/>
 			<Card title="'This is another test of passing code instead of text. Does this work?'" content="('1' == 1)?'Yes!':'No.'"/>
+			<TodoList />
 		</div>
 	</t>
 
