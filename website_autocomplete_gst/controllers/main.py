@@ -28,20 +28,29 @@ class WebsiteSale(main.WebsiteSale):
             if order_sudo:
                 #Update the invoice address based on vat
                 ResPartner = request.env['res.partner']
-                order_sudo.partner_invoice_id = ResPartner.sudo().create({
-                      'name': company_data.get('name'),
-                      'company_type': 'company',
-                      'parent_id': False,
-                      'street': company_data.get('street'),
-                      'street2': company_data.get('street2'),
-                      'city': company_data.get('city'),
-                      'state_id': company_data.get('state_id'),
-                      'country_id': company_data.get('country_id'),
-                      'zip': company_data.get('zip'),
-                      'vat': company_data.get('vat'),
-                   })
+                exist_partner = ResPartner.search([
+                    ('vat', '=', company_data.get('vat'))
+                ], limit=1)
+                if exist_partner:
+                    order_sudo.partner_invoice_id = exist_partner
+                else:
+                   order_sudo.partner_invoice_id = ResPartner.sudo().create({
+                        'name': company_data.get('name'),
+                        'company_type': 'company',
+                        'parent_id': False,
+                        'street': company_data.get('street'),
+                        'street2': company_data.get('street2'),
+                        'city': company_data.get('city'),
+                        'state_id': company_data.get('state_id'),
+                        'country_id': company_data.get('country_id'),
+                        'zip': company_data.get('zip'),
+                        'vat': company_data.get('vat'),
+                    })
                 partner_fnames = set()
                 partner_sudo = ResPartner.browse(order_sudo.partner_invoice_id.id).exists()
                 if (address_type == 'billing' and partner_sudo != order_sudo.partner_invoice_id):
                     partner_fnames.add('partner_invoice_id')
                 order_sudo.sudo()._update_address(order_sudo.partner_invoice_id.id, partner_fnames)
+                order_sudo.partner_shipping_id.write({
+                    'parent_id': order_sudo.partner_invoice_id.id,
+                })

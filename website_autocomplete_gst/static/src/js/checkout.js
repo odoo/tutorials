@@ -1,8 +1,7 @@
 import { rpc } from "@web/core/network/rpc";
 import publicWidget from '@web/legacy/js/public/public_widget';
-import WebsiteSaleCheckout from '@website_sale/js/checkout';
 
-WebsiteSaleCheckout.include({
+publicWidget.registry.WebsiteSaleCheckout.include({
     /**
      * @override
      */
@@ -28,12 +27,12 @@ WebsiteSaleCheckout.include({
         }
         try {
             const result = await rpc("/shop/get_data", { vat: vat });
-            if (result) {
+            if (result && result.name) {
                 console.log(result)
                 this.$companyNameInput.val(result.name);
-                await this.updateInvoiceAddress('billing', vat);                
+                await this.updateInvoiceAddress('billing', vat);
             } else {
-                console.warn("Could not find any company registered to this VAT", {vat});
+                console.warn("Could not find any company registered to this VAT : ", vat);
             }
         } catch (error) {
             console.error("Failed to fetch company details:", error);
