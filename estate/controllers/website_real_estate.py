@@ -8,7 +8,7 @@ class EstateWebsite(http.Controller):
     def list_properties(self, property_id=None, page=1, **kargs):
         # if property_id found then render property details 
         if property_id:
-            property = request.env['estate.property'].sudo().browse(property_id)
+            property = request.env['estate.property'].browse(property_id)
             return request.render('estate.property_detail_template' , {'property': property})
         
         # if property_id not found then render all property list
@@ -28,7 +28,7 @@ class EstateWebsite(http.Controller):
     # if route type get then render from and if post then crete offer and store in database (database interection)
     @http.route('/properties/<int:property_id>/make-offer', type='http', auth='public', website=True, methods=['POST'], csrf=False)
     def make_offer(self, property_id, **body):
-        property = request.env['estate.property'].sudo().browse(property_id)
+        property = request.env['estate.property'].browse(property_id)
         
         if not property.exists():
             return request.redirect('/properties')
@@ -38,7 +38,7 @@ class EstateWebsite(http.Controller):
         # Get logged-in user's partner
         partner = request.env.user.partner_id
 
-        request.env['estate.property.offer'].sudo().create({
+        request.env['estate.property.offer'].create({
             'property_id': property_id,
             'partner_id': partner.id,
             'price': float(offer_price),

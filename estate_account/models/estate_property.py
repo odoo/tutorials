@@ -7,7 +7,12 @@ class EstateProperty(models.Model):
         # call super method for confirmation property sold or not??
         res = super(EstateProperty, self).action_do_sold()
 
-        invoice = self.env["account.move"].create(
+        # Ensure user has 'write' access to the property
+        self.check_access('write', raise_exception=True)
+
+        print(" reached ".center(100, '='))
+
+        invoice = self.env["account.move"].sudo().create(
             {
                 "partner_id": self.buyer_id.id,
                 "move_type": 'out_invoice',

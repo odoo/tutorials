@@ -13,7 +13,7 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
-    property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", required=True, ondelete="cascade")
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     validity = fields.Integer(string="Validity (days)", default=7)

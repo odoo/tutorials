@@ -8,7 +8,7 @@
         </menuitem>
 
         <!-- setting menu -->
-        <menuitem id="estate_first_level_setting_menu" name="Setting">
+        <menuitem id="estate_first_level_setting_menu" name="Setting" groups="estate.estate_group_manager">
             <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"/>
             <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"/>
             <!-- <menuitem id="estate_user_companies_menu_action" action="estate_user_companies_action"/> -->

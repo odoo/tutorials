@@ -34,7 +34,6 @@ class EstateProperty(models.Model):
         default="new",
         copy=False,
         required=True,
-        compute="_compute_state_offer_received",
         store=True,
     )
     
@@ -59,6 +58,12 @@ class EstateProperty(models.Model):
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price", store=True)
 
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True)
+
+    company_id = fields.Many2one(
+        'res.company', 
+        required=True, 
+        default=lambda self: self.env.company
+    )
 
      # property constraits
     _sql_constraints = [

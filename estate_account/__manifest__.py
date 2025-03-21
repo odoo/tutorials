@@ -10,6 +10,6 @@
         # Add your XML/CSV files if any
         # 'security/ir.model.access.csv',
     ],
-    'installable': True,  # This is required!
+    'installable': True,
     'application': True,
 }

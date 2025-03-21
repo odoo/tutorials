@@ -47,15 +47,6 @@
                 </header>
 
                 <sheet>
-                    <!-- stat button for create offer report -->
-                    <!-- <div class="oe_button_box" name="button_box">
-                        <button name="%(estate_property_offers_print_action)d"
-                                string="Print"
-                                type="action"
-                                icon="fa-list">
-                        </button>
-                    </div> -->
-
                     <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" invisible="state not in('cancelled')"/>
                     <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="state not in('sold')"/>
                     <group>
@@ -105,6 +96,7 @@
                             <group>
                                 <field name="salesperson_id"/>
                                 <field name="buyer_id"/>
+                                <field name="company_id"/>
                             </group>
                         </page>
                     </notebook>
