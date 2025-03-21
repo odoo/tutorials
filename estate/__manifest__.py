@@ -11,6 +11,7 @@
     'data': [
         'security/estate_security.xml',
         'security/ir.model.access.csv',
+        'wizard/estate_property_offer_wizard.xml',
         'views/estate_property_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
@@ -19,13 +20,11 @@
         'views/estate_menus.xml',
         'views/website_views.xml',
         'views/website_properties_list.xml',
-        'report/estate_property_reports.xml',
+        'report/estate_template_reports.xml',
         'report/estate_property_report_views.xml',
     ],
     'demo': [
-        'data/demo_data_estate_property_type.xml',
-        'data/demo_data_estate_property.xml',
-        'data/demo_data_estate_property_offer.xml',
+        'data/demo_estate_property.xml',
     ],
     'installable': True,
     'application': True,

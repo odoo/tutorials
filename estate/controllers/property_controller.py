@@ -8,8 +8,8 @@ class PropertyController(http.Controller):
     @http.route(['/properties','/properties/page/<int:page>'], type="http", auth="public", website=True)
     def propertyHandler(self,page=1, **kwargs):
         Property = request.env['estate.property']
-        
-        properties_per_page = 6  
+
+        properties_per_page = 6
 
         total_properties = Property.search_count([
             ('status', 'in', ['new', 'offer_received']),

@@ -17,7 +17,7 @@
                                         </span>
                                     </t>
                                     <p>Price: <t t-esc="property.expected_price"/> $</p>
-                                    <p>Status: <t t-esc="property.status"/></p>    
+                                    <p>Status: <t t-esc="property.status"/></p> 
                                     <a t-att-href="'/properties/%s' % property.id" class="btn btn-primary">View Details</a>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
 
     <!-- Property Details template -->
     <template id="website_property_detail" name="Property Detail">
-        <t t-call="website.layout"> 
+        <t t-call="website.layout">
             <div class="container mt-5 border p-3 rounded">
                 <div class="mb-2">
                     <a t-att-href="'/properties/'" class="btn btn-primary">back</a>
@@ -53,7 +53,7 @@
                         </t>
                         <ul>
                             <li><h5>Price: <t t-esc="property.expected_price"/> $</h5></li>
-                            <li><h5>Status: <t t-esc="property.status"/></h5></li>   
+                            <li><h5>Status: <t t-esc="property.status"/></h5></li>
                         </ul>
                     </div>
                     <div class="col-md-7">
@@ -107,7 +107,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </t>

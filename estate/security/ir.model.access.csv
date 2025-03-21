@@ -7,3 +7,5 @@ estate.access_estate_property_tag_manager,Access Estate Property Tag (Manager),e
 estate.access_estate_property_tag_agent,Access Estate Property Tag (Agent),estate.model_estate_property_tag,estate.estate_group_user,1,0,0,0
 estate.access_estate_property_offer_manager,Access Estate Property Offer (Manager),estate.model_estate_property_offer,estate.estate_group_manager,1,1,1,1
 estate.access_estate_property_offer_agent,Access Estate Property Offer (Agent),estate.model_estate_property_offer,estate.estate_group_user,1,1,1,0
+estate.access_estate_property_offer_wizard_manager,Access Estate Property Offer Wizard (Manager),estate.model_estate_property_offer_wizard,estate.estate_group_manager,1,1,1,1
+estate.access_estate_property_offer_wizard_agent,Access Estate Property Offer Wizard (Agent),estate.model_estate_property_offer_wizard,estate.estate_group_user,1,1,1,1

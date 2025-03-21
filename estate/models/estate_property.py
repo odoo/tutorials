@@ -15,14 +15,10 @@ class EstateProperty(models.Model):
         ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.'),
     ]
 
-    name = fields.Char(required=True,string="Title")
+    name = fields.Char(string="Title", required=True,)
     description = fields.Text(string="Description of Property")
     postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(
-        default=lambda self: fields.date.today() + timedelta(days=90),
-        string="Available From",
-        copy=False
-    )
+    date_availability = fields.Date(string="Available From", default=lambda self: fields.date.today() + timedelta(days=90), copy=False)
     expected_price = fields.Float(string="Expected Price",required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
@@ -32,16 +28,14 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
     total_area = fields.Float(string="Total Area", compute="_compute_total_area")
-    garden_orientation = fields.Selection(
+    garden_orientation = fields.Selection( string="Garden Orientation",
         selection=[
             ('north', 'North'),
             ('south', 'South'),
             ('east', 'East'),
             ('west', 'West')
-        ],
-        string="Garden Orientation",
-    )
-    status = fields.Selection(
+        ],)
+    status = fields.Selection(string="Status",
         selection=[
             ('new', 'New'),
             ('offer_received', 'Offer Received'),
@@ -49,42 +43,19 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
-        string="Status",
         required=True,
         default="new",
         copy=False,
         tracking=True
     )
     active = fields.Boolean(string="Active", default=True)
-    property_type_id = fields.Many2one(
-        "estate.property.type",
-        string="Property Type",
-    )
-    buyer_id = fields.Many2one(
-        "res.partner",
-        string="Buyer"
-    )
-    salesperson_id = fields.Many2one(
-        "res.users",
-        string="Salesperson",
-        default=lambda self: self.env.user,
-        tracking=True
-    )
-    tag_ids = fields.Many2many(
-       "estate.property.tag",
-       string="Property Tags"
-    )
-    offer_ids = fields.One2many(
-        "estate.property.offer", "property_id",
-        string="Offers",
-        tracking=True
-    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type",)
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user,tracking=True)
+    tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers", tracking=True)
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
-    company_id = fields.Many2one(
-        "res.company",
-        required=True,
-        default=lambda self: self.env.company
-    )
+    company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company)
     property_image = fields.Binary()
 
     # Compute Total Area
@@ -109,18 +80,26 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
     
+    def write(self, vals):
+        """Ensure values are reset when garden is unchecked in backend operations."""
+        if 'garden' in vals and not vals['garden']:
+            vals.update({'garden_area': 0, 'garden_orientation': False})
+        return super().write(vals)
+
     #logic for sold and cancel
     def action_set_sold(self):
         if self.status == "cancelled":
             raise UserError("A cancelled property cannot be sold!")
+
+        accepted_offer = self.offer_ids.filtered(lambda o:o.status == 'accepted')
+        if not accepted_offer:
+            raise UserError("Cannot sell a property without an accepted offer")
         self.status = "sold"
-        return True
 
     def action_set_cancelled(self):
         if self.status == "sold":
             raise UserError("A sold property cannot be cancelled!")
         self.status = "cancelled"
-        return True
     
     #python constrains for advanced checks
     @api.constrains('selling_price', 'expected_price')

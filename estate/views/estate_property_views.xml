@@ -16,6 +16,9 @@
             <list decoration-success="status in ('offer_received','offer_accepted')"
                 decoration-bf="status == 'offer_accepted'"
                 decoration-muted="status == 'sold'">
+                <header>
+                    <button name="%(estate.action_estate_property_offer_wizard)d" string="Add Offer" type="action" class="oe_highlight"/>
+                </header>
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -47,7 +50,7 @@
                         statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
                 <sheet>
-                    <group>         
+                    <group>
                         <h1 class="mb-2">
                             <field name="name" placeholder="Enter property name..."/>
                         </h1>
@@ -55,11 +58,11 @@
                             <aside>
                             <field name="property_image" widget="image" class="oe_avatar"/>
                         </aside>
-                        </group> 
+                        </group>
                    </group>
                     <group>
                         <group>
-                            <field name="status"/>
+                            <field name="status" readonly="1"/>
                             <field name="tag_ids" widget="many2many_tags" string="Property tags"
                                 options="{'color_field': 'color'}"/>
                             <field name="property_type_id" widget="many2one"
@@ -110,7 +113,6 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Estate Properties">
-                <!-- <field name="context">{'search_default_available': 1}</field> -->
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
@@ -164,7 +166,7 @@
                                 <field name="tag_ids" widget="many2many_tags" string="Tags"
                                     options="{'color_field': 'color'}"/>
                             </div>
-                            <div class="col-4 text-end"> 
+                            <div class="col-4 text-end">
                                 <field name="property_image" widget="image"/>
                             </div>
                         </div>

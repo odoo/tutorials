@@ -81,10 +81,10 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             property = self.env['estate.property'].browse(vals.get('property_id'))
             if property:
+                if property.status == 'sold':
+                    raise exceptions.UserError("Cannot create an offer for a sold property")
                 property.status = 'offer_received'
-
-            # Logic for the creation greater offer than previous
-            existing_offers = property.mapped('offer_ids.price')
-            if existing_offers and vals['price'] < max(existing_offers):
-                raise exceptions.UserError("You cannot create an offer with a lower price than an existing offer.")
+                existing_offers = property.mapped('offer_ids.price')
+                if existing_offers and vals['price'] < max(existing_offers):
+                    raise exceptions.UserError("You cannot create an offer with a lower price than an existing offer.")
         return super().create(vals_list)
