@@ -150,13 +150,27 @@ class L10nInCustomDutyWizard(models.TransientModel):
             - `UserError`: If no custom duty or tax is provided for any product line.
         """
         for record in self:
+            # Check if a journal entry is already linked to the Bill of Entry
             if record.l10n_journal_entry_custom_duty:
                 raise UserError(_("A journal entry has already been created for this Bill of Entry."))
+
+            # Check if a journal entry already exists for the same bill reference
+            existing_entry = self.env["account.move"].search([
+                ("ref", "=", record.move_id.name),
+                ("move_type", "=", "entry"),
+                ("company_id", "=", record.company_id.id),
+            ], limit=1)
+
+            if existing_entry:
+                raise UserError(_("A journal entry already exists for this Bill."))
+
             if not record.line_ids:
                 raise UserError(_("Journal Entry can't be created without Bill Entry Line."))
+
             for line in record.line_ids:
                 if not line.custom_duty and not line.tax_amount:
                     raise UserError(_("Please enter Custom Duty or Tax Amount for each product line."))
+
             journal_entry_lines = [
                 Command.create({
                     "name": "Custom Duty and Additional Charges",
@@ -219,7 +233,6 @@ class L10nInCustomDutyWizard(models.TransientModel):
                 "l10n_port_code": record.port_code_id.code,
                 "line_ids": journal_entry_lines,
             })
-            print(custom_duty_entries)
             journal_entry.write({"custom_duty_line_ids": custom_duty_entries})
 
             journal_entry.action_post()
