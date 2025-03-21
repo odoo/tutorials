@@ -29,8 +29,7 @@ class VendorPortal(http.Controller):
 
         ProductTemplate = request.env["product.template"]
         all_products = ProductTemplate.search(domain)
-        total_products = len(all_products)
-        total_pages = ceil(total_products / page_size)
+        total_pages = ceil(len(all_products) / page_size)
         start = (page - 1) * page_size
         filtered_products = all_products[start:start + page_size]
 
@@ -89,8 +88,6 @@ class VendorPortal(http.Controller):
             "product_id": product.id,
             "product_qty": qty,
             "price_unit": vendor_price,
-            "product_uom": product.uom_po_id.id,
-            "name": product.name,
         }
 
         if existing_po:
