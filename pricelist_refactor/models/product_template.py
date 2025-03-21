@@ -47,7 +47,7 @@ class ProductTemplate(models.Model):
             ('recurrence_id', '!=', False)
         ]
     )
-    
+
     default_rent_unit = fields.Many2one(comodel_name='sale.temporal.recurrence', string="Default Sale Unit")
 
     def _get_best_pricing_rule(self, quantity, date, uom=None, product=False, start_date=False, end_date=False, **kwargs):
@@ -68,7 +68,7 @@ class ProductTemplate(models.Model):
         duration_dict = self.env['product.pricelist.item']._compute_duration_vals(start_date, end_date)
         min_price = float("inf")  # positive infinity
         available_pricelist_ids = self.env['product.pricelist.item']._get_suitable_pricings(
-            product or self, pricelist=pricelist
+            product or self, pricelist, start_date, end_date, date
         )
         for pricelist_id in available_pricelist_ids:
             unit = pricelist_id.recurrence_id.unit

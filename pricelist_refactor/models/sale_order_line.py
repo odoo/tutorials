@@ -24,27 +24,18 @@ class SaleOrderLine(models.Model):
                 start_date=self.start_date,
                 end_date=self.return_date,
             )
-        elif self.product_template_id.recurring_invoice:
+        elif self.product_template_id.recurring_invoice :
             if self.order_id.plan_id and self.order_id.pricelist_id:
-                pricelist_item_id = self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
-                    self.product_id, self.order_id.plan_id, self.pricelist_id
+                self.pricelist_item_id = self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
+                    self.product_id, self.product_uom_qty or 1.0, self.order_id.date_order, self.order_id.plan_id, self.pricelist_id
                 )
-            else:
-                pricelist_item_id = self.pricelist_item_id
-            return pricelist_item_id._compute_price(
-                self.product_id.with_context(**self._get_product_price_context()),
-                self.product_uom_qty or 1.0,
-                self.product_uom,
-                self.order_id.date_order,
-                self.currency_id,
-                self.order_id.plan_id
-            )
         return self.pricelist_item_id._compute_price(
             self.product_id.with_context(**self._get_product_price_context()),
             self.product_uom_qty or 1.0,
             self.product_uom,
             self.order_id.date_order,
             self.currency_id,
+            self.order_id.plan_id,
         )
 
     @api.depends('order_id.subscription_state', 'order_id.start_date', 'order_id.rental_start_date', 'order_id.rental_return_date')
@@ -153,24 +144,14 @@ class SaleOrderLine(models.Model):
         """
         self.ensure_one()
         self.product_id.ensure_one()
-        converted_duration = None
-        recurrence_id = None
-        plan_id = None
-        if self.start_date and self.return_date:
-            duration_vals = self.pricelist_item_id._compute_duration_vals(self.start_date, self.return_date)
-            duration = self.pricelist_item_id and duration_vals[self.pricelist_item_id.recurrence_id.unit or 'day'] or 0
-            converted_duration = duration
-            recurrence_id=self.pricelist_item_id.recurrence_id
-        elif self.order_id.plan_id:
-            plan_id = self.order_id.plan_id
         return self.pricelist_item_id._compute_price_before_discount(
             product=self.product_id.with_context(**self._get_product_price_context()),
             quantity=self.product_uom_qty or 1.0,
             uom=self.product_uom,
             date=self.order_id.date_order,
             currency=self.currency_id,
-            plan_id=plan_id,
-            converted_duration=converted_duration,
-            recurrence_id=recurrence_id
+            plan_id=self.order_id.plan_id,
+            recurrence_id=self.pricelist_item_id.recurrence_id,
+            start_date=self.start_date,
+            end_date=self.return_date,
         )
-        return super()._get_pricelist_price_before_discount()

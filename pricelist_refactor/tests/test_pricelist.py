@@ -89,6 +89,14 @@ class TestPricelist(TransactionCase):
                 }),
                 Command.create({
                     'compute_price': 'fixed',
+                    'recurrence_id': cls.recurrence_hourly.id,
+                    'fixed_price': 5,
+                    'min_quantity': 2,
+                    'product_tmpl_id': cls.test_rent_template_id.id,
+                    'applied_on': '1_product'
+                }),
+                Command.create({
+                    'compute_price': 'fixed',
                     'recurrence_id': cls.recurrence_daily.id,
                     'fixed_price': 100,
                     'product_tmpl_id': cls.test_rent_template_id.id,
@@ -215,7 +223,17 @@ class TestPricelist(TransactionCase):
 
         self.assertEqual(
             self.rent_order.order_line[0].price_subtotal,
-            90
+            45
+        )
+
+        self.rent_order.write({
+            'rental_start_date': fields.Datetime.now(),
+            'rental_return_date': fields.Datetime.now() + relativedelta(hours=1),
+        })
+        self.rent_order._recompute_prices()
+        self.assertEqual(
+            self.rent_order.order_line[0].price_subtotal,
+            10
         )
 
         self.rent_order.write({

@@ -60,6 +60,14 @@
             <field name="min_quantity" position="before">
                 <field name="recurrence_id" required="1"/>
             </field>
+            <field name="min_quantity" position="replace">
+                <div class="d-flex">
+                    <group>
+                        <field name="min_quantity" class="w-50"/>
+                    </group>
+                    <field name="recurrence_id" class="w-50"/>
+                </div>
+            </field>
         </field>
     </record>
 
