@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_appointment_type_form_capacity" model="ir.ui.view">
+        <field name="name">appointment.type.form.capacity</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='right_details']//field[@name='assign_method']" position="before">
+                <label for="capacity_type"/>
+                    <div>
+                        <field name="capacity_type" class="oe_inline"/>
+                        <div invisible="capacity_type == 'single_booking' or schedule_based_on == 'users'">
+                            Total: <field name="resource_total_capacity" class="oe_inline o_input_5ch me-1"/>
+                            <span invisible="capacity_type == 'multiple_bookings'">seats max</span>
+                            <span invisible="capacity_type == 'multiple_seats'">bookings</span>
+                            <button type="object" name="action_appointment_resources" class="btn btn-link ps-0 pb-2 ms-1 oe_inline" role="button">
+                                <i class="oi oi-fw o_button_icon oi-arrow-right"/> Manage Resources
+                            </button>
+                        </div>
+                        <span invisible="capacity_type == 'single_booking' or schedule_based_on == 'resources'">
+                            <field name="user_capacity_count" class="oe_inline o_input_5ch mx-1"/>
+                            <span invisible="capacity_type == 'multiple_bookings'">seats max</span>
+                            <span invisible="capacity_type == 'multiple_seats'">bookings</span>
+                        </span>
+                    </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
