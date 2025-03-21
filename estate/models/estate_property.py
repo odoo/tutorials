@@ -8,8 +8,9 @@ class estate_property(models.Model):
     _name = "estate.property"
     _description = "Information of property"
     _order = "id desc"
+    _inherit = ['mail.thread']
 
-    name = fields.Char(required=True, string="Title")
+    name = fields.Char(required=True, string="Title", tracking=True)
     description = fields.Text("Description")
     image = fields.Binary(" ")
     postcode = fields.Char("PostCode")

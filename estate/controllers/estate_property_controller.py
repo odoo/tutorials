@@ -1,5 +1,7 @@
 from odoo import http
 from odoo.http import request
+from odoo.exceptions import UserError
+from odoo.tools import float_utils
 from datetime import datetime
 
 
@@ -40,8 +42,18 @@ class EstatePropertyController(http.Controller):
 
     @http.route(['/estate/submit',"/estate/page/property/<int:property_id>/submit","/property/<int:property_id>/submit"], auth='public', type='http', website=True, csrf=False, methods=['POST'])
     def submit_offer(self, **post):
+
         property_id = int(post.get('property_id'))
         offer_price = float(post.get('offer_price'))
+
+        property = request.env['estate.property'].browse(property_id)
+
+        if float_utils.float_compare(float(property.best_offer), float(offer_price), 2) == 1:
+            return request.redirect('/property/'+str(property_id)+'/offer/' +"?error=Offer must be higher than " + str(property.best_offer))
+
+        # if float_utils.float_compare(float(property.best_offer), float(offer_price), 2) >= 1:
+        #     raise UserError("Offer must be higher than " + str(property.best_offer))
+
 
         property = request.env['estate.property'].browse(property_id)
 

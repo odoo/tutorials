@@ -171,7 +171,12 @@
                     </div>
                     <div class="col-md-6">
                         <h1 class="fw-bold" t-out="property.name"/>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3 class="text-primary">Rs. <t t-out="property.expected_price" /></h3>
+                            <t t-if = "property.status != 'offer_accepted'">
+                                <a t-att-href="'/property/%s/offer' % property.id" class="btn btn-primary">Make an Offer</a>
+                            </t>
+                        </div>
                         <p class="text-muted"><i class="fa fa-map-marker"></i> <t t-out="property.postcode" /></p>
                         <div class="mt-3">
                             <p><strong>Type:</strong> <t t-out="property.property_ids.name"/></p>
@@ -180,13 +185,11 @@
                             <p><strong>Living Area:</strong> <t t-out="property.living_area"/> sqm</p>
                             <p><strong>Facades:</strong> <t t-out="property.facades"/></p>
                             <p><strong>Garage:</strong> <t t-if="property.garage">Available</t><t t-else="">Not Available</t></p>
-                            <p><strong>Best Offer:</strong> 
-                                <t t-if="property.best_offer">
-                                    Rs. <t t-out="property.best_offer"/>
-                                </t>
-                                <t t-else="No Offers Yet"/>
-                            </p>
-                            <p><strong>Sales Person:</strong> <t t-out="property.sales_person_ids.name"/></p>
+                            <t t-if="property.best_offer">
+                                <p><strong>Best Offer:</strong> Rs. <t t-out="property.best_offer"/></p>
+                            </t>
+                            <t t-else="No Offers Yet"/>
+                            <!-- <p><strong>Sales Person:</strong> <t t-out="property.sales_person_ids.name"/></p> -->
                             <p><strong>Tags:</strong> 
                                 <t t-if="property.tags_ids">
                                     <t t-foreach="property.tags_ids" t-as="tag">
@@ -198,10 +201,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="mt-5">
+                <div class="mt-3">
                     <h3 class="fw-bold">Property Description</h3>
                     <p class="text-muted" t-out="property.description"/>
                 </div>
+                <t t-if="property.offer_ids">
                 <div class="row mt-5">
                     <div class="col-12">
                         <div class="d-flex justify-content-between align-items-center mb-3">
@@ -211,7 +215,6 @@
                                 <a t-att-href="'/property/%s/offer' % property.id" class="btn btn-success">Make an Offer</a>
                             </t>
                         </div>
-                        <t t-if="property.offer_ids">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
@@ -230,12 +233,9 @@
                                     </t>
                                 </tbody>
                             </table>
-                        </t>
-                        <t t-else="">
-                            <p class="text-muted">No offers yet. Be the first to make an offer!</p>
-                        </t>
                     </div>
                 </div>
+                </t>
             </div>
         </t>
     </template>
@@ -258,6 +258,7 @@
                             <h3 class="fw-bold text-center" t-out="property.name"/>
                             <h4 class="text-primary text-center">Rs. <t t-out="property.expected_price"/></h4>
                             <p class="text-muted text-center"><i class="fa fa-map-marker"></i> <t t-out="property.postcode"/></p>
+                            <t t-call="estate.property_offer_submitted_error_template" />
                             <form action="/estate/submit" method="post" class="mt-4">
                                 <input type="hidden" name="property_id" t-att-value="property.id"/>
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
@@ -274,6 +275,15 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_offer_submitted_error_template">
+        <t t-if="request.params.get('error')">
+            <div class="alert alert-danger alert-dismissible fade show col-12" role="alert">
+                <t t-out="request.params.get('error')"/>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </t>
     </template>

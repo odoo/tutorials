@@ -57,6 +57,8 @@ class estate_Property_Offer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
+            if property_id.status == 'sold':
+                raise UserError("You cannot create an offer for a sold property.")
             offer_price = vals.get('price')
             existing_offers = property_id.mapped("offer_ids")
             if existing_offers:
