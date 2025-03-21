@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_checkout_override" inherit_id="website_sale.checkout">
+        <!-- Billing address -->
+        <xpath expr="//h4[contains(text(), 'Billing')]" position="replace">
+            <button class="accordion-button px-0 collapsed"
+                    style="background-color: white"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".all_billing"
+                    aria-expanded="false"
+                    aria-controls="billingAddressDetails">
+                <div class="d-flex flex-wrap">
+                    <b class="w-100">Billing Address</b>
+                </div>
+            </button>
+        </xpath>
+
+        <xpath expr="//b[contains(text(), 'Billing')]" position="after">
+            <div class="row mb-2">
+                <div class="col-lg-12">
+                    <input type="text" class="form-control o_billing_address_search"
+                           placeholder="Search Billing Address..."
+                           onkeyup="filterAddresses(this, 'all_billing')"/>
+                </div>
+            </div>
+        </xpath>
+        <!-- Shipping address -->
+        <xpath expr="//h4[contains(text(), 'Shipping')]" position="replace">
+            <button class="accordion-button px-0 collapsed"
+                    style="background-color: white"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".all_shipping"
+                    aria-expanded="false"
+                    aria-controls="shippingAddressDetails">
+                <div class="d-flex flex-wrap">
+                    <b class="w-100">Shipping Address</b>
+                </div>
+            </button>
+        </xpath>
+
+        <xpath expr="//b[contains(text(), 'Shipping')]" position="after">
+            <div class="row mb-2">
+                <div class="col-lg-12">
+                    <input type="text" class="form-control o_shipping_address_search"
+                           placeholder="Search Shipping Address..."
+                           onkeyup="filterAddresses(this, 'all_shipping')"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <!-- Collapsed if more then 6 address avilable -->
+    <template id="portal_row_address_override" inherit_id="website_sale.row_addresses">
+        <xpath expr="//div" position="attributes">
+            <attribute name="t-attf-class">
+                {{'all_billing' if is_invoice else 'all_shipping'}}
+                row row-cols-md-2 row-cols-lg-3 g-3 flex-nowrap flex-md-wrap mb32
+                {{'accordion-collapse collapse' if len(addresses) &gt; 6 else 'accordion-collapse collapse show'}}
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
