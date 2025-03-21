@@ -122,14 +122,18 @@ class EstateProperty(models.Model):
         if self.state == 'sold':
             raise UserError("A sold property cannot be canceled.")
         self.state = 'cancelled'
-        return True
+        # return True
 
     def action_sold(self):
         # Marks the property as sold and prevents canceling it later.        
         if self.state == 'cancelled':
             raise UserError("Canceled properties cannot be sold.")
+        if self.state != "offer_accepted":
+            raise UserError("A property can only be sold with an accepted offer.")
+        if not self.buyer_id:
+            raise UserError("No buyer is assigned to this property!")
         self.state = 'sold'
-        return True
+        # return True
     
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):

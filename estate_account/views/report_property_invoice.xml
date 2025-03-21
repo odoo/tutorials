@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <template id="report_property_offers_invoice" inherit_id="estate.report_property_offers">
-        <xpath expr="//div[@class='page']" position="inside">
+        <xpath expr="//div[hasclass('page')]" position="inside">
             <!-- Invoice Section - Displayed only when the property is sold -->
             <t t-if="property.state == 'sold'">
                 <h3>Invoice Information</h3>

@@ -16,13 +16,12 @@ class estateProperty(models.Model):
     )
         result = super().action_sold()
 
-        # journal = self.env["account.journal"].sudo().search([("type", "=", "sale")], limit=1)
-        # if not journal:
-        #     raise UserError("No sales journal found!")
-
         if not self.buyer_id:
             raise UserError("No buyer is assigned to this property!")
 
+        # journal = self.env["account.journal"].sudo().search([("type", "=", "sale")], limit=1)
+        # if not journal:
+        #     raise UserError("No sales journal found!")
         invoice ={
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",
@@ -46,7 +45,7 @@ class estateProperty(models.Model):
             }
         
         try:
-            self.env["account.move"].check_access_rights("create")
+            self.env["account.move"].check_access("create")
         except AccessError:
             raise UserError("You do not have the required permissions to create invoices.")
 

@@ -42,8 +42,8 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.validity_date - record.create_date.date()).days
 
     def action_accept(self):
-        if self.property_id.state == "offer_accepted":
-            raise UserError("You can only accept offer ones.")
+        if self.property_id.state in ["offer_accepted", "sold"]:
+            raise UserError("Cannot accept offers for a sold property or one with an accepted offer.")
 
         self.property_id.selling_price = self.price
         self.property_id.state = "offer_accepted"

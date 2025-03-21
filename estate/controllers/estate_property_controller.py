@@ -1,6 +1,7 @@
 from odoo import http
 from odoo.http import request
 
+
 class EstatePropertyController(http.Controller):
 
     @http.route(['/estate/properties', '/estate/properties/page/<int:page>'], auth='public', website=True)
