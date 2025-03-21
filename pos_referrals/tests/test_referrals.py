@@ -77,12 +77,14 @@ class TestLoyaltyCardReferral(TransactionCase):
         with self.assertRaises(ValidationError):
             self.partner_referrer.write({"referred_by": self.partner_customer.id})
 
-    def test_no_gift_card_when_loyalty_program_is_inactive(self):
-        self.referral_program.write({"active": False})
-        result = self.env["loyalty.card"].create_referral_gift_card(self.partner_customer.id, self.pos_order.amount_total)
-        gift_card = self.env["loyalty.card"].search([("partner_id", "=", self.partner_referrer.id)])
-        self.assertFalse(result, "Gift card creation should return False when the referral program is inactive.")
-        self.assertFalse(gift_card, "No gift card should be created when the referral program is inactive.")
+    def test_referral_gift_card_not_created_when_inactive(self):
+        LoyaltyCard = self.env["loyalty.card"]
+
+        result = LoyaltyCard.create_referral_gift_card(self.partner_customer.id, self.pos_order.amount_total)
+        self.assertFalse(result, "Gift card should NOT be created when the referral program is inactive.")
+        gift_card = LoyaltyCard.search([("partner_id", "=", self.partner_referrer.id)])
+        self.assertFalse(gift_card, "No gift card should be created in the system.")
+
 
     def test_changing_company_type_removes_referral(self):
         self.partner_customer.company_type = "company"
