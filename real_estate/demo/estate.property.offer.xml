@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-
+    <data noupdate="1">
     <record id="estate_property_offer_1" model="estate.property.offer">
         <field name="price">10000</field>
         <field name="validity">14</field>
@@ -29,5 +29,6 @@
     <function name="action_set_accept_offer" model="estate.property.offer">
         <value eval="[ref('estate_property_offer_3')]"/>
     </function>
+    </data>
 
 </odoo>

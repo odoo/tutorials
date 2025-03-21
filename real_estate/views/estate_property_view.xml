@@ -22,20 +22,20 @@
                                 <field class="fs-1 fw-bold" name="name"/>
                             </div>
                             <div class="fs-3">
-                                <label for="expected_price" class="mr-2 fw-bold">Exp. Price:</label>
+                                <label for="expected_price" class="ms-2 fw-bold">Exp. Price:</label>
                                 <field name="expected_price"/>
                             </div>
 
                             <t t-if="record.state.raw_value == ='offer_received'">
                                 <div class="fs-3">
-                                    <label for="best_price" class="mr-2 fw-bold">Best Price:</label>
+                                    <label for="best_price" class="ms-2 fw-bold">Best Price:</label>
                                     <field name="best_price"/>
                                 </div>
                             </t>
 
                             <t t-if="record.state.raw_value == 'offer_accepted'">
                                 <div class="fs-3">
-                                    <label for="selling_price" class="fw-bold mr-2">Selling Price:</label>
+                                    <label for="selling_price" class="fw-bold ms-2">Selling Price:</label>
                                     <field name="selling_price"/>
                                 </div>
                             </t>
@@ -59,6 +59,10 @@
             <list string="Listed Properties"
                 decoration-success="state in ['offer_accepted','offer_received']"
                 decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
+                <header>
+                    <button string="Add Offer" name="%(estate_create_offer_action)d" type="action"
+                        class="oe_highlight"/>
+                </header>
                 <field name="name"/>
                 <field name="tags_ids" widget="many2many_tags"
                     options="{'color_field':'color','no_edit_color':True}"/>
