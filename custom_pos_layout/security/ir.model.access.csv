@@ -1,0 +1,2 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+custom_pos_layout.access_pos_receipt_preview_wizard,access_pos_receipt_preview_wizard,custom_pos_layout.model_pos_receipt_preview_wizard,base.group_user,1,1,1,1
