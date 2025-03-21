@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            <Counter/>
-            <Counter/>
-        </div>
-    </t>
+	<t t-name="awesome_owl.playground">
+		<div class="p-3">
+			<Counter/>
+			<Counter/>
+			<Card title="'Really cool title.'" content="'I told you it was really cool!'"/>
+			<Card title="test_title" content="test_content"/>
+			<Card title="'Actually, CAN you pass a function as a component?'" content="'No.'" ace="(obj) => {obj.content = 'Yes! But you need to call them inside the component.'}"/>
+			<Card title="'This is another test of passing code instead of text. Does this work?'" content="('1' == 1)?'Yes!':'No.'"/>
+		</div>
+	</t>
 
 </templates>
