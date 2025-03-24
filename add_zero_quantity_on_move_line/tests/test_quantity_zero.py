@@ -18,7 +18,7 @@ class TestIsZeroQuantityField(L10nInTestInvoicingCommon):
             'product_id': cls.product_a.id,
             'quantity': 5,
             'price_unit': 1,
-            'l10n_in_is_zero_quantity': False
+            'is_zero_quantity': False
         })
 
     def test_zero_quantity_field(self):
