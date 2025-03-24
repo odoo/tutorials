@@ -11,6 +11,7 @@
         'security/ir.model.access.csv',
         'report/real_estate_property_offer_templates.xml',
         'report/real_estate_property_offer_reports.xml',
+        'wizard/real_estate_property_offer_wizard_views.xml',
         'views/real_estate_property_views.xml',
         'views/real_estate_property_offers_views.xml',
         'views/real_estate_property_category_views.xml',

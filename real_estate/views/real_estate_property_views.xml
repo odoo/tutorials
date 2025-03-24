@@ -14,6 +14,10 @@
             <field name="model">real.estate.property</field>
             <field name="arch" type="xml">
                 <list decoration-success="status in('offer_received', 'offer_accepted')" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'">
+                    <header>
+                        <button class="btn btn-primary o_list_button_add" string="Add Offer" name="%(launch_real_estate_property_offer_wizard)d" type="action" icon="fa-dollar">
+                        </button>
+                    </header>
                     <field name="name" />
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     <field name="property_type_id" />

@@ -60,8 +60,8 @@ class RealEstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_id = self.env['real.estate.property'].browse(vals['property_id'])
-            # if property_id.status == 'sold':
-            #     raise exceptions.UserError(f"Property already sold. Offers cannot be created!!")
+            if property_id.status == 'sold' or property_id.status == 'offer_accepted':
+                raise exceptions.UserError(f"Offers cannot be created!!! Property already sold or offer already accepted!!!")
             if not float_is_zero(property_id.best_price, 2):
                 if float_compare(property_id.best_price, vals['price'], 2) == 1:
                     raise exceptions.UserError(f"Offer must be higher than {property_id.best_price:.2f}")

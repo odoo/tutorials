@@ -50,7 +50,7 @@
 
     <record id="real_estate_offer_data7" model="real.estate.property.offer">
         <field name='price'>330000</field>
-        <field name='status'>refused</field>
+        <field name='status'></field>
         <field name='validity'>10</field>
         <field name='partner_id' ref="res_partner_11" />
         <field name='property_id' ref="real_estate_property_data8" />
@@ -58,7 +58,7 @@
 
     <record id="real_estate_offer_data8" model="real.estate.property.offer">
         <field name='price'>340000</field>
-        <field name='status'>refused</field>
+        <field name='status'></field>
         <field name='validity'>12</field>
         <field name='partner_id' ref="res_partner_12" />
         <field name='property_id' ref="real_estate_property_data8" />
@@ -66,7 +66,7 @@
 
     <record id="real_estate_offer_data9" model="real.estate.property.offer">
         <field name='price'>360000</field>
-        <field name='status'>accepted</field>
+        <field name='status'></field>
         <field name='validity'>7</field>
         <field name='partner_id' ref="res_partner_13" />
         <field name='property_id' ref="real_estate_property_data8" />
@@ -74,7 +74,7 @@
 
     <record id="real_estate_offer_data10" model="real.estate.property.offer">
         <field name='price'>360000</field>
-        <field name='status'>refused</field>
+        <field name='status'></field>
         <field name='validity'>7</field>
         <field name='partner_id' ref="res_partner_13" />
         <field name='property_id' ref="real_estate_property_data8" />
@@ -82,7 +82,7 @@
 
     <record id="real_estate_offer_data11" model="real.estate.property.offer">
         <field name='price'>360000</field>
-        <field name='status'>refused</field>
+        <field name='status'></field>
         <field name='validity'>7</field>
         <field name='partner_id' ref="res_partner_13" />
         <field name='property_id' ref="real_estate_property_data9" />
@@ -90,7 +90,7 @@
 
     <record id="real_estate_offer_data12" model="real.estate.property.offer">
         <field name='price'>360000</field>
-        <field name='status'>accepted</field>
+        <field name='status'></field>
         <field name='validity'>7</field>
         <field name='partner_id' ref="res_partner_13" />
         <field name='property_id' ref="real_estate_property_data9" />
@@ -98,7 +98,7 @@
 
     <record id="real_estate_offer_data13" model="real.estate.property.offer">
         <field name='price'>340000</field>
-        <field name='status'>refused</field>
+        <field name='status'></field>
         <field name='validity'>10</field>
         <field name='partner_id' ref="res_partner_11" />
         <field name='property_id' ref="real_estate_property_data10" />
@@ -106,7 +106,7 @@
 
     <record id="real_estate_offer_data14" model="real.estate.property.offer">
         <field name='price'>345000</field>
-        <field name='status'>accepted</field>
+        <field name='status'></field>
         <field name='validity'>12</field>
         <field name='partner_id' ref="res_partner_12" />
         <field name='property_id' ref="real_estate_property_data10" />
@@ -114,7 +114,7 @@
 
     <record id="real_estate_offer_data15" model="real.estate.property.offer">
         <field name='price'>360000</field>
-        <field name='status'>refused</field>
+        <field name='status'></field>
         <field name='validity'>7</field>
         <field name='partner_id' ref="res_partner_13" />
         <field name='property_id' ref="real_estate_property_data10" />
@@ -122,7 +122,7 @@
     
     <record id="real_estate_offer_data16" model="real.estate.property.offer">
         <field name='price'>360000</field>
-        <field name='status'>refused</field>
+        <field name='status'></field>
         <field name='validity'>7</field>
         <field name='partner_id' ref="res_partner_13" />
         <field name='property_id' ref="real_estate_property_data10" />

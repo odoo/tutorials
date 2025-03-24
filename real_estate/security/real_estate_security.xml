@@ -38,6 +38,7 @@
     <record id="real_estate_comp_rule" model="ir.rule">
         <field name="name">Real Estate Multi-company</field>
         <field name="model_id" ref="model_real_estate_property" />
+        <field name="groups" eval="[(4, ref('real_estate_group_user'))]"/>
         <field name="domain_force">[
             '|', ('company_id', '=', False),
                  ('company_id', 'in', company_ids)

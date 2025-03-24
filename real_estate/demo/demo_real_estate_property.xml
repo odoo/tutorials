@@ -22,7 +22,7 @@
     </record>
 
     <record id="real_estate_property_data2" model="real.estate.property">
-        <field name="name">Cancel Residential</field>
+        <field name="name">OR Residential New</field>
         <field name="image" type="base64" file="real_estate/static/src/images/2.jpg" />
         <field name="description">2-bedroom apartment with city views, close to public transport.</field>
         <field name="postcode">10001</field>
@@ -35,7 +35,7 @@
         <field name="garden">1</field>
         <field name="garden_area">10</field>
         <field name="garden_orientation">north</field>
-        <field name="status">cancelled</field>
+        <field name="status">offer_received</field>
         <field name="active">1</field>
         <field name="property_type_id" ref="real_estate_type_data1" />
         <field name="salesperson_id" ref="base.user_admin" />
@@ -142,7 +142,7 @@
     </record>
 
     <record id="real_estate_property_data8" model="real.estate.property">
-        <field name="name">OA Residential</field>
+        <field name="name">OR Residential 2</field>
         <field name="image" type="base64" file="real_estate/static/src/images/1.jpg" />
         <field name="description">2-bedroom apartment with city views, close to public transport.</field>
         <field name="postcode">10001</field>
@@ -156,7 +156,7 @@
         <field name="garden">1</field>
         <field name="garden_area">10</field>
         <field name="garden_orientation">north</field>
-        <field name="status">offer_accepted</field>
+        <field name="status">offer_received</field>
         <field name="active">1</field>
         <field name='partner_id' ref="res_partner_13" />
         <field name="property_type_id" ref="real_estate_type_data1" />
@@ -165,7 +165,7 @@
     </record>
 
     <record id="real_estate_property_data9" model="real.estate.property">
-        <field name="name">OA Commercial</field>
+        <field name="name">OR Commercial 2</field>
         <field name="image" type="base64" file="real_estate/static/src/images/5.jpg" />
         <field name="description">2-bedroom apartment with city views, close to public transport.</field>
         <field name="postcode">10001</field>
@@ -179,7 +179,7 @@
         <field name="garden">1</field>
         <field name="garden_area">10</field>
         <field name="garden_orientation">north</field>
-        <field name="status">offer_accepted</field>
+        <field name="status">offer_received</field>
         <field name="active">1</field>
         <field name='partner_id' ref="res_partner_13" />
         <field name="property_type_id" ref="real_estate_type_data2" />
@@ -188,7 +188,7 @@
     </record>
 
     <record id="real_estate_property_data10" model="real.estate.property">
-        <field name="name">Sold Residential</field>
+        <field name="name">OR Residential 2</field>
         <field name="image" type="base64" file="real_estate/static/src/images/4.jpg" />
         <field name="description">2-bedroom apartment with city views, close to public transport.</field>
         <field name="postcode">10001</field>
@@ -200,7 +200,7 @@
         <field name="facades">1</field>
         <field name="garage">0</field>
         <field name="garden_orientation">north</field>
-        <field name="status">sold</field>
+        <field name="status">offer_received</field>
         <field name="active">1</field>
         <field name='partner_id' ref="res_partner_12" />
         <field name="property_type_id" ref="real_estate_type_data1" />
