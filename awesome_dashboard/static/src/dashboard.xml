@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'">
+            hello dashboard
+            <button t-on-click="customersButton">Customers</button>
+            <button t-on-click="leadsButton">Leads</button>
+        </Layout>
     </t>
 
 </templates>
