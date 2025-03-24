@@ -51,7 +51,6 @@ class PurchaseOrderInheritTestCase(TransactionCase):
         """Test that a UserError is raised if trying to scan a barcode on a canceled purchase order"""
         with self.assertRaises(UserError):
             self.purchase_order_cancelled.on_barcode_scanned("12345")
-        print("Test 'test_purchase_order_state_cancelled' done!")
 
     def test_purchase_order_create_line(self):
         """Test that a new line is created when a product is scanned in a draft purchase order"""
@@ -84,8 +83,6 @@ class PurchaseOrderInheritTestCase(TransactionCase):
             1,
             "Product quantity should be 1.",
         )
-
-        print("Test 'test_purchase_order_create_line' done!")  # Test passed message
 
     def test_purchase_order_existing_product_qty_increase(self):
         """Test that the quantity is increased for an existing product in the purchase order"""
@@ -121,16 +118,13 @@ class PurchaseOrderInheritTestCase(TransactionCase):
 
         print(
             "Test 'test_purchase_order_existing_product_qty_increase' done!"
-        )  # test passed message
-
+        ) 
     def test_purchase_order_invalid_product(self):
         """Test that a ValidationError is raised when a barcode does not match any product"""
         with self.assertRaises(ValidationError):
             self.purchase_order.on_barcode_scanned("invalid_barcode")
-        print("Test 'test_purchase_order_invalid_product' done!")  # test passed message
 
     def test_purchase_order_state_done(self):
         """Test that a UserError is raised if trying to scan a barcode on a locked (done) purchase order"""
         with self.assertRaises(UserError):
             self.purchase_order_done.on_barcode_scanned("12345")
-        print("Test 'test_purchase_order_state_done' done!")  # test passed message

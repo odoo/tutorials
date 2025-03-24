@@ -1,4 +1,4 @@
-from odoo import models
+from odoo import _, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -10,16 +10,16 @@ class SaleOrderInherit(models.Model):
         self.ensure_one()
         print("Barcode scanned in Sale Order:", barcode)
 
-        # Step 1: Validate if the sale order exists (order_id should not be empty)
+        # Step 1: Validate if the sale order exists (order_id should not be empty) self.id returns a value _origin.id returns false
         if not self._origin.id:
             raise UserError(
-                "Sale Order is not created. Please create a sale order first."
+                _("Sale Order is not created. Please create a sale order first.")
             )
 
         # Step 2: Check if the sale order state is 'cancel', raise an error if so
         if self.state == "cancel":
             raise UserError(
-                "This sale order is canceled. You cannot add any more products."
+                _("This sale order is canceled. You cannot add any more products.")
             )
 
         # Step 3: Try to find the product using the barcode
@@ -27,7 +27,7 @@ class SaleOrderInherit(models.Model):
 
         if not product:
             raise ValidationError(
-                "Product with this barcode was not found in the database."
+                _("Product with this barcode was not found in the database.")
             )
 
         # Step 4: Check if the product is already added to the order, otherwise create a new line
@@ -41,11 +41,9 @@ class SaleOrderInherit(models.Model):
             first_line.product_uom_qty += 1
         else:
             # Create a new sale order line instance with the scanned product
-            new_line = self.env[
-                "sale.order.line"
-            ].new(
+            new_line = self.env["sale.order.line"].new(
                 {
-                    "order_id": self._origin.id,  # Use the original Sale Order ID (from _origin)
+                    "order_id": self.id,  # Use the original Sale Order ID
                     "product_id": product.id,
                     "product_uom_qty": 1,  # Start with a quantity of 1
                     "price_unit": product.list_price,  # Or another price field as needed
