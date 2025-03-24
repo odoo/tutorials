@@ -13,6 +13,9 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <list string="Properties" decoration-success="status in ('offer_received' , 'offer_accepted')" decoration-bf="status == 'offer_accepted'" decoration-danger="status == 'cancelled'"  decoration-muted="status == 'sold'">
+                    <header>
+                        <button name="%(action_estate_add_offer_wizard)d" string="Add Offer" type="action" class="oe_highlight"/>
+                    </header>
                     <field name="name" />
                     <field name="property_ids"/>
                     <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>

@@ -8,10 +8,7 @@
     'installable': True,
     'license': 'LGPL-3',
     'summary': 'Help users with Real estate.',
-    'depends': [
-        'base',
-        'website'
-    ],
+    'depends': ['base','website'],
     'demo': [
         'demo/estate_property_tag.xml',
         'demo/estate_property_type.xml',
@@ -20,6 +17,7 @@
         'demo/estate_property_offer.xml'
     ],  
     'data': [
+        'wizards/estate_add_offer_wizard_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
@@ -32,5 +30,4 @@
         'security/security.xml',
         'security/ir.model.access.csv',
     ],  
-    'controllers': ['controllers/estate_property_controller.py'],
 }

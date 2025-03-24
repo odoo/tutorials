@@ -51,10 +51,6 @@ class EstatePropertyController(http.Controller):
         if float_utils.float_compare(float(property.best_offer), float(offer_price), 2) == 1:
             return request.redirect('/property/'+str(property_id)+'/offer/' +"?error=Offer must be higher than " + str(property.best_offer))
 
-        # if float_utils.float_compare(float(property.best_offer), float(offer_price), 2) >= 1:
-        #     raise UserError("Offer must be higher than " + str(property.best_offer))
-
-
         property = request.env['estate.property'].browse(property_id)
 
         if property.exists():

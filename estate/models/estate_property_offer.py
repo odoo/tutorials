@@ -9,7 +9,7 @@ class estate_Property_Offer(models.Model):
     _order = "price desc"
 
     price = fields.Float("Price")
-    status = fields.Selection([('accepted','Accepted'),('refused','Refused')],copy=False)
+    status = fields.Selection([('accepted','Accepted'),('refused','Refused'),('new','New')],copy=False,default="new")
     partner_id = fields.Many2one("res.partner",required=True, string="Partner")
     property_id = fields.Many2one("estate.property", required=True)
     validity =fields.Integer("Validity (days)",default=7)
@@ -59,6 +59,8 @@ class estate_Property_Offer(models.Model):
             property_id = self.env['estate.property'].browse(vals['property_id'])
             if property_id.status == 'sold':
                 raise UserError("You cannot create an offer for a sold property.")
+            if property_id.status == 'offer_accepted':
+                raise UserError("You cannot create an offer for a accepted property.")
             offer_price = vals.get('price')
             existing_offers = property_id.mapped("offer_ids")
             if existing_offers:

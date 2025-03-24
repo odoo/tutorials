@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
 
+<templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="o_playground">
+            <h2>Playground with Multiple Counters</h2>
+            <Counter/>
+            <Counter/>
+            <Card title="'Escaped Text'" content="unsafeText"/>
+            
+            <Card title="'Safe HTML Markup'" content="safeHTML"/>
         </div>
     </t>
-
 </templates>

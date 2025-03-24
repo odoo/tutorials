@@ -120,7 +120,7 @@
         <field name="garden">1</field>
         <field name="garden_area">250</field>
         <field name="garden_orientation">north</field>
-        <field name="status">offer_accepted</field>
+        <!-- <field name="status">offer_accepted</field> -->
         <field name="tags_ids" eval="[(4, ref('estate_tag_4')), (4, ref('estate_tag_5'))]"/>
         <field name="property_ids" ref="estate_property_type_bungalow"/>
     </record>
