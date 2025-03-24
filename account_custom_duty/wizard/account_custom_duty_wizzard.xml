@@ -3,7 +3,7 @@
 
     <record id="bill_entry_wizard_view_form" model="ir.ui.view">
         <field name="name">bill.entry.line.wizard.view.form</field>
-        <field name="model">l10n_in.custom.duty.wizard</field>
+        <field name="model">account.custom.duty.wizard</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -13,7 +13,7 @@
                             <field name="journal_entry_date" />
                             <field name="journal_id" />
                             <field name="custom_currency_rate"
-                                readonly="l10n_journal_entry_custom_duty" />
+                                readonly="account_journal_entry_custom_duty" />
                         </group>
                         <group>
                             <field name="move_id" readonly="1" />
@@ -24,7 +24,7 @@
                     </group>
                     <notebook>
                         <page string="Bill of Entry Details">
-                            <field name="line_ids" readonly="l10n_journal_entry_custom_duty">
+                            <field name="line_ids" readonly="account_journal_entry_custom_duty">
                                 <list editable="bottom" create="false">
                                     <field name="product_id" />
                                     <field name="assessable_value" widget="monetary" />
@@ -50,7 +50,7 @@
                 </sheet>
                 <footer>
                     <div class="d-flex gap-1"
-                        invisible="l10n_journal_entry_custom_duty">
+                        invisible="account_journal_entry_custom_duty">
                         <button type="object" name="action_create_and_post_journal_entry"
                             class="btn btn-primary o_form_button_save"> Confirm </button>
                         <button type="button" class="btn btn-secondary o_form_button_cancel"

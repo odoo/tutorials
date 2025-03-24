@@ -3,21 +3,21 @@ from odoo.exceptions import ValidationError, UserError
 
 
 @tagged('post_install', '-at_install')
-class TestL10nInCustomDuty(TransactionCase):
+class TestAccountCustomDuty(TransactionCase):
     def setUp(self):
         """Setup test data for Custom Duty Wizard"""
         super().setUp()
 
         self.company = self.env["res.company"].search([("id", "=", 2)], limit=1)
 
-        self.l10n_in_import_custom_duty_account_id = self.env["account.account"].create({
+        self.account_import_custom_duty_account_id = self.env["account.account"].create({
             "name": "Custom Duty Expense",
             "code": "EXP001",
             "account_type": "expense",
             "company_ids": [self.company.id],
         })
 
-        self.l10n_in_import_default_tax_account_id = self.env["account.account"].create({
+        self.account_import_default_tax_account_id = self.env["account.account"].create({
             "name": "Import Tax Account",
             "code": "AST001",
             "account_type": "asset_current",
@@ -25,7 +25,7 @@ class TestL10nInCustomDuty(TransactionCase):
             "company_ids": [self.company.id],
         })
 
-        self.l10n_in_import_journal_id = self.env["account.journal"].create({
+        self.account_import_journal_id = self.env["account.journal"].create({
             "name": "Import Journal",
             "type": "general",
             "code": "IMJ",
@@ -33,9 +33,9 @@ class TestL10nInCustomDuty(TransactionCase):
         })
 
         self.company.write({
-            "l10n_in_import_journal_id": self.l10n_in_import_journal_id.id,
-            "l10n_in_import_custom_duty_account_id": self.l10n_in_import_custom_duty_account_id.id,
-            "l10n_in_import_default_tax_account_id": self.l10n_in_import_default_tax_account_id.id,
+            "account_import_journal_id": self.account_import_journal_id.id,
+            "account_import_custom_duty_account_id": self.account_import_custom_duty_account_id.id,
+            "account_import_default_tax_account_id": self.account_import_default_tax_account_id.id,
         })
 
         self.currency = self.env["res.currency"].search([("name", "=", "INR")], limit=1)
@@ -73,7 +73,7 @@ class TestL10nInCustomDuty(TransactionCase):
             "product_id": self.product.id,
             "quantity": 10,
             "price_unit": 500,
-            "account_id": self.l10n_in_import_custom_duty_account_id.id,
+            "account_id": self.account_import_custom_duty_account_id.id,
             "company_id": self.company.id,
         })
 
@@ -81,7 +81,7 @@ class TestL10nInCustomDuty(TransactionCase):
             "state" : "posted"
         })
 
-        self.wizard = self.env["l10n_in.custom.duty.wizard"].create({
+        self.wizard = self.env["account.custom.duty.wizard"].create({
             "move_id": self.bill.id,
             "company_id": self.company.id,
             "custom_currency_rate": 1.2
@@ -89,15 +89,15 @@ class TestL10nInCustomDuty(TransactionCase):
 
     def test_action_open_wizard(self):
         """Test that the Custom Duty Wizard opens with correct context."""
-        action = self.bill.action_l10n_in_custom_duty_wizard()
-        self.assertEqual(action["res_model"], "l10n_in.custom.duty.wizard")
+        action = self.bill.action_account_custom_duty_wizard()
+        self.assertEqual(action["res_model"], "account.custom.duty.wizard")
         self.assertEqual(action["view_mode"], "form")
         self.assertEqual(action["target"], "new")
         self.assertEqual(action["context"]["move_id"], self.bill.id)
 
     def test_wizard_computations(self):
         """Test computed fields in Custom Duty Wizard."""
-        self.line = self.env["l10n_in.custom.duty.line"].create({
+        self.line = self.env["account.custom.duty.line"].create({
             "wizard_id": self.wizard.id,
             "bill_id": self.bill.id,
             "move_line_id": self.bill_line.id,
@@ -159,7 +159,7 @@ class TestL10nInCustomDuty(TransactionCase):
     def test_custom_duty_line_negative_values(self):
         """Test that custom duty and tax amount cannot be negative"""
         with self.assertRaises(ValidationError):
-            self.env["l10n_in.custom.duty.line"].create({
+            self.env["account.custom.duty.line"].create({
                 "wizard_id": self.wizard.id,
                 "bill_id": self.bill.id,
                 "move_line_id": self.bill_line.id,
@@ -167,7 +167,7 @@ class TestL10nInCustomDuty(TransactionCase):
             })
 
         with self.assertRaises(ValidationError):
-            self.env["l10n_in.custom.duty.line"].create({
+            self.env["account.custom.duty.line"].create({
                 "wizard_id": self.wizard.id,
                 "bill_id": self.bill.id,
                 "move_line_id": self.bill_line.id,

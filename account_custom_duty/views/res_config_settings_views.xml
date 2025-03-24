@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="res_config_settings_view_form_inherit_l10n_in_custom_duty" model="ir.ui.view">
-        <field name="name">res.config.settings.form.inherit.l10n_in_custom_duty</field>
+    <record id="res_config_settings_view_form_inherit_account_custom_duty" model="ir.ui.view">
+        <field name="name">res.config.settings.form.inherit.account_custom_duty</field>
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="account.res_config_settings_view_form" />
         <field name="arch" type="xml">
             <xpath expr="//block[@id='india_localization']" position="inside">
                 <setting name="custom_duty_setting" string="Custom Duty"
                     help="Enable this feature to apply custom duty on import/export transactions, including Bill of Entry and Shipping Bills">
-                    <field name="l10n_in_custom_duty" />
+                    <field name="account_custom_duty" />
                 </setting>
             </xpath>
             <xpath expr="//block[@id='default_accounts']" position="inside">
-                <setting string="Import" invisible="not l10n_in_custom_duty">
+                <setting string="Import" invisible="not account_custom_duty">
                     <div class="content-group">
                         <div class="row mt8">
-                            <label for="l10n_in_import_journal_id" class="col-lg-5 o_light_label"
+                            <label for="account_import_journal_id" class="col-lg-5 o_light_label"
                                 string="Journal" />
-                            <field name="l10n_in_import_journal_id" />
+                            <field name="account_import_journal_id" />
                         </div>
                         <div class="row mt8">
-                            <label for="l10n_in_import_custom_duty_account_id"
+                            <label for="account_import_custom_duty_account_id"
                                 class="col-lg-5 o_light_label" string="Custom Duty Account" />
-                            <field name="l10n_in_import_custom_duty_account_id" />
+                            <field name="account_import_custom_duty_account_id" />
                         </div>
                         <div class="row mt8">
-                            <label for="l10n_in_import_default_tax_account_id"
+                            <label for="account_import_default_tax_account_id"
                                 class="col-lg-5 o_light_label" string="Default Tax Account" />
-                            <field name="l10n_in_import_default_tax_account_id" />
+                            <field name="account_import_default_tax_account_id" />
                         </div>
                     </div>
                 </setting>
-                <setting string="Export" invisible="not l10n_in_custom_duty">
+                <setting string="Export" invisible="not account_custom_duty">
                     <div class="content-group">
                         <div class="row mt8">
-                            <label for="l10n_in_export_journal_id" class="col-lg-5 o_light_label"
+                            <label for="account_export_journal_id" class="col-lg-5 o_light_label"
                                 string="Journal" />
-                            <field name="l10n_in_export_journal_id" />
+                            <field name="account_export_journal_id" />
                         </div>
                         <div class="row mt8">
-                            <label for="l10n_in_export_custom_duty_account_id"
+                            <label for="account_export_custom_duty_account_id"
                                 class="col-lg-5 o_light_label" string="Custom Duty Account" />
-                            <field name="l10n_in_export_custom_duty_account_id" />
+                            <field name="account_export_custom_duty_account_id" />
                         </div>
                         <div class="row mt8">
-                            <label for="l10n_in_export_default_tax_account_id"
+                            <label for="account_export_default_tax_account_id"
                                 class="col-lg-5 o_light_label" string="Default Tax Account" />
-                            <field name="l10n_in_export_default_tax_account_id" />
+                            <field name="account_export_default_tax_account_id" />
                         </div>
                     </div>
                 </setting>

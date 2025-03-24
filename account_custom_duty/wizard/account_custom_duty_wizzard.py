@@ -2,8 +2,8 @@ from odoo import api, fields, models, _ , Command
 from odoo.exceptions import UserError, ValidationError
 
 
-class L10nInCustomDutyWizard(models.TransientModel):
-    _name = "l10n_in.custom.duty.wizard"
+class AccountCustomDutyWizard(models.TransientModel):
+    _name = "account.custom.duty.wizard"
     _description = "Custom Duty Wizard"
 
     company_id = fields.Many2one(
@@ -21,7 +21,7 @@ class L10nInCustomDutyWizard(models.TransientModel):
         "account.journal",
         string="Journal",
         readonly=True,
-        default=lambda self: self.env.company.l10n_in_import_journal_id,
+        default=lambda self: self.env.company.account_import_journal_id,
     )
     bill_of_entry_number = fields.Char(
         string="Bill of Entry Number", related="move_id.l10n_in_shipping_bill_number",
@@ -40,7 +40,7 @@ class L10nInCustomDutyWizard(models.TransientModel):
         currency_field="currency_id",
         default=1,
     )
-    line_ids = fields.One2many("l10n_in.custom.duty.line", "wizard_id", string="Product Lines")
+    line_ids = fields.One2many("account.custom.duty.line", "wizard_id", string="Product Lines")
     total_custom_duty_and_additional_charges = fields.Monetary(
         string="Total Custom Duty and Additional Charges",
         currency_field="currency_id",
@@ -56,21 +56,21 @@ class L10nInCustomDutyWizard(models.TransientModel):
         currency_field="currency_id",
         compute="_compute_total_amount_payable",
     )
-    l10n_in_import_custom_duty_account_id = fields.Many2one(
+    account_import_custom_duty_account_id = fields.Many2one(
         comodel_name="account.account",
         string="Default Import Custom Duty Account",
-        related="company_id.l10n_in_import_custom_duty_account_id",
+        related="company_id.account_import_custom_duty_account_id",
     )
-    l10n_in_import_default_tax_account_id = fields.Many2one(
+    account_import_default_tax_account_id = fields.Many2one(
         comodel_name="account.account",
         string="Default Import Tax Account",
-        related="company_id.l10n_in_import_default_tax_account_id",
+        related="company_id.account_import_default_tax_account_id",
     )
-    l10n_journal_entry_custom_duty = fields.Many2one(
+    account_journal_entry_custom_duty = fields.Many2one(
         "account.move",
         string="Custom Duty Journal Entry",
         readonly=True,
-        related="move_id.l10n_journal_entry_custom_duty",
+        related="move_id.account_journal_entry_custom_duty",
     )
 
     @api.constrains("custom_currency_rate")
@@ -116,7 +116,7 @@ class L10nInCustomDutyWizard(models.TransientModel):
         res = super().default_get(fields_list)
 
         if move_id:
-            bill_entry_details = self.env["l10n_in.custom.duty.line"].search([("bill_id", "=", move_id)])
+            bill_entry_details = self.env["account.custom.duty.line"].search([("bill_id", "=", move_id)])
             if not bill_entry_details:
                 move_lines = self.env["account.move.line"].search([
                     ("move_id", "=", move_id),
@@ -124,14 +124,14 @@ class L10nInCustomDutyWizard(models.TransientModel):
                     ("quantity", ">", 0)
                 ])
                 if move_lines:
-                    self.env["l10n_in.custom.duty.line"].create([
+                    self.env["account.custom.duty.line"].create([
                         {
                             "bill_id": move_id,
                             "move_line_id": line.id
                         } for line in move_lines
                     ])
             res["move_id"] = move_id
-            res["line_ids"] = self.env["l10n_in.custom.duty.line"].search([("bill_id", "=", move_id)])
+            res["line_ids"] = self.env["account.custom.duty.line"].search([("bill_id", "=", move_id)])
         return res
 
     def action_create_and_post_journal_entry(self):
@@ -151,7 +151,7 @@ class L10nInCustomDutyWizard(models.TransientModel):
         """
         for record in self:
             # Check if a journal entry is already linked to the Bill of Entry
-            if record.l10n_journal_entry_custom_duty:
+            if record.account_journal_entry_custom_duty:
                 raise UserError(_("A journal entry has already been created for this Bill of Entry."))
 
             # Check if a journal entry already exists for the same bill reference
@@ -177,7 +177,7 @@ class L10nInCustomDutyWizard(models.TransientModel):
                     "partner_id": record.move_id.partner_id.id,
                     "debit": record.total_custom_duty_and_additional_charges,
                     "credit": 0.0,
-                    "account_id": record.l10n_in_import_custom_duty_account_id.id,
+                    "account_id": record.account_import_custom_duty_account_id.id,
                     "company_currency_id": record.currency_id.id,
                     "amount_currency": record.total_custom_duty_and_additional_charges,
                 }),
@@ -186,7 +186,7 @@ class L10nInCustomDutyWizard(models.TransientModel):
                     "partner_id": record.move_id.partner_id.id,
                     "debit": 0.0,
                     "credit": record.total_amount_payable,
-                    "account_id": record.l10n_in_import_default_tax_account_id.id,
+                    "account_id": record.account_import_default_tax_account_id.id,
                     "company_currency_id": record.currency_id.id,
                     "amount_currency": -record.total_amount_payable,
                 }),
@@ -226,25 +226,25 @@ class L10nInCustomDutyWizard(models.TransientModel):
                 "journal_id": record.journal_id.id,
                 "date": record.journal_entry_date,
                 "ref": record.move_id.name,
-                "l10n_custom_currency_rate": record.custom_currency_rate,
-                "l10n_bill_reference": record.move_id.name,
-                "l10n_bill_entry_number": record.bill_of_entry_number,
-                "l10n_bill_entry_date": record.bill_of_entry_date,
-                "l10n_port_code": record.port_code_id.code,
+                "account_custom_currency_rate": record.custom_currency_rate,
+                "account_bill_reference": record.move_id.name,
+                "account_bill_entry_number": record.bill_of_entry_number,
+                "account_bill_entry_date": record.bill_of_entry_date,
+                "account_port_code": record.port_code_id.code,
                 "line_ids": journal_entry_lines,
             })
             journal_entry.write({"custom_duty_line_ids": custom_duty_entries})
 
             journal_entry.action_post()
-            record.move_id.l10n_journal_entry_custom_duty = journal_entry.id
+            record.move_id.account_journal_entry_custom_duty = journal_entry.id
 
 
-class L10nInCustomDutyLine(models.TransientModel):
-    _name = "l10n_in.custom.duty.line"
+class AccountCustomDutyLine(models.TransientModel):
+    _name = "account.custom.duty.line"
     _description = "Custom Duty Line"
 
     bill_id = fields.Many2one("account.move", string="Bill Entry", required=True)
-    wizard_id = fields.Many2one("l10n_in.custom.duty.wizard", string="Wizard Reference", ondelete="cascade")
+    wizard_id = fields.Many2one("account.custom.duty.wizard", string="Wizard Reference", ondelete="cascade")
     move_line_id = fields.Many2one("account.move.line", string="Move Line", required=True)
     product_id = fields.Many2one(
         "product.product", string="Product", related="move_line_id.product_id"
