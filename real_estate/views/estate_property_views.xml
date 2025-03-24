@@ -14,6 +14,10 @@
                 decoration-success="status in ('offer_received', 'offer_accepted')"
                 decoration-bf="status == 'offer_accepted'"
                 decoration-muted="status == 'sold'">
+                <header>
+                    <button name="%(action_add_offer_wizard)d" string="Add Offer"
+                    type="action" class="oe_stat_button" icon="fa-plus-square"/>
+                </header>
                 <field name="name"/>
                 <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                 <field name="postcode"/>
@@ -93,10 +97,12 @@
                             <group>
                                 <field name="salesperson_id"/>
                                 <field name="buyer_id"/>
+                                <field name="company_id"/>
                             </group>
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>

@@ -2,9 +2,11 @@ from odoo import Command, models
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property' 
-    
+
     def set_sold(self):
-        empty_move=self.env['account.move'].create({
+        res=super().set_sold()
+        self.check_access('write')
+        invoice = self.env['account.move'].sudo().create({
             'partner_id': self.buyer_id.id,
             'move_type':'out_invoice',
             'invoice_line_ids':[

@@ -7,12 +7,18 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property' 
     _description = 'property'
+    _inherit = ['mail.thread']
 
     name = fields.Char(string="Property Name", required=True)
     image = fields.Binary(string="Img")
+    company_id = fields.Many2one(
+        'res.company', 
+        required=True, 
+        default=lambda self: self.env.company
+    )
     property_type_id = fields.Many2one("estate.property.type",  string="Property Type")
     property_tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
-    offer_ids= fields.One2many("estate.property.offer", "property_id", string="Property Offers")
+    offer_ids= fields.One2many("estate.property.offer", "property_id", string="Property Offers", tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Available From", default=date.today()+relativedelta(months=+3), copy=False)
@@ -25,7 +31,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Has Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
     salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False, tracking=True)
     garden_orientation = fields.Selection(
         [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         string="Garden Orientation"
@@ -35,7 +41,8 @@ class EstateProperty(models.Model):
         string="Status",
         default='new',
         readonly=True,
-        copy=False
+        copy=False,
+        tracking=True
     )
     total_area= fields.Float(compute="_compute_total_area", readonly=True, copy=False)
     best_price= fields.Float(compute="_compute_best_price", readonly=True, default= 0.0)
@@ -99,5 +106,5 @@ class EstateProperty(models.Model):
     def set_cancel(self):
         self.status = "cancelled"
         for record in self.offer_ids:
-                record.status="refused"
+            record.status="refused"
         return True

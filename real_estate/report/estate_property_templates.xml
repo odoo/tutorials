@@ -5,7 +5,6 @@
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
                     <div class="page">
-                                    
                         <h1>
                             <span t-field="property.name"/>
                         </h1>

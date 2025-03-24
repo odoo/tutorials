@@ -3,7 +3,7 @@
     'version': '1.0',
     'depends': ['base','website'],
     'author': "Rishav Shah (sris)",
-    'category': 'Estate',
+    'category': 'Real Estate/Brokerage',
     'icon':'/real_estate/static/src/img/real_estate_icon.png',
     'description': """    
         A module for managing real estate properties, including:
@@ -16,7 +16,9 @@
     'application':True,
     'license':'LGPL-3',
     'data': [
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
+        'views/estate_offer_wizard_view.xml',
         'report/estate_property_templates.xml',
         'report/res_user_template.xml',
         'report/estate_property_reports.xml',

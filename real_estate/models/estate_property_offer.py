@@ -30,10 +30,12 @@ class EstatePropertyOffer(models.Model):
             property_id = self.env['estate.property'].browse(vals['property_id'])
             offer_price = vals.get('price')
             existing_offers = property_id.mapped("offer_ids")
+            if property_id.status == 'sold' or property_id.status == 'offer_accepted':
+                raise ValidationError(f"Offers cannot be created!!! Property already sold or offer already accepted!!!")
             if existing_offers:
                 highest_offer = max(existing_offers, key=lambda o: o.price)
                 if offer_price < highest_offer.price:
-                    raise ValidationError(f"The offer price must be higher than the existing accepted offer of {highest_offer.price}.")
+                    raise ValidationError(f"The offer price for {property_id.name} must be higher than the existing accepted offer of {highest_offer.price}.")
             property_id.status = "offer_received"
         return super().create(vals_list)
 
