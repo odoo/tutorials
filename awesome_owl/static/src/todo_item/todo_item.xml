@@ -5,7 +5,7 @@
 		<div class="card" t-on-click="click" t-att-class="contents.isCompleted ? 'text-muted text-decoration-line-through completed' : 'notcompleted'">
 			<h5><t t-esc="contents.title"/></h5>
 			<p><t t-esc="contents.description"/></p>
-			<button t-on-click="rubbish_bin">delete</button>
+			<button class="btn btn-primary" t-on-click="rubbish_bin">delete</button>
 		</div>
 	</t>
 
