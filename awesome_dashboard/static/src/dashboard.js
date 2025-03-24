@@ -1,15 +1,28 @@
 /** @odoo-module **/
 
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
+import { DashboardItem } from "./dashboard_item/dashboard_item";
+import { PieChart } from "./piechart/piechart";
+
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout };
+    static components = { Layout, DashboardItem, PieChart };
 
     setup() {
         this.action = useService('action');
+        
+        this.statsService = useService('awesome_dashboard.stats');
+        this.stats = this.statsService.test();
+
+
+        onWillStart(async () => {
+            this.stats = Object.entries(await this.statsService.getValuesMem()).filter((elt) => {return typeof(elt[1]) == typeof(1);});
+            this.salesData = (await this.statsService.getValuesMem()).orders_by_size
+        });
+
     }
     
     customersButton() {

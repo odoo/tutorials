@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout className="'o_dashboard h-100'">
-            hello dashboard
-            <button t-on-click="customersButton">Customers</button>
-            <button t-on-click="leadsButton">Leads</button>
+        <Layout className="'o_dashboard h-100'" display="props.display">
+            <button class="btn btn-primary" t-on-click="customersButton">Customers</button>
+            <button class="btn btn-primary" t-on-click="leadsButton">Leads</button>
+            <t t-foreach="stats" t-as="item" t-key="item">
+                <DashboardItem>
+                    <h3><t t-esc="item[0]"/></h3>
+                    <h2 style="color: green;"><t t-esc="item[1]"/></h2>
+                </DashboardItem>
+            </t>
+            <DashboardItem>
+                <PieChart data="salesData"/>
+            </DashboardItem>
+
         </Layout>
     </t>
 

@@ -5,4 +5,4 @@ from odoo.osv import expression
 
 
 class Partner(models.Model):
-	_inherit = 'res.partner'
+    _inherit = 'res.partner'
