@@ -82,9 +82,9 @@ options.registry.WebsiteSaleProductsItem = options.registry.WebsiteSaleProductsI
             ? (currentStyle === 'badge' ? 'o_tag_left' : 'o_ribbon_left')
             : (currentStyle === 'badge' ? 'o_tag_right' : 'o_ribbon_right');
 
-        this.$ribbon[0].className = this.$ribbon[0].className.replace(
-            /o_(ribbon|tag)_(left|right)/, positionClass
-        );
+        this.$ribbon.removeClass('o_ribbon_left o_ribbon_right o_tag_left o_tag_right')
+            .addClass(positionClass)
+            .attr('data-style', currentStyle);
 
         await this._saveRibbon();
     },

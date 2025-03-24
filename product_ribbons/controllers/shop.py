@@ -13,7 +13,8 @@ class WebsiteSaleExtended(WebsiteSale):
         response = super().shop(page, category, search, min_price, max_price, ppg, **post)
 
         if response.qcontext.get('products'):
+            products_prices = response.qcontext.get('products_prices')
             for product in response.qcontext['products']:
-                product._get_ribbon({})  
+                product._get_ribbon(products_prices)
 
         return response
