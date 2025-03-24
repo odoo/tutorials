@@ -30,17 +30,24 @@ export class Counter extends Component {
 }
 
 export class Card extends Component {
-    static props = ['title', 'content'];
+    static props = ['title', 'slots?'];
+
+    setup() {
+        this.state = useState({ visible: true });
+    }
 
     static template = xml`
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title"><t t-out='props.title'/></h5>
-                <p class="card-text">
-                <t t-out='props.content'/>
-                </p>
+                <button t-on-click="turnOfCard">Toggle</button>
+                <t t-slot="default" t-if="state.visible"/>
             </div>
         </div>`;
+
+    turnOfCard() {
+        this.state.visible = !this.state.visible;
+    }
 }
 
 export class Playground extends Component {

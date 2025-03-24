@@ -8,7 +8,7 @@ export class TodoItem extends Component {
     };
 
     static template = xml`
-        <p t-att-class="{'text-muted text-deLHcoration-line-through': props.todo.isCompleted}">
+        <p t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
             <input type="checkbox" t-att="['checked', props.todo.isCompleted]" t-on-change="changeState"/>
             <t t-esc='props.todo.id'/>. 
             <t t-esc='props.todo.description'/>
@@ -22,8 +22,6 @@ export class TodoItem extends Component {
     }
 
     removeTodo(ev){
-        console.log("caill");
         this.props.removeTodo(this.props.todo.id);
-        //TODO remove me
     }
 }

@@ -12,15 +12,15 @@ export class TodoList extends Component {
                 <input type="text" t-on-keyup="addTodo" placeholder="Add a todo" t-ref="todoInput"/> <br/>
             </div>
             <div>
-                <p t-foreach="todos" t-as="todo" t-key="todo.id" >
-                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo="removeTodo" />
+                <p t-foreach="state.todos" t-as="todo" t-key="todo.id" >
+                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" />
                 </p>
             </div>
         </div>
     `;
 
     setup() {
-        this.todos = useState([]);
+        this.state = useState( {todos: []});
         this.nextId = 0;
 
         useAutofocus("todoInput");
@@ -28,14 +28,15 @@ export class TodoList extends Component {
 
     addTodo(ev){
         if (ev.keyCode === 13 && ev.target.value !== ""){
-            this.todos.push({id: this.nextId, description: ev.target.value, isCompleted: false});
+            this.state.todos.push({id: this.nextId, description: ev.target.value, isCompleted: false});
             this.nextId ++;
             ev.target.value = "";
+            console.log(this.state.todos);
         }
     }
 
     toggleState(id, completed){
-        for (let todo in this.todos) {
+        for (let todo in this.state.todos) {
             if (todo.id === id){
                 todo.isCompleted = completed;
             }
@@ -43,11 +44,11 @@ export class TodoList extends Component {
     }
 
     removeTodo(id){
-        // const index = this.todos.findIndex((elem) => elem.id === id);
-
-        // if (index >= 0) {
-        //     // remove the element at index from list
-        //     this.todos.findIndex.splice(index, 1);
-        // }
+        console.log(this.state.todos);
+        const index = this.state.todos.findIndex((todo) => todo.id === id);
+        if (index >= 0) {
+            // remove the element at index from list
+            this.state.todos.splice(index, 1);
+        }
     }
 }
