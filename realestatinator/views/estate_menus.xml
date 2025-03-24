@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+<<<<<<< HEAD
+    <menuitem id="estate_menu_root" name="estate">
+        <menuitem id="estate_views_menu" name="Dashboard" action="estate_property_model_action"/>
+        <menuitem id="property_settings_menu" name="Settings">
+            <menuitem id="property_type_button" action="estate_property_type_action"/>
+            <menuitem id="property_tags_button" action="estate_property_tags_action"/>
+        </menuitem>
+    </menuitem>
+=======
+	<menuitem id="estate_menu_root" name="estate">
+		<menuitem id="estate_views_menu" name="Dashboard" action="estate_property_model_action"/>
+		<menuitem id="property_settings_menu" name="Settings">
+			<menuitem id="property_type_button" action="estate_property_type_action"/>
+			<menuitem id="property_tags_button" action="estate_property_tags_action"/>
+		</menuitem>
+	</menuitem>
+>>>>>>> 114af13f0 ([ADD] real-estate-inator: Inator that helps you manage and sell real estate properties)
+</odoo>
