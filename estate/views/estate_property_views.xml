@@ -57,8 +57,8 @@
             <field name="arch" type="xml">
                 <form string="Property" create="False">
                     <header>
-                        <button name="action_cancel" type="object" string="Cancel" invisible="state == 'sold'"/>
-                        <button name="action_sold" type="object" string="Sold" invisible="state == 'sold'"/>
+                        <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
+                        <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
                         <field name="state" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold" options="{'clickable': '0'}"/>
                     </header>
                     <sheet>
@@ -66,10 +66,8 @@
                             <div class="d-flex w-100">
                                 <field name="name" decoration-success="state == 'offer_accepted'" decoration-muted="state == 'sold'"/>
                             </div>
-                            <div class="d-flex align-items-center">
-                                <field name="image_1920" widget="image" class="oe_avatar ms-2"/>
-                            </div>
                         </h1>
+                        <field name="image_1920" widget="image" class="oe_avatar ms-2"/>
                         <div>
                             <group>
                                 <group>
@@ -87,8 +85,8 @@
                         </div>
                         <notebook>
                             <page string="Description">
-                                <div>
-                                    <group>
+                                <group>
+                                    <group name="property_description">
                                         <field name="description" string="Description"/>
                                         <field name="bedrooms" string="Bedrooms"/>
                                         <field name="living_area" string="Living Area"/>
@@ -99,7 +97,7 @@
                                         <field name="garden_orientation" string="Garden Orientation" invisible="garden == False"/>
                                         <field name="total_area" string="Total Area (sqm)"/>
                                     </group>
-                                </div>
+                                </group>
                             </page>
                             <page string="Offers" widget="one2many" name="offer_ids">
                                 <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']">

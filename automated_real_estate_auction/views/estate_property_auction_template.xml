@@ -70,7 +70,7 @@
                 <div class="col-md-4">
                     <label class="form-label fw-bold">Sell Type:</label>
                     <select name="sell_type" class="form-select">
-                        <option value="all" t-att-selected="request.httprequest.args.get('sell_type') == 'all'">All</option>
+                        <option value="">All</option>
                         <option value="auction" t-att-selected="request.httprequest.args.get('sell_type') == 'auction'">
                           Auction
                         </option>

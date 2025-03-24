@@ -30,3 +30,14 @@
     transform: scale(1.05);
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.o_task_state_widget {
+    font-size: large;
+}
+
+.o_state_container {
+    width: 20%;
+    @media only screen and (max-width: 650px) {
+        width: 5%;
+    }
+}

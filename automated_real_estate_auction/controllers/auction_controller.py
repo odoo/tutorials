@@ -42,6 +42,7 @@ class EstateAuctionController(EstateController):
         response = super().list_properties(page=page, **kwargs)
         sell_type = kwargs.get("sell_type")
         properties = response.qcontext.get('properties', request.env['estate.property'])
-        filtered_properties = properties.filtered(lambda p: p.sell_type == sell_type)
-        response.qcontext.update({'properties': filtered_properties})
+        if sell_type:
+          properties = properties.filtered(lambda p: p.sell_type == sell_type)
+        response.qcontext.update({'properties': properties})
         return response
