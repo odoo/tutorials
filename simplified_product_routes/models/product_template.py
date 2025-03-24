@@ -90,6 +90,19 @@ class ProductTemplate(models.Model):
 
         return route_commands
 
+    def _handle_route_assignment(self, product, route, condition):
+        """Helper function to handle route assignment based on a condition"""
+        commands = []
+        if not route:
+            return commands
+
+        if condition and route.id not in product.route_ids.ids:
+            commands.append(Command.link(route.id))
+        elif not condition and route.id in product.route_ids.ids:
+            commands.append(Command.unlink(route.id))
+
+        return commands
+
     def _update_routes_based_on_config(self):
         """Update routes based on product configuration
 
@@ -106,29 +119,20 @@ class ProductTemplate(models.Model):
 
         for product in self:
             route_commands = []
-            
+
             # Handle Buy route
-            if product.purchase_ok and buy_route and buy_route.id not in product.route_ids.ids:
-                route_commands.append(Command.link(buy_route.id))
-            elif not product.purchase_ok and buy_route and buy_route.id in product.route_ids.ids:
-                route_commands.append(Command.unlink(buy_route.id))
-            
+            route_commands.extend(self._handle_route_assignment(product, buy_route, product.purchase_ok))
+
             # Handle Manufacture route
-            if product.has_bom and manufacture_route and manufacture_route.id not in product.route_ids.ids:
-                route_commands.append(Command.link(manufacture_route.id))
-            elif not product.has_bom and manufacture_route and manufacture_route.id in product.route_ids.ids:
-                route_commands.append(Command.unlink(manufacture_route.id))
-            
+            route_commands.extend(self._handle_route_assignment(product, manufacture_route, product.has_bom))
+
             # Handle Subcontract route (components used in subcontracting BoMs)  
             is_subcontract_component = False
             if subcontract_route:
                 is_subcontract_component = self._is_subcontract_component()
-            
-            if is_subcontract_component and subcontract_route.id not in product.route_ids.ids:
-                route_commands.append(Command.link(subcontract_route.id))
-            elif not is_subcontract_component and subcontract_route.id in product.route_ids.ids:
-                route_commands.append(Command.unlink(subcontract_route.id))
-            
+
+            route_commands.extend(self._handle_route_assignment(product, subcontract_route, is_subcontract_component))
+
             # Handle Dropship routes
             dropship_commands = product._handle_dropship_routes()
             if dropship_commands:
