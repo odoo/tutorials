@@ -10,7 +10,6 @@ class SaleOrder(models.Model):
 
     def create_delivery_order(self, warehouse, order_lines):
         """Create a delivery order (picking) for the given warehouse and order lines."""
-
         delivery_picking = self.env['stock.picking'].create({
             'partner_id': self.partner_id.id,
             'picking_type_id': warehouse.out_type_id.id,
@@ -32,77 +31,75 @@ class SaleOrder(models.Model):
 
         return delivery_picking
 
-    def check_stock_availability(self, product, warehouse):
-        """Check if the entire order can be fulfilled from a single warehouse."""
-
+    def check_stock_availability(self, product, warehouse, required_qty):
+        """Check if a warehouse has sufficient stock for a given product."""
         stock_quant = self.env['stock.quant'].search([
             ('product_id', '=', product.id),
             ('location_id', '=', warehouse.lot_stock_id.id)
         ], limit=1)
-        return stock_quant.quantity > 0 if stock_quant else False
+        return stock_quant.quantity >= required_qty if stock_quant else False
 
-    def can_fulfill_from_single_warehouse(self, warehouse):
-        if not self.order_line:
-            return False
+    def get_fulfillment_warehouse(self):
+        """Determine the best warehouse strategy to minimize delivery orders."""
 
-        for line in self.order_line:
-            if self.check_stock_availability(line.product_id, warehouse) == False:
-                return False
+        warehouse_product_count = {}
+        product_warehouse_map = {}
 
-        return True
-
-    def group_lines_by_warehouse(self):
-        """Group order lines by available warehouse based on stock availability."""
-
-        warehouse_lines = {}
+        # Identify available warehouses for each product
         for line in self.order_line:
             product = line.product_id
-            primary_stock = self.check_stock_availability(
-                product, product.primary_warehouse_id)
-            secondary_stock = self.check_stock_availability(
-                product, product.secondary_warehouse_id) if product.secondary_warehouse_id else False
+            primary_warehouse = product.primary_warehouse_id
+            secondary_warehouse = product.secondary_warehouse_id
 
-            if primary_stock:
-                warehouse = product.primary_warehouse_id
-            elif secondary_stock:
-                warehouse = product.secondary_warehouse_id
-            else:
-                raise ValidationError(
-                    f"The product '{product.name}' has no stock in both primary and secondary warehouses.")
+            available_warehouses = []
+            if self.check_stock_availability(product, primary_warehouse, line.product_uom_qty):
+                available_warehouses.append(primary_warehouse)
+            if secondary_warehouse and self.check_stock_availability(product, secondary_warehouse, line.product_uom_qty):
+                available_warehouses.append(secondary_warehouse)
 
-            if warehouse not in warehouse_lines:
-                warehouse_lines[warehouse] = []
-            warehouse_lines[warehouse].append(line)
+            if not available_warehouses:
+                raise ValidationError(f"Product '{product.name}' is out of stock in warehouses.")
 
-        return warehouse_lines
+            # Count how many products each warehouse can fulfill
+            for warehouse in available_warehouses:
+                warehouse_product_count.setdefault(warehouse, 0)
+                warehouse_product_count[warehouse] += 1
+
+            product_warehouse_map[product] = available_warehouses
+
+        sorted_warehouses = sorted(warehouse_product_count, key=warehouse_product_count.get, reverse=True)
+
+        final_warehouse_assignment = {}
+
+        for product, available_warehouses in product_warehouse_map.items():
+            assigned_warehouse = None
+            for wh in sorted_warehouses:
+                if wh in available_warehouses:
+                    assigned_warehouse = wh
+                    break
+
+            if assigned_warehouse:
+                for line in self.order_line:
+                    if line.product_id == product:
+                        line.write({'warehouse_id': assigned_warehouse.id})  # Update SOL warehouse
+                        if assigned_warehouse not in final_warehouse_assignment:
+                            final_warehouse_assignment[assigned_warehouse] = []
+                        final_warehouse_assignment[assigned_warehouse].append(line)
+                        break
+
+        return final_warehouse_assignment
 
     # -------------------------------------------------------------------------
     # ACTIONS
     # -------------------------------------------------------------------------
 
     def action_confirm(self):
-        """Confirm the sale order and create delivery orders based on stock availability."""
+        """Confirm the sale order and create optimized delivery orders."""
+        warehouse_lines = self.get_fulfillment_warehouse()
 
-        primary_warehouse = self.order_line[0].product_id.primary_warehouse_id
-        secondary_warehouse = self.order_line[0].product_id.secondary_warehouse_id
-
-        if self.can_fulfill_from_single_warehouse(primary_warehouse):
-            for line in self.order_line:
-                line.warehouse_id = primary_warehouse # Assign all products to Primary Warehouse
-            res = self.create_delivery_order(
-                primary_warehouse, self.order_line)
+        for warehouse, lines in warehouse_lines.items():
+            res = self.create_delivery_order(warehouse, lines)
             self.write({'picking_ids': [(4, res.id)]})
-        elif secondary_warehouse and self.can_fulfill_from_single_warehouse(secondary_warehouse):
-            for line in self.order_line:
-                line.warehouse_id = secondary_warehouse # Assign all products to Secondary Warehouse
-            res = self.create_delivery_order(
-                secondary_warehouse, self.order_line)
-            self.write({'picking_ids': [(4, res.id)]})
-        else:
-            warehouse_lines = self.group_lines_by_warehouse()
-            for warehouse, lines in warehouse_lines.items():
-                res = self.create_delivery_order(warehouse, lines)
-                self.write({'picking_ids': [(4, res.id)]})
 
         self.write({'state': 'sale'})
         return True

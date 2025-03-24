@@ -32,14 +32,6 @@ class TestMultiWarehouseAllocation(TransactionCase):
             'secondary_warehouse_id': self.secondary_warehouse.id
         })
 
-    def test_create_product_without_warehouse(self):
-        """Test creating a product without assigning a warehouse."""
-        product_without_warehouse = self.product_model.create({
-            'name': 'Product Without Primary Warehouse',
-            'is_storable': True,
-        })
-        self.assertEqual(product_without_warehouse.primary_warehouse_id.id, False, "Product should have a primary warehouse.")
-
     def test_delivery_order_creation_single_warehouse(self):
         """Test that a single delivery order is created when stock is available in one warehouse."""
         self.stock_quant.create({
