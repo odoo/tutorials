@@ -6,22 +6,21 @@ from dateutil.relativedelta import relativedelta
 class ProductTemplate(models.Model):
     _inherit = "product.template"
 
-    last_invoice_time_diff = fields.Char("Last Invoice Time Difference")
-    
     def _compute_time_difference(self, past_date, current_date):
+        """Compute relative time difference for display."""
         delta = relativedelta(current_date, past_date)
         if delta.years > 0:
-            return f"{delta.years} year ago"
+            return f"{delta.years} Yr"
         elif delta.months > 0:
-            return f"{delta.months} month ago"
+            return f"{delta.months} Mo"
         elif delta.days > 0:
-            return f"{delta.days} day ago"
+            return f"{delta.days} D"
         elif delta.hours > 0:
-            return f"{delta.hours} hour ago"
+            return f"{delta.hours} H"
         elif delta.minutes > 0:
-            return f"{delta.minutes} minute ago"
+            return f"{delta.minutes} Min"
         return "Just now"
-
+    
     @api.model
     def name_search(self, name="", args=None, operator="ilike", limit=100):
         args = args or []
@@ -47,13 +46,13 @@ class ProductTemplate(models.Model):
                 ("move_id.move_type", "=", "out_invoice"),
                 ("move_id.state", "=", "posted"),
             ],
-            order="invoice_date DESC",
+            order="create_date DESC",
         )
         product_invoice_dates = {}
         for line in invoice_lines:
             product = line.product_id.product_tmpl_id
             if product.id not in product_invoice_dates:
-                product_invoice_dates[product.id] = line.move_id.invoice_date
+                product_invoice_dates[product.id] = line.move_id.create_date
         for product in products:
             if product.id in product_invoice_dates:
                 invoiced_products.append(product)

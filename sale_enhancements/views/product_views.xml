@@ -9,7 +9,6 @@
             <xpath expr="//div[@t-if='record.default_code.value']" position="replace">
                 <field name="default_code"/>
             </xpath>
-
             <xpath expr="//div[@name='o_kanban_qty_available']" position="replace">
                 <div t-if="record.is_storable.raw_value" js_class="product_catalog_kanban_record"
                     name="o_kanban_qty_available">

@@ -14,7 +14,7 @@ patch(ProductCatalogOrderLine.prototype, {
     },
     get price() {
         const { currencyId, digits } = this.env;
-        const formattedPrice = formatMonetary(this.props.price, { currencyId, digits });
-        return `${formattedPrice}/Units`;
+        const formatPrice = formatMonetary(this.props.price, { currencyId, digits });
+        return `${formatPrice}/Units`;
     }
 });
