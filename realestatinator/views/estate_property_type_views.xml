@@ -1,49 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
-<<<<<<< HEAD
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name='name'>estate.property.type.action</field>
-        <field name='res_model'>estate.property.type</field>
-        <field name='view_mode'>list,form</field>
-    </record>
-    <record id="estate_property_type_view_list" model="ir.ui.view">
-        <field name="name">estate.property.type.view.list</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <list string='Properties'>
-                <field name='sequence' widget='handle'/>
-                <field name='name'/>
-            </list>
-        </field>
-    </record>
-    <record id='estate_property_type_view_form' model='ir.ui.view'>
-        <field name="name">estate.property.type.view.form</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <form>
-                <h1><field name="name"/></h1>
-                <button type="action" name="%(estate_property_offer_action)d" string='Offers' />
-                <field name="offer_count"/>
-                <notebook>
-                    <page string="Properties">
-                        <field name="property_ids">
-                            <list>
-                                <field name="name"/>
-                                <field name="expected_price"/>
-                                <field name="state"/>
-                            </list>
-                        </field>
-                    </page>
-                    <page string="Offers">
-                        <field name="offer_ids"/>
-                    </page>
-                </notebook>
-            </form>
-        </field>
-    </record>
-=======
 	<record id="estate_property_type_action" model="ir.actions.act_window">
-		<field name='name'>Estate Property Type</field>
+		<field name='name'>estate.property.type.action</field>
 		<field name='res_model'>estate.property.type</field>
 		<field name='view_mode'>list,form</field>
 	</record>
@@ -82,5 +40,4 @@
 			</form>
 		</field>
 	</record>
->>>>>>> 114af13f0 ([ADD] real-estate-inator: Inator that helps you manage and sell real estate properties)
 </odoo>

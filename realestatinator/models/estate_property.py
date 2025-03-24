@@ -1,7 +1,7 @@
 from odoo import api, exceptions, fields, models
 
 class EstatePropery(models.Model):
-	_name = 'estate_property'
+	_name = 'estate.property'
 	_description = 'real estate property'
 	_order = 'id desc'
 	_sql_constraints = [

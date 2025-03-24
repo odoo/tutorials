@@ -35,13 +35,21 @@
 			}
 		</style>
 		<div class="p-3">
-			<Counter onChange.bind="updateTotal"/>
-			<Counter onChange.bind="updateTotal"/>
-			<p>Total : <t t-esc="counter.value"/></p>
-			<Card title="'Really cool title.'" content="'I told you it was really cool!'"/>
+			<Card title="'Really cool title.'">
+				<p>I told you it was really cool!</p>
+			</Card>
 			<Card />
-			<Card title="'Actually, CAN you pass a function as a component?'" content="'No.'" ace="(obj) => {obj.content = 'Yes! But you need to call them inside the component.'}"/>
-			<Card title="'This is another test of passing code instead of text. Does this work?'" content="('1' == 1)?'Yes!':'No.'"/>
+			<Card title="'Card with cards inside!!!'">
+				<Card title="'Card with counters'">
+					<Counter onChange.bind="updateTotal"/>
+					<Counter onChange.bind="updateTotal"/>
+					<p>Total : <t t-esc="counter.value"/></p>
+				</Card>
+				<Card title="'Card with more counters'">
+					<Counter onChange.bind="updateTotal"/>
+					<Counter onChange.bind="updateTotal"/>
+				</Card>
+			</Card>
 			<TodoList />
 		</div>
 	</t>

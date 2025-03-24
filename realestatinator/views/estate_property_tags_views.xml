@@ -1,16 +1,8 @@
 <?xml version="1.0"?>
 <odoo>
-<<<<<<< HEAD
-    <record id="estate_property_tags_action" model="ir.actions.act_window">
-        <field name='name'>estate.property.tags.action</field>
-        <field name='res_model'>estate.property.tags</field>
-        <field name='view_mode'>list,form</field>
-    </record>
-=======
 	<record id="estate_property_tags_action" model="ir.actions.act_window">
-		<field name='name'>Estate Property Tag</field>
+		<field name='name'>estate.property.tags.action</field>
 		<field name='res_model'>estate.property.tags</field>
 		<field name='view_mode'>list,form</field>
 	</record>
->>>>>>> 114af13f0 ([ADD] real-estate-inator: Inator that helps you manage and sell real estate properties)
 </odoo>

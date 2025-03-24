@@ -3,7 +3,7 @@
 	<t t-name="card.card">
 		<div class="card" t-on-click="() => {console.log(this.props)}">
 			<h5><t t-out="title"/></h5>
-			<p><t t-out="content"/></p> 
+			<t t-slot="default"/>
 		</div>
 	</t>
 
