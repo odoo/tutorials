@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="custom_orderline_templates" xml:space="preserve">
+    <t t-name="custom_pos_inherit" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
+        <xpath expr="//div[contains(@class, 'product-name')]" position="before">
+            <t t-if="line.barcode">
+                <div class="barcode me-1">
+                    <t t-out="line.barcode"/>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'product-price')]" position="replace">
+            <div t-if="!props.basic_receipt" class="product-price price fw-bolder">
+                <t t-if="line.showStrikedPrice and line.standardPrice">
+                    <span class="text-muted text-decoration-line-through mx-1">
+                        <t t-out="line.standardPrice"/>
+                    </span>
+                </t>
+                <t t-out="line.price"/>
+            </div>
+        </xpath>
+    </t>
+</templates>
