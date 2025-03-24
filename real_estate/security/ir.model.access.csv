@@ -8,3 +8,6 @@ access_estate_property_tags_agent,access.estate.property.tags.agent,model_estate
 access_estate_property_agent,access.estate.property.agent,model_estate_property,estate_group_user,1,1,1,0
 access_estate_property_offer_agent,access.estate.property.offer.agent,model_estate_property_offer,estate_group_user,1,1,1,0
 access_estate_property,access.estate.property,model_estate_property,base.group_user,1,0,0,0
+access_estate_property_inquiry,access.estate.property.inquiry,model_estate_inquiry,base.group_user,1,1,1,1
+access_estate_inquiry_agent,estate.inquiry.agent,model_estate_inquiry,real_estate.estate_group_agent,1,1,1,0
+access_estate_inquiry_manager,estate.inquiry.manager,model_estate_inquiry,real_estate.estate_group_manager,1,1,1,1

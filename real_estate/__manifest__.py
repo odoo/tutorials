@@ -6,18 +6,24 @@
     'application': True,
     'category': "Real Estate/Brokerage",
     'installable': True,
-    'depends': ['base','mail'],
+    'depends': ['base','mail','website'],
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
         'views/res_user_views.xml',
         'views/estate_property_offer_views.xml',
+        'views/website_template.xml',
+        'views/estate_inquiry_views.xml',
+
         'data/property_types.xml',
         'demo/estate_property_demo_data.xml',
         'demo/estate_property_offers_demo_data.xml',
         'data/cron.xml',
+        'data/email_template.xml',
+
         'report/estate_property_templates.xml',
         'report/estate_property_reports.xml',
     ],

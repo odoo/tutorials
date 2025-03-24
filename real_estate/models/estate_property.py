@@ -37,6 +37,7 @@ class EstateProperty(models.Model):
         default=lambda self: fields.Date.today()+timedelta(days=10),
         help="Date when the property will not be available"
     )
+    image_1920 = fields.Image()
     # Pricing Fields
     expected_price = fields.Float(
         string="Expected Price",
@@ -150,6 +151,10 @@ class EstateProperty(models.Model):
         string="Company",
         default=lambda self: self.env.company
     )
+    inquiry_count = fields.Integer(
+        string="Inquiries",
+        compute='_compute_inquiry_count'
+    )
     # SQL Constraints
     _sql_constraints = [
         (
@@ -163,6 +168,11 @@ class EstateProperty(models.Model):
             "The Selling Price must be strictly positive."
         )
     ]
+
+    #Compute Inquiry Count
+    def _compute_inquiry_count(self):
+        for property in self:
+            property.inquiry_count = self.env['estate.inquiry'].search_count([('property_id', '=', property.id)])
 
     # Compute Total Area
     @api.depends('living_area', 'garden_area')
@@ -191,6 +201,16 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     # Button Actions
+    def action_view_inquiries(self):
+        return {
+            'name': 'Inquiries',
+            'type': 'ir.actions.act_window',
+            'res_model': 'estate.inquiry',
+            'view_mode': 'list,form',
+            'domain': [('property_id', '=', self.id)],
+            'context': {'default_property_id': self.id},
+            'target': 'current',
+        }
     def action_cancel_button(self):
         """Cancel the property sale. Prevent cancellation if the property is already sold."""
         if self.state == 'sold':

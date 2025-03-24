@@ -52,6 +52,16 @@
                     />
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_inquiries"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-envelope">
+                            <field name="inquiry_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                     <field name="image_1920" widget="image" class="oe_avatar"
+                           options="{'size': [150, 150]}" nolabel="1" />
                     <group>
                         <h1>
                             <field name="name"/>
