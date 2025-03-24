@@ -124,6 +124,13 @@
                                     </p>
                                 </t>
                             </div>
+                                <div class="col-12 text-center mt-3">
+                                <a t-attf-href="/make-offer?property_id={{ property.id }}" 
+                                   class="btn btn-primary" 
+                                   style="background-color: rgb(102, 64, 102); border: none; padding: 10px 20px; font-size: 16px;">
+                                    Make an Offer
+                                </a>
+                            </div>
 
                         </div>
                     </div>

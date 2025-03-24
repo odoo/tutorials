@@ -4,7 +4,7 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-       
+        self.check_access('write')
         res = super().action_sold()  
 
         invoice_vals = {

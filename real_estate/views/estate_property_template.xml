@@ -14,7 +14,7 @@
                                     <h5 class="card-title text-dark">
                                         <t t-esc="property.name" />
                                     </h5>
-                                    <p class="card-text">
+                                    <p class="card-text" >
                                        
                                         <t
                                             t-esc="property.tag_id and ', '.join(property.tag_id.mapped('name')) or 'No Tags'" />

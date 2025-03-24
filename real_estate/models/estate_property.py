@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate"
+    _inherit = ['mail.thread']
     _order = "id desc"   
 
     name = fields.Char(required=True)
@@ -104,4 +105,12 @@ class EstateProperty(models.Model):
                 raise UserError("You can only delete properties that are 'New' or 'Cancelled'.")    
 
     
-    
+    def action_estate_add_offer_wizard(self):
+      return {
+        'name': 'Add Offer',
+        'type': 'ir.actions.act_window',
+        'res_model': 'estate.add.offer.wizard',
+        'view_mode': 'form',
+        'target': 'new',
+        'context': {'default_property_ids': self.ids},
+    }

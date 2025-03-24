@@ -28,3 +28,20 @@ class PropertyController(http.Controller):
         return request.render("real_estate.estate_property_detailed", {
             'property': property_obj
         })
+    
+
+    @http.route('/make-offer', type='http', auth="public", website=True)
+    def make_offer_form(self, property_id=None, **kwargs):
+        property = request.env['estate.property'].sudo().browse(int(property_id))
+        return request.render('real_estate.estate_property_offer_template', {'property': property})
+
+    @http.route('/submit-offer', type='http', auth="public", methods=['POST'], website=True)
+    def submit_offer(self, **post):
+        
+        request.env['estate.property.offer'].sudo().create({
+            'price': post.get('price'),
+            'validity': post.get('validity'),
+            'property_id': int(post.get('property_id')),
+            'partner_id': request.env.user.partner_id.id,
+        })
+        return request.redirect('/property/%s' % post.get('property_id'))

@@ -28,10 +28,8 @@ class EstatePropertyOffer(models.Model):
         readonly=True)
 
     _sql_constraints = [
-        ('check_price', 'CHECK(price > 0 )',
-         'An offer price must be strictly positive'),
-          ('check_valid', 'CHECK(validity > 0 )',
-         'An validity must be strictly positive')
+        ('check_price', 'CHECK(price > 0 )','An offer price must be strictly positive'),
+        ('check_valid', 'CHECK(validity > 0 )','A validity must be strictly positive'),
     ]
 
     @api.depends("validity")
@@ -76,7 +74,7 @@ class EstatePropertyOffer(models.Model):
 
                 existing_offer_price = max(property.offer_ids.mapped("price"), default=0)
 
-                if offer_price < existing_offer_price:
+                if float(offer_price) < float(existing_offer_price):
                     raise UserError("Offer price must be higher than existing offers!")
 
                 property.state = "offer_received"

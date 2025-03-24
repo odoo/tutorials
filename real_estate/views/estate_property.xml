@@ -13,7 +13,10 @@
             <list decoration-success="state in ('offer_accepted','offer_received')"
                 decoration-bf="state == 'offer_accepted'"
                 decoration-muted="state == 'sold'">
-
+                <header>
+                    <button name="action_estate_add_offer_wizard" type="object" string="Add Offer"
+                        class="btn-primary" />
+                </header>
                 <field name="name" />
                 <field name="tag_id" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="postcode" />
@@ -32,7 +35,6 @@
         <field name="arch" type="xml">
             <form>
 
-
                 <group>
                     <group>
                         <button name="action_sold" type="object" string="Sold"
@@ -49,7 +51,7 @@
                 </group>
 
                 <sheet>
-            
+
                     <group>
                         <group>
                             <field name="name" placeholder="Name" />
@@ -104,7 +106,9 @@
                             </group>
                         </page>
                     </notebook>
+
                 </sheet>
+                <chatter />
             </form>
         </field>
     </record>
