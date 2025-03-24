@@ -80,7 +80,7 @@
                                             <t t-esc="property.name"/>
                                         </h5>
                                         <p class="card-text">
-                                            <t t-esc="property.description[:100]"/>
+                                            <t t-esc="property.description[:40]"/>
                                             ...
                                         </p>
                                         <a t-att-href="'/property/details/%s' % property.id"
@@ -335,7 +335,7 @@
 
                                     <!-- Price Tag -->
                                     <span class="badge bg-primary position-absolute top-0 end-0 m-2 p-2 fs-6">
-                                        $ <t t-out="property.expected_price"/>
+                                        ₹ <t t-out="property.expected_price"/>
                                     </span>
                                 </div>
 
@@ -494,7 +494,7 @@
                             <p class="mb-2">
                                 <strong>Expected Price:</strong>
                                 <span class="text-primary fs-5 fw-bold">
-                                    $ <t t-out="property.expected_price"/>
+                                    ₹ <t t-out="property.expected_price"/>
                                 </span>
                             </p>
                         </div>
@@ -502,7 +502,7 @@
                             <p class="mb-2">
                                 <strong>Best Offer:</strong>
                                 <span class="text-danger fs-5 fw-bold">
-                                    $ <t t-out="property.best_price"/>
+                                    ₹ <t t-out="property.best_price"/>
                                 </span>
                             </p>
                         </div>
@@ -597,7 +597,7 @@
                             <input type="hidden" name="property_id" id="modal-property-id" />
 
                             <div class="mb-3">
-                                <label for="offerPrice" class="form-label">Your Offer Price ($)</label>
+                                <label for="offerPrice" class="form-label">Your Offer Price (₹)</label>
                                 <input type="number" class="form-control" id="offerPrice"
                                        name="offerPrice" required="true" />
                             </div>
@@ -703,7 +703,7 @@
                                     </div>
 
                                     <div class="mb-3 mt-3">
-                                        <label for="expectedPrice" class="form-label">Expected Price ($)</label>
+                                        <label for="expectedPrice" class="form-label">Expected Price (₹)</label>
                                         <input type="number" id="expectedPrice" name="expected_price" required="true"
                                                class="form-control form-control-lg rounded-3" />
                                     </div>
@@ -798,6 +798,52 @@
                     });
                 });
             </script>
+        </t>
+    </template>
+
+    <template id="property_success" name="property created successfully">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="text-center">
+                    <h2 class="text-success fw-bold">
+                        <i class="fa fa-check-circle"></i> Property Listed!
+                    </h2>
+                    <p class="text-muted">Your property has been listed successfully.</p>
+                </div>
+
+                <div class="card shadow-lg mx-auto mt-4 p-4"
+                     style="max-width: 500px; border-radius: 15px;">
+                    <div class="card-body text-center">
+                        <h4 class="card-title text-primary fw-bold">
+                            <i class="fa fa-box"></i>
+                            <t t-out="property.name"/>
+                        </h4>
+
+                        <hr class="my-3"/>
+
+                        <p class="mb-2 text-dark">
+                            <strong>Description:</strong>
+                            <span class="text-muted">
+                                <t t-out="property.description" />
+                            </span>
+                        </p>
+
+                        <p class="mb-3 text-dark">
+                            <i class="fa fa-inr"></i>
+                            <strong>Expected Price:</strong>
+                            <span class="badge bg-info text-dark">
+                                <t t-out="property.expected_price" />
+                            </span>
+                        </p>
+
+                        <div class="d-flex justify-content-center mt-4">
+                            <a href="/" class="btn btn-primary me-2">
+                                <i class="fa fa-home"></i> Back to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </t>
     </template>
 

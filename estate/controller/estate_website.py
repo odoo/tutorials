@@ -10,6 +10,7 @@ class EstateWebsite(http.Controller):
             [
                 ('is_published', '=', True),
                 ('state', '!=', 'accepted'),
+                ('state', '!=', 'cancelled'),
                 ('state', '!=', 'sold'),
             ],
             order='name asc'
@@ -36,13 +37,13 @@ class EstateWebsite(http.Controller):
     @http.route('/', type='http', auth='public', website=True, methods=['GET'])
     def render_homepage(self):
         Properties = request.env['estate.property'].sudo().search(
-            [('is_published', '=', True)], limit=3
+            [('is_published', '=', True)], limit=3,
         )
         return request.render('estate.property_listing_home_page', {
             'Properties': Properties,
         })
 
-    @http.route('/aboutus', type='http', auth='public', website=True, methods=['GET'], csrf=False)
+    @http.route('/aboutus', type='http', auth='public', website=True, methods=['GET'])
     def render_about_us_page(self):
         Agents = request.env['res.users'].sudo().search([
             ('groups_id', 'in', [
@@ -57,7 +58,7 @@ class EstateWebsite(http.Controller):
     @http.route('/create_offer', type='http', auth='public', website=True, methods=['POST'])
     def create_offer(self, **kwargs):
         if request.env.user.id == request.env.ref('base.public_user').id:
-            return request.redirect('/web/signup')
+            return request.redirect('/web/login')
 
         property_id = kwargs.get('property_id')
         offer_price = kwargs.get('offerPrice')
@@ -125,7 +126,6 @@ class EstateWebsite(http.Controller):
         except ValueError:
             return request.redirect('/error_page')
 
-        # Create property
         new_property = request.env['estate.property'].create({
             'name': property_name,
             'active': True,
@@ -147,4 +147,7 @@ class EstateWebsite(http.Controller):
             'is_published': is_published,
         })
 
-        return request.redirect('/property_success')
+        if new_property.exists():
+            return request.render('estate.property_success', {'property' : new_property})
+
+        return  request.redirect('/error_page')
