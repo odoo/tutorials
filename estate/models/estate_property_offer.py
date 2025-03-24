@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 import datetime
 
 
@@ -62,5 +63,9 @@ class PropertyOffers(models.Model):
     @api.model
     def create(self, vals):
         property_id = self.env['estate.property'].browse(vals['property_id'])
-        property_id.state = 'offer_received'
+        offer_price = vals.get('price')
+        if property_id.best_price <= offer_price:
+            property_id.state = 'offer_received'
+        else:
+            raise UserError('An offer with amount greater than this is already made, please consider increasing the amount')
         return super().create(vals)
