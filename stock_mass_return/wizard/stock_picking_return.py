@@ -89,6 +89,30 @@ class ReturnPicking(models.TransientModel):
             }
         )
 
+    # Override _create_return
+    def _create_return(self):
+        for return_move in self.product_return_moves.move_id:
+            return_move.move_dest_ids.filtered(lambda m: m.state not in ('done', 'cancel'))._do_unreserve()
+
+        # create new picking for returned products
+        new_picking = self.picking_id.copy(self._prepare_picking_default_values())
+        new_picking.user_id = False
+        new_picking.message_post_with_source(
+            "mail.message_origin_link",
+            render_values={"self": new_picking, "origin": self._get_picking_ids()},
+            subtype_xmlid="mail.mt_note",
+        )
+        returned_lines = False
+        for return_line in self.product_return_moves:
+            if return_line._process_line(new_picking):
+                returned_lines = True
+        if not returned_lines:
+            raise UserError(_("Please specify at least one non-zero quantity."))
+
+        new_picking.action_confirm()
+        new_picking.action_assign()
+        return new_picking
+
     def action_create_returns_all(self):
         if len(self.get_active_ids()) == 1:
             return super().action_create_returns_all()
@@ -96,18 +120,6 @@ class ReturnPicking(models.TransientModel):
 
         for picking in self._get_picking_ids():
             picking.write({"new_return_ids": [Command.link(new_picking.id)]})
-        last_message = self.env["mail.message"].search(
-            [("res_id", "=", new_picking.id), ("model", "=", "stock.picking")],
-            order="id desc",
-            limit=1,
-        )
-        if last_message:
-            last_message.unlink()
-        new_picking.message_post_with_source(
-            "mail.message_origin_link",
-            render_values={"self": new_picking, "origin": self._get_picking_ids()},
-            subtype_xmlid="mail.mt_note",
-        )
 
         vals = {
             "sale_id": self._get_picking_ids()[0].sale_id.id,
