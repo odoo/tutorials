@@ -1,0 +1,28 @@
+from odoo import api, fields, models, Command
+
+
+class PropertyInvoice(models.Model):
+    _inherit = 'estate.property'
+
+    def action_set_sold(self):
+        res = super().action_set_sold()
+
+        invoice_line_ids = [
+            Command.create({
+                'name': self.name,
+                'quantity': 1,
+                'price_unit': self.selling_price * 0.06
+            }),
+            Command.create({
+                'name': 'administrative fees',
+                'quantity': 1,
+                'price_unit': 100
+            })
+        ]
+
+        moves = self.env['account.move'].sudo().with_context(default_move_type='out_invoice').create({
+            'partner_id': self.buyer_id.id,
+            'move_type': 'out_invoice',
+            'line_ids': invoice_line_ids
+        })
+        return moves
