@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_view_inherit_approval_sales" model="ir.ui.view">
+        <field name="name">sale.order.form.view.inherit.approval.sales</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_quotation_send']" position="attributes">
+                <attribute name="invisible">state != 'draft' or approval_status != 'approved'</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="invisible">state != 'sent' or approval_status != 'approved'</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm'][2]" position="attributes">
+                <attribute name="invisible">state != 'draft' or approval_status != 'approved'</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_cancel']"
+                position="after">
+                <button name="action_create_approval" string="Send For Approval" 
+                type="object" class="btn-secondary" invisible="approval_id or state != 'draft'"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_approval_request" type="object"
+                    class="oe_stat_button" icon="fa-check-square-o"
+                    invisible="not approval_id">
+                    <span>
+                        <field name="approval_status" string="Approval Request" widget="statinfo"/>
+                    </span>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='order_line']" position="attributes">
+                <attribute name="readonly">state == 'cancel' or locked or approval_status == 'approved'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
