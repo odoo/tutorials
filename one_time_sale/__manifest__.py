@@ -5,7 +5,7 @@
     'author': "Odoo",
     'category': 'Sales/Subscriptions',
     'description': """
-    This module enables the sale and purchase of products with a one-time purchase option.
+    This module enables the sale and purchase of subscription products with a one-time purchase option.
     """,
     'data': [
         'data/one_time_sale_tour.xml',
@@ -15,7 +15,7 @@
     'assets': {
         'web.assets_frontend': [
             'one_time_sale/static/src/**/*',
-            ('remove', 'one_time_sale/static/src/js/tours/one_time_sale.js')
+            ('remove', 'one_time_sale/static/src/js/tours/**')
         ],
         'web.assets_backend': [
             'one_time_sale/static/src/js/tours/**',
