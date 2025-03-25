@@ -9,8 +9,6 @@
             <p>Total Sum: <t t-esc="state.sum" /></p>
         </div>
 
-
-         <!-- Using Cards with Slots -->
         <div class="mt-3 mb-3">
             <Card title="'Card 1'">
                 <p><t t-out="unsafehtml" /></p>
