@@ -33,10 +33,6 @@ class StockMove(models.Model):
                 }
                 move.s_quantity = move.quantity / unit_multipliers.get(move.s_unit, 1)
 
-    @api.onchange('quantity')
-    def _onchange_quantity(self):
-        self._compute_s_quantity()
-
     def _create_backorder(self):
         backorders = super()._create_backorder()
         for backorder in backorders:
