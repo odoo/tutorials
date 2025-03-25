@@ -1,14 +1,17 @@
-/** @odoo-module **/
-
 import { Component, useState } from "@odoo/owl";
 
 export class Counter extends Component {
-    static template = "awesome_owl.counter";
-    setup() {
-        this.state = useState({ count: 0 });  // Reactive counter state
+  static props = {
+    onChange: { type: Function, optional: true },
+  };
+  static template = "awesome_owl.counter";
+  setup() {
+    this.counter = useState({ value: 1 });
+  }
+  incrementCounter() {
+    this.counter.value++;
+    if (this.props.onChange) {
+      this.props.onChange();
     }
-
-    increment() {
-        this.state.count += 1;  // Update state (triggers re-render)
-    }
+  }
 }
