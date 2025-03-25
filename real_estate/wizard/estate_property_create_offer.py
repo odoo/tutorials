@@ -13,7 +13,6 @@ class EstateCreateOffer(models.TransientModel):
         if active_ids:
             offers = []
             for property_id in active_ids:
-                print(self.partner_id.id)
                 offers.append(
                     {
                         "price": self.price,

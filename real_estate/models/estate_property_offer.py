@@ -42,6 +42,10 @@ class EstatePropertyOffer(models.Model):
 
             if property.state == "new":
                 property.state = "offer_received"
+
+            if property.state == "sold":
+                raise ValidationError("Can't make offer on sold property!")
+
         return super().create(vals_list)
 
     @api.depends("validity")

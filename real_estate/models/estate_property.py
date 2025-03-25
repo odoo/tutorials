@@ -1,4 +1,3 @@
-from datetime import date, timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -108,7 +107,7 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden == True:
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
@@ -126,6 +125,9 @@ class EstateProperty(models.Model):
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     def action_set_sold(self):
+        if not self.buyer or self.state != "offer_accepted":
+            raise UserError("No buyer is assigned to this property!")
+
         if self.state == "cancelled":
             raise UserError("You cannot mark a cancelled property as sold.")
         self.state = "sold"
@@ -142,6 +144,5 @@ class EstateProperty(models.Model):
     def _track_subtype(self, init_values):
         self.ensure_one()
         if "state" in init_values and self.state == "offer_accepted":
-            print("=== STATE CHANGED TO OFFER ACCEPTED ===")
             return self.env.ref("real_estate.mt_state_change")
         return super()._track_subtype(init_values)

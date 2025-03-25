@@ -60,7 +60,7 @@
                 decoration-success="state in ['offer_accepted','offer_received']"
                 decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
                 <header>
-                    <button string="Add Offer" name="%(estate_create_offer_action)d" type="action"
+                    <button string="Add Offer" name="%(real_estate.estate_create_offer_action)d" type="action"
                         class="oe_highlight"/>
                 </header>
                 <field name="name"/>

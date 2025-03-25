@@ -1,4 +1,4 @@
-from odoo import models, fields, api, Command
+from odoo import models, Command
 from odoo.exceptions import UserError, AccessError
 
 
@@ -9,9 +9,6 @@ class EstateProperty(models.Model):
         self.check_access("write")
 
         result = super().action_set_sold()
-
-        if not self.buyer:
-            raise UserError("No buyer is assigned to this property!")
 
         invoice_vals = {
             "partner_id": self.buyer.id,
@@ -38,7 +35,7 @@ class EstateProperty(models.Model):
         }
 
         try:
-            self.env["account.move"].check_access_rights("create")
+            self.env["account.move"].check_access("create")
         except AccessError:
             raise UserError(
                 "You do not have the required permissions to create invoices."
