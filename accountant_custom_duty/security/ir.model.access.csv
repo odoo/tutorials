@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_bill_of_entry_wizard,access_account_bill_of_entry_wizard,model_account_bill_of_entry_wizard,,1,1,1,0
+access_account_move_line_wizard,Access Account Move Line Wizard,model_account_move_line_wizard,,1,1,1,1
+access_account_move_bill_of_entry_line,access_account_move_bill_of_entry_line,model_account_move_bill_of_entry_line,,1,1,1,0
