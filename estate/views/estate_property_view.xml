@@ -138,6 +138,8 @@
         <field name="arch" type="xml">
             <search string="Estate Search">
                 <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
                 <separator/>
                 <filter string="Filter on state" name="state"
                     domain="['|',('state','=','new'),('state','=','Offer Received')]"/>

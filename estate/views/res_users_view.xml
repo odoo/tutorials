@@ -4,14 +4,14 @@
         <record id="view_users_form_inherit" model="ir.ui.view">
             <field name="name">res.users.form.inherit</field>
             <field name="model">res.users</field>
-            <field name="inherit_id" ref="base.view_users_form" />
+            <field name="inherit_id" ref="base.view_users_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//notebook" position="inside">
                     <page name="Properties">
                         <field name="property_ids" nolabel="1">
                             <list>
-                                <field name="name" />
-                                <field name="expected_price" />
+                                <field name="name"/>
+                                <field name="expected_price"/>
                             </list>
                         </field>
                     </page>

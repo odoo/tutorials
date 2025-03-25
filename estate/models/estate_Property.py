@@ -113,11 +113,16 @@ class EstateModel(models.Model):
         if self.state == "sold":
             raise UserError("Sold Property cannot be cancelled.")
         self.state = "cancelled"
+        return True
 
     def action_set_sold_property(self):
+        if not self.offer_ids and not self.buyer_id:
+            raise UserError("Cannot sell a property with no offers.")
+
         if self.state == "cancelled":
             raise UserError("Cancelled Property cannot be Sold")
         self.state = "sold"
+        return True
 
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):

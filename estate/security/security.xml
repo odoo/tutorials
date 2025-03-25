@@ -40,7 +40,7 @@
         <record id="estate_property_company_rule" model="ir.rule">
             <field name="name">Estate Property: Restrict by company</field>
             <field name="model_id" ref="model_estate_property"/>
-            <field name="domain_force">['|', ('company_id', '=', 'user.comapny_id.id'),
+            <field name="domain_force">['|', ('company_id', '=', 'user.company_id.id'),
                 ('company_id',
                 "=", False)]</field>
             <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
