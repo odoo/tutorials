@@ -1,5 +1,6 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, } from "@odoo/owl";
 import { TodoItem } from "./todo_item";
+import { useAutoFocus } from "../util";
 
 
 export class TodoList extends Component {
@@ -8,10 +9,33 @@ export class TodoList extends Component {
     static props = {};
 
     setup() {
-        this.todos = useState([
-            { id: 1, description: "buy milk", isCompleted: false },
-            { id: 2, description: "finish Odoo project", isCompleted: true },
-            { id: 3, description: "call plumber", isCompleted: false },
-        ]);
+        this.nextId=1;
+        this.todos = useState([]);
+        useAutoFocus("input")
+    };
+
+    addTodo(ev){
+        if(ev.keyCode === 13 && ev.target.value != ""){
+            this.todos.push({
+                id: this.nextId++,
+                description : ev.target.value,
+                isCompleted : false
+            })
+            ev.target.value="";
+        }
+    };
+
+    toggleTodo(todoId){
+        const todo = this.todos.find((todo) => todo.id === todoId);
+        if(todo){
+            todo.isCompleted = !todo.isCompleted;
+        }
+    };
+    
+    removeTodo(remId){
+       const index = this.todos.findIndex((el) => el.id === remId);
+       if(index >= 0){
+        this.todos.splice(index,1)
+       }
     }
 }
