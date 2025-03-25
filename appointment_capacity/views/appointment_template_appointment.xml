@@ -1,16 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="appointment_info_inherit" inherit_id="appointment.appointment_info">
-        <xpath expr="//form[@id='slots_form']" position="inside">
-            <!-- <input type="hidden" name="capacity_type" t-att-value="appointment_type.capacity_type"/>
-            <input type="hidden" name="user_capacity_count" t-att-value="appointment_type.user_capacity_count"/> -->
-        </xpath>
         <xpath expr="//div[div[input[@name='max_capacity']]]" position="attributes">
             <attribute name="t-if">
-                not based_on_users and (
-                    appointment_type.capacity_type == 'multiple_seats' or 
-                    appointment_type.capacity_type == 'multiple_bookings'
-                )
+                    appointment_type.capacity_type == 'multiple_seats'
             </attribute>
         </xpath>
     </template>

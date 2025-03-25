@@ -19,88 +19,34 @@ from odoo.osv import expression
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as dtf, email_normalize
 from odoo.tools.mail import is_html_empty
 from odoo.tools.misc import babel_locale_parse, get_lang
+from odoo.addons.appointment.controllers.appointment import AppointmentController
 from odoo.addons.base.models.ir_qweb import keep_query
 from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.phone_validation.tools import phone_validation
 from odoo.exceptions import UserError
 
-from odoo.addons.appointment.controllers.appointment import AppointmentController
 
 
 class AppointmentCapacityController(AppointmentController):
-    # pass
 
 
-    def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, resource_selected_id=False, **kwargs):
-        """ Computes all values needed to choose between / common to all appointment_type page templates.
-
-        :return: a dict containing:
-            - available_appointments: all available appointments according to current filters and invite tokens.
-            - filter_appointment_type_ids, filter_staff_user_ids and invite_token parameters.
-            - user_default: the first of possible staff users. It will be selected by default (in the user select dropdown)
-            if no user_selected. Otherwise, the latter will be preselected instead. It is only set if there is at least one
-            possible user and the choice is activated in appointment_type, or used for having the user name in title if there
-            is a single possible user, for random selection.
-            - user_selected: the user corresponding to staff_user_id in the url and to the selected one. It can be selected
-            upstream, from the operator_select screen (see WebsiteAppointment controller), or coming back from an error.
-            It is only set if among the possible users.
-            - users_possible: all possible staff users considering filter_staff_user_ids and staff members of appointment_type.
-            - resource_selected: the resource corresponding to resource_selected_id in the url and to the selected one. It can be selected
-            upstream, from the operator_select screen (see WebsiteAppointment controller), or coming back from an error.
-            - resources_possible: all possible resources considering filter_resource_ids and resources of appointment type.
-            - max_capacity: the maximum capacity that can be selected by the user to make an appointment on a resource.
-            - hide_select_dropdown: True if the user select dropdown should be hidden. (e.g. an operator has been selected before)
-            Even if hidden, it can still be in the view and used to update availabilities according to the selected user in the js.
+    def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, resource_selected_id=False, skip_resource_selection=False, **kwargs):
         """
-        filter_staff_user_ids = json.loads(kwargs.get('filter_staff_user_ids') or '[]')
-        filter_resource_ids = json.loads(kwargs.get('filter_resource_ids') or '[]')
-        users_possible = self._get_possible_staff_users(appointment_type, filter_staff_user_ids)
-        resources_possible = self._get_possible_resources(appointment_type, filter_resource_ids)
-        user_default = user_selected = request.env['res.users']
-        resource_default = resource_selected = request.env['appointment.resource']
-        staff_user_id = int(staff_user_id) if staff_user_id else False
-        resource_selected_id = int(resource_selected_id) if resource_selected_id else False
-
-        if appointment_type.schedule_based_on == 'users':
-            if appointment_type.assign_method == 'resource_time' and users_possible:
-                if staff_user_id and staff_user_id in users_possible.ids:
-                    user_selected = request.env['res.users'].sudo().browse(staff_user_id)
-                user_default = users_possible[0]
-            elif appointment_type.assign_method == 'time_auto_assign' and len(users_possible) == 1:
-                user_default = users_possible[0]
-        elif resources_possible:
-            if resource_selected_id and resource_selected_id in resources_possible.ids and appointment_type.assign_method != 'time_resource':
-                resource_selected = request.env['appointment.resource'].sudo().browse(resource_selected_id)
-            elif appointment_type.assign_method == 'resource_time':
-                resource_default = resources_possible[0]
+        Overrides `_prepare_appointment_type_page_values` to include capacity management based on `capacity_type`.
+        """
+        values = super()._prepare_appointment_type_page_values(appointment_type, staff_user_id, resource_selected_id, **kwargs)
         
-        capacity_type = appointment_type.capacity_type
-        if capacity_type == 'multiple_seats':
+        if appointment_type.capacity_type == 'multiple_seats':
             if appointment_type.schedule_based_on == 'users':
                 max_capacity_possible = appointment_type.user_capacity_count
             else:
-                possible_combinations = (resource_selected or resource_default or resources_possible)._get_filtered_possible_capacity_combinations(1, {})
+                possible_combinations = (values['resource_selected'] or values['resource_default'] or values['resources_possible'])._get_filtered_possible_capacity_combinations(1, {})
                 max_capacity_possible = possible_combinations[-1][1] if possible_combinations else 1
         else:
             max_capacity_possible = 1
-
-        return {
-            'asked_capacity': int(kwargs['asked_capacity']) if kwargs.get('asked_capacity') else False,
-            'available_appointments': kwargs['available_appointments'],
-            'filter_appointment_type_ids': kwargs.get('filter_appointment_type_ids'),
-            'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
-            'filter_resource_ids': kwargs.get('filter_resource_ids'),
-            'hide_select_dropdown': len(users_possible if appointment_type.schedule_based_on == 'users' else resources_possible) <= 1,
-            'invite_token': kwargs.get('invite_token'),
-            'max_capacity': min(12, max_capacity_possible),
-            'resource_default': resource_default,
-            'resource_selected': resource_selected,
-            'resources_possible': resources_possible,
-            'user_default': user_default,
-            'user_selected': user_selected,
-            'users_possible': users_possible,
-        }
-
+        
+        values['max_capacity_possible'] = min(12, max_capacity_possible)
+        return values
 
 
     @http.route()
@@ -250,7 +196,6 @@ class AppointmentCapacityController(AppointmentController):
                     'capacity_reserved': new_capacity_reserved,
                     'capacity_used': new_capacity_reserved if resource.shareable and appointment_type.capacity_type != 'single_booking' else resource.capacity,
                 })
-                print("booking_value", booking_line_values , "end", asked_capacity,"en", new_capacity_reserved)
         else:
             user_remaining_capacity = users_remaining_capacity['total_remaining_capacity']
             new_capacity_reserved = min(user_remaining_capacity, asked_capacity, appointment_type.user_capacity_count)
@@ -263,43 +208,7 @@ class AppointmentCapacityController(AppointmentController):
             appointment_invite = request.env['appointment.invite'].sudo().search([('access_token', '=', invite_token)])
         else:
             appointment_invite = request.env['appointment.invite']
-
         return self._handle_appointment_form_submission(
             appointment_type, date_start, date_end, duration, answer_input_values, name,
             customer, appointment_invite, guests, staff_user, asked_capacity, booking_line_values
         )
-
-    def _slot_availability_prepare_users_bookings_values(self, users, start_dt_utc, end_dt_utc):
-        """ This method computes bookings of users between start_dt and end_dt
-        of appointment check. Also, users are shared between multiple appointment
-        type. So we must consider all bookings in order to avoid booking them more than once.
-
-        :param <res.users> users: prepare values to check availability
-          of those users against given appointment boundaries. At this point
-          timezone should be correctly set in context of those users;
-        :param datetime start_dt_utc: beginning of appointment check boundary. Timezoned to UTC;
-        :param datetime end_dt_utc: end of appointment check boundary. Timezoned to UTC;
-
-        :return: dict containing main values for computation, formatted like
-          {
-            'users_to_bookings': bookings, formatted as a dict
-              {
-                'appointment_user_id': recordset of booking line,
-                ...
-              },
-          }
-        """
-
-        users_to_bookings = {}
-        if users:
-            booking_lines = self.env['appointment.booking.line'].sudo().search([
-                ('appointment_user_id', 'in', users.ids),
-                ('event_start', '<', end_dt_utc),
-                ('event_stop', '>', start_dt_utc),
-            ])
-
-            users_to_bookings = booking_lines.grouped('appointment_user_id')
-        return {
-            'users_to_bookings': users_to_bookings,
-        }
-    

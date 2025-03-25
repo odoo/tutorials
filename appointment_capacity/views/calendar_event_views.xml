@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="calendar_event_view_form_gantt_booking" model="ir.ui.view">
+        <field name="name">calendar.event.view.form.gantt.booking.inherit</field>
+        <field name="model">calendar.event</field>
+        <field name="inherit_id" ref="appointment.calendar_event_view_form_gantt_booking"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//group//div[@invisible]" position="attributes">
+                <attribute name="invisible">appointment_type_capacity_type == 'single_booking'</attribute>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

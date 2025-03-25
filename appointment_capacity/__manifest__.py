@@ -7,10 +7,11 @@
         - Supports multiple seats per slot.
     """,
     'author': 'Darshan Patel',
-    'depends': ['calendar', 'appointment'],
+    'depends': ['appointment','appointment_account_payment', 'calendar'],
     'data': [
         'views/appointment_type_views.xml',
-        'views/appointment_template_appointment.xml'
+        'views/appointment_template_appointment.xml',
+        'views/calendar_event_views.xml',
     ],
     'installable': True,
     'license': 'LGPL-3',
