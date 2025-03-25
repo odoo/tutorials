@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_gift_card_report">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="oe_structure"></div>
+                <div style="margin:0px; font-size:24px; font-family:arial, 'helvetica neue', helvetica, sans-serif; line-height:36px; color:#333333; text-align: center">
+                    Here is your referral gift card!
+                </div>
+                <div class="oe_structure"></div>
+                <div style="padding-top:20px; padding-bottom:20px">
+                    <img src="/loyalty/static/img/gift_card.png" style="display:block; border:0; outline:none; text-decoration:none; margin:auto;" width="300"/>
+                </div>
+                <div class="oe_structure"></div>
+                <div style="padding:0; margin:0px; padding-top:35px; padding-bottom:35px; text-align:center;">
+                    <h3 style="margin:0px; line-height:48px; font-family:arial, 'helvetica neue', helvetica, sans-serif; font-size:40px; font-style:normal; font-weight:normal; color:#333333; text-align:center">
+                        <strong><span t-out="o.points" t-options="{'widget': 'monetary', 'display_currency': o.currency_id}">1000</span></strong>
+                    </h3>
+                </div>
+                <div class="oe_structure"></div>
+                <div t-if="o.referrer_id" style="padding:0; margin:0px; padding-top:15px; padding-bottom:15px; text-align:center;">
+                    <p style="margin:0px; font-size:18px;font-family:arial, 'helvetica neue', helvetica, sans-serif; line-height:27px; color:#333333">
+                        <strong>Successfull Order from your referral :</strong> <span t-out="o.referrer_id.name or 'Unknown'">John Doe</span>
+                    </p>
+                </div>
+                <div class="oe_structure"></div>
+                <div style="padding:0; margin:0px; padding-top:35px; padding-bottom:35px; background-color:#efefef; text-align:center;">
+                    <p style="margin:0px; font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif; line-height:21px; color:#333333">
+                        <strong>Gift Card Code</strong>
+                    </p>
+                    <p style="margin:0px; font-size:25px;font-family:arial, 'helvetica neue', helvetica, sans-serif; line-height:38px; color:#A9A9A9">
+                        <span t-field="o.code">ABCDE12345</span>
+                    </p>
+                </div>
+                <div class="oe_structure"></div>
+                <div t-if="o.expiration_date" style="padding:0; margin:0px; padding-top:10px; padding-bottom:10px; text-align:center;">
+                    <h3 style="margin:0px; line-height:17px; font-family:arial, 'helvetica neue', helvetica, sans-serif; font-size:14px; font-style:normal; font-weight:normal; color:#A9A9A9; text-align:center">
+                        Card expires <span t-field="o.expiration_date">2023-12-31</span>
+                    </h3>
+                </div>
+                <div class="oe_structure"></div>
+                <div style="padding:0; margin:0px; padding-top:10px; padding-bottom:10px; text-align:center;">
+                    <img t-att-src="'/report/barcode/Code128/'+o.code" style="width:400px;height:75px" alt="Barcode"/>
+                </div>
+                <div class="oe_structure"></div>
+            </t>
+        </t>
+    </template>
+
+    <template id="custom_gift_card_report_i18n">
+        <t t-call="web.html_container">
+            <div class="oe_structure"></div>
+            <t t-foreach="docs" t-as="o">
+                <t t-set="o" t-value="o.with_context(lang=o._get_mail_partner().lang or o.env.lang)"/>
+                <t t-call="pos_referrals.custom_gift_card_report" t-lang="o._get_mail_partner().lang or o.env.lang"/>
+            </t>
+            <div class="oe_structure"></div>
+        </t>
+    </template>
+</odoo>
