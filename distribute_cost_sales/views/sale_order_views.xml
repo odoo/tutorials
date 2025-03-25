@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="distribute_cost_wizard_action" model="ir.actions.act_window">
+            <field name="name">Distribute Cost</field>
+            <field name="res_model">cost.distribution.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <record id="view_sale_order_form_inherited" model="ir.ui.view">
+            <field name="name">sale.order.form.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="before">
+                    <button name="%(distribute_cost_wizard_action)d" type="action" string="share" class="fa fa-share-alt"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
