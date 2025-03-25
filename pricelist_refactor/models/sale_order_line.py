@@ -24,11 +24,6 @@ class SaleOrderLine(models.Model):
                 start_date=self.start_date,
                 end_date=self.return_date,
             )
-        elif self.product_template_id.recurring_invoice :
-            if self.order_id.plan_id and self.order_id.pricelist_id:
-                self.pricelist_item_id = self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
-                    self.product_id, self.product_uom_qty or 1.0, self.order_id.date_order, self.order_id.plan_id, self.pricelist_id
-                )
         return self.pricelist_item_id._compute_price(
             self.product_id.with_context(**self._get_product_price_context()),
             self.product_uom_qty or 1.0,
@@ -121,6 +116,7 @@ class SaleOrderLine(models.Model):
                     # otherwise it's a surcharge which shouldn't be shown to the customer
                     line.discount = discount
 
+    @api.depends('order_id.plan_id')
     def _compute_pricelist_item_id(self):
         for line in self:
             if not line.product_id or line.display_type or not line.order_id.pricelist_id:

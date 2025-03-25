@@ -42,7 +42,7 @@ class ProductPricelist(models.Model):
     )
 
     def _compute_price_rule(
-        self, products, quantity, currency=None, date=False, start_date=None, end_date=None, plan_id=None, uom=None, **kwargs
+        self, products, quantity, currency=None, date=False, start_date=None, end_date=None, uom=None, **kwargs
     ):
         """override method to compute price rule for rental and subscription."""
         self and self.ensure_one()  # self is at most one record
@@ -78,11 +78,7 @@ class ProductPricelist(models.Model):
                 results[product.id] = pricelist_id.currency_id._convert(
                     price, currency, self.env.company, date
                 ), pricelist_id.id
-            elif product.recurring_invoice:
-                pricelist_item_id = self.env['product.pricelist.item']._get_first_suitable_recurring_pricing(
-                    product, quantity, date, plan=plan_id, pricelist=self
-                )
-                results[product.id] = pricelist_item_id._compute_price(product, quantity, uom, date, plan_id=plan_id), pricelist_item_id.id
+
         price_computed_products = self.env[products._name].browse(results.keys())
         return {
             **results,
@@ -90,6 +86,26 @@ class ProductPricelist(models.Model):
                 products - price_computed_products, quantity, currency=currency, date=date, **kwargs
             ),
         }
+
+    def _get_applicable_rules_domain(self, products, date, plan_id=None, **kwargs):
+        if plan_id:
+            self and self.ensure_one()  # self is at most one record
+            if products._name == 'product.template':
+                templates_domain = ('product_tmpl_id', 'in', products.ids)
+                products_domain = ('product_id.product_tmpl_id', 'in', products.ids)
+            else:
+                templates_domain = ('product_tmpl_id', 'in', products.product_tmpl_id.ids)
+                products_domain = ('product_id', 'in', products.ids)
+            return [
+                ('pricelist_id', '=', self.id),
+                ('plan_id', '=', plan_id.id),
+                '|', ('categ_id', '=', False), ('categ_id', 'parent_of', products.categ_id.ids),
+                '|', ('product_tmpl_id', '=', False), templates_domain,
+                '|', ('product_id', '=', False), products_domain,
+                '|', ('date_start', '=', False), ('date_start', '<=', date),
+                '|', ('date_end', '=', False), ('date_end', '>=', date),
+            ]
+        return super()._get_applicable_rules_domain(products, date, **kwargs)
 
     def _enable_rental_price(self, start_date, end_date):
         """Determine if rental pricelist_id should be used."""

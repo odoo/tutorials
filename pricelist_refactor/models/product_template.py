@@ -60,16 +60,18 @@ class ProductTemplate(models.Model):
         """
         self.ensure_one()
         best_pricing_rule = self.env['product.pricelist.item']
-        if not self.rental_pricelist_rule_ids or not (start_date and end_date):
+        if not (start_date and end_date):
             return best_pricing_rule
         pricelist = kwargs.get('pricelist', self.env['product.pricelist'])
         currency = kwargs.get('currency', self.currency_id)
         company = kwargs.get('company', self.env.company)
         duration_dict = self.env['product.pricelist.item']._compute_duration_vals(start_date, end_date)
         min_price = float("inf")  # positive infinity
-        available_pricelist_ids = self.env['product.pricelist.item']._get_suitable_pricings(
+        available_pricelist_ids = self.env['product.pricelist.item']._get_suitable_pricelist_ids(
             product or self, pricelist, start_date, end_date, date
         )
+        if not available_pricelist_ids:
+            return best_pricing_rule
         for pricelist_id in available_pricelist_ids:
             unit = pricelist_id.recurrence_id.unit
             price = pricelist_id._compute_price_rental(duration_dict[unit], unit, product, quantity, date, start_date, end_date, uom=uom)
