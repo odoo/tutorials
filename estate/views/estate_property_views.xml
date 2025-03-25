@@ -16,7 +16,7 @@
                 <filter
                     name="property_available"
                     string="Available"
-                    domain="[('date_availability', '&lt;=', 'today()'), ('state', 'in', ['new', 'offer_received'])]"
+                    domain="[('state', 'in', ['new', 'offer_received'])]"
                 />
                 <filter
                     name="groupby_postcode"
@@ -57,7 +57,7 @@
             <kanban default_group_by="property_type_id" records_draggable="False">
                 <field name="state" />
                 <templates>
-                   <t t-name="card">
+                    <t t-name="card">
                         <field name="name" class="fw-bolder" />
                         <div>
                             Expected Price: <field name="expected_price" />
@@ -133,16 +133,18 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                            <group>
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" invisible="not garden" />
-                                <field name="garden_orientation" invisible="not garden" />
-                                <field name="total_area" />
+                            <group name="description">
+                                <group string="General Details" name="general_details">
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" invisible="not garden" />
+                                    <field name="garden_orientation" invisible="not garden" />
+                                    <field name="total_area" />
+                                </group>
                             </group>
                         </page>
                         <page string="Offers">
@@ -201,6 +203,16 @@
         <field name="name">Website Properties</field>
         <field name="target">self</field>
         <field name="url" eval="'/properties'"/>
+    </record>
+
+    <!-- Config Settings Action -->
+    <record id="estate_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="res_config_settings_view_form_inherit_estate" />
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'estate', 'bin_size': False}</field>
     </record>
 
     <record id="res_users_view_form" model="ir.ui.view">

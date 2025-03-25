@@ -14,6 +14,7 @@
         "data/website_menu_data.xml",
         "reports/estate_property_templates.xml",
         "reports/estate_property_reports.xml",
+        "wizard/res_config_settings.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_views.xml",
         "views/estate_property_type_views.xml",

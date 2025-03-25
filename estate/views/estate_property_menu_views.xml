@@ -27,6 +27,11 @@
         groups="estate.estate_group_manager"
     />
     <menuitem
+        id="estate_menu_config"
+        parent="estate_menu_setting"
+        action="estate_config_settings_action"
+    />
+    <menuitem
         id="estate_menu_property_type"
         parent="estate_menu_setting"
         action="estate_property_type_action"

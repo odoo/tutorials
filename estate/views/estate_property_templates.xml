@@ -6,12 +6,9 @@
             <div class="oe_structure">
                 <div class="container">
                     <div class="fs-3 fw-bold text-center my-3">Available Properties</div>
-                    <div class="d-blocl d-lg-none my-3">
-                        <t t-call="estate.estate_property_filter"/>
-                    </div>
-                    <div class="row">
-                        <div class="d-none d-lg-block col-3 border-end">
-                            <div class="fw-bold fs-3 mb-3">Filters</div>
+                    <div class="row row-gap-4">
+                        <div class="col-12 col-lg-3">
+                            <div class="fw-bold fs-3 mb-3 d-none d-lg-block">Filters</div>
                             <t t-call="estate.estate_property_filter"/>
                         </div>
                         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-gap-4 col-12 col-lg-9">
@@ -35,8 +32,8 @@
 
     <template id="estate.estate_property_filter">
         <form method="get" action="/properties">
-            <div class="row gap-lg-2">
-                <div class="col col-lg-12">
+            <div class="row gap-2">
+                <div class="col-12" id="listedAfterFilter">
                     <label class="fw-semibold" for="listed-after-input">Listed After</label>
                     <input name="listed_after" type="date" class="form-control" id="listed-after-input" t-att-value="property_filters['listed_after']"/>
                 </div>
@@ -55,7 +52,7 @@
                 <h5 class="fw-bold card-title" t-out="property.name"/>
                 <p class="card-subtitle text-muted" t-out="property.sequence"/>
                 <p class="card-text" t-out="property.description"/>
-                <a t-attf-href="/properties/{{slug(property)}}" class="stretched-link mt-auto">Know More</a>
+                <a t-attf-href="/properties/{{property.id}}" class="stretched-link mt-auto">Know More</a>
             </div>
         </div>
     </template>

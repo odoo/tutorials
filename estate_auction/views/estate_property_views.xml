@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_property_view_form_inherit_auction" model="ir.ui.view">
+        <field name="name">estate.property.view.form.inherit.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="attributes">
+                <attribute name="invisible">state == 'cancelled'</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_sell_property']" position="before">
+                <button name="action_start_auction"
+                    type="object"
+                    string="Start Auction"
+                    invisible="selling_mode != 'auction' or auction_start_time != False"
+                    class="btn-primary"
+                />
+                <button name="action_start_auction"
+                    type="object"
+                    string="Start Auction"
+                    invisible="not auction_start_time"
+                />
+            </xpath>
+            <xpath expr="//field[@name='image']" position="before">
+                <field name="auction_state"
+                    widget="state_selection"
+                    options="{'hide_label': False}"
+                    readonly="True"
+                    invisible="selling_mode != 'auction'"
+                    class="d-block"
+                />
+            </xpath>
+            <xpath expr="//field[@name='tag_ids']" position="before">
+                <field name="selling_mode"
+                    class="d-block"
+                    widget="radio"
+                    options="{'horizontal': true}"
+                    readonly="auction_start_time != False"
+                />
+            </xpath>
+            <xpath expr="//group[@name='general_details']" position="after">
+                <group string="Auction Details" name="auction_details" invisible="selling_mode != 'auction'">
+                    <field name="auction_end_time" />
+                    <field name="auction_highest_offer" />
+                    <field name="auction_highest_bidder" />
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='offer_ids']" position="attributes">
+                <attribute name="readonly" separator="or">selling_mode == 'auction'</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="estate_property_view_kanban_inherit_auction" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban.inherit.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <div class="d-flex">
+                    <field name="name" class="fw-bolder" />
+                    <field name="auction_state"
+                        invisible="selling_mode != 'auction'"
+                        widget="state_selection"
+                        readonly="True"
+                        class="ms-auto"
+                    />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

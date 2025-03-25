@@ -8,9 +8,9 @@
     "category": "Tutorials/RealEstate",
     "depends": ["estate", "account"],
     "data": [
-        "reports/estate_property_templates.xml"
+        "reports/estate_property_templates.xml",
+        "views/estate_property_views.xml"
     ],
     "installable": True,
-    "application": False,
     "license": "LGPL-3"
 }

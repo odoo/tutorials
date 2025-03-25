@@ -27,19 +27,19 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals):
-        offers = []
         for val in vals:
             property = self.env["estate.property"].browse(val["property_id"])
             if property.state == "sold":
                 raise UserError("Offers cannot be made for sold property!")
-            for offer in property.offer_ids:
-                if offer.price > val["price"]:
-                    raise UserError(f"The offer must be higher than {offer.price}")
-            offer = super().create(val)
-            if offer.property_id.state == "new":
-                offer.property_id.state = "offer_received"
-            offers.append(offer)
-        return offers
+            max_required_price = self.get_max_required_price(property)
+            if max_required_price > val["price"]:
+                raise UserError(f"The offer must be higher than {max_required_price}")
+            if property.state == "new":
+                property.state = "offer_received"
+        return super().create(vals)
+
+    def get_max_required_price(self, property):
+        return max(property.mapped("offer_ids.price"), default=0)
 
     @api.depends("validity")
     def _compute_deadline(self):
