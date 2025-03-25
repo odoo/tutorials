@@ -1,0 +1,7 @@
+<odoo>
+    <template id="report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//tbody[@class='sale_tbody']/t/tr" position="attributes">
+            <attribute name="t-if">(not line.parent_line_id) or (line.parent_line_id and doc.print_in_report)</attribute>
+        </xpath>
+    </template>
+</odoo>

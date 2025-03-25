@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="salesperson_button_pos.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if='!props.showRemainingButtons || (ui.isSmall and props.showRemainingButtons)']" position="after">
+            <SelectSalespersonButton salesperson="salesperson" t-if="!props.showRemainingButtons"/>
+            <!-- <button>Salesperson</button> -->
+        </xpath>
+    </t>
+</templates>
