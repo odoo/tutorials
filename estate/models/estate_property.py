@@ -2,7 +2,7 @@ from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
-class PropertyModel(models.Model):
+class Property(models.Model):
     _name = 'estate.property'
     _description = 'Real estate property model'
     _order = 'sequence, id desc'
@@ -79,7 +79,6 @@ class PropertyModel(models.Model):
             self.state = 'canceled'
         return True
 
-    @api.depends('expected_price')
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:

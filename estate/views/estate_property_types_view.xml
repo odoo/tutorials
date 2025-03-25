@@ -14,7 +14,7 @@
             <form string="Property Type">
                 <header>
                     <button name="%(estate_property_offers_action)d" icon="fa-money" type="action">
-                        <field name="offer_count" widget="statinfo" string="Offers made" />
+                        <field name="offer_count" widget="statinfo" string="Offers made"/>
                     </button>
                 </header>
                 <group>
@@ -27,9 +27,9 @@
                         <group>
                             <field name="property_ids" string="">
                                 <list>
-                                    <field name="name" string="Title" />
-                                    <field name="expected_price" />
-                                    <field name="state" string="Status" />
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state" string="Status"/>
                                 </list>
                             </field>
                         </group>

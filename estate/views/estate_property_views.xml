@@ -33,7 +33,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="PropertyList" decoration-success="state in ['offer_received','offer_accepted']" 
-            decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="sequence" widget="handle" />
                 <field name="name" string="Title"/>
                 <field name="property_type_id"/>

@@ -1,7 +1,7 @@
 from odoo import api, fields, models, Command
 
 
-class PropertyInvoice(models.Model):
+class Property(models.Model):
     _inherit = 'estate.property'
 
     def action_set_sold(self):
