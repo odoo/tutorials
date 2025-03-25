@@ -46,7 +46,7 @@ class ProductProduct(models.Model):
             last_date = last_ordered_products.get(record.id)
 
             record.last_order_time = last_date if last_date else False
-            record.last_date_str = self._get_time_ago_string(last_date) if last_date else False
+            record.last_date_str = self.env['product.template']._get_time_ago_string(last_date) if last_date else False
 
     def _get_last_sold_products(self, partner_id):
         '''Fetch products last sold to the given customer'''
@@ -100,28 +100,6 @@ class ProductProduct(models.Model):
 
         return last_purchased_order_products
 
-    def _get_time_ago_string(self, last_date):
-        '''Convert datetime to human-readable time difference (e.g., "1d", "4h", "4mo")'''
-
-        if not last_date:
-            return ""
-
-        now = fields.Datetime.now()
-        diff = now - last_date
-
-        if diff.days > 365:
-            return f"{diff.days // 365}y"
-        elif diff.days > 30:
-            return f"{diff.days // 30}mo"
-        elif diff.days > 0:
-            return f"{diff.days}d"
-        elif diff.seconds >= 3600:
-            return f"{diff.seconds // 3600}h"
-        elif diff.seconds >= 60:
-            return f"{diff.seconds // 60}m"
-        else:
-            return f"{diff.seconds}s"
-
     @api.model
     def name_search(self, name='', args=None, operator='ilike', limit=100):
         '''Modify product dropdown in sale order line to show last sold date'''
@@ -130,7 +108,7 @@ class ProductProduct(models.Model):
         partner_id = self.env.context.get('partner_id')
         order_type = self.env.context.get('order_type')
         active_id = self.env.context.get('active_id')
-        if active_id:
+        if not order_type and active_id:
             order_type = self.env['account.journal'].browse(active_id).type
 
         if partner_id:
@@ -147,8 +125,8 @@ class ProductProduct(models.Model):
             if limit_rest is None or limit_rest > 0:
                 products |= self.search_fetch(expression.AND([domain, [('id', 'not in', product_ids)], [("name", operator, name)]]), ['display_name'], limit=limit_rest)
 
-            products = sorted(products, key=lambda p: p.last_order_time if p.last_order_time else datetime.min, reverse=True)
+            products = sorted(products, key=lambda p: last_ordered_products.get(p.id, datetime.min), reverse=True)
 
-            return [(product.id, product.display_name, product.last_date_str if product.last_date_str else False) for product in products]
+            return [(product.id, product.display_name, self.env['product.template']._get_time_ago_string(last_ordered_products.get(product.id, False))) for product in products]
 
         return super().name_search(name, args, operator, limit)

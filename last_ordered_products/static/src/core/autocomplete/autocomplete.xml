@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="last_ordered_products.OrderedProductsAutoComplete" t-inherit="web.AutoComplete" t-inherit-mode="extension">
+    <t t-inherit="web.AutoComplete" t-inherit-mode="extension">
         <xpath expr="//t[@t-esc='option.label']" position="replace">
             <t t-if="option.time_str">
                 <div class="d-flex justify-content-between">

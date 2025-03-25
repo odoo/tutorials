@@ -12,7 +12,7 @@
             </xpath>
 
             <xpath expr="//div[@name='o_kanban_qty_available']" position="replace">
-                <div t-if="record.is_storable.raw_value" js_class="product_catalog_kanban_record"
+                <div t-if="record.is_storable.raw_value"
                     name="o_kanban_qty_available">
                     <field name="qty_available"/> On Hand
                     <field name="virtual_available" invisible="1"/>

@@ -89,7 +89,7 @@ class ProductTemplate(models.Model):
         partner_id = self.env.context.get('partner_id')
         order_type = self.env.context.get('order_type')
         active_id = self.env.context.get('active_id')
-        if active_id:
+        if not order_type and active_id:
             order_type = self.env['account.journal'].browse(active_id).type
 
         if partner_id:
