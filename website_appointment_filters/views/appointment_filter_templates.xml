@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_filter_buttons" name="Appointment Filter Buttons" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//t[@t-call='website.website_search_box_input']" position="before">
+            <div class="d-flex align-items-center">
+                <div class="dropdown d-none d-lg-block me-3">
+                    <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" title="Filter by Type">
+                        Type
+                    </a>
+                    <div class="dropdown-menu">
+                        <span t-attf-data-post="/appointment?#{keep_query('*', type='all')}" class="post_link cursor-pointer dropdown-item">All</span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', type='online')}" class="post_link cursor-pointer dropdown-item text-success">Online</span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', type='offline')}" class="post_link cursor-pointer dropdown-item text-danger">Offline</span>
+                    </div>
+                </div>
+                <div class="dropdown d-none d-lg-block me-3">
+                    <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" title="Filter by Payment Step">
+                        Payment Step
+                    </a>
+                    <div class="dropdown-menu">
+                        <span t-attf-data-post="/appointment?#{keep_query('*', payment_step='all')}" class="post_link cursor-pointer dropdown-item">All</span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', payment_step='paid')}" class="post_link cursor-pointer dropdown-item text-success">Paid</span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', payment_step='free')}" class="post_link cursor-pointer dropdown-item text-danger">Free</span>
+                    </div>
+                </div>
+                <div class="dropdown d-none d-lg-block me-3">
+                    <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" title="Filter by Schedule">
+                        Schedule
+                    </a>
+                    <div class="dropdown-menu">
+                        <span t-attf-data-post="/appointment?#{keep_query('*', schedule='all')}" class="post_link cursor-pointer dropdown-item">All</span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', schedule='users')}" class="post_link cursor-pointer dropdown-item text-primary">Users</span>
+                        <span t-attf-data-post="/appointment?#{keep_query('*', schedule='resources')}" class="post_link cursor-pointer dropdown-item text-secondary">Resources</span>
+                    </div>
+                </div>
+                <a href="/appointment" class="btn btn-danger d-none d-lg-block">
+                    Reset Filters
+                </a>
+            </div>
+        </xpath>
+    </template>
+    <template id="applied_filters" name="Applied Filters" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//div[hasclass('d-flex', 'flex-wrap', 'align-items-center', 'justify-content-between', 'w-100')]" position="after">
+            <t t-if="print_active_filters">
+                <div class="color-white mt-4 mb-2">
+                    <small style="background-color: #5a3c52; color:#ffffff" class="p-3 rounded">
+                        <span t-esc="print_active_filters"/>
+                    </small>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
