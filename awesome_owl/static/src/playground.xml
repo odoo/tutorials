@@ -3,11 +3,22 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
-            <Counter />
-            <Counter />
-            <Card title="'My title'" content="html" />
-            <Card title="'My title 2'" content="Markuphtml" />
+            <!-- hello world -->
+            <div class="p-3 d-flex gap-4 border">
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+            </div>
+            <p>Sum: <t  t-esc="state.sum" /></p>
+            <div class="mt-3 p-3 d-flex gap-4">
+                <Card title="'My title'" >
+                    <p>This is a simple card with text.</p>
+                </Card>
+                <Card title="'My title 2'">
+                        <Counter />
+                </Card>
+            </div>
+
+            <TodoList />
         </div>
     </t>
 

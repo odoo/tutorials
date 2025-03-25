@@ -6,7 +6,10 @@
             <div class="card d-inline-block m-2" style="width: 18rem;">
                 <div class="card-body">
                     <h5 class="card-title"><t t-out="props.title" /></h5>
-                    <p class="card-text"><t t-out="props.content" /></p>
+                     <button class="btn btn-sm btn-outline-primary" t-on-click="toggleContent">
+                        <t t-out="state.isOpen ? 'Hide' : 'Show'" />
+                    </button>
+                    <p class="card-text" t-if="state.isOpen"><t t-slot="default" /></p>
                 </div>
             </div>
         </div>
