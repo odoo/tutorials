@@ -2,12 +2,46 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout className="'o_dashboard h-100'" t-props="{ controlPanel: {} }">
-            <div class="my_dashboard_content">
-                Hii !!:
-                Raghav Here,
-            </div>
-        </Layout>
+        <div class="o_action">
+            <!-- Use Layout with controlPanel and t-set-slot -->
+            <Layout display="{ controlPanel: {} }">
+                <!-- Place buttons in the control panel header -->
+                <t t-set-slot="control-panel-create-button">
+                    <button t-on-click="openCustomers" class="btn btn-primary m-2">Customers</button>
+                    <button t-on-click="openLeads" class="btn btn-success m-2">Leads</button>
+                </t>
+
+                <div class="my_dashboard_content d-flex flex-wrap gap-4">
+                    <!-- Display Statistics -->
+                    <DashboardItem>
+                        <p>Number of new orders this month</p>
+                        <h3><t t-esc="state.statistics.new_orders"/></h3>
+                    </DashboardItem>
+
+                    <DashboardItem>
+                        <p>Total amount of new orders this month</p>
+                        <h3><t t-esc="state.statistics.total_amount"/></h3>
+                    </DashboardItem>
+
+                    <DashboardItem>
+                        <p>Average amount of t-shirt by order this month</p>
+                        <h3><t t-esc="state.statistics.avg_tshirt_per_order"/></h3>
+                    </DashboardItem>
+
+                    <DashboardItem>
+                        <p>Number of cancelled orders this month</p>
+                        <h3><t t-esc="state.statistics.cancelled_orders"/></h3>
+                    </DashboardItem>
+
+                    <DashboardItem size="2">
+                        <p>Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’</p>
+                        <h3><t t-esc="state.statistics.avg_order_time"/></h3>
+                    </DashboardItem>
+                </div>
+
+            </Layout>
+        </div>
     </t>
+
 
 </templates>

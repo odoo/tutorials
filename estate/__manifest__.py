@@ -33,4 +33,5 @@
         'demo/estate.property.xml',
         'demo/estate.property.offer.xml',
     ],
+    'test': ['tests/test_property.py'],
 }

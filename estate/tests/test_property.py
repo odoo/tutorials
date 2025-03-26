@@ -1,9 +1,9 @@
 from odoo.tests import TransactionCase, Form
 from odoo.exceptions import UserError, ValidationError
-from odoo.tests import tagged
+# from odoo.tests import tagged
 
 
-@tagged('post_install', '-at_install')
+# @tagged('post_install', '-at_install')
 class TestProperty(TransactionCase):
 
     @classmethod
