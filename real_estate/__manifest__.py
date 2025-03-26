@@ -10,7 +10,8 @@
     'application': True,
     'auto-install': True,
     'data': [
-        "wizard/estate_add_offer_wizard_views.xml",
+        'security/security.xml',
+        'security/ir.model.access.csv',
         'views/estate_property_tag.xml',
         'views/estate_property_offer.xml',
         'views/estate_property_type.xml',
@@ -23,8 +24,7 @@
         "views/estate_property_detailed_template.xml",
         "views/estate_property_offer_template.xml",
         'views/estate_menus.xml',
-        'security/security.xml',
-        'security/ir.model.access.csv',
+        "wizard/estate_add_offer_wizard_views.xml",
     ],
     'demo':[
         'demo/estate_property_tag.xml',
