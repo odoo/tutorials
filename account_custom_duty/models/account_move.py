@@ -19,7 +19,22 @@ class AccountMove(models.Model):
     custom_duty_line_ids = fields.One2many("account.move.custom.duty.line", "move_id", string="Custom Duty Lines")
 
     def action_account_custom_duty_wizard(self):
-        """Opens the Custom Duty Entry wizard for the current journal entry."""
+        """
+        Opens the "Custom Duty Entry" wizard for the current journal entry.
+
+        - Ensures the record is in the "posted" state.
+        - Ensures the GST treatment is one of the following:
+            - Overseas
+            - Special Economic Zone (SEZ)
+            - Deemed Export
+        - Opens the "Custom Duty Entry" wizard as a modal.
+
+        Returns:
+            dict: An `ir.actions.act_window` dictionary to open the wizard.
+
+        Raises:
+            UserError: If the move is not posted or the GST treatment is invalid.
+        """
         self.ensure_one()
         if self.state != "posted" or self.l10n_in_gst_treatment not in [
             "overseas",
@@ -40,7 +55,18 @@ class AccountMove(models.Model):
         }
 
     def action_account_bill_of_entry(self):
-        """Opens the Bill of Entry for the custom duty journal entry."""
+        """
+        Opens the "Bill of Entry" form for the custom duty journal entry.
+
+        - Ensures a related journal entry exists for the custom duty.
+        - Opens the existing `account.move` record associated with the bill of entry.
+
+        Returns:
+            dict: An `ir.actions.act_window` dictionary to open the bill of entry.
+
+        Raises:
+            UserError: If no custom duty journal entry is linked to the move.
+        """
         self.ensure_one()
         if not self.account_journal_entry_custom_duty:
             raise UserError(_("No custom duty entry found for this move."))

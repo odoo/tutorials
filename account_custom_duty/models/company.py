@@ -27,10 +27,10 @@ class ResCompany(models.Model):
         string="Import Default Tax Account",
         domain=[("account_type", "in", ("asset_current", "liability_current")), ("reconcile", "=", True)],
         default=lambda self: self._get_first_record("account.account",
-                                                    [
-                                                        ("account_type", "in", ("asset_current", "liability_current")),
-                                                        ("reconcile", "=", True)
-                                                    ])
+            [
+                ("account_type", "in", ("asset_current", "liability_current")),
+                ("reconcile", "=", True)
+            ])
     )
     account_export_journal_id = fields.Many2one(
         "account.journal",
@@ -49,8 +49,8 @@ class ResCompany(models.Model):
         string="Export Default Tax Account",
         domain=[("account_type", "in", ("asset_current", "liability_current")), ("reconcile", "=", True)],
         default=lambda self: self._get_first_record("account.account",
-                                                    [
-                                                        ("account_type", "in", ("asset_current", "liability_current")),
-                                                        ("reconcile", "=", True)
-                                                    ])
+            [
+                ("account_type", "in", ("asset_current", "liability_current")),
+                ("reconcile", "=", True)
+            ])
     )
