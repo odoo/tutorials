@@ -166,6 +166,7 @@ class AppointmentType(models.Model):
         :param <res.users> filter_users: filter available slots for those users (can be a singleton
           for fixed appointment types or can contain several users e.g. with random assignment and
           filters) If not set, use all users assigned to this appointment type.
+        :params asked_capacity <integer>: asked capacity for the appointment
 
         :return: None but instead update ``slots`` adding ``staff_user_id`` or ``available_staff_users`` key
           containing available user(s);
@@ -223,6 +224,7 @@ class AppointmentType(models.Model):
           At this point timezone should be correctly set in context;
         :param dict availability_values: dict of data used for availability check.
           See ``_slot_availability_prepare_users_values()`` for more details;
+        :params asked_capacity <integer>: asked capacity for the appointment
         :return: boolean: is user available for an appointment for given slot
         """
         slot_start_dt_utc, slot_end_dt_utc = slot['UTC'][0], slot['UTC'][1]
@@ -260,14 +262,14 @@ class AppointmentType(models.Model):
         return True
 
     def _get_users_remaining_capacity(self, users, slot_start_utc, slot_stop_utc, availability_values=None):
-        """ Compute the remaining capacities for users in a particular time slot.
-            :param <res.users> users : record containing one or a multiple of users
-            :param datetime slot_start_utc: start of slot (in naive UTC)
-            :param datetime slot_stop_utc: end of slot (in naive UTC)
-            :param list users_to_bookings: list of users linked to their booking lines from the prepared value.
-                If no value is passed, then we search manually the booking lines (used for the appointment validation step)
-            :param <res.users> filter_users: filter the users impacted with this value
-            :return remaining_capacity:
+        """ 
+        Compute the remaining capacity for users in a specific time slot.
+        :param <res.users> users : record containing one or a multiple of user
+        :param datetime slot_start_utc: start of slot (in naive UTC)
+        :param datetime slot_stop_utc: end of slot (in naive UTC)
+        :param dict availability_values: dict of data used for availability check.
+
+        :return remaining_capacity:
         """
         self.ensure_one()
 
@@ -280,7 +282,6 @@ class AppointmentType(models.Model):
         if availability_values is None:
             availability_values = self._slot_availability_prepare_users_values(all_users, slot_start_utc, slot_stop_utc)
         users_to_bookings = availability_values.get('users_to_bookings', {})
-        partners_to_events = availability_values.get('partner_to_events', {})
 
         users_remaining_capacity = {}
         for user, booking_lines_ids in users_to_bookings.items():
@@ -292,13 +293,51 @@ class AppointmentType(models.Model):
 
         for user in all_users:
             users_remaining_capacity[user] = self.user_capacity_count - sum(booking_line.capacity_used for booking_line in users_booking_lines.get(user, []))
-            partner_events = partners_to_events.get(user.partner_id, False)
-            if partner_events and any(event.appointment_type_id == self and not event.booking_line_ids for event in partner_events.values()):
-                users_remaining_capacity[user] -= 1
 
         users_remaining_capacity.update(total_remaining_capacity=sum(users_remaining_capacity.values()))
         return users_remaining_capacity
 
+    def _slot_availability_prepare_users_values(self, staff_users, start_dt, end_dt):
+        """ 
+        Override to add booking values.
+
+        :return: update ``super()`` values with users booking vaues, formatted like
+          {
+            'users_to_bookings': dict giving their corresponding bookings within the given time range
+              (see ``_slot_availability_prepare_users_bookings_values()``);
+          }
+        """
+        users_values = super()._slot_availability_prepare_users_values(staff_users, start_dt, end_dt)
+        users_values.update(self._slot_availability_prepare_users_bookings_values(staff_users, start_dt, end_dt))
+        return users_values
+
+    def _slot_availability_prepare_users_bookings_values(self, users, start_dt_utc, end_dt_utc):
+        """
+        This method retrieves and organizes bookings for the given users within the specified time range. 
+        Users may handle multiple appointment types, so all overlapping bookings must be considered 
+        to prevent double booking.
+
+        :param <res.users> users: A recordset of staff users for whom availability is being checked. 
+        :param datetime start_dt_utc: The start of the appointment check boundary in UTC.
+        :param datetime end_dt_utc: The end of the appointment check boundary in UTC.
+
+        :return: A dict containing booking data, formatted as:
+        {
+            'users_to_bookings': A dict mapping user IDs to their booking records,
+        }
+        """
+        users_to_bookings = {}
+        if users:
+            booking_lines = self.env['appointment.booking.line'].sudo().search([
+                ('appointment_user_id', 'in', users.ids),
+                ('event_start', '<', end_dt_utc),
+                ('event_stop', '>', start_dt_utc),
+            ])
+
+            users_to_bookings = booking_lines.grouped('appointment_user_id')
+        return {
+            'users_to_bookings': users_to_bookings,
+        }
 
     def _get_appointment_slots(self, timezone, filter_users=None, filter_resources=None, asked_capacity=1, reference_date=None):
         """ Fetch available slots to book an appointment.
@@ -505,42 +544,3 @@ class AppointmentType(models.Model):
             nb_slots_previous_months = total_nb_slots - nb_slots_next_months
             start = start + relativedelta(months=1)
         return months
-        
-    def _slot_availability_prepare_users_values(self, staff_users, start_dt, end_dt):
-        users_values = self._slot_availability_prepare_users_values_meetings(staff_users, start_dt, end_dt)
-        users_values.update(self._slot_availability_prepare_users_bookings_values(staff_users, start_dt, end_dt))
-        return users_values
-
-    def _slot_availability_prepare_users_bookings_values(self, users, start_dt_utc, end_dt_utc):
-        """ This method computes bookings of users between start_dt and end_dt
-        of appointment check. Also, users are shared between multiple appointment
-        type. So we must consider all bookings in order to avoid booking them more than once.
-
-        :param <res.users> users: prepare values to check availability
-          of those users against given appointment boundaries. At this point
-          timezone should be correctly set in context of those users;
-        :param datetime start_dt_utc: beginning of appointment check boundary. Timezoned to UTC;
-        :param datetime end_dt_utc: end of appointment check boundary. Timezoned to UTC;
-
-        :return: dict containing main values for computation, formatted like
-          {
-            'users_to_bookings': bookings, formatted as a dict
-              {
-                'appointment_user_id': recordset of booking line,
-                ...
-              },
-          }
-        """
-
-        users_to_bookings = {}
-        if users:
-            booking_lines = self.env['appointment.booking.line'].sudo().search([
-                ('appointment_user_id', 'in', users.ids),
-                ('event_start', '<', end_dt_utc),
-                ('event_stop', '>', start_dt_utc),
-            ])
-
-            users_to_bookings = booking_lines.grouped('appointment_user_id')
-        return {
-            'users_to_bookings': users_to_bookings,
-        }

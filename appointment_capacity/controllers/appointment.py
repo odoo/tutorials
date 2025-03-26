@@ -1,30 +1,17 @@
-
 import json
 import pytz
 import re
 
-from pytz.exceptions import UnknownTimeZoneError
-
-from babel.dates import format_datetime, format_date, format_time
-from datetime import datetime, date
 from dateutil.relativedelta import relativedelta
-from markupsafe import Markup
 from urllib.parse import unquote_plus
-from werkzeug.exceptions import Forbidden, NotFound
-from werkzeug.urls import url_encode
+from werkzeug.exceptions import NotFound
 
-from odoo import Command, exceptions, http, fields, _
-from odoo.http import request, route
-from odoo.osv import expression
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as dtf, email_normalize
-from odoo.tools.mail import is_html_empty
-from odoo.tools.misc import babel_locale_parse, get_lang
+from odoo import http, fields, _
+from odoo.http import request
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as email_normalize
 from odoo.addons.appointment.controllers.appointment import AppointmentController
 from odoo.addons.base.models.ir_qweb import keep_query
-from odoo.addons.base.models.res_partner import _tz_get
 from odoo.addons.phone_validation.tools import phone_validation
-from odoo.exceptions import UserError
-
 
 
 class AppointmentCapacityController(AppointmentController):
