@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Demo Product -->
+    <record id="product_laptop" model="product.template">
+        <field name="name">Demo Laptop</field>
+        <field name="is_warranty">True</field>
+        <field name="list_price">1000.0</field>
+    </record>
+
+    <record id="product_phone" model="product.template">
+        <field name="name">Demo Phone</field>
+        <field name="is_warranty">False</field>
+        <field name="list_price">500.0</field>
+    </record>
+
+    <!-- Demo Warranty Configuration -->
+    <record id="warranty_1_year" model="product.warranty.configuration">
+        <field name="name">1 Year Warranty</field>
+        <field name="product_id" ref="product_laptop"/>
+        <field name="percentage">5.0</field>
+        <field name="years">1</field>
+    </record>
+
+    <record id="warranty_2_year" model="product.warranty.configuration">
+        <field name="name">2 Years Warranty</field>
+        <field name="product_id" ref="product_laptop"/>
+        <field name="percentage">8.0</field>
+        <field name="years">2</field>
+    </record>
+
+    <!-- Demo Customer -->
+    <record id="res_partner_demo" model="res.partner">
+        <field name="name">Demo Customer</field>
+    </record>
+
+    <!-- Demo Sale Order -->
+    <record id="sale_order_demo" model="sale.order">
+        <field name="partner_id" ref="res_partner_demo"/>
+    </record>
+
+    <!-- Demo Sale Order Line -->
+    <record id="sale_order_line_demo" model="sale.order.line">
+        <field name="order_id" ref="sale_order_demo"/>
+        <field name="product_id" ref="product_laptop"/>
+        <field name="product_uom_qty">1</field>
+        <field name="price_unit">1000.0</field>
+    </record>
+</odoo>

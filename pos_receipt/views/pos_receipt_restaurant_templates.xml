@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_restaurant_preview_light">
+        <t t-call="pos_receipt.report_receipts_wizard_preview_light">
+            <!-- Set additional content -->
+            <t t-set="additional_content">
+                <div class="text-center">
+                    <p class="m-0">Served By MOG</p>
+                    <p class="m-1">Table 5 Guest 3</p>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_restaurant_preview_boxes">
+        <t t-call="pos_receipt.report_receipts_wizard_preview_boxes">
+            <!-- Set additional content -->
+            <t t-set="additional_content">
+                <div class="text-center">
+                    <p class="m-0">Served By MOG</p>
+                    <p class="m-1">Table 5 Guest 3</p>
+                </div>
+            </t>
+        </t>
+    </template>
+    <template id="report_restaurant_preview_lined">
+        <t t-call="pos_receipt.report_receipts_wizard_preview_lined">
+            <!-- Set additional content -->
+            <t t-set="additional_content">
+                <div class="text-center">
+                    <p class="m-0">Served By MOG</p>
+                    <p class="m-1">Table 5 Guest 3</p>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
