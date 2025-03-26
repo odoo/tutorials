@@ -16,6 +16,7 @@
     'version': '0.1',
     'application': True,
     'installable': True,
+    'images': ['static/description/icon.png'],
     'depends': ['base', 'web', 'mail', 'crm'],
 
     'data': [
