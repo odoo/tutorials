@@ -52,6 +52,12 @@ class EstatePropertyController(http.Controller):
         partner = request.env.user.partner_id
         best_price=property.best_price
 
+        if float(offer_price) == 0:
+            return request.render('real_estate.property_detail_template', {
+                'error': "Offer price must be greater than ₹0.",
+                'property': property
+            })
+
         if float_compare(float(best_price), float(offer_price), 2) == 1:
             return request.render('real_estate.property_detail_template', {
                 'error': f"We are not accepting offer below ₹{best_price}",

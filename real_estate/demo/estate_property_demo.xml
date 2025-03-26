@@ -104,7 +104,7 @@
     </record>
     <record id="estate_property_8" model="estate.property">
         <field name="name">Suburban Townhouse</field>
-            <field name="image" type="base64" file="real_estate/static/src/img/img_8.jpeg"/>
+        <field name="image" type="base64" file="real_estate/static/src/img/img_8.jpeg"/>
         <field name="property_type_id" ref="estate_property_type_3"/>
         <field name="property_tag_ids" eval="[(6, 0, [ref('estate_property_tag_3'), ref('estate_property_tag_6')])]"/>
         <field name="description">A family-friendly townhouse in a quiet suburb.</field>
@@ -121,7 +121,7 @@
     </record>
     <record id="estate_property_9" model="estate.property">
         <field name="name">Rustic Farmhouse</field>
-            <field name="image" type="base64" file="real_estate/static/src/img/img_9.jpeg"/>
+        <field name="image" type="base64" file="real_estate/static/src/img/img_9.jpeg"/>
         <field name="property_type_id" ref="estate_property_type_2"/>
         <field name="property_tag_ids" eval="[(6, 0, [ref('estate_property_tag_4'), ref('estate_property_tag_9')])]"/>
         <field name="description">A large farmhouse with acres of land.</field>
