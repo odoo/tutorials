@@ -55,7 +55,7 @@ class RealEstate(models.Model):
     #sql constraints to check that expected and selling price is not a negative number
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'A property expected price must be strictly positive'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'A property expected price must be positive')
+        ('check_selling_price', 'CHECK(selling_price > 0)', 'A property selling price must be positive')
     ]
 
     #depends method to calculate total area based on garden area and living area

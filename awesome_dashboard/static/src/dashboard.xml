@@ -2,7 +2,66 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="control-panel-create-button">
+                <div class="d-flex gap-1">
+                    <button class="btn btn-primary" t-on-click="openCustomersKanban">Customers</button>
+                    <button class="btn btn-primary" t-on-click="openCrmLead">Leads</button>
+                </div>
+            </t>
+            <div class="mt-5 container-fluid d-flex flex-wrap gap-5">
+
+                <DashboardItem>
+                    <p>Number of new orders this month</p>
+                    <h4 class="text-center text-success mb-0">
+                        <t t-if="statistics.data">
+                            <t t-esc="statistics.data.nb_new_orders" />
+                        </t>
+                        <t t-else="">Loading Data...</t>
+                    </h4>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Average time for an order to go from 'new' to 'sent' or 'cancelled'</p>
+                    <h4 class="text-center text-success mb-0">
+                        <t t-if="statistics.data">
+                            <t t-esc="statistics.data.average_time" />
+                        </t>
+                        <t t-else="">Loading Data...</t>
+                    </h4>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Total amount of new orders this month</p>
+                    <h4 class="text-center text-success mb-0">
+                        <t t-if="statistics.data">
+                            <t t-esc="statistics.data.total_amount" />
+                        </t>
+                        <t t-else="">Loading Data...</t>
+                    </h4>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Average amount of t-shirt by order this month</p>
+                    <h4 class="text-center text-success mb-0">
+                        <t t-if="statistics.data">
+                            <t t-esc="statistics.data.average_quantity" />
+                        </t>
+                        <t t-else="">Loading Data...</t>
+                    </h4>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Number of cancelled orders this month</p>
+                    <h4 class="text-center text-success mb-0">
+                        <t t-if="statistics.data">
+                            <t t-esc="statistics.data.nb_cancelled_orders" />
+                        </t>
+                        <t t-else="">Loading Data...</t>
+                    </h4>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <PieChart orders_by_size="statistics.data.orders_by_size" />
+                </DashboardItem>
+
+            </div>
+        </Layout>
     </t>
 
 </templates>

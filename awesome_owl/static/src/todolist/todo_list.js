@@ -35,8 +35,6 @@ export class TodoList extends Component{
     }
 
     toggleState(todoId){
-        console.log(this.todos)
-        if(!this.todos) return
         const todo = this.todos.find((t) => t.id === todoId);
         if(todo){
             todo.isCompleted = !todo.isCompleted;
