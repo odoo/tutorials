@@ -7,7 +7,13 @@
             <field name="arch" type="xml">
                 <form name="Distributed Cost">
                     <group>
-                        <field name="target_sale_order_lines"/>
+                        <field name="target_line_ids">
+                            <list>
+                                <field name="sale_order_line_id"/>
+                                <field name="is_selected"/>
+                                <field name="amount"/>
+                            </list>
+                        </field>
                     </group>
                     <footer>
                         <button string="Divide" class="btn btn-primary" type="object" name="distribute_cost_wizard_action"/>
