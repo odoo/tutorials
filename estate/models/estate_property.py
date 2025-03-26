@@ -34,6 +34,12 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     best_price = fields.Integer(compute = "_compute_price", string = "Best Price")
 
+    @api.constrains("expected_price", "sellling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if 0 < record.selling_price < 0.9 * record.expected_price:
+                raise exceptions.ValidationError("Less than 90% of expected price.")
+
     @api.ondelete(at_uninstall = False)
     def _unlink_if_new_cancelled(self):
         if any(record.state not in {"new", "cancelled"} for record in self):
@@ -43,7 +49,6 @@ class EstateProperty(models.Model):
     def _compute_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-
 
     @api.depends("offer")
     def _compute_price(self):
@@ -62,10 +67,9 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        for record in self:
-            if self.state == "cancelled":
-                raise exceptions.UserError("Cancelled property cannot be sold.")
-            self.state = "sold"
+        if any(property.state == 'cancelled' for property in self):
+            raise exceptions.UserError("Cancelled property cannot be sold.")
+        self.sold = 'sold'
 
     def action_cancel(self):
         for record in self:
@@ -78,12 +82,3 @@ class EstateProperty(models.Model):
         ("check_selling_price", "CHECK(selling_price > 0)", "Selling price should be positive."),
         ("check_offer_price", "CHECK(selling_price > 0)", "Selling price should be positive.")
     ]
-
-    @api.constrains("expected_price", "sellling_price")
-    def _check_selling_price(self):
-        print("Entered the method.")
-        for record in self:
-            if 0 < record.selling_price < 0.9 * record.expected_price:
-                raise exceptions.ValidationError("Less than 90% of expected price.")
-
-    

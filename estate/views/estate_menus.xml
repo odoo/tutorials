@@ -1,12 +1,14 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="test_menu_root" name="Real Estate">
-        <menuitem id="test_first_level_menu" name="Advertisements">
-            <menuitem id="test_model_menu_action" action="test_model_action"/>
-        </menuitem>
-        <menuitem id="test_menu_settings" name="Settings">
-            <menuitem id="test_menu_propertytypes" name="Property Types" action="test_model_ptypes_action"/>
-            <menuitem id="test_menu_tags" name="Property Tags" action="test_model_tags_action"/>
-        </menuitem>
-    </menuitem>
+     <menuitem id="test_menu_root" name="Real Estate"/>
+
+     <menuitem id="test_first_level_menu" name="Advertisements" parent="test_menu_root"/>
+
+     <menuitem id="test_menu_settings" name="Settings" parent="test_menu_root"/>
+
+     <menuitem id="test_model_menu_action" action="test_model_action" parent="test_first_level_menu"/>
+
+     <menuitem id="test_menu_propertytypes" name="Property Types" action="test_model_ptypes_action" parent="test_menu_settings"/>
+     
+     <menuitem id="test_menu_tags" name="Property Tags" action="test_model_tags_action" parent="test_menu_settings"/>
 </odoo>
