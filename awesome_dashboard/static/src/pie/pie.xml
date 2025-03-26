@@ -1,0 +1,3 @@
+<t t-name="awesome_dashboard.pie">
+    <canvas t-ref="canvas"></canvas>
+</t>
