@@ -5,7 +5,7 @@
 <input t-ref ="inputRef" t-model="state.newTask" t-on-keyup="addTodo" placeholder="Enter a new task"/>
 <div>
 <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
-<TodoItem todo="todo"/>
+<TodoItem todo="todo" toggleState.bind="toggleTodoState" removeTodo.bind="removeTodo"/>
 </t>
 </div>
 </t>

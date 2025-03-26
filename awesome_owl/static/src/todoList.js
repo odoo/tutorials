@@ -31,4 +31,18 @@ export class TodoList extends Component {
             }
         }
     }
+
+    toggleTodoState(todoId){
+        this.state.todos = this.state.todos.map(todo => 
+            todo.id == todoId ? {...todo, isCompleted: !todo.isCompleted}: todo
+        );
+    }
+
+    removeTodo(todoId){
+        const index = this.state.todos.findIndex(todo => todo.id === todoId);
+        if(index >=0){
+            this.state.todos.splice(index,1);
+            this.state.todos = [...this.state.todos];
+        }
+    }
 }

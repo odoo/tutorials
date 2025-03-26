@@ -4,8 +4,21 @@
          <div >
             hello world
            <h3>Cards</h3>
-           <Card title="'Card 1'" content="html1"/>
-           <Card title="'Card 2'" content="html2"/>
+           <Card title="'Card 1'">
+             <t t-set-slot="content">
+                 <p class="card-text"><b>Content of card 1</b></p>
+            </t>
+           </Card>
+           <Card title="'Card 2'">
+              <t t-set-slot="content">
+                 <p class="card-text"><b>Content of card 1</b></p>
+             </t>
+           </Card>
+           <Card title="'Counter Card'">
+              <t t-set-slot="content">
+                 <Counter onChange.bind="incrementSum"/>
+             </t>
+           </Card>
 
            <h3>Sum</h3>
            <Counter onChange.bind="incrementSum"/>

@@ -1,8 +1,66 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
-    </t>
+        <Layout display="{ controlPanel:{} }" className="'o_dashboard'">
+        <t t-set-slot="control-panel-create-button">
+        <button t-on-click="openCustomers" type="button" class="btn btn-primary">Customers</button>
+        <button t-on-click="openLeads" type="button" class="btn btn-secondary">Leads</button>
+        </t>
+           <div >Welcome to the Awesome Dashboard!</div>
 
+           <div class="dashboard-content d-flex gap-3">
+                <DashboardItem>
+                    <t t-if="state.nb_new_orders">
+                        <div>New Orders: <t t-esc="state.nb_new_orders"/></div>
+                    </t>
+                    <t t-else="">Loading...</t>                                                                                                                                                                                                                         
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    <t t-if="state.total_amount">
+                        <div>Total Amount: $<t t-esc="state.total_amount"/></div>
+                    </t>        
+                    <t t-else="">Loading...</t>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <t t-if="state.average_quantity">
+                        <div>Avg. Quantity per Order: <t t-esc="state.average_quantity"/></div>
+                    </t>
+                    <t t-else="">Loading...</t>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <t t-if="state.nb_cancelled_orders">
+                        <div>Cancelled Orders: <t t-esc="state.nb_cancelled_orders"/></div>
+                    </t>
+                    <t t-else="">Loading...</t>
+                </DashboardItem>
+
+                <DashboardItem>
+                    <t t-if="state.average_time">
+                        <div>Avg. Order Processing Time: <t t-esc="state.average_time"/> hours</div>
+                    </t>
+                    <t t-else="">Loading...</t>
+                </DashboardItem>
+
+               <DashboardItem>
+                    <t t-if="state.orders_by_size">
+                        <div>Orders by Size:</div>
+                        <div>M: <t t-esc="state.orders_by_size.m"/></div>
+                        <div>S: <t t-esc="state.orders_by_size.s"/></div>
+                        <div>XL: <t t-esc="state.orders_by_size.xl"/></div>
+                    </t>
+                    <t t-else="">Loading...</t>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                   <PieChart/>
+                </DashboardItem>
+
+           </div>
+        </Layout>
+    </t>
+    
 </templates>
