@@ -1,0 +1,16 @@
+.awesome-counter {
+  border: 1px solid var(--bs-gray-300); 
+  padding: 0.625rem; 
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: 0.25rem;
+
+  &-btn {
+    background-color: var(--bs-purple); 
+    color: var(--bs-white);
+    border: none;
+    padding: 0.375rem 0.75rem; 
+    border-radius: 0.25rem;
+  }
+}

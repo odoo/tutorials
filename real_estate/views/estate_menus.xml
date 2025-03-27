@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="estate_menu_root"
+        name="Estate"
+        sequence="10" />
+    <menuitem id="estate_menu_property"
+        name="Properties"
+        parent="estate_menu_root"
+        sequence="10" />
+    <menuitem id="estate_menu_property_action"
+        name="All Properties"
+        parent="estate_menu_property"
+        action="estate_property_action"
+        sequence="10" />
+    <menuitem id="estate_setting"
+        name="Settings"
+        parent="estate_menu_root"
+        sequence="20"
+        groups="real_estate.estate_group_manager" />
+    <menuitem id="estate_property_type"
+        name="Property Types"
+        parent="estate_setting"
+        action="estate_property_type_action"
+        sequence="10" />
+    <menuitem id="estate_menu_property_tag"
+        name="Property Tags"
+        parent="estate_setting"
+        action="estate_property_tag_action"
+        sequence="20" />
+</odoo>
