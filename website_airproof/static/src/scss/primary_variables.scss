@@ -1,0 +1,84 @@
+$o-website-values-palettes: (
+   (
+        // Templates
+        'header-template': 'airproof',
+        'footer-template': 'airproof',
+        // Colors
+        'color-palettes-name': 'airproof',
+        // Fonts
+        'headings-font': 'Space Grotesk',
+        'font': 'Lato',
+        'navbar-font': 'Lato',
+        'buttons-font': 'Lato',
+        // Header
+        'hamburger-position': 'center',
+        'header-font-size': 0.875rem,
+        // Buttons
+        'btn-border-radius': 10px,
+        'link-underline': 'never',
+        'btn-border-radius-sm': 10px,
+        'btn-font-size-sm': 0.875rem,
+        'btn-font-size-lg': 1.125rem,
+        'btn-secondary-outline': true,
+        // ...
+   ),
+);
+// Fonts
+$o-theme-font-configs: (
+    'Space Grotesk': (
+        'family': ('Space Grotesk', 'Arial', 'Helvetica Neue', 'Helvetica', sans-serif),
+        'url': 'Space+Grotesk:400,500,700',
+        'properties' : (
+            'base': (
+                'font-size-base': 1rem,
+            ),
+        ),
+    ),
+    'Lato': (
+        'family': ('Lato', 'Trebuchet MS', sans-serif),
+        'url': 'Lato:300,300i,400,400i,700,700i',
+        'properties' : (
+            'base': (
+                'font-size-base': 1.125rem,
+            ),
+        ),
+    ),
+);
+// Colors
+$o-color-palettes: map-merge($o-color-palettes,
+    (
+        'airproof': (
+            'o-color-1': #000000,
+            'o-color-2': #BBE1FA,
+            'o-color-3': #CEF8A1,
+            'o-color-4': #FFFFFF,
+            'o-color-5': #0B8EE6,
+
+            'o-cc1-btn-primary': 'o-color-3',
+            'o-cc1-btn-secondary': 'o-color-1',
+            'o-cc2-btn-primary': 'o-color-2',
+            'o-cc3-h2': 'o-color-4',
+            'o-cc3-h3': 'o-color-3',
+            'o-cc3-text': 'o-color-4',
+            'o-cc3-headings': 'o-color-4',
+            'o-cc3-btn-primary': 'o-color-4',
+            'o-cc3-link': 'o-color-4',
+            'o-cc4-link': 'o-color-4',
+
+            'footer': 4,
+        ),
+    )
+);
+$o-selected-color-palettes-names: append($o-selected-color-palettes-names, 'airproof');
+
+// Shapes
+$o-bg-shapes: map-merge($o-bg-shapes,
+    (
+        'illustration': map-merge(
+            map-get($o-bg-shapes, 'illustration') or (),
+            (
+                'airproof/waves': ('position': left bottom, 'size': 100% auto, 'colors': (3), 'repeat-y': false),
+            ),
+        ),
+    )
+);
