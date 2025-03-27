@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="number_card.number_card">
+        <Card size="size">
+            <h3><t t-esc="title"/></h3>
+            <h2 style="color: lightgreen;"><t t-esc="value"/></h2>
+        </Card>	
+    </t>
+
+</templates>

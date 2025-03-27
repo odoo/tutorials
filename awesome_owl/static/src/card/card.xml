@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+	<t t-name="card.card">
+		<div class="card">
+			<h5><t t-out="title"/><button class="btn btn-primary" t-on-click="click"><t t-esc="state.text"/></button></h5>
+			<t t-if="!state.collapsed">
+				<t t-slot="default"/>
+			</t>
+		</div>
+	</t>
+
+</templates>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="piechart.piechart" t-ref="'root'">
+        <canvas id="piechart">
+        </canvas>
+    </t>
+
+</templates>
