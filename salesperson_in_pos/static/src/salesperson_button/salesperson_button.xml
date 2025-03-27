@@ -1,0 +1,10 @@
+<templates id="temnplate" xml:space="preserve">
+    <t t-name="point_of_sale.SelectSalespersonButton">
+        <button class="btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="() => this.selectSalesperson()">
+            <div t-if="props.salesperson" t-esc="props.salesperson.name" class="text-truncate text-action"></div>
+            <div t-else="">
+                Salesperson
+            </div>
+        </button>
+    </t>
+</templates>
