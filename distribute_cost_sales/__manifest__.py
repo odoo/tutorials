@@ -13,6 +13,7 @@
         'security/ir.model.access.csv',
         'wizard/cost_distribution_wizard.xml',
         'views/sale_order_views.xml',
+        'report/report.xml'
     ],
     'installable' : True,
     'license': "AGPL-3"
