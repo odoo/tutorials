@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_kit_wizard_action" model="ir.actions.act_window">
+        <field name="name">Kit</field>
+        <field name="res_model">product.kit.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="product_kit_wizard_view_form" model="ir.ui.view">
+        <field name="name">product.kit.wizard.form</field>
+        <field name="model">product.kit.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sub Products">
+                <sheet>
+                    <field name="wizard_sub_product_ids">
+                        <list editable="bottom" create="false" delete="false">
+                            <field name="product_id" readonly="1" force_save="1"/>
+                            <field name="quantity"/>
+                            <field name="price"/>
+                        </list>
+                    </field>
+                    <footer>
+                        <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
