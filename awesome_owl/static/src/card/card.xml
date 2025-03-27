@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <t t-esc="props.title"/>
+                </h5>
+                <p class="card-text">
+                    <t t-out="props.content"/>
+                    <button class="btn bg-primary text-white px-3 py-2 ms-2" t-on-click="toggleCounter">Click</button>
+                </p>
+                <p class="card-text">
+                </p>
+                <t t-if="viewCounter.value">
+                    <div>
+                        <t t-slot="default"/>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
