@@ -1,4 +1,4 @@
-import { Component, onMounted, useState, onWillRender, markup } from "@odoo/owl";
+import { Component, onMounted, useState, onWillRender, markup, onWillPatch, onWillUpdateProps } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 import { Card } from "../card/card";
 
@@ -12,6 +12,7 @@ export class PieCard extends Component {
         size: {type: 'Number', optional: 'true',},
         id: {type: 'String', optional: 'true',},
         stringProps: {type: 'String', optional: 'true',},
+        registerUpdate: {type: 'Function', optional: 'true',},
     };
 
     setup() {
@@ -34,6 +35,17 @@ export class PieCard extends Component {
 
             this.title = this.props.title;
         }
+        
+
+        if (this.props.registerUpdate) {
+            if ((this.props.stringProps != null && this.props.stringProps != undefined) && this.stringProps.source) {
+                this.props.registerUpdate(() => {
+                    if (this.chart) {
+                        this.chart.destroy();
+                    }
+                });
+            }
+        }
 
 
         this.state = useState({data: null});
@@ -52,8 +64,9 @@ export class PieCard extends Component {
                 return;
             }
 
-            if (this.chart) {
-                this.chart.destroy();
+            try {
+                this.chart.clear();
+            } catch (exception) {
             }
 
             const chartJS = await loadJS("/web/static/lib/Chart/Chart.js");
@@ -74,7 +87,6 @@ export class PieCard extends Component {
                 },
             };
 
-            
             this.chart = new Chart(this.context, config);
 
         }

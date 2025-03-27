@@ -9,7 +9,7 @@
                 <NumberCard stringProps="item"/>
             </t>
             <t t-foreach="state.graphs" t-as="item" t-key="item">
-                <PieCard stringProps="item"/>
+                <PieCard stringProps="item" registerUpdate.bind="registerUpdate"/>
             </t>
         </Layout>
     </t>
