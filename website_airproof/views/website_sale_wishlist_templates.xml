@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- Replace wishlist icon in header -->
+    <template id="header_wishlist_link" inherit_id="website_sale_wishlist.header_wishlist_link" name="Airproof - Header wishlist icon">
+        <xpath expr="//i[@t-if='_icon']" position="attributes">
+            <attribute name="class" add="fa-heart-o" remove="fa-heart" separator=" "/>
+        </xpath>
+    </template>
+</odoo>
