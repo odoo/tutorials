@@ -1,0 +1,2 @@
+'id','name','model_id:id','group_id:id','perm_read','perm_write','perm_create','perm_unlink'
+'model_estate_property_base_group_allow_all','model.estate.property.base.group.allow_all','model_estate_property','base.group_user',1,1,1,1

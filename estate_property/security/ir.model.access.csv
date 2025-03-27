@@ -1,0 +1,5 @@
+'id','name','model_id:id','group_id:id','perm_read','perm_write','perm_create','perm_unlink'
+'model_estate_property_base_group_allow_all','model.estate.property.base.group.allow_all','model_estate_property','base.group_user',1,1,1,1
+'model_estate_property_type_base_group_allow_all','model.estate.property.type.base.group.allow_all','model_estate_property_type','base.group_user',1,1,1,1
+'model_estate_property_tag_base_group_allow_all','model.estate.property.tag.base.group.allow_all','model_estate_property_tag','base.group_user',1,1,1,1
+'model_estate_property_offer_base_group_allow_all','model.estate.property.offer.base.group.allow_all','model_estate_property_offer','base.group_user',1,1,1,1
