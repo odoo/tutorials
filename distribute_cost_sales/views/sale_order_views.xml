@@ -14,7 +14,7 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="before">
-                    <button name="%(distribute_cost_wizard_action)d" type="action" string="share" class="fa fa-share-alt"/>
+                    <button name="%(distribute_cost_wizard_action)d" type="action" string="Distribute" class="fa fa-share-alt"/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/list/field[@name='price_subtotal']" position="before">
                     <field name="division_price_tags" widget="many2many_tags" options="{'color_field': 'color'}"/>

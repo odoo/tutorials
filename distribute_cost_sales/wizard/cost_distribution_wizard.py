@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_round
 
 
@@ -8,7 +8,6 @@ class CostDistributionWizard(models.TransientModel):
 
     sale_order_id = fields.Many2one('sale.order')
     sale_order_line_id = fields.Many2one('sale.order.line')
-    distribution_price = fields.Float(string="Distribution price")
     target_line_ids = fields.One2many('cost.distribution.wizard.line', 'wizard_id')
 
     @api.model
@@ -21,19 +20,22 @@ class CostDistributionWizard(models.TransientModel):
             )
            distribution_price = sale_order_line.price_unit * sale_order_line.product_uom_qty
            line_count = len(order_lines)
-           amount_per_line = float_round(distribution_price / line_count if line_count else 0.0, precision_digits=2)
-           target_lines_data = [
-                (
-                    0,0,{
-                        "sale_order_line_id": line.id,
-                        "amount": amount_per_line,
-                        "is_selected": True,
-                    },
-                )
-                for line in order_lines
-            ]
-           remainder = distribution_price - (amount_per_line * line_count)
-           target_lines_data[0][2]["amount"] += remainder
+           if line_count > 0:
+             amount_per_line = float_round(distribution_price / line_count if line_count else 0.0, precision_digits=2)
+             target_lines_data = [
+                   (
+                     0,0,{
+                         "sale_order_line_id": line.id,
+                         "amount": amount_per_line,
+                         "is_selected": True,
+                       },
+                    )
+                   for line in order_lines
+                ]
+             remainder = distribution_price - (amount_per_line * line_count)
+             target_lines_data[0][2]["amount"] += remainder
+           else:
+              raise UserError("There are no lines to distribute amount")
        res.update({
             'sale_order_line_id': sale_order_line.id,
             'target_line_ids': target_lines_data,
@@ -48,15 +50,15 @@ class CostDistributionWizard(models.TransientModel):
           active_sale_order_line = self.env['sale.order.line'].browse(self.env.context.get('active_id'))
           distributed_sale_price =  active_sale_order_line.price_unit * active_sale_order_line.product_uom_qty
           if total_shared_amount > distributed_sale_price:
-            raise ValidationError(f"Total shared amount cannot exceed the original line's price as total share amount is {total_shared_amount} and original line's price {record.sale_order_line_id.price_subtotal}")
+            raise ValidationError(f"Total shared amount cannot exceed the original line's price as total share amount is {total_shared_amount} and original line's price {active_sale_order_line.price_subtotal}")
+          active_sale_order_line.division_price = 0.0
+          active_sale_order_line.division_price_tags = [(5, 0, 0)]
           for line in record.target_line_ids:
+             line.sale_order_line_id.division_price = line.amount
              line.sale_order_line_id.price_subtotal += line.amount
-             line.sale_order_line_id.parent_division_id = active_sale_order_line
-             line.amount = record.distribution_price
-             line.sale_order_line_id.division_price = round(record.distribution_price, 2)
-          record.sale_order_line_id.price_subtotal = 0.0
-          active_sale_order_line.division_price = round(record.distribution_price, 2)
-          remaining_amount = round(record.distribution_price - total_shared_amount, 2)
+             line.sale_order_line_id.distributed_line = active_sale_order_line
+          active_sale_order_line.division_price = distributed_sale_price - total_shared_amount
+          remaining_amount = round(distributed_sale_price - total_shared_amount, 2)
           if remaining_amount > 0:
               active_sale_order_line.division_price = remaining_amount
               active_sale_order_line.price_subtotal = remaining_amount

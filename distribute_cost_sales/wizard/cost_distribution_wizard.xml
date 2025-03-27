@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form name="Distributed Cost">
                     <group>
-                        <field name="target_line_ids">
+                        <field name="target_line_ids" nolabel="1">
                             <list>
                                 <field name="sale_order_line_id"/>
                                 <field name="is_selected"/>
