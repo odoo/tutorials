@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_added_warranty_view" model="ir.ui.view">
+        <field name="name">product.template.added.warranty.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales']" position="inside">
+            <group name="Warranty">
+                <field name="is_warranty_available" string="Is Warranty Available?"/>
+            </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
