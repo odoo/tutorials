@@ -96,6 +96,7 @@
                         </page>
                         <page string="Other Info">
                             <group>
+                                <field name="company_id" string="Company"/>
                                 <field name="salesperson_id" string="Salesman"/>
                                 <field name="buyer_id" string="Buyer"/>
                             </group>

@@ -7,22 +7,24 @@ class Property(models.Model):
     def action_set_sold(self):
         res = super().action_set_sold()
 
-        invoice_line_ids = [
-            Command.create({
-                'name': self.name,
-                'quantity': 1,
-                'price_unit': self.selling_price * 0.06
-            }),
-            Command.create({
-                'name': 'administrative fees',
-                'quantity': 1,
-                'price_unit': 100
-            })
-        ]
+        for record in self:
+            record.check_access('create')
+            invoice_line_ids = [
+                Command.create({
+                    'name': record.name,
+                    'quantity': 1,
+                    'price_unit': record.selling_price * 0.06
+                }),
+                Command.create({
+                    'name': 'administrative fees',
+                    'quantity': 1,
+                    'price_unit': 100
+                })
+            ]
 
-        moves = self.env['account.move'].sudo().with_context(default_move_type='out_invoice').create({
-            'partner_id': self.buyer_id.id,
-            'move_type': 'out_invoice',
-            'line_ids': invoice_line_ids
-        })
-        return moves
+            moves = record.env['account.move'].sudo().with_context(default_move_type='out_invoice').create({
+                'partner_id': record.buyer_id.id,
+                'move_type': 'out_invoice',
+                'line_ids': invoice_line_ids
+            })
+        return res

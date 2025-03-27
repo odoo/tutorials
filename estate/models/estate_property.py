@@ -38,6 +38,8 @@ class Property(models.Model):
     best_price = fields.Float(compute='_compute_best_price', copy=False)
     sequence = fields.Integer('Sequence', default=1)
 
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+
     _sql_constraints = [
         ('positive_expected_price', 'CHECK(expected_price >= 0)', 'Expected price must be strictly positive'),
         ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive'),

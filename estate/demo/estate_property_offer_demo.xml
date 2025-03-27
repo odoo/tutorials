@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<odoo>
+<odoo noupdate="1">
     <record id="estate_property_offer_1" model="estate.property.offer">
         <field name="create_date" eval="datetime.now()" />
         <field name="partner_id" ref="base.res_partner_12" />
@@ -24,4 +24,17 @@
         <field name="validity">14</field>
         <field name="price">1500001</field>
     </record>
+
+    <function name="action_accept" model="estate.property.offer">
+        <value eval="[ref('estate_property_offer_3')]"/>
+    </function>
+
+    <function name="action_refuse" model="estate.property.offer">
+        <value eval="[ref('estate_property_offer_1')]"/>
+    </function>
+
+    <function name="action_refuse" model="estate.property.offer">
+        <value eval="[ref('estate_property_offer_2')]"/>
+    </function>
+
 </odoo>
