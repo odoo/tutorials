@@ -1,0 +1,5 @@
+<t t-name="awesome_dashboard.PieChart">
+    <div class="o_pie_chart">
+        <canvas t-ref="canvas"></canvas> 
+    </div>
+</t>

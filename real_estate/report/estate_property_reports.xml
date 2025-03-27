@@ -8,5 +8,4 @@
     <field name="binding_model_id" ref="model_estate_property"/>
     <field name="binding_type">report</field>
 </record>
-
 </odoo>

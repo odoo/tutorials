@@ -65,7 +65,7 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             property_id = vals.get("property_id")
             offer_price = vals.get("price")
-
+            
             if property_id:
                 property = self.env["estate.property"].browse(property_id)
 
@@ -76,6 +76,8 @@ class EstatePropertyOffer(models.Model):
 
                 if float(offer_price) < float(existing_offer_price):
                     raise UserError("Offer price must be higher than existing offers!")
+
+
 
                 property.state = "offer_received"
 

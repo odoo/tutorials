@@ -37,11 +37,26 @@ class PropertyController(http.Controller):
 
     @http.route('/submit-offer', type='http', auth="public", methods=['POST'], website=True)
     def submit_offer(self, **post):
+      if post.get('price'):
+        price = float(post.get('price'))
+        property_id = int(post.get('property_id'))
         
+        
+        existing_offer = request.env['estate.property.offer'].sudo().search([
+            ('property_id', '=', property_id)
+        ], order='price desc', limit=1)
+
+       
+        if existing_offer and price < existing_offer.price:
+            return request.redirect('/property/%s' % property_id)
+
+       
         request.env['estate.property.offer'].sudo().create({
-            'price': post.get('price'),
+            'price': price,
             'validity': post.get('validity'),
-            'property_id': int(post.get('property_id')),
+            'property_id': property_id,
             'partner_id': request.env.user.partner_id.id,
         })
+
         return request.redirect('/property/%s' % post.get('property_id'))
+

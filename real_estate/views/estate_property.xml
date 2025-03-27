@@ -34,7 +34,6 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
-
                 <group>
                     <group>
                         <button name="action_sold" type="object" string="Sold"
@@ -51,10 +50,11 @@
                 </group>
 
                 <sheet>
-
+                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state in ('sold')"/>
                     <group>
                         <group>
-                            <field name="name" placeholder="Name" />
+                            <field name="name" placeholder="Name"
+                                style="font-size:50px; height:80px;" nolabel="1" />
                         </group>
                         <group>
                             <field name="image" widget="image" nolabel="1" class="oe_avatar" />
@@ -161,8 +161,8 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Property Search">
-                <filter string="Available" name="active" domain="[('active', '=', True)]" />
-                <filter string="Unavailable" name="active" domain="[('active', '=', False)]" />
+                <filter string="Available" name="active" domain="[('state', '!=', 'sold')]" />
+                <filter string="Unavailable" name="active" domain="[('state', '=', 'sold')]" />
                 <filter string="New or Received" name="state"
                     domain="['|',('state', '=', 'new'),('state', '=', 'offer_received')]" />
 
