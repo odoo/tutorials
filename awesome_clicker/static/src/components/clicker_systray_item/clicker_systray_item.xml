@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="clicker_systray_item.ClickerSystrayItem">
+        <Dropdown>
+            <t t-set-slot="default">
+                <div>
+                    <ClickValue clicks="state.clicks"/><i class="fa fa-mouse-pointer"/>
+                    <t t-esc="state.getTotalTree()"/><i class="fa fa-tree"/>
+                    <t t-esc="state.getTotalFruits()"/><i class="fa fa-apple"/>
+                </div>
+            </t>
+            <t t-set-slot="content">
+                <DropdownItem onSelected="open_client_action.bind(this)">Open the clicker game</DropdownItem>
+                <DropdownItem onSelected="increment_clickbot.bind(this)">Buy a ClickBot</DropdownItem>
+                <DropdownItem><t t-esc="state.trees.pear"/>x pearTree</DropdownItem>
+                <DropdownItem><t t-esc="state.trees.cherry"/>x cherryTree</DropdownItem>
+                <DropdownItem><t t-esc="state.fruits.pear"/>x pear</DropdownItem>
+                <DropdownItem><t t-esc="state.fruits.cherry"/>x cherry</DropdownItem>
+            </t>
+        </Dropdown>
+    </t>
+</templates>
