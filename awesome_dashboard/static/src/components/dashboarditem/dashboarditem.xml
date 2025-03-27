@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t t-name="awesome_dashboard.DashboardItem">
+    <div class=" d-flex flex-column align-items-center border bg-white pt-3 px-3 m-2 rounded" t-att-style="'width: ' + props.size * 18 + 'rem;'">
+        <t t-slot="default" />
+    </div>
+</t>
