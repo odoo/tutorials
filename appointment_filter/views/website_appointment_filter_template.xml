@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_calendar_index_topbar_inherit" name="Appointment Filter"
+        inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//t[@t-call='website.website_search_box_input']" position="before">
+            <div class="d-flex gap-2 me-2">
+                <div class="dropdown">
+                    <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                        <t t-if="filters.get('filter_location')">
+                            <t t-out="filters.get('filter_location')" />
+                        </t>
+                        <t t-else="">Location</t>
+                    </a>
+                    <div class="dropdown-menu">
+                        <t t-set="locations"
+                            t-value="{'All': '', 'Online': 'Online', 'Offline': 'Offline'}" />
+                        <t t-foreach="locations.items()" t-as="location">
+                            <a
+                                t-attf-href="?{{ keep_query('*', filter_location=location[1]) }}"
+                                t-attf-class="dropdown-item">
+                                <t t-out="location[0]" />
+                            </a>
+                        </t>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                        <t t-if="filters.get('filter_based_on')">
+                            <t t-out="filters.get('filter_based_on')" />
+                        </t>
+                        <t t-else="">Schedule Based On</t>
+                    </a>
+                    <div class="dropdown-menu">
+                        <t t-set="based_on"
+                            t-value="{'All': '', 'Users': 'Users', 'Resources': 'Rsources'}" />
+                        <t t-foreach="based_on.items()" t-as="based">
+                            <a t-attf-href="?{{ keep_query('*', filter_based_on=based[1]) }}"
+                                t-attf-class="dropdown-item">
+                                <t t-out="based[0]" />
+                            </a>
+                        </t>
+                    </div>
+                </div>
+
+                <div class="dropdown">
+                    <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                        <t t-if="filters.get('filter_payment')">
+                            <t t-out="filters.get('filter_payment')" />
+                        </t>
+                        <t t-else="">Payment Required</t>
+                    </a>
+                    <div class="dropdown-menu">
+                        <t t-set="payment_options"
+                            t-value="{'All': '', 'Required': 'Required', 'No Required': 'No Required'}" />
+                        <t t-foreach="payment_options.items()" t-as="payment">
+                            <a t-attf-href="?{{ keep_query('*', filter_payment=payment[1]) }}"
+                                t-attf-class="dropdown-item">
+                                <t t-out="payment[0]" />
+                            </a>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
