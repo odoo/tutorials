@@ -1,0 +1,29 @@
+#wrapwrap {
+    // Breadcrumb
+    .breadcrumb-item + .breadcrumb-item::before { font-family: "FontAwesome" !important; }
+    // Sort by button
+    .products_header .o_sortby_dropdown {
+        border: 1px solid o-color('o-color-1');
+        .btn-light {
+            border: 0;
+            background-color: transparent;
+        }
+    }
+    // Product cards
+    .o_wsale_product_grid_wrapper form,
+    .o_carousel_product_card {
+        transition: all .2s ease-in-out;
+        &:hover {
+            transform: translate(-10px, -10px);
+            border: none;
+        }
+        .o_wsale_products_item_title a {
+            color: o-color('black') !important;
+        }
+    }
+    .o_wsale_product_grid_wrapper form:hover {
+        background-color: o-color('o-color-3');
+        .img-fluid { mix-blend-mode: multiply; }
+    }
+    .oe_website_sale .o_wsale_design_cards { --o-wsale-card-info-padding: 1.5rem; }
+}
