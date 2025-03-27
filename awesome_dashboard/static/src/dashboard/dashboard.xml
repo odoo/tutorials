@@ -4,16 +4,13 @@
         <Layout className="'o_dashboard h-100'" display="props.display">
             <button class="btn btn-primary" t-on-click="customersButton">Customers</button>
             <button class="btn btn-primary" t-on-click="leadsButton">Leads</button>
-            <t t-foreach="stats" t-as="item" t-key="item">
-                <DashboardItem>
-                    <h3><t t-esc="item[0]"/></h3>
-                    <h2 style="color: green;"><t t-esc="item[1]"/></h2>
-                </DashboardItem>
+            <h1 style='margin: 2em;'><t t-esc="state.happygary"/></h1>
+            <t t-foreach="state.numbers" t-as="item" t-key="item">
+                <NumberCard stringProps="item"/>
             </t>
-            <DashboardItem>
-                <PieChart data="salesData"/>
-            </DashboardItem>
-
+            <t t-foreach="state.graphs" t-as="item" t-key="item">
+                <PieCard stringProps="item"/>
+            </t>
         </Layout>
     </t>
 

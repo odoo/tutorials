@@ -1,4 +1,4 @@
-from odoo import api, exceptions, fields, models
+from odoo import _, api, exceptions, fields, models
 
 
 class EstatePropertyOffer(models.Model):
@@ -46,13 +46,19 @@ class EstatePropertyOffer(models.Model):
     def accept_offer(self):
         for record in self:
             if record.property_id.selling_price != 0:
-                raise exceptions.UserError('An offer as already been accepted for this property.')
+                raise exceptions.UserError(_('An offer as already been accepted for this property.'))
             record.property_id.state = 'offer_accepted'
             record.status = 'accepted'
             record.property_id.selling_price = record.price
             record.property_id.buyer = record.partner_id
-    @api.model
+    
+
+    @api.model_create_multi
     def create(self, vals):
+        if "property_id" not in vals.keys():
+            raise exceptions.UserError(f'A property must be provided for an offer.')
+        if "price" not in vals.keys():
+            raise exceptions.UserError(f'A price must be provided for an offer.')
         estate_property = self.env['estate.property'].browse(vals["property_id"])
         if vals["price"] < estate_property.best_price:
             raise exceptions.UserError(f'Offer must be higher than the current best offer({estate_property.best_price})')

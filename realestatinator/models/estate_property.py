@@ -1,14 +1,10 @@
-from odoo import api, exceptions, fields, models
+from odoo import _, api, exceptions, fields, models
 
 
 class EstatePropery(models.Model):
     _name = 'estate.property'
     _description = 'real estate property'
     _order = 'id desc'
-    _sql_constraints = [
-        ('check_expected_price_positive', 'CHECK (0 < expected_price)', 'Check that the expected price is strictly positive'),
-        
-    ]
 
 
     sequence = fields.Integer('Sequence', default=0)
@@ -45,6 +41,12 @@ class EstatePropery(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
     total_area = fields.Integer('Total Area', readonly=True, compute='_compute_total_area')
     best_price = fields.Float('Best Offer', compute='_compute_best_price')
+    
+
+    _sql_constraints = [
+        ('check_expected_price_positive', 'CHECK (0 < expected_price)', 'Check that the expected price is strictly positive'),
+        
+    ]
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -74,10 +76,10 @@ class EstatePropery(models.Model):
     def mark_cancelled(self):
         for record in self:
             if record.state == 'cancelled':
-                raise exceptions.UserError('This property is already cancelled.')
+                raise exceptions.UserError(_('This property is already cancelled.'))
                 
             if record.state == 'sold':
-                raise exceptions.UserError('This property cannot be cancelled because it has already been sold.')
+                raise exceptions.UserError(_('This property cannot be cancelled because it has already been sold.'))
                 
             record.state = 'cancelled'
             record.active = False
@@ -85,11 +87,11 @@ class EstatePropery(models.Model):
     def mark_sold(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError('This property is already sold.')
+                raise exceptions.UserError(_('This property is already sold.'))
 
                 
             if record.state == 'cancelled':
-                raise exceptions.UserError('This property cannot be sold because it has already been cancelled.')
+                raise exceptions.UserError(_('This property cannot be sold because it has already been cancelled.'))
                 
             record.state = 'sold'
             record.active = False
@@ -100,10 +102,10 @@ class EstatePropery(models.Model):
             if record.state not in ['offer_accepted', 'sold']:
                 return
             if record.selling_price < 0.9 * record.expected_price:
-                raise exceptions.ValidationError('Selling price must be at least 90% of expected price.')
+                raise exceptions.ValidationError(_('Selling price must be at least 90% of expected price.'))
 
     @api.ondelete(at_uninstall=False)
     def _unlink(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
-                raise exceptions.UserError('Property must be either new or cancelled to be deleted.')
+                raise exceptions.UserError(_('Property must be either new or cancelled to be deleted.'))

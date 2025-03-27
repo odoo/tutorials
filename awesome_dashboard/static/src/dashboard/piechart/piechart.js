@@ -1,4 +1,4 @@
-import { Component, onWillStart, useRef, onMounted } from "@odoo/owl";
+import { Component, onMounted, useState, onWillRender } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
@@ -8,7 +8,21 @@ export class PieChart extends Component {
     };
 
     setup() {
-        onMounted(async () => {
+        this.state = useState({data: null});
+
+        this.chart = null;
+
+        this.render = async () => {
+            
+            this.context = document.getElementById('piechart');
+            if (this.context == null || this.context == undefined) {
+                return;
+            }
+
+            if (this.chart) {
+                this.chart.destroy();
+            }
+
             const chartJS = await loadJS("/web/static/lib/Chart/Chart.js");
 
             const config = {
@@ -28,8 +42,18 @@ export class PieChart extends Component {
             };
 
             
-            new Chart(document.getElementById('piechart'), config);
+            this.chart = new Chart(this.context, config);
+
+        }
+
+        onWillRender(() => {
+            this.render();
         });
+
+        onMounted(() => {
+            this.render();
+        });
+
 
     }
 }
