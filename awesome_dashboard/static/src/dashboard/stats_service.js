@@ -20,7 +20,7 @@ const nextReload = () => {
             cache.values = await rpc('/awesome_dashboard/statistics');
         }
 
-    }, 600000);
+    }, 5000);
 }
 
 const setActive = (cb) => {isActive = true;nextReload();callback = cb;};

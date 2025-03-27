@@ -14,17 +14,11 @@ class AwesomeDashboard extends Component {
     static components = { Layout, Card, PieCard, NumberCard, PieChart };
     
     setup() {
-        this.toUpdate = [];
-        this.registerUpdate = (f) => {
-            this.toUpdate.push(f)
-        };
         this.testData = registry.category('awesome_dashboard.data').get('graphs').map((elt) => JSON.stringify(elt));
 
         this.state = useState({numbers: null, graphs: null, data: null, happygary: 'ᕦ( ᐛ )ᕡ'});
+        
         this.onStatsUpdate = (vals) => {
-            for (const f of this.toUpdate) {
-                f();
-            }
             this.state.data = vals;
         }
         
