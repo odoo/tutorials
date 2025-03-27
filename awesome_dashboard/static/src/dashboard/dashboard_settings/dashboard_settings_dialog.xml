@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.SettingsDialog">
+        <div class="modal fade show d-block" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Dashboard Settings</h5>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Select Dashboard Items to Display:</h6>
+                        <div class="list-group">
+                            <t t-foreach="state.items" t-as="item" t-key="item.id">
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <label class="form-check-label">
+                                        <input type="checkbox" class="form-check-input" t-model="item.selected"/>
+                                        <t t-esc="item.description"/>
+                                    </label>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" t-on-click="applySettings">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,26 @@
+.number-card {
+    background: linear-gradient(135deg, #ccbdd6, #ccbdd6);
+    color: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.number-card:hover {
+    transform: translateY(-5px);
+}
+
+.number-card-title {
+    font-size: 1rem;
+    font-weight: 500;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.number-card-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+}

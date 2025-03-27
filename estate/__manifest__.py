@@ -17,6 +17,7 @@
         'demo/estate_property_offer.xml'
     ],  
     'data': [
+        'wizards/estate_add_offer_wizard_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
@@ -28,6 +29,5 @@
         'report/estate_property_reports.xml',
         'security/security.xml',
         'security/ir.model.access.csv',
-        'wizards/estate_add_offer_wizard_views.xml',
     ],  
 }

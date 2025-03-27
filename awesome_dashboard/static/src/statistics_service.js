@@ -18,6 +18,4 @@ const loadStatistics = {
   },
 };
 
-registry
-  .category("services")
-  .add("awesome_dashboard.loadStatistics", loadStatistics);
+registry.category("services").add("awesome_dashboard.loadStatistics", loadStatistics);

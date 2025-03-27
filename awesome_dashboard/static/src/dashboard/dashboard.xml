@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100 p-3'" display="{ controlPanel: { breadcrumbs: true } }">
+            
+            <!-- Top Action Buttons -->
+            <t t-set-slot="control-panel-create-button">
+                <div class="d-flex gap-2">
+                    <button class="btn btn-primary shadow-sm" t-on-click="openCustomers">
+                        <i class="fa fa-users me-1"></i> View Customers
+                    </button>
+                    <button class="btn btn-info shadow-sm" t-on-click="openLeads">
+                        <i class="fa fa-briefcase me-1"></i> View Leads
+                    </button>
+                </div>
+            </t>
+
+            <!-- Settings Button -->
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn btn-light rounded-circle p-2 shadow-sm" t-on-click="openSettings" title="Dashboard Settings">
+                    <i class="fa fa-cog fs-5"></i>
+                </button>
+            </t>
+
+            <!-- Dashboard Content -->
+            <div class="o_dashboard_content row g-3">
+                <t t-foreach="state.items" t-as="item" t-key="item.id">
+                    <div class="col-lg-4 col-md-6">
+                        <DashboardItem size="item.size || 1">
+                            <t t-set="itemProps" t-value="item.props ? item.props(state.stats) : {'data': state.stats}"/>
+                            <t t-component="item.Component" t-props="itemProps"/>
+                        </DashboardItem>
+                    </div>
+                </t>
+            </div>
+
+        </Layout>
+    </t>
+</templates>

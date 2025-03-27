@@ -1,0 +1,35 @@
+.o_dashboard {
+    background-color: #9275a5; // Replace with your chosen color
+}
+
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.number-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.number-card h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #333;
+}
+
+.number-card .value {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.number-card.large {
+    grid-column: span 2;
+}

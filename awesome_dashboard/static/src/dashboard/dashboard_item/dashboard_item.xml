@@ -7,6 +7,4 @@
             <t t-slot="default"/>
         </div>
     </t>
-
-
 </templates>
