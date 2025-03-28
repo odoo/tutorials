@@ -4,7 +4,8 @@
     'category': 'Real Estate/Brokerage',
     'license':'GPL-3',
     'depends': [
-        'base'
+        'base',
+        'website'
     ],
     'data': [
         'security/estate_security.xml',
@@ -14,8 +15,10 @@
         'views/estate_property_offers_view.xml',
         'views/estate_property_tag_view.xml',
         'views/estate_property_types_view.xml',
+        'views/estate_property_templates.xml',
         'views/res_users_view.xml',
         'views/estate_menus.xml',
+        'views/website_menus.xml',
     ],
     'demo': [
         'demo/estate_property_demo.xml',

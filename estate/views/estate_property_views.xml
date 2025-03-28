@@ -63,6 +63,9 @@
                         <h1 class="mb32">
                             <field name="name" class="mb16"/>
                         </h1>
+                        <group>
+                            <field name="image" widget="image" class="oe_avatar" options="{'preview_image': 'image'}" nolabel="1"/>
+                        </group>
                         <field name="tags_ids" widget="many2many_tags" class="mb16" options="{'color_field': 'color'}"/>
                     </group>
                     <group>
