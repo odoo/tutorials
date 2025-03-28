@@ -34,3 +34,14 @@ class AwesomeDashboard(http.Controller):
             'total_amount': random.randint(100, 1000)
         }
 
+    @http.route('/awesome_dashboard/getItems',type='json',auth='public')
+    def get_hiddenItems(self):
+        user = request.env.user
+        return {"hiddenItems": user.dashboard_hidden_items or "[]"}
+
+    
+    @http.route('/awesome_dashboard/setItems',type='json',auth='public')
+    def set_hiddenItems(self,hiddenItems):
+        user = request.env.user
+        user.dashboard_hidden_items = hiddenItems
+        

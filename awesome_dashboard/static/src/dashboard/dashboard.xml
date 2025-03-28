@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+
+        <Layout className="o_dashboard" display="display">
+
+            <t t-set-slot="control-panel-create-button">
+                <button class="btn btn-primary" t-on-click="openCustomersView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeadsView">Leads</button>
+                <button class="btn btn-light" t-on-click="openSettingsDialog">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
+
+            <!-- <t t-if="this.state.isSettingsOpen"> -->
+    <!-- <AwesomeDashboardSettingsDialog   
+            items="this.state.items"
+            hiddenItems="this.state.hiddenItems"
+            onApply.bind="this.applySettings"
+        /> -->
+<!-- </t> -->
+
+            <div class="o_dashboard_content p-3">
+                <!-- <p>Welcome to dashboard</p> -->
+               <div>
+               <t t-esc="this.state.translatableString"/>
+               </div> 
+                <DashboardItem size="1">
+                    <div>
+                        <t>
+                            <div>Order By Size</div>
+                        </t>
+                        <t>M:</t>
+                        <t t-esc="this.state.res.orders_by_size?.m"/>
+                        <t>;  S:</t>
+                        <t t-esc="this.state.res.orders_by_size?.s"/>
+                        <t>;  XL:</t>
+                        <t t-esc="this.state.res.orders_by_size?.xl"/>
+                    </div>
+                </DashboardItem>
+
+                <t t-foreach="this.state.items" t-as="entry" t-key="entry[0]">
+                    <t t-if="!this.state.hiddenItems.has(entry[0])">
+                    <t t-set="itemO" t-value="entry[1]" />
+                    <t t-set="item" t-value="{...itemO}"/>
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(this.state.res) : {'data': this.state.res}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+                </t>
+            </div>
+        </Layout>
+    </t>
+
+</templates>

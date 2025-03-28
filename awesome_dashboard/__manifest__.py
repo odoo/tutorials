@@ -23,8 +23,15 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'awesome_dashboard/static/src/**/*',
+        'awesome_dashboard/static/src/**/*.js',  # Load all JS files except lazy ones
+        'awesome_dashboard/static/src/**/*.xml',  # Load all XML files
+        'awesome_dashboard/static/src/scss/**/*.scss',
         ],
+        'awesome_dashboard.dashboard_assets':[
+            "awesome_dashboard/static/src/dashboard/**/*.js",
+            "awesome_dashboard/static/src/dashboard/**/*.xml",
+            # "awesome_dashboard/static/src/dashboard/scss/*.scss",
+        ]
     
     },
     'license': 'AGPL-3'
