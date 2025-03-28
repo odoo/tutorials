@@ -21,14 +21,13 @@ class SaleOrderLine(models.Model):
                 })
                 tags.append(tag.id)
             else:
-                color_index = hash(line.distributed_line.id) % 10
                 tag = self.env['sale.order.line.tag'].create({
                     'name': f"{line.division_price}",
-                    'color': color_index,
+                    'color': 5,
                 })
                 tags.append(tag.id)
             if line.division_price == 0.0:
-               line.division_price_tags = [(5, 0, 0)]
+               line.division_price_tags = [(5, tag.id)]
             else:
                line.division_price_tags = [(6, 0, tags)]
 

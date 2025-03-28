@@ -8,7 +8,7 @@
                 <form name="Distributed Cost">
                     <group>
                         <field name="target_line_ids" nolabel="1">
-                            <list>
+                            <list editable="bottom">
                                 <field name="sale_order_line_id"/>
                                 <field name="is_selected"/>
                                 <field name="amount"/>
