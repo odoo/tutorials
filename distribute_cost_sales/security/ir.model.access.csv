@@ -1,0 +1,4 @@
+"id","name","model_id:id","group_id:id","perm_read","perm_write","perm_create","perm_unlink"
+"access_sale_order_line_tag","Sale Order Line Tag Access","distribute_cost_sales.model_sale_order_line_tag","base.group_user",1,1,1,1
+"access_cost_distribution_wizard","Cost Distribution Wizard Access","distribute_cost_sales.model_cost_distribution_wizard","base.group_user",1,1,1,1
+"access_cost_distribution_wizard_line","Cost Distribution Wizard Line Access","distribute_cost_sales.model_cost_distribution_wizard_line","base.group_user",1,1,1,1
