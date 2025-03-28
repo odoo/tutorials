@@ -33,7 +33,7 @@ export default class TodoList extends Component {
             todo.isCompleted = !todo.isCompleted;
         }
     }
-    
+
     removeTodo(id) {
         const index = this.todos.findIndex((t) => t.id === id);
         if(index !== -1){

@@ -19,7 +19,7 @@
                         <div>
                             <strong>Status: </strong>
                             <span t-field="property.status"/>
-                        </div>
+                        </div>report_property_offers_sub_template
                         <t t-call="real_estate.report_property_offers_sub_template"/>
                     </div>
                 </t>

@@ -1,6 +1,6 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from odoo import fields, models
 
 class EstateOfferWizard(models.Model):
     _name = "estate.offer.wizard"
