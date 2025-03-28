@@ -3,7 +3,7 @@
     <t t-name="awesome_owl.TodoList">
         <div class="container border rounded m-2 p-3">
             <h3>Todo List</h3>
-            <input type="text" t-ref="input" placeholder="Add a todo" class="form-control mb-3" t-on-keyup="addTodo"/>
+            <input type="text" t-ref="inputRef" placeholder="Add a todo" class="form-control mb-3" t-on-keyup="addTodo"/>
             <div class="d-inline-block p-2 m-2">
                 <t t-foreach="todos" t-as="todo" t-key="todo.id">
                     <TodoItem todo="todo" toggle.bind="toggleTodo" remove.bind="removeTodo"/>

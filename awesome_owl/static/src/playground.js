@@ -5,7 +5,6 @@ import { Counter } from "./counter/Counter";
 import { Card } from "./card/Card";
 import { TodoList } from "./todo/todo_list";
 
-
 export class Playground extends Component {
     static template = "awesome_owl.playground";
     static props={}
@@ -17,7 +16,7 @@ export class Playground extends Component {
         // this.markupText = markup("This <em>will not be escaped</em>");
 
         this.state = useState({ sum: 0});
-        this.incrementSum =this.incrementSum.bind(this)
+        this.incrementSum =this.incrementSum
     }
 
     incrementSum(){

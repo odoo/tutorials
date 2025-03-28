@@ -24,13 +24,11 @@ export const statisticsService = {
             }
         };
 
-        // Initial load
         loadStatistics();
 
-        // Periodic refresh every 10 seconds
         setInterval(() => {
             loadStatistics();
-        }, 10000);
+        }, 10*60*10000);
 
         return { data: stats.data, loadStatistics };
     },

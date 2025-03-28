@@ -21,7 +21,7 @@ export class PieChart extends Component{
 
         onWillUpdateProps((nextProps) => {
             if (this.chart) {
-                this.chart.destroy(); // ✅ Destroy old chart before updating
+                this.chart.destroy(); 
             }
             this.renderChart(nextProps.data);
         });

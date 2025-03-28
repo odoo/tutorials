@@ -7,7 +7,7 @@ class PropertyController(http.Controller):
 
     @http.route(['/properties','/properties/page/<int:page>'], type="http", auth="public", website=True)
     def propertyHandler(self,page=1, **kwargs):
-        Property = request.env['estate.property']
+        property = request.env['estate.property'].sudo()
 
         properties_per_page = 6
 
@@ -23,7 +23,7 @@ class PropertyController(http.Controller):
             step=properties_per_page
         )
 
-        properties = Property.search([
+        properties = property.search([
             ('status', 'in', ['new', 'offer_received']),
             ('active', '=', True)
         ], limit=properties_per_page, offset=(page - 1) * properties_per_page)
@@ -35,5 +35,5 @@ class PropertyController(http.Controller):
 
     @http.route('/properties/<int:property_id>', type="http", auth="public", website=True)
     def property_detail(self, property_id, **kwargs):
-        property = request.env['estate.property'].browse(property_id)
+        property = request.env['estate.property'].sudo().browse(property_id)
         return request.render('estate.website_property_detail', {'property': property})

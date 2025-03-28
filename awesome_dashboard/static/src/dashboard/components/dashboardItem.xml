@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.DashboardItem">
-        <div class="card p-2 m-3"
+        <div class="card p-2 m-3 dashboard-card"
         t-att-style="'width:' + (18 * props.size) + 'rem'">
             <div class="card-body">
                 <t t-slot="default"/>
