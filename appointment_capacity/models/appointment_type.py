@@ -68,7 +68,6 @@ class AppointmentType(models.Model):
 
             if float_compare(total_capacity_used / total_capacity, self.resource_manual_confirmation_percentage, 2) > 0:
                 default_state = 'request'
-        
         return default_state
 
     def _slot_availability_is_resource_available(self, slot, resource, availability_values):

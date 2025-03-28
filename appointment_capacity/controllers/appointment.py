@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 from urllib.parse import unquote_plus
 from werkzeug.exceptions import NotFound
 
-from odoo import http, fields, _
+from odoo import http, fields
 from odoo.http import request
 from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT as email_normalize
 from odoo.addons.appointment.controllers.appointment import AppointmentController
