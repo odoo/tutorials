@@ -17,7 +17,6 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_1" />
     </record>
-
     <record id="property_2" model="estate.property">
         <field name="name">Cozy Apartment</field>
         <field name="description">A modern apartment in the heart of the city.</field>
@@ -33,7 +32,6 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_2" />
     </record>
-
     <record id="property_3" model="estate.property">
         <field name="name">Spacious Townhouse</field>
         <field name="description">A large townhouse with a private backyard.</field>
@@ -51,7 +49,6 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_3" />
     </record>
-
     <record id="property_4" model="estate.property">
         <field name="name">Modern Loft</field>
         <field name="description">An industrial-style loft with open space.</field>
@@ -67,7 +64,6 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_4" />
     </record>
-
     <record id="property_5" model="estate.property">
         <field name="name">Country House</field>
         <field name="description">A peaceful retreat in the countryside.</field>
@@ -85,7 +81,6 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_5" />
     </record>
-
     <record id="property_6" model="estate.property">
         <field name="name">Beachfront Condo</field>
         <field name="description">A stunning condo right on the beach.</field>
@@ -101,7 +96,6 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_6" />
     </record>
-
     <record id="property_7" model="estate.property">
         <field name="name">Modern Apartment</field>
         <field name="description">A stylish apartment in the city center.</field>
@@ -117,7 +111,6 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_2" />
     </record>
-
     <record id="property_8" model="estate.property">
         <field name="name">Cozy Cottage</field>
         <field name="description">A charming cottage in the countryside.</field>
@@ -135,7 +128,6 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_7" />
     </record>
-
     <record id="property_9" model="estate.property">
         <field name="name">Downtown Loft</field>
         <field name="description">A spacious loft with an industrial feel.</field>
@@ -151,7 +143,6 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_4" />
     </record>
-
     <record id="property_10" model="estate.property">
         <field name="name">Beach House</field>
         <field name="description">A serene beach house with private access to the shore.</field>
@@ -169,6 +160,4 @@
         <field name="salesperson_id" ref="base.user_admin" />
         <field name="property_type_id" ref="property_type_5" />
     </record>
-
-
 </odoo>

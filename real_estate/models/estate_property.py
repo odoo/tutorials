@@ -23,30 +23,25 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garage = fields.Boolean()
     garden_area = fields.Integer()
-    
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(string="Best Offer Price",  store=True)
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company)
-
     garden_orientation = fields.Selection(
         selection=[('north', 'North'), ('south', 'South'),('east', 'East'),('west','West')],
          help="Type is used to separate Leads and Opportunities")
-
     state = fields.Selection([
-    ('new', 'New'),
-    ('offer_received', 'Offer Received'),
-    ('offer_accepted', 'Offer Accepted'),
-    ('sold', 'Sold'),
-    ('cancelled', 'Cancelled')  
-], string="Status", default="new")
+        ('new', 'New'),
+        ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('cancelled', 'Cancelled')  
+    ], string="Status", default="new")
     
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesperson" , default=lambda self: self.env.user)
     tag_id = fields.Many2many("estate.property.tag", string="Tags")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-
-
     total_area= fields.Float(compute="_compute_total_area", readonly=True, copy=False)
     best_price= fields.Float(compute="_compute_best_price", readonly=True, default= 0.0)
 
@@ -57,9 +52,8 @@ class EstateProperty(models.Model):
 
     @api.constrains('selling_price')
     def check_selling_price(self):
-       if self.state == "accept" and self.selling_price < (0.90 * self.expected_price):
+       if (self.state == "accept" and (self.selling_price > (0.90 * self.expected_price))):
             raise UserError("selling price cannot be lower than 90% of the expected price.")
-
 
     @api.depends("living_area","garden_area")
     def _compute_total_area(self):
@@ -69,7 +63,6 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
-
 
     @api.onchange("garden")
     def _change_garden(self):
@@ -103,14 +96,3 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError("You can only delete properties that are 'New' or 'Cancelled'.")    
-
-    
-    def action_estate_add_offer_wizard(self):
-      return {
-        'name': 'Add Offer',
-        'type': 'ir.actions.act_window',
-        'res_model': 'estate.add.offer.wizard',
-        'view_mode': 'form',
-        'target': 'new',
-        'context': {'default_property_ids': self.ids},
-    }

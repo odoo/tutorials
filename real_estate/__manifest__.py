@@ -12,6 +12,7 @@
     'data': [
         'security/security.xml',
         'security/ir.model.access.csv',
+        'views/estate_offer_wizard.xml',
         'views/estate_property_tag.xml',
         'views/estate_property_offer.xml',
         'views/estate_property_type.xml',
@@ -24,7 +25,6 @@
         "views/estate_property_detailed_template.xml",
         "views/estate_property_offer_template.xml",
         'views/estate_menus.xml',
-        "wizard/estate_add_offer_wizard_views.xml",
     ],
     'demo':[
         'demo/estate_property_tag.xml',

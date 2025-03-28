@@ -7,7 +7,5 @@
     'depends': ['base','real_estate', 'account'], 
     'data': [],
     'installable': True,
-    'application': True,
-
-   
+    'application': True,   
 }

@@ -8,25 +8,18 @@
                     <div class="col-md-12">
                         <div class="card shadow-sm border-0 p-3">
                             <div class="row align-items-center">
-                                <!-- Left: Image -->
                                 <div class="col-md-4">
                                     <div class="position-relative">
                                         <img t-if="property.image"
                                             t-att-src="image_data_uri(property.image)"
                                             class="img-fluid rounded"
                                             style="width:100%; height:250px; object-fit:cover;" />
-                                        
-                                            
                                     </div>
                                 </div>
-
-                                <!-- Right: Property Details -->
                                 <div class="col-md-8">
                                     <h2 class="text-dark text-center">
                                         <t t-esc="property.name" />
                                     </h2>
-
-
                                     <div class="d-flex align-items-center bg-light p-2 rounded mt-2">
                                         <span class="me-4"><t t-esc="property.bedrooms or 'N/A'" />
                                             Bedrooms</span>
@@ -34,21 +27,17 @@
                                         <span class="me-4"><t t-esc="property.facades or 'N/A'" />
                                             facades</span>
                                     </div>
-
                                     <div class="row mt-3">
                                         <div class="col-4">
                                             <small class="text-muted">living Area</small>
-                                            <h6 class="text-success"><t
-                                                    t-esc="property.living_area or 'N/A'" /> sqft</h6>
+                                            <h6 class="text-success"><t t-esc="property.living_area or 'N/A'" /> sqft</h6>
                                         </div>
-
                                         <div class="col-4">
                                             <small class="text-muted">Price</small>
                                             <h6 class="text-success">₹ <t
                                                     t-esc="property.expected_price or 'N/A'" /></h6>
                                         </div>
                                     </div>
-
                                     <div class="row mt-3">
                                         <div class="col-4">
                                             <small class="text-muted">garden</small>
@@ -134,7 +123,6 @@
 
                         </div>
                     </div>
-
                 </div>
             </div>
         </t>

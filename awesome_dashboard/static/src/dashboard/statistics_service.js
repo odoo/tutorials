@@ -7,15 +7,12 @@ const statisticsService = {
         const stats = reactive({ data: {} });
 
         async function fetchStatistics() {
-            console.log("Fetching statistics from API...");
             const result = await rpc("/awesome_dashboard/statistics");
             Object.assign(stats.data, result); 
+            console.log(result);
         }
-
-       
         fetchStatistics();
         setInterval(fetchStatistics, 10000);
-
         return stats;
     },
 };

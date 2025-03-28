@@ -10,17 +10,14 @@
                             <form action="/submit-offer" method="post">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <input type="hidden" name="property_id" t-att-value="property.id" />
-
                                 <div class="mb-3">
                                     <label class="form-label">Offer Price </label>
                                     <input type="number" name="price" class="form-control" required="true" />
                                 </div>
-
                                 <div class="mb-3">
                                     <label class="form-label">Validity (days)</label>
                                     <input type="number" name="validity" class="form-control" required="true" />
                                 </div>
-
                                 <button type="submit" class="btn btn-success w-100">
                                     Submit Offer
                                 </button>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.todoitem">
         <div class="border rounded p-2" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through': '' ">
             <input type="checkbox" class="form-check-input me-2" t-att-checked="props.todo.isCompleted" t-on-change="toggleCompletion" />
@@ -11,5 +10,4 @@
             <span class="fa fa-remove ms-2 text-danger" t-on-click="remove" />
         </div>
     </t>
-
 </templates>

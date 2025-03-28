@@ -3,7 +3,6 @@
         <t t-call="website.layout">
             <div class="container">
                 <h1 class="text-center mt-3"> Exclusive Property</h1>
-
                 <div class="row">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-md-4">
@@ -15,32 +14,26 @@
                                         <t t-esc="property.name" />
                                     </h5>
                                     <p class="card-text" >
-                                       
-                                        <t
-                                            t-esc="property.tag_id and ', '.join(property.tag_id.mapped('name')) or 'No Tags'" />
+                                        <t t-esc="property.tag_id and ', '.join(property.tag_id.mapped('name')) or 'No Tags'" />
                                     </p>
                                     <p class="card-text text-success">
-                                        <strong>Expected Price:</strong> <t
-                                            t-esc="property.expected_price" /> $ </p>
+                                        <strong>Expected Price:</strong> <t t-esc="property.expected_price" /> $ </p>
                                 </div>
                             </a>
                         </div>  
                     </t>
                 </div>
 
-            
                 <div class="text-center mt-4">
                     <t t-if="page > 1">
                         <a t-attf-href="/properties?page={{ page - 1 }}" class="btn btn-primary">&lt;
                             Prev</a>
                     </t>
-
                     <span class="mx-3"> Page <t t-esc="page" /> of <t t-esc="total_pages" />
                     </span>
 
                     <t t-if="total_pages > page">
-                        <a t-attf-href="/properties?page={{ page + 1 }}" class="btn btn-primary">Next
-                            &gt;</a>
+                        <a t-attf-href="/properties?page={{ page + 1 }}" class="btn btn-primary">Next &gt;</a>
                     </t>
                 </div>
             </div>

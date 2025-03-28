@@ -3,13 +3,11 @@
         <t t-foreach="docs" t-as="property">
             <t t-call="web.html_container">
                 <t t-call="web.external_layout">
-
                     <div class="page">
                         <div>
                             <h2>
                                 <span t-field="property.name" />
                             </h2>
-
                             <p>
                                 <strong>Salesman:</strong>
                                 <span t-field="property.salesperson_id" />
@@ -23,11 +21,10 @@
                                 <span t-field="property.state" />
                             </p>
                         </div>
-
                         <t t-if="property.offer_ids">
                             <table class="table">
                                 <thead> 
-                                <hr/>
+                                    <hr/>
                                     <tr>
                                         <th style="font-weight: bold;">Price</th>
                                         <th style="font-weight: bold;">Partner</th>
@@ -63,9 +60,8 @@
                             </p>
                         </t>
                     </div>
-               
+                </t>
             </t>
-        </t>
         </t>
     </template>
 </odoo>

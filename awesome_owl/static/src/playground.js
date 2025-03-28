@@ -18,6 +18,4 @@ export class Playground extends Component {
     incrementSum() {
             this.state.sum++;
     }
-    
-   
 }

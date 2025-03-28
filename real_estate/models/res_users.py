@@ -1,7 +1,5 @@
 from odoo import models, fields
 
-
-
 class InheritResUsers(models.Model):
     _inherit = "res.users"
 
@@ -11,4 +9,3 @@ class InheritResUsers(models.Model):
         string="Available Properties",
         domain=[('state' , 'in' ,['new'])]
     )
-

@@ -9,7 +9,6 @@ class EstatePropertyOffer(models.Model):
     _description = "Property Offer"
     _order = "price desc"
 
-
     property_id = fields.Many2one("estate.property", string="Property", required=True, ondelete="cascade")
     price = fields.Float(string="Price", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
@@ -37,7 +36,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.date_deadline = date.today() + relativedelta(days=(record.validity))
 
-    
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline-record.create_date.date()).days
@@ -56,30 +54,22 @@ class EstatePropertyOffer(models.Model):
     def refuse_offer(self):
         for record in self:
             record.state = "refused"
-
         return True
     
     @api.model_create_multi
     def create(self, vals_list):
-
         for vals in vals_list:
             property_id = vals.get("property_id")
             offer_price = vals.get("price")
             
             if property_id:
                 property = self.env["estate.property"].browse(property_id)
-
                 if property.state == "offer_accepted":
                     raise UserError("Cannot make new offers. The property already has an accepted offer.")
-
                 existing_offer_price = max(property.offer_ids.mapped("price"), default=0)
 
                 if float(offer_price) < float(existing_offer_price):
                     raise UserError("Offer price must be higher than existing offers!")
-
-
-
                 property.state = "offer_received"
 
         return super().create(vals_list)
-        
