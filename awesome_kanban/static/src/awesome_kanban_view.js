@@ -1,3 +1,11 @@
 /** @odoo-module */
+import { kanbanView } from "@web/views/kanban/kanban_view";
+import { AwesomeKanbanController } from "./components/awesome_kanban_controller/awesome_kanban_controller";
+import { registry } from "@web/core/registry";
 
-// TODO: Define here your AwesomeKanban view
+export const awesomeKanbanView = {
+    ...kanbanView,
+    Controller: AwesomeKanbanController
+};
+
+registry.category("views").add("awesome_kanban", awesomeKanbanView);
