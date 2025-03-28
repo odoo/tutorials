@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="bill_entry_wizard_view_form" model="ir.ui.view">
+        <field name="name">bill.entry.line.wizard.view.form</field>
+        <field name="model">account.custom.duty.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="journal_entry_number" />
+                            <field name="journal_entry_date" />
+                            <field name="journal_id" />
+                            <field name="custom_currency_rate"
+                                readonly="account_journal_entry_custom_duty" />
+                        </group>
+                        <group>
+                            <field name="move_id" readonly="1" />
+                            <field name="bill_of_entry_number" />
+                            <field name="bill_of_entry_date" />
+                            <field name="port_code_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Bill of Entry Details">
+                            <field name="line_ids" readonly="account_journal_entry_custom_duty">
+                                <list editable="bottom" create="false">
+                                    <field name="product_id" />
+                                    <field name="assessable_value" widget="monetary" />
+                                    <field name="custom_duty" widget="monetary" />
+                                    <field name="taxable_amount" widget="monetary" />
+                                    <field name="tax_ids" widget="many2many_tags" />
+                                    <field name="tax_amount" widget="monetary" />
+                                    <field name="currency_id" optional="hide" />
+                                </list>
+                            </field>
+                            <group>
+                                <group class="oe_subtotal_footer">
+                                    <field name="total_custom_duty_and_additional_charges"
+                                        widget="monetary" readonly="1" />
+                                    <field name="total_tax_amount" widget="monetary" readonly="1" />
+                                    <field name="total_amount_payable" widget="monetary"
+                                        readonly="1" class="oe_subtotal_footer_separator" />
+                                    <field name="currency_id" invisible="1" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <div class="d-flex gap-1"
+                        invisible="account_journal_entry_custom_duty">
+                        <button type="object" name="action_create_and_post_journal_entry"
+                            class="btn btn-primary o_form_button_save"> Confirm </button>
+                        <button type="button" class="btn btn-secondary o_form_button_cancel"
+                            special="cancel"> Discard </button>
+                    </div>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>
