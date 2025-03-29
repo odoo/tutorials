@@ -1,0 +1,20 @@
+{
+    'name': 'Meeting Room Booking',
+    'version': '18.0.1.0.0',
+    'summary': 'App to manage and book meeting rooms',
+    'description': 'Manage meeting room booking',
+    'author': 'imheart',
+    'website': 'www.example-test-test.com',
+    'category': 'Productivity',
+    'license': 'LGPL-3', 
+    'depends': ['base',],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/room_views.xml',
+        'views/booking_views.xml',
+        'views/actions.xml',
+        'views/menus.xml',
+    ],
+    'installable': True,
+    'application': True,        
+}
