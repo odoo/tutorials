@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_meeting_booking_tree" model="ir.ui.view">
+            <field name="name">meeting.booking.tree</field>
+            <field name="model">meeting.booking</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name" />
+                    <field name="room_id" />
+                    <field name="start_time" />
+                    <field name="end_time" />
+                    <field name="booked_by" />
+                </list>
+            </field>
+        </record>
+
+        <record id="view_meeting_booking_form" model="ir.ui.view">
+            <field name="name">meeting.booking.form</field>
+            <field name="model">meeting.booking</field> 
+            <field name="arch" type="xml">
+                <form >
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="room_id" />
+                            <field name="start_time" />
+                            <field name="end_time" />
+                            <field name="booked_by" readonly="1" />        
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
