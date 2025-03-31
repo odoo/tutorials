@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_move_custom_duty_action" model="ir.actions.act_window">
+        <field name="name">Account Move Custom Duty</field>
+        <field name="res_model">account.move.custom.duty</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="account_move_custom_duty_view_form" model="ir.ui.view">
+        <field name="name">account.move.custom.duty.view.form</field>
+        <field name="model">account.move.custom.duty</field>
+        <field name="arch" type="xml">
+            <form string="Account Move Custom Duty">
+                <header invisible="bill_of_entry_state == 'draft'">
+                    <button name="action_account_move_reversal_wizard" string="Reverse Entry" type="object" invisible="not bill_of_entry_id" />
+                    <button name="action_reset_journal_to_draft" string="Reset to Draft" type="object" invisible="not bill_of_entry_id" />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="journal_entry_number"/>
+                            <field name="currency_id" invisible="1" />
+                            <field name="journal_entry_date" />
+                            <field name="journal_id" />
+                            <field name="custom_currency_rate" widget="monetary" />
+                        </group>
+                        <group>
+                            <field name="import_duty_bill_id" />
+                            <field name="bill_of_entry_number" />
+                            <field name="bill_of_entry_date" />
+                            <field name="port_code" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page name="custom_duty_lines" string="Custom Duty Lines">
+                            <field name="account_move_custom_duty_line_ids">
+                                <list editable="bottom" create="0">
+                                    <field name="account_move_line_id" readonly="1" force_save="1">
+                                        <list>
+                                            <field name="product_id" string="Product Details" />
+                                        </list>
+                                    </field>
+                                    <field name="currency_id" column_invisible="1" />
+                                    <field name="assessable_value" widget="monetary" />
+                                    <field name="custom_duty_with_added_charges" widget="monetary" />
+                                    <field name="taxable_amount" widget="monetary" />
+                                    <field name="tax_ids" widget="many2many_tags" />
+                                    <field name="tax_amount" widget="monetary" />
+                                </list>
+                            </field>
+                        </page>
+                        <page name="journal_items" string="Journal Items" invisible="not bill_of_entry_id">
+                            <field name="line_ids">
+                                <list>
+                                    <field name="company_currency_id" column_invisible="1"/>
+                                    <field name="account_id"/>
+                                    <field name="partner_id"/>
+                                    <field name="name"/>
+                                    <field name="debit" sum="Total Debit" widget="monetary" />
+                                    <field name="credit" sum="Total Credit" widget="monetary" />
+                                    <field name="tax_tag_ids" widget="many2many_tags" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+
+                    <group class="oe_subtotal_footer border-0">
+                        <field name="total_custom_duty_with_additional_charges" />
+                        <field name="total_tax_amount" />
+                        <field name="total_amount_payable" class="oe_subtotal_footer_separator" />
+                    </group>
+                </sheet>
+
+                <footer invisible="bill_of_entry_id and bill_of_entry_state == 'posted'">
+                    <button string="Confirm" type="object" name="action_create_and_post_journal_entry" class="btn-primary" />
+                    <button string="Discard" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
