@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="real_estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+    </record>
+
+    <record id="real_estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />    
+        <field name="implied_ids" eval="[(4, ref('real_estate_group_user'))]" />
+        <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+    </record>
+
+    <record id="real_estate_property_agent_rule" model="ir.rule">
+        <field name="name">Real Estate Property Rule for Agent</field>
+        <field name="model_id" ref="model_real_estate_property" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="False" />
+        <field name="groups" eval="[(4, ref('real_estate_group_user'))]" />
+        <field name="domain_force">['|', ('salesperson_id','=',user.id),('salesperson_id','=',False)]</field>
+    </record>
+
+    <record id="real_estate_property_manager_rule" model="ir.rule">
+        <field name="name">Real Estate Property Rule for Manager</field>
+        <field name="model_id" ref="model_real_estate_property" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="False" />
+        <field name="groups" eval="[(6, 0, [ref('real_estate_group_manager')])]" />
+        <field name="domain_force">[]</field>
+    </record>
+
+    <record id="real_estate_comp_rule" model="ir.rule">
+        <field name="name">Real Estate Multi-company</field>
+        <field name="model_id" ref="model_real_estate_property" />
+        <field name="groups" eval="[(4, ref('real_estate_group_user'))]"/>
+        <field name="domain_force">[
+            '|', ('company_id', '=', False),
+                 ('company_id', 'in', company_ids)
+        ]</field>
+    </record>
+
+</odoo>

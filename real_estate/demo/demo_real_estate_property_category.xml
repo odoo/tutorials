@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="real_estate_type_data1" model="real.estate.property.category">
+        <field name="name">Residential</field>
+    </record>
+    <record id="real_estate_type_data2" model="real.estate.property.category">
+        <field name="name">Commercial</field>
+    </record>
+    <record id="real_estate_type_data3" model="real.estate.property.category">
+        <field name="name">Industrial</field>
+    </record>
+    <record id="real_estate_type_data4" model="real.estate.property.category">
+        <field name="name">Plots</field>
+    </record>
+    <record id="real_estate_type_data5" model="real.estate.property.category">
+        <field name="name">Special Use Properties</field>
+    </record>
+</odoo>

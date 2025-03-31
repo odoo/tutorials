@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="website_property_listing_menu" model="website.menu">
+        <field name="name">Property</field>
+        <field name="url">/property</field>
+        <field name="parent_id" ref="website.main_menu" />
+    </record>
+</odoo>
