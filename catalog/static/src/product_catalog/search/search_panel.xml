@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="catalog.SearchPanel" t-inherit="web.SearchPanel.Category" t-inherit-mode="extension">
+        <xpath expr="//div[@class='o_search_panel_label d-flex align-items-center overflow-hidden w-100 cursor-pointer mb-0']" position="after">
+             <input type="checkbox"
+                    t-if="!value.childrenIds.length and this.env.searchModel.globalContext.active_model == 'catalog.catalog'"
+                    t-attf-id="{{ value.id }}_input_{{ attrName }}"
+                    class="form-check-input"
+                    t-att-checked="this.state.result[value.id]"
+                    t-on-click="ev => this.toggleSectionCategoryValue(value.id, attrIds, ev, value)"/>
+        </xpath>
+    </t>
+</templates>

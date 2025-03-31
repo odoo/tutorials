@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+   <record id="product_template_form_view_inherited_catalog" model="ir.ui.view">
+      <field name="name">view.order.form.inherited</field>
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_form_view" />
+      <field name="arch" type="xml">
+         <xpath expr="//div[@name='list_price_uom']" position="attributes">
+            <attribute name="class">d-inline-flex align-items-center</attribute>
+         </xpath>
+         <xpath expr="//span[@name='uom_span']" position="after">
+            <div>
+               Margin
+               <small class="d-inline-block oe_grey h6 mb-0">
+                  <field name="gross_profit_margin" style="width:50px; text-align:right;"/>
+                  <span class="ms-1" style="position: relative; top: -1px;">%</span>
+               </small>
+            </div> 
+         </xpath>
+      </field>
+   </record>
+</odoo>
