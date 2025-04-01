@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+   <t t-name="awesome_dashboard.AwesomeDashboard">
+     <Layout class="'o_dashboard h-100'" t-props="layoutProps">
+        <t t-slot="controlPanel">
+            <button class="btn btn-primary" style="margin-right: 10px;" t-on-click="openCustomers">Customers</button>
+            <button class="btn btn-secondary" style="margin-right: 10px;" t-on-click="openLeads">Leads</button>
+            <button class="btn btn-light" >Dashboard</button>
+            <button class="btn btn-light rounded-circle p-2 shadow-sm" t-on-click="openSettings" title="Dashboard Settings">
+                    <i class="fa fa-cog fs-5"></i>
+                </button>
+        </t>
+            <!-- <DashboardItem size="2">
+                    <h3>New Orders This Month</h3>
+                    <p class="text-success h1" t-esc="statistics.average_quantity" />
+                </DashboardItem> -->
+            <div class="o_dashboard_content d-flex flex-row flex-wrap  g-3">
+                <t t-foreach="state.items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
+                    </DashboardItem>
+                </t>
+            </div>
+    </Layout>
+   </t>
+
+</templates>

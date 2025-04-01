@@ -1,10 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+    <t t-name="awesome_owl.Playground">
+        <div class="card shadow-sm p-1 m-4">
+            <div class="card-body d-flex justify-content-center align-items-center gap-5 playground-container">
+                <p >Hello World</p>
+                <div class="counter-container d-flex gap-3">    
+                    <Counter  onChange.bind="incrementSum"/>
+                    <Counter onChange.bind="incrementSum"/>
+                </div>
+                <p><t t-esc="state.sum"/> </p>
+            </div>
+        </div>
+        <div class="card shadow-sm p-1 m-4">
+            <div class="card-body justify-content-center d-flex gap-3 playground-container">
+                <Card title="'Card 1'" content="this.card1Content"/>
+                <Card title="'Card 2'" content="'his is a simple card.'"/>  
+            </div>
+        </div>
+        <div class="card shadow-sm p-1 m-4">
+            <div class="card-body justify-content-center d-flex gap-3 playground-container">
+                <TodoList/>
+            </div>
         </div>
     </t>
-
 </templates>
