@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
-<odoo>] <template id="estate_offer_table">
+<odoo>
+ <template id="estate_offer_table">
         <t t-if="not property.offer_ids">
             <h3 class="text-center">
                 <strong>

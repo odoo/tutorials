@@ -1,31 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.todoItem">
-     <div class="card d-inline-block m-2" style="width: 18rem;">
-        <div class="card-body">
-            <span class="m-2">
-            <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-click="toggleState"/>
-            <t t-esc="props.todo.id"/>
-            </span>
-<span class="card-text" t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
-            <t t-out="props.todo.description"/>
-            <span class="mx-3 fa fa-remove" t-on-click="removeTask"/>
-            
-            </span>
-    </div>
-</div>
-    </t>
-<t t-name="awesome_owl.todoList">
-    <div>
-    <input type="text" class="mb-2" placeholder="Enter a new Task" t-ref="input" t-on-input="ev=>this.state.newTask=ev.target.value" t-on-keydown="checkEnter" t-att-value="state.newTask"/>
-    <button class="btn btn-primary mb-3" t-on-click="addTodo">Add</button>
-        <h3>Todo List</h3>
-        <div>
-            <t t-foreach="state.todo" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo" onToggleComplete.bind="onToggleComplete" onClickDelete.bind="onClickDelete"/>
-            </t>
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <span class="m-2">
+                    <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-click="toggleState"/>
+                    <t t-esc="props.todo.id"/>
+                </span>
+                <span class="card-text" t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+                    <t t-out="props.todo.description"/>
+                    <span class="mx-3 fa fa-remove" t-on-click="removeTask"/>
+
+                </span>
+            </div>
         </div>
-    </div>
-</t>
+    </t>
 </templates>

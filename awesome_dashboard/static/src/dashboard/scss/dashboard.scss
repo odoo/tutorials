@@ -3,32 +3,15 @@
     margin: 20px;
     border-radius: 1px;
 }
-// .o_dashboard_content {
-//     display: flex;
-//     flex-wrap: wrap;
-//     gap: 10px;  /* Add spacing between cards */
-// }
 
-// .o_dashboard_item {
-//     flex: 1 1 calc(33.33% - 10px);  /* Default: 3 items per row */
-//     min-width: 200px;
-// }
-
-// /* 🔹 Responsive: On screens smaller than 768px (mobile) */
-// @media (max-width: 768px) {
-//     .o_dashboard_item {
-//         flex: 1 1 100%;  /* Full width on mobile */
-//     }
-// }
 .o_dashboard_item {
     flex: 1 1 auto;
-    width: 15rem; /* Default width (adjust as needed) */
+    width: 15rem; 
     min-width: 200px;
 }
 
-/* 🔹 Mobile: Make all cards full width */
 @media (max-width: 768px) {
     .o_dashboard_item {
-        width: 100% !important; /* Override rem width */
+        width: 100% !important; 
     }
 }
