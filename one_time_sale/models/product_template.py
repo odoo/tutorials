@@ -24,8 +24,20 @@ class ProductTemplate(models.Model):
         )
     
     def _get_additionnal_combination_info(self, product_or_template, quantity, date, website):
-        """Pass additinal information to handle the one-time purchase."""
+        """Pass additional information to handle one-time purchases."""
         res = super()._get_additionnal_combination_info(product_or_template, quantity, date, website)
+
+        if not product_or_template.recurring_invoice:
+            return res
+
+        # Define the custom sort key for billing period unit (week < month < year)
+        def sort_pricing_plans(pricing):
+            if not pricing.get('plan_id'):
+                return (0, 0)
+            period_order = {'week': 1, 'month': 2, 'year': 3}
+            period_unit = pricing.get('billing_period_unit', '').lower()
+            period_value = pricing.get('billing_period_value', 0)
+            return (period_order.get(period_unit, 999), period_value)
 
         pricings = res.get('pricings', [])
         # add discount per pricing plan if product is consumable product
@@ -38,7 +50,7 @@ class ProductTemplate(models.Model):
                 for pricing in pricings:
                     discount = ((base_price - pricing['price_value']) / base_price * 100)
                     pricing['discount'] = f"-{round(discount, 2)}%" if discount > 0 else 0
-            
+
             if one_time_price > 0:
                 price_format = format_amount(self.env, amount=one_time_price, currency=website.currency_id)
                 # add one time price if available at top of the pricings for comparison list
@@ -51,6 +63,17 @@ class ProductTemplate(models.Model):
                     'can_be_added': True,
                     'discount': 0
                 })
+
+        # Add billing period information and sort the pricings list
+        if pricings:
+            for pricing in pricings:
+                if pricing.get('plan_id'):
+                    plan_id = self.env['sale.subscription.plan'].browse(pricing['plan_id'])
+                    pricing['billing_period_unit'] = plan_id.billing_period_unit
+                    pricing['billing_period_value'] = plan_id.billing_period_value
+
+            # Sort pricings based on the custom sort key (week, month, year)
+            pricings.sort(key=sort_pricing_plans)
 
         sale_order = website.sale_get_order() if website else None
         res.update({

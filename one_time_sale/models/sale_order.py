@@ -1,17 +1,17 @@
-from odoo import api, models
+from odoo import models
 
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    @api.depends('order_line', 'order_line.recurring_invoice')
     def _compute_has_recurring_line(self):
         """Disable validation of plan_id for one-time product purchase."""
-        recurring_orders = self.filtered(lambda order: order.order_line.filtered(
-            lambda line: line.product_id.recurring_invoice and not line.product_id.accept_one_time
-        ))
-        recurring_orders.has_recurring_line = True
-        (self - recurring_orders).has_recurring_line = False
+        for order in self:
+            order.has_recurring_line = any(
+                (line.product_id.recurring_invoice and not line.product_id.accept_one_time) or 
+                (line.product_id.accept_one_time and order.plan_id)
+                for line in order.order_line
+            )
 
     def _cart_update_order_line(self, product_id, quantity, order_line, **kwargs):
         """Handle subscription product plan selection with one time purchase option available."""

@@ -1,7 +1,7 @@
 {
     'name': "One Time Sale",
     'version': '1.0',
-    'depends': ['sale_subscription', 'website_sale_subscription'],
+    'depends': ['website_sale_subscription'],
     'author': "Odoo",
     'category': 'Sales/Subscriptions',
     'description': """
