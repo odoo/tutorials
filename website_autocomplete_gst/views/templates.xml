@@ -6,21 +6,17 @@
     </template>
     <template id="website_sale_billing_address_row_inherit" inherit_id="website_sale.billing_address_row">
         <xpath expr="//div[@id='billing_address_row']" position="replace">
-            <div id="billing_address_row" class="mb-3">
+            <div id="invoice_address_row" class="mb-3">
                 <h4 class="text-uppercase small fs-6 fw-bold mt-3">
                     <t groups="!account.group_delivery_invoice_address">Your address</t>
                 </h4>
-                <t groups="account.group_delivery_invoice_address">
-                    <t t-set="has_delivery" t-value="order._has_deliverable_products()"/>
-                    <div t-if="has_delivery" class="form-check form-switch mt-2 mb-3">
-                        <label id="want_tax_credit_label">
-                            <input type="checkbox" id="want_tax_credit" class="form-check-input" t-att-checked="want_tax_credit"/>
+                <t t-set="has_delivery" t-value="order._has_deliverable_products()"/>
+                <div t-if="has_delivery" class="form-check form-switch mt-2 mb-3">
+                    <label id="want_tax_credit_label">
+                        <input type="checkbox" id="want_tax_credit" class="form-check-input" t-att-checked="want_tax_credit"/>
                             want tax-credit
-                        </label>
-                    </div>
-                </t>
-                <t t-set="tax_credit_enable" groups="!account.group_delivery_invoice_address" t-value="True"/>
-                <t t-set="tax_credit_enable" groups="account.group_delivery_invoice_address" t-value="False"/>
+                    </label>
+                </div>
                 <div id="tax_credit_container" t-attf-class="{{'d-none' if not want_tax_credit and has_delivery else ''}}" t-att-data-tax-credit-enable="tax_credit_enable">
                     <label for="o_vat">
                         <t t-out="vat_label or 'VAT'"/>

@@ -4,19 +4,19 @@
     'category': "Website/Website",
     'summary': "Get Auto-completed Company address based on VAT",
     'depends': [
-        'base', 'website_sale'
+        'base', 'web', 'website_sale'
     ],
     'description': """
-        This module adds an option of "do you want tax credit" during checkout proccess in website and upon entering valid VAT number auto-completes company address details
+        This module adds an option of "do you want tax credit" during checkout process in website and upon entering a valid VAT number auto-completes company address details.
     """,
-    'data' : [
+    'data': [
         'views/templates.xml'
     ],
     'assets': {
         'web.assets_frontend': [
-            'website_autocomplete_gst/static/src/js/**/*'
+            'website_autocomplete_gst/static/src/js/**/*.js',
         ],
     },
-    'installable' : True,
+    'installable': True,
     'license': "AGPL-3"
 }

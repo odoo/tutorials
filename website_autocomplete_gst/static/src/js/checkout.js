@@ -1,5 +1,7 @@
 import { rpc } from "@web/core/network/rpc";
+import { user } from "@web/core/user";
 import publicWidget from '@web/legacy/js/public/public_widget';
+import { session } from "@web/session";
 
 publicWidget.registry.WebsiteSaleCheckout.include({
     /**
@@ -15,8 +17,13 @@ publicWidget.registry.WebsiteSaleCheckout.include({
         this.taxCreditContainer = this.el.querySelector('#tax_credit_container');
         this.$vatInput = this.$("#o_vat");
         this.$companyNameInput = this.$("#o_company_name");
-        if (this.$vatInput.length) {
+        var isSystemUser = await user.hasGroup("base.group_portal");
+        var isUserCompany = session.company_id
+        if (this.$vatInput.length && (user.isAdmin || isSystemUser || isUserCompany)) {
             this.$vatInput.on("change", this._fetchCompanyDetails.bind(this));
+        }
+        else {
+            console.warn("You are not allowed to fetch the details!");
         }
     },
 
@@ -30,7 +37,7 @@ publicWidget.registry.WebsiteSaleCheckout.include({
             if (result && result.name) {
                 console.log(result)
                 this.$companyNameInput.val(result.name);
-                await this.updateInvoiceAddress('billing', vat);
+                await this.updateInvoiceAddress('billing', result.vat, result.partner_id);
             } else {
                 console.warn("Could not find any company registered to this VAT : ", vat);
             }
@@ -85,8 +92,8 @@ publicWidget.registry.WebsiteSaleCheckout.include({
         this._enableMainButton();  // Try to enable the main button.
     },
 
-    async updateInvoiceAddress(addressType, vat) {
-        await rpc('/shop/update_invoice_address', {address_type: addressType, vat: vat});
+    async updateInvoiceAddress(addressType, vat, partner_id) {
+        await rpc('/shop/update_invoice_address', { address_type: addressType, vat: vat || '', partner_id: partner_id || null });
     },
 
     _isBillingAddressSelected() {
