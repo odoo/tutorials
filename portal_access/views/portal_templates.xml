@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="portal_access_my_home_sale" inherit_id="sale.portal_my_home_sale">
+        <xpath expr="(//t[@t-call='portal.portal_docs_entry'])[2]" position="attributes">
+            <attribute name="t-if">is_quotes_perm</attribute>
+        </xpath>
+        <xpath expr="(//t[@t-call='portal.portal_docs_entry'])[3]" position="attributes">
+            <attribute name="t-if">is_so_perm</attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_access_my_home_purchase" inherit_id="purchase.portal_my_home_purchase">
+        <xpath expr="(//t[@t-call='portal.portal_docs_entry'])[4]" position="attributes">
+            <attribute name="t-if">is_rfq_perm</attribute>
+        </xpath>
+        <xpath expr="(//t[@t-call='portal.portal_docs_entry'])[5]" position="attributes">
+            <attribute name="t-if">is_po_perm</attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_access_my_home_invoice" inherit_id="account.portal_my_home_invoice">
+        <xpath expr="(//t[@t-call='portal.portal_docs_entry'])[4]" position="attributes">
+            <attribute name="t-if">is_invoices_perm</attribute>
+        </xpath>
+        <xpath expr="(//t[@t-call='portal.portal_docs_entry'])[7]" position="attributes">
+            <attribute name="t-if">is_invoices_perm</attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_access_my_home_project" inherit_id="project.portal_my_home">
+        <xpath expr="(//t[@t-call='portal.portal_docs_entry'])[5]" position="attributes">
+            <attribute name="t-if">is_projects_perm</attribute>
+        </xpath>
+        <xpath expr="(//t[@t-call='portal.portal_docs_entry'])[6]" position="attributes">
+            <attribute name="t-if">is_tasks_perm</attribute>
+        </xpath>
+    </template>
+</odoo>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="filter_zero_price_sol_portal_user" model="ir.rule">
+        <field name="name">Filter zero price sale order line for portal user.</field>
+        <field name="model_id" ref="sale.model_sale_order_line"/>
+        <field name="groups" eval="[Command.link(ref('base.group_portal'))]"/>
+        <field name="domain_force">[('price_unit', '!=', 0.00)]</field>
+    </record>
+</odoo>

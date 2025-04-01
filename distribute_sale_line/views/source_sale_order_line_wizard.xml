@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="source_sale_order_line_wizard_view_form" model="ir.ui.view">
+        <field name="name">source.sale.order.line.wizard.view.form</field>
+        <field name="model">source.sale.order.line.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Distribute Sale Order Line">
+                <sheet>
+                    <group>
+                        <field name="source_sale_order_line_id"/>
+                        <field name="source_price_unit"/>
+                        <field name="distributed_price_unit"/>
+                        <notebook>
+                            <page name="distribution_wizards" string="Distributions">
+                                <field name="sale_order_line_distribution_wizard_ids"/>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="action_distribute" string="Distribute"
+                            class="oe_highlight" type="object" data-hotkey="S"/>
+                    <button special="cancel" data-hotkey="J" string="Discard"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
