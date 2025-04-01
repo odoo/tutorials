@@ -9,7 +9,6 @@ async function reloadStatistics() {
     try {
         const result = await rpc("/awesome_dashboard/statistics", {});
         Object.assign(statisticsData, result);
-        console.log("stat", statisticsData)
 
     } catch (error) {
         console.error("Error reloading statistics:", error);

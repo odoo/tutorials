@@ -17,6 +17,6 @@ export class Playground extends Component {
     }
 
     incrementSum() {
-        this.state.sum = this.state.sum + 1;
+        this.state.sum++;
     }
 }

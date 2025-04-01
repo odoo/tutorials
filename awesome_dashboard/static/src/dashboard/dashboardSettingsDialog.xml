@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardSettingsDialog">
+      <Dialog>
+
+            <t t-foreach="this.props.items" t-as="entry" t-key="entry[0]">
+                    <t t-set="itemO" t-value="entry[1]" />
+                    <t t-set="item" t-value="{...itemO}"/>
+                <div>
+                    <input type="checkbox" 
+                        t-att-checked="!this.state.hiddenItems.has(item.id)" 
+                        t-on-click="() => this.toggleItem(item.id)"/>  <!-- here we are giving {entry[0], list} ,, list.id in toggle -->
+                    <label t-esc="item.id"/>
+
+                </div>
+            </t>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" t-on-click="applyChanges">Apply</button>
+            </div>
+  
+ </Dialog>
+    </t>
+</templates>

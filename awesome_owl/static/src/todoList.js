@@ -1,6 +1,6 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, useRef } from "@odoo/owl";
 import { TodoItem } from "./todoItem";
-import { useAutofocus } from "./utils";
+import { useAutofocus } from "@web/core/utils/hooks";
 
 
 export class TodoList extends Component {
@@ -13,9 +13,9 @@ export class TodoList extends Component {
             newTask: '',
         });
 
-        this.inputRef = useAutofocus(this);
+        this.inputRef = useAutofocus({ refName: "inputRef" });
     }
-
+    
     addTodo(ev) {
         if (ev.keyCode === 13) {
             if (this.state.newTask.trim() !== "") {
@@ -31,18 +31,15 @@ export class TodoList extends Component {
             }
         }
     }
-
-    toggleTodoState(todoId){
-        this.state.todos = this.state.todos.map(todo => 
-            todo.id == todoId ? {...todo, isCompleted: !todo.isCompleted}: todo
+    toggleTodoState(todoId) {
+        this.state.todos = this.state.todos.map(todo =>
+            todo.id == todoId ? { ...todo, isCompleted: !todo.isCompleted } : todo
         );
     }
-
-    removeTodo(todoId){
+    removeTodo(todoId) {
         const index = this.state.todos.findIndex(todo => todo.id === todoId);
-        if(index >=0){
-            this.state.todos.splice(index,1);
-            this.state.todos = [...this.state.todos];
+        if (index >= 0) {
+            this.state.todos.splice(index, 1);
         }
     }
 }
