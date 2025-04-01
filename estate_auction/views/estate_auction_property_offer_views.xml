@@ -1,0 +1,38 @@
+<odoo>
+    <template id="create_offer_form_template" name="Create Offer Form">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h2>Create an Offer for <t t-esc="property.name"/></h2>
+
+                <form action="/submit/offer" method="post">
+                    <input type="hidden" name="property_id" t-att-value="property.id"/>
+
+                    <div >
+                        <label>Name:</label>
+                        <input type="text" class="form-control" name="user_name" t-att-value="user.name" readonly="readonly"/>
+                    </div>
+
+                    <!-- <input type="hidden" name="expected_price" t-att-value="property.expected_price"/> -->
+
+                    <div>
+                        <label>Offer Amount (Must be greater than <t t-esc="property.expected_price"/>):</label>
+                        <input type="number" class="form-control" name="offer_amount" required="required" min="0"/>
+                    </div>
+
+                    <button type="submit" class="btn btn-success mt-3">Submit Offer</button>
+                    <a t-att-href="'/properties/%d' % property.id" class="btn btn-danger mt-3">Cancel</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="congratulations_template" name="Congratulations Page">
+        <t t-call="website.layout">
+            <div class="container mt-5 text-center">
+                <h2>🎉 Congratulations! 🎉</h2>
+                <p>Your offer has been submitted successfully.</p>
+                <a href="/" class="btn btn-primary">Back to Home</a>
+            </div>
+        </t>
+    </template>
+</odoo>

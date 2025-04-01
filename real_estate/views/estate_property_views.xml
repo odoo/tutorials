@@ -50,16 +50,16 @@
                     <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="status not in('sold')"/>
                     <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" invisible="status not in('cancelled')"/>
                     <group>
-                        <group>
+                        <group name="property_name">
                             <h1>
                                 <field name="name" placeholder="Property Name"/>
                             </h1>
                         </group>
-                        <group>
+                        <group name="image_holder">
                             <field name="image" string="" widget="image" class="oe_avatar"/>
                         </group>
                     </group>
-                    <group>
+                    <group >
                         <group>
                             <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                             <field name="property_type_id" options="{'no_create':True}"/>
@@ -81,8 +81,7 @@
                                     <field name="living_area"/>
                                     <field name="facades"/>
                                     <field name="garage"/>
-                                </group>
-                                <group>
+                                
                                     <field name="garden"/>
                                     <field name="garden_area" invisible="not garden"/>
                                     <field name="total_area"/>

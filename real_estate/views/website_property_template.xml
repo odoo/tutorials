@@ -30,7 +30,7 @@
                                     <img 
                                         t-else="" 
                                         class="card-img-top" 
-                                        src="/real_estate/static/src/images/card-default.jpg" 
+                                        src="/real_estate/static/src/img/card-default.jpg" 
                                         t-att-alt="property.name" 
                                         style="width: 180px; height: 180px; object-fit: cover;"
                                     />
@@ -65,7 +65,7 @@
                         <img 
                             t-else="" 
                             class="img-fluid rounded border" 
-                            src="/real_estate/static/src/images/card-default.jpg" 
+                            src="/real_estate/static/src/img/card-default.jpg" 
                             t-att-alt="property.name" 
                             style="max-width: 100%; height: auto; object-fit: cover;"
                         />

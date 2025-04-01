@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="website_auction_property_details_template" inherit_id="real_estate.property_detail_template">
+        <xpath expr="//ul[@class='list-unstyled']" position="inside">
+            <li><strong>Bid Type:</strong> <span t-esc="property.bid_type"/></li>
+        </xpath>
+        <!-- <xpath expr="//ul[@class='list-unstyled']" position="after">
+            <t t-if="property.bid_type == 'auction'">
+                <button class="btn btn-primary btn-md">Create Offer</button>
+            </t>
+        </xpath> -->
+        <xpath expr="//div[@class='offers mt-4 p-4 border rounded bg-light shadow-sm']" position="attributes">
+                <attribute name="t-if">property.bid_type != 'auction'</attribute>
+        </xpath>
+        <xpath expr="//ul[@class='list-unstyled']" position="after">
+            <t t-if="property.bid_type == 'auction'">
+                <a t-att-href="'/create/offer/%d' % property.id" class="btn btn-primary btn-md">Create Offer</a>
+            </t>
+        </xpath>
+
+    </template>
+
+
+   
+</odoo>

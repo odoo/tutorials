@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_property_view_form_inherit" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="real_estate.estate_property_view_form"/> 
+        <field name="arch" type="xml">
+            <xpath expr=".//button[@name='set_sold']" position="before">
+                <button name="start_auction" type="object" string="Start Auction" invisible="bid_type not in('auction')"/>
+            </xpath>
+            <xpath expr="//group/group[@name='property_name']/h1" position="after">
+                <field name="bid_type" widget="radio"/>
+            </xpath>
+            <xpath expr="//group[@name='image_holder']/field[@name='image']" position="before">
+                <div class=" fw-bold text-warning">
+                    <field name="auction_status" string="Auction Status" />
+                </div>
+            </xpath>
+            <xpath expr="//page[.//field[@name='description']]/group" position="inside">
+                <group invisible="bid_type not in('auction')">
+                    <separator string="Auction Details" />
+                    <field name="auction_end_time" string="End Time:"/>
+                    <field name="highest_offer" />
+                    <field name="highest_bidder"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>
