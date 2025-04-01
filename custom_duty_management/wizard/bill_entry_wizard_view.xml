@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_bill_of_entry_wizard" model="ir.ui.view">
+        <field name="name">bill.of.entry.wizard.form</field>
+        <field name="model">bill.of.entry.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bill of Entry">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="journal_entry_date" readonly="1"/>
+                            <field name="journal_id" readonly="1"/>
+                            <field name="custom_currency_rate"/>
+                            <field name="company_currency_id" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="reference" readonly="1"/>
+                            <field name="bill_of_entry_no"/>
+                            <field name="bill_of_entry_date"/>
+                            <field name="port_code"/>
+                        </group>
+                    </group>
+                    <notebook>
+                         <page string="Bill of Entry Details">
+                            <field name="line_ids">
+                                <list editable="top" create="0">
+                                    <field name="product_id" readonly="1" force_save="1"/>
+                                    <field name="quantity" readonly="1" column_invisible="1" force_save="1"/>
+                                    <field name="company_currency_id" column_invisible="1"/>
+                                    <field name="price_unit_foreign" column_invisible="1" force_save="1"/>
+                                    <field name="assessable_value" readonly="1" force_save="1"/>
+                                    <field name="custom_duty"/>
+                                    <field name="taxable_amount" readonly="1" force-save="1"/>
+                                    <field name="tax_id" force_save="1"/>
+                                    <field name="tax_amount" readonly="1" force_save="1"/>
+                                </list>
+                            </field>
+                            <div class="d-flex flex-column align-items-end">
+                                <div class="d-flex gap-2">
+                                    <strong>Total Custom Duty + Additional Charges</strong>
+                                    <field name="total_cd_all" readonly="1" force_save="1" class="text-end"/>
+                                </div>
+                                <div class="d-flex gap-2 ">
+                                    <strong class="text-start" >Total Tax Amount</strong>
+                                    <field name="total_tax_all" readonly="1" force_save="1" class="text-end"/>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <strong>Total Amount Payable</strong>
+                                    <field name="total_amount_all" readonly="1" force_save="1" class="text-end"/>
+                                </div>
+                            </div>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+                        <button string="Discard" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
