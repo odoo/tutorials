@@ -10,13 +10,13 @@ class EstatePropertyOffer(models.Model):
     def _compute_is_auction(self):
         if self.property_id.bid_type=="auction":
             self.isAuction=True
-            print(self.isAuction)
+            # print(self.isAuction)
         else:
             self.isAuction=False
+            self.property_id.auction_end_time=False
 
     def accept_offer(self):
         for record in self:
             if record.property_id.bid_type == "auction":
                 raise ValidationError(("You cannot manually accept an offer for an auction property. The highest bid will be accepted automatically when the auction ends."))
         return super().accept_offer()
-    

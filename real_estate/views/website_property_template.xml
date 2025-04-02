@@ -7,7 +7,7 @@
     <template id="website_property_template" name="Property Listing">
         <t t-call="website.layout">
             <div class="container">
-                <h1 class="text-center my-4 fw-bold text-primary" style="font-size: 2.5rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);">
+                <h1 id="heading" class="text-center my-4 fw-bold text-primary" style="font-size: 2.5rem; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);">
                     🏡 From City Chic to Suburban Bliss — Find Your Place
                 </h1>
                 <div class="row">
@@ -53,7 +53,7 @@
     <template id="property_detail_template" name="Property Detail">
         <t t-call="website.layout">
             <div class="container my-5 p-4 shadow-lg rounded bg-light">
-                <div class="row">
+                <div id="container_box" class="row">
                     <div class="col-md-6 text-center">
                         <img 
                             t-if="property['image']" 

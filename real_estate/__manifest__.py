@@ -18,6 +18,7 @@
     'data': [
         'security/estate_security.xml',
         'security/ir.model.access.csv',
+        'views/res_config_settings_view.xml',
         'views/estate_offer_wizard_view.xml',
         'report/estate_property_templates.xml',
         'report/res_user_template.xml',

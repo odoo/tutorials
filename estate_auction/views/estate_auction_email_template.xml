@@ -1,0 +1,34 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="email_template_accept_offer" model="mail.template">
+    <field name="name">Accept Offer Email</field>
+    <field name="model_id" ref="model_estate_property_offer"/>
+    <field name="subject">Your Offer has been Accepted!</field>
+    <field name="email_from">${(object.property_id.salesperson_id.email or 'info@yourcompany.com')}</field>
+    <field name="email_to">${object.partner_id.email}</field>
+    <field name="body_html"><![CDATA[
+        <p>Hello ${object.partner_id.name},</p>
+        <p>Congratulations! Your offer of <strong>${object.price}</strong> for the property <strong>${object.property_id.name}</strong> has been accepted.</p>
+        <p>We will contact you soon for the next steps.</p>
+        <p>Best regards,</p>
+        <p>Your Real Estate Team</p>
+    ]]></field>
+</record>
+<record id="email_template_reject_offer" model="mail.template">
+            <field name="name">Offer Rejection Notification</field>
+            <field name="model_id" ref="model_estate_property_offer"/>
+            <field name="subject">Your Offer Has Not Been Accepted</field>
+            <field name="email_from">${(object.env.user.email or 'no-reply@yourcompany.com')}</field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="body_html">
+                <![CDATA[
+                <p>Dear ${object.partner_id.name},</p>
+                <p>Thank you for your interest in the property <strong>${object.property_id.name}</strong>. 
+                Unfortunately, we have accepted another offer.</p>
+                <p>We encourage you to check our other available properties and submit new offers.</p>
+                <p>Best regards,<br/>
+                The Real Estate Team</p>
+                ]]>
+            </field>
+        </record>
+        </odoo> -->

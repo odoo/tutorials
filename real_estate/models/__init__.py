@@ -4,3 +4,4 @@ from . import estate_property_tag
 from . import estate_property_offer
 from . import res_users
 from . import estate_offer_wizard
+from . import res_config_settings

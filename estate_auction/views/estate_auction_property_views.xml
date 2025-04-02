@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="estate_property_view_form_inherit" model="ir.ui.view">
+    <record id="estate_property_view_form_auction_inherit" model="ir.ui.view">
         <field name="name">estate.property.form.inherit</field>
         <field name="model">estate.property</field>
         <field name="inherit_id" ref="real_estate.estate_property_view_form"/> 
@@ -9,11 +9,11 @@
                 <button name="start_auction" type="object" string="Start Auction" invisible="bid_type not in('auction')"/>
             </xpath>
             <xpath expr="//group/group[@name='property_name']/h1" position="after">
-                <field name="bid_type" widget="radio"/>
+                <field name="bid_type" string="" widget="radio" options="{'horizontal': true}"/>
             </xpath>
-            <xpath expr="//group[@name='image_holder']/field[@name='image']" position="before">
-                <div class=" fw-bold text-warning">
-                    <field name="auction_status" string="Auction Status" />
+            <xpath expr="//group[@name='image_holder']/div/field[@name='image']" position="before">
+                <div class="d-flex fw-bold fs-3 text-warning text-end">
+                    <field name="auction_status" string="Auction Status" invisible="bid_type not in('auction')"/>
                 </div>
             </xpath>
             <xpath expr="//page[.//field[@name='description']]/group" position="inside">
@@ -26,4 +26,29 @@
             </xpath>
         </field>
     </record>
+  <record id="estate_property_view_kanban_auction_inherit" model="ir.ui.view">
+    <field name="name">estate.property.view.kanban.auction</field>
+    <field name="model">estate.property</field>
+    <field name="inherit_id" ref="real_estate.estate_property_view_kanban"/>
+    <field name="arch" type="xml">
+        <xpath expr="//field[@name='image']" position="after">
+            <div class="d-flex align-items-center">
+                <!-- <i class="fa"
+                    t-att-class="'fa-' + (auction_status == 'auction_not_begun' and 'clock text-secondary' or 
+                                        auction_status == 'auction_started' and 'gavel text-warning' or 
+                                        auction_status == 'auction_ended' and 'check text-success')">
+                </i> -->
+                <!-- <i class="fa"
+   t-att-class="'fa-' + ('clock text-secondary' if record.auction_status == 'auction_not_begun' else
+                         'gavel text-warning' if record.auction_status == 'auction_started' else
+                         'check text-success' if record.auction_status == 'auction_ended' else 'question-circle text-muted')"
+   t-att-title="record.auction_status">
+</i> -->
+                    <!-- <span class="ms-2">
+                        <field name="auction_status"/>
+                    </span> -->
+                </div>
+            </xpath>
+        </field>
+    </record> 
 </odoo>

@@ -54,14 +54,16 @@
                             <h1>
                                 <field name="name" placeholder="Property Name"/>
                             </h1>
+                             <field name="property_tag_ids" string="" widget="many2many_tags" options="{'color_field':'color'}"/>
                         </group>
                         <group name="image_holder">
-                            <field name="image" string="" widget="image" class="oe_avatar"/>
+                            <div class="d-flex flex-column align-items-end">
+                                <field name="image" string="" widget="image" class="img-fluid" style="max-width: 200px; max-height: 200px;" />
+                            </div>
                         </group>
                     </group>
                     <group >
                         <group>
-                            <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                             <field name="property_type_id" options="{'no_create':True}"/>
                             <field name="postcode"/>
                             <field name="expected_price"/>
@@ -81,7 +83,6 @@
                                     <field name="living_area"/>
                                     <field name="facades"/>
                                     <field name="garage"/>
-                                
                                     <field name="garden"/>
                                     <field name="garden_area" invisible="not garden"/>
                                     <field name="total_area"/>
@@ -140,7 +141,7 @@
                                     </div>
                                     <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                                 </div>
-                                <div class="d-flex align-items-center justify-content-center" style="width: 80px; height: 80px; overflow: hidden; ">
+                                <div class="d-flex flex-column align-items-center justify-content-center" style="width: 80px; height: 80px; overflow: hidden; ">
                                     <field name="image" string="" widget="image" class="oe_avatar" style="width: 100%; height: 100%;"/>
                                 </div>
                             </div>
