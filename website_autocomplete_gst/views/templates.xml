@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="website_sale_address_inherit" inherit_id="website_sale.address" name="Address Management">
+        <xpath expr='//t[@t-if="website._display_partner_b2b_fields()"]' position="replace">
+        </xpath>
+    </template>
+    <template id="website_sale_billing_address_row_inherit" inherit_id="website_sale.billing_address_row">
+        <xpath expr="//div[@id='billing_address_row']" position="replace">
+            <div id="invoice_address_row" class="mb-3">
+                <h4 class="text-uppercase small fs-6 fw-bold mt-3">
+                    <t groups="!account.group_delivery_invoice_address">Your address</t>
+                </h4>
+                <t t-set="has_delivery" t-value="order._has_deliverable_products()"/>
+                <div t-if="has_delivery" class="form-check form-switch mt-2 mb-3">
+                    <label id="want_tax_credit_label">
+                        <input type="checkbox" id="want_tax_credit" class="form-check-input" t-att-checked="want_tax_credit"/>
+                            want tax-credit
+                    </label>
+                </div>
+                <div id="tax_credit_container" t-attf-class="{{'d-none' if not want_tax_credit and has_delivery else ''}}" t-att-data-tax-credit-enable="tax_credit_enable">
+                    <label for="o_vat">
+                        <t t-out="vat_label or 'VAT'"/>
+                        <input type="text" id="o_vat" name="vat" t-att-value="vat" class="form-control"/>
+                    </label>
+                    <label>
+            Company Name
+                        <input type="text" id="o_company_name" name="name" autocomplete="organization" class="form-control"/>
+                    </label>
+                </div>
+            </div>
+        </xpath>
+    </template>
+    <template id="address_on_payment_inherit" inherit_id="website_sale.address_on_payment" name="Address on payment">
+        <xpath expr="//div[hasclass('card')]" position="replace">
+            <div class="card">
+                <div class="card-body" id="delivery_and_billing">
+                    <a class="float-end no-decoration" href="/shop/checkout">
+                        <i class="fa fa-pencil me-1"/>
+Edit
+                    </a>
+                    <t>
+                        <b>Delivery: </b>
+                        <span t-out="order.partner_shipping_id" t-options="dict(widget='contact', fields=['address'], no_marker=True, separator=', ')" class="address-inline"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
