@@ -1,4 +1,4 @@
-from odoo import api, Command, fields, models
+from odoo import Command, models
 from odoo.exceptions import UserError, AccessError
 
 
@@ -8,12 +8,12 @@ class estateProperty(models.Model):
     def action_sold(self):
         self.check_access("write")
 
-        company_id = fields.Many2one(
-        "res.company",
-        string="Company",
-        required=True,
-        default=lambda self: self.env.company,  # Defaults to the current user's company
-    )
+    #     company_id = fields.Many2one(
+    #     "res.company",
+    #     string="Company",
+    #     required=True,
+    #     default=lambda self: self.env.company,  # Defaults to the current user's company
+    # )
         result = super().action_sold()
 
         if not self.buyer_id:
@@ -22,7 +22,7 @@ class estateProperty(models.Model):
         # journal = self.env["account.journal"].sudo().search([("type", "=", "sale")], limit=1)
         # if not journal:
         #     raise UserError("No sales journal found!")
-        invoice ={
+        invoice = {
                 "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",
                 # "journal_id": journal.id,
@@ -43,7 +43,7 @@ class estateProperty(models.Model):
                     ),
                 ],
             }
-        
+
         try:
             self.env["account.move"].check_access("create")
         except AccessError:

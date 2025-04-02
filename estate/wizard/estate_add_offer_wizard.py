@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields
 from odoo.exceptions import UserError
 
 
@@ -17,10 +17,10 @@ class EstateAddOfferWizard(models.TransientModel):
     def make_offer(self):
         property_ids = self.env.context.get('active_ids')
         properties = self.env['estate.property'].browse(property_ids)
-        
+
         if not properties:
             raise UserError("No properties selected.")
-        
+
         for property in properties:
             self.env['estate.property.offer'].create({
                 'price': self.price,

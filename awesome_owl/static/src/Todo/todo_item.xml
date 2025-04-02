@@ -8,7 +8,7 @@
                 t-on-change="toggleCompleted"
             />
             <span class="card-text" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through': ''">
-                <t t-esc="props.todo.id + '. ' + props.todo.description" />
+                <t t-out="props.todo.id + '. ' + props.todo.description" />
             </span>
             <span 
                 class="fa fa-remove text-danger mx-2" 

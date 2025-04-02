@@ -2,23 +2,18 @@
 
 import { Component, useState ,useRef, onMounted} from "@odoo/owl";
 import { TodoItem } from "./todo_item";
-import { useAutofocus } from "../utils";
+import { useAutofocus } from "@web/core/utils/hooks";
+
 
 export class TodoList extends Component {
     static template = "awesome_owl.todo_list";
     static components = { TodoItem };
+    static props={};
 
     setup() {
-        // this.todos = useState([
-        //     { id: 1, description: "Buy milk", isCompleted: false},
-        //     { id: 2, description: "Read a book",isCompleted: true},  // here is no value or missing isCompleted, means that isCompleted is not present here == undefined, in the js undefined treated as false (Falsy)
-        //     { id: 3, description: "Walk the dog", isCompleted: true },
-        // ]);  //hard coded
-
         this.todos = useState([]);
         this.nextId = 1;
-
-        this.inputRef=useAutofocus("inputRef");
+        this.inputRef=useAutofocus({refName: "inputRef"});
     }
 
     addTodo(event) {
@@ -30,18 +25,10 @@ export class TodoList extends Component {
             };
             this.todos.push(newTodo);
             event.target.value = "";  
-            console.log(this.todos)
-            // doubt// onmounted or setup !!
         }
     }
 
     toggleState(todoId) {
-        // debugger
-        console.log(this.todos)
-        console.log()
-        // this.todos = this.todos.map(todo =>
-        //     todo.id === todoId ? { ...todo, isCompleted: !todo.isCompleted } : todo
-        // );
         const todo=this.todos.find((todo)=>todo.id===todoId);
         if(todo){
             todo.isCompleted=!todo.isCompleted;
@@ -54,4 +41,9 @@ export class TodoList extends Component {
             this.todos.splice(index, 1); 
         }
     }
+    
+    // removeTodo(todoId) {
+    //     const updatedList = this.todos.filter(todo => todo.id !== todoId);
+    //     this.todos = updatedList;
+    // }
 }

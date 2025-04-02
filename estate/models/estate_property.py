@@ -1,4 +1,4 @@
-from datetime import  datetime, timedelta # used to calculate date 
+from datetime import datetime, timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _inherit = ['mail.thread']
     _description = "Estate Property"
-    _order = "id desc" 
+    _order = "id desc"
 
     name = fields.Char(string="Name", required=True, tracking=True)
     sequence = fields.Integer("Sequence", default=1, help="Used to order property types. Lower is better.")
@@ -24,7 +24,7 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     tag_type_ids = fields.Many2many("estate.property.tag", string="Property Tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store="True") #Stores computed values in the database for faster access.
+    best_price = fields.Float(string="Best Offer Price", compute="_compute_best_price", store="True")
     total_area = fields.Float(string="Total Area (sqm)", compute="_compute_total_area", store=True)
     price = fields.Float(string="Offer Price", required=True, default=0.0, tracking=True)
     buyer_id = fields.Many2one("res.partner", string="Buyer")
@@ -36,24 +36,24 @@ class EstateProperty(models.Model):
         required=True
     )
     image_url = fields.Char(string="Image URL")
-    image_upload = fields.Image(string="Upload Image") 
+    image_upload = fields.Image(string="Upload Image")
 
-    # Read-Only 
+    # Read-Only
     selling_price = fields.Float(string="Selling Price")
     availability_date = fields.Date(
         string="Availability Date",
-        default=lambda self: datetime.today() + timedelta(days=90), #3 months
+        default=lambda self: datetime.today() + timedelta(days=90),
         copy=False
     )
     facades = fields.Integer()
     garage = fields.Boolean()
-    bedrooms = fields.Integer(string="Bedrooms", default=2)    
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
     active = fields.Boolean(string="Active", default=True)
     postcode = fields.Char()
     date_availability = fields.Date()
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float() 
-    living_area=fields.Integer()
+    # selling_price = fields.Float()
+    # living_area=fields.Integer()
     # State Field with Selection
     state = fields.Selection([
         ('new', "New"),
@@ -91,14 +91,14 @@ class EstateProperty(models.Model):
     def _check_property_deletion(self):
         for property in self:
             if property.state not in ['new', 'cancelled']:
-                raise exceptions.UserError("You can only delete properties that are 'New' or 'Cancelled'.")
-    
+                raise UserError("You can only delete properties that are 'New' or 'Cancelled'.")
+
     def _track_subtype(self, init_values):
         """Trigger a notification when property is sold"""
         self.ensure_one()
         if 'state' in init_values and self.state == 'sold':
             return self.env.ref('estate.mt_property_sold')
-        return super(EstateProperty, self)._track_subtype(init_values)
+        return super()._track_subtype(init_values)
 
     # def action_cancel(self):
     #     # Cancels the property and prevents selling it later.
@@ -114,18 +114,18 @@ class EstateProperty(models.Model):
     #             raise UserError("Canceled properties cannot be sold.")
     #         record.state = 'sold'
 
-    ## we can use above loop method in list view , when we are dealing with multiple records, like if 
+    ## we can use above loop method in list view , when we are dealing with multiple records, like if
     ## we want to sold or cancelled multiple properties at one time then we can use this.
 
     def action_cancel(self):
-        # Cancels the property and prevents selling it later.        
+        # Cancels the property and prevents selling it later.
         if self.state == 'sold':
             raise UserError("A sold property cannot be canceled.")
         self.state = 'cancelled'
         # return True
 
     def action_sold(self):
-        # Marks the property as sold and prevents canceling it later.        
+        # Marks the property as sold and prevents canceling it later.
         if self.state == 'cancelled':
             raise UserError("Canceled properties cannot be sold.")
         if self.state != "offer_accepted":
@@ -134,7 +134,7 @@ class EstateProperty(models.Model):
             raise UserError("No buyer is assigned to this property!")
         self.state = 'sold'
         # return True
-    
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:

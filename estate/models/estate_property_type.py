@@ -1,10 +1,10 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Property Type"
-    _order = "sequence, name asc" 
+    _order = "sequence, name asc"
 
     name = fields.Char(string="Name", required=True)
     property_ids = fields.One2many("estate.property", "property_type_id", string="Properties")
@@ -32,5 +32,5 @@ class EstatePropertyType(models.Model):
     # @api.depends("offer_ids","offer_ids.property_id")
     # def _compute_offer_count(self):
     #     for record in self:
-    #         record.offer_count = len(record.offer_ids)    
+    #         record.offer_count = len(record.offer_ids)
     # ##(why this code is not running and above code is running !!)
