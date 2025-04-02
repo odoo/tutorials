@@ -1,4 +1,4 @@
-from odoo import api, Command, fields, models
+from odoo import api, Command, exceptions, fields, models
 
 class AddProductWarrenty(models.TransientModel):
     _name = "add.product.warranty"
@@ -7,21 +7,23 @@ class AddProductWarrenty(models.TransientModel):
     sale_order_id = fields.Many2one(comodel_name="sale.order", required=True)
     warranty_line_ids = fields.One2many(comodel_name="product.warranty.line", inverse_name="wizard_id")
 
+    # To store product from sale order line
     @api.model
     def default_get(self, fields_list):
         res = super().default_get(fields_list)
-        sale_order_id = self.env.context.get("active_id")
+        sale_order_id = self.env.context.get("active_id") # Get active sale id
 
         if sale_order_id:
-            order_lines = self.env['sale.order'].browse(sale_order_id).order_line
+            order_lines = self.env['sale.order'].browse(sale_order_id).order_line # Get sale line ids
             res["warranty_line_ids"] = [
                 Command.create({"sale_order_line_id": order_line.id})
-                for order_line in order_lines.filtered(lambda ol: ol.product_template_id.is_warranty)
+                for order_line in order_lines.filtered(lambda ol: ol.product_template_id.is_warranty and not ol.product_warranty_sale_line_id)
             ]
 
         res["sale_order_id"] = sale_order_id
         return res
 
+    # Add warranty to sales order line
     def action_add_warranty(self):
         for warranty_line in self.warranty_line_ids:
             if warranty_line.warranty_configuration_id:
@@ -35,6 +37,7 @@ class AddProductWarrenty(models.TransientModel):
                     "sequence": warranty_line.sale_order_line_id.sequence + 1,
                 })
 
-            # warranty_line.sale_order_line_id.write({
-            #     "product_warranty_sale_line_id": new_sale_order_line.id
-            # })
+                # Store created sale order line id in main product
+                warranty_line.sale_order_line_id.write({
+                    "product_warranty_sale_line_id": new_sale_order_line.id
+                })

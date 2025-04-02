@@ -1,8 +1,0 @@
-<!-- <?xml version="1.0"?>
-<odoo>
-
-    <record id="product_data1" model="product.template">
-        <field name="name">Extended Warrenty 1 year</field>    
-    </record>
-
-</odoo> -->

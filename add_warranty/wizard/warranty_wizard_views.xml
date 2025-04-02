@@ -18,9 +18,6 @@
                         <list create="false" editable="bottom">
                             <field name="sale_order_line_id" />
                             <field name="warranty_configuration_id" string="Warranty" />
-                            <field name="warranty_name" string="Warranty Name" optional="hide" />
-                            <field name="warranty_percentage" optional="show" />
-                            <field name="warranty_duration" optional="hide" />
                             <field name="warranty_end_date" />
                         </list>
                     </field>

@@ -6,11 +6,12 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form" />
         <field name="arch" type="xml">
-            <button name="action_open_discount_wizard" position="before">
+             <button name="action_open_discount_wizard" position="before">
                 <button name="%(add_warranty.launch_warranty_wizard)d"
                         type="action"
                         string="Add Warranty"
-                        class="btn btn-secondary" />
+                        class="btn btn-secondary"
+                        invisible="not has_warranty" />
             </button>
         </field>
     </record>
