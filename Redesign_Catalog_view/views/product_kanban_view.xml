@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="product_view_kanban_catalog_custom" model="ir.ui.view">
+            <field name="name">product.view.kanban.catalog.custom</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_view_kanban_catalog" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='image_128']" position="replace">
+                    <aside>
+                        <t t-if="record.image_1024.raw_value">
+                            <div class="large-image-div">
+                                <field name="image_1024" widget="background_image"
+                                    options="{'zoom': true, 'preview_image':'image_128'}"
+                                    class="d-block position-relative mobile-zoom large-image" />
+                            </div>
+                        </t>
+                    </aside>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
