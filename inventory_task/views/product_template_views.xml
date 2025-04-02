@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="product_template_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.view.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//page[@name='general_information']//group[@name='group_general']" position="inside">
+                <div class="o_field_widget o_stat_info">
+                    <span class="o_stat_value d-flex flex-column align-items-start" invisible="type!='consu' or not is_storable">
+                        <span class="d-flex gap-1">
+                            <label for="qty_input" string="Quantity On Hand"/>
+                            <field name="qty_input" class="oe_inline" string="Quantity On Hand" readonly="is_multi_location"/>
+                            <field name="uom_name" class="oe_inline" readonly="true" />
+                            <button type="object" name="action_update_quantity_on_hand" string="Update" invisible="is_multi_location" class="opacity-0 opacity-100-hover btn btn-primary"/>
+                            <button type="object" name="action_update_quantity_on_hand" string="Update" invisible="not is_multi_location" class="btn btn-primary"/>
+
+                        </span>
+                    </span>
+                </div>
+
+            </xpath>
+            <xpath expr="//header/button[@name='action_open_label_layout']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_form_view_invisible_update_quantity" model="ir.ui.view">
+        <field name="name">product.form.view.print.label.button</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_form_view_procurement_button" />
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_update_quantity_on_hand']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_update_quantity_on_hand'][hasclass('oe_stat_button')]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@type='action']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_product_tmpl_forecast_report']" position="replace">
+                <button type="object" name="action_product_tmpl_forecast_report" invisible="not show_forecasted_qty_status_button" context="{'default_product_tmpl_id': id}" class="oe_stat_button" icon="fa-area-chart">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value d-flex gap-1">
+                            <field name="virtual_available" nolabel="1" decoration-danger="virtual_available &lt; 0" decoration-success="virtual_available &gt; 0" class="oe_inline"/>
+                            <field name="uom_name" class="oe_inline"/>
+                        </span>
+                        <span class="o_stat_text">Forecasted</span>
+                    </div>
+                </button>
+            </xpath>
+
+        </field>
+    </record>
+
+    <record id="action_product_template_print_labels" model="ir.actions.server">
+        <field name="name">Print Labels</field>
+        <field name="binding_model_id" ref="product.model_product_template" />
+        <field name="model_id" ref="product.model_product_template" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+             action = records.action_open_label_layout()
+        </field>
+    </record>
+
+    <record id="action_product_template_replenish" model="ir.actions.server">
+        <field name="name">Replenish</field>
+        <field name="binding_model_id" ref="product.model_product_template" />
+        <field name="model_id" ref="product.model_product_template" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+             action = records.action_product_replenish()
+        </field>
+    </record>
+</odoo>
