@@ -42,23 +42,26 @@ class PropertyOffers(models.Model):
                 record.validity = (record.date_deadline - create_date).days
 
     def action_accept(self):
-        self.ensure_one()
-        if not self.property_id.buyer_id:
-            self.status = 'accepted'
-            self.property_id.selling_price = self.price
-            self.property_id.buyer_id = self.partner_id
-            self.property_id.state = 'offer_accepted'
-        else:
-            raise UserError('An Offer is already accepted.')
+        for record in self:
+            if not record.property_id.buyer_id and record.property_id.state in ['new','offer_received']:
+                record.status = 'accepted'
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.state = 'offer_accepted'
+            else:
+                raise UserError('An Offer is already accepted.')
         return True
 
     def action_refuse(self):
-        self.ensure_one()
-        if self.partner_id == self.property_id.buyer_id:
-            self.property_id.selling_price = 0
-            self.property_id.buyer_id = None
-        self.property_id.state = 'offer_received'
-        self.status = 'refused'
+        for record in self:
+            if record.partner_id == record.property_id.buyer_id:
+                record.property_id.selling_price = 0
+                record.property_id.buyer_id = None
+            elif record.property_id.state == 'offer_accepted':
+                record.property_id.state = 'offer_accepted'
+            else:
+                record.property_id.state = 'offer_received'
+            record.status = 'refused'
         return True
 
     @api.model_create_multi
@@ -66,7 +69,9 @@ class PropertyOffers(models.Model):
         for val in vals:
             property_id = self.env['estate.property'].browse(val['property_id'])
             offer_price = val.get('price')
-            if property_id.best_price <= offer_price:
+            if property_id.state in ['sold','canceled','offer_accepted']:
+                raise UserError('Can not make an offer on sold or canceled or offer accepted properties')
+            elif property_id.best_price <= offer_price:
                 property_id.state = 'offer_received'
             else:
                 raise UserError('An offer with amount greater than this is already made, please consider increasing the amount')

@@ -69,10 +69,13 @@ class Property(models.Model):
             self.garden_orientation = None
 
     def action_set_sold(self):
-        if self.state == 'canceled':
-            raise UserError('Canceled properties can not be sold.')
-        else:
-            self.state = 'sold'
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError('Canceled properties can not be sold.')
+            elif 'accepted' not in record.offer_ids.mapped('status'):
+                raise UserError('No offer is accepted.')
+            else:
+                record.state = 'sold'
         return True
 
     def action_set_cancel(self):

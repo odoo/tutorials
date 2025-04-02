@@ -13,7 +13,7 @@
                 <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <filter string="Available" name="available"
-                    domain="[('state', 'in', [('new'),('offer_received')])]" />
+                    domain="[('state', 'in', [('new'),('offer_received')])]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
@@ -34,7 +34,12 @@
         <field name="arch" type="xml">
             <list string="PropertyList" decoration-success="state in ['offer_received','offer_accepted']" 
                 decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
-                <field name="sequence" widget="handle" />
+                <header>
+                    <button type="action" name="%(estate.action_bulk_offers_wizard)d"
+                        string="Add offer" class="oe_highlight"/>
+                </header>
+
+                <field name="sequence" widget="handle"/>
                 <field name="name" string="Title"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -115,7 +120,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="False">
-                <field name="state" />
+                <field name="state"/>
                 <field name="best_price"/>
                 <field name="selling_price"/>
                 <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
