@@ -1,0 +1,25 @@
+<odoo>
+    <record id="action_warranty_configuration" model="ir.actions.act_window">
+        <field name="name">Warranty Configuration</field>
+        <field name="res_model">warranty.configuration</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="warranty_configuration_view_tree" model="ir.ui.view">
+        <field name="name">warranty.configuration.list</field>
+        <field name="model">warranty.configuration</field>
+        <field name="arch" type="xml">
+            <list string="Product Warranty" editable="bottom">
+                <field name="name"/>
+                <field name="validity"/>
+                <field name="product_id"/>
+                <field name="percentage"/>
+            </list>
+        </field>
+    </record>
+
+    <menuitem id="sale_menu_action_warranty_config_form"
+        action="action_warranty_configuration"
+        parent="sale.prod_config_main"
+        sequence="50"/>
+</odoo>
