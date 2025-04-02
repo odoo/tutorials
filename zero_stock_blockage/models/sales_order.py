@@ -1,6 +1,6 @@
 from odoo import models, fields, api
-from odoo.osv import expression
 from odoo.exceptions import UserError
+
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
 
     # Compute the readonly state based on the user's group
     is_zero_stock_readonly = fields.Boolean(
-        compute='_compute_is_zero_stock_readonly', 
+        compute='_compute_is_zero_stock_readonly',
         string="Is Zero Stock Readonly"
     )
 
@@ -22,7 +22,6 @@ class SaleOrder(models.Model):
         is_zero_stock_readonly = self.env.user.has_group('sales_team.group_sale_manager')
         for record in self:
             record.is_zero_stock_readonly = is_zero_stock_readonly
-
 
     def action_confirm(self):
         """ Extend the confirmation logic to add approval functionality """
