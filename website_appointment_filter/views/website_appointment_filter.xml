@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="website_appointment_filter_template" inherit_id="website_appointment.website_calendar_index_topbar">
+    <template id="website_appointment_filter_template"
+        inherit_id="website_appointment.website_calendar_index_topbar">
         <xpath expr="//h4" position="after">
             <div class="d-flex flex-grow-1 justify-content-end gap-2 px-2">
-                <t t-set="filter_options" t-value="[
+                <t t-set="filter_options"
+                    t-value="[
                     {
                         'title': 'Type',
                         'param': 'appointment_type',
@@ -31,22 +33,26 @@
                             {'value': 'resources', 'label': 'Resources'}
                         ]
                     }
-                ]"/>
+                ]" />
                 <t t-foreach="filter_options" t-as="dropdown">
                     <div class="dropdown">
-                        <t t-set="current_selection" t-value="request.params.get(dropdown['param'], 'all')"/>
-                        <button class="btn btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown">
-                            <t t-esc="dropdown['title']"/>
+                        <t t-set="current_selection"
+                            t-value="request.params.get(dropdown['param'], 'all')" />
+                        <button class="btn btn-light dropdown-toggle" type="button"
+                            data-bs-toggle="dropdown">
+                            <t t-esc="dropdown['title']" />
                             <t t-if="current_selection != 'all'">
                                 <span class="badge bg-secondary ms-2">1</span>
                             </t>
                         </button>
                         <div class="dropdown-menu">
                             <t t-foreach="dropdown['choices']" t-as="choice">
-                                <t t-set="updated_params" t-value="dict(request.params, **{dropdown['param']: choice['value']})"/>
-                                <a t-att-href="'/appointment?' + '&amp;'.join(['%s=%s' % (k, v) for k, v in updated_params.items() if v and v != 'all'])"
-                                   t-att-class="'dropdown-item' + (' active' if current_selection == choice['value'] else '')">
-                                    <t t-esc="choice['label']"/>
+                                <t t-set="updated_params"
+                                    t-value="dict(request.params, **{dropdown['param']: choice['value']})" />
+                                <a
+                                    t-att-href="'/appointment?' + '&amp;'.join(['%s=%s' % (k, v) for k, v in updated_params.items() if v and v != 'all'])"
+                                    t-att-class="'dropdown-item' + (' active' if current_selection == choice['value'] else '')">
+                                    <t t-esc="choice['label']" />
                                 </a>
                             </t>
                         </div>
