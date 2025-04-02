@@ -18,8 +18,7 @@ publicWidget.registry.WebsiteSaleCheckout.include({
         this.$vatInput = this.$("#o_vat");
         this.$companyNameInput = this.$("#o_company_name");
         var isSystemUser = await user.hasGroup("base.group_portal");
-        var isUserCompany = session.company_id
-        if (this.$vatInput.length && (user.isAdmin || isSystemUser || isUserCompany)) {
+        if (this.$vatInput.length && (user.isAdmin || isSystemUser || session.is_company)) {
             this.$vatInput.on("change", this._fetchCompanyDetails.bind(this));
         }
         else {
