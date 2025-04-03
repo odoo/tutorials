@@ -2,7 +2,7 @@
     'name': 'Real Estate',
     'description': 'Buy and sell Real Estate properties',
     'category': 'Real Estate/Brokerage',
-    'license':'GPL-3',
+    'license': 'GPL-3',
     'depends': [
         'base',
         'website'
@@ -20,7 +20,7 @@
         'report/estate_property_reports.xml',
         'views/res_users_view.xml',
         'views/estate_menus.xml',
-        'views/website_menus.xml',
+        'data/website_menus.xml',
     ],
     'demo': [
         'demo/estate_property_demo.xml',

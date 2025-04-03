@@ -10,7 +10,7 @@ class Property(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=fields.Date.add(fields.Date.today(),days=90))
+    date_availability = fields.Date(copy=False, default=fields.Date.add(fields.Date.today(), days=90))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -21,13 +21,25 @@ class Property(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string='Orientation',
-        selection=[('north','North'),('south','South'),('east','East'),('west','West')]
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ]
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string='State of Property',
-        selection=[('new','New'),('offer_received','Offer Received'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')],
-        default='new'
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled')
+        ],
+        default='new',
+        copy=False
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -46,7 +58,7 @@ class Property(models.Model):
         ('positive_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive'),
     ]
 
-    @api.depends('living_area','garden_area')
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -94,5 +106,5 @@ class Property(models.Model):
     @api.ondelete(at_uninstall=True)
     def _unlink_check_property_state(self):
         for record in self:
-            if record.state not in ['new','canceled']:
+            if record.state not in ['new', 'canceled']:
                 raise ValidationError("Only new and canceled properties can be sold!")
