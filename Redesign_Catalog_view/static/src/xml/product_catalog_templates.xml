@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="product_catalog_redesign.ImageDialog">
+        <Dialog class="full-image-dialog">
+            <div class="image-container">
+                <img t-att-src="props.imageUrl" class="full-size-image"/>
+            </div>
+            <button class="btn btn-primary mt-2" t-on-click="props.close">Close</button>
+        </Dialog>
+    </t>
+</templates>
