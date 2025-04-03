@@ -3,7 +3,6 @@ from odoo import http
 from odoo.http import request
 
 class OfferController(http.Controller):
-
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth="public", website=True, csrf=False, methods=['GET', 'POST'])
     def list_properties(self, page=1, **kwargs):
         properties_per_page = 6
@@ -41,7 +40,6 @@ class OfferController(http.Controller):
         for property in properties:
             if property.bid_type == 'auction' and property.auction_end_time and property.auction_end_time <= now:
                 property.sudo().write({'auction_status': 'auction_ended'})  # Update auction status
-
 
         total_properties = request.env['estate.property'].sudo().search_count(domain)
         pager = request.website.pager(
@@ -98,15 +96,11 @@ class OfferController(http.Controller):
         property_id = int(post.get('property_id'))
         offer_amount = float(post.get('offer_amount'))
 
-        # if offer_amount <= expected_price:
-        #     return request.redirect(f'/create/offer/{property_id}') 
-
         request.env['estate.property.offer'].sudo().create({
             'property_id': property_id,
             'partner_id': request.env.user.partner_id.id,
             'price': offer_amount,
         })
-
         return request.redirect('/congratulations')
 
     @http.route('/congratulations', type='http', auth="public", website=True)

@@ -1,7 +1,7 @@
 {
     'name': "Estate Auction",
     'version': '1.0',
-    'depends': ['base','real_estate','website'],
+    'depends': ['mail','real_estate','website','estate_account'],
     'author': "Rishav Shah (sris)",
     'category': 'Estate Auction',
     'icon':'/estate_account/static/src/img/auction_icon.png',
@@ -13,6 +13,8 @@
     'license':'LGPL-3',
     'data': [
       'views/estate_auction_property_offer_views.xml',
+      'data/ir_cron.xml',
+      'data/estate_auction_email_template.xml',
       'views/estate_auction_property_views.xml',
       'views/auction_website_property_template.xml',
     ],

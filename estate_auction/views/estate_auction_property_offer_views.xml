@@ -23,7 +23,7 @@
         <t t-call="website.layout">
             <div class="container mt-5 text-center">
                 <p>Congratulations! Your offer has been successfully placed. We will notify you of the result as soon as auction concludes</p>
-                <a href="/" class="btn btn-primary">Back to Home</a>
+                <a href="/properties" class="btn btn-primary">Back to Home</a>
             </div>
         </t>
     </template>

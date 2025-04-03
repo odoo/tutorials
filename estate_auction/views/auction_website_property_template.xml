@@ -2,8 +2,8 @@
 <odoo> 
     <template id="website_auction_property_list_template" inherit_id="real_estate.website_property_template">
         <xpath expr="//div/h1[@id='heading']" position="before">
-            <form class="d-flex p-2" action="/properties" method="post">
-                <div class="p-3">
+            <form class="d-flex p-2 justify-content-center" action="/properties" method="post">
+                <div class="p-3 ">
                     <label for="property_status">Status</label>
                     <select name="property_status" id="property_status" class="form-control">
                         <option value="">All</option>
@@ -51,7 +51,6 @@
                     </div>
                 </t>
             </t>
-
             <script type="text/javascript">
                 document.addEventListener("DOMContentLoaded", function () {
                     let timerElement = document.getElementById("auction-timer");
@@ -90,7 +89,6 @@
                 });
             </script>
         </xpath>
-
         <xpath expr="//ul[@class='list-unstyled']" position="inside">
             <li><strong>Bid Type:</strong> <span t-esc="property.bid_type"/></li>
         </xpath>
@@ -98,7 +96,7 @@
                 <attribute name="t-if">property.bid_type != 'auction'</attribute>
         </xpath>
         <xpath expr="//ul[@class='list-unstyled']" position="after">
-            <t t-if="property.bid_type == 'auction'">
+           <t t-if="property.bid_type == 'auction' and property.status not in ('sold', 'cancelled')">
                 <a t-att-href="'/create/offer/%d' % property.id" class="btn btn-primary btn-md">Create Offer</a>
             </t>
         </xpath>
