@@ -9,9 +9,10 @@ WebsiteSaleCheckout.include({
     }, WebsiteSaleCheckout.prototype.events),
 
     async start() {
-        this._onTaxCreditToggle({
-            currentTarget: this.el.querySelector('#want_tax_credit_checkbox'),
-        });
+        this.vatLable = this.el.querySelector('#vat_label');
+        this.companyName = this.el.querySelector('#company_name');
+        this.address = this.el.querySelector('#address');
+        this.partnerId = this.el.querySelector('#partner_id');
         return this._super(...arguments);
     },
 
@@ -27,18 +28,11 @@ WebsiteSaleCheckout.include({
 
     async _onChangeVat(ev) {
         const vat = ev.currentTarget.value.trim();
-        const address_values = await rpc('/shop/vat/address', { vat: vat });
-        if (address_values.error) {
-            this.el.querySelector('#vat_warning').textContent = address_values.error;
-            this.el.querySelector('#vat_label').textContent = "Vat Number";
-            this.el.querySelector('#company_name').value = "";
-        }
-        else {
-            this.el.querySelector('#vat_warning').textContent = "";
-            this.el.querySelector('#vat_label').textContent = address_values.country;
-            this.el.querySelector('#company_name').value = address_values.name;
-        }
-        this.el.querySelector('#partner_id').value = "";
+        const addressValues = await rpc('/shop/vat/address', { vat });
+        this.vatLable.textContent = addressValues.country_id ? addressValues.country_id.display_name : "Vat Number";
+        this.companyName.value = addressValues.name || "";
+        this.address.value = JSON.stringify(addressValues);
+        this.partnerId.value = "";
     },
 
 });

@@ -13,7 +13,7 @@ class OrderLineWizard(models.TransientModel):
 
     @api.model
     def default_get(self, fields_list):
-        res = super(OrderLineWizard, self).default_get(fields_list)
+        res = super().default_get(fields_list)
         exclude_line_id = self.env["sale.order.line"].browse(
             self.env.context.get("active_id")
         )

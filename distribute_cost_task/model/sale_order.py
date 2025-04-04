@@ -26,7 +26,7 @@ class SaleOrder(models.Model):
                 order.divide_column = has_zero_divide_cost
 
     def _get_order_lines_to_report(self):
-        order_lines = super(SaleOrder, self)._get_order_lines_to_report()
+        order_lines = super()._get_order_lines_to_report()
         return order_lines.filtered(
             lambda line: not line.divide_from_order_lines or line.divide_cost > 0
         )

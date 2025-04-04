@@ -1,7 +1,6 @@
 import odoo.tests
 
 
-@odoo.tests.tagged("post_install", "-at_install")
 class TestTaxCreditCheckbox(odoo.tests.HttpCase):
     def test_tax_credit_checkbox_flow(self):
         self.env["product.product"].create(

@@ -2,7 +2,6 @@
     "name": "Billing Address In Website",
     "depends": [
         "website_sale",
-        "l10n_in",
     ],
     "data": [
         "views/templates.xml",

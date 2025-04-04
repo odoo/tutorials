@@ -12,7 +12,7 @@ class OrderWizard(models.TransientModel):
 
     @api.model
     def default_get(self, fields_list):
-        res = super(OrderWizard, self).default_get(fields_list)
+        res = super().default_get(fields_list)
         order_lines = self.env["sale.order"].browse(self.env.context.get("active_id"))
         filter_oder_lines = order_lines.order_line.filtered(
             lambda l: l.product_template_id.is_warranty_available
