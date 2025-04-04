@@ -5,6 +5,9 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="print_kit"/>
+            </xpath>
             <xpath expr="//field[@name='order_line']/list//field[@name='product_template_id']" position="after">
                 <button name="action_open_kit_wizard" type="object" string="+" class="oe_highlight"
                     invisible = "not is_kit or state in ['sale']"/>

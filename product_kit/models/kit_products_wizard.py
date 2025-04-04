@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 
+
 class KitProductsWizard(models.TransientModel):
     _name = "kit.products.wizard"
     _description = "Kit Products Wizard"
@@ -33,13 +34,13 @@ class KitProductsWizard(models.TransientModel):
                     kit_product_vals.append((0, 0, {
                         "product_id": line.product_id.id,
                         "product_qty": line.product_uom_qty,
-                        "price_unit": line.product_id.list_price, 
+                        "price_unit": line.product_id.list_price,
                     }))
             else:
                 for kit_product in product_template.kit_product_ids:
                     kit_product_vals.append((0, 0, {
                         "product_id": kit_product.id,
-                        "product_qty": 1,  
+                        "product_qty": 1,
                         "price_unit": kit_product.list_price,
                     }))
 
@@ -48,30 +49,41 @@ class KitProductsWizard(models.TransientModel):
         return res
 
     def action_generate_order_lines(self):
-        """Creates sale order lines for each kit product in the wizard"""
+        """Updates or creates sale order lines for each kit product in the wizard"""
         self.ensure_one()
 
         main_product_line = self.env["sale.order.line"].search([
             ("order_id", "=", self.sale_order_id.id),
-            ("product_id", "in", self.product_template_id.product_variant_ids.ids), 
+            ("product_id", "in", self.product_template_id.product_variant_ids.ids),
         ], limit=1)
-        # breakpoint()
-        original_price = main_product_line.price_unit if main_product_line else self.product_template_id.list_price
 
-        total_price = original_price 
+        original_price = self.product_template_id.list_price
+        total_price = original_price
 
         for kit_product in self.kit_product_ids:
+            existing_line = self.env["sale.order.line"].search([
+                ("order_id", "=", self.sale_order_id.id),
+                ("product_id", "=", kit_product.product_id.id),
+                ("from_wizard", "=", True),
+            ], limit=1)
 
-            sub_total = kit_product.product_qty * kit_product.price_unit
+            sub_total = kit_product.product_qty * kit_product.product_id.list_price
             total_price += sub_total
-            self.env["sale.order.line"].create({
-                "name": kit_product.product_id.name,  
-                "order_id": self.sale_order_id.id,
-                "product_id": kit_product.product_id.id,
-                "product_uom_qty": kit_product.product_qty,
-                "price_unit": 0.00,
-                "from_wizard": True,
-            })
+
+            if existing_line:
+                existing_line.write({
+                    "product_uom_qty": kit_product.product_qty,
+                    "price_unit": 0.00,  # Ensure sub-products remain zero-priced
+                })
+            else:
+                self.env["sale.order.line"].create({
+                    "name": kit_product.product_id.name,
+                    "order_id": self.sale_order_id.id,
+                    "product_id": kit_product.product_id.id,
+                    "product_uom_qty": kit_product.product_qty,
+                    "price_unit": 0.00,
+                    "from_wizard": True,
+                })
 
         if main_product_line:
             main_product_line.price_unit = total_price * main_product_line.product_uom_qty
@@ -79,9 +91,9 @@ class KitProductsWizard(models.TransientModel):
             self.env["sale.order.line"].create({
                 "order_id": self.sale_order_id.id,
                 "product_id": self.product_template_id.product_variant_id.id,
-                "product_uom_qty": 1,  
-                "price_unit": total_price,  
+                "product_uom_qty": 1,
+                "price_unit": total_price,
                 "name": self.product_template_id.name,
-            })  
+            })
 
         return {"type": "ir.actions.act_window_close"}
