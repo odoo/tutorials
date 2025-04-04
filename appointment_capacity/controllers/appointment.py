@@ -16,13 +16,12 @@ from odoo.addons.phone_validation.tools import phone_validation
 
 class AppointmentCapacityController(AppointmentController):
 
-
     def _prepare_appointment_type_page_values(self, appointment_type, staff_user_id=False, resource_selected_id=False, skip_resource_selection=False, **kwargs):
         """
         Overrides `_prepare_appointment_type_page_values` to include capacity management based on `capacity_type`.
         """
         values = super()._prepare_appointment_type_page_values(appointment_type, staff_user_id, resource_selected_id, **kwargs)
-        
+
         if appointment_type.capacity_type == 'multiple_seats':
             if appointment_type.schedule_based_on == 'users':
                 max_capacity_possible = appointment_type.user_capacity_count
@@ -31,10 +30,9 @@ class AppointmentCapacityController(AppointmentController):
                 max_capacity_possible = possible_combinations[-1][1] if possible_combinations else 1
         else:
             max_capacity_possible = 1
-        
-        values['max_capacity_possible'] = min(12, max_capacity_possible)
-        return values
 
+        values['max_capacity'] = min(12, max_capacity_possible)
+        return values
 
     @http.route()
     def appointment_form_submit(self, appointment_type_id, datetime_str, duration_str, name, phone, email, staff_user_id=None, available_resource_ids=None, asked_capacity=1,
@@ -106,7 +104,6 @@ class AppointmentCapacityController(AppointmentController):
             if users_remaining_capacity['total_remaining_capacity'] < asked_capacity and appointment_type.capacity_type != 'one_booking':
                 return request.redirect('/appointment/%s?%s' % (appointment_type.id, keep_query('*', state='failed-staff-user')))
 
-
         guests = None
         if appointment_type.allow_guests:
             if guest_emails_str:
@@ -156,7 +153,7 @@ class AppointmentCapacityController(AppointmentController):
             'partner_id': customer.id,
         }
 
-        for question in appointment_type.question_ids.filtered(lambda question: question.id in partner_inputs.keys()):
+        for question in appointment_type.question_ids.filtered(lambda question: question.id in partner_inputs):
             if question.question_type == 'checkbox':
                 answers = question.answer_ids.filtered(lambda answer: answer.id in partner_inputs[question.id])
                 answer_input_values.extend([
@@ -181,7 +178,7 @@ class AppointmentCapacityController(AppointmentController):
                 booking_line_values.append({
                     'appointment_resource_id': resource.id,
                     'capacity_reserved': new_capacity_reserved,
-                    'capacity_used': new_capacity_reserved if resource.shareable and appointment_type.capacity_type != 'single_booking' else resource.capacity,
+                    'capacity_used': new_capacity_reserved if resource.shareable and appointment_type.capacity_type != 'one_booking' else resource.capacity,
                 })
         else:
             user_remaining_capacity = users_remaining_capacity['total_remaining_capacity']

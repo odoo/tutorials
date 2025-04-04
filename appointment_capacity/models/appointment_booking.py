@@ -5,7 +5,7 @@ class AppointmentBookingLine(models.Model):
     _inherit = "appointment.booking.line"
 
     appointment_user_id = fields.Many2one('res.users', string="Appointment user", ondelete="cascade")
-    appointment_resource_id = fields.Many2one('appointment.resource', string="Appointment Resource",ondelete="cascade",required=False)
+    appointment_resource_id = fields.Many2one('appointment.resource', string="Appointment Resource", ondelete="cascade", required=False)
 
     @api.depends(
         "appointment_resource_id.capacity",
@@ -23,7 +23,7 @@ class AppointmentBookingLine(models.Model):
                 line.capacity_used = 1
             elif line.appointment_type_id.capacity_type == 'multiple_seats':
                 line.capacity_used = line.capacity_reserved
-            elif (not line.appointment_resource_id.shareable or line.appointment_type_id.capacity_type == 'single_booking') and line.appointment_type_id.schedule_based_on == 'resources':
+            elif (not line.appointment_resource_id.shareable or line.appointment_type_id.capacity_type == 'one_booking') and line.appointment_type_id.schedule_based_on == 'resources':
                 line.capacity_used = line.appointment_resource_id.capacity
             else:
                 line.capacity_used = line.capacity_reserved

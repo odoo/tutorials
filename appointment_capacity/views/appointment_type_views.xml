@@ -17,7 +17,7 @@
                 <label for="capacity_type"/>
                     <div>
                         <field name="capacity_type" class="oe_inline"/>
-                        <div invisible="capacity_type == 'single_booking' or schedule_based_on == 'users'">
+                        <div invisible="capacity_type == 'one_booking' or schedule_based_on == 'users'">
                             Total: <field name="resource_total_capacity" class="oe_inline o_input_5ch me-1"/>
                             <span invisible="capacity_type == 'multiple_bookings'">seats max</span>
                             <span invisible="capacity_type == 'multiple_seats'">bookings</span>
@@ -25,7 +25,7 @@
                                 <i class="oi oi-fw o_button_icon oi-arrow-right"/> Manage Resources
                             </button>
                         </div>
-                        <span invisible="capacity_type == 'single_booking' or schedule_based_on == 'resources'">
+                        <span invisible="capacity_type == 'one_booking' or schedule_based_on == 'resources'">
                             <field name="user_capacity_count" class="oe_inline o_input_5ch mx-1"/>
                             <span invisible="capacity_type == 'multiple_bookings'">seats max</span>
                             <span invisible="capacity_type == 'multiple_seats'">bookings</span>
