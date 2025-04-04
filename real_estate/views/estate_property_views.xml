@@ -115,7 +115,7 @@
                 <field name="status"/>
                 <templates>
                     <t t-name="card">
-                        <div class="d-flex flex-column p-1" >
+                        <div class="d-flex flex-column " >
                             <t t-if="record.status.raw_value == 'sold'">
                                 <widget name="web_ribbon" title="Sold" bg_color="bg-success"  style="z-index: 1;"/>
                             </t>
@@ -141,7 +141,7 @@
                                     </div>
                                     <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                                 </div>
-                                <div class="d-flex flex-column align-items-center justify-content-center" style="width: 80px; height: 80px; overflow: hidden; ">
+                                <div class="d-flex flex-column align-items-center justify-content-center" style="width: 80px; height: 100%; overflow: hidden; ">
                                     <field name="image" string="" widget="image" class="oe_avatar" style="max-width: 90%; max-height: 90%;"/>
                                 </div>
                             </div>

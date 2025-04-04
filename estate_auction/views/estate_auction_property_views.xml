@@ -13,11 +13,6 @@
             <xpath expr=".//button[@name='set_sold']" position="before">
                 <button name="start_auction" type="object" string="Start Auction" invisible="bid_type not in('auction')" />
             </xpath>
-            <!-- <xpath expr=".//button[@name='set_sold']" position="before">
-                <button name="start_auction" type="object" string="Start Auction" 
-                    invisible="bid_type not in ('auction')" 
-                    modifiers="{'disabled': [['isAuction', '=', False]]}"/>
-            </xpath> -->
             <xpath expr="//group/group[@name='property_name']/h1" position="after">
                 <field name="bid_type" string="" widget="radio" options="{'horizontal': true}"/>
             </xpath>
@@ -41,26 +36,38 @@
         <field name="model">estate.property</field>
         <field name="inherit_id" ref="real_estate.estate_property_view_kanban"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='image']" position="after">
+          
+            <!-- <xpath expr="//field[@name='image']" position="after">
                 <progressbar field="auction_stage" colors='{"template": "success", "auction": "warning", "sold": "danger"}'/>
+                
+                <div class="d-flex ms-auto align-items-center bottom-0 end-0 mt-2">
+                    <field t-if="record.auction_stage.value &amp;&amp; widget.editable" name="auction_stage" widget="project_state_selection"/>
+                    <span t-if="record.auction_stage.value &amp;&amp; !widget.editable" t-att-class="'o_status_bubble mx-0 o_color_bubble_' + record.auction_stage_color" t-att-title="record.last_update_status.value"></span>
+                </div>
+            </xpath> -->
+               
+            <xpath expr="//field[@name='image']" position="after">
+                <progressbar field="auction_update_status" colors='{"on_track": "success", "at_risk": "warning", "off_track": "danger"}'/>
                 <div class="d-flex align-items-center">
                     <!-- <field t-if="record.last_update_status.value &amp;&amp; widget.editable" name="last_update_status" widget="project_state_selection"/>
                     <span t-if="record.last_update_status.value &amp;&amp; !widget.editable" t-att-class="'o_status_bubble mx-0 o_color_bubble_' + record.last_update_color.value" t-att-title="record.last_update_status.value"></span> -->
                     <!-- <field name="salesperson_id" widget="many2one_avatar_user" class="me-1"></field> -->
 
-                   <field name="auction_stage_color" t-att-title="record.auction_stage.value"/>
-                    <field 
+                   <!-- <field name="auction_stage_color" t-att-title="record.auction_stage.value"/> -->
+                    <!-- <field 
                         t-att-class="'o_status_bubble mx-0 o_color_bubble_' + record.auction_stage_color.value"
                         name="auction_stage" 
-                        widget="project_state_selection"/>
+                        widget="project_state_selection"/> -->
+                    <field t-if="record.auction_update_status.value &amp;&amp; widget.editable" name="auction_update_status" widget="project_state_selection"/>
   
-                    <span t-if="record.auction_stage.value"
+                    <!-- <span t-if="record.auction_stage.value"
                         t-att-class="'o_status_bubble mx-0 o_color_bubble_' + record.auction_stage_color.value" 
-                        t-att-title="record.auction_stage.value"/>
-                    <!-- </span> -->
-
+                        t-att-title="record.auction_stage.value"/> -->
+                        <span t-if="record.auction_update_status.value &amp;&amp; !widget.editable" t-att-class="'o_status' + record.auction_stage_color.value" t-att-title="record.auction_update_status.value"></span>
                </div>
             </xpath>
+      
+
         </field>
     </record> 
 </odoo>

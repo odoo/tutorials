@@ -1,15 +1,18 @@
 from odoo import Command, models
 
+
 class EstateProperty(models.Model):
-    _inherit = 'estate.property' 
+    _inherit = 'estate.property'
 
     def set_sold(self):
-        res=super().set_sold()
+        res = super().set_sold()
+
         self.check_access('write')
+
         invoice = self.env['account.move'].sudo().create({
             'partner_id': self.buyer_id.id,
-            'move_type':'out_invoice',
-            'invoice_line_ids':[
+            'move_type': 'out_invoice',
+            'invoice_line_ids': [
                 Command.create({
                     'name': self.name,
                     'quantity': 1,
@@ -27,4 +30,5 @@ class EstateProperty(models.Model):
                 }),
             ],
         })
-        return super().set_sold()
+
+        return res
