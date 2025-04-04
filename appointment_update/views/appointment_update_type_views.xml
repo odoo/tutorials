@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="appointment_update_type_view_form" model="ir.ui.view">
+        <field name="name">appointment.type.view.form.inherit.appointment.update.type.view</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
+        <field name="arch" type="xml">
+            <field name="assign_method" position="after">
+                <label for="track_capacity" />
+                <div>
+                    <field name="track_capacity" class="oe_inline"/>
+                    <!-- Availability based on 'user' -->
+                    <span invisible="track_capacity == 'one_booking_per_slot' or schedule_based_on == 'resources'">
+                        Total: <field name="total_booking" class="o_field_integer oe_inline o_input_5ch me-1 form-control form-control-sm w-auto border border-primary rounded"/>
+                        <span class="badge bg-info" invisible="track_capacity == 'multiple_booking_per_slot'">seats</span>
+                        <span class="badge bg-info" invisible="track_capacity == 'multiple_seat_per_slot'">bookings</span>
+                    </span>
+                    <!-- Availability based on 'resource' -->
+                    <span invisible="track_capacity == 'one_booking_per_slot' or schedule_based_on == 'users'">
+                        Total: <field name="resource_total_capacity" class="oe_inline o_input_5ch me-1 form-control form-control-sm w-auto border border-primary rounded"/>
+                        <span class="badge bg-secondary" invisible="track_capacity == 'multiple_booking_per_slot'">seats</span>
+                        <span class="badge bg-secondary" invisible="track_capacity == 'multiple_seat_per_slot'">bookings</span>
+                        <a type="object" name="action_appointment_resources" class="btn btn-sm btn-link d-inline-flex align-items-center px-2 py-1 ms-2" role="button">
+                            <i class="oi oi-fw o_button_icon oi-arrow-right me-1"></i> Manage Resources
+                        </a>
+                    </span>
+                </div>
+            </field>
+            <xpath expr="//field[@name='resource_manage_capacity']/.." position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="appointment_update_type_view_form_1" model="ir.ui.view">
+        <field name="name">appointment.type.view.form.inherit.appointment.update.type.view</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment_account_payment.appointment_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//span[@class='ms-1'][1]" position="replace">
+                <span invisible="track_capacity == 'multiple_seat_per_slot'" class="ms-1">per booking</span>
+            </xpath>
+            <xpath expr="//span[@class='ms-1'][2]" position="replace">
+                <span invisible="track_capacity != 'multiple_seat_per_slot'" class="ms-1">per seat</span>
+            </xpath>
+        </field>
+    </record>
+
+    <template id="appointment_update_appointment_templates_appointments" inherit_id="appointment.appointment_info">
+        <xpath expr="//div[@t-if='not based_on_users and appointment_type.resource_manage_capacity']" position="attributes">
+            <attribute name="t-if">appointment_type.track_capacity != 'one_booking_per_slot' and appointment_type.track_capacity != 'multiple_booking_per_slot'</attribute>
+        </xpath>
+    </template>
+</odoo>
