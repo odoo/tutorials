@@ -13,6 +13,9 @@ class ProductTemplate(models.Model):
         if self.website_ribbon_id and not self.website_ribbon_auto:
             return
 
+        # if (True):
+        #     continue
+
         # Out of Stock Ribbon
         out_of_stock_ribbon = product_ribbon_sudo.search([('assign', '=', 'out_of_stock')])
         if out_of_stock_ribbon and self.qty_available <= 0.0 and not self.allow_out_of_stock_order:
