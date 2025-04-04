@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_salesperson_form" model="ir.ui.view">
+        <field name="name">hr.employee.form</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <form string="Salesperson Details" class="o_form_view">
+                <sheet>
+                    <div class="oe_title">
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <h1>
+                                    <field name="name" placeholder="Salesperson's Name"
+                                        required="True"/>
+                                </h1>
+                                <h4 class="text-muted">
+                                    <field name="job_title" placeholder="Job Title"/>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <group>
+                        <group string="Contact Info" col="2">
+                            <field name="work_phone"/>
+                            <field name="mobile_phone"/>
+                        </group>
+                        <group string="Work Info" col="2">
+                            <field name="department_id"/>
+                            <field name="work_email"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="salesperson_button_in_pos.action_salesperson_create_form_view"
+        model="ir.actions.act_window">
+        <field name="name">Edit Salesperon</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_salesperson_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>
