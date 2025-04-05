@@ -7,9 +7,18 @@ import { ProductCatalogKanbanRenderer } from "@product/product_catalog/kanban_re
 import { productCatalogKanbanView } from "@product/product_catalog/kanban_view";
 
 class ImageDialog extends Component {
-    static components = { Dialog };
     static template = "product_catalog_redesign.ImageDialog";
-    static props = ["imageUrl", "close"];
+    static components = { Dialog };
+    static props = ["imageUrl","close"];
+
+    setup() {
+        this.state = useState({ zoom: 1 });
+        this.updateZoom = this.updateZoom.bind(this);
+    }
+
+    updateZoom(value) {
+        this.state.zoom = Math.max(0.5, Math.min(3, this.state.zoom + value));
+    }
 }
 
 class ProductCatalogKanbanRecordInherited extends ProductCatalogKanbanRecord {
@@ -19,20 +28,25 @@ class ProductCatalogKanbanRecordInherited extends ProductCatalogKanbanRecord {
     }
 
     onGlobalClick(ev) {
+        
         const imageElement = ev.target.closest(".o_product_image_custom img");
         if (imageElement) {
             this.dialogService.add(ImageDialog, {
                 imageUrl: imageElement.src,
-                close: () => this.dialogService.close(),
             });
             return;
         }
 
         if (ev.target.closest(".o_product_catalog_cancel_global_click")) {
+            console.log("hiii");
             return;
         }
+        if (this.productCatalogData.quantity === 0) {
+            this.addProduct();
+        } else {
+            this.increaseQuantity();
+        }
 
-        this.productCatalogData.quantity === 0 ? this.addProduct() : this.increaseQuantity();
     }
 }
 
