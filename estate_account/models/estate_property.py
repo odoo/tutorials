@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
 
         self.check_access('write')
 
-        invoice = self.env['account.move'].sudo().create({
+        self.env['account.move'].sudo().create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
             'invoice_line_ids': [

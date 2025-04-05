@@ -11,7 +11,6 @@ class EstateOfferWizard(models.Model):
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
 
-
     def action_make_offer(self):
         property_ids = self.env.context.get('active_ids', [])
         properties = self.env['estate.property'].browse(property_ids)

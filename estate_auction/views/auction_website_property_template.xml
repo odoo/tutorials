@@ -19,7 +19,6 @@
                     <input type="number" name="min_price" id="min_price" class="form-control" placeholder="Min Price"
                         t-att-value="request.params.get('min_price')"/>
                 </div>
-
                 <div class="p-3">
                     <label for="max_price">Max Price</label>
                     <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Max Price"

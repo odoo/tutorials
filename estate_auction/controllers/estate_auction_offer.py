@@ -2,6 +2,7 @@ from datetime import datetime
 from odoo import http
 from odoo.http import request
 
+
 class OfferController(http.Controller):
     @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth="public", website=True, csrf=False, methods=['GET', 'POST'])
     def list_properties(self, page=1, **kwargs):
@@ -34,7 +35,7 @@ class OfferController(http.Controller):
             domain.append(('expected_price', '>=', float(min_price)))
         if max_price:
             domain.append(('expected_price', '<=', float(max_price)))
-        
+
         properties = request.env['estate.property'].sudo().search(domain)
         now = datetime.now()
         for property in properties:
@@ -84,7 +85,7 @@ class OfferController(http.Controller):
         if not property_obj.exists():
             return request.not_found()
 
-        user = request.env.user 
+        user = request.env.user
 
         return request.render('estate_auction.create_offer_form_template', {
             'property': property_obj,

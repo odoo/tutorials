@@ -5,7 +5,7 @@
     'author': "Rishav Shah (sris)",
     'category': 'Estate Account',
     'icon': '/estate_account/static/src/img/estate_account_icon.png',
-    'description': """    
+    'description': """
         Estate Account module used for invoicing
       """,
     'installable': True,

@@ -1,20 +1,20 @@
 {
     'name': "Real Estate",
     'version': '1.0',
-    'depends': ['base','website'],
+    'depends': ['base', 'website'],
     'author': "Rishav Shah (sris)",
     'category': 'Real Estate/Brokerage',
-    'icon':'/real_estate/static/src/img/real_estate_icon.png',
-    'description': """    
+    'icon': '/real_estate/static/src/img/real_estate_icon.png',
+    'description': """
         A module for managing real estate properties, including:
         - Property listings with various details.
         - Offers management with constraints and computed fields.
         - Property types and tags.
         - Security rules for user access.
       """,
-    'installable':True,
-    'application':True,
-    'license':'LGPL-3',
+    'installable': True,
+    'application': True,
+    'license': 'LGPL-3',
     'data': [
         'security/estate_security.xml',
         'security/ir.model.access.csv',

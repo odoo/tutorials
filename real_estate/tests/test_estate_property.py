@@ -1,4 +1,3 @@
-
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged
@@ -28,7 +27,7 @@ class RealEstateTestCase(TransactionCase):
             'validity': 10,
             'partner_id': self.partner.id
         })
-    
+
     def test_create_offer_for_sold_property(self):
         self.property.write({'status': 'sold'})
 

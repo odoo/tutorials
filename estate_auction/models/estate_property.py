@@ -1,5 +1,4 @@
-from datetime import timedelta, datetime
-from dateutil.relativedelta import relativedelta
+from datetime import timedelta
 from odoo import api, fields, models
 
 STATUS_COLOR = {
@@ -16,23 +15,23 @@ class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     auction_end_time = fields.Datetime(
-        string = "Auction End Date",
-        compute = "_compute_auction_end_time",
-        store = True,
-        copy = False
+        string="Auction End Date",
+        compute="_compute_auction_end_time",
+        store=True,
+        copy=False
     )
 
     is_auction_started = fields.Boolean(
-        compute = "_compute_is_auction_started",
-        default = False
+        compute="_compute_is_auction_started",
+        default=False
     )
 
     bid_type = fields.Selection(
         [('auction', 'Auction'), ('regular', 'Regular')],
-        string = "Bid Type",
-        default = 'auction',
-        copy = False,
-        tracking = True
+        string="Bid Type",
+        default='auction',
+        copy=False,
+        tracking=True
     )
 
     auction_status = fields.Selection(
@@ -41,52 +40,51 @@ class EstateProperty(models.Model):
             ('auction_started', 'Auction Started'),
             ('auction_ended', 'Auction Ended')
         ],
-        string = "Auction Status",
-        default = 'auction_not_begun',
-        copy = False,
-        tracking = True
+        string="Auction Status",
+        default='auction_not_begun',
+        copy=False,
+        tracking=True
     )
 
     auction_update_status = fields.Selection(
-        selection = [
+        selection=[
             ('on_track', 'Template'),
             ('at_risk', 'Audition'),
             ('off_track', 'Sold'),
-            ('to_define', 'To Define'),
+            ('to_define', 'To Define')
         ],
-        default = 'to_define',
-        store = True,
-        readonly = False,
-        required = True
+        default='to_define',
+        store=True,
+        readonly=False,
+        required=True
     )
 
     auction_stage_color = fields.Integer(
-        compute = "_compute_auction_stage_color",
-        store = True
+        compute="_compute_auction_stage_color",
+        store=True
     )
 
     invoice_count = fields.Integer(
-        string = "Invoices",
-        compute = "_compute_invoice_count"
+        string="Invoices",
+        compute="_compute_invoice_count"
     )
 
     highest_offer = fields.Float(
-        string = "Highest Offer",
-        compute = "_compute_highest_offer",
-        readonly = True
+        string="Highest Offer",
+        compute="_compute_highest_offer",
+        readonly=True
     )
 
     highest_bidder = fields.Many2one(
         "res.partner",
-        string = "Highest Bidder",
-        readonly = True
+        string="Highest Bidder",
+        readonly=True
     )
 
     def start_auction(self):
-        print("is_auction_started: ", self.is_auction_started)
         if not self.is_auction_started and not self.auction_end_time:
             self.write({
-                'auction_end_time': fields.Datetime.now() + timedelta(days = 10),
+                'auction_end_time': fields.Datetime.now() + timedelta(days=10),
                 'is_auction_started': True,
                 'highest_offer': 0.0,
                 'highest_bidder': False,
@@ -102,7 +100,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_highest_offer(self):
         for record in self:
-            record.highest_offer = max(record.mapped('offer_ids.price'), default = 0)
+            record.highest_offer = max(record.mapped('offer_ids.price'), default=0)
             highest_bid_offer_id = record.offer_ids.filtered(lambda o: o.price == record.highest_offer)
             record.highest_bidder = highest_bid_offer_id.partner_id
 
@@ -110,7 +108,7 @@ class EstateProperty(models.Model):
     def _compute_is_auction_started(self):
         for record in self:
             if record.auction_end_time and record.auction_end_time < fields.Datetime.now():
-                highest_bid = max(record.mapped('offer_ids.price'), default = 0)
+                highest_bid = max(record.mapped('offer_ids.price'), default=0)
                 highest_bid_offer = record.offer_ids.filtered(lambda o: o.price == highest_bid)[:1]
 
                 record.write({
@@ -129,7 +127,7 @@ class EstateProperty(models.Model):
             if record.auction_end_time and record.auction_end_time < fields.Datetime.now():
                 record.auction_status = 'auction_ended'
                 record.is_auction_started = False
-                highest_bid = max(record.mapped('offer_ids.price'), default = 0)
+                highest_bid = max(record.mapped('offer_ids.price'), default=0)
                 highest_bid_offer = record.offer_ids.filtered(lambda o: o.price == highest_bid)[:1]
 
                 record.write({
@@ -161,7 +159,7 @@ class EstateProperty(models.Model):
             if not record.buyer_id:
                 raise ValueError("A buyer must be assigned before creating an invoice.")
 
-            invoice = self.env["account.move"].create({
+            self.env["account.move"].create({
                 "partner_id": record.buyer_id.id,
                 "move_type": "out_invoice",
                 "invoice_line_ids": [
