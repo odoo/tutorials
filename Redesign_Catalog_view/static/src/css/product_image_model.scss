@@ -1,3 +1,4 @@
+/* Responsive product image on product card */
 @media (max-width: 768px) {
     .o_product_image_custom img {
         max-width: 150px !important;
@@ -7,35 +8,94 @@
     }
 }
 
+/* Full-screen image viewer modal */
+@media (max-width: 768px){
 .full-image-dialog {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100vw; 
-    height: 100vh; 
-    background: rgba(0, 0, 0, 0.8); 
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(4px);
+    padding: 1rem;
 }
 
+/* Container for the image and controls */
 .image-container {
     position: relative;
-    max-width: 90vw; 
-    max-height: 90vh; 
+    width: 70vw;
+    height: 70vh;
+    max-width: 95vw;
+    max-height: 95vh;
     overflow: hidden;
+    border-radius: 12px;
+    background-color: #000;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
 }
 
+/* Zoomable image */
 .full-size-image {
     width: 100%;
     height: 100%;
-    object-fit: contain; 
-    cursor: zoom-in;
+    object-fit: contain;
     transition: transform 0.3s ease-in-out;
 }
 
+/* Zoom control buttons */
+.zoom-controls {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    gap: 10px;
+    z-index: 2;
+}
 
-.full-size-image:active {
-    transform: scale(1.5);
-    cursor: zoom-out;
+/* Zoom buttons styling */
+.zoom-btn {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.zoom-btn:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+/* Close button styling */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 30px;
+    height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    transition: background 0.2s ease;
+}
+
+.close-btn:hover {
+    background-color: rgba(255, 255, 255, 1);
+}
 }
