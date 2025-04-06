@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name = "awesome_kanban.customerListView">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>
+                        Customers
+                        <div>
+                            <input type="checkbox" t-model = "state.only_active" t-on-input="() => this._change()"/>
+                            <label>Active customers</label>
+                        </div>
+                        <div>
+                            <input type="text" t-model="state.search" t-on-input="()=> this._change()"/>
+                            <Pager offset="state.pager.offset" limit="limit" total="state.pager.total" onUpdate.bind="_changePager"/>
+                        </div>
+                    </td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="_getCurrentCustomersSet()" t-as="column" t-key="column.id">
+                    <td class="cursor-pointer" t-esc="column.display_name" t-on-click="() => props.selectCustomer(column.display_name,column.id)"/>
+                </tr>
+            </tbody>
+        </table>
+    </t>
+</templates>
