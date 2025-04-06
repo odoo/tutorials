@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+multiple_early_payment_discount.access_payment_term_discount,Access Payment Term Discount,model_account_payment_term_discount,base.group_user,1,1,1,1
