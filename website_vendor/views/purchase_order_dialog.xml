@@ -1,0 +1,48 @@
+<odoo>
+    <template id="website_vendor_purchase_order_dialog" name="Purchase Order Dialog">
+        <div class="modal fade" id="purchaseOrderModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Purchase Order</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p>
+                            <strong>Product Name:</strong>
+                            <span id="modal-product-name"></span>
+                        </p>
+
+                        <p>
+                            <strong>Price:</strong> $ 
+                            <span id="modal-product-price"></span>
+                        </p>
+
+                        <form action="/purchase_order_view" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            
+                            <input type="hidden" name="product_id" id="modal-product-id" />
+
+                            <div class="mb-3">
+                                <label for="vendor_select" class="form-label">Select Vendor</label>
+                                <select name="vendor_id" id="vendor_select" class="form-select" required="true">
+                                    <option value="">Choose Vendor</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="modal-product-quantity" class="form-label">Quantity</label>
+                                <input type="number" name="quantity" id="modal-product-qty" class="form-control" min="1" value="1" required="true"/>
+                            </div>
+
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-success">Confirm Order</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</odoo>

@@ -1,0 +1,94 @@
+<odoo>
+    <template id="website_vendor_products_views" name="Product View for Vendor Portal">
+        <t t-set="items_per_page" t-value="15"/>
+        <t t-set="page" t-value="int(request.params.get('page', '1'))"/>
+        <t t-set="total_products" t-value="int(len(search_result))"/>
+        <t t-set="offset" t-value="(page - 1) * items_per_page"/>
+        <t t-set="paged_products" t-value="search_result[offset:offset + items_per_page]"/>
+
+        <t t-foreach="paged_products" t-as="product">
+            <div class="card shadow-lg border-0 mx-2 my-3 px-3 py-2">
+                <div class="d-flex align-items-center justify-content-between border-bottom pb-3">
+                    <div class="d-flex flex-column">
+                        <h4 class="card-title text-primary fw-bold m-2">
+                            <t t-out="product.name" />
+                        </h4>
+
+                        <p class="text-muted m-2 mb-1">
+                            <strong>Min Price:</strong> $
+                            <t t-out="product.min_price" />
+                        </p>
+
+                        <p class="text-muted m-2 mb-1">
+                            <strong>Max Price:</strong> $
+                            <t t-out="product.max_price" />
+                        </p>
+                    </div>
+
+                    <t t-if="product.image_1920">
+                        <img t-att-src="'data:image/png;base64,' + product.image_1920.decode('utf-8')"
+                             t-att-alt="product.name"
+                             class="rounded border"
+                             style="width: 120px; height: 80px; object-fit: cover;" />
+                    </t>
+                </div>
+
+                <t t-if="product.seller_ids">
+                    <div class="card-body rounded mt-2 p-2">
+                        <p class="text-muted fw-bold mb-2">Sellers and Prices:</p>
+
+                        <ul class="list-group">
+                            <t t-foreach="product.seller_ids" t-as="seller">
+                                <li class="list-group-item d-flex justify-content-between align-items-center border rounded px-3 py-2 my-2">
+                                    <span class="fw-semibold text-success">
+                                        <t t-out="seller.partner_id.name" />
+                                    </span>
+                                    
+                                    <span class="fw-bold badge bg-success text-white px-3 py-2 rounded-pill">
+                                        Min Qty.: <t t-out="seller.min_qty or 1.0" />
+                                    </span>
+
+                                    <span class="fw-bold badge bg-success text-white px-3 py-2 rounded-pill">
+                                        $ <t t-out="seller.price" />
+                                    </span>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex justify-content-end align-items-center mt-2 p-2 border-top">
+                        <button class="btn btn-primary create-po-btn mt-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#purchaseOrderModal"
+                                t-att-data-product-id="product.id"
+                                t-att-data-product-name="product.name"
+                                t-att-data-product-price="product.min_price"
+                                t-att-data-product-vendors="product_vendor_list[product.id]"
+                                style="font-weight: 600; font-size: 16px;">
+                            <i class="fa fa-shopping-cart"></i> Create Purchase Order
+                        </button>
+                    </div>
+                </t>
+
+                <t t-else="" >
+                    <p class="text-muted text-center py-3">No sellers for this product.</p>
+                </t>
+            </div>
+        </t>
+
+        <t t-if="total_products > items_per_page">
+            <nav>
+                <ul class="pagination justify-content-center mt-4">
+                    <t t-set="num_pages" t-value="(total_products + items_per_page - 1) // items_per_page"/>
+                    <t t-foreach="range(1, num_pages + 1)" t-as="page_number">
+                        <li t-att-class="'page-item ' + ('active' if page == page_number else '')">
+                            <a class="page-link" t-att-href="'?page=' + str(page_number)">
+                                <t t-out="page_number" />
+                            </a>
+                        </li>
+                    </t>
+                </ul>
+            </nav>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,22 @@
+<odoo>
+    <record id="group_vendor_portal_user" model="res.groups">
+        <field name="name">Vendor Portal User</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+    </record>
+
+    <record id="group_vendor_portal_manager" model="res.groups">
+        <field name="name">Vendor Portal Administrator</field>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
+        <field name="implied_ids" eval="[(4, ref('group_vendor_portal_user'))]"/>
+    </record>
+
+    <record id="vendor_portal_purchase_order_access" model="ir.model.access">
+        <field name="name">Vendor Portal Purchase Order Access</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="group_id" ref="website_vendor.group_vendor_portal_user"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+    </record>
+</odoo>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_vendor_portal_template" name="Vendor Portal">
+        <t t-call="website.layout">
+            <t t-set="title">Vendor Portal</t>
+            <div class="container mt-4">
+                <div>
+                    <form action="/vendor_portal" method="GET">
+                        <div class="row d-flex align-items-end">
+                            <div class="col-md-3">
+                                <label for="country" class="form-label">Select Country</label>
+                                <select name="country" id="country" class="form-select" autocomplete="country">
+                                    <option value="">All Countries</option>
+                                    <t t-foreach="countries" t-as="country">
+                                        <option t-att-value="country"
+                                                t-att-selected="country == request.params.get('country')">
+                                            <t t-out="country"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="vendor" class="form-label">Select Vendor</label>
+                                <select name="vendor" id="vendor" class="form-select">
+                                    <option value="">All Vendors</option>
+                                    <t t-foreach="vendors" t-as="vendor">
+                                        <option t-att-value="vendor"
+                                                t-att-selected="vendor == request.params.get('vendor')">
+                                            <t t-out="vendor"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="category" class="form-label">Select Category</label>
+                                <select name="category" id="category" class="form-select">
+                                    <option value="">All Categories</option>
+                                    <t t-foreach="categories" t-as="category">
+                                        <option t-att-value="category"
+                                                t-att-selected="category == request.params.get('category')">
+                                            <t t-out="category"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="product" class="form-label">Select Product</label>
+                                <select name="product" id="product" class="form-select">
+                                    <option value="">All Products</option>
+                                    <t t-foreach="products" t-as="product">
+                                        <option t-att-value="product"
+                                                t-att-selected="product == request.params.get('product')">
+                                            <t t-out="product"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-md-12 d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-primary px-4 py-2">
+                                        <i class="fa fa-search"></i> Search
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <t t-call="website_vendor.website_vendor_products_views" />
+            </div>
+        </t>
+
+        <t t-call="website_vendor.website_vendor_purchase_order_dialog" />
+
+        <script type="text/javascript">
+            document.addEventListener("DOMContentLoaded", function () {
+                let vendorQtyMap = {};
+                let vendorPriceMap = {};
+                document.body.addEventListener("click", function (event) {
+                    const button = event.target.closest(".create-po-btn");
+                    if (!button) return;
+
+                    const modalProductId = document.getElementById("modal-product-id");
+                    const modalProductName = document.getElementById("modal-product-name");
+                    const modalProductPrice = document.getElementById("modal-product-price");
+                    const vendorSelect = document.getElementById("vendor_select");
+                    const modalProductQty = document.getElementById("modal-product-qty")
+
+                    const productId = button.getAttribute("data-product-id");
+                    const productName = button.getAttribute("data-product-name");
+                    const productPrice = button.getAttribute("data-product-price");
+                    const productVendors = button.getAttribute("data-product-vendors");
+
+                    modalProductId.value = productId;
+                    modalProductName.textContent = productName;
+                    modalProductPrice.textContent = productPrice;
+                    vendorQtyMap = {};
+                    vendorPriceMap = {};
+
+                    vendorSelect.innerHTML = '<option value="">Choose Vendor</option>';
+
+                    if (!productVendors) {
+                        console.error("No vendor data found!");
+                        return;
+                    }
+
+                    try {
+                        const decodedData = productVendors.replace(/&quot;/g, '"');
+                        const jsonArray = JSON.parse(decodedData);
+
+                        jsonArray.forEach(vendor => {
+                            const option = new Option(vendor.vendor_name, vendor.vendor_id)
+                            vendorSelect.add(option)
+                            vendorQtyMap[vendor.vendor_id] = Number(vendor.min_qty);
+                            vendorPriceMap[vendor.vendor_id] = Number(vendor.price);
+                        });
+                    } catch (error) {
+                        console.error("Error parsing JSON: ", error);
+                    }
+
+                    vendorSelect.addEventListener("change", function () {
+                        const selectedVendorId = this.value;
+                        if (selectedVendorId) {
+                            modalProductQty.value = vendorQtyMap[selectedVendorId];
+                            modalProductPrice.textContent = `${vendorPriceMap[selectedVendorId]}.0`;
+                        }
+                    });
+
+                    modalProductQty.addEventListener("change", function () {
+                        const selectedVendorId = document.getElementById("vendor_select").value;
+                        if (!selectedVendorId) {
+                            alert("Please select a vendor first.");
+                            this.value = "";
+                            return;
+                        }
+
+                        const minQty = vendorQtyMap[selectedVendorId];
+                        const enteredQty = Number(this.value);
+
+                        if (enteredQty &lt; minQty) {
+                            const userConfirmed = confirm(`Minimum quantity required for this vendor is ${minQty}. Do you want to update the quantity?`);
+                            if (userConfirmed) {
+                                this.value = minQty;
+                            } else {
+                                this.value = "";
+                            }
+                        } else if ((enteredQty % minQty) !== 0) {
+                            const userConfirmed = confirm(`Quantity should be a multiple of ${minQty} for this vendor. Do you want to update the quantity?`);
+                            if (userConfirmed == true) {
+                                this.value = minQty;
+                            } else {
+                                this.value = "";
+                            }
+                        }
+                    });
+                });
+            });
+        </script>
+    </template>
+</odoo>
