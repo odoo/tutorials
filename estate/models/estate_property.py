@@ -91,9 +91,9 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if float_is_zero(record.selling_price, precision_rounding = self.env.company.currency_id.rounding):
+            if float_is_zero(record.selling_price, precision_rounding=self.env.company.currency_id.rounding):
                 continue
-            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding = self.env.company.currency_id.rounding)< 0:
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=self.env.company.currency_id.rounding) < 0:
                 raise ValidationError("The selling price cannot be lower than 90 percent of the expected price!")
 
     @api.ondelete(at_uninstall=False)
