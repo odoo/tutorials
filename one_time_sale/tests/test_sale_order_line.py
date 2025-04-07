@@ -68,8 +68,8 @@ class TestSaleOrderLine(TestOneTimeSaleCommon):
     def test_price_unit_without_plan(self):
         """Test that a one-time purchase product gets its price from list_price if no plan is set."""
         self.assertEqual(
-            self.sale_order_line.price_unit, 
-            self.product.list_price, 
+            self.sale_order_line.price_unit,
+            self.product.list_price,
             "Without a subscription plan, the price should be the product's list price."
         )
 
@@ -79,8 +79,8 @@ class TestSaleOrderLine(TestOneTimeSaleCommon):
         self.sale_order_line.product_id = self.subscription_product.id
 
         self.assertEqual(
-            self.sale_order_line.price_unit, 
-            6.0, 
+            self.sale_order_line.price_unit,
+            6.0,
             f"With plan_id set, price should be 6.0, but got {self.sale_order_line.price_unit}."
         )
 
@@ -103,7 +103,7 @@ class TestSaleOrderLine(TestOneTimeSaleCommon):
 
     def test_price_unit_change_after_plan_applied(self):
         """Test that applying a plan after adding a one-time purchase product updates the price to the monthly subscription price."""
-        
+
         self.sale_order_line.product_id = self.subscription_product.id
 
         # Ensure the price starts as list_price

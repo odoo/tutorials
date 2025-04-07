@@ -8,7 +8,7 @@ class SaleOrder(models.Model):
         """Disable validation of plan_id for one-time product purchase."""
         for order in self:
             order.has_recurring_line = any(
-                (line.product_id.recurring_invoice and not line.product_id.accept_one_time) or 
+                (line.product_id.recurring_invoice and not line.product_id.accept_one_time) or
                 (line.product_id.accept_one_time and order.plan_id)
                 for line in order.order_line
             )
@@ -31,5 +31,5 @@ class SaleOrder(models.Model):
                     order_line_values = self._prepare_order_line_values(product_id, quantity, **kwargs)
                     order_line = self.env['sale.order.line'].sudo().create(order_line_values)
                 return order_line
-        
+
         return super()._cart_update_order_line(product_id, quantity, order_line, **kwargs)

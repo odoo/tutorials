@@ -22,7 +22,7 @@ class ProductTemplate(models.Model):
             and line.price_unit == line.product_id.list_price
             for line in (sale_order.order_line if sale_order else [])
         )
-    
+
     def _get_additionnal_combination_info(self, product_or_template, quantity, date, website):
         """Pass additional information to handle one-time purchases."""
         res = super()._get_additionnal_combination_info(product_or_template, quantity, date, website)
@@ -107,3 +107,12 @@ class ProductTemplate(models.Model):
         if self.accept_one_time and self.type != 'consu':
             self.accept_one_time = False
         return {}
+
+    def get_default_subscription_plan_id(self, combination_info):
+        if (
+            combination_info.get('is_subscription')
+            and combination_info.get('pricings')
+            and not combination_info.get('accept_one_time_product')
+        ):
+            return combination_info.get('subscription_default_pricing_plan_id')
+        return ''

@@ -19,5 +19,5 @@ class SaleOrderLine(models.Model):
             )
 
             return price
-        
+
         return super()._get_pricelist_price() or self.price_unit

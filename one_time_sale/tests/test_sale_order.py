@@ -11,7 +11,7 @@ class TestSaleOrder(TestOneTimeSaleCommon):
     def setUpClass(cls):
         """Set up common data for all test cases."""
         super().setUpClass()
-        
+
         cls.sale_order_with_subscription_product = cls.env['sale.order'].create({
             'partner_id': cls.partner.id,
             'order_line': [
@@ -76,12 +76,12 @@ class TestSaleOrder(TestOneTimeSaleCommon):
             "The order line should contain the recurring product.")
 
     def test_cart_update_order_line_plan_consistency(self):
-        """Test that adding another product does not change the plan_id once set."""        
+        """Test that adding another product does not change the plan_id once set."""
         # Add a recurring product with a plan
         self.sale_order._cart_update_order_line(
             self.subscription_product.id, 1, self.env['sale.order.line'], plan_id=self.plan_monthly.id
         )
-        
+
         # Add another recurring product without specifying a plan
         self.sale_order._cart_update_order_line(self.subscription_product2.id, 1, self.env['sale.order.line'])
 
@@ -92,7 +92,7 @@ class TestSaleOrder(TestOneTimeSaleCommon):
 
     def test_cart_update_order_line_remove_recurring_product(self):
         """Test removing a recurring product and clearing the subscription plan if no other recurring products exist."""
-        
+
         order_line = self.sale_order._cart_update_order_line(
             self.subscription_product.id, 1, self.env['sale.order.line'], plan_id=self.plan_monthly.id
         )
@@ -114,7 +114,7 @@ class TestSaleOrder(TestOneTimeSaleCommon):
 
     def test_cart_update_order_line_mix_plans_error(self):
         """Test that adding products with different subscription plans raises an error."""
-        
+
         # Add first recurring product with Monthly Plan
         self.sale_order._cart_update_order_line(
             self.subscription_product.id, 1, self.env['sale.order.line'], plan_id=self.plan_monthly.id
@@ -124,7 +124,7 @@ class TestSaleOrder(TestOneTimeSaleCommon):
         with self.assertRaises(UserError, msg="Should raise error when mixing different subscription plans."):
             self.sale_order._cart_update_order_line(
                 self.subscription_product2.id, 1, self.env['sale.order.line'], plan_id=self.plan_yearly.id
-            )      
+            )
 
     def test_cart_update_order_line_one_time_product(self):
         """Test that adding a one-time product does not affect the subscription plan."""
@@ -169,7 +169,7 @@ class TestSaleOrder(TestOneTimeSaleCommon):
 
     def test_cart_update_order_line_subscription_pricing_mixed(self):
         """Test that adding a one-time product does not affect the pricing of a recurring product."""
-        
+
         # Add a subscription product with a monthly plan
         order_line1 = self.sale_order._cart_update_order_line(
             self.subscription_product2.id, 1, self.env['sale.order.line'], plan_id=self.plan_monthly.id
@@ -186,7 +186,7 @@ class TestSaleOrder(TestOneTimeSaleCommon):
 
     def test_cart_update_order_line_quantity_update_one_time_product(self):
         """Test updating quantity of a one-time product."""
-        
+
         order_line = self.sale_order._cart_update_order_line(
             self.product_one_time.id, 1, self.env['sale.order.line']
         )
@@ -208,7 +208,6 @@ class TestSaleOrder(TestOneTimeSaleCommon):
             self.sale_order.subscription_state,
             "Sale order should NOT be a subscription when it has only a one-time product."
         )
-
 
     def test_sale_order_becomes_subscription_when_plan_is_applied(self):
         """Test that applying a plan to a sale order converts it into a subscription order."""
@@ -232,7 +231,6 @@ class TestSaleOrder(TestOneTimeSaleCommon):
             self.sale_order.subscription_state,
             "Sale order should become a subscription after applying a plan."
         )
-
 
     def test_recurring_total_updates_when_plan_is_applied(self):
         """Verify that the recurring total updates correctly after a subscription plan is applied."""
