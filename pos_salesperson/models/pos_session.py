@@ -1,5 +1,4 @@
-#type:ignore
-from odoo import api,models
+from odoo import api, models
 
 
 class PosSession(models.Model):

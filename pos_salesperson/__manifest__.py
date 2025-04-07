@@ -15,7 +15,6 @@
             'pos_salesperson/static/src/**/*',
         ],
     },
-    
     'installable': True,
     'application': True,
 }
