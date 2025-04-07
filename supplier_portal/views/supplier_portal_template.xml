@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <template id="supplier_portal_template">
+        <t t-call="website.layout">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-center m-auto p-5 px-0 px-sm-5">
+                    <div class="p-3 shadow bg-body-tertiary rounded">
+                        <form action="/submit_supplier_portal_form" method="post" enctype="multipart/form-data">
+                            <h4 class="mb-3 text-center">Bill Details</h4>
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                            <div class="mb-4">
+                                <label for="orgnisation" class="form-label">Select Organisation</label>
+                                <select name="company_id" class="form-select" id="orgnisation" required="required">
+                                    <t t-foreach="request.env.user.company_ids" t-as="company">
+                                        <option t-att-value="company.id" t-out="company.name" />
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="pdfFile" class="form-label">Select PDF file</label>
+                                <input name="pdf_file" type="file" class="form-control" id="pdfFile" accept="application/pdf" aria-describedby="inputGroupFileAddon04" aria-label="Upload" required="required" />
+                            </div>
+                            <div class="mb-4">
+                                <label for="xmlFile" class="form-label">Select XML file</label>
+                                <input name="xml_file" type="file" class="form-control" id="xmlFile" accept=".xml, text/xml" aria-describedby="inputGroupFileAddon04" aria-label="Upload" required="required" />
+                            </div>
+                            <div>
+                                <button type="submit" class="btn btn-outline-success">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
