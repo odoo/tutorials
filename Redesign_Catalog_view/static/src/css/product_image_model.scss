@@ -1,4 +1,4 @@
-/* Responsive product image on product card */
+
 @media (max-width: 768px) {
     .o_product_image_custom img {
         max-width: 150px !important;
@@ -8,7 +8,6 @@
     }
 }
 
-/* Full-screen image viewer modal */
 @media (max-width: 768px){
 .full-image-dialog {
     display: flex;
@@ -18,11 +17,10 @@
     inset: 0;
     z-index: 1000;
     background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(1px);
     padding: 1rem;
 }
 
-/* Container for the image and controls */
 .image-container {
     position: relative;
     width: 70vw;
@@ -37,7 +35,6 @@
     justify-content: center;
 }
 
-/* Zoomable image */
 .full-size-image {
     width: 100%;
     height: 100%;
@@ -45,7 +42,6 @@
     transition: transform 0.3s ease-in-out;
 }
 
-/* Zoom control buttons */
 .zoom-controls {
     position: absolute;
     bottom: 10px;
@@ -55,7 +51,6 @@
     z-index: 2;
 }
 
-/* Zoom buttons styling */
 .zoom-btn {
     background-color: rgba(255, 255, 255, 0.8);
     border: none;
@@ -75,7 +70,6 @@
     background-color: rgba(255, 255, 255, 1);
 }
 
-/* Close button styling */
 .close-btn {
     position: absolute;
     top: 10px;

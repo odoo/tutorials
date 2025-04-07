@@ -9,12 +9,9 @@
   
     ],
     'assets': {
+    
         'web.assets_backend': [
             'Redesign_Catalog_view/static/src/**/*',
-            
-        ],
-        'web.assets_frontend': [
-            'Redesign_Catalog_view/static/src/**/*',  
             
         ],
     },

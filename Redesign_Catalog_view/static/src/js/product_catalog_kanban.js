@@ -1,6 +1,5 @@
 import { Component, useState } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
-import { Dialog } from "@web/core/dialog/dialog";
 import { registry } from "@web/core/registry";
 import { ProductCatalogKanbanRecord } from "@product/product_catalog/kanban_record";
 import { ProductCatalogKanbanRenderer } from "@product/product_catalog/kanban_renderer";
@@ -8,8 +7,7 @@ import { productCatalogKanbanView } from "@product/product_catalog/kanban_view";
 
 class ImageDialog extends Component {
     static template = "product_catalog_redesign.ImageDialog";
-    static components = { Dialog };
-    static props = ["imageUrl","close"];
+    static props = ["imageUrl"];
 
     setup() {
         this.state = useState({ zoom: 1 });
@@ -34,6 +32,7 @@ class ProductCatalogKanbanRecordInherited extends ProductCatalogKanbanRecord {
             this.dialogService.add(ImageDialog, {
                 imageUrl: imageElement.src,
             });
+           
             return;
         }
 
