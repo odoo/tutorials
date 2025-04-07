@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem
+        id="menu_stock_bulk_return"
+        name="Bulk Return"
+        parent="stock.menu_stock_warehouse_mgmt"
+        action="action_stock_bulk_return"
+        groups="stock.group_stock_manager"
+        sequence="500"/>
+</odoo>

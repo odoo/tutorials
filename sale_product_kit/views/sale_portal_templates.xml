@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+     <template id="sale_order_portal_content_inherit_kit" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//table[@id='sales_order_table']/tbody/t/tr" position="attributes">
+            <attribute name="t-if">(not line.kit_line_id) or (line.kit_line_id and sale_order.print_in_report)</attribute>
+        </xpath>
+     </template>
+</odoo>

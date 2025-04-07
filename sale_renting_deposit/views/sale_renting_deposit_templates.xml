@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_inherit_deposit" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.rent_ok and product.is_deposit_required">
+                <div id="rental_deposit_amount_container" class="my-4">
+                    <strong class="fw-bold">Deposit Required:</strong>
+                    <t t-esc="product.currency_id.symbol"/>
+                    <span id="total_deposit_amount"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+    <template id="cart_lines_inherit_deposit" inherit_id="website_sale.cart_lines">
+        <div name="o_wsale_cart_line_button_container" position="attributes">
+            <attribute name="t-if">not line.rental_line_id</attribute>
+        </div>
+        <div name="website_sale_cart_line_quantity" position="attributes">
+            <attribute name="t-if">not line.rental_line_id</attribute>
+        </div>
+    </template>
+</odoo>
