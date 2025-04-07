@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="price_division_wizard_action" model="ir.actions.act_window">
+        <field name="name">Price Division</field>
+        <field name="res_model">price.division.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="sale_order_inherit_view" model="ir.ui.view">
+        <field name="name">sale.order.inherit.view</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <!-- add button next to product name coloumn -->
+            <xpath expr="//list/field[@name='product_template_id']" position="after">
+                <button name="%(price_division_wizard_action)d" type="action" icon='fa-share-alt'></button>
+            </xpath>
+            <!-- add division tag  -->
+                <xpath expr="//list/field[@name='price_subtotal']" position="before">
+                    <field name="divided_cost_tags" widget="many2many_tags" options="{'color_field': 'color'}" column_invisible="not parent.isDivisionVisible"/>
+                </xpath>
+        </field>
+    </record>
+</odoo>
