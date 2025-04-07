@@ -12,7 +12,6 @@
         'views/estate_property_tag.xml',
         'views/estate_property_offer.xml',
         'views/estate_property_menus.xml'
-        
     ],
     'license':'LGPL-3'
 }
