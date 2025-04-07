@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_template_property_form" model="ir.ui.view">
+        <field name="name">product.template.stock.property.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_template_property_form3" model="ir.ui.view">
+        <field name="name">product.template.stock</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@groups='stock.group_stock_user']//button[@name='action_update_quantity_on_hand']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//t[@groups='stock.group_stock_user']//button[@name='action_product_tmpl_forecast_report']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//t[@groups='stock.group_stock_user']" position="inside">
+                <button type="object"
+                    name="action_product_tmpl_forecast_report"
+                    invisible="not show_forecasted_qty_status_button"
+                    context="{'default_product_tmpl_id': id}"
+                    class="oe_stat_button" icon="fa-area-chart">
+                    
+                    <div class="o_field_widget o_stat_info d-flex align-items-center">
+                        <div class="d-flex flex-column ps-2">
+                            <span class="o_stat_value d-flex gap-1">
+                                <field name="qty_available" nolabel="1" class="oe_inline"/>
+                                <field name="uom_name" class="oe_inline"/>
+                            </span>
+                            <span class="o_stat_value d-flex gap-1">
+                                <field name="virtual_available" nolabel="1" class="oe_inline" decoration-danger="virtual_available &lt; 0" decoration-success="virtual_available &gt; 0"/>
+                                <span class="text-muted">Forecasted</span>
+                            </span>
+                        </div>
+                    </div>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_template_property_form2" model="ir.ui.view">
+        <field name="name">product.template.stock.property.form.inherit2</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='group_general']" position="inside">
+                <label for="qty_input" class="oe_inline"/>
+                <div class="o_row" invisible ="is_multi_location">
+                    <field name="qty_input"/>
+                    <field name="uom_name"/>
+                </div>
+                <div class="o_row" invisible ="not is_multi_location">
+                    <field name="qty_available"/>
+                    <field name="uom_name"/>
+                    <button name="action_open_quants" type="object"
+                        string="Update Quantity"
+                        class="btn-link mb-1 px-0" icon="fa-refresh" />
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='product_tooltip']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_open_label_layout_from_action" model="ir.actions.server">
+        <field name="name">Print Labels</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="state">code</field>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_view_types">form</field> 
+        <field name="code">
+            action = records.action_open_label_layout()
+        </field>
+    </record>
+
+    <record id="action_open_replenish_action" model="ir.actions.server">
+        <field name="name">Replenish</field>
+        <field name="model_id" ref="product.model_product_template"/>
+        <field name="state">code</field>
+        <field name="binding_model_id" ref="product.model_product_template"/>
+        <field name="binding_view_types">form</field> 
+        <field name="code">
+            action = {
+                'type': 'ir.actions.act_window',
+                'res_model': 'product.replenish',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'default_product_tmpl_id': records.id},
+            }
+        </field>
+    </record>
+</odoo>
+
