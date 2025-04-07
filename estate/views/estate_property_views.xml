@@ -22,23 +22,29 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
+                    <button name="action_sold" type="object" string="Sold"
+                        invisible="not active or state in ['offer_accepted', 'sold', 'cancelled']"/>
                     <button name="action_sold" type="object" string="Sold" class="oe_highlight"
-                        invisible="not active or state in ['sold', 'cancelled']"/>
+                        invisible="not active or state in ['new', 'offer_received', 'sold', 'cancelled']"/>
                     <button name="action_cancel" type="object" string="Cancel"
                         invisible="not active or state in ['sold', 'cancelled']"/>
-                    <button name="action_open_add_offer" type="object" string="Add Offer (using object)"/>
-                    <button name="%(estate_property_add_offer_server_action)d" type="action" string="Add Offer (using server action)"/>
-                    <button name="%(estate_property_add_offer_action)d" type="action" string="Add Offer (using window action)"/>
+                    <button name="action_open_add_offer" type="object" string="Add Offer (using object)"
+                        invisible="not active or state in ['offer_accepted', 'sold', 'cancelled']"/>
+                    <button name="%(estate_property_add_offer_server_action)d" type="action" string="Add Offer (using server action)"
+                        invisible="not active or state in ['offer_accepted', 'sold', 'cancelled']"/>
+                    <button name="%(estate_property_add_offer_action)d" type="action" string="Add Offer (using window action)"
+                        invisible="not active or state in ['offer_accepted', 'sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box"></div>
+                    <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger" invisible="active"/>
                     <field name="property_image" widget="image" class="oe_avatar"/>
-                    <div class="oe_title">
+                    <div class="oe_title mb-4">
                         <h1>
-                            <field name="name" placeholder="Name"/>
+                            <field name="name" options="{'line_breaks': False}" widget="text"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" nolabel="1"/>
                     </div>
                     <group>
                         <group>
@@ -147,16 +153,6 @@
                     </div>
                 </templates>
             </kanban>
-        </field>
-    </record>
-
-    <record id="estate_property_view_map" model="ir.ui.view">
-        <field name="name">estate.property.map</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <map res_partner="buyer_id">
-                <field name="buyer_id" string="Buyers"/>
-            </map>
         </field>
     </record>
 </odoo>

@@ -4,7 +4,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -29,32 +29,29 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
-    garden_orientation = fields.Selection(
-        selection = [
-            ('north', "North"),
-            ('south', "South"),
-            ('east', "East"),
-            ('west', "West")
-        ],
-        string="Garden Orientation"
-    )
+    garden_orientation = fields.Selection(selection=[
+        ('north', "North"),
+        ('south', "South"),
+        ('east', "East"),
+        ('west', "West")
+    ], string="Garden Orientation")
     property_image = fields.Image(string="Property Image")
 
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
-        selection = [
+        selection=[
             ('new', "New"),
             ('offer_received', "Offer Received"),
             ('offer_accepted', "Offer Accepted"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled")
         ],
-        help="New: A new property with no offers yet\n \
+        string="Status", help="New: A new property with no offers yet\n \
             Offer Received: Offers from others are received\n \
             Offer Accepted: An offer has been accepted\n \
             Sold: property is sold\n \
             Cancelled: property cancelled",
-        string="Status", required=True, default='new', copy=False, tracking=True)
+        required=True, default='new', copy=False, tracking=True)
 
     property_type_id = fields.Many2one(comodel_name='estate.property.type', string="Property Type")
     tag_ids = fields.Many2many(comodel_name='estate.property.tag', string="Tags")
@@ -94,20 +91,20 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
-        if any(property.state not in ('new', 'cancelled') for property in self):
+        if self.filtered(lambda property: property.state not in ('new', 'cancelled')):
             raise UserError(_("Only properties in new or cancelled state can be deleted."))
 
     def action_sold(self):
         if 'cancelled' in self.mapped('state'):
             raise UserError(_("A cancelled property cannot be sold."))
-        if any(property.state != 'offer_accepted' for property in self):
+        if self.filtered(lambda property: property.state != 'offer_accepted'):
             raise UserError(_("Cannot sell a property without an accepted offer."))
-        return self.write({ 'state': 'sold' })
+        return self.write({'state': 'sold'})
 
     def action_cancel(self):
         if 'sold' in self.mapped('state'):
             raise UserError(_("Sold properties cannot be cancelled."))
-        return self.write({ 'state': 'cancelled' })
+        return self.write({'state': 'cancelled'})
 
     def action_open_add_offer(self):
         return {

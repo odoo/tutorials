@@ -5,10 +5,7 @@ from odoo.http import request
 
 
 class EstateController(http.Controller):
-    @http.route(
-        route=['/properties', '/properties/page/<int:page>'],
-        type='http', auth='public', website=True
-    )
+    @http.route(['/properties', '/properties/page/<int:page>'], type='http', auth='public', website=True)
     def list_properties(self, page=1, **kw):
         per_page = 3
         domain = ['&', ('active', '=', 'True'), ('state', 'not in', ['cancelled'])]
@@ -30,7 +27,7 @@ class EstateController(http.Controller):
             'properties': properties,
         })
 
-    @http.route(route='/property/<int:property_id>', type='http', auth='public', website=True)
+    @http.route('/property/<int:property_id>', type='http', auth='public', website=True)
     def view_property(self, property_id, **kw):
         property = request.env['estate.property'].sudo().browse(property_id)
         if not property.exists():
@@ -48,10 +45,10 @@ class EstateController(http.Controller):
             'currency_symbol': request.env.company.currency_id.symbol,
         })
 
-    @http.route(route='/offer/create', auth='user', methods=['POST'], website=True)
+    @http.route('/offer/create', type='http', auth='user', methods=['POST'], website=True)
     def create_offer(self, **kw):
         property_id = int(kw.get('property_id'))
-        offer = request.env['estate.property.offer'].create({
+        request.env['estate.property.offer'].sudo().create({
             'partner_id': request.env.user.partner_id.id,
             'property_id': property_id,
             'price': float(kw.get('price')),

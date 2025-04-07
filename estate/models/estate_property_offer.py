@@ -18,13 +18,10 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float(string="Price", required=True)
     validity = fields.Integer(string='Validity (days)', default=7)
 
-    state = fields.Selection(
-        selection=[
-            ('accepted', "Accepted"),
-            ('refused', "Refused"),
-        ],
-        string="Status", copy=False
-    )
+    state = fields.Selection(selection=[
+        ('accepted', "Accepted"),
+        ('refused', "Refused"),
+    ], string="Status", copy=False)
 
     partner_id = fields.Many2one(comodel_name='res.partner', string="Partner", required=True)
     property_id = fields.Many2one(comodel_name='estate.property', string="Property", required=True)
@@ -61,13 +58,17 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         if 'offer_accepted' in self.mapped('property_id.state'):
             raise UserError(_("An offer has already been accepted."))
+        elif 'sold' in self.mapped('property_id.state'):
+            raise UserError(_("Cannot accept an offer for a sold property."))
+        elif 'canceled' in self.mapped('property_id.state'):
+            raise UserError(_("Cannot accept an offer for a canceled property."))
         for offer in self:
             offer.property_id.write({
                 'state': 'offer_accepted',
                 'selling_price': offer.price,
                 'buyer_id': offer.partner_id.id,
             })
-        return self.write({ 'state': 'accepted' })
+        return self.write({'state': 'accepted'})
 
     def action_refuse(self):
-        return self.write({ 'state': 'refused' })
+        return self.write({'state': 'refused'})

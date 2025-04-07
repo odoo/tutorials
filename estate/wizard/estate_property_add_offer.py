@@ -5,6 +5,7 @@ from odoo import fields, models
 
 class EstatePropertyAddOffer(models.TransientModel):
     _name = 'estate.property.add.offer'
+    _description = "Estate Property Add Offer"
 
     price = fields.Float(string="Price")
     validity = fields.Integer(string="Validity (days)", default=7)

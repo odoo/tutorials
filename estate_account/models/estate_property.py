@@ -15,13 +15,13 @@ class EstateProperty(models.Model):
         return result
 
     def _create_invoice(self):
-        invoices_list = []
+        invoice_vals = []
         for property in self:
             try:
                 property.check_access('write')
             except AccessError:
                 raise UserError(_("You do not have permission to change the status of this property."))
-            invoices_list.append({
+            invoice_vals.append({
                 'name': _("For selling %s", property.name),
                 'move_type': 'out_invoice',
                 'partner_id': property.buyer_id.id,
@@ -39,9 +39,9 @@ class EstateProperty(models.Model):
                     }),
                 ]
             })
-        invoices = self.env['account.move'].sudo().create(invoices)
+        invoices = self.env['account.move'].sudo().create(invoice_vals)
         for invoice in invoices:
-            invoice.estate_property_id.update({ 'invoice_id': invoice.id })
+            invoice.estate_property_id.update({'invoice_id': invoice.id})
         return invoices
 
     def action_open_invoice(self):

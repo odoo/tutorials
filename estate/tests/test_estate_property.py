@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.tests.common import TransactionCase
-from odoo.exceptions import UserError, AccessError
+from odoo.exceptions import UserError
 from odoo.tests import Form, tagged
 
 
@@ -27,7 +27,7 @@ class TestEstateProperty(TransactionCase):
         ])
 
     def test_cannot_create_offer_for_sold_property(self):
-        self.property.state ='sold'
+        self.property.action_sold()
         with self.assertRaises(UserError):
             self.env['estate.property.offer'].create({
                 'price': 100,
@@ -41,11 +41,11 @@ class TestEstateProperty(TransactionCase):
     def test_can_sell_property_with_accepted_offer(self):
         offer = self.env['estate.property.offer'].create({
             'price': 100,
-            'state': 'accepted',
             'property_id': self.property.id,
             'partner_id': self.partner.id,
         })
-        self.property.state = 'offer_accepted'
+        offer.action_accept()
+        self.assertEqual(self.property.state, 'offer_accepted')
         self.property.action_sold()
         self.assertEqual(self.property.state, 'sold')
 

@@ -26,7 +26,8 @@
         <t t-call="website.layout">
             <div class="container">
                 <div class="row mt-4">
-                    <div class="col-md-8">
+                    <div class="col-md-8 position-relative">
+                        <div t-if="property.state == 'sold'" class="o_ribbon_left text-bg-info">Sold</div>
                         <h2 t-out="property.name"/>
                         <p class="text-muted">
                             Price: <t t-out="property.expected_price"/>
@@ -47,7 +48,7 @@
                             <p><strong>Size:</strong><t t-out="property.living_area"/></p>
                             <p><strong>Facades:</strong><t t-out="property.facades"/></p>
                         </div>
-                        <div class="card mt-2 border p-4">
+                        <div t-if="property.state != 'sold'" class="card mt-2 border p-4">
                             <h4 class="border-bottom mb-3">Your offers</h4>
                             <div t-foreach="offers" t-as="offer">
                                 <p t-out="offer.price"/>

@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <record id="account_move_invoices_action" model="ir.actions.act_window">
+        <field name="name">Invoice</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="account.view_move_form"/>
+        <field name="domain">[('estate_property_id', '=', active_id)]</field>
+        <field name="context">{'default_estate_property_id': active_id, 'default_move_type': 'out_invoice'}</field>
+    </record>
+
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form.inherit.estate.account</field>
         <field name="model">estate.property</field>
         <field name="inherit_id" ref="estate.estate_property_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="%(estate_account.account_move_invoices_action)d" type="action" class="oe_stat_button" icon="fa-book" invisible="not invoice_id" context="{'default_invoice_id': invoice_id}">
+                    <field string="Invoice" name="invoice_id" widget="statinfo"/>
+                </button>
                 <button name="action_open_invoice" type="object" class="oe_stat_button" icon="fa-book" invisible="not invoice_id">
                     <div class="o_stat_info">
                         <span class="o_stat_text">Invoice</span>
