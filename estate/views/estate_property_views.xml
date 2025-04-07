@@ -4,7 +4,7 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list name="estate_property_list">
+            <list name="estate_property_list" decoration-bf="status == 'offer_accepted'" decoration-success="status in ('offer_received', 'offer_accepted')" decoration-muted="status == 'sold'">
                 <field name="name" width="30%"/>
                 <field name="postcode" width="10%"/>
                 <field name="bedrooms" width="10%"/>
@@ -12,7 +12,7 @@
                 <field name="expected_price" width="10%"/>
                 <field name="selling_price" width="10%"/>
                 <field name="property_type_id" width="10%"/>
-                <field name="date_availability" width="10%"/>
+                <field name="date_availability" width="10%" optional="hide"/>
             </list>
         </field>
     </record>
@@ -23,8 +23,9 @@
         <field name="arch" type="xml">
             <form name="estate_property_form" string="Estate Property">
                 <header>
-                    <button name="action_set_sold" type="object" string="SOLD"/>
-                    <button name="action_set_cancle" type="object" string="CANCEL"/>
+                    <button name="action_set_sold" type="object" string="SOLD" invisible="status in ['sold', 'cancelled']"/>
+                    <button name="action_set_cancle" type="object" string="CANCEL" invisible="status in ['sold', 'cancelled']"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"></field>
                 </header>
                 <sheet>
                     <group>
@@ -32,11 +33,10 @@
                             <field name="name" class="mb16"></field>
                         </h1>
                     </group>
-                        <field name="tag_ids" widget="many2many_tags" class="mb16"/>
+                        <field name="tag_ids" widget="many2many_tags" class="mb16" options="{'color_field': 'color'}"/>
                     <group>
                         <group>
-                            <field name="status"/>
-                            <field name="property_type_id"></field>
+                            <field name="property_type_id" options="{'no_create' : true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -55,14 +55,14 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                                 <field name="active"/>
                             </group>
                         </page>
                         <page name="Offers" string="Offers">
-                                <field name="offer_ids"/>
+                                <field name="offer_ids" readonly="status in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page name="other_info" string="Other Info">
                             <group>
@@ -85,7 +85,7 @@
                 <field name="postcode"></field>
                 <field name="expected_price"></field>
                 <field name="bedrooms"></field>
-                <field name="living_area" string="living Area (sqm)"></field>
+                <field name="living_area" string="living Area (sqm)" filter_domain="[('living_area', '>=', self)]"></field>
                 <field name="facades"></field>
                 <field name="property_type_id" string="Property Type id"></field>
                 <filter name="available_property" string="Available" domain="[('status', 'in', ['offer_received', 'new'])]"></filter>
@@ -98,5 +98,6 @@
         <field name="name">Real Estate</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available_property' : True}</field>
     </record>
 </odoo>

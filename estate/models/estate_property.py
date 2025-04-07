@@ -1,12 +1,14 @@
 from datetime import timedelta
-from odoo import _, api,fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero, float_compare
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = 'Estate Property model'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order = 'id desc'
 
     name = fields.Char(string='Title', required=True)
     description = fields.Text(string='Description')
@@ -21,18 +23,17 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string='Garden')
     garden_area = fields.Integer(string='Garden Area')
     garden_orientation = fields.Selection(string='Garden Selection',
-        selection = [('north', 'North'),
+        selection=[('north', 'North'),
             ('south', 'South'),
             ('east', 'East'),
             ('west', 'West')]
     )
     status = fields.Selection(string='Status',
-        selection=
-        [('new', 'New'),
+        selection=[('new', 'New'),
             ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('cancelled', 'Cancelled')] ,
+            ('cancelled', 'Cancelled')],
 
             required=True,
             copy=False,
@@ -44,15 +45,15 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
     salesperson_id = fields.Many2one('res.users', string='Salesman', tracking=True, default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False, tracking=True)
-    total_area=fields.Float(compute='_compute_total_area', string='Total Area (sqm)')
-    best_price=fields.Float(compute='_compute_best_offer', string='Best Price')
+    total_area = fields.Float(compute='_compute_total_area', string='Total Area (sqm)')
+    best_price = fields.Float(compute='_compute_best_offer', string='Best Price')
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0.0)', 'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price > 0.0)', 'The selling price must be strictly positive.')
     ]
 
-    @api.depends('living_area','garden_area')
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
@@ -90,7 +91,13 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if float_is_zero(record.selling_price, precision_rounding=self.env.company.currency_id.rounding):
+            if float_is_zero(record.selling_price, precision_rounding = self.env.company.currency_id.rounding):
                 continue
-            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=self.env.company.currency_id.rounding)< 0:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding = self.env.company.currency_id.rounding)< 0:
+                raise ValidationError("The selling price cannot be lower than 90 percent of the expected price!")
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_check_state(self):
+        for record in self:
+            if record.status not in ['new', 'cancelled']:
+                raise UserError(_("You can only delete properties that are New or Cancelled."))
