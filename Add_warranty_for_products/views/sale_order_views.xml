@@ -4,7 +4,7 @@
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//header/button[@name='action_confirm']" position="before">
+            <xpath expr="//group[@name='sale_total']" position="before">
                 <button name="%(warranty_configuration_wizard_action)d"
                         string="Add Warranty"
                         type="action"

@@ -4,14 +4,19 @@
         <field name="model">warranty.configuration.wizard</field>
         <field name="arch" type="xml">
             <form string="Add Warranty for your Products">
-                <group> 
-                    <field name="product_id"/>
-                    <field name="warranty_id"/>
-                    <field name="end_date"/>
-                </group>
+                <sheet>
+                    <field name="order_id" invisible="1"/>
+                    <field name="warranty_line_ids">
+                        <list editable="bottom">
+                            <field name="order_line_id"/>
+                            <field name="warranty_id"/>
+                            <field name="end_date"/>
+                        </list>
+                    </field>
+                </sheet>
                 <footer>
-                    <button name="action_add_warranty" string="Add Warranty" type="object"/>
-                    <button string="Cancel" type="object" special="cancel"/>
+                    <button name="action_add_warranty" string="Add" type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
                 </footer>
             </form>
         </field>
