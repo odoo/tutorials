@@ -6,6 +6,13 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'An offer made for an Estate Property'
+    _sql_constraints = [
+        (
+            'estate_property_offer_price_positive',
+            'CHECK(price > 0)',
+            'The offer price must be strictly positive.',
+        )
+    ]
 
     price = fields.Float('Price')
     validity = fields.Integer('Validity (days)', default=7)
