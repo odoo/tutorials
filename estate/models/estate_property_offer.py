@@ -37,8 +37,16 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             record_property = record.property_id
+            property_state = record_property.state
+
             if record_property.state == 'offer_accepted':
                 raise UserError('You can only accept one offer at a time.')
+            if property_state == 'sold':
+                raise UserError('You cannot accept an offer on a sold property.')
+            if property_state == 'cancelled':
+                raise UserError('You cannot accept an offer on a cancelled property.')
+            if record.status == 'refused':
+                raise UserError('You cannot accept an already refused offer.')
 
             record.status = 'accepted'
             record_property.update({
@@ -46,10 +54,20 @@ class EstatePropertyOffer(models.Model):
                 'selling_price': record.price,
                 'state': 'offer_accepted',
             })
+
         return True
 
     def action_refuse(self):
         for record in self:
+            record_property = record.property_id
+            property_state = record_property.state
+
+            if property_state == 'sold':
+                raise UserError('You cannot refuse an offer on a sold property.')
+            if property_state == 'cancelled':
+                raise UserError('You cannot refuse an offer on a cancelled property.')
+            if record.status == 'accepted':
+                raise UserError('You cannot refuse an already accepted offer.')
+
             record.status = 'refused'
-            record.property_id.state = 'offer_received'
         return True

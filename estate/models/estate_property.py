@@ -78,6 +78,32 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.onchange('offer_ids')
+    def _onchange_offer_ids(self):
+        # When the user removes all offers
+        if not self.offer_ids:
+            if self.state == 'offer_received':
+                self.state = 'new'
+            elif self.state == 'offer_accepted':
+                # Check if the accepted offer was removed
+                self.state = 'new'
+                self.selling_price = 0
+                self.buyer_id = False
+            return
+
+        # User created the first offer
+        if self.state == 'new':
+            self.state = 'offer_received'
+            return
+
+        # User removed an offer when the property was in offer_accepted state
+        if self.state == 'offer_accepted':
+            # Check if the accepted offer was removed
+            if not self.offer_ids.filtered(lambda o: o.status == 'accepted'):
+                self.selling_price = 0
+                self.buyer_id = False
+                self.state = 'offer_received'
+
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
