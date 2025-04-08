@@ -33,26 +33,26 @@ class ProductTemplate(models.Model):
         products = self.search(search_domain, limit=None)
         if not products:
             return []
-        product_variants = self.env["product.product"].search(
-            [("product_tmpl_id", "in", products.ids)]
-        )
+        product_variants = self.env["product.product"].search([
+            ("product_tmpl_id", "in", products.ids)
+        ])
         now = fields.Datetime.now()
-        invoiced_products = []
-        non_invoiced_products = []
-        invoice_lines = self.env["account.move.line"].search(
-            [
-                ("product_id", "in", product_variants.ids),
-                ("partner_id", "=", partner_id),
-                ("move_id.move_type", "=", "out_invoice"),
-                ("move_id.state", "=", "posted"),
-            ],
+        invoice_lines = self.env["account.move.line"].search([
+            ("product_id", "in", product_variants.ids),
+            ("partner_id", "=", partner_id),
+            ("move_id.move_type", "=", "out_invoice"),
+            ("move_id.state", "=", "posted"),
+        ],
             order="create_date DESC",
         )
         product_invoice_dates = {}
         for line in invoice_lines:
-            product = line.product_id.product_tmpl_id
-            if product.id not in product_invoice_dates:
-                product_invoice_dates[product.id] = line.move_id.create_date
+            tmpl_id = line.product_id.product_tmpl_id.id
+            date = line.move_id.create_date
+            if tmpl_id not in product_invoice_dates or product_invoice_dates[tmpl_id] < date:
+                product_invoice_dates[tmpl_id] = date
+        invoiced_products = []
+        non_invoiced_products = []
         for product in products:
             if product.id in product_invoice_dates:
                 invoiced_products.append(product)

@@ -63,6 +63,7 @@ patch(ProductCatalogKanbanModel.prototype, {
                 },
             });
         } catch (error) {
+            console.error("Failed to fetch partner product data:", error);
             return [];
         }
     }

@@ -20,6 +20,9 @@
                     <span t-else="" class="text-danger">
                         <span>(</span><t t-out="record.virtual_available.raw_value - record.qty_available.raw_value"/><span>)</span>
                     </span>
+                    <div>
+                        <field name="create_date"/>
+                    </div>
                 </div>
             </xpath>
         </field>
