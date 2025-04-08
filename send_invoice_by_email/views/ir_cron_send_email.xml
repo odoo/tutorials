@@ -1,0 +1,12 @@
+<!-- Create cron to trigger cron_send_invoice_emails mehod everyday -->
+<odoo>
+    <record id="ir_cron_send_invoice_emails_after_days" model="ir.cron">
+        <field name="name">Send Invoice Emails After given Days</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_send_invoice_emails()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+</odoo>
