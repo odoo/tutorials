@@ -5,12 +5,22 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <record model="ir.actions.act_window" id="estate_property_type_offers_action">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
     <record model="ir.ui.view" id="estate_property_type_view_list">
         <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Types">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="offer_ids" optional="hide"/>
+                <field name="offer_count" optional="hide"/>
             </list>
         </field>
     </record>
@@ -21,11 +31,29 @@
         <field name="arch" type="xml">
             <form string="Property Types">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" name="%(estate_property_type_offers_action)d" icon="fa-money"
+                                class="oe_stat_button">
+                            <field name="offer_count" widget="statinfo" string="Offers"
+                                   class="flex-column-reverse"/>
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
                         </h1>
                     </div>
+                    <notebook>
+                        <page name="properties" string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
