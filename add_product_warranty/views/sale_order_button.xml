@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_button_wizard" model="ir.ui.view">
+        <field name="name">sale.order.button.wizard</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='so_button_below_order_lines']" position="inside">
+                <button string="Add Warranty" type="action"
+                    name="%(add_product_warranty.action_add_warranty)d" class="btn btn-primary" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
