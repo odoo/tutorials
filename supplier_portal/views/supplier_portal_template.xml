@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="supplier_portal_template" name="Supplier Portal">
+        <t t-call="website.layout">
+            <div class="container d-flex justify-content-center align-items-center py-5">
+                <div class="card p-5 shadow-sm">
+                    <h3 class="text-center text-primary fw-bold mb-4">Upload Your Invoice</h3>
+            
+                    <form action="/supplier/invoice_submit" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Select Organization</label>
+                            <select name="company_id" class="form-select border-secondary" >
+                                <t t-foreach="request.env.user.company_ids" t-as="company">
+                                    <option t-att-value="company.id">
+                                        <t t-esc="company.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+            
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Upload PDF Invoice</label>
+                            <input type="file" name="pdf_invoice" accept=".pdf" class="form-control border-secondary" />
+                            <small class="text-muted">Allowed: PDF</small>
+                        </div>
+            
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Upload XML Invoice</label>
+                            <input type="file" name="xml_invoice" accept=".xml" class="form-control border-secondary" />
+                            <small class="text-muted">Allowed: XML</small>
+                        </div>
+            
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary fw-bold">
+                                <i class="bi bi-upload"></i> Submit Invoice
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+        </t>
+    </template>
+
+    <template id="supplier_invoice_upload_success" name="Invoice Upload Success">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row justify-content-center p-3">
+                    <div class="col-md-6 col-lg-5 p-4 border rounded bg-light shadow-sm text-center">
+                        <h2 class="text-success fw-bold">Success</h2>
+                        <p class="text-muted" t-esc="message"></p>
+                        <a href="/my" class="btn btn-primary mt-3">
+                            <i class="bi bi-house-door"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <template id="supplier_invoice_upload_fail" name="Invoice Upload Fail">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row justify-content-center p-3">
+                    <div class="col-md-6 col-lg-5 p-4 border rounded bg-light shadow-sm text-center">
+                        <h2 class="text-danger fw-bold">Failed</h2>
+                        <p class="text-muted" t-esc="message"></p>
+                        <a href="/supplier/portal" class="btn btn-primary mt-3">
+                            <i class="bi bi-house-door"></i> Back to Upload Invoice
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>  
+</odoo>
