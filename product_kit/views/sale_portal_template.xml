@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <template id="sale_preview_subproduct" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//tbody[hasclass('sale_tbody')]//tr//t" position="attributes">
+            <attribute name="t-if">(sale_order.print_in_report and line.is_kit) or (not line.is_kit)</attribute>
+        </xpath>
+    </template>
+
+</odoo>
