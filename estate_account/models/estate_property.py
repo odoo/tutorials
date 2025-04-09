@@ -7,13 +7,13 @@ class EstateProperty(models.Model):
     def action_set_sold(self):
         for record in self:
             invoice_vals = {
-                "partner_id": self.buyer_id.id,
+                "partner_id": record.buyer_id.id,
                 "move_type": "out_invoice",
                 'invoice_line_ids': [
                     Command.create({
-                        "name": self.name,
+                        "name": record.name,
                         "quantity": 1,
-                        "price_unit": self.selling_price*0.06,
+                        "price_unit": record.selling_price * 0.06,
                     }),
                     Command.create({
                         "name": "Administrative Fees",
