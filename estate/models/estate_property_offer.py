@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -53,7 +53,7 @@ class EstatePropertyOffer(models.Model):
             record_property = record.property_id
             property_state = record_property.state
 
-            if record_property.state == 'offer_accepted':
+            if property_state == 'offer_accepted':
                 raise UserError('You can only accept one offer at a time.')
             if property_state == 'sold':
                 raise UserError('You cannot accept an offer on a sold property.')
@@ -62,8 +62,13 @@ class EstatePropertyOffer(models.Model):
             if record.status == 'refused':
                 raise UserError('You cannot accept an already refused offer.')
 
+            other_offers = record_property.offer_ids.filtered(
+                lambda o: o.id != record.id
+            )
+            other_offers.write({'status': 'refused'})
+
             record.status = 'accepted'
-            record_property.update({
+            record_property.write({
                 'buyer_id': record.partner_id.id,
                 'selling_price': record.price,
                 'state': 'offer_accepted',
@@ -76,12 +81,35 @@ class EstatePropertyOffer(models.Model):
             record_property = record.property_id
             property_state = record_property.state
 
-            if property_state == 'sold':
-                raise UserError('You cannot refuse an offer on a sold property.')
-            if property_state == 'cancelled':
-                raise UserError('You cannot refuse an offer on a cancelled property.')
+            if property_state in ['sold', 'cancelled']:
+                raise UserError(
+                    'You cannot refuse an offer on a sold or cancelled property.'
+                )
+            if property_state == 'new':
+                raise ValidationError(
+                    'You cannot refuse an offer on a new property. (New properties are not supposed to have offers.)'
+                )
             if record.status == 'accepted':
                 raise UserError('You cannot refuse an already accepted offer.')
 
             record.status = 'refused'
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        curr_max_price = 0
+        for vals in vals_list:
+            estate_property = self.env['estate.property'].browse(vals['property_id'])
+
+            if estate_property.state in ['sold', 'cancelled']:
+                raise UserError(
+                    'You cannot create an offer on a sold or cancelled property.'
+                )
+            if curr_max_price >= vals['price']:
+                raise UserError(
+                    'The offer price must be higher than the current best price.'
+                )
+            curr_max_price = max(curr_max_price, vals['price'])
+
+            estate_property.state = 'offer_received'
+        return super().create(vals_list)

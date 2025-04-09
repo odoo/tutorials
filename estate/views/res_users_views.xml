@@ -1,0 +1,14 @@
+<odoo>
+    <record model="ir.ui.view" id="inherited_res_users_view_form">
+        <field name="name">inherited.res.users.view.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page name="estate_properties" string="Real Estate Properties">
+                    <field name="property_ids"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

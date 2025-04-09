@@ -29,8 +29,8 @@ class EstateProperty(models.Model):
                 == -1
             ):
                 raise ValidationError(
-                    'The selling price must be greater than 90% of the expected price. You must reduce the expected '
-                    'price if you want to accept this offer'
+                    'The selling price must be greater than 90% of the expected price.'
+                    'You must reduce the expected price if you want to accept this offer'
                 )
 
     name = fields.Char('Title', required=True, default='Unknown')
@@ -73,7 +73,7 @@ class EstateProperty(models.Model):
         'res.users', 'Salesperson', default=lambda self: self.env.uid
     )
     buyer_id = fields.Many2one('res.partner', 'Buyer', copy=False)
-    tag_ids = fields.Many2many('estate.property.tag')
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     best_price = fields.Float(
         'Best Price', copy=False, readonly=True, compute='_compute_best_price'
@@ -106,29 +106,15 @@ class EstateProperty(models.Model):
 
     @api.onchange('offer_ids')
     def _onchange_offer_ids(self):
-        # When the user removes all offers
-        if not self.offer_ids:
-            if self.state == 'offer_received':
+        if self.state == 'offer_received':
+            if not self.offer_ids:
                 self.state = 'new'
-            elif self.state == 'offer_accepted':
-                # Check if the accepted offer was removed
-                self.state = 'new'
-                self.selling_price = 0
-                self.buyer_id = False
             return
 
-        # User created the first offer
-        if self.state == 'new':
-            self.state = 'offer_received'
-            return
-
-        # User removed an offer when the property was in offer_accepted state
-        if self.state == 'offer_accepted':
-            # Check if the accepted offer was removed
-            if not self.offer_ids.filtered(lambda o: o.status == 'accepted'):
-                self.selling_price = 0
-                self.buyer_id = False
-                self.state = 'offer_received'
+        if self.state != 'new':
+            raise UserError(
+                'You cannot modify offers when the property is not in New or Offer Received state.'
+            )
 
     def action_cancel(self):
         for record in self:
@@ -147,3 +133,12 @@ class EstateProperty(models.Model):
             record.state = 'sold'
 
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_new_cancelled(self):
+        """Only allow New or Cancelled properties to be deleted."""
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(
+                    'You cannot delete a property that is not New or Cancelled.'
+                )
