@@ -70,7 +70,7 @@
         </record>
 
 
-        <record id="estate_prperty_view_form" model="ir.ui.view">
+        <record id="estate_property_view_form" model="ir.ui.view">
             <field name="name">Property.form</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
@@ -81,6 +81,7 @@
                         <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                     </header>
                     <sheet>
+
                         <div invisible="status !='sold'">
                             <widget name="web_ribbon" title="sold" bg_color="text-bg-success"/>
                         </div>
@@ -92,36 +93,35 @@
                                 <h1>
                                     <field name="name" />
                                 </h1>
-                                <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
-                            </group>
-                            <group>
-                                <field name="image" widget="image" class="oe_avatar"/>
                             </group>
                         </group>
-                        <group>
+                        <group col="3">
                             <group>
+                                <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                                 <field name="property_ids" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="postcode" />
                                 <field name="expected_price" />
                             </group>
-                            <group>
+                            <group><br/><br/><br/>
                                 <field name="date_avaibility" />
                                 <field name="selling_price" />
                                 <field name="best_offer" />
+                            </group>
+                            <group>
+                                <field name="image" widget="image"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="Description">
                                 <group>
-                                    <field name="description" />
-                                </group>
-                                <group>
                                     <group>
+                                        <h2 class="mb-2 fw-semibold border-bottom pb-1">
+                                            Property Details
+                                        </h2>
+                                        <field name="description" />
                                         <field name="bedrooms" />
                                         <field name="facades" />
                                         <field name="garage" />
-                                    </group>
-                                    <group>
                                         <field name="living_area" />
                                         <field name="garden" />
                                         <field name="garden_area" invisible = "garden == 0"/>

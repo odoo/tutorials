@@ -1,10 +1,11 @@
 from odoo import fields, models
 from odoo.exceptions import UserError
 
+
 class res_users(models.Model):
     _inherit = "res.users"
 
-    property_ids = fields.One2many("estate.property","sales_person_ids", string=" ")
+    property_ids = fields.One2many("estate.property", "sales_person_ids", string=" ")
 
     def action_generate_sales_person_report(self):
 

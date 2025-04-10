@@ -13,5 +13,5 @@
     ],
     'data': [
         'report/estate_property_account.xml',
-    ],  
+    ],
 }

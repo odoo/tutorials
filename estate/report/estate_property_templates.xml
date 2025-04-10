@@ -238,7 +238,7 @@
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="mt-4">
+                        <div class="mt-4" id="make_offers">
                             <t t-if="property.status != 'offer_accepted'">
                                 <a t-att-href="'/property/%s/offer' % property.id" class="btn btn-primary w-100">
                                     Make an Offer <i class="fa fa-arrow-right ms-2"></i>
@@ -328,11 +328,11 @@
                             <form action="/estate/submit" method="post" class="mt-4">
                                 <input type="hidden" name="property_id" t-att-value="property.id"/>
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                                <div class="mb-3">
+                                <div class="mb-3" id="offer_price">
                                     <label class="form-label fw-bold">Offer Price (Rs.)</label>
                                     <input type="number" name="offer_price" class="form-control" placeholder="Enter your offer" required="" />
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3" id="validity">
                                     <label class="form-label fw-bold">Validity of Your Offer (Days)</label>
                                     <input type="number" name="validity" class="form-control" placeholder="Enter validity period" required="" />
                                 </div>

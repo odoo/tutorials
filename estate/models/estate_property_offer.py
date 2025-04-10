@@ -3,21 +3,22 @@ from dateutil.relativedelta import relativedelta
 from datetime import date
 from odoo.exceptions import UserError
 
+
 class estate_Property_Offer(models.Model):
     _name = "estate.property.offer"
     _description = "relevent offers"
     _order = "price desc"
 
     price = fields.Float("Price")
-    status = fields.Selection([('accepted','Accepted'),('refused','Refused'),('new','New')],copy=False,default="new")
-    partner_id = fields.Many2one("res.partner",required=True, string="Partner")
+    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused'), ('new', 'New')], copy=False, default="new")
+    partner_id = fields.Many2one("res.partner", required=True, string="Partner")
     property_id = fields.Many2one("estate.property", required=True)
-    validity =fields.Integer("Validity (days)",default=7)
+    validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
-    property_type_id = fields.Many2one(related = "property_id.property_ids", store = True)
+    property_type_id = fields.Many2one(related="property_id.property_ids", store=True)
 
     _sql_constraints = [
-        ('price', 'CHECK(price > 0)','The price must be strictly positive.')
+        ('price', 'CHECK(price > 0)', 'The price must be strictly positive.')
     ]
 
     @api.constrains('date_deadline')
@@ -29,7 +30,7 @@ class estate_Property_Offer(models.Model):
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
         for record in self:
-            record.date_deadline = date.today() + relativedelta(days =+ record.validity)
+            record.date_deadline = date.today() + relativedelta(days=+ record.validity)
 
     def _inverse_deadline(self):
         for record in self:
@@ -37,7 +38,7 @@ class estate_Property_Offer(models.Model):
 
     def action_accept(self):
         if self.property_id.selling_price:
-            raise UserError("Another offer is already accepted")            
+            raise UserError("Another offer is already accepted")
         else:
             self.status = "accepted"
             self.property_id.status = "offer_accepted"
@@ -45,9 +46,9 @@ class estate_Property_Offer(models.Model):
             self.property_id.selling_price = self.price
 
             for record in self.property_id.offer_ids:
-                if record != self: 
-                    record.status = "refused" 
-        
+                if record != self:
+                    record.status = "refused"
+
     def action_refuse(self):
         self.status = "refused"
         self.property_id.selling_price = 0
@@ -55,6 +56,8 @@ class estate_Property_Offer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        if self._context.get('skip_intermediate_create'):
+            return super().create(vals_list)
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
             if property_id.status == 'sold':

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="ir_cron_check_auction_expiry" model="ir.cron">
+        <field name="name">Check Auction Expiry</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="state">code</field>
+        <field name="code">model._close_expired_auctions()</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header//button[@name='action_sold']" position="before">
+                <button name="action_start_auction" type="object" string="Start Auction" invisible = "status in ('sold','cancelled') or selling_type == 'regular' or auction_state in ('blocked','done')"/>
+            </xpath>
+            <xpath expr="//field[@name='tags_ids']" position="before">
+                <h4><field name="selling_type" widget="radio" options="{'horizontal': true}" nolabel="1" readonly="lock_selling_type"/></h4>
+            </xpath>
+            <xpath expr="//sheet//group//group" position="after">
+                <group>
+                    <h5><field name="auction_state" widget="state_selection" invisible="selling_type == 'regular'" options="{'hide_label': False}" class="oe_avatar d-flex pt-1 me-1 badge rounded-pill bg-gray" nolabel="1"/></h5>
+                </group>
+            </xpath>
+            <xpath expr="//page//group//group//h2" position="attributes">
+                <attribute name="invisible">selling_type == 'regular'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='offer_ids']" position="attributes">
+                <attribute name="readonly">status in ('sold','offer_accepted','cancelled') or (auction_state == 'normal' and selling_type == 'auction')</attribute>
+            </xpath>
+            <xpath expr="//page//group//group" position="after">
+                <group invisible="selling_type == 'regular'">
+                    <h2 class="mb-2 fw-semibold border-bottom pb-1">
+                        Auction Details
+                    </h2>
+                    <field name="end_time" />
+                    <field name="highest_offer" />
+                    <field name="highest_bidder" />
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t//div" position="inside">
+                <footer class="pt-1 p-0 m-0">
+                    <div class="d-flex justify-content-between" invisible="selling_type == 'regular'">
+                        <field name="sales_person_ids" widget="many2one_avatar_user"/>
+                        <field class="mt-1 mr4" name="auction_state" widget="state_selection"/>
+                    </div>
+                </footer>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.inherit</field>
+        <field name="model">estate.property.offer</field>
+        <field name="inherit_id" ref="estate.estate_property_offer_list"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list//button[@name='action_accept']" position="attributes">
+                <attribute name="invisible">from_auction == 1</attribute>
+            </xpath>
+            <xpath expr="//list//button[@name='action_refuse']" position="attributes">
+                <attribute name="invisible">from_auction == 1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <template id="website_property_details1" inherit_id="estate.website_property_details">
+        <xpath expr="//t//div//div//div//h3[@class='text-primary mb-3']" position="after">
+            <t t-if="property.time_remaining and property.selling_type == 'auction'">
+                <div class="mb-3">
+                    <span class="badge bg-primary text-white px-3 py-2 fs-6">
+                        <t t-out="property.time_remaining"/>
+                    </span>
+                </div>
+            </t>
+        </xpath>
+
+        <xpath expr="//t//div//div//div//div[@class='mt-4']" position="replace">
+            <t t-if="not (property.selling_type == 'auction' and property.auction_state in ['normal', 'done'])">
+                <div class="mt-4">
+                    <t t-if="property.status != 'offer_accepted'">
+                        <a t-att-href="'/property/%s/offer' % property.id" class="btn btn-primary w-100">
+                            Make an Offer <i class="fa fa-arrow-right ms-2"></i>
+                        </a>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="make_offer_template1" inherit_id="estate.make_offer_template">
+        <xpath expr="//div[@id='validity']" position="replace">
+            <!-- Replaced with nothing to remove it -->
+        </xpath>
+        <xpath expr="//div[@id='offer_price']" position="before">
+            <div class="mb-3" id="offer_price"><h5>
+                <label class="form-label fw-bold">Name : </label>
+                <t t-out="request.env.user.name"/></h5>
+            </div>
+            <div class="mb-3" id="offer_price"><h5>
+                <label class="form-label fw-bold">Current highest bid : </label>
+                <t t-out="property.highest_offer"/></h5>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="property_list_filter_inherit" inherit_id="estate.property_list_template">
+        <xpath expr="//div[@class='d-flex justify-content-between align-items-center mb-4']" position="after">
+            <!-- Filter Form -->
+            <div class="mb-4">
+                <form method="get" action="/estate">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-auto">
+                            <select name="selling_type" class="form-select">
+                                <option value="">All Types</option>
+                                <option value="auction" t-att-selected="'selected' if request.params.get('selling_type') == 'auction' else None">Auction</option>
+                                <option value="regular" t-att-selected="'selected' if request.params.get('selling_type') == 'regular' else None">Regular</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-outline-primary">Filter</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>

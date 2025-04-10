@@ -2,10 +2,11 @@ from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged
 
+
 @tagged('post_install', '-at_install')
 class TestEstateProperty(TransactionCase):
     def setUp(self):
-        super(TestEstateProperty, self).setUp()
+        super().setUp()
         self.property = self.env['estate.property'].create({
             'name': 'Test Property',
             'expected_price': 100000,
@@ -34,7 +35,6 @@ class TestEstateProperty(TransactionCase):
     def test_can_sell_property_with_accepted_offer(self):
         self.offer.action_accept()
         self.property.action_sold()
-        
         self.assertEqual(self.property.status, 'sold')
 
     def test_onchange_garden(self):

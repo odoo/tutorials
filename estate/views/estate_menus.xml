@@ -11,5 +11,7 @@
     <menuitem id="estate_menu_property_type" action="estate_property_type" parent="estate_menu_settings" />
 
     <menuitem id="estate_menu_property_tag" action="estate_property_tag" parent="estate_menu_settings" />
+
+    <menuitem id="estate_property_menu_configuration" action="estate_property_setting_action" parent="estate_menu_settings"/>
     
 </odoo>
