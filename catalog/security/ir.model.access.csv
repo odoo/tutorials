@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+catalog.access_catalog,access_catalog,catalog.model_catalog,base.group_user,1,1,1,1
+catalog.access_catalog_line,access_catalog_line,catalog.model_catalog_line,base.group_user,1,1,1,1
+catalog.access_catalog_field,access_catalog_field,catalog.model_catalog_field,base.group_user,1,1,1,1

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <record id="sale_price_history_wizard_form" model="ir.ui.view">
+        <field name="name">sale.price.history.wizard.form</field>
+        <field name="model">sale.price.history.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <div>
+                    <strong>Product: </strong>
+                    <field name="product_id" readonly="1" nolabel="1"/>
+                </div>
+                <field name="history_line_ids" readonly="1">
+                    <list create="0" delete="0">
+                        <field name="order_date"/>
+                        <field name="price_unit"/>
+                    </list>
+                </field>
+                <footer>
+                    <button string="Close" class="btn-primary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    <record id="action_sale_price_history" model="ir.actions.act_window">
+        <field name="name">Sales Price History</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.price.history.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
