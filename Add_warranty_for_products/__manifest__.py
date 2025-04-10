@@ -1,7 +1,7 @@
 {
     "name": "Product Warranty Sale",
     "version": "1.0",
-    "depends": ["sale", "product"],
+    "depends": ["sale_management"],
     'license': 'LGPL-3',
     "category": "Sales",
     "summary": "Add warranty options to sales orders",

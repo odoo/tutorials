@@ -7,7 +7,7 @@
                 <sheet>
                     <field name="order_id" invisible="1"/>
                     <field name="warranty_line_ids">
-                        <list editable="bottom">
+                        <list editable="bottom" create="0" delete="0">
                             <field name="order_line_id"/>
                             <field name="warranty_id"/>
                             <field name="end_date"/>

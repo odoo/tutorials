@@ -32,7 +32,7 @@ class WarrantyConfigurationWizard(models.TransientModel):
         for line in self.warranty_line_ids.filtered(lambda l: l.order_line_id and l.warranty_id):
             product = line.order_line_id.product_id
             warranty_product = line.warranty_id.product_id
-            warranty_price = (product.list_price / 100) * line.warranty_id.percentage
+            warranty_price = (line.order_line_id.price_unit / 100) * line.warranty_id.percentage
             warranty_description = f"Warranty for {product.name} - {line.warranty_id.name} (Ends: {line.end_date})"
 
             existing_line = self.order_id.order_line.filtered(
@@ -84,7 +84,20 @@ class SaleOrder(models.Model):
 
     @api.onchange('order_line')
     def _onchange_order_line(self):
-        product_lines = self.order_line.filtered(lambda l: not l.linked_order_line_id)
+        base_lines = self.order_line.filtered(lambda l: not l.linked_order_line_id)
         self.order_line = self.order_line.filtered(
-            lambda l: not l.linked_order_line_id or l.linked_order_line_id in product_lines
+            lambda l: not l.linked_order_line_id or l.linked_order_line_id.id in base_lines.ids
         )
+
+    has_warranty_available = fields.Boolean(
+    string="Has Warranty Available",
+    compute='_compute_has_warranty_available',
+    store=True)
+
+    @api.depends('order_line.product_id.is_warranty_available')
+    def _compute_has_warranty_available(self):
+        for order in self:
+            order.has_warranty_available = any(
+                line.product_id.is_warranty_available
+                for line in order.order_line
+            )

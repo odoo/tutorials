@@ -1,0 +1,12 @@
+<data>
+    <record id="your_record_id" model="ir.ui.view">
+        <field name="name">Product Popup View</field>
+        <field name="inherit_id" ref="web.assets_backend"/>
+        <field name="arch" type="xml">
+            <xpath expr="." position="inside">
+                <script type="module" src="/Redesign_Catalog_view/static/src/js/product_popup.js"/>
+                <link rel="stylesheet" href="/Redesign_Catalog_view/static/src/css/product_popup.css"/>
+            </xpath>
+        </field>
+    </record>
+</data>

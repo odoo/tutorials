@@ -6,17 +6,12 @@
     'depends': ['base', 'product', 'web'],
     'data': [
         'views/product_catalog_kanban.xml',
-  
     ],
     'assets': {
-    
         'web.assets_backend': [
             'Redesign_Catalog_view/static/src/**/*',
-            
         ],
     },
-
     'installable': True,
     'application': True,
-    
 }
