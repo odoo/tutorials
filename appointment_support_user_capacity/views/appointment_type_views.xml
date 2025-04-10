@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="inherit_appointment_type_view_form" model="ir.ui.view">
+        <field name="name">appointment.type.form.view</field>
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='right_details']/label" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='right_details']/div" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='right_details']/field[@name='assign_method']" position="before">
+                <label for="capacity_type"/>
+                <div>
+                    <div class="o_row">
+                        <field name="capacity_type"/>
+                        <field name="user_capacity" invisible="schedule_based_on != 'users'" placeholder="Enter user capacity" class="oe_inline"/>
+                    </div>
+                    <div invisible="schedule_based_on != 'resources'">
+                        <span>Total:<field name="resource_total_capacity" class="oe_inline mx-2"/>seats</span>
+                    </div>
+                    <div invisible="schedule_based_on != 'resources'">
+                        <a type="object" name="action_appointment_resources" class="btn btn-link ps-0 pb-2" role="button">
+                            <i class="oi oi-fw o_button_icon oi-arrow-right"/> Manage Resources
+                        </a>
+                    </div>
+                </div>
+            </xpath>
+
+            <xpath expr="//group[@name='options_left_details']/div/div/div/span[1]" position="attributes">
+                <attribute name="invisible">capacity_type not in ['one_booking', 'multiple_bookings']</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='options_left_details']/div/div/div/span[2]" position="attributes">
+                <attribute name="invisible">capacity_type != 'multiple_seats'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
