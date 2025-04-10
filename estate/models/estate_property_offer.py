@@ -98,8 +98,13 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         curr_max_price = 0
+        estate_property_model = self.env['estate.property']
+
         for vals in vals_list:
-            estate_property = self.env['estate.property'].browse(vals['property_id'])
+            estate_property = estate_property_model.browse(vals.get('property_id'))
+
+            if not estate_property.exists():
+                raise ValidationError('The specified property does not exist.')
 
             if estate_property.state in ['sold', 'cancelled']:
                 raise UserError(
