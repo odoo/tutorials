@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="modular_type_wizard_form" model="ir.ui.view">
+        <field name="name">modular.type.wizard.form</field>
+        <field name="model">modular.type.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Modular Type">
+                <sheet>
+                    <group>
+                        <field name="wizard_lines" nolabel="1">
+                            <list editable="bottom" create="false" delete="false">
+                                <field name="modular_type_id" force_save="1" readonly="1"/>
+                                <field name="value"/>
+                            </list>
+                        </field>
+                    </group>
+                    <footer>
+                        <button string="Add" type="object" name="action_add" class="btn-primary"/>
+                        <button string="Cancel" special="cancel" class="btn-secondary"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+     <record id="modular_type_wizard_action" model="ir.actions.act_window">
+        <field name="name">modular type</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">modular.type.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="modular_type_wizard_form"/>
+    </record>
+</odoo>
