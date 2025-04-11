@@ -68,6 +68,9 @@ class EstateProperty(models.Model):
         copy=False,
         required=True,
     )
+    company_id = fields.Many2one(
+        'res.company', required=True, default=lambda self: self.env.company
+    )
     property_type_id = fields.Many2one('estate.property.type', 'Property Type')
     salesperson_id = fields.Many2one(
         'res.users', 'Salesperson', default=lambda self: self.env.uid
@@ -129,6 +132,11 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError('You cannot mark a cancelled property as sold.')
+
+            if record.state != 'offer_accepted':
+                raise UserError(
+                    'You cannot mark a property as sold without accepting an offer.'
+                )
 
             record.state = 'sold'
 
