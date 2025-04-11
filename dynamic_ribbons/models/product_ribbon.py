@@ -1,6 +1,7 @@
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 
+
 class ProductRibbon(models.Model):
     _inherit = "product.ribbon"
 
@@ -38,7 +39,7 @@ class ProductRibbon(models.Model):
                 if existing_ribbon:
                     raise ValidationError(f"A ribbon with assign type '{assign_type}' already exists. You cannot create another one.")
         return super().create(vals_list)
-        
+
     def write(self, vals):
         assign_type = vals.get('assign')
         if assign_type != 'manual':
@@ -46,4 +47,3 @@ class ProductRibbon(models.Model):
             if existing_ribbon:
                 raise ValidationError(f"A ribbon with assign type '{assign_type}' already exists. You cannot assign another one.")
         return super().write(vals)
-        

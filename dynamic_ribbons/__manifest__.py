@@ -4,13 +4,13 @@
     'summary': '',
     'author': 'PBCH',
     'category': 'Website',
-    'depends': [ 'website_sale', 'stock' ],
+    'depends': ['website_sale', 'stock'],
     'data': [
         'views/product_ribbon_view.xml',
         'views/snippet.xml',
     ],
     'assets': {
-        'website.assets_wysiwyg':[
+        'website.assets_wysiwyg': [
             'dynamic_ribbons/static/src/js/website_sale_editor.js',
         ],
         'website.backend_assets_all_wysiwyg': [

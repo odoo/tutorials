@@ -1,6 +1,7 @@
 from odoo.addons.website_sale.controllers.main import WebsiteSale
 from odoo import http
 
+
 class WebsiteSaleExtended(WebsiteSale):
 
     @http.route([
@@ -18,4 +19,3 @@ class WebsiteSaleExtended(WebsiteSale):
                 product._get_ribbon(products_prices)
 
         return response
-        

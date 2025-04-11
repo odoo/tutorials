@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
 
@@ -21,12 +22,12 @@ class ProductTemplate(models.Model):
         if out_of_stock_ribbon and self.qty_available <= 0.0 and not self.allow_out_of_stock_order:
             self.website_ribbon_id = out_of_stock_ribbon.id
             self.website_ribbon_auto = True
-            return 
+            return
 
         # Sale Ribbon
         pricelist_price = products_prices[self.id].get('price_reduce')
         sale_ribbon = product_ribbon_sudo.search([('assign', '=', 'sale')])
-        if sale_ribbon and (pricelist_price < self.list_price or self.list_price < self.compare_list_price):            
+        if sale_ribbon and (pricelist_price < self.list_price or self.list_price < self.compare_list_price):
             self.website_ribbon_id = sale_ribbon.id
             self.website_ribbon_auto = True
             return
@@ -38,11 +39,10 @@ class ProductTemplate(models.Model):
             if days_since_publish <= new_ribbon.show_period:
                 self.website_ribbon_id = new_ribbon.id
                 self.website_ribbon_auto = True
-                return  
+                return
 
         # If no ribbon was assigned automatically then clearing any existing automatic ribbon
         self.website_ribbon_id = None
-
 
     def write(self, vals):
         if 'website_ribbon_id' in vals and vals['website_ribbon_id'] != self.website_ribbon_id.id:
