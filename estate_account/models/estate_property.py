@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         """Automatically create an invoice for the property sale."""
-        self.check_access("write")
+        self.check_access('write')
         if super().action_sold() is True:
             return (
                 self.env['account.move']
