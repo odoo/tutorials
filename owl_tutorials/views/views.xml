@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <!-- Tree (List) View -->
   <record id="todo_list_view_tree" model="ir.ui.view">
     <field name="name">todo.list.tree</field>
     <field name="model">todo.list</field>
@@ -13,7 +12,6 @@
     </field>
   </record>
 
-  <!-- Form View -->
   <record id="todo_list_view_form" model="ir.ui.view">
     <field name="name">todo.list.form</field>
     <field name="model">todo.list</field>
@@ -30,7 +28,6 @@
     </field>
   </record>
 
-  <!-- Action -->
   <record id="action_todo_list" model="ir.actions.act_window">
     <field name="name">Todo List</field>
     <field name="res_model">todo.list</field>
@@ -42,7 +39,6 @@
     <field name="tag">owl.action_todo_list_js</field>
   </record>
 
-  <!-- Menus -->
   <menuitem id="menu_todo_root" name="OWL Tutorials" sequence="10"/>
   <menuitem id="menu_todo_list" name="Todo List" parent="menu_todo_root" action="action_todo_list"/>
   <menuitem id="menu_todo_list_js" name="Todo List OWL" parent="menu_todo_root" action="action_owl_todo_list_js"/>
