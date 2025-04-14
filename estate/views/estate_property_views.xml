@@ -20,6 +20,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Channel" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
+                <header>
+                    <button name="%(action_add_offer_wizard)d" string="Add Offer"
+                    type="action" class="oe_stat_button" icon="fa-plus-square"/>
+                </header>
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="expected_price" widget="monetary"/>
@@ -41,12 +45,20 @@
             <form string="Property">
 
                 <header>
-                    <button name="action_do_sold" type="object" string="Sold" class="oe_highlight" invisible="state in ('sold' , 'cancelled')" />
+                    <button name="action_do_sold" type="object" string="Sold" class="oe_secondary" invisible="state in ('sold' , 'cancelled')" />
                     <button name="action_do_cencelled" type="object" string="Cancelled" class="oe_secondary" invisible="state in ('sold' , 'cancelled')" />
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
 
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate_property_offers_report_print)d"
+                                string="Print"
+                                id="print"
+                                type="action"
+                                icon="fa-print">
+                        </button>
+                    </div>
                     <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" invisible="state not in('cancelled')"/>
                     <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="state not in('sold')"/>
                     <group>
@@ -74,17 +86,19 @@
                     </group>
                     
                     <notebook>
-                        <page string="Description">
+                        <page id="property_description" string="Description">
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_orientation" invisible="not garden"/>
-                                <field name="garden_area" invisible="not garden"/>
-                                <field name="living_area"/>
-                                <field name="total_area" readonly="1"/>
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="living_area"/>
+                                    <field name="total_area" readonly="1"/>
+                                </group>
                             </group>
                         </page>
 
@@ -101,6 +115,8 @@
                         </page>
                     </notebook>
                 </sheet>
+                <!-- for chatter besides form -->
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>

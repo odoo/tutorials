@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields
+
 
 class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
@@ -14,7 +15,7 @@ class EstatePropertyType(models.Model):
     ]
 
     offer_ids = fields.One2many('estate.property.offer', 'property_type_id', string="offers")
-    offer_count = fields.Integer(compute = "_compute_offer_count", string="Offers")
+    offer_count = fields.Integer(compute="_compute_offer_count", string="Offers")
 
     # count offer for display at star button
     # @api.depends("offer_ids")

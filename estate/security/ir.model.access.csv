@@ -3,7 +3,10 @@ estate_access_manager_type,estate.manager.type.access,model_estate_property_type
 estate_access_manager_tag,estate.manager.tag.access,model_estate_property_tag,estate_group_manager,1,1,1,1
 estate_access_manager_property,estate.manager.property.access,model_estate_property,estate_group_manager,1,1,1,0
 estate_access_manager_offer,estate.manager.offer.access,model_estate_property_offer,estate_group_manager,1,1,1,1
+estate_access_manager_offer_wizard,estate.manager.offer.wizard.access,model_estate_offer_wizard,estate_group_manager,1,1,1,1
+
 estate_access_agent_types,estate.agent.types.readonly,model_estate_property_type,estate_group_user,1,0,0,0
 estate_access_agent_tags,estate.agent.tags.readonly,model_estate_property_tag,estate_group_user,1,0,0,0
 estate_access_agent_property,estate.agent.property.access,model_estate_property,estate_group_user,1,1,1,0
 estate_access_agent_offer,estate.agent.offer.access,model_estate_property_offer,estate_group_user,1,1,1,1
+estate_access_agent_offer_wizard,estate.agent.offer.wizard.access,model_estate_offer_wizard,estate_group_user,1,1,1,1

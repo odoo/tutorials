@@ -3,3 +3,4 @@ from . import estate_property_type
 from . import estate_property_tag
 from . import estate_property_offer
 from . import estate_res_user
+from . import res_config_settings

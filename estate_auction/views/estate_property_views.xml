@@ -1,0 +1,57 @@
+<odoo>
+     <!-- crone for check auction expired or not -->
+    <record id="ir_cron_check_auction_expired" model="ir.cron">
+        <field name="name">Check Auction Expired</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="state">code</field>
+        <field name="code">model._close_expired_auctions()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+    </record>
+
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='tag_ids']" position="before">
+                <field name="sale_type" widget="radio"/>
+            </xpath>
+            <xpath expr="//field[@name='image']" position="before">
+                <group>
+                    <h5><field name="auction_state" widget="state_selection" invisible="sale_type != 'auction'" options="{'hide_label': False}" class="oe_avatar d-flex pt-1 me-1 badge rounded-pill bg-gray" nolabel="1"/></h5>
+                </group>
+            </xpath>
+            <xpath expr="//page[@id='property_description']//group" position="inside">
+                <group invisible="sale_type != 'auction'">
+                    <separator string="Auction Details"/>
+                    <field name="auction_end_time"/>
+                    <field name="highest_offer" readonly="1"/>
+                    <field name="highest_bidder" readonly="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//button[@name='action_do_sold']" position="before">
+                <button name="start_auction_action" type="object" string="Start Auction" invisible="sale_type != 'auction'" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- kanban view for auction -->
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.view_estate_property_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t//div" position="inside">
+                    <footer class="pt-1 p-0 m-0">
+                        <div class="d-flex justify-content-between" invisible="sale_type == 'regular'">
+                            <div class="ms-auto">
+                            <field class="mt-1 mr4" name="auction_state" widget="state_selection"/>
+                            </div>
+                        </div>
+                    </footer>
+            </xpath>
+        </field>
+    </record>
+</odoo>
