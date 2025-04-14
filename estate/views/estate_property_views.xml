@@ -39,6 +39,7 @@
                             <field name="property_type_id" options="{'no_create' : true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="company_id"></field>
                         </group>
                         <group>
                             <field name="expected_price"/>
