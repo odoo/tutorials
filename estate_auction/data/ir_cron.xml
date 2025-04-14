@@ -1,0 +1,12 @@
+<odoo>
+    <record id="ir_cron_process_auctions" model="ir.cron">
+        <field name="name">Process Auctions</field>
+        <field name="model_id" ref="real_estate.model_estate_property"/>
+        <field name="state">code</field>
+        <field name="code">model.check_and_end_auction()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+    </record>
+</odoo>
+
