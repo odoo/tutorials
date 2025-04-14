@@ -5,16 +5,15 @@
     'category': 'Point of Sale',
     'summary': 'Sell products using a second unit of measure in POS',
     'license': 'LGPL-3',
-    'data': [
+    'data':[
         'views/product_template_views.xml',
+
     ],
     'assets': {
-    'point_of_sale.assets': [
-        'Pos_second_uom/static/src/js/add_quantity_button.js',
-        'Pos_second_uom/static/src/xml/add_quantity_button.xml',
-    ],
-},
-
+        'point_of_sale._assets_pos': [
+            'Pos_second_uom/static/src/**/*',
+        ],
+    },
     'installable': True,
     'auto_install': True,
     'application': True,

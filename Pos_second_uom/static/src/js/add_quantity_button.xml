@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+        <t t-name="pos_secondary_uom.SecondaryUomDialog">
+            <Dialog title="Enter Quantity" class="secondary-uom-dialog">
+                <div class="form-group">
+                    <label>Quantity (Secondary UoM)</label>
+                    <input
+                        type="number"
+                        t-model="state.quantity"
+                        class="form-control"
+                        min="0.01"
+                        step="0.01"
+                        style="width: 100%;"
+                    />
+                </div>
+                <div class="footer d-flex justify-end mt-3">
+                    <button type="button" class="btn btn-primary me-2" t-on-click="confirm">Confirm</button>
+                    <button type="button" class="btn btn-secondary" t-on-click="cancel">Discard</button>
+                </div>
+            </Dialog>
+        </t>
+    <!-- Button in POS -->
+    <t t-name="pos_secondary_uom.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//SelectPartnerButton" position="after">
+            <button class="btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="openSecondaryUomDialog">
+                Add Quantity
+            </button>
+        </xpath>
+    </t>
+</templates>
