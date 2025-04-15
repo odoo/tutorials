@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Property Tags -->
+    <record id="property_tag_luxury" model="estate.property.tag">
+        <field name="name">Luxury</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="property_tag_affordable" model="estate.property.tag">
+        <field name="name">Affordable</field>
+        <field name="color">5</field>
+    </record>
+
+    <record id="property_tag_new" model="estate.property.tag">
+        <field name="name">New</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="property_tag_furnished" model="estate.property.tag">
+        <field name="name">Furnished</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="property_tag_sea_view" model="estate.property.tag">
+        <field name="name">Sea View</field>
+        <field name="color">6</field>
+    </record>
+
+    <record id="property_tag_garden" model="estate.property.tag">
+        <field name="name">Garden</field>
+        <field name="color">9</field>
+    </record>
+
+    <record id="property_tag_pool" model="estate.property.tag">
+        <field name="name">Private Pool</field>
+        <field name="color">7</field>
+    </record>
+
+    <record id="property_tag_gated" model="estate.property.tag">
+        <field name="name">Gated Community</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="property_tag_spacious" model="estate.property.tag">
+        <field name="name">Spacious</field>
+        <field name="color">8</field>
+    </record>
+
+    <record id="property_tag_pet_friendly" model="estate.property.tag">
+        <field name="name">Pet Friendly</field>
+        <field name="color">10</field>
+    </record>
+
+    <record id="property_tag_greenery" model="estate.property.tag">
+        <field name="name">Greenery</field>
+        <field name="color">11</field>
+    </record>
+
+    <record id="property_tag_smart_home" model="estate.property.tag">
+        <field name="name">Smart Home</field>
+        <field name="color">12</field>
+    </record>
+
+    <record id="property_tag_corner_plot" model="estate.property.tag">
+        <field name="name">Corner Plot</field>
+        <field name="color">13</field>
+    </record>
+</odoo>

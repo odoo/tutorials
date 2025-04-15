@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- extend property offer report  -->
+    <template id="estate_property_sold_offer_report_template" inherit_id="estate.estate_property_offers_report_template">
+        <xpath expr="//span[@t-field='property.state']" position="after">
+            <div t-if="property.state == 'sold'">!!!Invoice has already been created!!!</div>
+        </xpath>
+    </template>
+
+    <template id="estate_res_user_property_sold_offer_report_template" inherit_id="estate.res_user_offer_report_template">
+        <xpath expr="//span[@t-field='property.state']" position="after">
+            <div t-if="property.state == 'sold'">!!!Invoice has already been created!!!</div>
+        </xpath>
+    </template>
+</odoo>
