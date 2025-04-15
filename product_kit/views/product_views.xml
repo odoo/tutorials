@@ -7,9 +7,8 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='general_information']/group/group[@name='group_general']" position="inside">
                 <field name="isKit" string="Is Kit"/>
-                <field name="subProduct" widget="many2many_tags" string="Sub Products" invisible="not subProductVisibility"/>
+                <field name="subProduct_ids" widget="many2many_tags" string="Sub Products" invisible="not subProductVisibility"/>
             </xpath>
-
         </field>
     </record>
 </odoo>
