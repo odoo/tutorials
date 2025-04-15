@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="pos_salesperson.SalespersonList">
+        <Dialog bodyClass="'overflow-y-auto'" contentClass="'h-100'">
+            <t t-set-slot="header" class="">
+                <h3>Select Salesperson</h3>
+            </t>
+            <div class="salesperson-container">
+                <t t-foreach="getSalesperson()" t-as="salesperson" t-key="salesperson.id">
+                    <div class="salesperson-card" t-att-class="{'active':props.salesperson ? props.salesperson.id === salesperson.id : ''}" t-on-click="() => this.setSalesperson(salesperson)">
+                        <div class="salesperson-item">
+                            <t t-esc="salesperson.name"/>
+                            <button t-if="isSelected" t-on-click="() => this.setSalesperson(false)">
+                                <i class="fa fa-times me-1"></i>
+                                <i class="fa fa-check me-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-secondary btn-lg lh-lg" t-on-click="() => this.setSalesperson(props.salesperson)">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

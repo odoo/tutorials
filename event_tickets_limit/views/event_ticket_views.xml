@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_event_form_inherit" model="ir.ui.view">
+        <field name="name">event.event.form.inherit</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='address_id']" position="after">
+                <field name="max_tickets_per_registration"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

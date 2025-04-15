@@ -1,0 +1,71 @@
+.salesperson-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    padding: 0.5rem;
+}
+
+.salesperson-card {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    background-color: #f8f9fa;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+
+    &.active {
+        background-color: #dff0ff;
+        border-color: #007bff;
+    }
+
+    &:hover {
+        background-color: #e9ecef;
+    }
+}
+
+.salesperson-item {
+    font-size: 1.1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+        border: none;
+        background-color: transparent;
+        color: #007bff;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+
+        .fa-times {
+            display: none;
+        }
+
+        .fa-check {
+            display: inline;
+        }
+
+        &:hover {
+            .fa-times {
+                display: inline;
+            }
+
+            .fa-check {
+                display: none;
+            }
+        }
+    }
+}
+
+/* Mobile friendliness */
+@media (max-width: 576px) {
+    .salesperson-card {
+        padding: 0.75rem;
+    }
+
+    .salesperson-item {
+        font-size: 1rem;
+    }
+}

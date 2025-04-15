@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="website_sale_product_rental" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='product_attributes_simple']" position="before">
+            <t t-if="product.require_deposit and product.deposit_amount">
+                <div class="mb-2">
+                    <strong>Deposit Required: </strong>
+                    <span id="deposit_base_amount" t-esc="product.deposit_amount"/>
+                    <span> × </span>
+                    <span id="deposit_quantity">1</span>
+                    <span>=</span>
+                    <span t-esc="product.currency_id.symbol"/>
+                    <strong id="deposit_total_amount" t-esc="product.deposit_amount"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="cart_lines_deposit" inherit_id="website_sale.cart_lines" name="Cart Lines Deposit">
+        <xpath expr="//div[@name='website_sale_cart_line_price']" position="after">
+            <t t-if="line.product_id.require_deposit and line.product_id.deposit_amount">
+                <div>
+                    <strong>Deposit for</strong>
+                    <strong t-esc="line.product_id.name"/>
+                    <span> : </span>
+                    <span t-esc="line.product_id.currency_id.symbol"/>
+                    <strong t-esc="line.product_id.deposit_amount * line.product_uom_qty"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
