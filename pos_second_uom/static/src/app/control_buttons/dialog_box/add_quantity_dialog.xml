@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="pos_second_uom.AddQuantityDialog">
+      <Dialog size="'sm'" title="'Enter Quantity in Second UoM'">
+        <t t-set-slot="default">
+          <div class="mb-3">
+            <label for="quantityInput" class="form-label">
+              Enter Quantity in <b><t t-out="props.secondUomName"/></b>
+            </label>
+            <input type="number" min="0.01" step="0.01" class="form-control"
+                   id="quantityInput" placeholder="Enter quantity" t-ref="quantityInput"/>
+          </div>
+        </t>
+        <t t-set-slot="footer">
+          <button class="btn btn-primary" t-on-click="confirm">Confirm</button>
+          <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+        </t>
+      </Dialog>
+    </t>
+</templates>
