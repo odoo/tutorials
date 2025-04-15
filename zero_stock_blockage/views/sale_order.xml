@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_approval_checkbox" model="ir.ui.view">
+        <field name="name">sale.approval.checkbox</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="is_approval" readonly="not is_approval_read" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
