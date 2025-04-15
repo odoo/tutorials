@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="openCustomers" type="button" class="btn btn-primary"
+                        title="Customers">Customers</button>
+
+                <button t-on-click="openLeads" type="button" class="btn btn-primary"
+                        title="Leads">Leads</button>
+            </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
+
+            <t t-if="items.some(item => item.isSelected)">
+                <div class="o_card_container" t-if="stats.isDone">
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                       <DashboardItem size="item.size || 1" t-if="item.isSelected">
+                          <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
+                           <t t-component="item.Component" t-props="itemProp"/>
+                       </DashboardItem>
+                    </t>
+                </div>
+            </t>
+            <t t-else="">
+                <div class="text-center h-100"
+                     style="margin: 0 auto; width: fit-content; display: flex; flex-direction: column; justify-content: center; align-items: center">
+                    <h3 class="text-muted">Your Dashboard is Empty</h3>
+                    <p class="text-muted">Start by adding dashboard items to view insights.</p>
+                    <button class="btn btn-primary px-4 py-2"
+                            style="display: flex; width: fit-content; justify-content: center; align-items: center"
+                            t-on-click="openConfiguration">
+                        <i class="fa fa-plus me-2"/> Add Dashboard Items
+                    </button>
+                </div>
+            </t>
+        </Layout>
+    </t>
+
+</templates>
