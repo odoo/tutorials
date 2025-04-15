@@ -4,12 +4,12 @@
         <div class="todo-list-container">
             <div class="row mx=2 mt-2 ms-1 me-1">
                 <div class="col-lg-6">
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">New</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" t-on-click="addTask">New</button>
                 </div>
                 <div class="col-lg-6">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search.."/>
-                        <button class="btn btn-outline-primary">Search</button>
+                        <input type="text" class="form-control" placeholder="Search.." t-ref="search-input" t-on-keyup="searchTask"/>
+                        <button class="btn btn-outline-primary" t-on-click="searchTask">Search</button>
                     </div>
                 </div>
             </div>
@@ -27,18 +27,18 @@
                             <tr t-foreach="state.taskList" t-as="task" t-key="task.id">
                                 <td>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" t-att-id="task.id" t-att-checked="task.completed"/>
+                                        <input class="form-check-input" type="checkbox" value="" t-att-id="task.id" t-att-checked="task.completed" t-on-click="(e)=>this.toggleTask(e,task)"/>
                                         <label class="form-check-label" for="checkDefault" t-att-for="task.id" t-attf-class="#{task.completed and 'text-decoration-line-through'}">
                                             <span t-esc="task.name"/>
                                         </label>
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="color" class="form-control form-control-color" id="exampleColorInput" t-att-value="task.color" title="Choose your color"/>
+                                    <input type="color" class="form-control form-control-color" id="exampleColorInput" t-att-value="task.color" title="Choose your color" t-on-change="(e)=>this.toggleColor(e,task)"/>
                                 </td>
                                 <td>
-                                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button class="btn btn-success me-2" data-bs-toggle="modal" data-bs-target="#exampleModal" t-on-click="()=>this.editTask(task)">Edit</button>
+                                    <button class="btn btn-danger" t-on-click="()=>this.deleteTask(task)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -75,7 +75,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" t-on-click="saveTask">Save changes</button>
+                        <button type="button" class="btn btn-primary" t-on-click="saveTask" data-bs-dismiss="modal">Save changes</button>
                     </div>
                 </div>
             </div>
