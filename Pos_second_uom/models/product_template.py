@@ -10,5 +10,8 @@ class ProductTemplate(models.Model):
         store=True
     )
 
-    pos_secondary_uom_id = fields.Many2one("uom.uom", string="POS Secondary Unit of Measure")
-
+    pos_secondary_uom_id = fields.Many2one(
+        comodel_name='uom.uom',
+        string='Secondary Unit of Measure',
+        domain="[('category_id', '=', uom_category_id), ('id', '!=', uom_id)]"
+    )
