@@ -10,23 +10,8 @@
                     <field name="default_code"/>
                 </div>
             </xpath>
-
-            <xpath expr="//div[@name='o_kanban_qty_available']" position="replace">
-                <div t-if="record.is_storable.raw_value"
-                    name="o_kanban_qty_available">
-                    <field name="qty_available"/> On Hand
-                    <field name="virtual_available" invisible="1"/>
-                    <span t-if="record.virtual_available.raw_value - record.qty_available.raw_value >= 0" class="text-success">
-                        <span>(+</span><t t-out="record.virtual_available.raw_value - record.qty_available.raw_value"/><span>)</span>
-                    </span>
-                    <span t-else="" class="text-danger">
-                        <span>(</span><t t-out="record.virtual_available.raw_value - record.qty_available.raw_value"/><span>)</span>
-                    </span>
-                </div>
-            </xpath>
-            
             <field name="product_template_attribute_value_ids" position="after">
-                <span invisible="not last_date_str"><field name="last_date_str"/> ago</span>
+                <span invisible="not last_date_str" class="text-success"><field name="last_date_str"/> ago</span>
                 <span invisible="true"><field name="last_order_time"/></span>
             </field>
         </field>

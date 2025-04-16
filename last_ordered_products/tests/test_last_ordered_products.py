@@ -146,7 +146,7 @@ class LastOrderedProductsTestCase(TransactionCase):
         res_ids = [r[0] for r in res]
         self.assertEqual(self.test_product_1.id, res_ids[0])
         self.assertEqual(self.test_product_2.id, res_ids[1])
-        
+
     def test_product_variant_in_purchase_order(self):
         po_context = {
             'partner_id': self.test_partner_1.id,

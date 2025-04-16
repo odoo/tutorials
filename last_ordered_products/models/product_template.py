@@ -1,6 +1,4 @@
-from datetime import datetime
 from odoo import api, fields, models
-from odoo.osv import expression
 
 
 class ProductTemplate(models.Model):
@@ -11,7 +9,7 @@ class ProductTemplate(models.Model):
 
     @api.depends_context('order_id')
     def _compute_last_order_time(self):
-        """Compute the last order time for each product based on the latest sale or purchase."""
+        '''Compute the last order time for each product based on the latest sale or purchase.'''
 
         partner_id = self.env.context.get('partner_id')
         order_type = self.env.context.get('order_type')
@@ -80,32 +78,3 @@ class ProductTemplate(models.Model):
             return f"{diff.seconds // 60}m"
         else:
             return f"{diff.seconds}s"
-
-    @api.model
-    def name_search(self, name='', args=None, operator='ilike', limit=100):
-        '''Modify product dropdown in sale order line to show last sold date'''
-
-        domain = args or []
-        partner_id = self.env.context.get('partner_id')
-        order_type = self.env.context.get('order_type')
-        active_id = self.env.context.get('active_id')
-        if not order_type and active_id:
-            order_type = self.env['account.journal'].browse(active_id).type
-
-        if partner_id:
-            last_ordered_products = {}
-            if order_type == 'sale':
-                last_ordered_products = self._get_last_sold_products(partner_id)
-
-            product_ids = list(last_ordered_products.keys())
-
-            products = self.search_fetch(expression.AND([domain, [('id', 'in', product_ids)], [("name", operator, name)]]), ['display_name'], limit=limit)
-            limit_rest = limit and limit - len(products)
-            if limit_rest is None or limit_rest > 0:
-                products |= self.search_fetch(expression.AND([domain, [('id', 'not in', product_ids)], [("name", operator, name)]]), ['display_name'], limit=limit_rest)
-
-            products = sorted(products, key=lambda p: p.last_order_time if p.last_order_time else datetime.min, reverse=True)
-
-            return [(product.id, product.display_name, product.last_date_str if product.last_date_str else False) for product in products]
-
-        return super().name_search(name, args, operator, limit)

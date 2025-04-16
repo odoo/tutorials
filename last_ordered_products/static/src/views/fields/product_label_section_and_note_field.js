@@ -5,6 +5,9 @@ patch(ProductLabelSectionAndNoteFieldAutocomplete.prototype, {
     mapRecordToOption(result) {
         let res = super.mapRecordToOption(result)
         let time_str = result[2] ? result[2] : ""
+        if (time_str === ""){
+            return res;
+        }
         res['time_str'] = time_str
         return res
     },
