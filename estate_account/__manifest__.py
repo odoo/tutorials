@@ -5,6 +5,7 @@
     'category': 'Category',
     'description': "",
     "data": [
+        'report/estate_property_templates.xml',
     ],
     'application': True,
     'license': 'LGPL-3'

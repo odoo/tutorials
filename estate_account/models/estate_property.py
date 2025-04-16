@@ -1,5 +1,5 @@
 from odoo import Command, models
-
+from odoo.exceptions import AccessError
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
@@ -28,6 +28,5 @@ class EstateProperty(models.Model):
             except AccessError:
                 raise AccessError("You don't have the permission to sold on this record")
 
-            print(" reached  ".center(100, '='))
             self.env['account.move'].sudo().create(invoice_vals)
         return super().action_set_sold()

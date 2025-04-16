@@ -85,8 +85,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status == 'cancelled':
                 raise UserError(_("Cancelled properties cannot be sold."))
-            else:
-                record.status = 'sold'
+
+            has_accepted_offer = any(offer.status == "accepted" for offer in record.offer_ids)
+            if not has_accepted_offer:
+                raise UserError("You cannot sell a property without an accepted offer")
+
+            record.status = 'sold'
         return True
 
     @api.constrains("selling_price", "expected_price")
