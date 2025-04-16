@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_order_wizard,access_order_wizard,model_order_wizard,base.group_user,1,1,1,0
+access_order_line_wizard,access_order_line_wizard,model_order_line_wizard,base.group_user,1,1,1,0
+access_order_line_cost_divide,access_order_line_cost_divide,model_order_line_cost_divide,base.group_user,1,1,1,1
