@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_ribbon_form_view" model="ir.ui.view">
+        <field name="name">product.ribbon.form.view.inherit</field>
+        <field name="model">product.ribbon</field>
+        <field name="inherit_id" ref="website_sale.product_ribbon_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='position']" position="after">
+                <field name="style"/>
+                <field name="assign"/>
+                <div class="d-flex align-items-center" style="margin-left: 120px; display: flex; align-items: center; gap: 8px;" invisible="assign not in ('new')">
+                    <span class="o_form_label">For</span>
+                    <field name="days" style="width: 60px;" />
+                    <span class="o_form_label">days after publication</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_ribbon_list_view" model="ir.ui.view">
+        <field name="name">product.ribbon.list.view.inherit</field>
+        <field name="model">product.ribbon</field>
+        <field name="inherit_id" ref="website_sale.product_ribbon_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="sequence" widget="handle"/>
+            </xpath>
+        </field>
+    </record>
+
+    <template id="inherit_snippet_options"
+              inherit_id="website.snippet_options">
+        <xpath expr="//div[@data-name='ribbon_customize_opt']/we-colorpicker[1]" position="before">
+            <we-select string="Style" class="o_we_sublevel_1">
+                <we-button data-set-ribbon-style="badge">Badge</we-button>
+                <we-button data-set-ribbon-style="ribbon">Ribbon</we-button>
+            </we-select>
+        </xpath>
+    </template>
+</odoo>
