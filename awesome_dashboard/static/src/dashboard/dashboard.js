@@ -9,6 +9,7 @@ import { PieChart } from "@awesome_dashboard/dashboard/pie_chart/pie_chart";
 import { NumberCard } from "@awesome_dashboard/dashboard/number_card/number_card";
 import { PieChartCard } from "@awesome_dashboard/dashboard/pie_chart_card/pie_chart_card";
 import { ConfigDialog } from "@awesome_dashboard/dashboard/config_dialog/config_dialog";
+import { _t } from "@web/core/l10n/translation";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -30,14 +31,18 @@ class AwesomeDashboard extends Component {
 
     }
 
+    _t(...args) {
+        return _t(...args);
+    }
+
     openCustomers() {
-        this.action.doAction('base.action_partner_form')
+        this.action.doAction("base.action_partner_form")
     }
 
     openLeads() {
         this.action.doAction({
             type: 'ir.actions.act_window',
-            name: 'CRM Leads',
+            name: _t('CRM Leads'),
             res_model: 'crm.lead',
             views: [[false, 'list'], [false, 'form']],
         });

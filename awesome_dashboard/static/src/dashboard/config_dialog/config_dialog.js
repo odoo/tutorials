@@ -2,6 +2,7 @@
 
 import { Component, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
+import { _t } from "@web/core/l10n/translation";
 
 export class ConfigDialog extends Component {
     static template = "awesome_dashboard.ConfigDialog";
@@ -14,6 +15,10 @@ export class ConfigDialog extends Component {
 
     setup() {
         this.items = useState(this.props.items);
+    }
+
+    _t(...args) {
+        return _t(...args);
     }
 
     toggleItem(item) {

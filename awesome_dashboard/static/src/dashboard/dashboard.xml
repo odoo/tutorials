@@ -5,10 +5,10 @@
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
             <t t-set-slot="control-panel-create-button">
                 <button t-on-click="openCustomers" type="button" class="btn btn-primary"
-                        title="Customers">Customers</button>
+                        t-att-title="_t('Customers')"><t t-esc="_t('Customers')"/></button>
 
                 <button t-on-click="openLeads" type="button" class="btn btn-primary"
-                        title="Leads">Leads</button>
+                        t-att-title="_t('Leads')"><t t-esc="_t('Leads')"/></button>
             </t>
 
             <t t-set-slot="control-panel-additional-actions">
@@ -30,12 +30,12 @@
             <t t-else="">
                 <div class="text-center h-100"
                      style="margin: 0 auto; width: fit-content; display: flex; flex-direction: column; justify-content: center; align-items: center">
-                    <h3 class="text-muted">Your Dashboard is Empty</h3>
-                    <p class="text-muted">Start by adding dashboard items to view insights.</p>
+                    <h3 class="text-muted"><t t-esc="_t('Your Dashboard is Empty')"/></h3>
+                    <p class="text-muted"><t t-esc="_t('Start by adding dashboard items to view insights.')"/></p>
                     <button class="btn btn-primary px-4 py-2"
                             style="display: flex; width: fit-content; justify-content: center; align-items: center"
                             t-on-click="openConfiguration">
-                        <i class="fa fa-plus me-2"/> Add Dashboard Items
+                        <i class="fa fa-plus me-2"/> <t t-esc="_t('Add Dashboard Items')"/>
                     </button>
                 </div>
             </t>
