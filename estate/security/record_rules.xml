@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Agents: Only see and manage their properties -->
+    <record id="estate_agent_rule" model="ir.rule">
+        <field name="name">Agent Own Properties</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="0"/>
+        <field name="domain_force">[('salesperson_id', '=', user.id)]</field>
+    </record>
+
+    <!-- Managers: See all properties -->
+    <record id="estate_manager_rule" model="ir.rule">
+        <field name="name">Manager All Properties</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+        <field name="perm_read" eval="1"/>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_create" eval="1"/>
+        <field name="perm_unlink" eval="1"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>
