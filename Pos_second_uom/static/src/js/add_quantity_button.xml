@@ -11,7 +11,7 @@
                         <button type="button" class="btn-close" aria-label="Close" t-on-click="cancel"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div >
                             <label for="secondary-uom-input">Quantity (Secondary UoM)</label>
                             <input
                                 id="secondary-uom-input"
@@ -31,11 +31,9 @@
 
     <t t-name="pos_secondary_uom.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
     <xpath expr="//SelectPartnerButton" position="after">
-        <t t-if="pos.get_order().get_selected_orderline().product_id.uom_id.category_id.uom_ids[1]">
             <button class="btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="openSecondaryUomDialog">
                 Add Quantity
             </button>   
-        </t>
     </xpath>
 </t>
 
