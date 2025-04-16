@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_event_form_inherit" model="ir.ui.view">
+        <field name="name">event.event.form.inherit</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form"/> 
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='right_event_details']/div[field[@name='seats_limited']]" position="after">
+                <label for="has_ticket_limitation" string="Limit Tickets"/>
+                <div>
+                    <field name="has_ticket_limitation" string="Limit Tickets"/>
+                    <span invisible="not has_ticket_limitation" required="not has_ticket_limitation">to <field name="ticket_max_per_registration" class="oe_inline o_input_9ch"/> Tickets</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
