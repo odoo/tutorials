@@ -1,0 +1,96 @@
+from odoo import api, fields, models
+
+
+class ProductProduct(models.Model):
+    _inherit = 'product.product'
+
+    last_order_time = fields.Datetime(compute='_compute_last_order_time')
+    last_date_str = fields.Char(compute='_compute_last_order_time')
+
+    @api.depends_context('order_id')
+    def _compute_last_order_time(self):
+        '''Compute the last order time for each product based on the latest sale or purchase.'''
+
+        order_type = False
+        if self.env.context.get('active_model') == 'sale.order.line':
+            partner_id = self.env['sale.order'].browse(self.env.context.get('order_id')).partner_id.id
+            order_type = 'sale'
+        elif self.env.context.get('active_model') == 'purchase.order.line':
+            partner_id = self.env['purchase.order'].browse(self.env.context.get('order_id')).partner_id.id
+            order_type = 'purchase'
+        elif self.env.context.get('active_model') == 'account.journal':
+            active_id = self.env.context.get('active_id')
+            if active_id:
+                order_type = self.env['account.journal'].browse(active_id).type
+            partner_id = self.env.context.get('default_partner_id')
+
+        if not partner_id:
+            for record in self:
+                record.last_order_time = False
+                record.last_date_str = False
+            return
+
+        last_ordered_products = {}
+
+        if order_type == 'sale':
+            last_ordered_products = self._get_last_sold_products(partner_id)
+        elif order_type == 'purchase':
+            last_ordered_products = self._get_last_purchased_products(partner_id)
+
+        for record in self:
+            last_date = last_ordered_products.get(record.id)
+
+            record.last_order_time = last_date if last_date else False
+            record.last_date_str = self.env['product.template']._get_time_ago_string(last_date) if last_date else False
+
+    def _get_last_sold_products(self, partner_id):
+        '''Fetch products last sold to the given customer'''
+
+        sale_order_lines = self.env['sale.order.line'].search([
+            ('order_id.partner_id', '=', partner_id)
+        ])
+
+        if not sale_order_lines:
+            return {}
+
+        invoices = self.env['account.move'].search([
+            ('partner_id', '=', partner_id),
+            ('invoice_origin', 'in', sale_order_lines.order_id.mapped('name'))
+        ])
+
+        last_sale_ordered_products = {}
+        invoice_dates = {inv.invoice_origin: inv.create_date for inv in invoices}
+        for sol in sale_order_lines:
+            last_date = invoice_dates.get(sol.order_id.name)
+            if last_date:
+                product_id = sol.product_id.id
+                if product_id not in last_sale_ordered_products or last_date > last_sale_ordered_products[product_id]:
+                    last_sale_ordered_products[product_id] = last_date
+
+        return last_sale_ordered_products
+
+    def _get_last_purchased_products(self, partner_id):
+        '''Fetch products last purchased to the given vendor'''
+
+        purchase_order_line = self.env['purchase.order.line'].search([
+            ('order_id.partner_id', '=', partner_id)
+        ])
+
+        if not purchase_order_line:
+            return {}
+
+        invoices = self.env['account.move'].search([
+            ('partner_id', '=', partner_id),
+            ('invoice_origin', 'in', purchase_order_line.order_id.mapped('name'))
+        ])
+
+        last_purchased_order_products = {}
+        invoice_dates = {inv.invoice_origin: inv.create_date for inv in invoices}
+        for sol in purchase_order_line:
+            last_date = invoice_dates.get(sol.order_id.name)
+            if last_date:
+                product_id = sol.product_id.id
+                if product_id not in last_purchased_order_products or last_date > last_purchased_order_products[product_id]:
+                    last_purchased_order_products[product_id] = last_date
+
+        return last_purchased_order_products
