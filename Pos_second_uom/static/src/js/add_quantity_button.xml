@@ -31,12 +31,10 @@
 
     <t t-name="pos_secondary_uom.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
     <xpath expr="//SelectPartnerButton" position="after">
-            <button class="btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="openSecondaryUomDialog">
+            <button t-if="this.pos.selectedOrder.get_selected_orderline()?.product_id.pos_secondary_uom_id !== undefined and !currentOrder?.is_empty() and pos.get_order()?.uiState.selected_orderline_uuid" class="btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="openSecondaryUomDialog">
                 Add Quantity
             </button>   
     </xpath>
 </t>
-
-    
 
 </templates>

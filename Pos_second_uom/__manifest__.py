@@ -5,9 +5,8 @@
     'category': 'Point of Sale',
     'summary': 'Sell products using a second unit of measure in POS',
     'license': 'LGPL-3',
-    'data':[
+    'data': [
         'views/product_template_views.xml',
-
     ],
     'assets': {
         'point_of_sale._assets_pos': [

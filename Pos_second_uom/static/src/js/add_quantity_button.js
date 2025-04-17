@@ -14,12 +14,11 @@ export class SecondaryUomDialog extends Component {
         this.state = useState({ quantity: 1 });
 
         this.orderline = this.props.orderline;
-
+        console.log(this.orderline);
         const uomIds = this.orderline.product_id.uom_id.category_id.uom_ids;
 
         this.baseUom = uomIds[0];
         this.secondaryUom = uomIds[1];
-
         this.conversionRatio = 1;
         if (this.secondaryUom && this.baseUom) {
             const secondaryFactor = this.secondaryUom.factor;
@@ -37,8 +36,8 @@ export class SecondaryUomDialog extends Component {
 
         const baseQty = enteredQty * this.conversionRatio;
         this.orderline.set_quantity(baseQty);
-        this.orderline.uom_id = this.secondaryUom; 
-        this.props.close(); 
+        this.orderline.uom_id = this.secondaryUom;
+        this.props.close();
     }
 
     cancel() {

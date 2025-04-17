@@ -10,10 +10,6 @@ patch(ControlButtons.prototype, {
         const order = this.pos.get_order();
         const orderline = order.get_selected_orderline();
 
-        console.log("Order:", order);
-        console.log("Orderline:", orderline);
-        
-
         if (!orderline.product_id.uom_id.category_id.uom_ids[1]) {
             this.env.services.notification.add("Select a product with a secondary UoM first.", {
                 type: "warning",
