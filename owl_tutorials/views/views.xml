@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <record id="todo_list_view_tree" model="ir.ui.view">
-    <field name="name">todo.list.tree</field>
+  <record id="todo_list_view_list" model="ir.ui.view">
+    <field name="name">todo.list.view.list</field>
     <field name="model">todo.list</field>
     <field name="arch" type="xml">
       <list>
@@ -13,7 +13,7 @@
   </record>
 
   <record id="todo_list_view_form" model="ir.ui.view">
-    <field name="name">todo.list.form</field>
+    <field name="name">todo.list.view.form</field>
     <field name="model">todo.list</field>
     <field name="arch" type="xml">
       <form>
