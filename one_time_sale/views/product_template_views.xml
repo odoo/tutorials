@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_product_template_form_inherit_one_time" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.one.time</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='alternative_product_ids']" position="after">
+                <field name="accept_one_time"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
