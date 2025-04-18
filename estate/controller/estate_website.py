@@ -151,3 +151,16 @@ class EstateWebsite(http.Controller):
             return request.render('estate.property_success', {'property' : new_property})
 
         return  request.redirect('/error_page')
+
+    @http.route('/my/properties', type='http', auth='public', website=True, methods=['GET'])
+    def my_properties(self, **kwargs):
+        my_properties = request.env['estate.property'].sudo().search(
+            [('user_id', '=', request.env.user.id)]
+        )
+        my_offers = request.env['estate.property.offers'].sudo().search(
+            [('partner_id', '=', request.env.user.partner_id.id)]
+        )
+        return request.render("estate.property_my_property", {
+            "properties" : my_properties,
+            "offers": my_offers,
+        })

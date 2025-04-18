@@ -1,15 +1,24 @@
 <odoo>
 
     <template id="property_listing_nav_bar" name="vendor_portal.home" inherit_id="website.template_header_default">
-        <xpath expr="//t[@t-call='website.navbar_nav']" position="inside">
-                <a class="nav-item nav-link" href="/aboutus">About Us</a>
-                <a class="nav-item nav-link" href="/properties">Properties</a>
+        <xpath expr="//t[@t-call='website.navbar_nav']" position="replace">
+            <nav class="navbar navbar-expand-lg">
+                <div class="container-fluid">
+                    <a class="nav-item nav-link px-2" href="/">Home</a>
+                    <a class="nav-item nav-link px-2" href="/aboutus">About Us</a>
+                    <a class="nav-item nav-link px-2" href="/properties">Properties</a>
+                    <a class="nav-item nav-link px-2" href="/contactus">Contact Us</a>
+                </div>
+            </nav>
         </xpath>
     </template>
 
-    <template id="property_listing_new_property" name="Create New Property" inherit_id="portal.user_dropdown">
-        <xpath expr="//a[@t-attf-href='/web/session/logout?redirect=/']" position="before">
-            <a class="dropdown-item ps-3" href="/create_new_property">List Property</a>
+    <template id="property_listing_new_property" name="Create New Property" inherit_id="portal.my_account_link">
+        <xpath expr="//a[@href='/my/home' and contains(@class, 'dropdown-item')]" position="after">
+            <a class="dropdown-item ps-3" href="/create_new_property">
+                <span class="fa fa-home me-1 small text-primary text-primary-emphasis"/>
+                List Property
+            </a>
         </xpath>
     </template>
 
@@ -847,4 +856,117 @@
         </t>
     </template>
 
+    <template id="property_my_properties" name="My Properties" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@id='portal_common_category']/t[2]" position="after">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/estate/static/img/home_icon.svg'"/>
+                <t t-set="title" t-value="'My Properties and Offers'"/>
+                <t t-set="text" t-value="'See you listied Properties and Offers'"/>
+                <t t-set="url" t-value="'/my/properties'"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="property_my_property" name="My Property">
+        <t t-call="website.layout">
+            <t t-set="title" t-value="'Property Details'"/>
+            <div class="container">
+                <h3 class="text-center text-primary py-2 m-2">
+                    My Properties
+                </h3>
+                <t t-if="not properties">
+                    <p class="text-muted text-center">You haven't listed any properties yet.</p>
+                </t>
+                <t t-else="">
+                    <div class="row g-4 mb-4">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-md-4">
+                                <div class="card property-card shadow-lg border-0 overflow-hidden">
+                                    <!-- Property Image -->
+                                    <div class="position-relative">
+                                        <img t-if="property.image"
+                                             t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')"
+                                             class="card-img-top img-fluid property-image"
+                                             alt="Property Image" />
+    
+                                        <!-- Price Tag -->
+                                        <span class="badge bg-primary position-absolute top-0 end-0 m-2 p-2 fs-6">
+                                            ₹ <t t-out="property.expected_price"/>
+                                        </span>
+                                    </div>
+    
+                                    <div class="card-body">
+                                        <h4 class="text-dark fw-bold">
+                                            <t t-out="property.name"/>
+                                        </h4>
+                                        <p class="text-muted small">
+                                            <t t-out="property.description"/>
+                                        </p>
+    
+                                        <div class="row text-muted small">
+                                            <div class="col-6">
+                                                <strong>🛏 Bedrooms:</strong>
+                                                <t t-out="property.bedrooms"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <strong>📏 Living Area:</strong>
+                                                <t t-out="property.living_area"/> ft²</div>
+                                            <div class="col-6">
+                                                <strong>🏠 Facades:</strong>
+                                                <t t-out="property.facades"/>
+                                            </div>
+                                            <div class="col-6" t-if="property.garage">
+                                                <strong>🚗 Garage:</strong> Yes</div>
+                                            <div class="col-6" t-if="property.garden">
+                                                <strong>🌳 Garden:</strong> Yes
+                                                (<t t-out="property.garden_area"/> ft²)
+                                            </div>
+                                            <div class="col-12">
+                                                <strong>📐 Total Area:</strong>
+                                                <t t-out="property.total_area"/> ft²</div>
+                                        </div>
+    
+                                        <!-- View Details Button -->
+                                        <a t-att-href="'/property/details/' + str(property.id)"
+                                           class="btn btn-primary w-100 mt-3 d-flex justify-content-center align-items-center">
+                                            View Details <i class="fa fa-arrow-right ms-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+                <h3 class="text-center text-primary m-2 p-2">
+                    My Offers
+                </h3>
+                <t t-if="not offers">
+                    <p class="text-muted text-center">You haven't made any offers yet.</p>
+                </t>
+                <t t-else="">
+                    <table class="table table-striped table-bordered shadow-sm">
+                        <tr>
+                            <th>Property</th>
+                            <th>Salesperson</th>
+                            <th>Price</th>
+                            <th>Validitiy Days</th>
+                            <th>Deadline</th>
+                            <th>State</th>
+                        </tr>
+                        <t t-foreach="offers" t-as="offer">
+                            <tr>
+                                <td><a t-att-href="'/property/details/' + str(offer.property_id.id)"><t t-esc="offer.property_id.name"/></a></td>
+                                <td><t t-esc="offer.property_id.user_id.name"/></td>
+                                <td>₹<t t-esc="offer.price"/></td>
+                                <td><t t-esc="offer.validity_days"/></td>
+                                <td><t t-esc="offer.deadline"/></td>
+                                <td><t t-esc="offer.state if offer.state else 'Sended'"/></td>
+                            </tr>
+                        </t>
+                    </table>
+                </t>
+            </div>
+        </t>
+    </template>
 </odoo>
