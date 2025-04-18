@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_view_form_recurring" model="ir.ui.view">
+        <field name="name">sale.subscription.product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="pricelist_refactor_base.product_template_view_form_pricelist_refactor"/>
+        <field name="arch" type="xml">
+            <page name="subscription_pricing" position="replace">
+                <page string="Pricing" name="subscription_pricing" invisible="not recurring_invoice">
+                    <field
+                        name="subscription_pricelist_rule_ids"
+                        context="{
+                            'default_product_tmpl_id': id,
+                            'default_compute_price': 'percentage',
+                            'form_view_ref': 'pricelist_refactor_subscription.product_pricelist_item_sale_subscription_view'
+                        }"
+                        groups="product.group_product_pricelist"
+                    >
+                        <list>
+                            <field name="plan_id"/>
+                            <field name="pricelist_id"/>
+                            <field name="price"/>
+                            <field name="min_quantity"/>
+                            <field name="date_start" optional="hide"/>
+                            <field name="date_end" optional="hide"/>
+                            <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                            <field name="name" string="Applied On" column_invisible="1"/>
+                            <field name="base" column_invisible="True"/>
+                            <field name="applied_on" column_invisible="True"/>
+                            <field name="price_discount" column_invisible="True"/>
+                            <field name="compute_price" column_invisible="True"/>
+                        </list>
+                    </field>
+                </page>
+            </page>
+            <page name="sales_price" position="attributes">
+                <attribute name="invisible" separator="or" add="recurring_invoice"/>
+            </page>
+        </field>
+    </record>
+</odoo>

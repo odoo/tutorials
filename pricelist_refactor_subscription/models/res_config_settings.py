@@ -1,0 +1,16 @@
+from odoo import api, models
+from odoo.exceptions import UserError
+
+
+class ResConfigSettings(models.TransientModel):
+    _inherit = 'res.config.settings'
+
+    @api.constrains('group_product_pricelist')
+    def _check_pricelist_requirement(self):
+        """ Prevent disabling pricelists if Sale Subscription is installed """
+        for config in self:
+            if not config.group_product_pricelist and self.env['ir.module.module'].search_count([
+                ('name', '=', 'sale_subscription'),
+                ('state', '=', 'installed')
+            ]):
+                raise UserError("Pricelists are required for Sale Subscription. You cannot disable them.")

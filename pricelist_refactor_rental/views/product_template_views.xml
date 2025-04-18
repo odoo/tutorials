@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_template_view_form_renting" model="ir.ui.view">
+        <field name="name">sale.subscription.product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <page name="pricing" position="replace">
+                <page string="Pricing" name="rental_pricing" invisible="not rent_ok">
+                    <group class="d-flex">
+                        <field name="list_price" class="oe_inline" string="Sales Price" widget='monetary'
+                            options="{'currency_field': 'currency_id'}" optional="show" decoration-muted="not sale_ok"/>
+                        <span name="default_rent_unit_span" invisible="type == 'combo'">
+                            per
+                            <field
+                                name="default_recurrence_id"
+                                class="oe_inline" style="max-width:136px"
+                                options="{'no_create': True}"
+                            />
+                        </span>
+                        <div groups="product.group_product_pricelist">This is default price when no rule is applied.</div>
+                        <div groups="!product.group_product_pricelist">Activate pricelist setting if you want to set specific price rule.</div>
+                    </group>
+                    <field
+                        name="rental_pricelist_rule_ids"
+                        context="{
+                            'default_product_tmpl_id': id,
+                            'default_compute_price': 'percentage',
+                            'form_view_ref': 'pricelist_refactor_rental.product_pricelist_item_sale_rental_view'
+                        }"
+                        groups="product.group_product_pricelist"
+                    >
+                        <list>
+                            <field name="recurrence_id"/>
+                            <field name="pricelist_id"/>
+                            <field name="price"/>
+                            <field name="min_quantity"/>
+                            <field name="date_start" optional="hide"/>
+                            <field name="date_end" optional="hide"/>
+                            <field name="company_id" groups="base.group_multi_company" optional="hide"/>
+                            <field name="name" string="Applied On" column_invisible="True"/>
+                            <field name="base" column_invisible="True"/>
+                            <field name="applied_on" column_invisible="True"/>
+                            <field name="price_discount" column_invisible="True"/>
+                            <field name="compute_price" column_invisible="True"/>
+                        </list>
+                    </field>
+                    <group string="Reservations" name="extra_rental" invisible="not rent_ok">
+                        <field name="extra_hourly" widget="monetary"/>
+                        <field name="extra_daily" widget="monetary"/>
+                        <field name="currency_id" invisible="1"/>
+                    </group>
+                </page>
+            </page>
+            <page name="sales_price" position="attributes">
+                <attribute name="invisible" separator="or" add="rent_ok"/>
+            </page>
+        </field>
+    </record>
+</odoo>

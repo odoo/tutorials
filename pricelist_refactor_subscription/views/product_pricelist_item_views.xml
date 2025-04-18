@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_subscription_product_pricelist_item_form_view" model="ir.ui.view">
+        <field name="name">sale.subscription.product.pricelist.item.form.subscription</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <field name="product_tmpl_id" position="attributes">
+               <attribute name="domain">[('recurring_invoice', '=', True)]</attribute>
+            </field>
+            <field name="min_quantity" position="before">
+                <field name="plan_id" required="1"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_pricelist_item_sale_subscription_view" model="ir.ui.view">
+        <field name="name">product.pricelist.item.sale.subscription.form.inherit</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="pricelist_refactor_base.product_pricelist_item_product_template_form_view"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="pricelist_id" position="after">
+                <field name="plan_id" required="1"/>
+            </field>
+            <field name="product_id" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="force_save">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_pricelist_item_form_view" model="ir.ui.view">
+        <field name="name">sale.subscription.product.pricelist.item.form</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <field name="product_tmpl_id" position="attributes">
+               <attribute name="domain">[('recurring_invoice', '=', False)]</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
