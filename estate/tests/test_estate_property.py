@@ -4,6 +4,7 @@ from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests import Form
 
+
 @tagged('post_install', '-at_install')
 class EstateTestCase(TransactionCase):
 

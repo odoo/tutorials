@@ -1,6 +1,7 @@
 from odoo import Command, models
 from odoo.exceptions import AccessError
 
+
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
