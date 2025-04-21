@@ -15,10 +15,4 @@ export class Playground extends Component {
     incrementSum() {
         this.state.sum++;
     }
-
-    // setup() {
-    //     this.safeHtml = markup("<strong>This is bold content.</strong>");
-    //     this.unsafeHtml = "<em>This will be escaped and not rendered as HTML.</em>";
-    //   }
 }
-

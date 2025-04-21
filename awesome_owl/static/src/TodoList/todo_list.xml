@@ -9,7 +9,7 @@
              t-on-input="onInput"
              t-on-keyup="addTodo"
              class="form-control mb-2"
-             t-att-value="state.newTodo"/> <!-- use state.newTodo -->
+             t-att-value="state.newTodo"/>
       <t t-foreach="todos" t-as="todo" t-key="todo.id">
         <TodoItem todo="todo" toggleState.bind="toggleTodoState" removeTodo.bind="removeTodo"/>
       </t>

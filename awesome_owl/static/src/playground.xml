@@ -16,9 +16,6 @@
             <Card title="'Card 2'">
                 <Counter />
             </Card>
-
-            <!-- <Card title="'Card 3 Safe'" content="safeHtml"/>
-            <Card title="'Card 4 Unsafe'" content="unsafeHtml"/> -->
         </div>
         <div class="p-4">
             <TodoList/>

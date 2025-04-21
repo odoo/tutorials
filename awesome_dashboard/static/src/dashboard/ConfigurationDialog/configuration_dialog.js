@@ -18,10 +18,10 @@ export class ConfigurationDialog extends Component {
     }
 
     onItemChange(checked, changedItem) {
-        changedItem.enabled = checked; //checked = ev = true or false
+        changedItem.enabled = checked;
         const newDisabledItems = Object.values(this.items).filter(
-            (item) => !item.enabled         // Keep only disabled items
-        ).map((item) => item.id);          // Extract their IDs
+            (item) => !item.enabled
+        ).map((item) => item.id);
 
         browser.localStorage.setItem(
             "disabledDashboardItems",

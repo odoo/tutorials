@@ -12,6 +12,7 @@
         <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
         <field name="comment">Real Estate Manager: Can manage all properties and configuration.</field>
         <field name="implied_ids" eval="[(6, 0, [ref('estate_group_user')])]"/>
+        <field name="users" eval="[(4, ref('base.user_admin'), 0)]"/>
     </record>
 
     <record id="estate_property_specific_user" model="ir.rule">
@@ -32,6 +33,6 @@
         <field name="perm_create" eval="True"/>
         <field name="perm_unlink" eval="True"/>
         <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
-        <field name="domain_force">[]</field>  <!-- no filter , all prperties are accesisible to manager-->
+        <field name="domain_force">[]</field>
     </record>
 </odoo>

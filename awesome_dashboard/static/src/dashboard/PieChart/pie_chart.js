@@ -47,7 +47,7 @@ export class PieChart extends Component {
             type: 'ir.actions.act_window',
             name: 'Orders with size ' + size,
             res_model: 'sale.order',
-            domain: [['size', '=', size]],  // Adjust this field based on your model
+            domain: [['size', '=', size]],
             views: [[false, "list"]],
             target: "current",
         });

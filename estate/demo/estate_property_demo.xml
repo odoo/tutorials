@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Demo Property 1 -->
     <record id="property_demo_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="status">new</field>
@@ -18,7 +17,6 @@
         <field name="property_type_id" ref="estate.property_type_residential"/>
     </record>
 
-    <!-- Demo Property 2 -->
     <record id="property_demo_trailer_home" model="estate.property">
         <field name="name">Trailer home</field>
         <field name="status">cancelled</field>
@@ -76,17 +74,14 @@
         <field name="validity" eval="14"/>
     </record>
 
-    <!-- Accept Offer -->
     <function model="estate.property.offer" name="action_set_accepted">
         <value eval="[ref('estate_offer_3')]"/>
     </function>
 
-    <!-- Refuse Offer 1 -->
     <function model="estate.property.offer" name="action_set_refused">
         <value eval="[ref('estate_offer_1')]"/>
     </function>
 
-    <!-- Refuse Offer 2 -->
     <function model="estate.property.offer" name="action_set_refused">
         <value eval="[ref('estate_offer_2')]"/>
     </function>

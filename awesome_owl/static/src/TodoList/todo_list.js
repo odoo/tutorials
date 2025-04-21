@@ -8,16 +8,14 @@ export class TodoList extends Component {
 
   setup() {
     this.todos = useState([]);
-    this.state = useState({ newTodo: "" });  // use object here instead of just a string
+    this.state = useState({ newTodo: "" });
     this.inputRef = useAutofocus("inputfocus");
   }
 
-  // Handle input change
   onInput(ev) {
     this.state.newTodo = ev.target.value;
   }
 
-  // Add new todo when enter key is pressed
   addTodo(ev) {
     if (ev.keyCode === 13 && this.state.newTodo.trim() !== "") {
       this.todos.push({
@@ -25,7 +23,7 @@ export class TodoList extends Component {
         description: this.state.newTodo,
         isCompleted: false,
       });
-      this.state.newTodo = "";  // Clear input field
+      this.state.newTodo = "";
     }
   }
 

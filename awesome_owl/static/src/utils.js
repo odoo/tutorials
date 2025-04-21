@@ -4,7 +4,7 @@ export function useAutofocus(refName = "inputfocus") {
     const inputRef = useRef(refName);
 
     onMounted(() => {
-        inputRef.el?.focus(); // Focus the input if it exists
+        inputRef.el?.focus();
     });
 
     return inputRef;

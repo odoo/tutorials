@@ -10,7 +10,7 @@ export class Card extends Component {
 
   setup() {
     this.state = useState({
-      isOpen: true,  // default: content is visible
+      isOpen: true,
     });
   }
 

@@ -5,7 +5,7 @@
         <Dialog title="'Dashboard items configuration'">
             Which cards do you whish to see ?
             <t t-foreach="items" t-as="item" t-key="item.id">
-                <CheckBox value="item.enabled" onChange="(ev) => this.onItemChange(ev, item)"> <!--ev = true or false -->
+                <CheckBox value="item.enabled" onChange="(ev) => this.onItemChange(ev, item)">
                     <t t-esc="item.description"/>
                 </CheckBox>
             </t>
