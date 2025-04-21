@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_pos_receipt_layout_wizard_form" model="ir.ui.view">
+            <field name="name">pos.receipt.layout.wizard.form</field>
+            <field name="model">pos.receipt.layout.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Configure Receipt Layout" class="o_document_layout">
+                    <sheet>
+                        <group>
+                            <group class="o_document_layout_company">
+                                <field name="receipt_layout"
+                                    string="Layout"
+                                    widget="selection_badge"
+                                    options="{'horizontal': true, 'size': 'sm'}"
+                                    required="1" />
+                                <field name="receipt_logo" string="Logo" widget="image"
+                                    options="{'size': [0, 50]}" class="oe_avatar" />
+                                <field name="receipt_header" />
+                                <field name="receipt_footer" />
+
+                            </group>
+                            <div class="o_preview">
+                                <field name="preview_html" widget="iframe_wrapper"
+                                    class="preview_document_layout d-flex justify-content-center mb-0" />
+                            </div>
+                        </group>
+                        <footer>
+                            <button string="Apply" type="object" name="action_save_receipt_layout"
+                                class="btn-primary" />
+                            <button string="Cancel" class="btn-secondary" special="cancel" />
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

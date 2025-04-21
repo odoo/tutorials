@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="custom_receipt_template_file" xml:space="preserve">
+    <t t-name="pos_receipt_layout_customization.CustomOrderReceipt_main" owl="1">
+        <div class="pos-receipt p-2">
+            <t t-call="pos_receipt_layout_customization.CustomOrderReceipt"/>
+        </div>
+    </t>
+</templates>
