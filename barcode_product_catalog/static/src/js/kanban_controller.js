@@ -5,32 +5,47 @@ import { ProductCatalogKanbanController } from "@product/product_catalog/kanban_
 import { ManualBarcodeScanner } from "@stock_barcode/components/manual_barcode";
 import { rpc } from "@web/core/network/rpc";
 import { useService } from "@web/core/utils/hooks";
-import { useState } from "@odoo/owl";
+import { onMounted, onWillUnmount } from "@odoo/owl";
 
 patch(ProductCatalogKanbanController.prototype, {
     setup() {
         super.setup();
-        this.state = useState({ barcode: "" });
 
         this.orm = useService("orm");
         this.barcodeService = useService("barcode");
         this.notification = useService("notification");
         this.dialogService = useService("dialog");
 
-        this.orderId = this.props.context.order_id;
+        this.orderId = this.props.context.order_id ;
+        console.log("orderId",this.orderId);
         this.orderModel = this.props.context.product_catalog_order_model;
+        console.log("orderModel",this.orderModel);
 
+        this._onBarcodeScanned = this._onBarcodeScanned.bind(this);
         this._setupBarcodeScanner();
+
+        onWillUnmount(() => {
+            this.barcodeService.bus.removeEventListener("barcode_scanned", this._onBarcodeScanned);
+        });
+        onMounted(() => {
+            if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+            }
+        });
     },
 
     _setupBarcodeScanner() {
         console.log("Listening for barcode scans...");
-        this.barcodeService.bus.addEventListener("barcode_scanned", (event) => {
-            event.preventDefault?.();
-            const barcode = event.detail.barcode;
-            console.log("Barcode scanned:", barcode);
-            this._processBarcode(barcode);
-        });
+        this.barcodeService.bus.addEventListener("barcode_scanned", this._onBarcodeScanned);
+    },
+
+    _onBarcodeScanned(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const barcode = event.detail.barcode;
+        console.log("Barcode scanned:", barcode);
+        this._processBarcode(barcode);
     },
 
     openManualBarcodeDialog() {
@@ -64,14 +79,14 @@ patch(ProductCatalogKanbanController.prototype, {
             const product = await this._findProductByBarcode(barcode);
 
             if (!product) {
-                this.notification.add("No product found for the scanned barcode.", { type: "warning" });
+                this.notification.add("No product found matching the scanned barcode.", { type: "warning" });
                 return;
             }
 
             const { lineModel, qtyField } = this.getOrderLineInfo();
             if (!lineModel) {
                 this.notification.add("Unsupported order type for barcode scanning.", { type: "warning" });
-                console.warn("Unsupported order model:", this.orderModel);
+                console.warn("Unsupported order type:", this.orderModel);
                 return;
             }
 
@@ -92,7 +107,7 @@ patch(ProductCatalogKanbanController.prototype, {
 
         } catch (error) {
             console.error("Error processing barcode:", error);
-            this.notification.add("An error occurred while processing the barcode.", { type: "danger" });
+            this.notification.add("Error processing barcode.", { type: "danger" });
         }
     },
 

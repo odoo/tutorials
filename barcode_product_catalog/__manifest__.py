@@ -5,7 +5,7 @@
     'author': "Rishav Shah",
     'category': 'product',
     'description': """
-    Scan Barcode to add product from product catalog
+    Scan Barcode to add product to order line from product catalog
     """,
     'installable': True,
     'application': True,
