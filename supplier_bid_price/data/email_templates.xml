@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="email_template_supplier_bid_update" model="mail.template">
+        <field name="name">Supplier Bid Update Notification</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="subject">Supplier Updated Bid Price for RFQ {{ object.name or 'n/a' }}</field>
+        <field name="email_from">{{ object.company_id.email or 'info@yourcompany.com' }}</field>
+        <field name="email_to">{{ object.user_id.email }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+            <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                <ul>
+                    <li><strong>Supplier: </strong><t t-out="object.partner_id.name"/></li>
+                    <li><strong>RFQ Number: </strong><t t-out="object.name"/></li>
+                    <t t-foreach="ctx.get('mail_values', [])" t-as="line">
+                        <li><strong>New Bid Price for <t t-out="line.get('product_id')"/>: </strong>$<t t-out="line.get('bid_price')"/></li>
+                        <li><strong>New Bid Quantity for <t t-out="line.get('product_id')"/>: </strong><t t-out="line.get('bid_qty')"/> Units</li>
+                    </t>
+                </ul>
+                <p><strong>Action Required:</strong> Review the updated bid price in the system.</p>
+            </p>
+            </div>
+        </field>
+    </record>
+</odoo>
