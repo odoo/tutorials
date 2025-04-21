@@ -1,5 +1,6 @@
 import { Component, onMounted, onWillStart, onWillUnmount, onWillUpdateProps, useRef } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
+import { useService } from "@web/core/utils/hooks";
 
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
@@ -9,6 +10,7 @@ export class PieChart extends Component {
 
     setup() {
         this.canvasRef = useRef("canvas")
+        this.actionService = useService("action")
 
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"))
 
@@ -34,12 +36,48 @@ export class PieChart extends Component {
             type: "pie",
             data: {
                 labels: labels.map(x => x.toUpperCase()),
-                datasets: [
-                    {
-                        data: data,
-                    },
-                ],
+                datasets: [{data}]
             },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const size = labels[index].toLowerCase();
+                        this.openOrdersListView(size);
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: (context) => {
+                                const label = context.label || "";
+                                const value = context.formattedValue;
+                                return `${label}: ${value}`;
+                            }
+                        }
+                    }
+                },
+                hover: {
+                    mode: "nearest",
+                    intersect: true,
+                    onHover: (event, elements) => {
+                        canvas.style.cursor = elements.length ? "pointer" : "default";
+                    }
+                }
+            }
+        });
+    }
+
+    openOrdersListView(size) {
+        this.actionService.doAction({
+            type: "ir.actions.act_window",
+            name: `Orders with Size ${size.toUpperCase()}`,
+            res_model: "sale.order",
+            views: [[false, "list"]],
+            domain: [["order_line.product_template_attribute_value_ids.display_name", "ilike", size]],
+            context: {create: false}
         });
     }
 }
