@@ -23,6 +23,10 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
+                        <button name="action_sold" type="object" class="oe_stat_button" string="Sold"
+                                invisible="state =='sold'"/>
+                        <button name="action_cancel" type="object" class="oe_stat_button" string="Cancel"
+                                invisible="state =='cancelled'"/>
                         <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
                     </header>
                     <sheet string="Property">
@@ -65,6 +69,10 @@
                                         <field name="partner_id"/>
                                         <field name="date_deadline"/>
                                         <field name="validity"/>
+                                        <button name="action_accept" type="object" class="oe_stat_button"
+                                                icon="fa-check" string=" " invisible="status=='accepted'"/>
+                                        <button name="action_refuse" type="object" class="oe_stat_button"
+                                                icon="fa-close" string=" " invisible="status=='refused'"/>
                                         <field name="status"/>
                                     </list>
                                 </field>

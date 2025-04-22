@@ -35,3 +35,24 @@ class EstatePropertyOffer(models.Model):
                 ).days
             else:
                 val.validity = 7
+
+    def action_accept(self):
+        for val in self:
+            self.property_id.offer_ids.filtered(
+                lambda x: x.status == "accepted").write({
+                'status': "refused",
+            })
+
+            val.status = 'accepted'
+            val.property_id.write({
+                'buyer_id': val.partner_id.id,
+                'selling_price': val.price,
+            })
+
+    def action_refuse(self):
+        for val in self:
+            val.status = 'refused'
+            val.property_id.write({
+                'buyer_id': False,
+                'selling_price': False,
+            })
