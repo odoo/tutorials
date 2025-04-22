@@ -17,9 +17,9 @@ patch(ProductCatalogKanbanController.prototype, {
         this.dialogService = useService("dialog");
 
         this.orderId = this.props.context.order_id ;
-        console.log("orderId",this.orderId);
+        // console.log("orderId",this.orderId);
         this.orderModel = this.props.context.product_catalog_order_model;
-        console.log("orderModel",this.orderModel);
+        // console.log("orderModel",this.orderModel);
 
         this._onBarcodeScanned = this._onBarcodeScanned.bind(this);
         this._setupBarcodeScanner();
@@ -35,7 +35,7 @@ patch(ProductCatalogKanbanController.prototype, {
     },
 
     _setupBarcodeScanner() {
-        console.log("Listening for barcode scans...");
+        // console.log("Listening for barcode scans...");
         this.barcodeService.bus.addEventListener("barcode_scanned", this._onBarcodeScanned);
     },
 
@@ -44,7 +44,7 @@ patch(ProductCatalogKanbanController.prototype, {
         event.stopPropagation();
 
         const barcode = event.detail.barcode;
-        console.log("Barcode scanned:", barcode);
+        // console.log("Barcode scanned:", barcode);
         this._processBarcode(barcode);
     },
 
@@ -54,7 +54,7 @@ patch(ProductCatalogKanbanController.prototype, {
                 facingMode: "environment",
                 onResult: (barcode) => {
                     console.log("Manually entered barcode:", barcode);
-                    this._processBarcode(barcode);
+                    // this._processBarcode(barcode);
                     resolve(barcode);
                 },
                 onError: reject,
