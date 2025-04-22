@@ -86,6 +86,7 @@ class EstatePropertyType(models.Model):
     _description="property type"
 
     name = fields.Char(string="Name", required=True)
+    property_ids = fields.One2many("estate_property", "estate_property_type", string="Properties")
 
 class EstatePropertyTags(models.Model):
     _name ="estate_property_tags"
