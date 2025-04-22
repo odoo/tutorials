@@ -1,14 +1,14 @@
 <!-- views/product_warranty_views.xml
 <odoo>
     <record id="view_product_warranty_tree" model="ir.ui.view">
-        <field name="name">product.warranty.tree</field>
+        <field name="name">product.warranty.list</field>
         <field name="model">product.warranty</field>
         <field name="arch" type="xml">
-            <tree>
+            <list>
                 <field name="name"/>
                 <field name="product_id"/>
                 <field name="percentage"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -33,7 +33,7 @@
     <record id="menu_warranty_config" model="ir.actions.act_window">
         <field name="name">Warranty Configurations</field>
         <field name="res_model">product.warranty</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
     </record>
 
     <menuitem id="menu_warranty_config_action" name="Warranty Configurations"
