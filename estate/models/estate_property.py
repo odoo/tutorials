@@ -1,5 +1,6 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
 from odoo.tools import float_compare, float_is_zero
@@ -49,3 +50,28 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many('estate.property.offer', 'property_id',
                                 string="Offers")
+
+    total_area = fields.Float(string="Total Area", compute="_compute_total_area",
+                              store=True)
+
+    best_price = fields.Float(string="Best price",
+                              compute='_compute_best_price', store=True)
+
+    @api.depends('garden_area', 'living_area')
+    def _compute_total_area(self):
+        for val in self:
+            val.total_area = val.living_area + val.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for val in self:
+            val.best_price = max(val.offer_ids.mapped('price'), default=0)
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = False
+            self.garden_orientation = False

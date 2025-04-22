@@ -10,7 +10,7 @@
     'author': "Odoo",
     'website': "https://www.odoo.com/",
     'category': 'Tutorials/Real Estate',
-    'version': '18.0.1.1.0',
+    'version': '18.0.1.7.0',
     'application': True,
     'installable': True,
     'depends': ['base'],
@@ -21,7 +21,5 @@
         "views/estate_property_tag_views.xml",
         "views/estate_menus.xml",
     ],
-    'assets': {
-    },
     'license': 'AGPL-3'
 }
