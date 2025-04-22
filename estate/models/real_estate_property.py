@@ -12,13 +12,13 @@ class EstateProperty(models.Model):
     active = fields.Boolean("Active", default=True)
 
     postcode = fields.Char("Postcode")
-    date_availablility = fields.Date(
-        "Availibility Date",
+    date_availability = fields.Date(
+        "Availability Date",
         copy=False,
         default=fields.Date.today() + relativedelta.relativedelta(months=3),
     )
 
-    exprected_price = fields.Float("Expected Price", required=True)
+    expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
 
     bedrooms = fields.Integer("# of bedrooms", default=2)
