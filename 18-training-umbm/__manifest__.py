@@ -12,7 +12,7 @@
     ],
     'data': [
         './security/ir.model.access.csv',
-        #'./views/real_estate_view.xml',
+        './views/estate_property_views.xml',
     ],
     'demo': [
 
