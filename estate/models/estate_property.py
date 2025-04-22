@@ -8,7 +8,7 @@ class RecurringPlan(models.Model):
     _name = "estate.property"
     _description = "Land, Office or any property details for Real Estate module"
 
-    name = fields.Char('Property Name', required=True)
+    name = fields.Char('Title', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('PostCode')
     date_availability = fields.Date('Available From', copy=False, default=lambda self: fields.Date.today(self) + relativedelta(months=3)) # in 3 months
@@ -30,7 +30,6 @@ class RecurringPlan(models.Model):
         required=True,
         copy=False,
         default='new'
-        
     )
     active = fields.Boolean('Active', default=True)
 
