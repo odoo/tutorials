@@ -10,7 +10,7 @@
     'author': "Odoo",
     'website': "https://www.odoo.com/",
     'category': 'Tutorials/Real Estate',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.1.0',
     'application': True,
     'installable': True,
     'depends': ['base'],
