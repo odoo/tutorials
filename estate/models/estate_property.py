@@ -1,8 +1,8 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
 from dateutil.relativedelta import relativedelta
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     name = fields.Char('Title', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('PostCode')
-    date_availability = fields.Date('Available From', copy=False, default=lambda self: fields.Date.today(self) + relativedelta(months=3)) # in 3 months
+    date_availability = fields.Date('Available From', copy=False, default=lambda self: fields.Date.today(self) + relativedelta(months=3))  # in 3 months
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', copy=False, readonly=True)
     bedrooms = fields.Integer('Bedrooms', default=2)
