@@ -1,18 +1,14 @@
 <odoo>
     <data >
         <record id="warranty_product_1_yr" model="product.template">
-            <field name="name">Extended Warranty 1 Yr</field>
-            
+            <field name="name">Extended Warranty 1 Yr</field>   
         </record>
         <record id="warranty_product_2_yr" model="product.template">
-            <field name="name">Extended Warranty 2 Yr</field>
-            
+            <field name="name">Extended Warranty 2 Yr</field>   
         </record>
         <record id="warranty_product_3_yr" model="product.template">
             <field name="name">Extended Warranty 3 Yr</field>
-
         </record>
-
 
         <record id="warranty_1_year" model="warranty.configuration">
             <field name="name">1 Yr</field>
