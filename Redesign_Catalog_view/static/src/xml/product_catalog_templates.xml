@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="product_catalog_redesign.ImageDialog">
+        <div class="full-image-dialog" >
+             <button class="close-btn" t-on-click="props.close">×</button>
+                <div class="image-container">
+                    <img t-att-src="props.imageUrl"
+                         class="full-size-image"
+                         t-att-style="'transform: scale(' + state.zoom + ');'"/>
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" t-on-click="() => updateZoom(0.1)">+</button>
+                        <button class="zoom-btn" t-on-click="() => updateZoom(-0.1)">-</button>
+                    </div>
+                </div>
+        </div>
+    </t>
+</templates>
