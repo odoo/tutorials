@@ -38,7 +38,6 @@ class ProductCatalogKanbanRecordInherited extends ProductCatalogKanbanRecord {
         }
 
         if (ev.target.closest(".o_product_catalog_cancel_global_click")) {
-            console.log("hiii");
             return;
         }
         if (this.productCatalogData.quantity === 0) {
