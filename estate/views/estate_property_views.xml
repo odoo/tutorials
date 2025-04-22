@@ -35,6 +35,7 @@
                         <group>
                             <field name="postcode" />
                             <field name="date_availability" />
+                            <field name="state" />
                         </group>
                         <group>
                             <field name="expected_price" />
@@ -73,7 +74,9 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades" string="Facades"/>
                 <separator/>
-                <filter domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" string="Available"/>
+                <filter domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received'),]" name="available" string="Available"/>
+                <!-- <filter string="Available" name="available" domain="['|', ('state', '=', 'new'),('state', '=', 'offer_received'),]" /> -->
+                <separator/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
                 </group>
