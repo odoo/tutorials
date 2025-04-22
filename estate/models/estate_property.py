@@ -4,7 +4,7 @@
 from odoo import fields, models
 from dateutil.relativedelta import relativedelta
 
-class RecurringPlan(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Land, Office or any property details for Real Estate module"
 
@@ -31,8 +31,9 @@ class RecurringPlan(models.Model):
         copy=False,
         default='new'
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
+    salesman = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
+    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     active = fields.Boolean('Active', default=True)
-
-    # _sql_constraints = [
-    #     ('check_number_of_months', 'CHECK(number_of_months >= 0)', 'The number of month can\'t be negative.'),
-    # ]

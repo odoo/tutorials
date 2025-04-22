@@ -55,13 +55,15 @@
                         <div class="oe_edit_only">
                             <label for="name"/>
                         </div>
-                        <h1 class="mb32">
-                            <field name="name" class="mb16"/>
+                        <h1>
+                            <field name="name"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags" class="mb16"/>
                         <field name="active" invisible="1"/>
                     </div>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -81,6 +83,15 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" mode="list"/>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="salesman"/>
+                                <field name="buyer"/>
                             </group>
                         </page>
                     </notebook>
