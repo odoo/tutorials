@@ -1,7 +1,7 @@
 # type: ignore
-from datetime import date, timedelta
-from odoo import api, exceptions, fields, models  
-from odoo.exceptions import UserError,ValidationError 
+from datetime import timedelta
+from odoo import api, exceptions, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -15,11 +15,11 @@ class EstateProperty(models.Model):
         ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.'),
     ]
 
-    name = fields.Char(string="Title", required=True,)
+    name = fields.Char(string="Title", required=True)
     description = fields.Text(string="Description of Property")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(string="Available From", default=lambda self: fields.date.today() + timedelta(days=90), copy=False)
-    expected_price = fields.Float(string="Expected Price",required=True)
+    expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
@@ -28,13 +28,13 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
     total_area = fields.Float(string="Total Area", compute="_compute_total_area")
-    garden_orientation = fields.Selection( string="Garden Orientation",
+    garden_orientation = fields.Selection(string="Garden Orientation",
         selection=[
             ('north', 'North'),
             ('south', 'South'),
             ('east', 'East'),
             ('west', 'West')
-        ],)
+        ])
     status = fields.Selection(string="Status",
         selection=[
             ('new', 'New'),
@@ -49,9 +49,9 @@ class EstateProperty(models.Model):
         tracking=True
     )
     active = fields.Boolean(string="Active", default=True)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type",)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer")
-    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user,tracking=True)
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user, tracking=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers", tracking=True)
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
@@ -79,19 +79,18 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-    
+
     def write(self, vals):
         """Ensure values are reset when garden is unchecked in backend operations."""
         if 'garden' in vals and not vals['garden']:
             vals.update({'garden_area': 0, 'garden_orientation': False})
         return super().write(vals)
 
-    #logic for sold and cancel
     def action_set_sold(self):
         if self.status == "cancelled":
             raise UserError("A cancelled property cannot be sold!")
 
-        accepted_offer = self.offer_ids.filtered(lambda o:o.status == 'accepted')
+        accepted_offer = self.offer_ids.filtered(lambda o: o.status == 'accepted')
         if not accepted_offer:
             raise UserError("Cannot sell a property without an accepted offer")
         self.status = "sold"
@@ -100,20 +99,17 @@ class EstateProperty(models.Model):
         if self.status == "sold":
             raise UserError("A sold property cannot be cancelled!")
         self.status = "cancelled"
-    
-    #python constrains for advanced checks
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            # Ensure selling_price is not zero before checking constraint
             if not float_is_zero(record.selling_price, precision_digits=2):
                 min_acceptable_price = record.expected_price * 0.9
                 if float_compare(record.selling_price, min_acceptable_price, precision_digits=2) == -1:
                     raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
 
-    #logic for ondelete any property
     @api.ondelete(at_uninstall=False)
     def _check_state_on_delete(self):
         for property in self:
-            if property.status not in ['new','cancelled']:
+            if property.status not in ['new', 'cancelled']:
                 raise exceptions.UserError("You can only delete properties that are in 'New' or 'Canceled' state.")

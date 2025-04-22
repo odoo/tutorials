@@ -1,5 +1,4 @@
-#type:ignore
-from odoo import fields,models
+from odoo import fields, models
 
 
 class ResUsers(models.Model):
@@ -9,5 +8,5 @@ class ResUsers(models.Model):
         'estate.property',
         'salesperson_id',
         string='Preoperties',
-        domain=[('status','in',['new','offer_received'])]
+        domain=[('status', 'in', ['new', 'offer_received'])]
     )

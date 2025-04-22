@@ -1,17 +1,16 @@
-#type:ignore
 from odoo import http
 from odoo.http import request
 
 
 class PropertyController(http.Controller):
 
-    @http.route(['/properties','/properties/page/<int:page>'], type="http", auth="public", website=True)
-    def propertyHandler(self,page=1, **kwargs):
+    @http.route(['/properties', '/properties/page/<int:page>'], type="http", auth="public", website=True)
+    def propertyHandler(self, page=1, **kwargs):
         property = request.env['estate.property'].sudo()
 
         properties_per_page = 6
 
-        total_properties = Property.search_count([
+        total_properties = property.search_count([
             ('status', 'in', ['new', 'offer_received']),
             ('active', '=', True)
         ])

@@ -1,5 +1,4 @@
-#type:ignore
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class EstatePropertyOfferWizard(models.TransientModel):
@@ -9,8 +8,8 @@ class EstatePropertyOfferWizard(models.TransientModel):
     price = fields.Float(string="Price")
     status = fields.Selection(
         [
-            ('accepted','Accepted'),
-            ('refused','Refused')
+            ('accepted', 'Accepted'),
+            ('refused', 'Refused')
         ],
         string="Offer Status"
     )
@@ -26,7 +25,7 @@ class EstatePropertyOfferWizard(models.TransientModel):
         properties = self.env['estate.property'].browse(property_ids)
 
         for property in properties:
-            offer=self.env['estate.property.offer']
+            offer = self.env['estate.property.offer']
             offer.create({
                 'price': self.price,
                 'partner_id': self.partner_id.id,

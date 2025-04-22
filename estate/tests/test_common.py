@@ -1,14 +1,13 @@
-#type:ignore
 from odoo.tests.common import TransactionCase
 from odoo.tests import tagged
 
 
-# @tagged('post_install', '-at_install')
+@tagged('post_install', '-at_install')
 class EstateTestCommon(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EstateTestCommon, cls).setUpClass()
+        super().setUpClass()
 
         cls.partner = cls.env['res.partner'].create({
             'name': 'test Partner'

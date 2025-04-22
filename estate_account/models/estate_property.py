@@ -1,14 +1,12 @@
 # type: ignore
 from odoo import Command, exceptions, models
 
+
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self):
         self.check_access('write')
-        print(" reached ".center(100, '='))
-        # Explicitly check if the user has write access to the property
-        
 
         if not self.buyer_id:
             raise exceptions.UserError("Buyer not set. Cannot create invoice.")
@@ -17,7 +15,7 @@ class EstateProperty(models.Model):
         if not journal:
             raise exceptions.UserError("No sales journal found. Please configure one.")
 
-        invoice = self.env['account.move'].sudo().create({
+        self.env['account.move'].sudo().create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
             'journal_id': journal.id,

@@ -1,7 +1,7 @@
 # type: ignore
 from datetime import timedelta
-from odoo import api, exceptions, fields, models 
-from odoo.exceptions import UserError 
+from odoo import api, exceptions, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -9,16 +9,16 @@ class EstatePropertyOffer(models.Model):
     _description = "Property Offer"
     _order = "price desc"
 
-    price=fields.Float(string="Price")
-    status=fields.Selection(
+    price = fields.Float(string="Price")
+    status = fields.Selection(
         selection=[
-            ('accepted','Accepted'),
-            ('refused','Refused')
+            ('accepted', 'Accepted'),
+            ('refused', 'Refused')
     ])
-    partner_id=fields.Many2one(
+    partner_id = fields.Many2one(
         'res.partner',
         string="Partner",
-        required=True, 
+        required=True,
     )
     property_id = fields.Many2one(
         "estate.property",
@@ -41,12 +41,10 @@ class EstatePropertyOffer(models.Model):
         related="property_id.property_type_id",
     )
 
-    #sql constraints
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.'),
     ]
 
-    #compute dealine
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -59,10 +57,9 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.validity = 7
 
-    #logic for offer accepted or refused
     def action_accept_offer(self):
         if self.property_id.status == 'offer_accepted':
-                raise UserError("This property already has an accepted offer!")
+            raise UserError("This property already has an accepted offer!")
 
         self.status = "accepted"
         self.property_id.selling_price = self.price
@@ -70,12 +67,10 @@ class EstatePropertyOffer(models.Model):
         self.property_id.status = "offer_accepted"
         other_offers = self.property_id.offer_ids.filtered(lambda o: o.id != self.id)
         other_offers.write({'status': 'refused'})
-    
-    #Refuse an offer.
+
     def action_refuse_offer(self):
-         self.status = "refused"
-        
-    
+        self.status = "refused"
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:

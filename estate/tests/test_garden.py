@@ -1,4 +1,3 @@
-#type:ignore
 from .test_common import EstateTestCommon
 
 
