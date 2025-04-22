@@ -16,6 +16,18 @@
         </field>
     </record>
 
+    <record id="property_offer_view_list" model="ir.ui.view">
+        <field name="name">property_offer_view_list</field>
+        <field name="model">estate_property_offer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
     <record id="real_estate_view_form" model="ir.ui.view">
         <field name="name">real_estate_view_form</field>
         <field name="model">estate_property</field>
@@ -26,9 +38,11 @@
                         <h1>
                         <field name="name"/>
                         </h1>
+                        <field name="tags_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group>
+                            <field name="estate_property_type"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -49,6 +63,15 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orentation"/>
                             </group>
+                        </page>
+                        <page name="Other infos">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesman_id"/>
+                            </group>
+                        </page>
+                        <page name="Offers">
+                            <field name="offer_ids" string="Offers"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -81,9 +104,26 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <record id="estate_property_type_menu_action" model="ir.actions.act_window">
+        <field name="name">Property Type</field>
+        <field name="res_model">estate_property_type</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="estate_property_tags_menu_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate_property_tags</field>
+        <field name="view_mode">list</field>
+    </record>
+
     <menuitem id="real_estate_main" name="Real Estate">
         <menuitem id="real_estate_first_level" name="Estate Property">
             <menuitem id="real_estate_action" action="estate_property_menu_action" name="Estate Property"/>
+        </menuitem>
+        <menuitem id="settings" name="Settings">
+            <menuitem id="property_type_action" action="estate_property_type_menu_action" name="Estate Property Type" />
+            <menuitem id="property_tags_action" action="estate_property_tags_menu_action" name="Estate Property Tags" />
+
         </menuitem>
     </menuitem>
 
