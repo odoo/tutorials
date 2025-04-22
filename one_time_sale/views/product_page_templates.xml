@@ -1,52 +1,67 @@
 <odoo>
-    <template id="product_subscription_view" inherit_id="website_sale.product">
-        <xpath expr="//div[@id='product_details']" position="inside">
-            <t t-if="product.recurring_invoice">
-                <div class="o_subscription_options mt-4">
-                    <h5 class="mb-3">Choose Your Purchase Option</h5>
+    <data>
+        <!-- Your product subscription template -->
+        <template id="product_subscription_view" inherit_id="website_sale.product">
+            <xpath expr="//div[@id='product_details']" position="inside">
+                <t t-if="combination_info.get('is_subscription') and combination_info['pricings']">
+                    <div class="o_subscription_options mt-4">
+                        <h5 class="mb-3">Choose Your Purchase Option</h5>
 
-                    <div class="form-check mb-2">
-                        <input class="form-check-input purchase-mode-option" type="radio" name="purchase_mode"
-                               id="purchase_subscription" value="subscription" checked="checked"
-                               t-att-data-price="product.subscription_plan_ids[0].price if product.subscription_plan_ids else 0"/>
-                        <label class="form-check-label" for="purchase_subscription">
-                            With Regular Delivery
-                        </label>
-                    </div>
+                        <!-- With Regular Delivery + Price -->
+                        <div class="form-check d-flex align-items-center justify-content-between mb-2">
+                            <div>
+                                <input class="form-check-input purchase-mode-option" type="radio"
+                                       name="purchase_mode"
+                                       id="purchase_subscription" value="subscription"
+                                       checked="checked"
+                                       t-att-data-price="combination_info['subscription_default_pricing_price']" />
+                                <label class="form-check-label" for="purchase_subscription">
+                                    With Regular Delivery
+                                </label>
+                            </div>
+                            <strong id="subscription_plan_price">
+                                <t t-esc="combination_info['subscription_default_pricing_price']" /> €
+                            </strong>
+                        </div>
 
-                    <div class="mb-3 ms-4">
-                        <label for="recurrence_period" class="form-label">Deliver every:</label>
-                        <select name="recurrence_period" id="recurrence_period"
-                                class="form-select recurrence-selector"
-                                style="max-height: 200px; overflow-y: auto;">
-                            <t t-set="plans" t-value="product.subscription_plan_ids"/>
-                            <t t-foreach="plans" t-as="plan">
-                                <option t-att-value="plan.id"
-                                        t-att-data-price="plan.price">
-                                    <t t-esc="plan.name"/>
-                                </option>
-                            </t>
-                        </select>
-                    </div>
-                    
+                        <!-- Deliver every: -->
+                        <div class="mb-3 ms-4 d-flex align-items-center gap-2">
+                            <label for="recurrence_period" class="form-label mb-0"
+                                   style="white-space: nowrap;">Deliver every:</label>
+                            <select name="recurrence_period" id="recurrence_period"
+                                    class="form-select recurrence-selector"
+                                    style="max-height: 150px; overflow-y: auto; width: auto;">
+                                <t t-foreach="combination_info['pricings']" t-as="pricing">
+                                    <option
+                                        t-att-value="pricing['plan_id']"
+                                        t-att-data-price="pricing['price']"
+                                        t-att-selected="pricing['plan_id'] == combination_info['subscription_default_pricing_plan_id']">
+                                        <t t-esc="pricing['price']" /> 
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
 
-                    <div class="form-check mb-2">
-                        <input class="form-check-input purchase-mode-option" type="radio" name="purchase_mode"
-                               id="purchase_onetime" value="onetime"
-                               t-att-data-price="product.list_price"/>
-                        <label class="form-check-label" for="purchase_onetime">
-                            One-Time Purchase
-                        </label>
-                    </div>
+                        <!-- One-Time Purchase -->
+                        <div class="form-check d-flex align-items-center justify-content-between mb-2">
+                            <div>
+                                <input class="form-check-input purchase-mode-option" type="radio"
+                                       name="purchase_mode"
+                                       id="purchase_onetime" value="onetime"
+                                       t-att-data-price="product.list_price" />
+                                <label class="form-check-label" for="purchase_onetime">
+                                    One-Time Purchase
+                                </label>
+                            </div>
+                            <strong id="selected_price">
+                                <t t-esc="product.list_price" />
+                            </strong>
+                        </div>
 
-                    <div class="o_price_box mt-3 alert alert-info">
-                        <strong>Price:</strong>
-                        <span id="selected_price">
-                            <t t-esc="product.subscription_plan_ids[0].price if product.subscription_plan_ids else product.list_price"/> €
-                        </span>
                     </div>
-                </div>
-            </t>
-        </xpath>
-    </template>
+                </t>
+            </xpath>
+        </template>
+
+    </data>
 </odoo>
