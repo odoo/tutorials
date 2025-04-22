@@ -1,5 +1,8 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_round, float_compare
+from odoo.exceptions import ValidationError
+
 
 class EstateProperty(models.Model):
     _name = "estate_property"
@@ -29,6 +32,12 @@ class EstateProperty(models.Model):
 
     total_area = fields.Float(compute="_compute_area", string="Total area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+
+    _sql_constraints = [
+        ('check_price_positive', 'CHECK(expected_price >= 0)', 'The price should be higher than 0'),
+        ('check_selling_price_positive', 'CHECK(selling_price >= 0)','The selling price should be higher than 0'),
+        ('check_unique_name','UNIQUE(name)','The name of the property should be unique'),
+    ]
 
     @api.depends("garden_area","living_area")
     def _compute_area(self):
@@ -64,6 +73,14 @@ class EstateProperty(models.Model):
             else:
                 record.states = "canceled"
 
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.expected_price != 0 :
+                min_selling_price = record.expected_price * 0.9
+                if float_compare(record.selling_price, min_selling_price,2) == -1 :
+                    raise ValidationError("Selling price shoudn't be lower than 90% of expected price")
+
 class EstatePropertyType(models.Model):
     _name ="estate_property_type"
     _description="property type"
@@ -76,6 +93,10 @@ class EstatePropertyTags(models.Model):
 
     name = fields.Char(string ="Name", required=True)
 
+    _sql_constraints = [
+        ('check_unique_name','UNIQUE(name)','The name of the tag should be unique'),
+    ]
+
 class EstatePropertyOffer(models.Model):
     _name = "estate_property_offer"
     _description = "property offers"
@@ -86,6 +107,10 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate_property", string="Property", required=True)
     validity = fields.Integer(string="Validity", compute="_compute_validity", inverse="_inverse_validty")
     date_deadline = fields.Date(string="Deadline")
+
+    _sql_constraints = [
+        ('check_price_positive', 'CHECK(price >= 0)', 'The price should be higher than 0'),
+    ]
 
     @api.depends("date_deadline")
     def _compute_validity(self):
@@ -101,7 +126,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_confirm(self):
         for record in self:
-            if record.property_id.status == 'sold':
+            if record.property_id.states == 'sold':
                 raise UserError("You can't validate an offer for a sold property")
             else:
                 record.property_id.buyer_id = record.partner_id
