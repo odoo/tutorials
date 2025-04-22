@@ -1,21 +1,49 @@
-from odoo import models, fields
+from dateutil import relativedelta
+
+from odoo import fields, models
+
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Real Estate: Property"
 
-    name = fields.Char("Name", required=True)
+    name = fields.Char("Title", required=True)
     description = fields.Text("Description")
+    active = fields.Boolean("Active", default=True)
+
     postcode = fields.Char("Postcode")
-    date_availablility = fields.Date("Availibility Date")
+    date_availablility = fields.Date(
+        "Availibility Date",
+        copy=False,
+        default=fields.Date.today() + relativedelta.relativedelta(months=3),
+    )
+
     exprected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price")
-    bedrooms = fields.Integer("# of bedrooms")
+    selling_price = fields.Float("Selling Price", readonly=True, copy=False)
+
+    bedrooms = fields.Integer("# of bedrooms", default=2)
     living_area = fields.Integer("# of living areas")
     facades = fields.Integer("# of facades")
     garage = fields.Boolean("Garage")
     garden = fields.Boolean("Garden")
     garden_area = fields.Integer("Garden Area")
     garden_orientation = fields.Selection(
-        selection = [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
+        selection=[
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ],
+    )
+    state = fields.Selection(
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        required=True,
+        copy=False,
+        default="new",
     )
