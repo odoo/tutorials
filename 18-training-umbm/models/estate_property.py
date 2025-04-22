@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate_property"
@@ -18,7 +19,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(string="Garden area")
     garden_orentation = fields.Selection(string="Garden orientation", selection=[('north', 'North'),('south', 'South'), ('ouest', 'West'), ('east', 'East')])
     active = fields.Boolean(default=True)
-    states = fields.Selection(string="State", selection=[('new','New'),('offer_received','Offre Received'),('offer_accepted','Offer Accepted'),('sold','Sold'),('cancelled','Cancelled')])
+    states = fields.Selection(string="State", selection=[('new','New'),('offer_received','Offre Received'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')])
 
     tags_ids = fields.Many2many("estate_property_tags", string="Tags")
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
@@ -49,7 +50,19 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orentation = ''
 
+    def mark_as_sold(self):
+        for record in self:
+            if record.states == "canceled":
+                raise UserError("You can't set a canceled property to sold")
+            else:
+                record.states = "sold"
 
+    def mark_as_canceled(self):
+        for record in self:
+            if record.states == "sold":
+                raise UserError("You can't cancel a sold property")
+            else:
+                record.states = "canceled"
 
 class EstatePropertyType(models.Model):
     _name ="estate_property_type"
@@ -69,7 +82,7 @@ class EstatePropertyOffer(models.Model):
 
     price = fields.Float(string="Price")
     status = fields.Selection(string="Status", selection=[('accepted', 'Accepted'),('refused', 'Refused')])
-    partner_id = fields.Many2one("res.partner", string="Acheteur", required=True)
+    partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate_property", string="Property", required=True)
     validity = fields.Integer(string="Validity", compute="_compute_validity", inverse="_inverse_validty")
     date_deadline = fields.Date(string="Deadline")
@@ -85,3 +98,18 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.create_date and record.validity:
                 record.date_deadline = fields.Datetime.add(record.create_date, days=record.validity)
+
+    def action_confirm(self):
+        for record in self:
+            if record.property_id.status == 'sold':
+                raise UserError("You can't validate an offer for a sold property")
+            else:
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.states = 'sold'
+                record.property_id.selling_price = record.price
+                record.status = 'accepted'
+
+    def action_close(self):
+        for record in self:
+            record.status = 'refused'
+            
