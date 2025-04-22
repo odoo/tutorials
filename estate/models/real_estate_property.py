@@ -1,4 +1,3 @@
-from typing import Required
 from odoo import models, fields
 
 class EstateProperty(models.Model):
