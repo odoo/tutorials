@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
-from datetime import datetime, timedelta
 from dateutil.relativedelta import *
 
 
@@ -22,12 +21,12 @@ class Estate(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(string='Graden Orientation', selection=[('north','North'),
+    garden_orientation = fields.Selection(string='Garden Orientation', selection=[('north','North'),
                                                                        ('south', 'South'),
                                                                          ('east','East'),
                                                                             ('west','West')])
     
-    state = fields.Selection(string='State', default='new', copy = False, selection=[('new','New'),
+    state = fields.Selection(string='State', required=True, default='new', copy = False, selection=[('new','New'),
                                                                        ('offer received', 'Offer Received'),
                                                                          ('offer accepted','Offer Accepted'),
                                                                             ('sold','Sold'), ('cancelled','Cancelled')])
