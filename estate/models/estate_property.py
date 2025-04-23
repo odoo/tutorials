@@ -1,9 +1,10 @@
 from odoo import models, fields
-from datetime import datetime
 from dateutil.relativedelta import relativedelta
+
 
 def _default_date_availability():
     return fields.Date.today() + relativedelta(months=3)
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
