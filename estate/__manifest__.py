@@ -1,9 +1,9 @@
 {
     'name': 'estate',
-    'version': '0.0',
-    'category': '',
-    'summary': '',
-    'description': "",
+    'version': '1.0',
+    'author' : "Parth Vyas",
+    'summary': 'Real estate module',
+    'description': "Real estate module for managing property listings and transactions!",
     'website': '',
     'depends': [
         'base',
@@ -13,4 +13,5 @@
     ],
     'installable': True,
     'application': True,
+    'license': 'LGPL-3',
 }
