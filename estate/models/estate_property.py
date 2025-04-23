@@ -1,5 +1,7 @@
-from odoo import models, fields
 import datetime
+
+from odoo import fields, models
+
 
 class Estate_Property(models.Model):
     _name = "estate.property"
@@ -7,7 +9,10 @@ class Estate_Property(models.Model):
     name = fields.Char()
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(default=datetime.datetime.now(), copy=False)
+    date_availability = fields.Date(
+        default=datetime.datetime.now(),
+        copy=False,
+    )
     expected_price = fields.Float()
     selling_price = fields.Float(readonly=True, copyright=False, copy=False)
     bedrooms = fields.Integer(default=4)
@@ -17,6 +22,11 @@ class Estate_Property(models.Model):
     has_garden = fields.Boolean()
     active = fields.Boolean(default=True)
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(selection = [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
-    status = fields.Selection(selection=[("new", "New"), ("offer_receieved", "Offer Recieved"), ("sold", "Sold")], readonly=True, default="new")
-
+    garden_orientation = fields.Selection(
+        selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
+    )
+    status = fields.Selection(
+        selection=[("new", "New"), ("offer_receieved", "Offer Recieved"), ("sold", "Sold")],
+        readonly=True,
+        default="new",
+    )
