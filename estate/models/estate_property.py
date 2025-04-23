@@ -153,9 +153,9 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("You can't validate an offer for a sold property")
             else:
                 record.property_id.buyer_id = record.partner_id
-                record.property_id.states = 'sold'
                 record.property_id.selling_price = record.price
                 record.status = 'accepted'
+                record.property_id.mark_as_sold()
 
     def action_close(self):
         for record in self:
