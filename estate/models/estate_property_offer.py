@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float("Price")
     status = fields.Selection(
         selection=[
-            ("available", "Available"),
+            ("accepted", "Accepted"),
             ("refused", "Refused"),
         ],
         copy=False,
@@ -30,3 +30,27 @@ class EstatePropertyOffer(models.Model):
     def _inverse_compute_deadline(self) -> None:
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    def action_refuse_offer(self) -> bool:
+        for record in self:
+            record.status = "refused"
+            record.property_id.write(
+                {
+                    "selling_price": None,
+                    "buyer_id": None,
+                }
+            )
+        return True
+
+    def action_accept_offer(self) -> bool:
+        for record in self:
+            record.property_id.offer_ids.filtered(lambda x: x.status == "accepted").write({"status": "refused"})
+            record.status = "accepted"
+            record.property_id.write(
+                {
+                    "selling_price": record.price,
+                    "buyer_id": record.partner_id,
+                }
+            )
+
+        return True

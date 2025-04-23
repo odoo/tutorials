@@ -7,6 +7,8 @@
             <list string="Channel">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <button name="action_refuse_offer" type="object" icon="fa-times" title="refuse"/>
+                <button name="action_accept_offer" type="object" icon="fa-check" title="accept"/>
                 <field name="status"/>
             </list>
         </field>
@@ -16,6 +18,7 @@
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
+
             <form string="Test">
                 <sheet>
                     <!-- <h1 >
