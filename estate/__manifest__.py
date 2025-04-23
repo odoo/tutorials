@@ -9,5 +9,9 @@
         'security/ir.model.access.csv',
         'views/re_action_model.xml',
         'views/estate_menus.xml',
+        'views/form_view.xml',
+        'views/list_view.xml',
+        'views/search_view.xml',
+
      ]
 }
