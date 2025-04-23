@@ -15,10 +15,7 @@ class EstateProperty(models.Model):
         copy=False,
         default=fields.Date.today() + relativedelta.relativedelta(months=3),
     )
-    expected_price = fields.Float(
-        string="Expected Price",
-        required=True,
-    )
+    expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(
         string="Selling Price",
         readonly=True,
@@ -63,7 +60,7 @@ class EstateProperty(models.Model):
         string="Salesman",
         default=lambda self: self.env.user,
     )
-    partner_id = fields.Many2one("res.partner", string="Buyer")
+    partner_id = fields.Many2one("res.partner", string="Buyer", readonly=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many(
         "estate.property.offer",
@@ -95,3 +92,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = "north"
 
         self.garden_area = 10
+
+    def action_sell(self):
+        for record in self:
+            record.state = "sold"
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            record.state = "cancelled"
+        return True
