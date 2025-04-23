@@ -1,8 +1,14 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_action" model="ir.actions.act_window">
+    <record id="estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate_property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_type" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate_property_type</field>
         <field name="view_mode">list,form</field>
     </record>
 
@@ -12,6 +18,8 @@
         <field name="arch" type="xml">
             <list string="Channels">
                 <field name="name" />
+                <field name="property_type_id" />
+                <field name="tag_ids" widget="many2many_tags" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
@@ -27,19 +35,23 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Form">
-                <h1 class="mb32">
-                    <field name="name" class="mb16" />
+                <h1>
+                    <field name="name"/>
                 </h1>
+                <div class="mb32">
+                    <field name="tag_ids" widget="many2many_tags" />
+                </div>
                 <sheet>
                     <group>
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
-                            <field name="state" />
                         </group>
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="state" />
                         </group>
                     </group>
                     <notebook>
@@ -53,6 +65,17 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" />
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
@@ -72,6 +95,7 @@
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
+                <field name="property_type_id" />
                 <separator />
                 <filter string="Available" name="available"
                     domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]" />
