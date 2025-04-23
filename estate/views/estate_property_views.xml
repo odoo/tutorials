@@ -59,6 +59,13 @@
                                 <field name="property_type_id"/>
                             </group>
                         </page>
+
+                        <page string="Other info">
+                            <group>
+                                <field name="salesperson"/>
+                                <field name="buyer"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
