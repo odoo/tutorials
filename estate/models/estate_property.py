@@ -17,7 +17,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         "Availability Date",
         copy=False,
-        default=fields.Date.today() + relativedelta.relativedelta(months=3),
+        default=(lambda _: fields.Date.today() + relativedelta.relativedelta(months=3)),
     )
     state = fields.Selection(
         selection=[
@@ -37,7 +37,7 @@ class EstateProperty(models.Model):
 
     # Description
     bedrooms = fields.Integer("# of bedrooms", default=2)
-    living_area = fields.Integer("# of living areas")
+    living_area = fields.Integer("living area")
     facades = fields.Integer("# of facades")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     description = fields.Text("Description")
@@ -77,7 +77,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids")
     def _compute_best_price(self) -> None:
         for record in self:
-            record.best_price = max(offer.price for offer in record.offer_ids)
+            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
 
     @api.onchange("garden")
     def _onchange_change(self) -> None:
