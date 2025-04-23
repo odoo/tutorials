@@ -2,8 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="p-3 fs-4 h-100 align-content-center text-center"
+             style="display: flex; flex-direction:column; gap: 10px">
+            <div class="border rounded-3" style="margin: 0 auto; width: fit-content">
+                <div style="display: flex; flex-direction: row; gap: 10px;">
+                    <Counter onChange.bind="incrementSum"/>
+                    <Counter onChange.bind="incrementSum"/>
+                </div>
+                <p>Total Sum: <t t-esc="this.sum.value"/></p>
+            </div>
+            <div style="display: flex; flex-direction: row; gap: 10px; margin: 0 auto; width: fit-content">
+                <Card title="'Card 1'"><Counter/></Card>
+                <Card title="'Card 2'"><Counter/></Card>
+                <Card title="'Card 3'"><span class="text-primary">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span></Card>
+            </div>
+            <div class="border rounded-3 h-100" style="display: flex; gap: 5px; padding: 10px;">
+                <TodoList/>
+            </div>
         </div>
     </t>
 

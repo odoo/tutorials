@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_list">
+        <div class="mx-auto">
+            <input name="add_todo" placeholder="Add a ToDo" class="px-2" t-on-keyup="addTodo"
+                   t-ref="todo_input"/>
+            <t t-foreach="this.todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="{...todo, sequence: todo_index+1}" toggleState.bind="toggleState"
+                          removeTodo.bind="removeTodo"/>
+            </t>
+        </div>
+    </t>
+
+</templates>

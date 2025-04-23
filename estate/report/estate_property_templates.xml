@@ -1,0 +1,91 @@
+<odoo>
+    <template id="property_offers_table_template">
+        <hr class="m-0"/>
+        <table t-if="property.mapped('offer_ids')" class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="fw-bold">Price</th>
+                    <th class="fw-bold">Partner</th>
+                    <th class="fw-bold">Validity (days)</th>
+                    <th class="fw-bold">Deadline</th>
+                    <th class="fw-bold">State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="property.mapped('offer_ids')" t-as="offer">
+                    <td><span t-field="offer.price"/></td>
+                    <td><span t-field="offer.partner_id.name"/></td>
+                    <td><span t-field="offer.validity"/></td>
+                    <td><span t-field="offer.date_deadline"/></td>
+                    <td>
+                        <span t-if="offer.status" t-field="offer.status"/>
+                        <span t-else="">N/A</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p t-else="" class="text-center h2 mt-2">
+            <strong>No offers available for this property.</strong>
+            <hr class="m-0"/>
+        </p>
+    </template>
+
+    <template id="estate_property_report_template_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="mt-4 o_border_bottom">
+                            <div>
+                                <h1 t-field="property.name"/>
+                            </div>
+                            <div id="property_info" class="mb-3">
+                                <strong>Salesperson:</strong>
+                                <t t-out="property.salesperson_id.name"/>
+                                <br/>
+                                <strong>Expected Price:</strong>
+                                <t t-out="'{:,.2f}'.format(property.expected_price)"/>
+                                <br/>
+                                <strong>Status:</strong>
+                                <t t-out="' '.join(property.state.split('_')).title()"/>
+                            </div>
+                        </div>
+                        <t t-call="estate.property_offers_table_template"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="res_users_report_template_properties">
+        <t t-foreach="docs" t-as="salesperson">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page mt-5">
+                        <p class="h1">
+                            <strong>Salesperson: </strong>
+                            <t t-out="salesperson.name"/>
+                        </p>
+                        <div t-foreach="salesperson.property_ids" t-as="property" class="mt-5">
+                            <div>
+                                <div>
+                                    <h1 t-field="property.name"/>
+                                </div>
+                                <div>
+                                    <p>
+                                        <strong class="font-bold">Expected Price:</strong>
+                                        <t t-out="'{:,.2f}'.format(property.expected_price)"/>
+                                        <br/>
+                                        <strong class="font-bold">Status:</strong>
+                                        <t t-out="' '.join(property.state.split('_')).title()"/>
+                                    </p>
+                                </div>
+                            </div>
+                            <t t-call="estate.property_offers_table_template"/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
