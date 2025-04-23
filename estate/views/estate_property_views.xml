@@ -7,14 +7,16 @@
         <field name="arch" type="xml">
             <search string="Search Properties">
                 <field string="Title" name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
                 <field string="Living Area (sqm)" name="living_area"/>
                 <field name="facades"/>
-                <filter string="Available properties" name="state" domain="['|', ('state', '=', 'new'), ('active', '=', 'offer_received')]"/>
+                <filter string="Available properties" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name='postcode' context="{'group_by':'postcode'}"/>
+                    <filter name='property_type_id' context="{'group_by':'property_type_id'}"/>
                 </group>
             </search>
         </field>
@@ -26,13 +28,15 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
-                    <div class="oe_title">
-                        <h1 class="mb32">
+                    <div class="oe_title mb32">
+                        <h1>
                             <field name="name" class="mb16"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field string="Available From" name="date_availability"/>
                         </group>
@@ -54,6 +58,15 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -67,12 +80,14 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field string="Title" name="name"/>
+                <field name="property_type_id"/>
                 <field string="Postcode" name="postcode"/>
                 <field string="Bedrooms" name="bedrooms"/>
                 <field string="Living Area (sqm)" name="living_area"/>
                 <field string="Expected Price" name="expected_price"/>
                 <field string="Selling Price" name="selling_price"/>
                 <field string="Available From" name="date_availability"/>
+                <field name="tag_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
