@@ -31,3 +31,5 @@ class EstateProperty(models.Model):
                    ('cancelled', 'Cancelled')],
         default="new"
     )
+    property_type_id = fields.Many2one(
+        "estate.property.type", string="property type")
