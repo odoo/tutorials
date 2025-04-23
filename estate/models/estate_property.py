@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 
 
@@ -22,14 +22,14 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer('Total Area (sqm)')
     garden_orientation = fields.Selection(
         string='Garden Orientation',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
     )
     state = fields.Selection(
         string='State',
         selection=[('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
-        required=True,
+        readonly=True,
         copy=False,
-        default='new'
+        default='new',
     )
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     salesman = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
@@ -59,3 +59,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
+
+    def action_cancel(self):
+        for record in self:
+            if (record.state != 'sold'):
+                record.state = 'cancelled'
+            else:
+                raise exceptions.ValidationError("Sold property cannot be cancelled")
+        return True
+
+    def action_sold(self):
+        for record in self:
+            if (record.state != 'cancelled'):
+                record.state = 'sold'
+            else:
+                raise exceptions.ValidationError("Cancelled property cannot be sold")
+        return True
