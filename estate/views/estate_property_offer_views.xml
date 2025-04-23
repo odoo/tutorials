@@ -1,6 +1,5 @@
 <odoo>
     <data>
-
         <record id="estate_property_offer_list" model="ir.ui.view">
             <field name="name">estate.property.offer.list</field>
             <field name="model">estate.property.offer</field>

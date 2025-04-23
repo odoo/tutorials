@@ -9,8 +9,9 @@
                       decoration-bf="is_offer_excepted"
                       decoration-muted="state=='sold'">
                     <field name="name"/>
+                    <field name="type_id"/>
+                    <field name="postcode"/>
                     <field name="tag_ids" widget="many2many_tags"/>
-                    <field name="postcode" optional="hide"/>
                     <field name="bedrooms" optional="hide"/>
                     <field name="living_area"/>
                     <field name="expected_price"/>
