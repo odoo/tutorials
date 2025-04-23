@@ -171,3 +171,4 @@ class EstatePropertyOffer(models.Model):
             else:
                 property.states = 'offer_received'
         return offers
+    
