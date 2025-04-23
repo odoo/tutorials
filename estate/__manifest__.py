@@ -4,7 +4,7 @@
     'version': '0.1',
     'license': 'LGPL-3',
     'depends': ['base'],
-    'category': 'Tutorials/AwesomeClicker',
+    'category': 'Tutorials/Server',
     'application': True,
     'installable': True,
     'description': """
@@ -14,6 +14,7 @@
     'data': [
         'security/ir.model.access.csv',
 
+        'views/estate_tag_views.xml',
         'views/estate_type_views.xml',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
