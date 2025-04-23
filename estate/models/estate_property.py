@@ -31,7 +31,7 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price")
 
     # Many2One relationships
-    property_type_id = fields.Many2one("estate.property.type", string="Type")
+    property_type_id = fields.Many2one("estate.property.type", string="Property type")
     salesperson_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
 
@@ -53,4 +53,4 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
+            record.best_price = max([0] + record.offer_ids.mapped('price'))  # To get 0 as best price if no offer
