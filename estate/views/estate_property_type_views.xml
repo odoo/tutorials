@@ -11,7 +11,7 @@
                     <button name="%(estate.estate_property_offer_action)d"
                             type="action"
                             class="oe_stat_button"
-                            icon="fa-list"/>
+                            icon="fa-list" string="offers"/>
                 </list>
             </field>
         </record>
