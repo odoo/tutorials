@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate model"
@@ -26,7 +27,7 @@ class EstateProperty(models.Model):
                              copy=False,
                              default="new",
                              selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
-    
+
     # Many2One relationships
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     salesperson_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
@@ -34,6 +35,6 @@ class EstateProperty(models.Model):
 
     # Many2Many relationships
     tag_ids = fields.Many2many('estate.property.tag')
-    
+
     # One2Many relionships
     offer_ids = fields.One2many('estate.property.offer', 'property_id')

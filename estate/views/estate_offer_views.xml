@@ -8,8 +8,8 @@
             <form string="Form">
                 <group>
                     <field name="price"/>
-                    <field name="status"/>
                     <field name="partner_id"/>
+                    <field name="status"/>
                 </group>
             </form>
         </field>
