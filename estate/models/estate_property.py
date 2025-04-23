@@ -20,7 +20,7 @@ class EstateProperty(models.Model):
     facades = fields.Integer('Facades')
     garage = fields.Boolean('Garage')
     garden = fields.Boolean('Garden')
-    garden_area = fields.Integer('Total Area (sqm)')
+    garden_area = fields.Integer('Garden Area (sqm)')
     garden_orientation = fields.Selection(
         string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
@@ -37,7 +37,6 @@ class EstateProperty(models.Model):
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    active = fields.Boolean('Active', default=True)
 
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
@@ -46,7 +45,6 @@ class EstateProperty(models.Model):
         ('positive_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('positive_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be strictly positive.'),
     ]
-
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
