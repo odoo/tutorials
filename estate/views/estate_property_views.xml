@@ -30,6 +30,7 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="property_type_id"/>
@@ -52,6 +53,12 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="user_id" />
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
