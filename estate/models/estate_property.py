@@ -1,6 +1,7 @@
-from dateutil import relativedelta
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -14,7 +15,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         "Available From",
         copy=False,
-        default=fields.Date.today() + relativedelta.relativedelta(months=3),
+        default=fields.Date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
@@ -81,3 +82,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def action_state_sold(self):
+        for record in self:
+            if record.state != "cancelled":
+                record.state = "sold"
+            else:
+                UserError("A cancelled property cannot be set as sold")
+        return True
+
+    def action_state_cancelled(self):
+        for record in self:
+            if record.state != "sold":
+                record.state = "cancelled"
+            else:
+                UserError("A sold property cannot be cancelled")
+        return True

@@ -7,6 +7,8 @@
             <list string="Channels">
                 <field name="partner_id" />
                 <field name="price" />
+                <button name="action_state_accept" type="object" title="check" icon="fa-check"/>
+                <button name="action_state_refuse" type="object" title="times" icon="fa-times"/>
                 <field name="status" />
             </list>
         </field>
