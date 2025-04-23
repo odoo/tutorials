@@ -1,6 +1,7 @@
 from odoo import api, models, fields
 from odoo.exceptions import UserError
 
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
@@ -10,7 +11,6 @@ class SaleOrder(models.Model):
     @api.depends_context('uid')
     def _compute_stock_approval_readonly(self):
         self.stock_approval_readonly = self.env.user.has_group('sales_team.group_sale_manager')
-
 
     def action_confirm(self):
         for records in self:

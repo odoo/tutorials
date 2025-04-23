@@ -5,8 +5,8 @@
     'description': """
         This module adds a zero stock approval feature to sale orders.
         """,
-    'data' : [
+    'data': [
         'views/sale_order_view.xml'
     ],
-    'license' : 'LGPL-3'
+    'license': 'LGPL-3'
 }
