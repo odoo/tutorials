@@ -1,10 +1,10 @@
 {
     "name": "Real Estate",
     "summary": """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
+        Starting module for "Server framework 101"
     """,
     "description": """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
+        Starting module for "Server framework 101"
     """,
     "author": "Odoo",
     "website": "https://www.odoo.com",

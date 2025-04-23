@@ -1,26 +1,25 @@
 from dateutil import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
+from odoo.tools import float_utils
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must strictly be positive."),
+        ("check_selling_price", "CHECK(selling_price > 0)", "The selling price must be positive."),
+    ]
 
     name = fields.Char(string="Name of the Property", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
-        string="Available From",
-        copy=False,
-        default=fields.Date.today() + relativedelta.relativedelta(months=3),
+        string="Available From", copy=False, default=fields.Date.today() + relativedelta.relativedelta(months=3)
     )
     expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(
-        string="Selling Price",
-        readonly=True,
-        copy=False,
-    )
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer(string="Number Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer(string="Facades")
@@ -29,12 +28,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
-        selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
-        ],
+        selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -50,33 +44,20 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-
-    property_type_id = fields.Many2one(
-        "estate.property.type",
-        string="Property Type",
-    )
-    users_id = fields.Many2one(
-        "res.users",
-        string="Salesman",
-        default=lambda self: self.env.user,
-    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    users_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     partner_id = fields.Many2one("res.partner", string="Buyer", readonly=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
-    offer_ids = fields.One2many(
-        "estate.property.offer",
-        "property_id",
-        string="Offers",
-    )
-
-    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_area")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Integer(string="Best Offer", compute="_compute_price")
 
     @api.depends("living_area", "garden_area")
-    def _compute_area(self):
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offer_ids")
+    @api.depends("offer_ids.price")
     def _compute_price(self):
         for record in self:
             record.best_price = max([*record.offer_ids.mapped("price"), 0])
@@ -102,3 +83,9 @@ class EstateProperty(models.Model):
         for record in self:
             record.state = "cancelled"
         return True
+
+    @api.constrains("selling_price")
+    def _check_price(self):
+        for record in self:
+            if float_utils.float_compare(record.selling_price, record.expected_price * 0.9) > 0:
+                raise exceptions.ValidationError("The selling cannot be lower than 90%% of the expected price.")
