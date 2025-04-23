@@ -1,6 +1,6 @@
 from dateutil import relativedelta
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -11,12 +11,12 @@ class EstateProperty(models.Model):
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
-        string="Date of Availability",
+        string="Available From",
         copy=False,
         default=fields.Date.today() + relativedelta.relativedelta(months=3),
     )
     expected_price = fields.Float(
-        string="Expected Selling Price",
+        string="Expected Price",
         required=True,
     )
     selling_price = fields.Float(
@@ -24,14 +24,14 @@ class EstateProperty(models.Model):
         readonly=True,
         copy=False,
     )
-    bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
-    living_area = fields.Integer(string="Number of Living Areas")
-    facades = fields.Integer(string="Number of Facades")
-    garage = fields.Boolean(string="Has a garage")
-    garden = fields.Boolean(string="Has a garden")
-    garden_area = fields.Integer(string="Number of garden Areas")
+    bedrooms = fields.Integer(string="Number Bedrooms", default=2)
+    living_area = fields.Integer(string="Living Area (sqm)")
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        string="Orientation of the Garden",
+        string="Garden Orientation",
         selection=[
             ("north", "North"),
             ("south", "South"),
@@ -70,3 +70,28 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers",
     )
+
+    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_area")
+    best_price = fields.Integer(string="Best Offer", compute="_compute_price")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids")
+    def _compute_price(self):
+        for record in self:
+            record.best_price = max([*record.offer_ids.mapped("price"), 0])
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden is False:
+            self.garden_orientation = False
+            self.garden_area = 0
+            return
+
+        if self.garden_orientation is False:
+            self.garden_orientation = "north"
+
+        self.garden_area = 10
