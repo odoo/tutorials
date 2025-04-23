@@ -1,0 +1,17 @@
+<odoo>
+
+
+    <record id="seller_action" model="ir.actions.act_window">
+        <field name="name">Seller</field>
+        <field name="res_model">seller</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="real_estate_root_menu" name="Real Estate">
+        <menuitem id="Users_menu" name="Users">
+            <menuitem id="seller_menu_item" name="Sellers" action="seller_action" />
+        </menuitem>
+    </menuitem>
+
+
+</odoo>

@@ -44,10 +44,20 @@
                         <group string='General Info'>
                             <field name='name' />
                             <field name="postcode" />
-                            <field name='selling_price' />
                             <field name="date_availability" />
                             <field name="bedrooms" />
+                            <field name="owner_id" />
+                            <field name='type_id' />
+                            <field name='tag_ids' widget="many2many_tags" />
+
+
+                        </group>
+                        <group string="Sales Info">
+                            <field name="seller_id" />
+                            <field name='buyer_id' />
+                            <field name='selling_price' />
                             <field name="expected_price" />
+
 
                         </group>
                         <notebook>
@@ -60,6 +70,19 @@
                                     <field name="garden_orientation" />
 
                                 </group>
+                            </page>
+                            <page string="Offers">
+
+                                <field name='offer_ids'>
+                                    <list>
+                                        <field name='price' />
+                                        <field name='status' />
+                                    </list>
+
+
+                                </field>
+
+
                             </page>
                         </notebook>
 
