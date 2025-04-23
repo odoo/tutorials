@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models, exceptions
+from odoo.tools.float_utils import float_compare
 from dateutil.relativedelta import relativedelta
 
 
@@ -41,6 +42,12 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _sql_constraints = [
+        ('positive_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('positive_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be strictly positive.'),
+    ]
+
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -59,6 +66,12 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = False
             self.garden_orientation = False
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price, 0.9 * record.expected_price, 1) < 0:
+                raise exceptions.ValidationError("The selling price must be at least 90% of the exoected price! You must reduce the expected price if you want to accept this offer.")
 
     def action_cancel(self):
         for record in self:

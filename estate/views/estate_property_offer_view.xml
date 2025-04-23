@@ -10,8 +10,8 @@
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="status"/>
-                <button name="action_accept" type="object" icon="fa-check"/>
-                <button name="action_refuse" type="object" icon="fa-times"/>
+                <button name="action_accept" title="Accept" type="object" icon="fa-check"/>
+                <button name="action_refuse" title="Refuse" type="object" icon="fa-times"/>
             </list>
         </field>
     </record>
