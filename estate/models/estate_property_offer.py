@@ -62,7 +62,7 @@ class EstatePropertyOffer(models.Model):
             property_id.write({
                 'state': 'received',
             })
-        return super(EstatePropertyOffer, self).create(vals_list)
+        return super().create(vals_list)
 
     def action_accept(self):
         for val in self:
