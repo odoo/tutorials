@@ -23,4 +23,44 @@
         </field>
     </record>
 
+    <record id="estate_notebook" model="ir.ui.view">
+        <field name="name">estate.name</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Notebook form">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    
+                    <group>
+                        <group>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
 </odoo>
