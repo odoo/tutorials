@@ -1,5 +1,5 @@
 {
-    'name': "XAFR's training estate module",
+    'name': "Estate",
     'version': '1.0',
     'summary': 'Training sandbox',
     'depends': [
