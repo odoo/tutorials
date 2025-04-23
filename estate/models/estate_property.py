@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(string="Available From", copy=False, default=fields.Datetime.add(fields.Datetime.today(), months=3))
+    date_availability = fields.Date(string="Available From", copy=False, default=lambda self: self._default_availability_date())
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -21,12 +21,13 @@ class EstateProperty(models.Model):
         string='Garden orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Allows to know where the sun is about the home")
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     state = fields.Selection(string="Status",
                              required=True,
                              copy=False,
                              default="new",
-                             selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
+                             selection=[('new', 'New'), ('offer_received', 'Offer Received'),
+                                        ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
     total_area = fields.Integer(string="Total area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
@@ -44,6 +45,9 @@ class EstateProperty(models.Model):
     # ---------------
     # Compute methods
     # ---------------
+
+    def _default_availability_date(self):
+        return fields.Datetime.add(fields.Datetime.today(), months=3)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

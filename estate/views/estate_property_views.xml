@@ -11,7 +11,7 @@
         <field name="name">estate.name</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="List">
+            <list>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -29,7 +29,7 @@
         <field name="name">estate.name</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Notebook form">
+            <form>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -95,9 +95,7 @@
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 
-                <filter string="Available" name="state" domain="['|', 
-                                                                    ('state', '=', 'new'),
-                                                                    ('state', '=', 'offer received')]"/>
+                <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer received'])]"/>
                 
                 <group string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>

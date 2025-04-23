@@ -5,7 +5,7 @@
         <field name="name">estate.name</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form string="Form">
+            <form>
                 <group>
                     <field name="price"/>
                     <field name="partner_id"/>
@@ -21,7 +21,7 @@
         <field name="name">estate.name</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="List">
+            <list>
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
