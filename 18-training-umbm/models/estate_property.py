@@ -7,6 +7,7 @@ from odoo.exceptions import ValidationError
 class EstateProperty(models.Model):
     _name = "estate_property"
     _description = "manage properties"
+    _order = "id desc"
 
     name = fields.Char(string="Name", required=True, default="Unknown")
     description = fields.Text(string="Description")
@@ -22,7 +23,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(string="Garden area")
     garden_orentation = fields.Selection(string="Garden orientation", selection=[('north', 'North'),('south', 'South'), ('ouest', 'West'), ('east', 'East')])
     active = fields.Boolean(default=True)
-    states = fields.Selection(string="State", selection=[('new','New'),('offer_received','Offre Received'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')])
+    states = fields.Selection(string="State", default='new', selection=[('new','New'),('offer_received','Offre Received'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')])
 
     tags_ids = fields.Many2many("estate_property_tags", string="Tags")
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
@@ -84,23 +85,36 @@ class EstateProperty(models.Model):
 class EstatePropertyType(models.Model):
     _name ="estate_property_type"
     _description="property type"
+    _order="sequence, name, id"
 
     name = fields.Char(string="Name", required=True)
     property_ids = fields.One2many("estate_property", "estate_property_type", string="Properties")
+    sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
+    
+    offer_ids = fields.One2many(comodel='estate_property_offer',inverse_name='property_type_id',string="Related offers")
+    offer_count = fields.Integer(compute='_compute_offer_count')
+
+    @api.depends("offer_ids")
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
 
 class EstatePropertyTags(models.Model):
     _name ="estate_property_tags"
     _description="property tags"
+    _order="name asc"
 
     name = fields.Char(string ="Name", required=True)
+    color = fields.Integer(string="Color")
 
     _sql_constraints = [
         ('check_unique_name','UNIQUE(name)','The name of the tag should be unique'),
     ]
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate_property_offer"
-    _description = "property offers"
+    _name ="estate_property_offer"
+    _description ="property offers"
+    _order="price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(string="Status", selection=[('accepted', 'Accepted'),('refused', 'Refused')])
@@ -108,9 +122,11 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate_property", string="Property", required=True)
     validity = fields.Integer(string="Validity", compute="_compute_validity", inverse="_inverse_validty")
     date_deadline = fields.Date(string="Deadline")
+    
+    property_type_id = fields.Many2one(related="property_id.estate_property_type", string="Property Type", stored=True)
 
     _sql_constraints = [
-        ('check_price_positive', 'CHECK(price >= 0)', 'The price should be higher than 0'),
+        ('check_price_positive', 'CHECK(price > 0)', 'The price should be higher than 0'),
     ]
 
     @api.depends("date_deadline")
