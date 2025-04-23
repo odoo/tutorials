@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
     name = fields.Char('Title',required=True, translate=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Date Availability', copy=False, default=fields.Date.add(fields.Date.today(),months=3))
+    date_availability = fields.Date('Date Available', copy=False, default=lambda self:self._get_current_day())
     expected_price = fields.Float('Expected Price',required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms',default=2)
@@ -19,4 +19,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer('Garden Area')
     garden_orientation = fields.Selection(string='Orientation Type', selection=[('north', 'North'), ('south', 'South'),('west', 'West'), ('east', 'East')])
     active = fields.Boolean(default=True)
-    state = fields.Selection(required=True, copy=False, default='New', selection=[('New', 'New'), ('Offer Received', 'Offer Received'),('Offer Accepted', 'Offer Accepted'), ('Sold', 'Sold'), ('Cancelled', 'Cancelled')])
+    state = fields.Selection(required=True, copy=False, default='New', selection=[('new', 'New'), ('offer_received', 'Offer Received'),('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
+
+    def _get_current_day(self):
+        return fields.Date.add(fields.Date.today(),months=3)
