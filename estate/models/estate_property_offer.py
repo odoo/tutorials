@@ -1,12 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, exceptions, fields, models
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offer for real estate properties"
+    _order = "price desc"
 
     price = fields.Float('Price', required=True)
     status = fields.Selection(
@@ -18,6 +20,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer("Validity", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one(related = "property_id.property_type_id", store=True)
 
     _sql_constraints = [
         ('positive_price', 'CHECK(price > 0)', 'The price must be strictly positive.'),
@@ -31,8 +34,9 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            if (record.create_date & record.date_deadline):
-                record.validity = (record.date_deadline - record.create_date.date()).days
+            if (record.create_date):
+                if (record.date_deadline):
+                    record.validity = (record.date_deadline - record.create_date.date()).days
 
     def action_refuse(self):
         for record in self:
