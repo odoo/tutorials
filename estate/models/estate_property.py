@@ -6,7 +6,7 @@ from odoo import fields, models
 class Estate_Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
-    name = fields.Char()
+    name = fields.Char(string="Title")
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -30,3 +30,4 @@ class Estate_Property(models.Model):
         readonly=True,
         default="new",
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property type")
