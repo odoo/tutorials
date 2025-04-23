@@ -91,7 +91,7 @@ class EstatePropertyType(models.Model):
     property_ids = fields.One2many("estate_property", "estate_property_type", string="Properties")
     sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
     
-    offer_ids = fields.One2many(comodel='estate_property_offer',inverse_name='property_type_id',string="Related offers")
+    offer_ids = fields.One2many(comodel_name='estate_property_offer',inverse_name='property_type_id',string="Related offers")
     offer_count = fields.Integer(compute='_compute_offer_count')
 
     @api.depends("offer_ids")
@@ -123,7 +123,7 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string="Validity", compute="_compute_validity", inverse="_inverse_validty")
     date_deadline = fields.Date(string="Deadline")
     
-    property_type_id = fields.Many2one(related="property_id.estate_property_type", string="Property Type", stored=True)
+    property_type_id = fields.Many2one(related="property_id.estate_property_type", string="Property Type", store=True)
 
     _sql_constraints = [
         ('check_price_positive', 'CHECK(price > 0)', 'The price should be higher than 0'),
