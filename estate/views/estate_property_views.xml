@@ -19,6 +19,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="property_type_id"/>
             </list>
         </field>
     </record>
@@ -55,6 +56,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="property_type_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -74,6 +76,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
                 
                 <filter string="Available" name="state" domain="['|', 
                                                                     ('state', '=', 'new'),
@@ -81,6 +84,7 @@
                 
                 <group string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="House type" name="property_type_id" context="{'group_by':'property_type_id'}"/>
                 </group>
                 
             </search>
