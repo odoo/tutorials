@@ -2,7 +2,7 @@ from odoo import fields, models
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate_property_offer"
+    _name = "estate.property.offer"
     _description = "Estate property Offer"
 
     price = fields.Float(string="Price")
@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
         required=True,
     )
     property_id = fields.Many2one(
-        "estate_property",
+        "estate.property",
         string="Property",
         required=True,
     )
