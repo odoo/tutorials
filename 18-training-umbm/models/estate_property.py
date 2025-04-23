@@ -40,6 +40,12 @@ class EstateProperty(models.Model):
         ('check_unique_name','UNIQUE(name)','The name of the property should be unique'),
     ]
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_states_match(self):
+        for record in self:
+            if record.states not in ['new', 'canceled']:
+                raise UserError("You can't delete active properties")
+
     @api.depends("garden_area","living_area")
     def _compute_area(self):
         for record in self:
@@ -154,4 +160,14 @@ class EstatePropertyOffer(models.Model):
     def action_close(self):
         for record in self:
             record.status = 'refused'
-            
+        
+    @api.model_create_multi
+    def create(self, vals_list):
+        offers = super().create(vals_list)
+        for offer in offers:
+            property = offer.property_id
+            if any(offer.price < existing_price for existing_price in property.offer_ids.mapped('price')):
+                raise UserError("You can't create offer with a lower price than existing offer")
+            else:
+                property.states = 'offer_received'
+        return offers
