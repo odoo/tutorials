@@ -21,5 +21,11 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(required=True, copy=False, default='New', selection=[('new', 'New'), ('offer_received', 'Offer Received'),('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
 
+    property_type_id = fields.Many2one("estate.property.type",string="Property Type")
+    salesman_id = fields.Many2one("res.partner", string="Salesman", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.users",string="Buyer", copy=False)
+    tag_ids = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
     def _get_current_day(self):
         return fields.Date.add(fields.Date.today(),months=3)
