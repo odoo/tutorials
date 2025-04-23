@@ -4,24 +4,31 @@ from odoo import api, fields, models
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
-    _description = "Estate Property Offer"
+    _name = 'estate.property.offer'
+    _description = 'Estate Property Offer'
+    _order = 'price desc'
 
-    price = fields.Float()
-    status = fields.Selection(
+    price = fields.Float("Price")
+    state = fields.Selection(
+        "State",
         selection=[
-            ("accepted", "Accepted"),
-            ("refused", "Refused")
-        ], copy=False,
+            ('accepted', "Accepted"),
+            ('refused', "Refused")
+        ], copy=False
     )
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    partner_id = fields.Many2one('res.partner',
+                                 "Partner",
+                                 required=True)
+    property_id = fields.Many2one("estate.property",
+                                  "Property",
+                                  required=True)
+    date_deadline = fields.Date("Deadline Date",
+                                compute='_compute_date_deadline',
+                                inverse='_inverse_date_deadline')
+    validity = fields.Integer("Validity Days", default=7)
 
-    date_deadline = fields.Date(string="Deadline Date",
-                                compute="_compute_date_deadline",
-                                inverse="_inverse_date_deadline")
-    validity = fields.Integer(string="Validity Days", default=7)
-
+    property_type_id = fields.Many2one('estate.property.type',
+                                       related='property_id.type_id', store=True)
     _sql_constraints = [
         (
             "check_price_positive",
@@ -47,11 +54,11 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for val in self:
             self.property_id.offer_ids.filtered(
-                lambda x: x.status == "accepted").write({
-                'status': "refused",
+                lambda x: x.state == 'accepted').write({
+                'state': 'refused',
             })
 
-            val.status = 'accepted'
+            val.state = 'accepted'
             val.property_id.write({
                 'buyer_id': val.partner_id.id,
                 'selling_price': val.price,
@@ -59,7 +66,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         for val in self:
-            val.status = 'refused'
+            val.state = 'refused'
             val.property_id.write({
                 'buyer_id': False,
                 'selling_price': False,

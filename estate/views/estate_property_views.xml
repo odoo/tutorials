@@ -4,15 +4,18 @@
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Estate Property">
+                <list string="Estate Property"
+                      decoration-success="offer_ids"
+                      decoration-bf="is_offer_excepted"
+                      decoration-muted="state=='sold'">
                     <field name="name"/>
                     <field name="tag_ids" widget="many2many_tags"/>
-                    <field name="postcode"/>
-                    <field name="bedrooms"/>
+                    <field name="postcode" optional="hide"/>
+                    <field name="bedrooms" optional="hide"/>
                     <field name="living_area"/>
                     <field name="expected_price"/>
                     <field name="selling_price"/>
-                    <field name="date_availability"/>
+                    <field name="date_availability" optional="hide"/>
                 </list>
             </field>
         </record>
@@ -27,7 +30,8 @@
                                 invisible="state =='sold'"/>
                         <button name="action_cancel" type="object" class="oe_stat_button" string="Cancel"
                                 invisible="state =='cancelled'"/>
-                        <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
+                        <field name="state" widget="statusbar" options="{'clickable': '1'}"
+                               statusbar_visible="new,received,accepted,sold" invisible="state == 'sold'"/>
                     </header>
                     <sheet string="Property">
                         <div class="oe_title">
@@ -35,11 +39,13 @@
                             <h1>
                                 <field name="name" placeholder="e.g. Property Title"/>
                             </h1>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <p>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </p>
                         </div>
                         <group>
                             <group>
-                                <field name="type_id"/>
+                                <field name="type_id" options="{'no_create': True, 'no_open': True}"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
                             </group>
@@ -54,26 +60,30 @@
                                 <group>
                                     <field name="description"/>
                                     <field name="bedrooms"/>
+                                    <field name="total_area"/>
                                     <field name="living_area"/>
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                 </group>
                             </page>
                             <page name="offers" string="Offers">
-                                <field name="offer_ids">
-                                    <list editable="bottom">
+                                <field name="offer_ids" readonly="state in ['accepted', 'sold', 'cancelled']">
+                                    <list editable="bottom"
+                                          decoration-success="state == 'accepted'"
+                                          decoration-danger="state == 'refused'">
                                         <field name="price"/>
                                         <field name="partner_id"/>
                                         <field name="date_deadline"/>
                                         <field name="validity"/>
                                         <button name="action_accept" type="object" class="oe_stat_button"
-                                                icon="fa-check" string=" " invisible="status=='accepted'"/>
+                                                icon="fa-check" string=" " invisible="state=='accepted'"/>
                                         <button name="action_refuse" type="object" class="oe_stat_button"
-                                                icon="fa-close" string=" " invisible="status=='refused'"/>
-                                        <field name="status"/>
+                                                icon="fa-close" string=" " invisible="state=='refused'"/>
+                                        <field name="state" column_invisible="1"/>
+                                        <field name="property_type_id"/>
                                     </list>
                                 </field>
                             </page>
@@ -106,6 +116,8 @@
                     <filter name="is_not_available"
                             string="Not Available"
                             domain="[('state','not in',['new','received'])]"/>
+                    <field name="living_area" filter_domain="[('living_area', '>=', self)]"
+                           string="Living area more than"/>
                     <group expand="1" string="Group By">
                         <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
                     </group>
@@ -118,6 +130,7 @@
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form</field>
             <field name="search_view_id" ref="estate_property_search"/>
+            <field name="context">{'search_default_is_available': True}</field>
         </record>
     </data>
 </odoo>

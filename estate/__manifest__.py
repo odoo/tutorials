@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Real Estate",
     'summary': """
@@ -10,7 +9,7 @@
     'author': "Odoo",
     'website': "https://www.odoo.com/",
     'category': 'Tutorials/Real Estate',
-    'version': '18.0.1.7.0',
+    'version': '1.0',
     'application': True,
     'installable': True,
     'depends': ['base'],
@@ -19,7 +18,9 @@
         "views/estate_property_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
+        "views/estate_property_offer_views.xml",
         "views/estate_menus.xml",
     ],
-    'license': 'AGPL-3'
+    'license': "LGPL-3",
 }
+
