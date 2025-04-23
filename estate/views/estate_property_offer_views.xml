@@ -5,8 +5,8 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Channels">
-                <field name="price" />
                 <field name="partner_id" />
+                <field name="price" />
                 <field name="status" />
             </list>
         </field>
@@ -22,14 +22,13 @@
                         <group>
                             <field name="price" />
                             <field name="partner_id" />
-                        </group>
-                        <group>
                             <field name="status" />
+                            <field name="validity" />
+                            <field name="date_deadline" />
                         </group>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
-
 </odoo>

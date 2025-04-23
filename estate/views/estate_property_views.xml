@@ -46,12 +46,13 @@
                         <group>
                             <field name="property_type_id" />
                             <field name="postcode" />
+                            <field name="state" />
                             <field name="date_availability" />
                         </group>
                         <group>
                             <field name="expected_price" />
+                            <field name="best_price" />
                             <field name="selling_price" />
-                            <field name="state" />
                         </group>
                     </group>
                     <notebook>
@@ -65,6 +66,7 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                                <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
