@@ -20,7 +20,7 @@
                 <field name="selling_price"/>
                 <field name="date_availability"/>
                 <field name="property_type_id"/>
-                <field name="tag_ids" widget='many2many_tags'/>
+                <field name="tag_ids" widget='many2many_tags' options="{'color_field': 'color'}"/>
             </list>
         </field>
     </record>
@@ -31,8 +31,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_sell_offer" type="object" string="Sold"/>
-                    <button name="action_cancel_offer" type="object" string="Cancel"/>
+                    <button name="action_sell_offer" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_cancel_offer" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
 
@@ -41,12 +41,12 @@
                         <field name="name"/>
                     </h1>
 
-                    <field name="tag_ids" widget='many2many_tags'/>
+                    <field name="tag_ids" widget='many2many_tags' options="{'color_field': 'color'}"/>
                     <separator/>
                     
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -66,14 +66,14 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="garden == False"/>
+                                <field name="garden_orientation" invisible="garden == False"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
 
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
 
                         <page string="Other info">
