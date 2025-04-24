@@ -9,7 +9,7 @@ class EstatePropertyTags(models.Model):
 
     @api.model
     def _get_random_color(self):
-        return random.randint(1,11)
+        return random.randint(1, 11)
 
     name = fields.Char(required=True)
     color = fields.Integer(default=_get_random_color)
@@ -17,5 +17,3 @@ class EstatePropertyTags(models.Model):
     _sql_constraints = [
         ('check_unique_name', 'UNIQUE(name)', 'The name of the tag should be unique'),
     ]
-
- 
