@@ -7,10 +7,7 @@ from odoo.tools import float_utils
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
-    _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must strictly be positive."),
-        ("check_selling_price", "CHECK(selling_price > 0)", "The selling price must be positive."),
-    ]
+    _order = "id desc"
 
     name = fields.Char(string="Name of the Property", required=True)
     description = fields.Text(string="Description")
@@ -52,36 +49,41 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Integer(string="Best Offer", compute="_compute_price")
 
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must strictly be positive."),
+        ("check_selling_price", "CHECK(selling_price > 0)", "The selling price must be positive."),
+    ]
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
-            record.total_area = record.living_area + record.garden_area
+            record.write({"total_area": record.living_area + record.garden_area})
 
     @api.depends("offer_ids.price")
     def _compute_price(self):
         for record in self:
-            record.best_price = max([*record.offer_ids.mapped("price"), 0])
+            record.write({"best_price": max([*record.offer_ids.mapped("price"), 0])})
 
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden is False:
-            self.garden_orientation = False
-            self.garden_area = 0
+            self.write({"garden_orientation": False, "garden_area": 0})
             return
 
-        if self.garden_orientation is False:
-            self.garden_orientation = "north"
-
-        self.garden_area = 10
+        self.write({"garden_area": 10, "garden_orientation": self.garden_orientation or "north"})
 
     def action_sell(self):
-        for record in self:
-            record.state = "sold"
+        if "cancelled" in self.mapped("state"):
+            raise exceptions.UserError("A property cancelled cannot be set as sold.")
+
+        self.write({"state": "sold"})
         return True
 
     def action_cancel(self):
-        for record in self:
-            record.state = "cancelled"
+        if "sold" in self.mapped("state"):
+            raise exceptions.UserError("A property sold cannot be set as cancelled.")
+
+        self.write({"state": "cancelled"})
         return True
 
     @api.constrains("selling_price")
