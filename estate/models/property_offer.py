@@ -7,10 +7,7 @@ class PropertyOffer(models.Model):
     _description = "Property Offer Model"
     name = fields.Char(required=True)
     price = fields.Float()
-    state = fields.Selection(
-        string="State",
-        required=True,
-        default="new",
+    status = fields.Selection(
         copy=False,
         selection=[
             ("accepted", "Accepted"),
