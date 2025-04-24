@@ -1,4 +1,5 @@
 from odoo import api, models, fields
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 
@@ -12,7 +13,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Text()
-    property_tags_ids = fields.Many2many("estate.property.tag")
+    property_tag_ids = fields.Many2many("estate.property.tag")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -54,6 +55,20 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one('res.partner', string='Buyer')
     offers_ids = fields.One2many('estate.property.offer', 'property_id')
     active = fields.Boolean(default=True)
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Canceled properties cannot be set as sold.")
+            record.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties cannot be canceled.")
+            record.state = 'cancelled'
+        return True
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
