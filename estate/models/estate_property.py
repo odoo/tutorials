@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 
-class TestModel(models.Model):
+class EstateModel(models.Model):
     _name = "estate.property"
     _description = "Estate properties"
 
@@ -20,15 +20,3 @@ class TestModel(models.Model):
         string='Garden Orientation',
         selection=[('north', 'North'), ('west', 'West'), ('south', 'South'), ('east', 'East')],
         help="The selection of the garden orientation.")
-
-    # company_currency_id = fields.Many2one('res.currency', compute='_compute_company_currency_id')
-    # expected_price = fields.Monetary('Expected Price', currency_field='company_currency_id')
-
-
-    _sql_constraints = [
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The price can\'t be negative.'),
-    ]
-
-    @api.depends_context('company')
-    def _compute_company_currency_id(self):
-        self.company_currency_id = self.env.company.currency_id
