@@ -22,6 +22,10 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
 
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')
+    ]
+
     def action_accept(self):
         for record in self:
             accepted_offers = record.property_id.offers_ids.filtered(lambda o: o.status == 'accepted')
