@@ -1,5 +1,5 @@
 {
-    'name': 'estate',
+    'name': 'Real Estate',
     'version': '1.0',
     'author' : "Parth Vyas",
     'summary': 'Real estate module',
@@ -10,6 +10,7 @@
     ],
     'data': [
         'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
     ],
     'installable': True,
     'application': True,
