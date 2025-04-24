@@ -6,6 +6,8 @@
             <list string="properties offer list">
                 <field name="price"/>
                 <field name="status"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
                 <field name="partner_id"/>
             </list>
         </field>
@@ -18,9 +20,15 @@
             <form string="properties offer from">
                 <sheet>
                     <group>
-                        <field name="price"/>
-                        <field name="status"/>
-                        <field name="partner_id"/>
+                        <group>
+                            <field name="validity"/>
+                            <field name="date_deadline"/>
+                        </group>
+                        <group>
+                            <field name="price"/>
+                            <field name="status"/>
+                            <field name="partner_id"/>
+                        </group>
                     </group>
                 </sheet>
             </form>
