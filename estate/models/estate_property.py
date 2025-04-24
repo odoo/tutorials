@@ -34,7 +34,7 @@ class EstateProperty(models.Model):
         copy=False,
         default='new',
     )
-    property_type_id = fields.Many2one('estate.property.type', string='Type', can_write=False, can_create=False)
+    property_type_id = fields.Many2one('estate.property.type', string='Type')
     salesman = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     buyer = fields.Many2one('res.partner', string='Buyer', copy=False)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
@@ -88,3 +88,9 @@ class EstateProperty(models.Model):
             else:
                 raise exceptions.ValidationError("Cancelled property cannot be sold")
         return True
+
+    @api.ondelete(at_uninstall=True)
+    def _ondelete(self):
+        for record in self:
+            if record.state in {'new', 'cancelled'}:
+                raise exceptions.ValidationError("New or Cancelled property cannot be deleted")

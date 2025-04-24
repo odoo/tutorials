@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-        <field name="context">{'search_default_available': True, 'search_default_current': True}</field>
-    </record>
-
     <!-- List view -->
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.list</field>
@@ -107,5 +100,13 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="estate_property_view_search"/>
+        <field name="context">{'search_default_available': True, 'search_default_current': True}</field>
     </record>
 </odoo>
