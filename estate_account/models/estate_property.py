@@ -1,14 +1,15 @@
-from odoo import models, fields, Command
+from odoo import models, Command
+
 
 class EstateProperty(models.Model):
-    _inherit="estate_property"
+    _inherit = "estate_property"
 
     def mark_as_sold(self):
         account_move = self.env['account.move']
         for values in self:
             account_values = {
-                'partner_id':values.buyer_id.id,
-                'move_type':'out_invoice',
+                'partner_id':values.buyer_id.id, 
+                'move_type':'out_invoice', 
                 "line_ids": [
                     Command.create({
                         "name": "6% commission",
@@ -25,4 +26,3 @@ class EstateProperty(models.Model):
             account_move.create(account_values)
 
         return super().mark_as_sold()
-

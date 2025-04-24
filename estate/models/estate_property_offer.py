@@ -1,18 +1,18 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
+
 class EstatePropertyOffer(models.Model):
-    _name ="estate_property_offer"
-    _description ="property offers"
-    _order="price desc"
+    _name = "estate_property_offer"
+    _description = "property offers"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
-    status = fields.Selection(string="Status", selection=[('accepted', 'Accepted'),('refused', 'Refused')])
+    status = fields.Selection(string="Status", selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate_property", string="Property", required=True)
     validity = fields.Integer(string="Validity", compute="_compute_validity", inverse="_inverse_validty")
     date_deadline = fields.Date(string="Deadline")
-    
     property_type_id = fields.Many2one(related="property_id.estate_property_type", string="Property Type", store=True)
 
     _sql_constraints = [
@@ -44,7 +44,7 @@ class EstatePropertyOffer(models.Model):
     def action_close(self):
         for record in self:
             record.status = 'refused'
-        
+
     @api.model_create_multi
     def create(self, vals_list):
         offers = super().create(vals_list)
@@ -55,4 +55,3 @@ class EstatePropertyOffer(models.Model):
             else:
                 property.states = 'offer_received'
         return offers
-    

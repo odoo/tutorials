@@ -1,7 +1,8 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_round, float_compare
+from odoo.tools.float_utils import float_compare
 from odoo.exceptions import ValidationError
+
 
 class EstateProperty(models.Model):
     _name = "estate_property"
@@ -20,9 +21,9 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden area")
-    garden_orentation = fields.Selection(string="Garden orientation", selection=[('north', 'North'),('south', 'South'), ('ouest', 'West'), ('east', 'East')])
+    garden_orentation = fields.Selection(string="Garden orientation", selection=[('north', 'North'), ('south', 'South'), ('ouest', 'West'), ('east', 'East')])
     active = fields.Boolean(default=True)
-    states = fields.Selection(string="State", default='new', selection=[('new','New'),('offer_received','Offre Received'),('offer_accepted','Offer Accepted'),('sold','Sold'),('canceled','Canceled')])
+    states = fields.Selection(string="State", default='new', selection=[('new', 'New'), ('offer_received', 'Offre Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')])
 
     tags_ids = fields.Many2many("estate_property_tags", string="Tags")
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
@@ -35,8 +36,8 @@ class EstateProperty(models.Model):
 
     _sql_constraints = [
         ('check_price_positive', 'CHECK(expected_price >= 0)', 'The price should be higher than 0'),
-        ('check_selling_price_positive', 'CHECK(selling_price >= 0)','The selling price should be higher than 0'),
-        ('check_unique_name','UNIQUE(name)','The name of the property should be unique'),
+        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'The selling price should be higher than 0'),
+        ('check_unique_name', 'UNIQUE(name)', 'The name of the property should be unique'),
     ]
 
     @api.ondelete(at_uninstall=False)
@@ -45,7 +46,7 @@ class EstateProperty(models.Model):
             if record.states not in ['new', 'canceled']:
                 raise UserError("You can't delete active properties")
 
-    @api.depends("garden_area","living_area")
+    @api.depends("garden_area", "living_area")
     def _compute_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -79,10 +80,10 @@ class EstateProperty(models.Model):
             else:
                 record.states = "canceled"
 
-    @api.constrains('selling_price','expected_price')
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if record.expected_price != 0 :
+            if record.expected_price != 0:
                 min_selling_price = record.expected_price * 0.9
-                if float_compare(record.selling_price, min_selling_price,2) == -1 :
+                if float_compare(record.selling_price, min_selling_price, 2) == -1:
                     raise ValidationError("Selling price shoudn't be lower than 90% of expected price")
