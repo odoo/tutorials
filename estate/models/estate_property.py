@@ -42,6 +42,17 @@ class EstateProperty(models.Model):
     # One2Many relionships
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
 
+    # -----------
+    # Constraints
+    # -----------
+
+    _sql_constraints = [
+        ('expected_price_constraint', 'CHECK(expected_price > 0)',
+         'Your expected price must be positive.'),
+        ('selling_price_constraint', 'CHECK(selling_price >= 0)',
+         'Your selling price must be positive.')
+    ]
+
     # ---------------
     # Compute methods
     # ---------------
