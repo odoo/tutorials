@@ -38,6 +38,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_price"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -52,6 +53,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area" string="Total Area (sqm)"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -89,59 +91,5 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
-    </record>
-
-
-
-    <record id="estate_property_type_view_form" model="ir.ui.view">
-        <field name="name">estate.property.type.form</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <form string="Type">
-                <sheet>
-                    <h1>
-                        <field name="name"/>
-                    </h1>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Property Types</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="estate_property_tag_view_form" model="ir.ui.view">
-        <field name="name">estate.property.tag.form</field>
-        <field name="model">estate.property.tag</field>
-        <field name="arch" type="xml">
-            <form string="Type">
-                <sheet>
-                    <h1>
-                        <field name="name"/>
-                    </h1>
-                </sheet>
-            </form>
-        </field>
-    </record>
-
-    <record id="estate_property_tag_action" model="ir.actions.act_window">
-        <field name="name">Property Tags</field>
-        <field name="res_model">estate.property.tag</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
-    <record id="estate_property_offer_view_list" model="ir.ui.view">
-        <field name="name">estate.property.offer.list</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">
-            <list string="Offers">
-                <field name="price"/>
-                <field name="partner_id" string="Partner"/>
-                <field name="status"/>
-            </list>
-        </field>
     </record>
 </odoo>
