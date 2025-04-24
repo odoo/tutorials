@@ -39,5 +39,14 @@ class EstateProperty(models.Model):
     def _compute_best_offer(self):
         self.best_offer = max(self.offer_ids.mapped("price") + [0])
 
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""
+
     def _get_day_in_3_months(self):
         return fields.Date.add(fields.Date.today(), months=3)
