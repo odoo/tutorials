@@ -7,7 +7,7 @@ class EstateModel(models.Model):
 
     name = fields.Char('Title', required=True, translate=True)
     description = fields.Text()
-    postcode = fields.Integer(help='Your post code in 4 or 5 digits. e.g: 3000')
+    postcode = fields.Integer(help='Your post code in 4 or 5 digits.')
     date_availability = fields.Date('Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
