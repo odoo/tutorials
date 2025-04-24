@@ -21,8 +21,8 @@ class estate_property_offer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
-            if record.property_id.state == 'offer_accepted':
-                raise UserError("An offer is already accepted for this property")
+            if record.property_id.state in ('canceled', 'sold'):
+                raise UserError("Cannot make changes on a canceled or sold property")
         for record in self:
             record.property_id.selling_price = record.price
             record.property_id.buyer = record.partner_id
@@ -31,5 +31,7 @@ class estate_property_offer(models.Model):
 
     def action_refuse_offer(self):
         for record in self:
+            if record.property_id.state in ('canceled', 'sold'):
+                raise UserError("Cannot make changes on a canceled or sold property")
             record.property_id.state = 'offer_received'
             record.status = 'refused'
