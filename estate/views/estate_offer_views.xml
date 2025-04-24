@@ -21,14 +21,13 @@
         <field name="name">estate.name</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <button name="action_accept_offer" icon="fa-check" string="Accept" type="object" invisible="status"/>
                 <button name="action_refuse_offer" icon="fa-times" string="Refuse" type="object" invisible="status"/>
-                <field name="status"/>
             </list>
         </field>
     </record>

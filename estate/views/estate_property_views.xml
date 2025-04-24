@@ -11,14 +11,14 @@
         <field name="name">estate.name</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="True"/>
                 <field name="property_type_id"/>
                 <field name="tag_ids" widget='many2many_tags' options="{'color_field': 'color'}"/>
             </list>
@@ -49,6 +49,7 @@
                             <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="state"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
