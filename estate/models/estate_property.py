@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import exceptions, api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -61,9 +61,33 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if (self.garden):
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    # --------------
+    # Public methods
+    # --------------
+
+    def action_cancel_offer(self):
+        for record in self:
+            if record.state == "cancelled":
+                return False
+            elif record.state == "sold":
+                raise exceptions.UserError('Sold properties cannot be cancelled.')
+            else:
+                record.state = "cancelled"
+                return True
+
+    def action_sell_offer(self):
+        for record in self:
+            if record.state == "sold":
+                return False
+            elif record.state == "cancelled":
+                raise exceptions.UserError('Cancelled properties cannot be sold.')
+            else:
+                record.state = "sold"
+                return True
