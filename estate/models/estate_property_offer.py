@@ -7,12 +7,12 @@ class EstatePropertyOffer(models.Model):
     _description = "property offers"
     _order = "price desc"
 
-    price = fields.Float(string="Price")
-    status = fields.Selection(string="Status", selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
+    price = fields.Float()
+    status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate_property", string="Property", required=True)
-    validity = fields.Integer(string="Validity", compute="_compute_validity", inverse="_inverse_validty")
-    date_deadline = fields.Date(string="Deadline")
+    validity = fields.Integer(compute="_compute_validity", inverse="_inverse_validty")
+    date_deadline = fields.Date(string="Deadline", required=True)
     property_type_id = fields.Many2one(related="property_id.estate_property_type", string="Property Type", store=True)
 
     _sql_constraints = [
@@ -21,10 +21,15 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends("date_deadline")
     def _compute_validity(self):
+        today = fields.Datetime.today().date()
         for record in self:
-            if record.create_date and record.date_deadline:
-                delta = record.date_deadline - record.create_date.date()
-                record.validity = int(delta.days)
+            deadline = record.date_deadline
+            if deadline:
+                start_date = record.create_date.date() if record.create_date else today
+                delta = deadline - start_date
+                record.validity = delta.days
+            else:
+                record.validity = 0
 
     def _inverse_validty(self):
         for record in self:
@@ -33,7 +38,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_confirm(self):
         for record in self:
-            if record.property_id.states == 'sold':
+            if record.property_id.state == 'sold':
                 raise UserError("You can't validate an offer for a sold property")
             else:
                 record.property_id.buyer_id = record.partner_id
@@ -53,5 +58,5 @@ class EstatePropertyOffer(models.Model):
             if any(offer.price < existing_price for existing_price in property.offer_ids.mapped('price')):
                 raise UserError("You can't create offer with a lower price than existing offer")
             else:
-                property.states = 'offer_received'
+                property.state = 'offer_received'
         return offers
