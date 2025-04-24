@@ -45,7 +45,6 @@
                     
                     <group>
                         <group>
-                            <field name="state"/> <!--TODO remove-->
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
