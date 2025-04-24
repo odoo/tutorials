@@ -5,6 +5,9 @@ from odoo.exceptions import UserError
 class estate_property_offer(models.Model):
     _name = 'estate.property.offer'
     _description = 'property offer'
+    _sql_constraints = [
+        ('offer_price_positive', 'CHECK(price > 0)', 'An offer price must be strictly positive'),
+    ]
 
     price = fields.Float(string = 'price')
     status = fields.Selection([('accepted', 'Accepted'),
@@ -35,3 +38,4 @@ class estate_property_offer(models.Model):
                 raise UserError("Cannot make changes on a canceled or sold property")
             record.property_id.state = 'offer_received'
             record.status = 'refused'
+    

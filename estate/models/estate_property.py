@@ -1,10 +1,15 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _sql_constraints = [
+        ("expected_price_positive", "CHECK(expected_price > 0)", "A property expected price must be strictly positive"),
+        ("selling_price_positive", "CHECK(selling_price >= 0)", "A property selling price must be positive"),
+    ]
 
     name = fields.Char(required = True)
     description = fields.Text()
@@ -40,7 +45,13 @@ class EstateProperty(models.Model):
     total_area = fields.Float(string = "Total area", compute="_compute_total_area", store = True)
     best_price = fields.Float(string = "Best Offer", compute= "_compute_best_offer", store = True)
     property_state = fields.Integer(default = 0)
-    
+
+    @api.constrains('selling_price')
+    def _check_price(self):
+        for record in self:
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
+                raise UserError("The selling price must be at least 90% of the expected price")
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self: 
