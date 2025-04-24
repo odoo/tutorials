@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="estate_property_view_searc" model="ir.ui.view">
+    <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -29,8 +29,10 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -50,6 +52,15 @@
                                 <field name="garden"/>
                                 <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                                <field name = "offers_ids"/> 
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="seller_id" string="Salesman"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -78,5 +89,59 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+    </record>
+
+
+
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Type">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_tag_view_form" model="ir.ui.view">
+        <field name="name">estate.property.tag.form</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <form string="Type">
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offers">
+                <field name="price"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="status"/>
+            </list>
+        </field>
     </record>
 </odoo>

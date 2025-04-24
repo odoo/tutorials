@@ -3,9 +3,9 @@ from odoo.tools import date_utils as du
 from datetime import date
 
 
-class TestModel(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "A test description"
+    _description = "A property module that adds the property as a listing"
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -40,4 +40,13 @@ class TestModel(models.Model):
         required=True,
         copy=False,
         default="new",
+    )
+    property_type_id = fields.Many2one("estate.property.type")
+    buyer_id = fields.Many2one("res.partner", copy=False)
+    seller_id = fields.Many2one(
+        "res.users", name="Salesperson", default=lambda self: self.env.user
+    )
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offers_ids = fields.One2many(
+        "estate.property.offer", "property_id", string="Offers"
     )
