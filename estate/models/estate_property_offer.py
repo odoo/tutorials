@@ -1,5 +1,6 @@
 from odoo import fields, models
 from odoo import api
+from odoo import exceptions
 
 
 class EstatePropertyOffer(models.Model):
@@ -23,6 +24,19 @@ class EstatePropertyOffer(models.Model):
     def _inverse_validity_date(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date).days
+
+    def action_accept_offer(self):
+        for record in self:
+            if not record.property_id.buyer_id:
+                record.status = "accepted"
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
+            else:
+                exceptions.UserError("This property cannot be bought by two people at the same time")
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
 
     def _get_current_day(self):
         return fields.Date.today()
