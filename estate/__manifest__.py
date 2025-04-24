@@ -1,17 +1,17 @@
 {
-    'name': "Real Estate",
-    'depends': [
-        'base_setup',
+    "name": "Real Estate",
+    "depends": [
+        "base",
     ],
-    
-    'application': True,
-     'data': [
-        'security/ir.model.access.csv',
-        'views/re_action_model.xml',
-        'views/estate_menus.xml',
-        'views/form_view.xml',
-        'views/list_view.xml',
-        'views/search_view.xml',
-
-     ]
+    "author": "Youssef Abdelmoneim",
+    "description": "A module for managing real estate properties.",
+    "application": True,
+    "data": [
+        "security/ir.model.access.csv",
+        "views/estate_views.xml",
+        "views/property_type_views.xml",
+        "views/property_tag_views.xml",
+        "views/estate_menus.xml",
+        "views/settings_menu.xml",
+    ],
 }
