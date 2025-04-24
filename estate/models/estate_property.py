@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -15,15 +16,15 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         "Available From",
         copy=False,
-        default=fields.Date.today() + relativedelta(months=3),
+        default=lambda __: fields.Date.today() + relativedelta(months=3),
     )
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
+    has_garage = fields.Boolean()
+    has_garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string="Orientation",
@@ -55,13 +56,31 @@ class EstateProperty(models.Model):
     )
     buyer_id = fields.Many2one("res.partner", "Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many(
-        "estate.property.offer",
-        "property_id",
-        " ",
-    )
-    total_area = fields.Float(compute="_compute_total")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
+    total_area = fields.Integer(compute="_compute_total")
     best_price = fields.Float("Best Offer", compute="_compute_best_price")
+
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price >= 0)",
+            "A property expected price must be strictly positive.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "A property selling price must be positive.",
+        ),
+    ]
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if (
+                record.offer_ids.filtered(lambda x: x.status == "accepted")
+                and float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=3) == -1
+            ):
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -71,12 +90,11 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            prices = record.offer_ids.mapped("price")
-            record.best_price = max(prices) if prices else 0.0
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
-    @api.onchange("garden")
+    @api.onchange("has_garden")
     def _onchange_garden(self):
-        if self.garden:
+        if self.has_garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
@@ -84,17 +102,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     def action_state_sold(self):
-        for record in self:
-            if record.state != "cancelled":
-                record.state = "sold"
-            else:
-                UserError("A cancelled property cannot be set as sold")
+        if "cancelled" in self.mapped("state"):
+            raise UserError("A cancelled property cannot be set as sold")
+        self.write({"state": "sold"})
         return True
 
     def action_state_cancelled(self):
-        for record in self:
-            if record.state != "sold":
-                record.state = "cancelled"
-            else:
-                UserError("A sold property cannot be cancelled")
+        if "sold" in self.mapped("state"):
+            raise UserError("A sold property cannot be set as cancelled")
+        self.state = "cancelled"
         return True

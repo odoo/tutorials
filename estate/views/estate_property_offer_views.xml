@@ -4,11 +4,11 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Channels">
+            <list string="Offers">
                 <field name="partner_id" />
                 <field name="price" />
-                <button name="action_state_accept" type="object" title="check" icon="fa-check"/>
-                <button name="action_state_refuse" type="object" title="times" icon="fa-times"/>
+                <button name="action_state_accept" type="object" title="check" icon="fa-check" />
+                <button name="action_state_refuse" type="object" title="times" icon="fa-times" />
                 <field name="status" />
             </list>
         </field>

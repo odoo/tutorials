@@ -16,7 +16,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channels">
+            <list string="Properties">
                 <field name="name" />
                 <field name="property_type_id" />
                 <field name="tag_ids" widget="many2many_tags" />
@@ -36,11 +36,11 @@
         <field name="arch" type="xml">
             <form string="Form">
                 <header>
-                    <button name="action_state_sold" type="object" string="Sold"/>
-                    <button name="action_state_cancelled" type="object" string="Cancel"/>
+                    <button name="action_state_sold" type="object" string="Sold" />
+                    <button name="action_state_cancelled" type="object" string="Cancel" />
                 </header>
                 <h1>
-                    <field name="name"/>
+                    <field name="name" />
                 </h1>
                 <div class="mb32">
                     <field name="tag_ids" widget="many2many_tags" />
@@ -66,17 +66,15 @@
                                 <field name="bedrooms" />
                                 <field name="living_area" />
                                 <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
+                                <field name="has_garage" />
+                                <field name="has_garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
                                 <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
-                            <group>
-                                <field name="offer_ids" />
-                            </group>
+                            <field name="offer_ids" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -104,10 +102,10 @@
                 <field name="property_type_id" />
                 <separator />
                 <filter string="Available" name="available"
-                    domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]" />
+                    domain="[('state', 'in', ['new', 'received'])]" />
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode"
-                        context="{'group_by':'postcode', 'residual_visible':True}" />
+                        context="{'group_by':'postcode'}" />
                 </group>
             </search>
         </field>
