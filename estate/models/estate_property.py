@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -38,6 +39,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(string = "Total area", compute="_compute_total_area", store = True)
     best_price = fields.Float(string = "Best Offer", compute= "_compute_best_offer", store = True)
+    property_state = fields.Integer(default = 0)
     
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -54,3 +56,31 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         for record in self:
             record.garden_area = record.garden * record.garden_area
+    
+    @api.onchange('state')
+    def _onchange_state(self):
+        for record in self:
+            if record.property_state == 2:
+                record.state = 'canceled'
+            elif record.property_state == 1:
+                record.state = 'sold'
+
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("A sold property cannot be cancelled, create a new property instead.")
+            elif record.state == 'canceled':
+                raise UserError("Cannot cancel a cancelled property.")
+            record.state = 'canceled'
+            record.property_state = 2
+        return True
+    
+    def action_set_sold(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise UserError("Cannot sell a cancelled property.")
+            elif record.state == 'sold':
+                raise UserError("Cannot sell an already sold property.")
+            record.state = 'sold'
+            record.property_state = 1
+        return True

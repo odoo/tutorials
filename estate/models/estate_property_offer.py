@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 class estate_property_offer(models.Model):
     _name = 'estate.property.offer'
@@ -17,3 +18,18 @@ class estate_property_offer(models.Model):
     def compute_date_deadline(self):
         for record in self:
             record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
+
+    def action_accept_offer(self):
+        for record in self:
+            if record.property_id.state == 'offer_accepted':
+                raise UserError("An offer is already accepted for this property")
+        for record in self:
+            record.property_id.selling_price = record.price
+            record.property_id.buyer = record.partner_id
+            record.property_id.state = 'offer_accepted'
+            record.status = 'accepted'
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.property_id.state = 'offer_received'
+            record.status = 'refused'
