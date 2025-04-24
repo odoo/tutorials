@@ -1,22 +1,27 @@
+from dateutil.relativedelta import relativedelta
 from odoo import api, models, fields
 from odoo.exceptions import UserError
-from dateutil.relativedelta import relativedelta
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "Estate property offer description"
+    _description = "Estate property offer"
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "The offer price must be strictly positive")
+    ]
 
     price = fields.Float('price')
     status = fields.Selection(
         string='status',
-        selection=[('accepted', 'Accepted'), ('refused', 'Refused')]
+        selection=[
+            ('accepted', 'Accepted'),
+            ('refused', 'Refused')
+        ],
     )
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(
-        compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):

@@ -89,7 +89,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="availability_date"/>
-                <filter string="Available" name="state" domain="['|',('state','=','new'),('state','=','offer_received')]"/>
+                <filter string="Available" name="state" domain="[('state','in',['new', 'offer_received'])]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>

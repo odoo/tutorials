@@ -19,7 +19,7 @@
         <field name="name">properties.view.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="properties type from">
+            <form string="properties type form">
                 <sheet>
                     <h1>
                         <field name="name"/>
