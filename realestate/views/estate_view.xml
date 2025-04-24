@@ -65,9 +65,12 @@
                                 <group>
                                     <field name='facades' />
                                     <field name='living_area' />
+                                    <field name='garden_area' />
+                                    <field name='total_area' />
                                     <field name="garden" />
                                     <field name="garage" />
                                     <field name="garden_orientation" />
+                                    <field name='best_price' />
 
                                 </group>
                             </page>
@@ -77,6 +80,8 @@
                                     <list>
                                         <field name='price' />
                                         <field name='status' />
+                                        <field name='validity' />
+                                        <field name='deadline' />
                                     </list>
 
 

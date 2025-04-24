@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class Realestate(models.Model):
@@ -23,7 +23,6 @@ class Realestate(models.Model):
             ("east", "East"),
             ("west", "West"),
         ],
-        default="north",
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -44,3 +43,26 @@ class Realestate(models.Model):
     offer_ids = fields.One2many("offer", "property_id")
     status = fields.Selection(related="offer_ids.status")
     price = fields.Float(related="offer_ids.price")
+    validity = fields.Integer(related="offer_ids.validity")
+    deadline = fields.Date(related="offer_ids.deadline")
+
+    total_area = fields.Integer(compute="_compute_total")
+    best_price = fields.Float(compute="_max_offer_price")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids")
+    def _max_offer_price(self):
+        self.best_price = max(self.offer_ids.mapped("price"), default=0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""
