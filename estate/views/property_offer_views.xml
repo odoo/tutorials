@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <!-- List -->
+    <record id="offer_list" model="ir.ui.view">
+        <field name="name">offers List</field>
+        <field name="model">property_offer</field>
+        <field name="arch" type="xml">
+            <list string = "offers">
+                <field name="name" />
+                <field name="partner_id" />
+                <field name="status" />
+            </list>
+        </field>
+    </record>
+    <!-- Form -->
+    <!-- Offer form -->
+    <record id="offer_form" model="ir.ui.view">
+        <field name="name">offers Form</field>
+        <field name="model">property_offer</field>
+        <field name="arch" type="xml">
+            <form string="offer_Forms">
+                <sheet>
+                    <notebook>
+                        <page string="Offers">
+                            <group>
+                                <field name="price"/>
+                                <field name="partner_id"/>
+                                <field name="status"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
