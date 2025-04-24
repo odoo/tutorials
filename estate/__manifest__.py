@@ -6,20 +6,14 @@
     'summary': 'Manage appartments rent',
     'description': "",
     'license': "GPL-3",
-    'website': 'https://www.odoo.com/page/crm',
     'depends': [
         'base',
     ],
     'data': [
-        './security/ir.model.access.csv',
-        './views/estate_property_views.xml',
-        './views/res_users_views.xml',
-    ],
-    'demo': [
-
+        'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+        'views/res_users_views.xml',
     ],
     'installable': True,
     'application': True,
-    'auto_install': False,
-    
 }

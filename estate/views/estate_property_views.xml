@@ -5,7 +5,9 @@
         <field name="name">real_estate_view_list</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <list decoration-muted="states=='sold'" decoration-success="states=='offer_received' or states == 'offer_accepted'" decoration-bf="states=='offer_accepted'" >
+            <list decoration-muted="states=='sold'" 
+                  decoration-success="states in ['offer_received','offer_accepted']" 
+                  decoration-bf="states=='offer_accepted'" >
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -23,7 +25,7 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <field name="states" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,canceled" options="{'clickable': True}"/>
+                    <field name="states" widget="statusbar" options="{'clickable': True}"/>
                     <button name="mark_as_sold" type="object" string="Sold"/>
                     <button name="mark_as_canceled" type="object" string="Canceled"/>
                 </header>
