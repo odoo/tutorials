@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(string="Available From", copy=False, default=lambda self: self._default_availability_date())
+    date_availability = fields.Date(string="Available From", copy=False, default=lambda self: fields.Datetime.add(fields.Datetime.today(), months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -58,15 +58,12 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_rounding=1) < 0 :
+            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_rounding=1) < 0:
                 raise ValidationError("This selling price is under 90% of the expected price. Please review the expected price or the amount of the buyer's offer")
 
     # ---------------
     # Compute methods
     # ---------------
-
-    def _default_availability_date(self):
-        return fields.Datetime.add(fields.Datetime.today(), months=3)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
