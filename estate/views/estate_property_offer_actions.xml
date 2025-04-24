@@ -7,7 +7,6 @@
             <list string="Offers">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <field name="status"/>
             </list>
         </field>
     </record>
@@ -18,6 +17,8 @@
         <field name="arch" type="xml">
             <form string="Property Offer">
                 <sheet>
+                    <button name="action_accept_offer" class="btn-success" string="Accept" type="object"/>
+                    <button name="action_reject_offer" class="btn-danger" string="Reject" type="object"/>
                     <h1 class="mb32">
                         <field name="property_id"/>
                     </h1>
@@ -28,6 +29,22 @@
                     </group>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_list_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.list_view</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offers">
+                <field name="price" string="Offer Price"/>
+                <field name="partner_id"/>
+                <field name="deadline_date"/>
+                <field name="validity_days" string = "Validity"/>
+                <button name="action_accept_offer" type="object" icon="fa-check"/>
+                <button name="action_reject_offer" type="object" icon="fa-times"/>
+                <field name="status"/>
+            </list>
         </field>
     </record>
 </odoo>

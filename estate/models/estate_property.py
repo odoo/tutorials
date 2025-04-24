@@ -1,11 +1,13 @@
 import datetime
 
 from odoo import api, fields, models
+from odoo.excepetions import UserError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+
     name = fields.Char(string="Title")
     seller_id = fields.Many2one(
         "res.users", string="Salesperson", index=True, copy=True, default=lambda self: self.env.user
@@ -13,12 +15,9 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        default=datetime.datetime.now()
-        + datetime.timedelta(days=90),  # Setting the date availability 3 months from now.
+        default=datetime.datetime.now() + datetime.timedelta(days=90),
         copy=False,
     )
-    validity_days = fields.Integer(default=7)
-    deadline_date = fields.Date(compute="_compute_deadline_date", inverse="_inverse_validity_days")
     expected_price = fields.Float()
     selling_price = fields.Float(readonly=True, copyright=False, copy=False)
     bedrooms = fields.Integer(default=4)
@@ -38,7 +37,7 @@ class EstateProperty(models.Model):
         default="new",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property type")
-    property_tag_id = fields.Many2many("estate.property.tag", string="Property tag")
+    property_tag_ids = fields.Many2many("estate.property.tag", string="Property tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     best_offer_price = fields.Float(compute="_compute_best_offer_price")
 
@@ -50,21 +49,27 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer_price(self):
         for record in self:
-            record.best_offer_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
-
-    def _compute_deadline_date(self):
-        for record in self:
-            record.deadline_date = datetime.date.today() + datetime.timedelta(days=record.validity_days)
-
-    @api.depends("deadline_date")
-    def _inverse_validity_days(self):
-        for record in self:
-            record.validity_days = (record.deadline_date - datetime.date.today()).days
+            record.best_offer_price = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("has_garden")
     def _onchange_has_garden(self):
         for record in self:
             if record.has_garden:
-                record.garden_orientation, record.garden_area = "north", 10
+                record.garden_orientation = "north"
+                record.garden_area = 10
             else:
-                record.garden_orientation, record.garden_area = None, None
+                record.garden_orientation = False
+                record.garden_area = False
+
+    def action_mark_property_as_sold(self):
+        if "cancelled" in self.mapped("status"):
+            raise UserError("Cannot sell a property that was canceled.")
+
+        for record in self:
+            record.status = "sold"
+
+    def action_mark_property_as_cancelled(self):
+        if "sold" in self.mapped("status"):
+            raise UserError("Cannot cancel a property that was sold.")
+
+        self.status = "cancelled"
