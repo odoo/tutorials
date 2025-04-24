@@ -3,6 +3,7 @@
 {
     'name': 'Real Estate',
     'application': True,
+    'category': 'Real Eastate/Core',
     'data': [
         'security/ir.model.access.csv',
 
