@@ -14,4 +14,5 @@
         "views/estate_menus.xml",
         "views/settings_menu.xml",
     ],
+    "license": "LGPL-3",
 }

@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <odoo>
     <!-- Action -->
-    <record id="re_action_model" model="ir.actions.act_window">
+    <record id="estate_action_model" model="ir.actions.act_window">
         <field name="name">Real Estate Listings</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">list,form</field>
     </record>
     <!-- List -->
-    <record id="re_view_list" model="ir.ui.view">
+    <record id="estate_view_list" model="ir.ui.view">
         <field name="name">Estate List</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
@@ -23,8 +23,8 @@
         </field>
     </record>
     <!-- Form -->
-    <record id="re_view_form" model="ir.ui.view">
-        <field name="name">name</field>
+    <record id="estate_view_form" model="ir.ui.view">
+        <field name="name">Estate Form</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Estate_Forms">
@@ -42,6 +42,7 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -50,12 +51,13 @@
                                 <field name="description"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
+                                <field name="garden_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -76,7 +78,7 @@
     </record>
 
     <!-- Search -->
-    <record id="re_view_search" model="ir.ui.view">
+    <record id="estate_view_search" model="ir.ui.view">
         <field name="name">search</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
@@ -85,6 +87,7 @@
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
                 <field name="garage"/>
+                <field name="best_price"/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <filter string="New" name="new" domain="[('state', '=', 'new')]"/>
                 <filter string="Offer Received" name="Offer Received" domain="[('state', '=', 'offer_received')]"/>
