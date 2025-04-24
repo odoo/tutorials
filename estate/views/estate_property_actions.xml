@@ -40,6 +40,8 @@
                             <field name="postcode"/>
                             <field name="property_type_id"/>
                             <field name="date_availability"/>
+                            <field name="deadline_date"/>
+                            <field name="validity_days" string="Validity"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -52,6 +54,8 @@
                                 <field name="description"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area" string="Living Area(sqm)"/>
+                                <field name="garden_area" string="Garden Area(sqm)"/>
+                                <field name="total_area" string="Total Area(sqm)"/>
                                 <field name="facades"/>
                                 <field name="has_garage" string="Garage"/>
                                 <field name="has_garden" string="Graden"/>
