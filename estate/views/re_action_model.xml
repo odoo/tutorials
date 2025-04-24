@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<odoo>
-  <record id="re_action_model" model="ir.actions.act_window">
-        <field name="name">Real Estate action</field>
-    <field name="res_model">estate_property</field>
-    <field name="view_mode">list</field>
-    </record>
-</odoo>
