@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
@@ -36,3 +36,21 @@ class EstateProperty(models.Model):
     buyer = fields.Many2one("res.partner", string = "Buyer", copy=False)
     tags = fields.Many2many("estate.property.tag", string = "Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    total_area = fields.Float(string = "Total area", compute="_compute_total_area", store = True)
+    best_price = fields.Float(string = "Best Offer", compute= "_compute_best_offer", store = True)
+    
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self: 
+            record.total_area = record.living_area + record.garden_area
+    
+    @api.depends('offer_ids')
+    def _compute_best_offer(self):
+        for record in self:
+            prices = record.offer_ids.mapped('price')
+            record.best_price = max(prices) if prices else 0.0
+    
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        for record in self:
+            record.garden_area = record.garden * record.garden_area
