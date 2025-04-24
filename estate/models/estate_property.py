@@ -12,6 +12,8 @@ class EstateProperty(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Text()
+    property_tags_ids = fields.Many2many("estate.property.tag")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     postcode = fields.Char()
     date_availability = fields.Date(
         copy=False,
@@ -43,4 +45,7 @@ class EstateProperty(models.Model):
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Orientation of the garden"
     )
+    salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string='Buyer')
+    offers_ids = fields.One2many('estate.property.offer', 'property_id')
     active = fields.Boolean(default=True)
