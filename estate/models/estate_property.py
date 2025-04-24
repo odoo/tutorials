@@ -73,7 +73,7 @@ class EstateProperty(models.Model):
         for record in self:
             if float_compare(record.selling_price, 0.9 * record.expected_price, 1) < 0:
                 raise exceptions.ValidationError("The selling price must be at least 90% of the exoected price! You must reduce the expected price if you want to accept this offer.")
-    
+
     def action_cancel(self):
         for record in self:
             if record.state != 'sold':
