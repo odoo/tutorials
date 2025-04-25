@@ -1,5 +1,4 @@
 <odoo>
-    
     <record id="res_users_view_action" model="ir.actions.act_window">
         <field name="name">Users</field>
         <field name="res_model">res.users</field>
