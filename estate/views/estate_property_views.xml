@@ -109,7 +109,6 @@
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                     <filter string="House type" name="property_type_id" context="{'group_by':'property_type_id'}"/>
                 </group>
-                
             </search>
         </field>
     </record>

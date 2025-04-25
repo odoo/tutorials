@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -17,6 +18,21 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
     property_type_id = fields.Many2one('estate.property.type', related="property_id.property_type_id", store=True)
+
+    # -----------
+    # Inheritance
+    # -----------
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for val in vals_list:
+            property_onchange = self.env['estate.property'].browse(val['property_id'])
+
+            if val.get("price", 0) < property_onchange.best_price:
+                raise ValidationError("Your offer is under the best offer.")
+
+            property_onchange.state = 'offer_received'
+        return super().create(vals_list)
 
     # -----------
     # Constraints

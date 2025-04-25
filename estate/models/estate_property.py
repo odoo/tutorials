@@ -1,5 +1,5 @@
 from odoo import exceptions, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 
@@ -56,6 +56,12 @@ class EstateProperty(models.Model):
          'Your selling price must be positive.')
     ]
 
+    @api.ondelete(at_uninstall=False)
+    def _check_property_state_to_delete(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError('An offer which is not "New" or "Cancelled" cannot be deleted...')
+
     @api.onchange('selling_price', 'expected_price')
     @api.constrains('selling_price')
     def _check_selling_price(self):
@@ -96,7 +102,7 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 return False
             elif record.state == "sold":
-                raise exceptions.UserError('Sold properties cannot be cancelled.')
+                raise UserError('Sold properties cannot be cancelled.')
             else:
                 record.state = "cancelled"
                 return True
@@ -106,7 +112,7 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 return False
             elif record.state == "cancelled":
-                raise exceptions.UserError('Cancelled properties cannot be sold.')
+                raise UserError('Cancelled properties cannot be sold.')
             else:
                 record.state = "sold"
                 return True

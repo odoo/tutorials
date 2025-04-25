@@ -8,7 +8,7 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char(required=True)
     sequence = fields.Integer('Sequence', default=1)
-    offer_count = fields.Integer(compute="_compute_offer_number")
+    offer_count = fields.Integer(compute="_compute_offer_count")
 
     # One2Many relationships
     property_ids = fields.One2many('estate.property', 'property_type_id')
@@ -19,6 +19,6 @@ class EstatePropertyType(models.Model):
     # ---------------
 
     @api.depends('offer_ids')
-    def _compute_offer_number(self):
+    def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
