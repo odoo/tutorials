@@ -105,7 +105,14 @@ class Estate(models.Model):
             if not record.selling_price:
                 continue
 
-            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits = 2) == -1:
+            if (
+                float_compare(
+                    record.selling_price,
+                    0.9 * record.expected_price,
+                    precision_digits=2,
+                )
+                == -1
+            ):
                 raise ValidationError(
                     "The selling price can not be less than 90 percent of the expected price"
                 )

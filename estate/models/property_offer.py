@@ -2,6 +2,7 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 
+
 class PropertyOffer(models.Model):
     _name = "property_offer"
     _description = "Property Offer Model"
@@ -51,4 +52,3 @@ class PropertyOffer(models.Model):
             record.status = "refused"
             if record.property_id.selling_price == record.price:
                 record.property_id.selling_price = 0
-            
