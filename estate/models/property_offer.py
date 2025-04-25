@@ -21,6 +21,7 @@ class PropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate_property", required=True)
+    _order = "price desc"
 
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "The offer price must be positive.")

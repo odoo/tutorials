@@ -55,6 +55,7 @@ class Estate(models.Model):
     property_offer_ids = fields.One2many("property_offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+    _order = "id desc"
 
     _sql_constraints = [
         (
@@ -94,7 +95,6 @@ class Estate(models.Model):
     def action_sell_property(self):
         for record in self:
             record.state = "sold"
-            
 
     def action_cancel_property(self):
         for record in self:

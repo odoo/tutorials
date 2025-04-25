@@ -6,6 +6,8 @@ class PropertyTag(models.Model):
     _name = "property_tag"
     _description = "Property Tag Model"
     name = fields.Char(required=True)
+    _order = "name"
+
     _sql_constraints = [
         (
             "unique_tag_name",
