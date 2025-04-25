@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class Realestate(models.Model):
@@ -35,7 +36,7 @@ class Realestate(models.Model):
         ],
         default="new",
     )
-    owner_id = fields.Many2one("owner")
+    owner_id = fields.Many2one("buyer")
     type_id = fields.Many2one("types")
     tag_ids = fields.Many2many("tags", string="Tags")
     seller_id = fields.Many2one("seller")
@@ -56,7 +57,8 @@ class Realestate(models.Model):
 
     @api.depends("offer_ids")
     def _max_offer_price(self):
-        self.best_price = max(self.offer_ids.mapped("price"), default=0)
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -66,3 +68,50 @@ class Realestate(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    def action_set_property_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled properties cannot be sold")
+            record.state = "sold"
+
+    def action_set_property_cancelled(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold properties cannot be Cancelled")
+            record.state = "cancelled"
+
+    # def action_set_offer_accepted(self):
+    #     for record in self:
+    #         if record.status
+
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price> 0)",
+            "Expected price must be positive.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price> 0)",
+            "Selling price must be positive.",
+        ),
+        (
+            "check_offer_price",
+            "CHECK(price> 0)",
+            "Offer price must be positive.",
+        ),
+        (
+            "unique_name",
+            "unique('name')",
+            "Name already exists",
+        ),
+    ]
+
+    @api.constrains("selling_price")
+    def _validate_selling_price(self):
+        for record in self:
+            if record.selling_price < 0.9 * record.expected_price:
+                raise ValidationError(
+                    "Selling price must be at least 90'%' of the expected price"
+                )

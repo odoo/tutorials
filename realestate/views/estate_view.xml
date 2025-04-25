@@ -35,8 +35,14 @@
         <field name='arch' type='xml'>
             <form string='Property'>
                 <header>
+                    <button type='object' name='action_set_property_sold' string="SOLD"
+                    />
+                    <button type='object' name='action_set_property_cancelled' string="CANCEL"
+                        class="oe_highlight" />
+
+
                     <field name="state" widget="statusbar"
-                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled" />
+                        statusbar_visible="sold,cancelled" />
                 </header>
                 <sheet>
 
@@ -54,7 +60,6 @@
                         </group>
                         <group string="Sales Info">
                             <field name="seller_id" />
-                            <field name='buyer_id' />
                             <field name='selling_price' />
                             <field name="expected_price" />
 
@@ -82,6 +87,11 @@
                                         <field name='status' />
                                         <field name='validity' />
                                         <field name='deadline' />
+                                        <button type='object' name="set_offer_accepted"
+                                            string="" icon='fa-check' />
+                                        <button type='object' name="set_offer_refused"
+                                            string="" icon='fa-times' />
+
                                     </list>
 
 
