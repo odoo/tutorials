@@ -16,6 +16,7 @@ class EstatePropertyOffer(models.Model):
     # Many2One relationships
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
+    property_type_id = fields.Many2one('estate.property.type', related="property_id.property_type_id", store=True)
 
     # -----------
     # Constraints

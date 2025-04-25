@@ -13,6 +13,15 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" icon="fa-money" class="oe_stat_button" name="%(estate_offer_action)d">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Offres</span>
+                                <field name="offer_count" class="o_stat_text"/>
+                            </div>
+                        </button>
+                    </div>
+                    
                     <h1>
                         <field name="name"/>
                     </h1>
