@@ -24,6 +24,16 @@ class EstatePropertyOffer(models.Model):
          'The offer price must be strictly positive.')
     ]
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            offered_property = self.env['estate.property'].browse(vals['property_id'])
+            if offered_property.state == 'new':
+                offered_property.state = 'offer_received'
+            if vals.get("price", 0.0) < offered_property.best_offer:
+                raise exceptions.UserError("You cannot create on offer with a lower amount than an existing offer.")
+        return super().create(vals_list)
+
     @api.depends("create_date", "validity")
     def _compute_validity_date(self):
         for record in self:

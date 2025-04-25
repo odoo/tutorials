@@ -68,7 +68,7 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" string=" " readonly="state=='offer_received' or state=='sold' or state=='cancelled'"/>
+                                <field name="offer_ids" string=" " readonly="state=='offer_accepted' or state=='sold' or state=='cancelled'"/>
                             </group>
                         </page>
                         <page string="Other info">
