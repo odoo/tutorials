@@ -1,7 +1,8 @@
 import datetime
 
 from odoo import api, fields, models
-from odoo.excepetions import UserError
+from odoo.excepetions import UserError, ValidationError
+from odoo.tools import float_utils
 
 
 class EstateProperty(models.Model):
@@ -41,6 +42,19 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     best_offer_price = fields.Float(compute="_compute_best_offer_price")
 
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price of a property must be strictly positive.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price > 0)",
+            "The selling price of a property must be strictly positive.",
+        ),
+    ]
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -60,6 +74,12 @@ class EstateProperty(models.Model):
             else:
                 record.garden_orientation = False
                 record.garden_area = False
+
+    @api.constrains("selling_price")
+    def _check_price(self):
+        for record in self:
+            if float_utils.float_compare(record.selling_price, record.expected_price * 0.9) > 0:
+                raise ValidationError("The selling price cannot be lower than 90%% of the expected price.")
 
     def action_mark_property_as_sold(self):
         if "cancelled" in self.mapped("status"):

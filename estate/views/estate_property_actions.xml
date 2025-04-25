@@ -67,9 +67,7 @@
                         </page>
 
                         <page string="Offers">
-                            <group>
-                                <field name="offer_ids"/>
-                            </group>
+                            <field name="offer_ids"/>
                         </page>
                     </notebook>
                 </sheet>
