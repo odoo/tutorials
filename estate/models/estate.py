@@ -1,6 +1,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 from dateutil.relativedelta import relativedelta
 
 
@@ -54,6 +56,19 @@ class Estate(models.Model):
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price must be positive.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price > -1)",
+            "Selling price must be positive.",
+        ),
+    ]
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -62,6 +77,9 @@ class Estate(models.Model):
     @api.depends("property_offer_ids")
     def _compute_best_price(self):
         for record in self:
+            if not record.property_offer_ids:
+                record.best_price = 0
+                continue
             record.best_price = max(record.mapped("property_offer_ids.price"))
 
     @api.onchange("garden")
@@ -70,8 +88,8 @@ class Estate(models.Model):
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
-            self.garden_area = 0  # Or None if you prefer
-            self.garden_orientation = False  # Or None if you prefer
+            self.garden_area = 0
+            self.garden_orientation = False
 
     def action_sell_property(self):
         for record in self:
@@ -80,3 +98,14 @@ class Estate(models.Model):
     def action_cancel_property(self):
         for record in self:
             record.state = "cancelled"
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if not record.selling_price:
+                continue
+
+            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits = 2) == -1:
+                raise ValidationError(
+                    "The selling price can not be less than 90 percent of the expected price"
+                )

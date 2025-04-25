@@ -2,11 +2,9 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 
-
 class PropertyOffer(models.Model):
     _name = "property_offer"
     _description = "Property Offer Model"
-    name = fields.Char(required=True)
     price = fields.Float()
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
@@ -21,6 +19,10 @@ class PropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate_property", required=True)
+
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "The offer price must be positive.")
+    ]
 
     @api.depends("validity", "create_date")
     def _compute_date_deadine(self):
@@ -49,4 +51,4 @@ class PropertyOffer(models.Model):
             record.status = "refused"
             if record.property_id.selling_price == record.price:
                 record.property_id.selling_price = 0
-
+            
