@@ -79,6 +79,12 @@ class EstateProperty(models.Model):
             record.state = 'cancelled'
         return True
 
+    @api.ondelete(at_uninstall=False)
+    def _check_unlink_state(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("You cannot delete a property that is not in 'New' or 'Cancelled' state.")
+
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
         for record in self:

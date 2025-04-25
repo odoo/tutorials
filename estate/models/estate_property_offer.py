@@ -2,6 +2,7 @@ from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta
 
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -27,6 +28,26 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ('check_price', 'CHECK(price > 0)', 'The offer price must be strictly positive.')
     ]
+
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            property_id = val.get('property_id')
+            price = val.get('price')
+
+            prop = self.env['estate.property'].browse(property_id)
+
+            existing_offer_prices = prop.offers_ids.mapped('price')
+            if existing_offer_prices:
+                max_existing_offer = max(existing_offer_prices)
+                if float_compare(price, max_existing_offer, precision_digits=2) < 0:
+                    raise UserError("Cannot create an offer with a price lower than an existing offer")
+
+            if prop.state == 'new':
+                prop.write({'state': 'offer_received'})
+
+        new_offer = super(EstatePropertyOffer, self).create(vals)
+        return new_offer
 
     def action_accept(self):
         for record in self:
