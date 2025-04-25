@@ -46,7 +46,7 @@ class EstatePropertyOffer(models.Model):
             if prop.state == 'new':
                 prop.write({'state': 'offer_received'})
 
-        new_offer = super(EstatePropertyOffer, self).create(vals)
+        new_offer = super().create(vals)
         return new_offer
 
     def action_accept(self):
