@@ -1,4 +1,5 @@
 from odoo import fields, models, api, _
+from odoo.exceptions import UserError
 
 
 class EstateModel(models.Model):
@@ -61,3 +62,19 @@ class EstateModel(models.Model):
             return {'warning': {
                 'title': _("Warning"),
                 'message': ('Unchecking the garden option removed the area value and orientation.')}}
+
+    def action_btn_sold(self):
+        for record in self:
+            if record.state != 'cancelled':
+                record.state = "sold"
+            else:
+                raise UserError("This property is already cancelled and thus cannot be sold anymore.")
+        return True
+
+    def action_btn_cancel(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = "cancelled"
+            else:
+                raise UserError("This property is already sold and thus cannot be cancelled anymore.")
+        return True
