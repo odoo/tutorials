@@ -35,6 +35,7 @@ class Estate(models.Model):
     state = fields.Selection(
         string="State",
         required=True,
+        readonly=True,
         default="new",
         copy=False,
         selection=[
@@ -62,12 +63,20 @@ class Estate(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.mapped("property_offer_ids.price"))
-    
-    @api.onchange('garden')
+
+    @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = 'north'
+            self.garden_orientation = "north"
         else:
             self.garden_area = 0  # Or None if you prefer
             self.garden_orientation = False  # Or None if you prefer
+
+    def action_sell_property(self):
+        for record in self:
+            record.state = "sold"
+
+    def action_cancel_property(self):
+        for record in self:
+            record.state = "cancelled"

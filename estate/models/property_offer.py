@@ -34,10 +34,17 @@ class PropertyOffer(models.Model):
 
     def _inverse_date_deadline(self):
         for record in self:
-            print(f"Computing deadline for record: {record.id}")
-            print(f"  Create Date: {record.create_date}")
             if not record.create_date:
                 record.create_date = fields.Date.today()
 
             record.validity = (record.date_deadline - record.create_date.date()).days
             print(f"  Validity: {record.validity}")
+
+    def action_accept_offer(self):
+        for record in self:
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
