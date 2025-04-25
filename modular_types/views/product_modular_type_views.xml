@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_modular_type_form_view" model="ir.ui.view">
+        <field name="name">product.modular.type.form.view</field>
+        <field name="model">product.modular.type</field>
+        <field name="arch" type="xml">
+            <form string="Product Modular Types">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

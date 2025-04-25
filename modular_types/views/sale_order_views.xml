@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sale_order_form_modular_type" model="ir.ui.view">
+        <field name="name">view.sale.order.form.modular.type</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="product_template_id" position="after">
+                <button icon="fa-flask" type="action" name="%(modular_types.action_sale_order_line_wizard)d"
+                        title="Manage modular types"
+                        invisible="not has_modular_type"/>
+            </field>
+        </field>
+    </record>
+</odoo>
