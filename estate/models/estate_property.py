@@ -1,5 +1,5 @@
-from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
+from odoo import fields, api, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -7,10 +7,10 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _sql_constraints = [
-        ("expected_price_positive", "CHECK(expected_price > 0)", "A property expected price must be strictly positive"),
+        ("expected_price_positive", "CHECK(expected_price >= 0)", "A property expected price must be strictly positive"),
         ("selling_price_positive", "CHECK(selling_price >= 0)", "A property selling price must be positive"),
     ]
-
+    _order = 'id desc'
     name = fields.Char(required = True)
     description = fields.Text()
     postcode = fields.Char()
@@ -18,11 +18,11 @@ class EstateProperty(models.Model):
     expected_price = fields.Float()
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer(string = 'Living Area (sqm)')
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection([
         ('north', 'North'),
         ('south', 'South'),
@@ -35,16 +35,15 @@ class EstateProperty(models.Model):
         ('offer_received', 'Offer Received'),
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
-        ('canceled', 'Cancelled')
+        ('canceled', 'Canceled')
     ], required=True, copy=False, default='new')
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one("estate.property.type")
     sales_person = fields.Many2one("res.users", string = "Salesman", default = lambda self: self.env.user)
     buyer = fields.Many2one("res.partner", string = "Buyer", copy=False)
     tags = fields.Many2many("estate.property.tag", string = "Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(string = "Total area", compute="_compute_total_area", store = True)
     best_price = fields.Float(string = "Best Offer", compute= "_compute_best_offer", store = True)
-    property_state = fields.Integer(default = 0)
 
     @api.constrains('selling_price')
     def _check_price(self):
@@ -60,13 +59,13 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids')
     def _compute_best_offer(self):
         for record in self:
-            prices = record.offer_ids.mapped('price')
-            record.best_price = max(prices) if prices else 0.0
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
     
     @api.onchange('garden')
     def _onchange_garden(self):
         for record in self:
-            record.garden_area = record.garden * record.garden_area
+            if not record.garden:
+                record.garden_area = 0.0
     
     @api.onchange('state')
     def _onchange_state(self):
@@ -76,22 +75,22 @@ class EstateProperty(models.Model):
             elif record.property_state == 1:
                 record.state = 'sold'
 
-    def action_set_cancelled(self):
+    def action_set_canceled(self):
+        current_state = self.browse(record.id).state
         for record in self:
-            if record.state == 'sold':
-                raise UserError("A sold property cannot be cancelled, create a new property instead.")
-            elif record.state == 'canceled':
-                raise UserError("Cannot cancel a cancelled property.")
+            if current_state == 'sold':
+                raise UserError("A sold property cannot be canceled, create a new property instead.")
+            elif current_state == 'canceled':
+                raise UserError("Cannot cancel a canceled property.")
             record.state = 'canceled'
-            record.property_state = 2
         return True
     
     def action_set_sold(self):
+        current_state = self.browse(record.id).state
         for record in self:
-            if record.state == 'canceled':
-                raise UserError("Cannot sell a cancelled property.")
-            elif record.state == 'sold':
+            if current_state == 'canceled':
+                raise UserError("Cannot sell a canceled property.")
+            elif current_state == 'sold':
                 raise UserError("Cannot sell an already sold property.")
             record.state = 'sold'
-            record.property_state = 1
         return True
