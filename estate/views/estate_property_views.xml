@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- List view -->
-    <record id="estate_property_view_tree" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -22,7 +22,7 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Tests">
+            <search>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>

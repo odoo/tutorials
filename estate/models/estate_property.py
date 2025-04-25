@@ -2,7 +2,8 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare
 
 
@@ -70,28 +71,32 @@ class EstateProperty(models.Model):
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
+        _ = self.env._
         for record in self:
             if float_compare(record.selling_price, 0.9 * record.expected_price, 1) < 0:
-                raise exceptions.ValidationError("The selling price must be at least 90% of the exoected price! You must reduce the expected price if you want to accept this offer.")
+                raise ValidationError(_("The selling price must be at least 90% of the exoected price! You must reduce the expected price if you want to accept this offer."))
 
     def action_cancel(self):
+        _ = self.env._
         for record in self:
             if record.state != 'sold':
                 record.state = 'cancelled'
             else:
-                raise exceptions.ValidationError("Sold property cannot be cancelled")
+                raise ValidationError(_("Sold property cannot be cancelled"))
         return True
 
     def action_sold(self):
+        _ = self.env._
         for record in self:
             if record.state != 'cancelled':
                 record.state = 'sold'
             else:
-                raise exceptions.ValidationError("Cancelled property cannot be sold")
+                raise ValidationError(_("Cancelled property cannot be sold"))
         return True
 
-    @api.ondelete(at_uninstall=True)
+    @api.ondelete(at_uninstall=False)
     def _ondelete(self):
+        _ = self.env._
         for record in self:
-            if record.state in {'new', 'cancelled'}:
-                raise exceptions.ValidationError("New or Cancelled property cannot be deleted")
+            if record.state not in {'new', 'cancelled'}:
+                raise ValidationError(_("New or Cancelled property cannot be deleted"))

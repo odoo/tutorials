@@ -2,7 +2,7 @@
 
 {
     'name': 'Real Estate Account',
-    'application': True,
+    'auto_install': True,
     'category': 'Real Eastate/Invoicing',
     'data': [
         # 'security/ir.model.access.csv',

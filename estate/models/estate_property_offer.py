@@ -2,7 +2,8 @@
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -39,28 +40,27 @@ class EstatePropertyOffer(models.Model):
                     record.validity = (record.date_deadline - record.create_date.date()).days
 
     def action_refuse(self):
+        _ = self.env._
         for record in self:
             if (record.status != 'accepted'):
                 record.status = 'refused'
             else:
-                raise exceptions.ValidationError("Accepted offer cannot be canceled")
+                raise ValidationError(_("Accepted offer cannot be canceled"))
         return True
 
     def action_accept(self):
+        _ = self.env._
         # Make sure that only one offer is selected
-        if (len(self) > 1):
-            raise exceptions.ValidationError("Only one offer can be accepted")
+        self.ensure_one()
 
         # Accept the offer
-        if (self.status != 'refused'):
+        if self.status != 'refused':
             self.status = 'accepted'
         else:
-            raise exceptions.ValidationError("Refused offer cannot be accepted")
+            raise ValidationError(_("Refused offer cannot be accepted"))
 
         # Reject other offers
-        for record in self.property_id.offer_ids:
-            if (record != self):
-                record.status = 'refused'
+        self.property_id.offer_ids.filtered(lambda offer: offer != self).status = 'refused'
 
         # Set the buyer and selling price
         self.property_id.buyer = self.partner_id
@@ -68,11 +68,12 @@ class EstatePropertyOffer(models.Model):
         return True
 
     @api.model_create_multi
-    def create(self, vals):
-        for record in vals:
-            property = self.env['estate.property'].browse(record.get('property_id'))
-            higher_offer = max(property.offer_ids.mapped('price')) if len(property.offer_ids) > 0 else 0
-            offer_price = record.get('price', 0)
-            if higher_offer > offer_price:
-                raise exceptions.ValidationError("Cannot create an offer with a lower price than an existing one")
-        return super().create(vals)
+    def create(self, vals_list):
+        _ = self.env._
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals.get('property_id'))
+            highest_offer = max(property.offer_ids.mapped('price')) if len(property.offer_ids) > 0 else 0
+            offer_price = vals.get('price', 0)
+            if highest_offer > offer_price:
+                raise ValidationError(_("Cannot create an offer with a lower price than an existing one"))
+        return super().create(vals_list)
