@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo import fields, api, models
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -67,17 +67,9 @@ class EstateProperty(models.Model):
             if not record.garden:
                 record.garden_area = 0.0
     
-    @api.onchange('state')
-    def _onchange_state(self):
-        for record in self:
-            if record.property_state == 2:
-                record.state = 'canceled'
-            elif record.property_state == 1:
-                record.state = 'sold'
-
     def action_set_canceled(self):
-        current_state = self.browse(record.id).state
         for record in self:
+            current_state = self.browse(record.id).state
             if current_state == 'sold':
                 raise UserError("A sold property cannot be canceled, create a new property instead.")
             elif current_state == 'canceled':
@@ -86,8 +78,8 @@ class EstateProperty(models.Model):
         return True
     
     def action_set_sold(self):
-        current_state = self.browse(record.id).state
         for record in self:
+            current_state = self.browse(record.id).state
             if current_state == 'canceled':
                 raise UserError("Cannot sell a canceled property.")
             elif current_state == 'sold':

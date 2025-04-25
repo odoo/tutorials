@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
@@ -12,13 +12,10 @@ class EstatePropertyType(models.Model):
     sequence = fields.Integer('Sequence', default=10, help="Used to order property types. Lower is better.", required=True)
     name = fields.Char(required=True)
     property_ids = fields.One2many('estate.property', 'property_type_id', string='Properties')
-#     line_ids = fields.One2may('estate.property.type.ldine','model_id')
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Offers")
+    offer_count = fields.Integer(string="Offers Count", compute='_compute_offer_count')
 
-# class EstatePropertyTypeLine(models.Model):
-#     _name = 'estate.property.type.line'
-#     _description = 'Property Type Line'
-
-#     model_id = fields.Many2one('estate.property.type')
-#     title = fields.Char(string = 'Title')
-#     expected_price = fields.Float(string="Expected Price")
-#     status = fields.Float(string = 'Status')
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)
