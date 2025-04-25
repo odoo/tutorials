@@ -8,6 +8,9 @@
             <field name="bom_id" position="attributes">
                 <attribute name="readonly">is_modular_bom</attribute>
             </field>
+            <xpath expr="//page[@name='components']//field[@name='product_uom_qty']" position="before">
+                <field name="modular_type_id" invisible="not parent.is_modular_bom"/>
+            </xpath>
         </field>
     </record>
 </odoo>

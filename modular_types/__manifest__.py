@@ -13,5 +13,7 @@
         'views/mrp_bom_views.xml',
         'views/product_template_views.xml',
         'views/mrp_production_views.xml',
+        'wizard/sale_order_line_wizard_views.xml',
+        'views/sale_order_views.xml',
     ],
 }
