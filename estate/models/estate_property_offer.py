@@ -6,6 +6,7 @@ from odoo import exceptions
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property offer for an estate"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
@@ -15,6 +16,13 @@ class EstatePropertyOffer(models.Model):
     create_date = fields.Date(default=lambda self: self._get_current_day())
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_validity_date", inverse="_inverse_validity_date")
+
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
+
+    _sql_constraints = [
+        ('check_price_value', 'CHECK(price >= 0)',
+         'The offer price must be strictly positive.')
+    ]
 
     @api.depends("create_date", "validity")
     def _compute_validity_date(self):
@@ -31,6 +39,7 @@ class EstatePropertyOffer(models.Model):
                 record.status = "accepted"
                 record.property_id.selling_price = record.price
                 record.property_id.buyer_id = record.partner_id
+                record.property_id.state = 'offer_accepted'
             else:
                 exceptions.UserError("This property cannot be bought by two people at the same time")
 

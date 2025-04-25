@@ -1,11 +1,13 @@
 from odoo import fields, models
 from odoo import api
 from odoo import exceptions
+from odoo.tools import float_utils
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Properties of an estate"
+    _order = "id desc"
 
     name = fields.Char('Title', required=True, translate=True)
     description = fields.Text('Description')
@@ -21,16 +23,30 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer('Garden Area')
     garden_orientation = fields.Selection(string='Orientation Type', selection=[('north', 'North'), ('south', 'South'), ('west', 'West'), ('east', 'East')])
     active = fields.Boolean(default=True)
-    state = fields.Selection(required=True, copy=False, default='New', selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
+    state = fields.Selection(required=True, copy=False, default='new', selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one("res.partner", string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
 
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
+
+    _sql_constraints = [
+        ('check_expected_price_value', 'CHECK(expected_price > 0)',
+         'The expected price must be strictly positive.'),
+        ('check_selling_price_value', 'CHECK(selling_price >= 0)',
+         'The selling price must be positive.')
+    ]
+
+    @api.onchange("selling_price", "expected_price")
+    @api.constrains("selling_price")
+    def _check_selling_price_value(self):
+        for record in self:
+            if record.selling_price > 0.0 and float_utils.float_compare(record.selling_price, record.expected_price * 9.0 / 10.0, precision_rounding=0.1) < 0:
+                raise exceptions.ValidationError("The selling price cannot be lower than 90 percent of the expected price.")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
