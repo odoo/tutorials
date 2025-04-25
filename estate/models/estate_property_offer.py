@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -9,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     _description = "Property Offers"
     _order = "price desc"
 
-    price = fields.Float("Price")
+    price = fields.Float("Price", default=0.0)
     status = fields.Selection(
         string="Status",
         selection=[
@@ -36,6 +37,24 @@ class EstatePropertyOffer(models.Model):
         ),
     ]
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env["estate.property"].browse(vals["property_id"])
+            if (
+                float_compare(
+                    max(property_id.offer_ids.mapped("price"), default=-0.01), vals["price"], precision_digits=3
+                )
+                > -1
+            ):
+                raise UserError(_("Can't create an offer with a lower amount than an other offer"))
+        property_id.write(
+            {
+                "state": "received",
+            }
+        )
+        return super().create(vals_list)
+
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
@@ -49,12 +68,14 @@ class EstatePropertyOffer(models.Model):
     def action_state_accept(self):
         for record in self:
             if record.property_id.offer_ids.filtered(lambda offer: offer.status == "accepted"):
-                raise UserError("Only one offer can be accepted for a given property")
+                raise UserError(_("Only one offer can be accepted for a given property"))
             record.status = "accepted"
-            record.property_id.write({
-                "selling_price": record.price,
-                "buyer_id": record.partner_id,
-            })
+            record.property_id.write(
+                {
+                    "selling_price": record.price,
+                    "buyer_id": record.partner_id,
+                }
+            )
         return True
 
     def action_state_refuse(self):

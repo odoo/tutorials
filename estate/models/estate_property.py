@@ -1,8 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare
+from odoo.tools import float_compare
 
 
 class EstateProperty(models.Model):
@@ -74,14 +74,19 @@ class EstateProperty(models.Model):
         ),
     ]
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_new_cancelled(self):
+        if any(record.state not in ("new", "cancelled") for record in self):
+            raise UserError(_("Can only delete a new or cancelled property"))
+
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
             if (
                 record.offer_ids.filtered(lambda x: x.status == "accepted")
-                and float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=3) == -1
+                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=0.001) == -1
             ):
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price"))
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -104,12 +109,12 @@ class EstateProperty(models.Model):
 
     def action_state_sold(self):
         if "cancelled" in self.mapped("state"):
-            raise UserError("A cancelled property cannot be set as sold")
+            raise UserError(_("A cancelled property cannot be set as sold"))
         self.write({"state": "sold"})
         return True
 
     def action_state_cancelled(self):
         if "sold" in self.mapped("state"):
-            raise UserError("A sold property cannot be set as cancelled")
+            raise UserError(_("A sold property cannot be set as cancelled"))
         self.state = "cancelled"
         return True
