@@ -6,6 +6,7 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate: Offer"
+    _order = "price desc"
 
     price = fields.Float("Price")
     status = fields.Selection(
@@ -17,10 +18,9 @@ class EstatePropertyOffer(models.Model):
     )
     validity = fields.Integer("Validity", default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_compute_deadline")
-
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
-
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     _sql_constraints = [
         (
             "check_offer_price",
@@ -44,7 +44,7 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
             record.property_id.write(
                 {
-                    "selling_price": None,
+                    "selling_price": record.price,
                     "buyer_id": None,
                 }
             )

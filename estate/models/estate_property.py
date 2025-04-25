@@ -8,6 +8,7 @@ from odoo.tools import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate: Property"
+    _order = "id desc"
 
     name = fields.Char("Title", required=True)
     active = fields.Boolean("Active", default=True)
@@ -35,14 +36,6 @@ class EstateProperty(models.Model):
     expected_price = fields.Float("Expected Price", required=True, default=0.0)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     best_price = fields.Float("Best Price", compute="_compute_best_price")
-
-    _sql_constraints = [
-        (
-            "check_property_prices",
-            "CHECK(expected_price >= 0 AND selling_price > 0)",
-            "A property expected price and selling price must be positive",
-        )
-    ]
 
     # Description
     bedrooms = fields.Integer("# of bedrooms", default=2)
@@ -78,6 +71,14 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user,
     )
 
+    _sql_constraints = [
+        (
+            "check_property_prices",
+            "CHECK(expected_price >= 0 AND selling_price > 0)",
+            "A property expected price and selling price must be positive",
+        )
+    ]
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self) -> None:
         for record in self:
@@ -107,17 +108,13 @@ class EstateProperty(models.Model):
                 raise ValidationError("The selling price should be atleast 90% of the expected price")
 
     def action_cancel_property(self) -> bool:
-        for record in self:
-            if record.state != "sold":
-                record.state = "cancelled"
-            else:
-                raise UserError("Cannot cancel a sold property")
+        if "sold" in self.mapped("state"):
+            raise UserError("Cannot cancel a sold property")
+        self.write({"state": "cancelled"})
         return True
 
     def action_sold_property(self) -> bool:
-        for record in self:
-            if record.state != "cancelled":
-                record.state = "sold"
-            else:
-                raise UserError("Cannot sold a cancel property")
+        if "cancelled" in self.mapped("state"):
+            raise UserError("Cannot sell a cancel property")
+        self.write({"state": "sold"})
         return True

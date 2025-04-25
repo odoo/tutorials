@@ -1,15 +1,24 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property Offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Channel">
-                <field name="price"/>
+            <list string="Offers" editable="bottom" decoration-success="status in ('accepted',)"
+                decoration-danger="status in ('refused',)">
                 <field name="partner_id"/>
-                <button name="action_refuse_offer" type="object" icon="fa-times" title="refuse"/>
-                <button name="action_accept_offer" type="object" icon="fa-check" title="accept"/>
-                <field name="status"/>
+                <field name="price"/>
+                <button name="action_refuse_offer" type="object" icon="fa-times" title="refuse"
+                    invisible="status in ('accepted', 'refused',)"/>
+                <button name="action_accept_offer" type="object" icon="fa-check" title="accept"
+                    invisible="status in ('accepted', 'refused',)"/>
             </list>
         </field>
     </record>
@@ -19,11 +28,8 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
 
-            <form string="Test">
+            <form string="Offers">
                 <sheet>
-                    <!-- <h1 >
-                        <field name="name" />
-                    </h1> -->
                     <group>
                         <field name="price" string="Price"/>
                         <field name="status" string="Status"/>
