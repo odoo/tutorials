@@ -12,9 +12,11 @@ def _default_date_availability():
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property Information"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
+    sequence = fields.Integer('Sequence', default=10)
     property_tag_ids = fields.Many2many("estate.property.tag")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     postcode = fields.Char()
@@ -81,8 +83,10 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.expected_price, precision_digits=2):
-                if float_compare(record.selling_price, record.expected_price * 0.90, precision_digits=2) == -1:
-                    raise ValidationError("Selling price cannot be lower than 90 percent of expected price")
+                accepted_offers = record.offers_ids.filtered(lambda o: o.status == 'accepted')
+                if accepted_offers:
+                    if float_compare(record.selling_price, record.expected_price * 0.90, precision_digits=2) == -1:
+                        raise ValidationError("Selling price cannot be lower than 90 percent of expected price")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
