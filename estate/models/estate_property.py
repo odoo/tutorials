@@ -1,6 +1,8 @@
-from odoo import fields, models, api
-from odoo.tools import date_utils as du
 from datetime import date
+
+from odoo import fields, models, api
+from odoo.tools import date_utils
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -10,7 +12,9 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=du.add(date.today(), months=3))
+    date_availability = fields.Date(
+        copy=False, default=lambda _: date_utils.add(date.today(), months=3)
+    )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -28,7 +32,7 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
     )
-    total_area = fields.Float(compute="_compute_area")
+    total_area = fields.Float(compute="_compute_total_area")
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string="State",
@@ -56,18 +60,22 @@ class EstateProperty(models.Model):
         compute="_compute_best_price", readonly=True, string="Best Offer"
     )
 
-    @api.depends("living_area", "garden", "garden_area")
-    def _compute_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for single_property in self:
+            single_property.total_area = (
+                single_property.living_area + single_property.garden_area
+            )
 
     @api.depends("offers_ids.price")
     def _compute_best_price(self):
-        for record in self:
-            if record.offers_ids:
-                record.best_price = max(record.offers_ids.mapped("price"))
+        for single_property in self:
+            if single_property.offers_ids:
+                single_property.best_price = max(
+                    single_property.offers_ids.mapped("price")
+                )
             else:
-                record.best_price = 0
+                single_property.best_price = 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -77,3 +85,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def action_property_cancel(self):
+        for single_property in self:
+            if single_property.state == "sold":
+                raise UserError("Sold properties cannot be cancelled!")
+                return False
+            single_property.state = "cancelled"
+        return True
+
+    def action_property_sold(self):
+        for single_property in self:
+            if single_property.state == "cancelled":
+                raise UserError("Cancelled properties cannot be sold!")
+                return False
+            single_property.state = "sold"
+        return True

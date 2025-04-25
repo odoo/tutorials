@@ -12,9 +12,9 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="facades"/>
                 <separator/>
-                <filter string="Available" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer-received')]"/>
+                <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer-received'])]"/>                
                 <group expand="1" string="Group By">
-                    <filter name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
+                    <filter name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
@@ -25,6 +25,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Listing">
+                <header>
+                    <button name="action_property_cancel" string="Cancel" type="object" class="oe_highlight"/>
+                    <button name="action_property_sold" string="Sold" type="object" class="oe_highlight"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -32,6 +36,7 @@
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="state" string="Status"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>

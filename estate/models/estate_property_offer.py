@@ -1,6 +1,8 @@
-from odoo import fields, models, api
-from odoo.tools import date_utils as du
 from datetime import date
+
+from odoo import fields, models, api
+from odoo.tools import date_utils
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -23,18 +25,37 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         string="Deadline",
     )
+    sold = fields.Boolean(default="false")
 
     @api.depends("validity")
     def _compute_date_deadline(self):
-        for record in self:
+        for offer in self:
             create_date_actual = (
-                date.today() if not record.create_date else record.create_date.date()
+                date.today() if not offer.create_date else offer.create_date.date()
             )
-            record.date_deadline = du.add(create_date_actual, days=record.validity)
+            offer.date_deadline = date_utils.add(
+                create_date_actual, days=offer.validity
+            )
 
     def _inverse_date_deadline(self):
-        for record in self:
+        for offer in self:
             create_date_actual = (
-                date.today() if not record.create_date else record.create_date.date()
+                date.today() if not offer.create_date else offer.create_date.date()
             )
-            record.validity = (record.date_deadline - create_date_actual).days
+            offer.validity = (offer.date_deadline - create_date_actual).days
+
+    def action_offer_accept(self):
+        for offer in self:
+            if offer.sold:
+                raise UserError("An offer has already been accepted!")
+                return False
+            offer.status = "accepted"
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
+            offer.sold = False
+        return True
+
+    def action_offer_refuse(self):
+        for offer in self:
+            offer.status = "refused"
+        return True
