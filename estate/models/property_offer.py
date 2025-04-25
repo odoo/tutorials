@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 from dateutil.relativedelta import relativedelta
 
 
@@ -44,8 +45,20 @@ class PropertyOffer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
+            accepted_offer_count = self.search_count(
+                [
+                    ("property_id", "=", record.property_id.id),
+                    ("status", "=", "accepted"),
+                    ("id", "!=", record.id),
+                ]
+            )
+            if accepted_offer_count > 0:
+                raise ValidationError(
+                    "There is already an accepted offer for this property"
+                )
             record.status = "accepted"
             record.property_id.selling_price = record.price
+            record.property_id.buyer = record.partner_id
 
     def action_refuse_offer(self):
         for record in self:

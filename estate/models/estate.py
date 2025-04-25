@@ -94,6 +94,7 @@ class Estate(models.Model):
     def action_sell_property(self):
         for record in self:
             record.state = "sold"
+            
 
     def action_cancel_property(self):
         for record in self:

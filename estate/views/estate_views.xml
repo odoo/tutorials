@@ -31,6 +31,7 @@
                 <header>
                     <button name="action_sell_property" type="object" class="btn-primary" string = "Sold"/>
                     <button name="action_cancel_property" type="object" string = "Canceled"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <h1>
@@ -60,7 +61,6 @@
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="garden_orientation"/>
-                                <field name="state"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
