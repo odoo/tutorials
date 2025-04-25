@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 class estate_property_offer(models.Model):
     _name = 'estate.property.offer'
@@ -17,7 +17,7 @@ class estate_property_offer(models.Model):
     validity = fields.Integer(default = 7, string = "Validity (days)")
     date_deadline = fields.Date(string = "Deadline", compute = '_compute_date_deadline', inverse='_inverse_date_deadline',  store = True)
     property_type_id = fields.Many2one(related="property_id.property_type_id", string="Property Type", store=True)
-    
+
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
@@ -44,3 +44,11 @@ class estate_property_offer(models.Model):
                 raise UserError("Cannot make changes on a canceled or sold property")
             record.status = 'refused'
     
+    @api.model_create_multi
+    def create(self, vals):
+        for record in vals:
+            property = self.env['estate.property'].browse(record.get('property_id'))
+            higher_offer = max(property.offer_ids.mapped('price'), default=0)
+            if higher_offer > record.get('price', 0):
+                raise ValidationError("Cannot create an offer with a lower price than an existing one")
+        return super().create(vals)

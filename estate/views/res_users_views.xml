@@ -1,0 +1,20 @@
+<odoo>
+    
+    <record id="res_users_view_action" model="ir.actions.act_window">
+        <field name="name">Users</field>
+        <field name="res_model">res.users</field>
+    </record>
+ 
+    <record id="res_users_view_form" model="ir.ui.view">
+        <field name="name">res.users.form</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <notebook>
+                <page string="Real Estate Properties">
+                    <field name="property_ids"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

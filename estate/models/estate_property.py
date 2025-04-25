@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import fields, api, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
@@ -86,3 +86,9 @@ class EstateProperty(models.Model):
                 raise UserError("Cannot sell an already sold property.")
             record.state = 'sold'
         return True
+
+    @api.ondelete(at_uninstall=True)
+    def _ondelete(self):
+        for record in self:
+            if record.state in {'new', 'cancelled'}:
+                raise ValidationError("New or Cancelled property cannot be deleted")
