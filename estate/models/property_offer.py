@@ -38,7 +38,6 @@ class PropertyOffer(models.Model):
                 record.create_date = fields.Date.today()
 
             record.validity = (record.date_deadline - record.create_date.date()).days
-            print(f"  Validity: {record.validity}")
 
     def action_accept_offer(self):
         for record in self:
@@ -48,3 +47,6 @@ class PropertyOffer(models.Model):
     def action_refuse_offer(self):
         for record in self:
             record.status = "refused"
+            if record.property_id.selling_price == record.price:
+                record.property_id.selling_price = 0
+
