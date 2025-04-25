@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
+    _order = "price desc"
 
     price = fields.Float("Price")
     status = fields.Selection(
@@ -17,14 +18,15 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False,
     )
-    partner_id = fields.Many2one("res.partner", "Partner", required=True)
-    property_id = fields.Many2one("estate.property", "Property", required=True)
+    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer("Validity", default=7)
     date_deadline = fields.Date(
         "Deadline",
         compute="_compute_deadline",
         inverse="_inverse_deadline",
     )
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     _sql_constraints = [
         (
@@ -49,12 +51,10 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.offer_ids.filtered(lambda offer: offer.status == "accepted"):
                 raise UserError("Only one offer can be accepted for a given property")
             record.status = "accepted"
-            record.property_id.write(
-                {
-                    "selling_price": record.price,
-                    "buyer_id": record.partner_id,
-                }
-            )
+            record.property_id.write({
+                "selling_price": record.price,
+                "buyer_id": record.partner_id,
+            })
         return True
 
     def action_state_refuse(self):
