@@ -99,13 +99,18 @@ class EstateProperty(models.Model):
         )
 
     @api.constrains("selling_price")
-    def _check_selling_price(self):
+    def _check_selling_price(self) -> None:
         for record in self:
             if (
                 record.offer_ids.filtered(lambda x: x.status == "accepted")
                 and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=3) == -1
             ):
                 raise ValidationError("The selling price should be atleast 90% of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self) -> None:
+        if any(record.state not in ("new", "cancelled") for record in self):
+            raise UserError("Can't delete an active property")
 
     def action_cancel_property(self) -> bool:
         if "sold" in self.mapped("state"):
