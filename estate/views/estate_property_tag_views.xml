@@ -11,7 +11,16 @@
                 </sheet>
             </form>
         </field>
-        
+    </record>
+
+    <record id="property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" string="Property Tags">
+                <field name="name" class="mb16"/>
+            </list>
+        </field>
     </record>
 
     <record id="property_tag_model_action" model="ir.actions.act_window">

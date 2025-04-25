@@ -1,11 +1,14 @@
-from odoo import _, api, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -19,20 +22,20 @@ class Property(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
+    garden_orientation = fields.Selection([("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
-            ('new', 'New'), 
-            ('offer_received', 'Offer Received'), 
-            ('offer_accepted', 'Offer Accepted'), 
-            ('sold', 'Sold'), 
-            ('cancelled', 'Cancelled')
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
         string="Status",
         required=True,
         copy=False,
-        default='new',
+        default="new",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
@@ -44,9 +47,8 @@ class Property(models.Model):
     best_price = fields.Float(compute="_compute_best_price")
 
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'A property expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', 'A property selling price must be positive.'),
-        ('name_uniq', "unique(name)", "A property with the same name already exists.")
+        ("check_expected_price", "CHECK(expected_price > 0)", "A property expected price must be strictly positive."),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "A property selling price must be positive."),
     ]
 
     @api.depends("living_area", "garden_area")
@@ -57,7 +59,7 @@ class Property(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0
+            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -72,24 +74,27 @@ class Property(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError(_("Canceled properties cannot be sold."))
-        
-        for record in self:
-            record.state = "sold"
-        
+
+        self.write({"state": "sold"})
         return True
 
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
                 raise UserError(_("Sold properties cannot be canceled."))
-        
-        for record in self:
-            record.state = "cancelled"
-        
+
+        self.write({"state": "cancelled"})
         return True
 
-    @api.constrains('selling_price', 'expected_price')
+    @api.constrains("selling_price", "expected_price")
     def check_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price, 2) and float_compare(record.selling_price, 0.9*record.expected_price, 2) < 0:
-                raise ValidationError(_("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer."))
+            if (
+                not float_is_zero(record.selling_price, 2)
+                and float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 0
+            ):
+                raise ValidationError(
+                    _(
+                        "The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer."
+                    )
+                )
