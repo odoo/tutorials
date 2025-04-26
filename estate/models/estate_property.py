@@ -13,6 +13,7 @@ class EstateProperty(models.Model):
         ("check_sell_price", "CHECK(selling_price > 0)",
          "The selling price of a property must be positive")
     ]
+    _order = "id desc"
 
     name = fields.Char('name', required=True)
     description = fields.Text('description')
@@ -85,7 +86,7 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         if "sold" in self.mapped('state'):
             raise UserError("You can't cancel a sold property")
-        self.state = "Cancelled"
+        self.state = "cancelled"
 
         return True
 
