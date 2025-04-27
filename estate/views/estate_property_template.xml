@@ -1,0 +1,63 @@
+<odoo>
+    <template id="property_list_template" name="Property Listing">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h1 class="text-center">Available Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img t-if="property.image_upload"
+                                    t-att-src="'/web/image/estate.property/' + str(property.id) + '/image_upload'"
+                                    class="img-fluid rounded"
+                                    style="max-height: 600px; object-fit: cover; border-radius: 10px;"
+                                    alt="Property Image"/>
+
+                                <img t-elif="property.image_url"
+                                    t-att-src="property.image_url"
+                                    class="card-img-top"
+                                    style="height: 250px; object-fit: cover; border-radius: 10px;"
+                                    alt="Property Image"/>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a t-att-href="'/estate/properties/%d' % property.id">
+                                            <t t-esc="property.name"/>
+                                        </a>
+                                    </h5>
+                                    <p><strong>Price:</strong> ₹<t t-esc="property.expected_price"/></p>
+                                    <a t-att-href="'/estate/properties/%s' % property.id"
+                                        class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="text-center mt-4">
+                    <t t-if="total_pages > 1">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" t-if="page > 1">
+                                    <a class="page-link"
+                                        t-att-href="'/estate/properties/page/%d' % (page - 1)">
+                                        Previous</a>
+                                </li>
+                                <t t-foreach="range(1, total_pages + 1)" t-as="p">
+                                    <li class="page-item"
+                                        t-att-class="'active' if p == page else ''">
+                                        <a class="page-link"
+                                            t-att-href="'/estate/properties/page/%d' % p" t-esc="p"/>
+                                    </li>
+                                </t>
+                                <li class="page-item" t-if="page &lt; total_pages">
+                                    <a class="page-link"
+                                        t-att-href="'/estate/properties/page/%d' % (page + 1)">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

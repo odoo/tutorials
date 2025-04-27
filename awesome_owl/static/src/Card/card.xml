@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title"><t t-esc="props.title or 'Default Title'"/></h5>
+                    <!-- <p class="card-text"><t t-out="props.content or 'Content'"/></p> -->
+                    <button 
+                        class="btn btn-sm btn-secondary"
+                        t-on-click="toggleContent"
+                    >
+                        <t t-esc="state.isOpen ? 'Hide' : 'Show'" />
+                    </button>
+                </div>
+                
+                <div t-if="state.isOpen" class="mt-2">
+                    <t t-slot="default" />
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

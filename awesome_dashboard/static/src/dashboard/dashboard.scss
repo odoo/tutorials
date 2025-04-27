@@ -1,0 +1,17 @@
+.my_dashboard_content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dashboard-item {
+    flex: 1;
+    min-width: 250px; 
+    max-width: calc(33.333% - 10px); 
+}
+
+@media (max-width: 768px) {
+    .dashboard-item {
+        max-width: 100%;
+    }
+}
