@@ -1,12 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
-from dateutil.relativedelta import relativedelta
 
 
 class PropertyOffer(models.Model):
-    _name = "property_offer"
+    _name = "property.offer"
     _description = "Property Offer Model"
+    
     price = fields.Float()
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
@@ -20,7 +22,10 @@ class PropertyOffer(models.Model):
         ],
     )
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate_property", required=True)
+    property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
     _order = "price desc"
 
     _sql_constraints = [
@@ -58,6 +63,7 @@ class PropertyOffer(models.Model):
                     "There is already an accepted offer for this property"
                 )
             record.status = "accepted"
+            record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer = record.partner_id
 

@@ -1,18 +1,19 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare
-from dateutil.relativedelta import relativedelta
 
 
 class Estate(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "RE Initial Model"
+
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
-    description = fields.Text()
-    postcode = fields.Text()
+    description = fields.Char()
+    postcode = fields.Char()
     date_availability = fields.Date(
         copy=False, default=fields.Date.today() + relativedelta(months=+3)
     )
@@ -48,11 +49,11 @@ class Estate(models.Model):
             ("cancelled", "Canceled"),
         ],
     )
-    property_type_id = fields.Many2one("property_type")
+    property_type_id = fields.Many2one("property.type")
     buyer = fields.Many2one("res.partner", copy=False)
     salesperson = fields.Many2one("res.users", default=lambda self: self.env.user)
-    property_tag_ids = fields.Many2many("property_tag")
-    property_offer_ids = fields.One2many("property_offer", "property_id")
+    property_tag_ids = fields.Many2many("property.tag")
+    property_offer_ids = fields.One2many("property.offer", "property_id")
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
     _order = "id desc"
@@ -65,7 +66,7 @@ class Estate(models.Model):
         ),
         (
             "check_selling_price",
-            "CHECK(selling_price > -1)",
+            "CHECK(selling_price >= 0)",
             "Selling price must be positive.",
         ),
     ]
