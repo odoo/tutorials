@@ -11,5 +11,8 @@
     This module follows the onboarding training to extend estate and account modules.
     """,
     'data': [
+        'security/ir.model.access.csv',
+
+
         ],
 }
