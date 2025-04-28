@@ -22,8 +22,8 @@
         "views/res_users_views.xml",
         "views/estate_menus.xml",
 
-        "data/master_data.xml",
-        "demo/demo_data.xml",
+        # "data/master_data.xml",
+        # "demo/demo_data.xml",
     ],
     'license': "LGPL-3",
 }

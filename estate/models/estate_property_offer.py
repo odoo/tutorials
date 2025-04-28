@@ -66,7 +66,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for val in self:
-            self.property_id.offer_ids.filtered(
+            val.property_id.offer_ids.filtered(
                 lambda x: x.state == 'accepted').write({
                 'state': 'refused',
             })

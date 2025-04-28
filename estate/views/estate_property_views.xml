@@ -62,7 +62,7 @@
                         <button name="action_cancel" type="object" class="oe_stat_button" string="Cancel"
                                 invisible="state =='cancelled'"/>
                         <field name="state" widget="statusbar" options="{'clickable': '1'}"
-                               statusbar_visible="new,received,accepted,sold" invisible="state == 'sold'"/>
+                               statusbar_visible="new,received,accepted,sold"/>
                     </header>
                     <sheet string="Property">
                         <div class="oe_title">
@@ -150,7 +150,8 @@
                     <field name="living_area" filter_domain="[('living_area', '>=', self)]"
                            string="Living area more than"/>
                     <group expand="1" string="Group By">
-                        <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                        <filter name="group_by_postcode" string="Postcode"
+                                context="{'group_by': 'postcode'}"/>
                     </group>
                 </search>
             </field>
