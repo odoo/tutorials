@@ -1,7 +1,7 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'author' : "Parth Vyas",
+    'author': "Parth Vyas",
     'summary': 'Real estate module',
     'description': "Real estate module for managing property listings and transactions!",
     'website': '',

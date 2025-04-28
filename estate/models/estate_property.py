@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
@@ -19,7 +20,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string="Type",
-        selection = [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -38,12 +39,12 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type",
         string="Property Type",
-        context={"no_create":True}
+        context={"no_create": True}
     )
     buyer_id = fields.Many2one(
         comodel_name="res.partner",
         string="Buyer",
-        copy =False
+        copy=False
     )
     salesperson_id = fields.Many2one(
         comodel_name="res.users",
@@ -68,10 +69,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0) if record.garden else (record.living_area or 0)
     
+    
     best_price = fields.Float(
         string="Best Price",
         compute="_compute_best_price",
     )
+    
     
     @api.depends("offer_ids")
     def _compute_best_price(self):
