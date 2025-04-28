@@ -1,4 +1,4 @@
-from odoo import fields, models, Command
+from odoo import models, Command
 
 
 class EstateProperty(models.Model):
@@ -8,8 +8,8 @@ class EstateProperty(models.Model):
         is_sold = super().action_sell()
         for record in self:
             self.env["account.move"].create({
-                "partner_id" : record.buyer_id.id,
-                "move_type" : "out_invoice",
+                "partner_id": record.buyer_id.id,
+                "move_type": "out_invoice",
                 "line_ids": [
                     Command.create({
                         "name": "Down payment 6%",

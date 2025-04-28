@@ -54,11 +54,12 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("You already accepted this offer")
             record.status = "refused"
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
-        property_record = self.env["estate.property"].browse(vals["property_id"])
-        if vals["price"] < property_record.best_offer:
-            raise UserError(f"Your offer can't be lower than {property_record.best_offer}")
+        for val in vals:
+            property_record = self.env["estate.property"].browse(val["property_id"])
+            if val["price"] < property_record.best_offer:
+                raise UserError(f"Your offer can't be lower than {property_record.best_offer}")
 
-        property_record.state = "offer_received"
+            property_record.state = "offer_received"
         return super().create(vals)

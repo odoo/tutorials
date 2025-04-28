@@ -2,8 +2,7 @@
     'name': 'Estate Account',
     'depends':
         ['estate', 'account'],
-    'data': [],
-    'installable': True,
+    'auto_install': True,
     'application': True,
     'license': 'AGPL-3',
 }
