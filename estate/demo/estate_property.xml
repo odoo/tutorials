@@ -1,11 +1,10 @@
 <odoo>
     <record id="umbm_estate_01" model="estate_property">
         <field name="name">Big Villa 3</field>
-        <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
         <field name="estate_property_type" ref="estate.umbm_01"/>
-        <field name="date_availability">2024-04-25</field>
+        <field name="date_availability" eval="datetime.now()"/>
         <field name="expected_price">1600000</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
@@ -22,7 +21,7 @@
         <field name="estate_property_type" ref="estate.umbm_01"/>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
-        <field name="date_availability">2024-01-01</field>
+        <field name="date_availability" eval="datetime.now()"/>
         <field name="expected_price">120000</field>
         <field name="selling_price">120000</field>
         <field name="bedrooms">1</field>
@@ -52,30 +51,34 @@
         <field name="date_deadline" eval="(datetime.now() + relativedelta(months=1)).strftime('%Y-%m-%d')"/>
     </record>
 
-    <function model="estate_property_offer" name="action_close">
-        <value eval="[ref('umbm_offer_01')]"/>
-    </function>
-
-    <function model="estate_property_offer" name="action_close">
-        <value eval="[ref('umbm_offer_02')]"/>
-    </function>
-
     <function model="estate_property_offer" name="action_confirm">
         <value eval="[ref('umbm_offer_03')]"/>
     </function>
 
-<!--     <record id="umbm_estate_03" model="estate_property">
+    <record id="umbm_estate_04" model="estate_property">
+        <field name="name">How offered123</field>
+        <field name="estate_property_type" ref="estate.umbm_01"/>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">2024-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
         <field name="offer_ids" eval="[
             Command.create({
-                'price': '100000',
-                'partner_id': 'base.res_partner_12',
-                'property_id': 'estate.umbm_estate_03',
+                'price': 100000,
+                'partner_id': ref('base.res_partner_12'),
+                'date_deadline': (datetime.now() + relativedelta(months=1)).strftime('%Y-%m-%d'),
             }),
             Command.create({
-                'name': 'Your name',
+                'price': 100000,
+                'partner_id': ref('base.res_partner_12'),
+                'date_deadline': (datetime.now() + relativedelta(months=1)).strftime('%Y-%m-%d'),
             }),
-            Command.link(ref('model.xml_id')),
         ]"/>
-    </record> -->
+    </record>
+
 
 </odoo>
