@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-const {markup, Component} = owl;
+const {markup, Component, useState} = owl;
 import {Counter} from "./counter/counter";
 import {Card} from "./card/card";
 
@@ -10,7 +10,12 @@ export class Playground extends Component {
     static components = {Counter, Card};
 
     setup() {
+        this.sum = useState({value: 2});
         this.str1 = "<div class='text-primary'>some content</div>";
         this.str2 = markup("<div class='text-primary'>some content</div>");
+    }
+
+    incrementSum() {
+        this.sum.value++;
     }
 }
