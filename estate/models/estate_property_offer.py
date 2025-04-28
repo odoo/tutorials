@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
 
@@ -37,26 +37,31 @@ class EstatePropertyOffer(models.Model):
                 record.date_deadline = fields.Datetime.add(record.create_date, days=record.validity)
 
     def action_confirm(self):
-        for record in self:
-            if record.property_id.state == 'sold':
+        for offer in self:
+            if offer.property_id.state in ['sold', 'canceled']:
                 raise UserError("You can't validate an offer for a sold property")
             else:
-                record.property_id.buyer_id = record.partner_id
-                record.property_id.selling_price = record.price
-                record.status = 'accepted'
-                record.property_id.mark_as_sold()
+                offer.property_id.write({
+                    'buyer_id' : offer.partner_id,
+                    'selling_price' : offer.price,
+                    })
+                offer.status = 'accepted'
+                offer.property_id.mark_as_sold()
+            related_offers = offer.property_id.offer_ids.filtered(lambda o: o.id != offer.id and o.status != 'refused')
+            related_offers.action_close()
 
     def action_close(self):
-        for record in self:
-            record.status = 'refused'
+        self.write({'status': 'refused'})
 
     @api.model_create_multi
     def create(self, vals_list):
-        offers = super().create(vals_list)
-        for offer in offers:
-            property = offer.property_id
-            if any(offer.price < existing_price for existing_price in property.offer_ids.mapped('price')):
-                raise UserError("You can't create offer with a lower price than existing offer")
-            else:
-                property.state = 'offer_received'
-        return offers
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            price = vals.get('price')
+
+            property = self.env['estate_property'].browse(property_id)
+
+            if any(price < exsiting_price for exsiting_price in property.offer_ids.mapped('price')):
+                raise UserError(_("You can't create an offer with a lower price than an existing offer"))
+            
+        return super().create(vals_list)

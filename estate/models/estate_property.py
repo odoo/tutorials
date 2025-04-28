@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True, default="Unknown")
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(string="Availability", copy=False, default=fields.Datetime.add(fields.Datetime.today(), months=3))
+    date_availability = fields.Date(string="Availability", copy=False, default=lambda x: fields.Datetime.add(fields.Datetime.today(), months=3))
     expected_price = fields.Float(string="Excepted price", required=True)
     selling_price = fields.Float(string="Selling price", readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -27,10 +27,15 @@ class EstateProperty(models.Model):
             ('south', 'South'),
             ('west', 'West'),
             ('east', 'East')
-            ]
-    )
+            ])
+    
     active = fields.Boolean(default=True)
-    state = fields.Selection(default='new', selection=[('new', 'New'), ('offer_received', 'Offre Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')])
+    state = fields.Selection(default='new', selection=[('new', 'New'), 
+                                                       ('offer_received', 'Offre Received'), 
+                                                       ('offer_accepted', 'Offer Accepted'), 
+                                                       ('sold', 'Sold'), 
+                                                       ('canceled', 'Canceled')
+                                                       ])
 
     tags_ids = fields.Many2many("estate_property_tags", string="Tags")
     salesman_id = fields.Many2one("res.users", default=lambda self: self.env.user)
@@ -49,9 +54,9 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_match(self):
-        for record in self:
-            if record.state not in ['new', 'canceled']:
-                raise UserError("You can't delete active properties")
+        for property in self:
+            if property.state not in ['new', 'canceled']:
+                raise UserError(_("You can't delete active properties"))
 
     @api.depends("garden_area", "living_area")
     def _compute_area(self):
@@ -70,24 +75,23 @@ class EstateProperty(models.Model):
             self.garden_orentation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orentation = ''
+            self.garden_orentation = False
 
     def mark_as_sold(self):
         if 'canceled' in self.mapped("state"):
-            raise UserError("You can't set a canceled property to sold")
+            raise UserError(_("You can't set a canceled property to sold"))
         self.state = "sold"
 
     def mark_as_canceled(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("You can't cancel a sold property")
+                raise UserError(_("You can't cancel a sold property"))
             else:
                 record.state = "canceled"
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if not float_is_zero(record.expected_price, 2):
-                min_selling_price = record.expected_price * 0.9
-                if float_compare(record.selling_price, min_selling_price, 2) == -1:
-                    raise ValidationError("Selling price shoudn't be lower than 90% of expected price")
+            if not float_is_zero(record.expected_price, 2) and not float_is_zero(record.selling_price, 2):
+                if float_compare(record.selling_price, (record.expected_price * 0.9), 2) == -1:
+                    raise ValidationError(_("Selling price shoudn't be lower than 90% of expected price"))
