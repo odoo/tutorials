@@ -87,7 +87,6 @@ class EstateProperty(models.Model):
         if "sold" in self.mapped('state'):
             raise UserError("You can't cancel a sold property")
         self.state = "cancelled"
-
         return True
 
     @api.constrains("selling_price", "expected_price")
@@ -96,3 +95,8 @@ class EstateProperty(models.Model):
             if not float_is_zero(record.selling_price, 2) and \
                 float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 0:
                 raise ValidationError("The selling price has to be at least 90% of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        if any(x in self.mapped("state") for x in ["offer_received", "offer_accepted", "sold"]):
+            raise UserError("You can only delete a new or cancelled property")
