@@ -17,7 +17,6 @@
 
     <record id="umbm_estate_02" model="estate_property">
         <field name="name">Trailer home 3</field>
-        <field name="state">canceled</field>
         <field name="estate_property_type" ref="estate.umbm_01"/>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>

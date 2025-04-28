@@ -61,7 +61,7 @@ class EstatePropertyOffer(models.Model):
 
             property = self.env['estate_property'].browse(property_id)
 
-            if any(price < exsiting_price for exsiting_price in property.offer_ids.mapped('price')):
+            if any(price < best_price for best_price in property.best_price):
                 raise UserError(_("You can't create an offer with a lower price than an existing offer"))
             
         return super().create(vals_list)
