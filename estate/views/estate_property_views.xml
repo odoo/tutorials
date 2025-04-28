@@ -75,8 +75,8 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible = "garden == False"/>
+                                <field name="garden_orientation" invisible = "garden == False"/>
                                 <field name="total_area" readonly="1"/>
                             </group>
                         </page>
