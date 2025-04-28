@@ -1,8 +1,8 @@
-from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo import fields, models, api, _, tools
+from odoo.exceptions import UserError, ValidationError
 
 
-class EstateModel(models.Model):
+class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate properties'
 
@@ -68,7 +68,7 @@ class EstateModel(models.Model):
             if record.state != 'cancelled':
                 record.state = "sold"
             else:
-                raise UserError("This property is already cancelled and thus cannot be sold anymore.")
+                raise UserError(_("This property is already cancelled and thus cannot be sold anymore."))
         return True
 
     def action_btn_cancel(self):
@@ -76,5 +76,21 @@ class EstateModel(models.Model):
             if record.state != 'sold':
                 record.state = "cancelled"
             else:
-                raise UserError("This property is already sold and thus cannot be cancelled anymore.")
+                raise UserError(_("This property is already sold and thus cannot be cancelled anymore."))
         return True
+
+    # Add a constraint so that the selling price cannot be lower than 90% of the expected price.
+    #
+    # Tip: the selling price is zero until an offer is validated. You will need to fine tune your check to take this into account.
+    @api.constrains('expected_price', 'selling_price')
+    @api.onchange("expected_price", "selling_price")
+    def _check_offer_price(self):
+        for record in self:
+            if tools.float_utils.float_compare((record.expected_price * 0.9), record.selling_price, precision_rounding=0.01) >= 0 and not tools.float_utils.float_is_zero(record.selling_price, precision_rounding=0.001):
+                raise ValidationError(_("Offer price cannot be lower than 90% of the expected price."))
+
+    _check_strictly_positive_expected_price = (models.Constraint("""CHECK (expected_price > 0)""",
+             "The property expected price must be strictly positive."))
+
+    _check_positive_selling_price = (models.Constraint("""CHECK (selling_price >= 0)""",
+             "The property selling price must be positive."))
