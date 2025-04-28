@@ -1,0 +1,18 @@
+<odoo>
+    <record id="inherit_product_ribbon_form_view" model="ir.ui.view">
+        <field name="name">product.ribbon.form.view.inherit</field>
+        <field name="model">product.ribbon</field>
+        <field name="inherit_id" ref="website_sale.product_ribbon_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='position']" position="after">
+                <field name="style"/>
+                <field name="assign"/>
+                <div invisible="assign != 'new'" class="o_row">
+                    <span>For</span>
+                    <field name="show_period" style="max-width: 2rem;" nolabel="1"/>
+                    <span>days after publication</span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
