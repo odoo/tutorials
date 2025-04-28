@@ -18,7 +18,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     sequence = fields.Integer('Sequence', default=10)
     property_tag_ids = fields.Many2many("estate.property.tag")
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", group_expand="group_by_empty")
     postcode = fields.Char()
     date_availability = fields.Date(
         copy=False,
@@ -64,6 +64,10 @@ class EstateProperty(models.Model):
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
     ]
+
+    @api.model
+    def group_by_empty(self, types, domain):
+        return types.search([])  # this is equivalent to return self.env['estate.property.type'].search([])
 
     def action_set_sold(self):
         for record in self:
