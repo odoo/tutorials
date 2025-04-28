@@ -4,9 +4,23 @@ from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
+    # ------------------
+    # Private attributes
+    # ------------------
+
     _name = "estate.property"
-    _description = "Estate model"
+    _description = "This class manages property creations."
     _order = "id desc"
+    _sql_constraints = [
+        ('expected_price_constraint', 'CHECK(expected_price > 0)',
+         'Your expected price must be positive.'),
+        ('selling_price_constraint', 'CHECK(selling_price >= 0)',
+         'Your selling price must be positive.')
+    ]
+
+    # ------------------
+    # Field declarations
+    # ------------------
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -45,16 +59,23 @@ class EstateProperty(models.Model):
     # One2Many relionships
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
 
-    # -----------
-    # Constraints
-    # -----------
+    # ---------------
+    # Compute methods
+    # ---------------
 
-    _sql_constraints = [
-        ('expected_price_constraint', 'CHECK(expected_price > 0)',
-         'Your expected price must be positive.'),
-        ('selling_price_constraint', 'CHECK(selling_price >= 0)',
-         'Your selling price must be positive.')
-    ]
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max([0] + record.offer_ids.mapped('price'))  # To get 0 as best price if no offer
+
+    # -------------------------------
+    # Constraint and onchange methods
+    # -------------------------------
 
     @api.ondelete(at_uninstall=False)
     def _check_property_state_to_delete(self):
@@ -70,20 +91,6 @@ class EstateProperty(models.Model):
             if record.selling_price > 0 and is_selling_price_over_90_percent < 0:
                 raise ValidationError("This selling price is under 90% of the expected price. Please review the expected price or the amount of the buyer's offer")
 
-    # ---------------
-    # Compute methods
-    # ---------------
-
-    @api.depends("living_area", "garden_area")
-    def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
-
-    @api.depends("offer_ids.price")
-    def _compute_best_price(self):
-        for record in self:
-            record.best_price = max([0] + record.offer_ids.mapped('price'))  # To get 0 as best price if no offer
-
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -94,10 +101,11 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     # --------------
-    # Public methods
+    # Action methods
     # --------------
 
     def action_cancel_offer(self):
+        self.ensure_one()
         for record in self:
             if record.state == "cancelled":
                 return False
@@ -108,6 +116,7 @@ class EstateProperty(models.Model):
                 return True
 
     def action_sell_offer(self):
+        self.ensure_one()
         for record in self:
             if record.state == "sold":
                 return False
