@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class WarrantyConfig(models.Model):
     _name = 'warranty.config'
     _description = 'Warranty Configuration'

@@ -1,8 +1,8 @@
-from odoo import api, fields, models
+from odoo import fields, models
+
 
 class SaleOrder(models.Model):
     _inherit = "sale.order"
-
 
     def open_warranty_wizard(self):
 
@@ -14,4 +14,3 @@ class SaleOrder(models.Model):
         'target': 'new',
         'context': {'default_sale_order_id': self.id},
         }
-

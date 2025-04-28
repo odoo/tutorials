@@ -7,7 +7,7 @@
             <form>
                 <field name="wizard_line_ids">
                     <list editable="bottom" create="false" delete="false">
-                        <field name="sale_order_line_id" invisible="1"/>
+                        <field name="sale_order_line_id" column_invisible="1"/>
                         <field name="product_id" readonly="1"/>
                         <field name="warranty_name"/>
                         <field name="end_date"/>
