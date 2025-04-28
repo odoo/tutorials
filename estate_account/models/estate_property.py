@@ -21,6 +21,6 @@ class EstateAccountProperty(models.Model):
                                            "price_unit": 100.00
                                        })
                                     ]
-                            } 
+                            }
         self.env["account.move"].create(account_move)
         return super().action_sell_offer()

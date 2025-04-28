@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
+    <!--Salesperson views-->
+
     <record id="salesperson_user_form" model="ir.ui.view">
         <field name="name">salesperson.user.view.inherit</field>
         <field name="model">res.users</field>
