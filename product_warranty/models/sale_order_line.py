@@ -14,7 +14,6 @@ class SaleOrderLine(models.Model):
         for line in self:
             if line.is_warranty and line.order_line_linked_to_warranty:
                 linked_line = line.order_line_linked_to_warranty
-                print(f"Checking warranty quantity: {line.product_uom_qty} > linked product quantity: {linked_line.product_uom_qty}")
                 if line.product_uom_qty > linked_line.product_uom_qty:
                     raise ValidationError(
                         f"The warranty quantity ({line.product_uom_qty}) cannot be more than the linked product quantity ({linked_line.product_uom_qty})."
