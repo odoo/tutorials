@@ -6,7 +6,7 @@ from odoo import fields, models
 class PropertyTag(models.Model):
     _name = "property.tag"
     _description = "Property Tag Model"
-    
+
     name = fields.Char(required=True)
     color = fields.Integer()
     _order = "name"

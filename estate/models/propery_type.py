@@ -6,10 +6,10 @@ from odoo import fields, models, api
 class PropertyType(models.Model):
     _name = "property.type"
     _description = "Property Types"
-    
+
     name = fields.Char(required=True)
     property_ids = fields.One2many("estate.property", "property_type_id")
-    property_offer_ids = fields.One2many("property.offer",'property_type_id')
+    property_offer_ids = fields.One2many("property.offer", "property_type_id")
     sequence = fields.Integer("Sequence", default=1, help="Used to types.")
     _order = "sequence, name"
     offer_count = fields.Integer(compute="_compute_offer_count")

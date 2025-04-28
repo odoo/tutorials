@@ -8,7 +8,7 @@ from odoo.exceptions import ValidationError
 class PropertyOffer(models.Model):
     _name = "property.offer"
     _description = "Property Offer Model"
-    
+
     price = fields.Float()
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
