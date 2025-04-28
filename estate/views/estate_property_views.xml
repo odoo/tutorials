@@ -50,15 +50,14 @@
                     </div>
                     <group>
                         <group>
-                            <field name="property_type_id"
-                                options="{'no_create': True}" />
+                            <field name="property_type_id" options="{'no_create': True}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
                         <group>
-                            <field name="expected_price" />s <field name="best_price" />
-                            <field
-                                name="selling_price" />
+                            <field name="expected_price" />
+                            <field name="best_price" />
+                            <field name="selling_price" />
                         </group>
                     </group>
                     <notebook>
@@ -81,7 +80,7 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"
-                                readonly="state in ('sold', 'cancelled', 'offer accepted')" />
+                                readonly="state in ('sold', 'cancelled', 'accepted')" />
                         </page>
                         <page string="Other Info">
                             <group>
@@ -104,15 +103,12 @@
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area"
-                    filter_domain="[('living_area', '>=', self)]" />
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]" />
                 <field name="facades" />
                 <field name="property_type_id" />
                 <separator />
-                <filter string="Available" name="available"
-                    domain="[('state', 'in', ['new', 'received'])]" />
-                <group expand="1" string="Group By">
-                    <filter string="Postcode" name="postcode"
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'received'])]" />
+                <group expand="1" string="Group By"> <filter string="Postcode" name="postcode"
                         context="{'group_by':'postcode'}" />
                 </group>
             </search>

@@ -5,12 +5,12 @@ class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def action_state_sold(self):
+        res = super().action_state_sold()
         invoice_vals_list = []
         for record in self:
             invoice_vals = {
                 'partner_id': record.buyer_id.id,
                 'move_type': 'out_invoice',
-                'journal_id': self.env['account.journal'].search([('type', '=', 'sale')], limit=1).id,
                 'invoice_line_ids': [
                     Command.create({
                         'name': "6% Commission",
@@ -26,4 +26,4 @@ class EstateProperty(models.Model):
                 }
             invoice_vals_list.append(invoice_vals)
         self.env['account.move'].create(invoice_vals_list)
-        return super().action_state_sold()
+        return res

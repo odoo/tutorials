@@ -2,8 +2,8 @@
     'name': 'Real Estate Accounting',
     'category': 'Tutorials/Real Estate Accounting',
     'version': '0.1',
-    'installable': True,
     'depends': ['estate', 'account'],
-    'data': [],
+    'installable': True,
+    'auto_install': True,
     'license': 'LGPL-3',
 }

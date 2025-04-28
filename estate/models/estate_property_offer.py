@@ -10,7 +10,7 @@ class EstatePropertyOffer(models.Model):
     _description = 'Property Offers'
     _order = 'price desc'
 
-    price = fields.Float('Price', default=0.0)
+    price = fields.Float('Price', required=True)
     status = fields.Selection(
         string='Status',
         selection=[
@@ -32,7 +32,7 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         (
             'check_price',
-            'CHECK(price >= 0)',
+            'CHECK(price > 0)',
             'An offer price must be strictly positive.',
         ),
     ]
@@ -41,44 +41,38 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_id = self.env['estate.property'].browse(vals['property_id'])
-            if (
-                float_compare(
-                    max(property_id.offer_ids.mapped('price'), default=-0.01), vals['price'], precision_digits=3
-                )
-                > -1
-            ):
+            if property_id.best_price and (float_compare(property_id.best_price, vals['price'], precision_digits=3) > 0):
                 raise UserError(_("Can't create an offer with a lower amount than an other offer"))
-        property_id.write(
-            {
-                'state': 'received',
-            }
-        )
+        property_id.write({'state': 'received',})
         return super().create(vals_list)
 
     @api.depends('validity')
     def _compute_deadline(self):
-        for record in self:
-            base_date = record.create_date or fields.Date.today()
-            record.date_deadline = base_date + relativedelta(days=record.validity)
+        for r_offer in self:
+            base_date = r_offer.create_date or fields.Date.today()
+            r_offer.date_deadline = base_date + relativedelta(days=r_offer.validity)
 
     def _inverse_deadline(self):
-        for record in self:
-            record.validity = (record.date_deadline - record.create_date.date()).days
+        for r_offer in self:
+            base_date = r_offer.create_date or fields.Date.today()
+            r_offer.validity = (r_offer.date_deadline - base_date.date()).days
 
     def action_state_accept(self):
-        for record in self:
-            if record.property_id.offer_ids.filtered(lambda offer: offer.status == 'accepted'):
+        for r_offer in self:
+            if r_offer.property_id.state == 'accepted':
                 raise UserError(_('Only one offer can be accepted for a given property'))
-            record.status = 'accepted'
-            record.property_id.write(
+            r_offer.property_id.offer_ids.status = 'refused'
+            r_offer.status = 'accepted'
+            r_offer.property_id.write(
                 {
-                    'selling_price': record.price,
-                    'buyer_id': record.partner_id,
+                    'selling_price': r_offer.price,
+                    'buyer_id': r_offer.partner_id,
+                    'accepted': r_offer.property_id.state
                 }
             )
         return True
 
     def action_state_refuse(self):
-        for record in self:
-            record.status = 'refused'
+        for r_offer in self:
+            r_offer.status = 'refused'
         return True

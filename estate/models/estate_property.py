@@ -64,7 +64,7 @@ class EstateProperty(models.Model):
     _sql_constraints = [
         (
             'check_expected_price',
-            'CHECK(expected_price >= 0)',
+            'CHECK(expected_price > 0)',
             'A property expected price must be strictly positive.',
         ),
         (
@@ -76,27 +76,27 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_new_cancelled(self):
-        if any(record.state not in ('new', 'cancelled') for record in self):
+        if any(r_property.state not in ('new', 'cancelled') for r_property in self):
             raise UserError(_("Can only delete a new or cancelled property"))
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
-        for record in self:
+        for r_property in self:
             if (
-                record.offer_ids.filtered(lambda x: x.status == 'accepted')
-                and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=3) == -1
+                r_property.selling_price
+                and float_compare(r_property.selling_price, r_property.expected_price * 0.9, precision_digits=3) == -1
             ):
                 raise ValidationError(_("The selling price cannot be lower than 90% of the expected price"))
 
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+        for r_property in self:
+            r_property.total_area = r_property.living_area + r_property.garden_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+        for r_property in self:
+            r_property.best_price = max(r_property.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('has_garden')
     def _onchange_garden(self):
