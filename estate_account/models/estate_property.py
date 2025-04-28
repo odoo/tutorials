@@ -6,20 +6,21 @@ class EstateAccountProperty(models.Model):
 
     def action_sell_offer(self):
         for record in self:
-            account_dictionnary = {"move_type": "out_invoice",
+            account_move = {"move_type": "out_invoice",
                                    "journal_id": self.env["account.journal"].search([('type', '=', 'sale')]).id,
                                    "partner_id": record.buyer_id.id,
                                    "line_ids": [
                                        Command.create({
-                                           "name":"6% of the property price",
-                                           "quantity":"1",
-                                           "price_unit":record.selling_price*0.06
+                                           "name": "6% of the property price",
+                                           "quantity": "1",
+                                           "price_unit": record.selling_price*0.06
                                        }),
                                        Command.create({
-                                           "name":"Administrative fees",
-                                           "quantity":"1",
-                                           "price_unit":100.00
+                                           "name": "Administrative fees",
+                                           "quantity": "1",
+                                           "price_unit": 100.00
                                        })
-                                   ]} 
-        self.env["account.move"].create(account_dictionnary)
+                                    ]
+                            } 
+        self.env["account.move"].create(account_move)
         return super().action_sell_offer()
