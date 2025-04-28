@@ -12,7 +12,7 @@ class EstateProperty(models.Model):
     name = fields.Char('Title', required=True, translate=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Date Available', copy=False, default=lambda self: self._get_day_in_3_months())
+    date_availability = fields.Date('Date Available', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
@@ -90,6 +90,3 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
-
-    def _get_day_in_3_months(self):
-        return fields.Date.add(fields.Date.today(), months=3)
