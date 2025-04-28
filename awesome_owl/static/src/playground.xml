@@ -10,6 +10,7 @@
         <p>The sum is: <t t-esc="state.value"/></p>
         <Card title="'card 1'" content="str1"/>
         <Card title="'card 2'" content="str2"/>
+        <TodoList/>
     </t>
 
 </templates>
