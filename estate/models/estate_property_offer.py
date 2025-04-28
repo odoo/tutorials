@@ -16,12 +16,10 @@ class PropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-    property_type_id = fields.Many2one("estate.property.type",
-        related="property_id.property_type_id", stored=True)
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", store=True)
 
     validity = fields.Integer(string="Validity (days)", default=7)
-    date_deadline = fields.Date(string="Deadline",
-        compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "An offer price must be strictly positive."),
@@ -59,3 +57,8 @@ class PropertyOffer(models.Model):
                 record.property_id.buyer_id = None
 
             record.status = "refused"
+
+    @api.model
+    def create(self, vals):
+        self.env["estate.property"].browse(vals["property_id"]).state = "offer_received"
+        return super().create(vals)
