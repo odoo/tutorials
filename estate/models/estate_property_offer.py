@@ -8,6 +8,14 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offers made on a listing"
+    _sql_constraints = [
+        (
+            "check_price",
+            "CHECK(price > 0)",
+            "Price of an offer should be only positive",
+        ),
+    ]
+
     price = fields.Float()
     status = fields.Selection(
         string="Status",
@@ -25,7 +33,6 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         string="Deadline",
     )
-    sold = fields.Boolean(default="false")
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -46,16 +53,26 @@ class EstatePropertyOffer(models.Model):
 
     def action_offer_accept(self):
         for offer in self:
-            if offer.sold:
-                raise UserError("An offer has already been accepted!")
-                return False
             offer.status = "accepted"
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer_id = offer.partner_id
-            offer.sold = False
+            offer._action_check_offers()
         return True
 
+    @api.depends("status")
+    def _action_check_offers(self):
+        if self.status == "accepted":
+            if self.property_id.state in ("offer-accepted", "sold"):
+                self.status = False
+                raise UserError("An offer has already been accepted!")
+            else:
+                self.property_id.state = "offer-accepted"
+                self.property_id.selling_price = self.price
+                self.property_id.buyer_id = self.partner_id
+        return True
+
+    @api.depends("status")
     def action_offer_refuse(self):
         for offer in self:
+            if offer.status == "accepted":
+                self.property_id.state = "offer-received"
             offer.status = "refused"
         return True

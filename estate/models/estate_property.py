@@ -1,13 +1,25 @@
 from datetime import date
 
 from odoo import fields, models, api
-from odoo.tools import date_utils
-from odoo.exceptions import UserError
+from odoo.tools import date_utils, float_utils
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "A property module that adds the property as a listing"
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price of a property should be only positive",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "Selling price of a property should be positive",
+        ),
+    ]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -101,3 +113,16 @@ class EstateProperty(models.Model):
                 return False
             single_property.state = "sold"
         return True
+
+    @api.constrains("selling_price", "expected_price")
+    def check_selling_price_in_range(self):
+        for single_property in self:
+            if not float_utils.float_is_zero(
+                single_property.selling_price, precision_rounding=0.1
+            ):
+                if single_property.selling_price < (
+                    0.9 * single_property.expected_price
+                ):
+                    raise ValidationError(
+                        "Selling price cannot be lower than 90%% of Expected price"
+                    )
