@@ -39,7 +39,7 @@
                 <field
                     name="property_type_id" />
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
                             <field name="name" class="fw-bolder" />
                             <div> Expected Price: <field name='expected_price' />
@@ -105,7 +105,6 @@
                                 <field name="garden_area" invisible="not garden" />
                                 <field name="garden_orientation" invisible="not garden" />
                                 <field name="total_area" />
-                                <field name="active" invisible="1" />
                             </group>
                         </page>
                         <page string="Offers">
@@ -139,14 +138,10 @@
                 <field name="facades" />
                 <separator />
                 <filter string="Available" name="available"
-                    domain="[
-                        '|', 
-                        ('state', '=', 'new'),
-                        ('state', '=', 'received'),
-                    ]" />
+                    domain="[('state', 'in', ['new', 'received'])]" />
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode"
-                        context="{'group_by':'postcode', 'residual_visible':True}" />
+                        context="{'group_by':'postcode'}" />
                 </group>
             </search>
         </field>

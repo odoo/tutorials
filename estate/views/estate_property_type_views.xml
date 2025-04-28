@@ -10,7 +10,7 @@
         <field name="name">estate_property_type_list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Property Types">
                 <field name="sequence" widget="handle" />
                 <field name="name" />
             </list>
@@ -21,7 +21,7 @@
         <field name="name">estate_property_type_form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form string="Property Types">
                 <sheet>
                     <h1 class="mb32">
                         <field name="name" />

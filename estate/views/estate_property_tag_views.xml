@@ -10,7 +10,7 @@
         <field name="name">estate_property_tag_form</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form string="Property Tags">
                 <sheet>
                     <h1 class="mb32">
                         <field name="name" />
@@ -24,7 +24,7 @@
         <field name="name">estate_property_tag_list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="bottom">
+            <list string="Property Tags" editable="bottom">
                 <field name="name" />
             </list>
         </field>

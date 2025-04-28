@@ -11,7 +11,7 @@
         <field name="name">estate_property_offer_list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="bottom"
+            <list string="Property Offers" editable="bottom"
                 decoration-danger="status in ('refused',)"
                 decoration-success="status in ('accepted',)">
                 <field name="price" />

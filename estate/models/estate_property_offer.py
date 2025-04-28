@@ -1,8 +1,7 @@
-import math
-
 from dateutil import relativedelta
 
-from odoo import _, api, exceptions, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -10,7 +9,7 @@ class EstatePropertyOffer(models.Model):
     _description = 'Estate property Offer'
     _order = 'price desc'
 
-    price = fields.Float(string='Price')
+    price = fields.Float(string='Price', required=True)
     status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one('res.partner', string='Buyer', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True)
@@ -30,19 +29,17 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         properties = {
             p.id: p
-            for p in self.env['estate.property'].browse([
-                e.get('property_id') for e in vals_list if e.get('property_id')
-            ])
+            for p in self.env['estate.property'].browse([e['property_id'] for e in vals_list if e.get('property_id')])
         }
 
         for vals in vals_list:
             property = properties.get(vals.get('property_id'), '')
 
-            if not properties or 'price' not in vals:
-                continue
+            if not property:
+                raise ValidationError(_('Creating an offer without a property is not possible.'))
 
-            if vals['price'] < min([*property.offer_ids.mapped('price'), math.inf]) and len(property.offer_ids) > 1:
-                raise exceptions.UserError(_('An offer cannot have a lower price then an existing offer.'))
+            if (price := vals.get('price')) and price < property.best_price:
+                raise UserError(_('An offer cannot have a lower price then an existing offer.'))
 
             if property.state == 'new':
                 property.write({'state': 'received'})
@@ -67,22 +64,15 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
+            if record.property_id.state in {'accepted', 'sold'}:
+                raise UserError(_('An offer as already been accepted.'))
+
             record.write({'status': 'accepted'})
-            record._onchange_status()
+
+            record.property_id.write({
+                'selling_price': record.price,
+                'state': 'accepted',
+                'partner_id': record.partner_id,
+            })
 
         return True
-
-    @api.onchange('status')
-    def _onchange_status(self):
-        if self.status != 'accepted':
-            return
-
-        if self.property_id.state in {'accepted', 'sold'}:
-            self.write({'status': False})
-            raise exceptions.UserError(_('An offer as already been accepted.'))
-
-        self.property_id.write({
-            'selling_price': self.price,
-            'state': 'accepted',
-            'partner_id': self.partner_id,
-        })

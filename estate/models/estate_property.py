@@ -1,6 +1,7 @@
 from dateutil import relativedelta
 
-from odoo import _, api, exceptions, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_utils
 
 
@@ -49,31 +50,31 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string='Property Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer(string='Total Area (sqm)', compute='_compute_total_area')
-    best_price = fields.Integer(string='Best Offer', compute='_compute_price')
+    best_price = fields.Float(string='Best Offer', compute='_compute_price')
 
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must strictly be positive.'),
-        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
     ]
 
     @api.ondelete(at_uninstall=False)
     def prevent_delete_based_on_state(self):
         if any(record.state in {'new', 'cancelled'} for record in self):
-            raise exceptions.UserError(_('A new or cancelled property cannot be deleted.'))
+            raise UserError(_('A new or cancelled property cannot be deleted.'))
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
-            record.write({'total_area': record.living_area + record.garden_area})
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends('offer_ids.price')
     def _compute_price(self):
         for record in self:
-            record.write({'best_price': max([*record.offer_ids.mapped('price'), 0])})
+            record.write({'best_price': max(record.offer_ids.mapped('price'), default=0)})
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden is False:
+        if not self.garden:
             self.write({'garden_orientation': False, 'garden_area': 0})
             return
 
@@ -81,14 +82,14 @@ class EstateProperty(models.Model):
 
     def action_sell(self):
         if 'cancelled' in self.mapped('state'):
-            raise exceptions.UserError(_('A property cancelled cannot be set as sold.'))
+            raise UserError(_('A property cancelled cannot be set as sold.'))
 
         self.write({'state': 'sold'})
         return True
 
     def action_cancel(self):
         if 'sold' in self.mapped('state'):
-            raise exceptions.UserError(_('A property sold cannot be set as cancelled.'))
+            raise UserError(_('A property sold cannot be set as cancelled.'))
 
         self.write({'state': 'cancelled'})
         return True
@@ -96,5 +97,8 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_price(self):
         for record in self:
+            if not record.selling_price:
+                continue
+
             if float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=3) == -1:
-                raise exceptions.ValidationError(_('The selling cannot be lower than 90% of the expected price.'))
+                raise ValidationError(_('The selling cannot be lower than 90% of the expected price.'))
