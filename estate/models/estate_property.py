@@ -1,13 +1,14 @@
 import datetime
 
 from odoo import api, fields, models
-from odoo.excepetions import UserError, ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_utils
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Title")
     seller_id = fields.Many2one(
@@ -20,7 +21,7 @@ class EstateProperty(models.Model):
         copy=False,
     )
     expected_price = fields.Float()
-    selling_price = fields.Float(readonly=True, copyright=False, copy=False)
+    selling_price = fields.Float(readonly=True, copyright=False, copy=False, precision_rounding=0.01)
     bedrooms = fields.Integer(default=4)
     living_area = fields.Integer()
     garden_area = fields.Integer()
@@ -33,7 +34,13 @@ class EstateProperty(models.Model):
         selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
     status = fields.Selection(
-        selection=[("new", "New"), ("offer_receieved", "Offer Recieved"), ("sold", "Sold"), ("cancelled", "Cancelled")],
+        selection=[
+            ("new", "New"),
+            ("offer_receieved", "Offer Recieved"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
         readonly=True,
         default="new",
     )
@@ -78,7 +85,7 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price")
     def _check_price(self):
         for record in self:
-            if float_utils.float_compare(record.selling_price, record.expected_price * 0.9) > 0:
+            if float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
                 raise ValidationError("The selling price cannot be lower than 90%% of the expected price.")
 
     def action_mark_property_as_sold(self):
@@ -87,6 +94,10 @@ class EstateProperty(models.Model):
 
         for record in self:
             record.status = "sold"
+            accepted_offer = self.env["estate.property.offer"].search_fetch(
+                [("status", "=", "accepted"), ("property_id", "=", record.id)], ["price"], limit=1
+            )
+            record.selling_price = accepted_offer.price
 
     def action_mark_property_as_cancelled(self):
         if "sold" in self.mapped("status"):
