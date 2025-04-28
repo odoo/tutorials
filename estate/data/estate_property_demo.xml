@@ -15,6 +15,7 @@
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
+        <field name="image" type="base64" file="estate/static/img/e1.jpg" />
     </record>
     <record id="estate_property_2" model="estate.property">
         <field name="name">Trailer home</field>
@@ -29,6 +30,7 @@
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="garage">False</field>
+        <field name="image" type="base64" file="estate/static/img/e2.jpg" />
     </record>
     <record id="estate_property_3" model="estate.property">
         <field name="name">Cozy Cabin</field>
@@ -60,6 +62,267 @@
                 'partner_id': ref('base.res_partner_2')
             }),
         ]" />
+        <field name="image" type="base64" file="estate/static/img/e3.jpg" />
     </record>
 
+    <record id="estate_property_4" model="estate.property">
+        <field name="name">Modern Loft</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" />
+        <field name="state">new</field>
+        <field name="description">A sleek and modern loft in the city center</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2024-08-01</field>
+        <field name="expected_price">300000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">80</field>
+        <field name="facades">1</field>
+        <field name="garage">True</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 280000,
+                'validity': 20,
+                'partner_id': ref('base.res_partner_3')
+            }),
+            Command.create({
+                'price': 310000,
+                'validity': 15,
+                'partner_id': ref('base.res_partner_5')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e4.jpg" />
+    </record>
+    <record id="estate_property_5" model="estate.property">
+        <field name="name">Beachside Villa</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+        <field name="state">new</field>
+        <field name="description">A luxurious villa by the beach</field>
+        <field name="postcode">45678</field>
+        <field name="date_availability">2024-09-20</field>
+        <field name="expected_price">950000</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">250</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 940000,
+                'validity': 10,
+                'partner_id': ref('base.res_partner_4')
+            }),
+            Command.create({
+                'price': 960000,
+                'validity': 7,
+                'partner_id': ref('base.res_partner_5')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e5.jpg" />
+    </record>
+    <record id="estate_property_6" model="estate.property">
+        <field name="name">Suburban House</field>
+        <field name="property_type_id" ref="estate.estate_property_type_4" />
+        <field name="state">new</field>
+        <field name="description">A spacious house in the suburbs</field>
+        <field name="postcode">78901</field>
+        <field name="date_availability">2024-07-10</field>
+        <field name="expected_price">500000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">180</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 480000,
+                'validity': 30,
+                'partner_id': ref('base.res_partner_10')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e6.jpg" />
+    </record>
+    <record id="estate_property_7" model="estate.property">
+        <field name="name">Countryside Farmhouse</field>
+        <field name="property_type_id" ref="estate.estate_property_type_2" />
+        <field name="state">new</field>
+        <field name="description">A peaceful farmhouse in the countryside</field>
+        <field name="postcode">11223</field>
+        <field name="date_availability">2024-05-30</field>
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">120</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 340000,
+                'validity': 25,
+                'partner_id': ref('base.res_partner_5')
+            }),
+            Command.create({
+                'price': 360000,
+                'validity': 18,
+                'partner_id': ref('base.res_partner_12')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e7.jpg" />
+    </record>
+    <record id="estate_property_8" model="estate.property">
+        <field name="name">Urban Apartment</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" />
+        <field name="state">new</field>
+        <field name="description">Compact apartment ideal for city living</field>
+        <field name="postcode">33445</field>
+        <field name="date_availability">2024-10-05</field>
+        <field name="expected_price">220000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">60</field>
+        <field name="facades">1</field>
+        <field name="garage">False</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 210000,
+                'validity': 14,
+                'partner_id': ref('base.res_partner_18')
+            }),
+            Command.create({
+                'price': 225000,
+                'validity': 10,
+                'partner_id': ref('base.res_partner_12')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e8.jpg" />
+    </record>
+    <record id="estate_property_9" model="estate.property">
+        <field name="name">Lakeview Retreat</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+        <field name="state">new</field>
+        <field name="description">A beautiful retreat overlooking the lake</field>
+        <field name="postcode">99887</field>
+        <field name="date_availability">2024-11-01</field>
+        <field name="expected_price">420000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">150</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 415000,
+                'validity': 20,
+                'partner_id': ref('base.res_partner_18')
+            }),
+            Command.create({
+                'price': 430000,
+                'validity': 14,
+                'partner_id': ref('base.res_partner_address_1')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e9.jpg" />
+    </record>
+    <record id="estate_property_10" model="estate.property">
+        <field name="name">Mountain Bungalow</field>
+        <field name="property_type_id" ref="estate.estate_property_type_2" />
+        <field name="state">new</field>
+        <field name="description">A serene bungalow nestled in the mountains</field>
+        <field name="postcode">44556</field>
+        <field name="date_availability">2025-01-12</field>
+        <field name="expected_price">280000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">90</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 270000,
+                'validity': 12,
+                'partner_id': ref('base.res_partner_address_2')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e10.jpg" />
+    </record>
+    <record id="estate_property_11" model="estate.property">
+        <field name="name">Penthouse Suite</field>
+        <field name="property_type_id" ref="estate.estate_property_type_1" />
+        <field name="state">new</field>
+        <field name="description">High-rise penthouse with skyline view</field>
+        <field name="postcode">55667</field>
+        <field name="date_availability">2024-12-25</field>
+        <field name="expected_price">1200000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">300</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 1190000,
+                'validity': 15,
+                'partner_id': ref('base.res_partner_address_3')
+            }),
+            Command.create({
+                'price': 1210000,
+                'validity': 8,
+                'partner_id': ref('base.res_partner_address_4')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e11.jpg" />
+    </record>
+    <record id="estate_property_12" model="estate.property">
+        <field name="name">Downtown Condo</field>
+        <field name="property_type_id" ref="estate.estate_property_type_4" />
+        <field name="state">new</field>
+        <field name="description">Conveniently located condo in downtown area</field>
+        <field name="postcode">22113</field>
+        <field name="date_availability">2024-06-01</field>
+        <field name="expected_price">375000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">95</field>
+        <field name="facades">2</field>
+        <field name="garage">False</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 370000,
+                'validity': 10,
+                'partner_id': ref('base.res_partner_address_1')
+            }),
+            Command.create({
+                'price': 380000,
+                'validity': 12,
+                'partner_id': ref('base.res_partner_12')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e12.jpg" />
+    </record>
+    <record id="estate_property_13" model="estate.property">
+        <field name="name">Historic Townhouse</field>
+        <field name="property_type_id" ref="estate.estate_property_type_3" />
+        <field name="state">new</field>
+        <field name="description">Charming townhouse with historic character</field>
+        <field name="postcode">66778</field>
+        <field name="date_availability">2024-08-15</field>
+        <field name="expected_price">450000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">130</field>
+        <field name="facades">3</field>
+        <field name="garage">False</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 440000,
+                'validity': 17,
+                'partner_id': ref('base.res_partner_address_7')
+            }),
+            Command.create({
+                'price': 455000,
+                'validity': 14,
+                'partner_id': ref('base.res_partner_address_1')
+            })
+        ]" />
+        <field name="image" type="base64" file="estate/static/img/e13.jpg" />
+    </record>
 </odoo>

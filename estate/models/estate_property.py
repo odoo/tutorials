@@ -7,7 +7,7 @@ from odoo.tools import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Contains all properties related to estate model"
+    _description = "Property"
     _order = "id desc"
     _inherit = ["mail.thread"]
 
@@ -17,7 +17,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(
         string="Available From", copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3)
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
+    expected_price = fields.Float(string="Expected Price", required=True, tracking=True)
     selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
     description = fields.Text(string="Description")
     bedrooms = fields.Integer(string="Bedrooms", default=2)
@@ -52,12 +52,14 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
+    offers_count = fields.Integer(string="Number Of Offers", compute="_compute_offers_count", store=True)
     company_id = fields.Many2one(string="Company", comodel_name="res.company", default=lambda self: self.env.company)
     tag_ids = fields.Many2many(string="Property Tags", comodel_name="estate.property.tag")
     property_type_id = fields.Many2one(string="Property Type", comodel_name="estate.property.type")
     offer_ids = fields.One2many(string="Offers", comodel_name="estate.property.offer", inverse_name="property_id")
-    buyer_id = fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False)
-    salesperson_id = fields.Many2one(string="Salesperson", comodel_name="res.users", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one(string="Buyer", comodel_name="res.partner", copy=False, tracking=True)
+    salesperson_id = fields.Many2one(string="Salesperson", comodel_name="res.users",
+                                     default=lambda self: self.env.user, tracking=True)
 
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive"),
@@ -93,6 +95,11 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for property in self:
             property.best_price = max([offer.price for offer in property.offer_ids], default=0)
+
+    @api.depends("offer_ids")
+    def _compute_offers_count(self):
+        for property in self:
+            property.offers_count = len(property.offer_ids)
 
     @api.onchange("garden")
     def _onchange_garden(self):

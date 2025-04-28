@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_my_home_property_offers" name="Property Offers" inherit_id="portal.portal_my_home" customize_show="True">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True" />
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/estate/static/img/Offer.svg'" />
+                <t t-set="title">Your Offers</t>
+                <t t-set="url" t-value="'/my/property-offers'" />
+                <t t-set="text">View the offers made by you</t>
+                <t t-set="placeholder_count" t-value="'offers_count'" />
+            </t>
+        </div>
+    </template>
+    <template id="portal_my_home_menu_offers" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'offers'" t-attf-class="breadcrumb-item">
+                Offers
+            </li>
+        </xpath>
+    </template>
+    <template id="portal_my_offers" name="Offers">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True" />
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">Offers</t>
+            </t>
+            <t t-if="not offers">
+                <p class="alert alert-warning">There are currently no offers.</p>
+            </t>
+            <t t-if="offers" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <td>Property</td>
+                        <td>Expected Price</td>
+                        <td>Price</td>
+                        <td>Validity</td>
+                        <td>Deadline</td>
+                        <td>Status</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="offers" t-as="offer">
+                        <tr>
+                            <td>
+                                <t t-out="offer.property_id.name" />
+                            </td>
+                            <td>
+                                <t t-out="offer.property_id.expected_price" />
+                            </td>
+                            <td>
+                                <t t-out="offer.price" />
+                            </td>
+                            <td>
+                                <t t-out="offer.validity" />
+                            </td>
+                            <td>
+                                <t t-out="offer.date_deadline" />
+                            </td>
+                            <td>
+                                <t t-if="offer.status == 'accepted'">
+                                    <span class="badge text-bg-success">Accepted</span>
+                                </t>
+                                <t t-if="offer.status == 'rejected'">
+                                    <span class="badge text-bg-danger">Rejected</span>
+                                </t>
+                                <t t-if="not offer.status">
+                                    <span class="badge text-bg-secondary">Pending</span>
+                                </t>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+                <t t-if="len(offers) == 0">
+                    <div class="alert alert-info">No Offers to show</div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

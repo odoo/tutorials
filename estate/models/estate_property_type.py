@@ -5,7 +5,7 @@ from odoo import api, fields, models
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
-    _description = "Contains all property type"
+    _description = "Property Type"
     _order = "sequence, name"
 
     name = fields.Char(string="Property Type", required=True)
