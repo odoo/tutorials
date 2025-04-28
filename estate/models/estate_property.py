@@ -1,6 +1,5 @@
-from odoo import fields, models
-from odoo import api
-from odoo import exceptions
+from odoo import fields, models, api
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_utils
 
 
@@ -23,7 +22,16 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer('Garden Area')
     garden_orientation = fields.Selection(string='Orientation Type', selection=[('north', 'North'), ('south', 'South'), ('west', 'West'), ('east', 'East')])
     active = fields.Boolean(default=True)
-    state = fields.Selection(required=True, copy=False, default='new', selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
+    state = fields.Selection(
+        required=True, copy=False, default='new',
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ]
+    )
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one("res.partner", string="Salesman", default=lambda self: self.env.user)
@@ -41,20 +49,21 @@ class EstateProperty(models.Model):
          'The selling price must be positive.')
     ]
 
-    @api.onchange("selling_price", "expected_price")
     @api.constrains("selling_price")
     def _check_selling_price_value(self):
         for record in self:
             if record.selling_price > 0.0 and float_utils.float_compare(record.selling_price, record.expected_price * 9.0 / 10.0, precision_rounding=0.1) < 0:
-                raise exceptions.ValidationError("The selling price cannot be lower than 90 percent of the expected price.")
+                raise ValidationError("The selling price cannot be lower than 90 percent of the expected price.")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        self.total_area = self.living_area + self.garden_area
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offer_ids")
+    @api.depends("offer_ids.price")
     def _compute_best_offer(self):
-        self.best_offer = max(self.offer_ids.mapped("price") + [0])
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -69,14 +78,12 @@ class EstateProperty(models.Model):
     def _prevent_deletion_based_on_state(self):
         for record in self:
             if record.state != "new" and record.state != "cancelled":
-                raise exceptions.UserError("You cannot delete a property that is not in the New or Cancelled state")
+                raise UserError("You can only delete a property that is new or cancelled")
 
     def action_sell_property(self):
         for record in self:
             if record.state == "cancelled":
-                raise exceptions.UserError("Canceled property cannot be sold.")
-            elif record.state == "sold":
-                pass
+                raise UserError("Canceled property cannot be sold.")
             else:
                 record.state = "sold"
         return True
@@ -84,7 +91,7 @@ class EstateProperty(models.Model):
     def action_cancel_sell_property(self):
         for record in self:
             if record.state == "sold":
-                raise exceptions.UserError("Sold property cannot be cancelled.")
+                raise UserError("Sold property cannot be cancelled.")
             elif record.state == "sold":
                 pass
             else:

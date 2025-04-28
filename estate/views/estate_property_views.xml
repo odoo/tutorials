@@ -7,11 +7,11 @@
         <field name="context">{'search_default_state': True, 'search_default_current': True}</field>
     </record>
 
-    <record id="estate_property_list" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel" decoration-success="state=='offer_received' or state=='offer_accepted'" decoration-bf="state=='offer_accepted'" decoration-muted="state=='cancelled'">
+            <list decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state=='offer_accepted'" decoration-muted="state=='cancelled'">
                 <field name="name" string="Title"/>
                 <field name="state"/>
                 <field name="postcode"/>
@@ -19,7 +19,7 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" string="Available From" optional="hidden"/>
+                <field name="date_availability" string="Available From" optional="hide"/>
             </list>
         </field>
     </record>
@@ -27,7 +27,7 @@
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="">
+            <form>
                 <sheet>
                     <header>
                         <button name="action_sell_property" type="object" string="Sold" invisible="state == 'sold' or state=='cancelled'"/>
@@ -68,7 +68,7 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" string=" " readonly="state=='offer_accepted' or state=='sold' or state=='cancelled'"/>
+                                <field name="offer_ids" string=" " readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
                             </group>
                         </page>
                         <page string="Other info">
@@ -82,7 +82,7 @@
             </form>
         </field>
     </record>
-    <record id="estate_property_kanban" model="ir.ui.view">
+    <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -123,7 +123,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
-                <filter string="Available" name="state" domain="['|',('state', '=', 'new'),('state', '=', 'offer_received')]"/>
+                <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                     <filter string="House Type" name="property_type_id" context="{'group_by':'property_type_id'}"/>

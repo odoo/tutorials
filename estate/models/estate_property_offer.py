@@ -1,6 +1,5 @@
-from odoo import fields, models
-from odoo import api
-from odoo import exceptions
+from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -20,7 +19,7 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _sql_constraints = [
-        ('check_price_value', 'CHECK(price >= 0)',
+        ('check_price_value', 'CHECK(price > 0)',
          'The offer price must be strictly positive.')
     ]
 
@@ -28,16 +27,17 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             offered_property = self.env['estate.property'].browse(vals['property_id'])
+            if vals.get("price", 0.0) < offered_property.best_offer:
+                raise UserError("You cannot create on offer with a lower amount than an existing offer.")
             if offered_property.state == 'new':
                 offered_property.state = 'offer_received'
-            if vals.get("price", 0.0) < offered_property.best_offer:
-                raise exceptions.UserError("You cannot create on offer with a lower amount than an existing offer.")
         return super().create(vals_list)
 
     @api.depends("create_date", "validity")
     def _compute_validity_date(self):
         for record in self:
-            record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
+            if record.create_date:
+                record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
 
     def _inverse_validity_date(self):
         for record in self:
@@ -51,11 +51,10 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.state = 'offer_accepted'
             else:
-                exceptions.UserError("This property cannot be bought by two people at the same time")
+                UserError("This property cannot be bought by two people at the same time")
 
     def action_refuse_offer(self):
-        for record in self:
-            record.status = "refused"
+        self.status = "refused"
 
     def _get_current_day(self):
         return fields.Date.today()

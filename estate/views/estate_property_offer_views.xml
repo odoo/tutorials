@@ -6,11 +6,11 @@
         <field name="view_mode">list,form</field>
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
-    <record id="estate_property_offer_list" model="ir.ui.view">
-        <field name="name">estate.property.offer.list</field>
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="top" decoration-danger="status=='refused'" decoration-success="status=='accepted'">
+            <list editable="top" decoration-danger="status=='refused'" decoration-success="status=='accepted'">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
@@ -24,7 +24,7 @@
         <field name="name">estate.property.offer.view.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form string="">
+            <form>
                 <sheet>
                     <group>
                         <field name="price"/>

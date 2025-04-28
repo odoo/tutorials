@@ -6,11 +6,11 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="estate_property_tag_list" model="ir.ui.view">
-        <field name="name">estate.property.tag.list</field>
+    <record id="estate_property_tag_view_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.view.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="top">
+            <list editable="top">
                 <field name="name"/>
             </list>
         </field>
@@ -19,7 +19,7 @@
         <field name="name">estate.property.tag.view.form</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <form string="">
+            <form>
                 <sheet>
                     <group>
                         <field name="name" placeholder="Name"/>

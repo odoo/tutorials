@@ -5,8 +5,10 @@ class InheritedEstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sell_property(self):
+        res = super().action_sell_property()
+        invoice_values = []
         for record in self:
-            invoice_dictionary = {
+            invoice_values.append({
                 "partner_id": record.buyer_id.id,
                 "move_type": "out_invoice",
                 "journal_id": self.env['account.journal'].search([("code", "=", "INV")]).id,
@@ -22,6 +24,7 @@ class InheritedEstateProperty(models.Model):
                         "price_unit": "100",
                     })
                 ]
-            }
-            self.env["account.move"].create(invoice_dictionary)
-            super().action_sell_property()
+            })
+        for val in invoice_values:
+            self.env["account.move"].create(val)
+        return res
