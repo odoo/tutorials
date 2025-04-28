@@ -8,6 +8,5 @@
         'views/account_invoice_views.xml',
     ],
     'license': 'LGPL-3',
-    'installable': True,
-    'application': True
+    'auto_install': True,
 }
