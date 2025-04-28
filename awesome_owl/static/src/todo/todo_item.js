@@ -14,13 +14,4 @@ export class TodoItem extends Component {
             }
         }
     };
-
-    // setup() {
-    //     this.state = useState({ value: 0 });
-    // }
-
-    // increment() {
-    //     this.state.value++;
-    //     if (this.props.onChange) this.props.onChange()
-    // }
 }

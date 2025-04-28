@@ -5,7 +5,7 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title">ToDo List</h5>
-                <p class="card-text"><t t-foreach="todos" t-as="todo" t-key="item_index">
+                <p class="card-text"><t t-foreach="todos" t-as="todo" t-key="todo.id">
                     <TodoItem todo="todo"/>
                 </t></p>
             </div>

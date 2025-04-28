@@ -2,6 +2,6 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todo_item">
-        <p>#<t t-out="props.todo.id"/> - <t t-out="props.todo.description"/></p>
+        <p class="mt-1 mb-0" t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through' : ''">#<t t-out="props.todo.id"/> - <t t-out="props.todo.description"/></p>
     </t>
 </templates>

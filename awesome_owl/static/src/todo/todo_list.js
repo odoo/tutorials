@@ -6,16 +6,12 @@ import { TodoItem } from "./todo_item";
 export class TodoList extends Component {
     static template = "awesome_owl.todo_list";
     static components = { TodoItem };
-    // static props = {
-    //     onChange: { type: Function, optional: true }
-    // };
+    static props = { };
 
     setup() {
-        this.todos = useState([{ id: 3, description: "buy milk", isCompleted: false }]);
+        this.todos = useState([
+            { id: 2, description: "write tutorial", isCompleted: true },
+            { id: 3, description: "buy milk", isCompleted: false }
+        ]);
     }
-
-    // increment() {
-    //     this.state.value++;
-    //     if (this.props.onChange) this.props.onChange()
-    // }
 }
