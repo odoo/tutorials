@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sale Order tab content template -->
+<templates xml:space="preserve">
+    <t t-name="website_dynamic_snippet.sale_order_snippet">
+        <section class="categories_section my-5">
+            <div class="container">
+                <h3 class="section_heading">Sale Order Details</h3>
+                <div class="categories_wrapper">
+                    <div class="categories .card_list_wrapper">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Number</th>
+                                    <th scope="col">Customer Name</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="result" t-as="sale_order" t-key="sale_order.id">
+                                    <tr>
+                                        <th scope="row">
+                                            <t t-esc="sale_order.id"/>
+                                        </th>
+                                        <td><t t-esc="sale_order.partner_id[1]"/></td>
+                                        <td><t t-esc="sale_order.state"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+
+                        <div class="text-center mt-3">
+                            <button type="button" class="btn btn-primary load-more-button">
+                                Load More
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </t>
+</templates>

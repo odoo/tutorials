@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="sale_order_highlight" name="Sale Order Details">
+        <section class="categories_section">
+            <div class="container">
+                <div class="alert alert-info">
+                    <h4>Your Category Highlight Tab snippet will be displayed here...
+                        Please save to view the snippet
+                    </h4>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="category_highlight_snippet" inherit_id="website.snippets"
+        name="Sale Order Details Snippet">
+        <xpath expr="//snippets[@id='snippet_groups']" position="inside">
+            <t t-snippet="website_dynamic_snippet.sale_order_highlight"/>
+        </xpath>
+    </template>
+
+</odoo>
