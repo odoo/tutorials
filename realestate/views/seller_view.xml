@@ -13,5 +13,31 @@
         </menuitem>
     </menuitem>
 
+    <record id='seller_form_view' model='ir.ui.view'>
+        <field name='name'>Seller</field>
+        <field name='model'>seller</field>
+        <field name='arch' type='xml'>
+            <form string='Properties'>
+                <sheet>
+                    <notebook>
+
+                        <page string="Properties">
+                            <field name="properties_ids" />
+
+                        </page>
+
+
+                    </notebook>
+
+
+                </sheet>
+
+
+            </form>
+        </field>
+
+
+    </record>
+
 
 </odoo>
