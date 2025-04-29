@@ -11,13 +11,5 @@
                 </t></p>
             </div>
         </div>
-        <div class="card d-inline-block m-2" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">ToDo List</h5>
-                <p class="card-text"><t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
-                </t></p>
-            </div>
-        </div>
     </t>
 </templates>
