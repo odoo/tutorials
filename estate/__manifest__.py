@@ -1,5 +1,11 @@
 {
     'name': 'Estate',
+    'summary': "Module to manage properties",
+    'description': """
+This module is used to manage any type of properties and also to manage the selling pipeline for each property
+    """,
+    'author': 'Odoo',
+    'version': '1.0',
     'depends': ['base'],
     'application': True,
     'license': 'LGPL-3',

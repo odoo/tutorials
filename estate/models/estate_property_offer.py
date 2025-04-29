@@ -1,4 +1,4 @@
-from odoo import api, models, fields
+from odoo import _, api, models, fields
 from dateutil.relativedelta import relativedelta
 
 from odoo.exceptions import UserError
@@ -30,10 +30,12 @@ class EstatePropertyOffer(models.Model):
     ]
 
     @api.model_create_multi
-    def create(self, vals):
-        for val in vals:
+    def create(self, vals_list):
+        for val in vals_list:
             property_id = val.get('property_id')
-            price = val.get('price')
+            if not property_id:
+                continue
+            price = val.get('price', 0)
 
             prop = self.env['estate.property'].browse(property_id)
 
@@ -41,43 +43,43 @@ class EstatePropertyOffer(models.Model):
             if existing_offer_prices:
                 max_existing_offer = max(existing_offer_prices)
                 if float_compare(price, max_existing_offer, precision_digits=2) < 0:
-                    raise UserError("Cannot create an offer with a price lower than an existing offer")
+                    raise UserError(_("Cannot create an offer with a price lower than an existing offer"))
 
             if prop.state == 'new':
                 prop.write({'state': 'offer_received'})
 
-        new_offer = super().create(vals)
+        new_offer = super().create(vals_list)
         return new_offer
 
     def action_accept(self):
-        for record in self:
-            accepted_offers = record.property_id.offers_ids.filtered(lambda o: o.status == 'accepted')
+        for offer in self:
+            accepted_offers = offer.property_id.offers_ids.filtered(lambda o: o.status == 'accepted')
             if accepted_offers:
-                raise UserError("Another offer has already been accepted for this property.")
-            record.status = 'accepted'
-            record.property_id.state = 'offer_accepted'
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
+                raise UserError(_("Another offer has already been accepted for this property."))
+            offer.status = 'accepted'
+            offer.property_id.state = 'offer_accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
         return True
 
     def action_refuse(self):
-        for record in self:
-            record.status = 'refused'
+        for offer in self:
+            offer.status = 'refused'
         return True
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                base_date = record.create_date.date()
+        for offer in self:
+            if offer.create_date:
+                base_date = offer.create_date.date()
             else:
                 base_date = fields.Date.today()
-            record.date_deadline = base_date + relativedelta(days=record.validity)
+            offer.date_deadline = base_date + relativedelta(days=offer.validity)
 
     def _inverse_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                base_date = record.create_date.date()
+        for offer in self:
+            if offer.create_date:
+                base_date = offer.create_date.date()
             else:
                 base_date = fields.Date.today()
-            record.validity = (record.date_deadline - base_date).days
+            offer.validity = (offer.date_deadline - base_date).days

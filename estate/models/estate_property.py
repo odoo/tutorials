@@ -1,11 +1,11 @@
-from odoo import api, models, fields
-from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
 
+from odoo import _, api, models, fields
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
-def _default_date_availability():
+def _default_date_availability(_):
     return fields.Date.today() + relativedelta(months=3)
 
 
@@ -22,7 +22,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(
         copy=False,
-        default=_default_date_availability()
+        default=_default_date_availability
     )
     state = fields.Selection(
         string='Status',
@@ -70,46 +70,46 @@ class EstateProperty(models.Model):
         return types.search([])  # this is equivalent to return self.env['estate.property.type'].search([])
 
     def action_set_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise UserError("Canceled properties cannot be set as sold.")
-            record.state = 'sold'
+        for property in self:
+            if property.state == 'cancelled':
+                raise UserError(_("Canceled properties cannot be set as sold."))
+            property.state = 'sold'
         return True
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError("Sold properties cannot be canceled.")
-            record.state = 'cancelled'
+        for property in self:
+            if property.state == 'sold':
+                raise UserError(_("Sold properties cannot be canceled."))
+            property.state = 'cancelled'
         return True
 
     @api.ondelete(at_uninstall=False)
     def _check_unlink_state(self):
-        for record in self:
-            if record.state not in ('new', 'cancelled'):
-                raise UserError("You cannot delete a property that is not in 'New' or 'Cancelled' state.")
+        for property in self:
+            if property.state not in ('new', 'cancelled'):
+                raise UserError(_("You cannot delete a property that is not in 'New' or 'Cancelled' state."))
 
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.expected_price, precision_digits=2):
-                accepted_offers = record.offers_ids.filtered(lambda o: o.status == 'accepted')
+        for property in self:
+            if not float_is_zero(property.expected_price, precision_digits=2):
+                accepted_offers = property.offers_ids.filtered(lambda o: o.status == 'accepted')
                 if accepted_offers:
-                    if float_compare(record.selling_price, record.expected_price * 0.90, precision_digits=2) == -1:
+                    if float_compare(property.selling_price, property.expected_price * 0.90, precision_digits=2) == -1:
                         raise ValidationError("Selling price cannot be lower than 90 percent of expected price")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
 
     @api.depends('offers_ids.price')
     def _compute_best_price(self):
-        for record in self:
-            if record.offers_ids:
-                record.best_price = max(record.offers_ids.mapped('price'))
+        for property in self:
+            if property.offers_ids:
+                property.best_price = max(property.offers_ids.mapped('price'))
             else:
-                record.best_price = 0.0
+                property.best_price = 0.0
 
     @api.onchange('garden')
     def _onchange_garden(self):

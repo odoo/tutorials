@@ -136,7 +136,7 @@
                     <field name="facades"/>
                     <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                     <group expand="1" string="Group By">
-                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                        <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                     </group>
                 </search>
             </field>

@@ -1,4 +1,4 @@
-from odoo import models, Command
+from odoo import _, models, Command
 from odoo.exceptions import UserError
 
 
@@ -11,14 +11,14 @@ class EstateProperty(models.Model):
         if not self:
             return res
 
-        for record in self:
-            if not record.buyer_id:
-                raise UserError("Cannot create invoice: Buyer is not set for property")
+        for property in self:
+            if not property.buyer_id:
+                raise UserError(_("Cannot create invoice: Buyer is not set for property"))
 
-            if record.selling_price <= 0:
-                raise UserError("Cannot create invoice: Selling price must be positive for property")
+            if property.selling_price <= 0:
+                raise UserError(_("Cannot create invoice: Selling price must be positive for property"))
 
-            commission = record.selling_price * 0.06
+            commission = property.selling_price * 0.06
             admin_fees = 100.00
 
             invoice_line_commands = [
@@ -35,7 +35,7 @@ class EstateProperty(models.Model):
             ]
 
             invoice_vals = {
-                'partner_id': record.buyer_id.id,
+                'partner_id': property.buyer_id.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': invoice_line_commands,
             }
