@@ -53,7 +53,9 @@ class Estate(models.Model):
     buyer = fields.Many2one("res.partner", copy=False)
     salesperson = fields.Many2one("res.users", default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many("property.tag")
-    property_offer_ids = fields.One2many("property.offer", "property_id")
+    property_offer_ids = fields.One2many(
+        "property.offer", "property_id", ondelete="cascade"
+    )
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
     _order = "id desc"
@@ -118,3 +120,9 @@ class Estate(models.Model):
                 raise ValidationError(
                     "The selling price can not be less than 90 percent of the expected price"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_inactive(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise ValidationError("Can't delete an active property!")

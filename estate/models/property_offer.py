@@ -72,3 +72,14 @@ class PropertyOffer(models.Model):
             record.status = "refused"
             if record.property_id.selling_price == record.price:
                 record.property_id.selling_price = 0
+
+    @api.model
+    def create(self, vals):
+        property_id = self.env["estate.property"].browse(vals["property_id"])
+
+        if property_id.best_price > vals["price"] or not vals["price"]:
+            raise ValidationError("Offer must be higher than the best price")
+        if property_id.state == "new":
+            property_id.state = "offer_received"
+
+        return super().create(vals)
