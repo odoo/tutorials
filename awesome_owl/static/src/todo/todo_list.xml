@@ -7,7 +7,15 @@
                 <h5 class="card-title">ToDo List</h5>
                 <input t-ref="input" type="text" placeholder="Enter a new task" t-on-keyup="addTodo"/>
                 <p class="card-text"><t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo"/>
+                    <TodoItem todo="todo" toggleState.bind="toggleState"/>
+                </t></p>
+            </div>
+        </div>
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">ToDo List</h5>
+                <p class="card-text"><t t-foreach="todos" t-as="todo" t-key="todo.id">
+                    <TodoItem todo="todo" toggleState.bind="toggleState"/>
                 </t></p>
             </div>
         </div>
