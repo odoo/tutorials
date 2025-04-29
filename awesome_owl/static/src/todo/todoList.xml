@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t t-name="TodoList">
+    <div class="p-3 border rounded">
+        <input type="text" t-ref="input" class="form-control mb-2" placeholder="Enter a new task"
+               t-on-keyup="addTodo"/>
+        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+            <t t-call="TodoItem">
+                <t t-set="todo" t-value="todo"/>
+                <t t-set="toggleState" t-value="toggleTodo"/>
+                <t t-set="removeTodo" t-value="removeTodo"/>
+            </t>
+        </t>
+    </div>
+</t>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t t-name="TodoItem">
+    <div class="d-flex align-items-center p-2 border-bottom"
+         t-att-class="{'text-muted text-decoration-line-through': todo.isCompleted}">
+        <input type="checkbox" t-att-checked="todo.isCompleted" t-on-change="toggleTodo" class="me-2"/>
+        <span t-out="todo.id + '. ' + todo.description" class="flex-grow-1"/>
+        <span class="fa fa-remove text-danger" t-on-click="removeTodo" style="cursor: pointer;"/>
+    </div>
+</t>
