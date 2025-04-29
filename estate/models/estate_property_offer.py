@@ -43,7 +43,7 @@ class EstatePropertyOffer(models.Model):
             property_id = self.env['estate.property'].browse(vals['property_id'])
             if property_id.best_price and (float_compare(property_id.best_price, vals['price'], precision_digits=3) > 0):
                 raise UserError(_("Can't create an offer with a lower amount than an other offer"))
-        property_id.write({'state': 'received',})
+        property_id.write({'state': 'received'})
         return super().create(vals_list)
 
     @api.depends('validity')
@@ -67,8 +67,8 @@ class EstatePropertyOffer(models.Model):
                 {
                     'selling_price': r_offer.price,
                     'buyer_id': r_offer.partner_id,
-                    'accepted': r_offer.property_id.state
-                }
+                    'accepted': r_offer.property_id.state,
+                },
             )
         return True
 
