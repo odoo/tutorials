@@ -103,8 +103,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.status = "sold"
             accepted_offer = self.env["estate.property.offer"].search_fetch(
-                [("status", "=", "accepted"), ("property_id", "=", record.id)], ["price"], limit=1
+                [("status", "=", "accepted"), ("property_id", "=", record.id)], ["price", "id"], limit=1
             )
+
+            if not accepted_offer.id:
+                raise UserError("Cannot mark property as sold unless there was an accepted offer on this property.")
+
             record.selling_price = accepted_offer.price
 
     def action_mark_property_as_cancelled(self):
