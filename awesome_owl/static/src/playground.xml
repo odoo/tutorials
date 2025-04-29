@@ -5,6 +5,9 @@
         <div class="p-3">
             hello world <Counter/> <Counter/>
         </div>
+        
+        <Card title="'A very beautiful card!'" content="'This card is so rare that it costs: 1,000,000.00€!'"/>
+        <Card title="'A not very beautiful card!'" content="'This one is not so rare as far...'"/>
     </t>
 
 </templates>
