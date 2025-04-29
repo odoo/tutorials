@@ -5,6 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 class Realestate(models.Model):
     _name = "realestate"
     _description = "Estate"
+    _order = "type_id"
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -17,6 +18,7 @@ class Realestate(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),
@@ -37,7 +39,7 @@ class Realestate(models.Model):
         default="new",
     )
     owner_id = fields.Many2one("buyer")
-    type_id = fields.Many2one("types")
+    type_id = fields.Many2one("types", widget="handle")
     tag_ids = fields.Many2many("tags", string="Tags")
     seller_id = fields.Many2one("seller")
     buyer_id = fields.Many2one("buyer")
@@ -46,7 +48,6 @@ class Realestate(models.Model):
     price = fields.Float(related="offer_ids.price")
     validity = fields.Integer(related="offer_ids.validity")
     deadline = fields.Date(related="offer_ids.deadline")
-
     total_area = fields.Integer(compute="_compute_total")
     best_price = fields.Float(compute="_max_offer_price")
 
@@ -101,11 +102,6 @@ class Realestate(models.Model):
             "CHECK(price> 0)",
             "Offer price must be positive.",
         ),
-        (
-            "unique_name",
-            "unique('name')",
-            "Name already exists",
-        ),
     ]
 
     @api.constrains("selling_price")
@@ -115,3 +111,14 @@ class Realestate(models.Model):
                 raise ValidationError(
                     "Selling price must be at least 90'%' of the expected price"
                 )
+
+    @api.constrains("offer_ids")
+    def _check_for_offers(self):
+        if len(self.offer_ids) > 0:
+            self.state = "offer_received"
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_new_properties(self):
+        for record in self:
+            if record.state != "new" or record.state != "cancelled":
+                raise UserError("Property Cannot be deleted")
