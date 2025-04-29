@@ -11,9 +11,9 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field string="Living Area (sqm)" name="living_area" filter_domain="['!', ('living_area', '&lt;', self)]"/>
+                <field string="Living Area (sqm)" name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
-                <filter string="Available" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name='postcode' context="{'group_by':'postcode'}"/>
                     <filter name='property_type_id' context="{'group_by':'property_type_id'}"/>
@@ -86,7 +86,11 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" decoration-success="state in ['offer_received','offer_accepted','sold']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+            <list string="Properties" 
+                decoration-success="state in ['offer_received','offer_accepted','sold']"
+                decoration-bf="state == 'offer_accepted'" 
+                decoration-muted="state == 'sold'">
+
                 <field string="Title" name="name"/>
                 <field name="property_type_id"/>
                 <field string="Postcode" name="postcode"/>

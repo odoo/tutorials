@@ -40,9 +40,8 @@ class PropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            for offer in record.property_id.offer_ids:
-                if offer.id != record.id and offer.status == "accepted":
-                    raise UserError(_("Another offer has already been accepted."))
+            if record.property_id.state == "offer_accepted":
+                raise UserError(_("Another offer has already been accepted."))
 
             record.status = "accepted"
             record.property_id.state = "offer_accepted"
@@ -52,13 +51,19 @@ class PropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             if record.status == "accepted":
-                record.property_id.state = "offer_received"
-                record.property_id.selling_price = 0.0
-                record.property_id.buyer_id = None
+                raise UserError(_("Cannot refuse an aleady accepted offer."))
 
             record.status = "refused"
 
-    @api.model
-    def create(self, vals):
-        self.env["estate.property"].browse(vals["property_id"]).state = "offer_received"
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for record in vals_list:
+            estate_property = self.env["estate.property"].browse(record["property_id"])
+            if estate_property.state not in ["new", "offer_received"]:
+                raise UserError(_("Cannot create offer on property that is not new or offer received."))
+
+            if record["price"] < estate_property.best_price:
+                raise UserError(_("Cannot create offer with lower price than existing offers."))
+            estate_property.state = "offer_received"
+
+        return super().create(vals_list)

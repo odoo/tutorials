@@ -43,7 +43,7 @@ class Property(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
-    total_area = fields.Float(compute="_compute_total_area")
+    total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
 
     _sql_constraints = [
@@ -59,7 +59,7 @@ class Property(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -75,7 +75,7 @@ class Property(models.Model):
             if record.state == "cancelled":
                 raise UserError(_("Canceled properties cannot be sold."))
 
-        self.write({"state": "sold"})
+        self.state = "sold"
         return True
 
     def action_cancel(self):
@@ -83,7 +83,7 @@ class Property(models.Model):
             if record.state == "sold":
                 raise UserError(_("Sold properties cannot be canceled."))
 
-        self.write({"state": "cancelled"})
+        self.state = "cancelled"
         return True
 
     @api.constrains("selling_price", "expected_price")
