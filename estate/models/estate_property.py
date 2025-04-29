@@ -37,6 +37,7 @@ class EstateProperty(models.Model):
                                                        ('canceled', 'Canceled')
                                                        ])
 
+    company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company, required=True)
     tags_ids = fields.Many2many("estate_property_tags", string="Tags")
     salesman_id = fields.Many2one("res.users", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)

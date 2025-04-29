@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <xpath expr="//page[@name='account_security']" position="after">
-                <page string="Properties">
+                <page string="Properties" groups="estate.estate_group_agent">
                     <field name="property_ids"/>
                 </page>
             </xpath>

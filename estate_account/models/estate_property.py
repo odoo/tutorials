@@ -23,6 +23,7 @@ class EstateProperty(models.Model):
                     })
                 ],
             }
-            account_move.create(account_values)
+
+            account_move.sudo().create(account_values)
 
         return super().mark_as_sold()

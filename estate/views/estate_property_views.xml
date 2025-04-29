@@ -60,6 +60,7 @@
                                 <field name="garden_area" invisible="not garden"/>
                                 <field name="garden_orentation" invisible="not garden"/>
                                 <field name="total_area"/>
+                                <field name="company_id"/>
                             </group>
                         </page>
                         <page name="Other infos">
@@ -224,9 +225,9 @@
         <menuitem id="real_estate_first_level" name="Estate Property">
             <menuitem id="real_estate_action" action="estate_property_menu_action" name="Estate Property"/>
         </menuitem>
-        <menuitem id="settings" name="Settings">
-            <menuitem id="property_type_action" action="estate_property_type_menu_action" name="Estate Property Type" />
-            <menuitem id="property_tags_action" action="estate_property_tags_menu_action" name="Estate Property Tags" />
+        <menuitem id="settings" name="Settings" groups="estate_group_manager">
+            <menuitem id="property_type_action" action="estate_property_type_menu_action" name="Estate Property Type"/>
+            <menuitem id="property_tags_action" action="estate_property_tags_menu_action" name="Estate Property Tags"/>
         </menuitem>
     </menuitem>
 
