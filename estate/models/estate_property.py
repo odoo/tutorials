@@ -5,6 +5,13 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate properties'
+    _order = "id desc"
+
+    _check_strictly_positive_expected_price = (models.Constraint("""CHECK (expected_price > 0)""",
+             "The property expected price must be strictly positive."))
+
+    _check_positive_selling_price = (models.Constraint("""CHECK (selling_price >= 0)""",
+             "The property selling price must be positive."))
 
     name = fields.Char('Title', required=True, translate=True)
     description = fields.Text()
@@ -23,7 +30,7 @@ class EstateProperty(models.Model):
         selection=[('north', 'North'), ('west', 'West'), ('south', 'South'), ('east', 'East')],
         help='The selection of the garden orientation.')
     active = fields.Boolean(default=True)
-    state = fields.Selection(
+    state = fields.Selection(string="Status",
         required=True,
         copy=False,
         default='new',
@@ -33,7 +40,6 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-
     total_area = fields.Float(compute="_compute_total_area")
 
     @api.depends("living_area", "garden_area")
@@ -79,18 +85,8 @@ class EstateProperty(models.Model):
                 raise UserError(_("This property is already sold and thus cannot be cancelled anymore."))
         return True
 
-    # Add a constraint so that the selling price cannot be lower than 90% of the expected price.
-    #
-    # Tip: the selling price is zero until an offer is validated. You will need to fine tune your check to take this into account.
     @api.constrains('expected_price', 'selling_price')
-    @api.onchange("expected_price", "selling_price")
     def _check_offer_price(self):
         for record in self:
             if tools.float_utils.float_compare((record.expected_price * 0.9), record.selling_price, precision_rounding=0.01) >= 0 and not tools.float_utils.float_is_zero(record.selling_price, precision_rounding=0.001):
                 raise ValidationError(_("Offer price cannot be lower than 90% of the expected price."))
-
-    _check_strictly_positive_expected_price = (models.Constraint("""CHECK (expected_price > 0)""",
-             "The property expected price must be strictly positive."))
-
-    _check_positive_selling_price = (models.Constraint("""CHECK (selling_price >= 0)""",
-             "The property selling price must be positive."))

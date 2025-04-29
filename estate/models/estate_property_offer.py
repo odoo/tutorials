@@ -4,6 +4,10 @@ from odoo import fields, models, api
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate property offer'
+    _order = "price desc"
+
+    _check_positive_offer_price = (models.Constraint("""CHECK (price >= 0)""",
+             "The property offer price must be positive."))
 
     price = fields.Float()
     status = fields.Selection(
@@ -13,6 +17,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Offer", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline", default=fields.Date.add(fields.Date.today(), days=7))
+    property_type_id = fields.Many2one(related='property_id.property_type_id')
 
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
@@ -34,6 +39,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
-
-    _check_positive_offer_price = (models.Constraint("""CHECK (price >= 0)""",
-             "The property offer price must be positive."))
