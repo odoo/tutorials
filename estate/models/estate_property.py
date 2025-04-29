@@ -1,6 +1,6 @@
 from dateutil import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
@@ -27,7 +27,7 @@ class EstateProperty(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ("canceled", "canceled"),
         ],
         required=True,
         copy=False,
@@ -80,17 +80,17 @@ class EstateProperty(models.Model):
     ]
 
     @api.depends("garden_area", "living_area")
-    def _compute_total_area(self) -> None:
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
     @api.depends("offer_ids")
-    def _compute_best_price(self) -> None:
+    def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
 
     @api.onchange("garden")
-    def _onchange_change(self) -> None:
+    def _onchange_change(self):
         self.write(
             {
                 "garden_area": 10 if self.garden else 0,
@@ -99,27 +99,27 @@ class EstateProperty(models.Model):
         )
 
     @api.constrains("selling_price")
-    def _check_selling_price(self) -> None:
+    def _check_selling_price(self):
         for record in self:
             if (
-                record.offer_ids.filtered(lambda x: x.status == "accepted")
+                record.offer_ids
                 and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=3) == -1
             ):
-                raise ValidationError("The selling price should be atleast 90% of the expected price")
+                raise ValidationError(_("The selling price should be atleast 90% of the expected price"))
 
     @api.ondelete(at_uninstall=False)
-    def _unlink_if_new_or_cancelled(self) -> None:
-        if any(record.state not in ("new", "cancelled") for record in self):
-            raise UserError("Can't delete an active property")
+    def _unlink_if_new_or_canceled(self):
+        if any(record.state not in ("new", "canceled") for record in self):
+            raise UserError(_("Can't delete an active property"))
 
     def action_cancel_property(self) -> bool:
         if "sold" in self.mapped("state"):
-            raise UserError("Cannot cancel a sold property")
-        self.write({"state": "cancelled"})
+            raise UserError(_("Cannot cancel a sold property"))
+        self.write({"state": "canceled"})
         return True
 
     def action_sold_property(self) -> bool:
-        if "cancelled" in self.mapped("state"):
-            raise UserError("Cannot sell a cancel property")
+        if "canceled" in self.mapped("state"):
+            raise UserError(_("Cannot sell a cancel property"))
         self.write({"state": "sold"})
         return True

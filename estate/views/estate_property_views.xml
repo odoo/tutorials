@@ -34,9 +34,9 @@
             <form string="Properties">
                 <header>
                     <button name="action_cancel_property" type="object" string="Cancel"
-                        invisible="state in ('cancelled', 'sold',)"/>
+                        invisible="state in ('canceled', 'sold',)"/>
                     <button name="action_sold_property" type="object" string="Sold"
-                        invisible="state in ('cancelled', 'sold',)"/>
+                        invisible="state in ('canceled', 'sold',)"/>
                     <field name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold"
                         options="{'clickable': '1'}"/>
@@ -82,7 +82,7 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"
-                                readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
+                                readonly="state in ('offer_accepted', 'sold', 'canceled')"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -123,7 +123,7 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" records_draggable="False" groups_draggable="False">
+            <kanban default_group_by="property_type_id" records_draggable="0" groups_draggable="0">
                 <field name="state"/>
                 <templates>
                     <t t-name="card">

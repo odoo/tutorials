@@ -5,6 +5,7 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold_property(self):
+        res = super().action_sold_property()
         invoice_vals_list = []
         purchase_journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
         for record in self:
@@ -31,4 +32,4 @@ class EstateProperty(models.Model):
             }
             invoice_vals_list.append(invoice_vals)
         self.env["account.move"].create(invoice_vals_list)
-        return super().action_sold_property()
+        return res
