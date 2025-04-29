@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_view_kits" model="ir.ui.view">
+        <field name="name">sale.order.form.view.kits</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <field name="product_template_id" position="after">
+                <button icon="fa-gears" type="action" name="%(product_kits.action_product_kit_wizard)d"
+                        title="Manage Kit Sub-products"
+                        invisible="(not is_kit) or (state in ['sale', 'cancel'])"/>
+            </field>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly">parent_kit_line_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">parent_kit_line_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">parent_kit_line_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">parent_kit_line_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="decoration-info">parent_kit_line_id</attribute>
+            </xpath>
+            <group name="order_details" position="inside">
+                <field name="print_in_report"/>
+            </group>
+        </field>
+    </record>
+</odoo>
