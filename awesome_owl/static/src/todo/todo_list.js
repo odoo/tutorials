@@ -32,4 +32,10 @@ export class TodoList extends Component {
         let todo = this.todos.find((todo) => todo.id === id);
         todo.isCompleted = !todo.isCompleted;
     }
+
+    removeTodo(id) {
+        console.log("Removing " + id);
+        const index = this.todos.findIndex((todo) => todo.id === id);
+        if (index >= 0) this.todos.splice(index, 1);
+    }
 }

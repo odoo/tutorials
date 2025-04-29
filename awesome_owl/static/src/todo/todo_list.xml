@@ -7,7 +7,7 @@
                 <h5 class="card-title">ToDo List</h5>
                 <input t-ref="input" type="text" placeholder="Enter a new task" t-on-keyup="addTodo"/>
                 <p class="card-text"><t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo" toggleState.bind="toggleState"/>
+                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
                 </t></p>
             </div>
         </div>
@@ -15,7 +15,7 @@
             <div class="card-body">
                 <h5 class="card-title">ToDo List</h5>
                 <p class="card-text"><t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo" toggleState.bind="toggleState"/>
+                    <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
                 </t></p>
             </div>
         </div>
