@@ -3,7 +3,8 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            hello world <Counter/><Counter/><Counter/><Counter/><br/>
+            <Card title="'cool title'" content="'some content'"/><Card title="'boring title'" content="'some content'"/>
         </div>
     </t>
 
