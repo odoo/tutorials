@@ -62,6 +62,14 @@ class EstateProperty(models.Model):
         ),
     ]
 
+    def unlink(self):
+        properties_statuses = self.mapped("status")
+
+        if "cancelled" in properties_statuses or "sold" in properties_statuses:
+            raise UserError("Cannot delete a property with a status of canceled or sold.")
+
+        return super().unlink()
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:

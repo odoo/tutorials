@@ -30,11 +30,35 @@ class EstatePropertyOffer(models.Model):
         ),
     ]
 
-    @api.model_create_single
+    @api.model_create_multi
     def create(self, vals):
-        record = super().create(vals)
-        record.property_id.status = "offer_receieved"
-        return record
+        for val in vals:
+            property_id = self.env["estate.property"].browse(val["property_id"])
+
+            if property_id.status in ["cancelled", "sold"]:
+                raise UserError("Cannot submit an offer on a cancelled or a sold property.")
+
+            if property_id.best_offer_price > val["price"]:
+                raise UserError("Cannot submit an offer with a price lower than the best offer price.")
+
+            property_id.write({"status": "offer_receieved"})
+
+        return super().create(vals)
+
+    def unlink(self):
+        property_ids = set()
+
+        for record in self:
+            property_ids.add(record.property_id.id)
+
+        deletion_state = super().unlink()
+
+        for property_id in property_ids:
+            offers_cnt = self.env["estate.property.offer"].search_count([("property_id", "=", property_id)])
+            if not offers_cnt:
+                self.env["estate.property"].browse(property_id).write({"status": "new"})
+
+        return deletion_state
 
     @api.depends("validity_days")
     def _compute_deadline_date(self):

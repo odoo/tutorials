@@ -31,7 +31,7 @@
         <field name="arch" type="xml">
             <form string="New Property">
                 <header>
-                    <group invisible="(status == 'cancelled') or (status == 'sold')">
+                    <group invisible="status in ['cancelled', 'sold']">
                         <button name="action_mark_property_as_sold" string="Mark as Sold" type="object" class="btn-primary"/>
                         <button name="action_mark_property_as_cancelled" string="Cancel" type="object"/>
                     </group>
@@ -74,7 +74,7 @@
                         </page>
 
                         <page string="Offers">
-                            <field name="offer_ids" readonly="status == 'offer_accepted'"/>
+                            <field name="offer_ids" readonly="status not in ['offer_receieved', 'new']"/>
                         </page>
                     </notebook>
                 </sheet>
