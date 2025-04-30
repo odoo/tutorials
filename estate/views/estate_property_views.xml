@@ -2,8 +2,14 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
+    </record>
+
+    <record id="open_url_action" model="ir.actions.act_url">
+        <field name="name">Open External Website</field>
+        <field name="url">/properties</field>
+        <field name="target">new</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -35,21 +41,27 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
+                <chatter/>
                 <header>
-                    <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state != 'offer_accepted'"
+                            class="btn btn-primary"/>
+                    <button name="action_sold" type="object" string="Sold"
+                            invisible="state in ['sold', 'cancelled', 'offer_accepted']"/>
                     <button name="action_cancel" type="object" string="Cancel"
                             invisible="state in ['sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                    <div class="oe_title">
+                    <field name="image" widget="image" class="oe_avatar" nolabel='1'
+                           options="{'zoom': True, 'size': [0,270]}"/>
+                    <div class="oe_title pb-2">
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <group>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                        </group>
                     </div>
+                    <group class="mt-4">
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    </group>
                     <group>
                         <group>
                             <field name="property_type_id" options="{'no_create':True, 'no_open':True}"/>
@@ -65,15 +77,17 @@
                     <notebook>
                         <page name="description" string="Description">
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
-                                <field name="garden_area" invisible="not garden"/>
-                                <field name="garden_orientation" invisible="not garden"/>
-                                <field name="total_area"/>
+                                <group string="Property Details">
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                    <field name="total_area"/>
+                                </group>
                             </group>
                         </page>
                         <page name="offers" string="Offers">
@@ -115,6 +129,30 @@
 
                 <filter name="available" string="Available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
             </search>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="false">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bolder"/>
+                        <div> Expected Price : <field name="expected_price"/>
+                        </div>
+                        <div t-if="record.state.raw_value === 'offer_received'">
+                            Best Price : <field name="best_price"/>
+                        </div>
+                        <div t-if="['offer_accepted', 'sold'].includes(record.state.raw_value)">
+                            Selling Price: <field name="selling_price"/>
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>

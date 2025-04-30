@@ -7,5 +7,5 @@
     'application': True,
     'auto_install': True,
     'license': 'LGPL-3',
-    'data': ['report/estate_property_templates.xml'],
+    'data': ['report/estate_property_templates.xml', 'views/estate_property_views.xml'],
 }

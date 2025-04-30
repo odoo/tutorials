@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'An individual estate property listing'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
     _sql_constraints = [
         (
@@ -30,11 +31,12 @@ class EstateProperty(models.Model):
             ):
                 raise ValidationError(
                     'The selling price must be greater than 90% of the expected price.'
-                    'You must reduce the expected price if you want to accept this offer'
+                    'You must reduce the expected price to accept this offer'
                 )
 
     name = fields.Char('Title', required=True, default='Unknown')
     description = fields.Text('Description')
+    image = fields.Image(string='Property Image', max_width=2048, max_height=2048)
     postcode = fields.Char('Postcode')
     date_availability = fields.Date(
         'Available From',
@@ -65,6 +67,7 @@ class EstateProperty(models.Model):
         ],
         'Status',
         default='new',
+        tracking=True,
         copy=False,
         required=True,
     )
@@ -116,7 +119,8 @@ class EstateProperty(models.Model):
 
         if self.state != 'new':
             raise UserError(
-                'You cannot modify offers when the property is not in New or Offer Received state.'
+                'You cannot modify offers when the property'
+                ' is not in New or Offer Received state.'
             )
 
     def action_cancel(self):
