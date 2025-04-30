@@ -182,7 +182,7 @@
                 <field name="state"/>
                 <field name="estate_property_type"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
                             <field name="name"/>
                             <div>
