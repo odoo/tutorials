@@ -28,13 +28,13 @@ class EstateProperty(models.Model):
             ('west', 'West'),
             ('east', 'East')
             ])
-    
+
     active = fields.Boolean(default=True)
-    state = fields.Selection(default='new', selection=[('new', 'New'), 
-                                                       ('offer_received', 'Offre Received'), 
-                                                       ('offer_accepted', 'Offer Accepted'), 
-                                                       ('sold', 'Sold'), 
-                                                       ('canceled', 'Canceled')
+    state = fields.Selection(default='new', selection=[('new', 'New'),
+                                                       ('offer_received', 'Offre Received'),
+                                                       ('offer_accepted', 'Offer Accepted'),
+                                                       ('sold', 'Sold'),
+                                                       ('canceled', 'Canceled'),
                                                        ])
 
     company_id = fields.Many2one('res.company', string="Company", default=lambda self: self.env.company, required=True)

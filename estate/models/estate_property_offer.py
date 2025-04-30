@@ -42,8 +42,8 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("You can't validate an offer for a sold property")
             else:
                 offer.property_id.write({
-                    'buyer_id' : offer.partner_id,
-                    'selling_price' : offer.price,
+                    'buyer_id': offer.partner_id,
+                    'selling_price': offer.price,
                     })
                 offer.status = 'accepted'
                 offer.property_id.mark_as_sold()
@@ -63,5 +63,5 @@ class EstatePropertyOffer(models.Model):
 
             if price < property.best_price:
                 raise UserError(_("You can't create an offer with a lower price than an existing offer"))
-            
+
         return super().create(vals_list)
