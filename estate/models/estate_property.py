@@ -79,6 +79,8 @@ class EstateProperty(models.Model):
             self.garden_orentation = False
 
     def mark_as_sold(self):
+        if self.mapped("offer_ids").status != 'accepted':
+            raise UserError(_("You can't sell a property without valided offer"))
         if 'canceled' in self.mapped("state"):
             raise UserError(_("You can't set a canceled property to sold"))
         self.state = "sold"
