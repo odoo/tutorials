@@ -15,6 +15,7 @@ class EstatePropertyOffer(models.Model):
             "Price of an offer should be only positive",
         ),
     ]
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -27,6 +28,9 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
     validity = fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
@@ -72,7 +76,5 @@ class EstatePropertyOffer(models.Model):
     @api.depends("status")
     def action_offer_refuse(self):
         for offer in self:
-            if offer.status == "accepted":
-                self.property_id.state = "offer-received"
             offer.status = "refused"
         return True

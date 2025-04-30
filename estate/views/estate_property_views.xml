@@ -4,12 +4,12 @@
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Apartments">
+            <search string="Properties">
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <separator/>
                 <filter string="Available" name="state" domain="[('state', 'in', ['new', 'offer-received'])]"/>                
@@ -26,18 +26,18 @@
         <field name="arch" type="xml">
             <form string="Listing">
                 <header>
-                    <button name="action_property_cancel" string="Cancel" type="object" class="oe_highlight"/>
-                    <button name="action_property_sold" string="Sold" type="object" class="oe_highlight"/>
+                    <button name="action_property_sold" string="Sold" type="object" invisible="state == 'sold'"/>
+                    <button name="action_property_cancel" string="Cancel" type="object" invisible="state == 'sold'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer-received,offer-accepted,sold"/>
                 </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags"/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>
                         <group>
-                            <field name="state" string="Status"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -56,13 +56,13 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area" string="Total Area (sqm)"/>
                             </group>
                         </page>
                         <page string="Offers">
-                                <field name = "offers_ids"/> 
+                                <field name = "offers_ids" readonly="state in ['offer-accepted', 'sold', 'cancelled']"/> 
                         </page>
                         <page string="Other info">
                             <group>
@@ -80,14 +80,14 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Listings">
+            <list string="Listings" decoration-success="state in ('offer-received', 'offer-accepted')" decoration-bf="state == 'offer-accepted'" decoration-muted="state == 'sold'">
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" string="Available From"/>
+                <field name="date_availability" string="Available From" optional="hidden"/>
             </list>
         </field>
     </record>
@@ -96,5 +96,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_state': True}</field>
     </record>
 </odoo>
