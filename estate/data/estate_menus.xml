@@ -7,6 +7,7 @@
         <menuitem id="estate_property_settings_menu" name="Settings">
             <menuitem id="estate_property_type_model_menu_action" action="estate_property_type_model_action"/>
             <menuitem id="estate_property_tag_model_menu_action" action="estate_property_tag_model_action"/>
+            <menuitem id="inherited_users_model_menu_action" action="inherited_users_action"/>
         </menuitem>
     </menuitem>
 </odoo>

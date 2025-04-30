@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -39,3 +40,11 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+            if vals['price'] < self.env['estate.property'].browse(vals['property_id']).best_offer:
+                raise UserError("Can't make a smaller offer than the best one currently recorded!")
+        return super().create(vals_list)

@@ -12,8 +12,6 @@
                 <button name="action_btn_accept" type="object" string="Accept" icon="fa-check" invisible="status=='accepted' or status=='refused'"/>
                 <button name="action_btn_refuse" type="object" string="Refuse" icon="fa-times" invisible="status in ['accepted', 'refused']"/>
                 <field name="status" optional="hide"/>
-                <field name="property_id" optional="show"/>
-                <field name="property_type_id" optional="show"/>
             </list>
         </field>
     </record>
