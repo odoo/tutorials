@@ -8,7 +8,7 @@ class Offer(models.Model):
     _order = "price desc"
     price = fields.Float()
     status = fields.Selection([("accepted", "Accepted"), ("refused", "Refused")])
-    buyer_id = fields.Many2one("buyer")
+    buyer_id = fields.Many2one("res.partner")
     property_id = fields.Many2one("realestate")
     property_type_id = fields.Many2one(related="property_id.type_id")
     state = fields.Selection(related="property_id.state")
@@ -35,8 +35,7 @@ class Offer(models.Model):
                 raise UserError("This property is already sold")
             record.status = "accepted"
             record.property_id.selling_price = record.price
-            record.property_id.owner_id = record.buyer_id
-            record.property_id.buyer_id = record.property_id.owner_id
+            record.property_id.buyer_id = record.buyer_id
             record.property_id.state = "offer_accepted"
 
     def set_offer_refused(self):

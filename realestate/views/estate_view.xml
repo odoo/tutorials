@@ -97,6 +97,7 @@
                                         <field name='price' />
                                         <field name='status' />
                                         <field name='validity' />
+                                        <field name='buyer_id' />
                                         <field name='deadline' />
                                         <button type='object' name="set_offer_accepted"
                                             string="" icon='fa-check'

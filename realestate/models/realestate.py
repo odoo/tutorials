@@ -42,7 +42,7 @@ class Realestate(models.Model):
     type_id = fields.Many2one("types", widget="handle")
     tag_ids = fields.Many2many("tags", string="Tags")
     seller_id = fields.Many2one("seller")
-    buyer_id = fields.Many2one("buyer")
+    buyer_id = fields.Many2one("res.partner")
     offer_ids = fields.One2many("offer", "property_id")
     status = fields.Selection(related="offer_ids.status")
     price = fields.Float(related="offer_ids.price")
@@ -121,4 +121,4 @@ class Realestate(models.Model):
     def _unlink_new_properties(self):
         for record in self:
             if record.state != "new" or record.state != "cancelled":
-                raise UserError("Property Cannot be deleted")
+                raise UserError("Property cannot be deleted!")
