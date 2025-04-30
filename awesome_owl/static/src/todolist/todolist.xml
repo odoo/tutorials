@@ -2,9 +2,12 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todolist">
-        <t t-foreach="todos" t-as="todo" t-key="todo.id">
-            <TodoItem todo="todo"/>
-        </t>
+        <div class="p-3">
+            <input placeholder="Enter a new task" t-on-keyup="event => this.addTodo(event)"/>
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo"/>
+            </t>
+        </div>
     </t>
 
 </templates>

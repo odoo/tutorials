@@ -8,8 +8,18 @@ export class TodoList extends Component {
     static template = "awesome_owl.todolist";
     static components = { TodoItem };
     
-    todos = useState([
-        { id: 2, description: "write tutorial", isCompleted: false }, 
-        { id: 3, description: "buy milk", isCompleted: true }
-    ]);
+    todos = useState([]);
+    state = useState({ counter: 0 });
+
+    addTodo(event) {
+        if (event.keyCode === 13 && event.target.value !== "") {
+            console.log(event);
+            this.todos.push({
+                id: this.state.counter,
+                description: event.target.value,
+                isCompleted: false,
+            });
+            this.state.counter++;
+        }
+    }
 }
