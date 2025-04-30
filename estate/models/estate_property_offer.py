@@ -43,8 +43,12 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        estate_properties = self.env["estate.property"].browse([vals['property_id'] for vals in vals_list if vals['property_id']])
         for vals in vals_list:
-            self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
-            if vals['price'] < self.env['estate.property'].browse(vals['property_id']).best_offer:
+            if not vals["property_id"]:
+                continue
+            estate_property = estate_properties.filtered(lambda ep: ep.id == vals['property_id'])[:1]
+            estate_property.state = 'offer_received'
+            if vals['price'] < estate_property.best_offer:
                 raise UserError("Can't make a smaller offer than the best one currently recorded!")
         return super().create(vals_list)

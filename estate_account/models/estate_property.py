@@ -1,5 +1,4 @@
 from odoo import fields, models, Command
-from odoo.addons.account.models.account_move import AccountMove
 
 
 class EstateProperty(models.Model):

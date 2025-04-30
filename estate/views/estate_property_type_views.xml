@@ -52,7 +52,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list>
-                <field name="manual_ordering" widget="handle"/>
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="line_ids"/>
                 <field name="offer_ids"/>
