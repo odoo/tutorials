@@ -5,6 +5,10 @@ import publicWidget from "@web/legacy/js/public/public_widget";
 publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
     selector: '.categories_section',
 
+    events: {
+        'click .load-more-button': '_onLoadMoreClick',
+    },
+
     init() {
         this._super(...arguments);
         this.orm = this.bindService("orm");
@@ -14,10 +18,6 @@ publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
 
     async willStart() {
         await this.loadCategories();
-    },
-
-    events: {
-        'click .load-more-button': '_onLoadMoreClick',
     },
 
     async loadCategories() {
