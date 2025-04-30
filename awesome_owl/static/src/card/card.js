@@ -1,5 +1,6 @@
-import { Component, useState } from "@odoo/owl";
+import { Component } from "@odoo/owl";
 
 export class Card extends Component {
     static template = "Card";
+    static props = ["title", "content"];
 }
