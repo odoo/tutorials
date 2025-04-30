@@ -17,6 +17,8 @@
         <Card title="'A very beautiful card!'" content="'This card is so rare that it costs: 1,000,000.00€!'"/> <!--Direct creation-->
         <Card title="this.titleCard2" content="this.contentCard2"/> <!--Referenced values-->
         <Card title="this.titleCard3" content="this.contentCard3"/> <!--Referenced values-->
+
+        <TodoList/>
     </t>
 
 </templates>
