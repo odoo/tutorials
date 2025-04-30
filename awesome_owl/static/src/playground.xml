@@ -3,12 +3,20 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world <Counter/> <Counter/>
+            <Counter onChange.bind="this.incrementSum"/> <Counter onChange.bind="this.incrementSum"/>
+            <br/>
+            The sum is: <t t-esc="state.sum"/>
+
+            <br/>
+            Free counter: <Counter/> 
+            <i>
+                (let me freeeeeee!)
+            </i>
         </div>
         
         <Card title="'A very beautiful card!'" content="'This card is so rare that it costs: 1,000,000.00€!'"/> <!--Direct creation-->
-        <Card title="this.title_card_2" content="this.content_card_2"/> <!--Referenced values-->
-        <Card title="this.title_card_3" content="this.content_card_3"/> <!--Referenced values-->
+        <Card title="this.titleCard2" content="this.contentCard2"/> <!--Referenced values-->
+        <Card title="this.titleCard3" content="this.contentCard3"/> <!--Referenced values-->
     </t>
 
 </templates>
