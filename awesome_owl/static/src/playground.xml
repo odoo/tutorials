@@ -2,8 +2,9 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="card d-inline-block m-4" style="width: 320px;">
+            <Card title="'card 1'" content="this.html"/>
+            <Card title="'card 2'" content="'content of card 2'"/>
         </div>
     </t>
 
