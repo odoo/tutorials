@@ -6,6 +6,7 @@
             hello world <Counter onChange.bind="incrementSum"/><Counter onChange.bind="incrementSum"/><Counter onChange.bind="incrementSum"/><br/>
             <Card title="'cool title'" content="html_value_1"/><Card title="'boring title'" content="html_value_2"/>
             <p>The sum is : <t t-esc="sum.value"/></p>
+            <p><TodoList/></p>
         </div>
     </t>
 
