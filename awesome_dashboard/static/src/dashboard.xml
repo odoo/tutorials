@@ -7,7 +7,9 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            some content
+            <Card>Some content</Card>
+            <Card size="2">I love milk</Card>
+            <Card size="1">Some content</Card>
         </Layout>    
     </t>
 
