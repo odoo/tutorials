@@ -103,7 +103,6 @@ class EstateProperty(models.Model):
         for single_property in self:
             if single_property.state == "sold":
                 raise UserError("Sold properties cannot be cancelled!")
-                return False
             single_property.state = "cancelled"
         return True
 
@@ -111,7 +110,6 @@ class EstateProperty(models.Model):
         for single_property in self:
             if single_property.state == "cancelled":
                 raise UserError("Cancelled properties cannot be sold!")
-                return False
             single_property.state = "sold"
         return True
 
@@ -127,6 +125,7 @@ class EstateProperty(models.Model):
                     raise ValidationError(
                         "Selling price cannot be lower than 90%% of Expected price"
                     )
+        return True
 
     @api.ondelete(at_uninstall=False)
     def _unlink_check_property_state(self):
@@ -135,3 +134,4 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "Property cannot be deleted unless it is new or cancelled"
                 )
+        return True
