@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
 
 

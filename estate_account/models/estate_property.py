@@ -1,4 +1,4 @@
-from odoo import models, Command
+from odoo import Command, models
 
 
 class EstateProperty(models.Model):
