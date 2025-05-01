@@ -19,6 +19,7 @@ class EstateProperty(models.Model):
             "A property selling price must be positive",
         ),
     ]
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -132,8 +133,18 @@ class EstateProperty(models.Model):
             else:
                 raise UserError("Sold Property can't be cancelled")
 
-    @api.constrains('expected_price', 'selling_price')
+    @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
-                    raise UserError("The selling price cannot be lower than 90% of the expected price.")
+            if (
+                not float_is_zero(record.selling_price, precision_digits=2)
+                and float_compare(
+                    record.selling_price,
+                    0.9 * record.expected_price,
+                    precision_digits=2,
+                )
+                < 0
+            ):
+                raise UserError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
