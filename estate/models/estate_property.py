@@ -1,0 +1,120 @@
+from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare
+
+
+class EstateProperty(models.Model):
+    _name = 'estate.property'
+    _description = 'Estate property'
+    _order = 'id desc'
+
+    name = fields.Char('Title', required=True)
+    active = fields.Boolean('Active', default=True)
+    description = fields.Text()
+    postcode = fields.Char('Postcode')
+    date_availability = fields.Date(
+        'Available From',
+        copy=False,
+        default=lambda __: fields.Date.today() + relativedelta(months=3),
+    )
+    expected_price = fields.Float('Expected Price', required=True)
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    bedrooms = fields.Integer('Bedrooms', default=2)
+    living_area = fields.Integer('Living Area (sqm)')
+    facades = fields.Integer()
+    has_garage = fields.Boolean()
+    has_garden = fields.Boolean()
+    garden_area = fields.Integer()
+    garden_orientation = fields.Selection(
+        string='Orientation',
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West'),
+        ],
+    )
+    state = fields.Selection(
+        string='State',
+        selection=[
+            ('new', 'New'),
+            ('received', 'Offer Received'),
+            ('accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled'),
+        ],
+        default='new',
+        required=True,
+        copy=False,
+    )
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    salesman_id = fields.Many2one(
+        'res.users',
+        'Salesman',
+        default=lambda self: self.env.user,
+    )
+    buyer_id = fields.Many2one('res.partner', 'Buyer', copy=False)
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
+    total_area = fields.Integer(compute='_compute_total')
+    best_price = fields.Float('Best Offer', compute='_compute_best_price')
+
+    _sql_constraints = [
+        (
+            'check_expected_price',
+            'CHECK(expected_price > 0)',
+            'A property expected price must be strictly positive.',
+        ),
+        (
+            'check_selling_price',
+            'CHECK(selling_price >= 0)',
+            'A property selling price must be positive.',
+        ),
+    ]
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_new_cancelled(self):
+        if any(r_property.state not in ('new', 'cancelled') for r_property in self):
+            raise UserError(_("Can only delete a new or cancelled property"))
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for r_property in self:
+            if (
+                r_property.selling_price
+                and float_compare(r_property.selling_price, r_property.expected_price * 0.9, precision_digits=3) == -1
+            ):
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price"))
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total(self):
+        for r_property in self:
+            r_property.total_area = r_property.living_area + r_property.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for r_property in self:
+            r_property.best_price = max(r_property.offer_ids.mapped('price'), default=0.0)
+
+    @api.onchange('has_garden')
+    def _onchange_garden(self):
+        if self.has_garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
+
+    def action_state_sold(self):
+        if 'cancelled' in self.mapped('state'):
+            raise UserError(_("A cancelled property cannot be set as sold"))
+        self.write({'state': 'sold'})
+        return True
+
+    def action_state_cancelled(self):
+        if 'sold' in self.mapped('state'):
+            raise UserError(_("A sold property cannot be set as cancelled"))
+        self.state = 'cancelled'
+        return True
