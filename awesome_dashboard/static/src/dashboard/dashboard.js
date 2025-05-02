@@ -31,7 +31,7 @@ class AwesomeDashboard extends Component {
             name: "Leads",
             target: "current",
             res_model: "crm.lead",
-            views: [[false, "list"],[false, "form"]],
+            views: [[false, "list"], [false, "form"]],
         });
     }
     
