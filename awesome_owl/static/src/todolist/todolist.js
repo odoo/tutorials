@@ -1,5 +1,6 @@
 import { Component, useState } from "@odoo/owl";
 import { TodoItem } from "./todoitem";
+import { UseAutofocus } from "../utils";
 
 export class TodoList extends Component {
     static template = "TodoList";
@@ -8,10 +9,11 @@ export class TodoList extends Component {
     setup(){
         this.todos = useState([]);
         this.nextId = 1;
+        UseAutofocus("todo_input");
     }
 
     addTodo(ev){
-        if (ev.keyCode == 13 ){
+        if (ev.keyCode == 13 && ev.target.value != ""){
             this.todos.push({
                 id: this.nextId,
                 description: ev.target.value,
@@ -20,5 +22,12 @@ export class TodoList extends Component {
             this.nextId++;
             ev.target.value = "";
         }
+    }
+
+    removeTodo(todoId){
+        var todoIdInArray = this.todos.findIndex((todo) => todo.id == todoId);
+         if (todoIdInArray >= 0) {
+             this.todos.splice(todoIdInArray, 1);
+         }
     }
 }
