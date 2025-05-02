@@ -2,7 +2,15 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todolist">
-        <TodoItem/>
+        <br/>
+        <input t-ref="input_todo" t-on-keyup="ev => this.addTodo(ev)" type="text" placeholder="Enter a new task"/>
+        <t t-foreach="state.todos" t-as="i" t-key="i.id">
+            <div style="border: 1px solid black">
+                <div t-att-class="{'text-muted': i.isCompleted, 'text-decoration-line-through': i.isCompleted}">
+                    <TodoItem todo= "i"/>
+                </div>
+            </div>
+        </t>
     </t>
 
 </templates>
