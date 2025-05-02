@@ -5,5 +5,6 @@ export class TodoItem extends Component {
     static props = {
         todo: Object,
         onToggleState: Function,
+        onRemoveTodo: Function,
     }
 }

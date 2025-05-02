@@ -4,11 +4,9 @@
     <t t-name="awesome_owl.todolist">
         <br/>
         <input t-ref="input_todo" t-on-keyup="ev => this.addTodo(ev)" type="text" placeholder="Enter a new task"/>
-        <t t-foreach="state.todos" t-as="i" t-key="i.id">
+        <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
             <div style="border: 1px solid black">
-                <div t-att-class="{'text-muted': i.isCompleted, 'text-decoration-line-through': i.isCompleted}">
-                    <TodoItem todo= "i" onToggleState.bind="toggleState"/>
-                </div>
+                <TodoItem todo="todo" onToggleState.bind="toggleState" onRemoveTodo.bind="removeTodo"/>
             </div>
         </t>
     </t>
