@@ -1,0 +1,39 @@
+<odoo>
+    <!-- Main Template -->
+    <template id="s_category_template_highlight" name="Helpdesk Ticket">    
+        <section class="categories_section">
+            <div class="container">
+                <div class="alert alert-info">
+                    <h4>Your Helpdesk ticket Highlight Tab snippet will be displayed here...
+                        Please save to view the snippet
+                    </h4>
+                </div>
+            </div>
+        </section>
+    </template>
+    
+    <!-- Snippet Registration -->
+    <template id="snippets" inherit_id="website.snippets">
+        <xpath expr="//snippets[@id='snippet_groups']" position="inside">
+            <t t-snippet="website_helpdesk_snippet.s_category_template_highlight"/>
+        </xpath>
+    </template>
+
+    <template id="s_dynamic_snippet_helpdesk_options" inherit_id="website.snippet_options">
+        <xpath expr="." position="inside">
+            <div data-js="HelpdeskTickets" data-selector=".categories_section">
+                <we-row>
+                    <we-many2one string="Helpdesk Team" data-model="helpdesk.team" data-name="helpdesk_team_opt" data-no-preview="true" data-set-helpdesk-team-id="" />
+                    <we-button data-icon="fa-times" data-set-helpdesk-team-id="all" data-no-preview="true" />
+                </we-row>
+        </div>
+        </xpath>
+    </template> 
+
+    <!-- <template id="website_helpdesk" inherit_id="website.snippets" name="Snippet Helpdesk">
+        <xpath expr="//t[@id='installed_snippets_hook']" position="replace">
+            <t t-snippet="website_helpdesk_snippet.category_template_highlight"/>
+        </xpath>
+    </template>  -->
+
+</odoo>
