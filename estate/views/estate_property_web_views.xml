@@ -76,7 +76,7 @@
                                         <p class="mb-2">
                                             <t t-foreach="property.tag_ids" t-as="tag">
                                                 <span
-                                                        class="badge bg-info-subtle text-info-emphasis me-1 mb-1">
+                                                        class="badge text-bg-secondary text-info-emphasis me-1 mb-1">
                                                     <t t-out="tag.name"/>
                                                 </span>
                                             </t>
@@ -91,7 +91,7 @@
                                                 t-out="property.bedrooms"/> bed</span>
                                         <span t-if="property.living_area"><i
                                                 class="fa fa-arrows-alt me-1"></i> <t
-                                                t-out="property.living_area"/> sq.ft.</span>
+                                                t-out="property.living_area"/> sq.m.</span>
                                     </div>
                                     <div class="mt-auto">
                                         <div
@@ -134,7 +134,7 @@
                     <t t-if="property.tag_ids">
                         <p class="mb-1">
                             <t t-foreach="property.tag_ids" t-as="tag">
-                                <span class="badge bg-info-subtle text-info-emphasis me-1 mb-1">
+                                <span class="badge text-bg-secondary text-info-emphasis me-1 mb-1">
                                     <t t-out="tag.name"/>
                                 </span>
                             </t>
@@ -176,7 +176,7 @@
                             <t t-if="property.tag_ids">
                                 <p class="mb-3">
                                     <t t-foreach="property.tag_ids" t-as="tag">
-                                        <span class="badge bg-info-subtle text-info-emphasis me-1">
+                                        <span class="badge text-bg-secondary text-info-emphasis me-1">
                                             <t t-out="tag.name"/>
                                         </span>
                                     </t>
@@ -197,8 +197,8 @@
                             <t
                                     t-foreach="[('fa-building', 'Property Type', property.property_type_id.name),
                                            ('fa-bed', 'Bedrooms', property.bedrooms),
-                                           ('fa-arrows-alt', 'Total Area', '%s sq.ft.' % property.total_area),
-                                           ('fa-home', 'Living Area', '%s sq.ft.' % property.living_area)]"
+                                           ('fa-arrows-alt', 'Total Area', '%s sq.m.' % property.total_area),
+                                           ('fa-home', 'Living Area', '%s sq.m.' % property.living_area)]"
                                     t-as="info">
                                 <t t-if="info[2]">
                                     <div class="col-6">
@@ -222,7 +222,7 @@
                         </div>
                         <t t-set="details"
                            t-value="[('Facades', property.facades), ('Garage', 'Yes' if property.garage else 'No'),
-                            ('Garden', 'Yes' if property.garden else 'No'), ('Garden Area', '%s sq.ft.' % property.garden_area if property.garden_area else None),
+                            ('Garden', 'Yes' if property.garden else 'No'), ('Garden Area', '%s sq.m.' % property.garden_area if property.garden_area else None),
                             ('Salesperson', property.salesperson_id.name), ('Company', property.company_id.name)]"/>
                         <div class="card border-0 shadow-sm mb-4"
                              t-if="any(val for _, val in details)">
