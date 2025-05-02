@@ -36,7 +36,9 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
-    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -77,3 +79,18 @@ class EstatePropertyOffer(models.Model):
                     raise UserError("The offer is already refused!!!")
                 else:
                     record.status = "refused"
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env["estate.property"].browse(vals["property_id"])
+            if property_id.state == "sold":
+                raise UserError("You cannot make an offer on a sold property")
+            if property_id.state == "new":
+                property_id.state = "offer_received"
+            if property_id.offer_ids:
+                if vals["price"] <= property_id.offer_ids[0].price:
+                    raise UserError(
+                        "The offer price must be higher than the existing price"
+                    )
+        return super().create(vals_list)

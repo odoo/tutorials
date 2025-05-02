@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 
+
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type"
@@ -13,7 +14,7 @@ class EstatePropertyType(models.Model):
     _order = "sequence,name"
 
     name = fields.Char("Name", required=True)
-    sequence = fields.Integer(string='Sequence', default=1, help="Used to order types")
+    sequence = fields.Integer(string="Sequence", default=1, help="Used to order types")
     property_ids = fields.One2many(
         comodel_name="estate.property",
         inverse_name="property_type_id",
