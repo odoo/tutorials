@@ -5,6 +5,10 @@
         hello dashboard
         <Layout className="'o_dashboard h-100'" display="myDisplay">
             some content
+            <div>
+                <button t-on-click="openCustomersView">Customers</button>
+                <button t-on-click="openLeads">Leads</button>
+            </div>
         </Layout>
 
     </t>
