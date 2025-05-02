@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
-import { useState, Component } from "@odoo/owl";
+import { useRef, useState, onMounted, Component } from "@odoo/owl";
 
+import { useAutofocus } from "./../utils";
 import { TodoItem } from "./todoitem";
 
 export class TodoList extends Component {
@@ -11,12 +12,18 @@ export class TodoList extends Component {
     todos = useState([]);
     state = useState({ counter: 0 });
 
+    setup() {
+        this.inputRef = useRef("task_name");
+        onMounted(() => {
+            useAutofocus(this.inputRef);
+        });
+    }
+
     addTodo(event) {
-        if (event.keyCode === 13 && event.target.value !== "") {
-            console.log(event);
+        if (event.keyCode === 13 && this.inputRef.el.value !== "") {
             this.todos.push({
                 id: this.state.counter,
-                description: event.target.value,
+                description: this.inputRef.el.value,
                 isCompleted: false,
             });
             this.state.counter++;

@@ -3,7 +3,7 @@
 
     <t t-name="awesome_owl.todolist">
         <div class="p-3">
-            <input placeholder="Enter a new task" t-on-keyup="event => this.addTodo(event)"/>
+            <input placeholder="Enter a new task" t-ref="task_name" t-on-keyup="event => this.addTodo(event)"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
                 <TodoItem todo="todo"/>
             </t>
