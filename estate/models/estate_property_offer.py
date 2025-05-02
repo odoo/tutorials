@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from datetime import timedelta
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -80,17 +81,19 @@ class EstatePropertyOffer(models.Model):
                 else:
                     record.status = "refused"
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property_id = self.env["estate.property"].browse(vals["property_id"])
-            if property_id.state == "sold":
-                raise UserError("You cannot make an offer on a sold property")
-            if property_id.state == "new":
-                property_id.state = "offer_received"
-            if property_id.offer_ids:
-                if vals["price"] <= property_id.offer_ids[0].price:
+            if vals.get("property_id") and vals.get("price"):
+                property = self.env["estate.property"].browse(vals["property_id"])
+                best_price = property.best_price or 0.0
+                if (
+                    float_compare(vals["price"], best_price, precision_rounding=0.01)
+                    <= 0
+                ):
                     raise UserError(
-                        "The offer price must be higher than the existing price"
+                        "The offer price must be higher than %.2f" % best_price
                     )
+                property.state = "offer_received"
+
         return super().create(vals_list)

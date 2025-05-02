@@ -6,7 +6,7 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//page[@name='account_security'" position="after">
+            <xpath expr="//notebook" position="inside">
                 <page name="estate_property" string="Properties">
                     <field name="property_ids"/>
                 </page>

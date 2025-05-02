@@ -8,5 +8,5 @@ class ResUsersInherited(models.Model):
         comodel_name="estate.property",
         inverse_name="salesperson_id",
         string="Properties",
-        domain=[('state', 'in', '["new", "offer_received"])]  # Adjust the domain as needed')],
+        domain="[('state', 'in', ['new', 'offer_received'])]",
     )
