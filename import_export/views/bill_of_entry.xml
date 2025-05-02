@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="bill_of_entry_view_form" model="ir.ui.view">
+        <field name="name">bill.of.entry.view.form</field>
+        <field name="model">bill.of.entry</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="currency_id" invisible="1" />
+                <sheet>
+                    <header invisible="not is_confirmed_boe">
+                        <button type="object" name="refund_moves" string="Reverse Entry"/>
+                        <button type="object" string="Reset to Draft" name="button_draft"/>
+                    </header>
+                    <group>
+                        <div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="journal_entry_number" string="Journal Entry No."/>
+                                    <field name="journal_entry_number" readonly="1"/>
+                                </div>
+                                <div class="col">
+                                    <label for="account_move_id" string="Reference"/>
+                                    <field name="account_move_id" readonly="1"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="journal_entry_date" string="Journal Entry Date"/>
+                                    <field name="journal_entry_date"/>
+
+                                </div>
+                                <div class="col">
+                                    <label for="bill_of_entry_number" string="Bill of Entry No."/>
+                                    <field name="bill_of_entry_number" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="journal_id" string="Journal"/>
+                                    <field name="journal_id" readonly="1"/>
+                                </div>
+                                <div class="col">
+                                    <label for="bill_of_entry_date" string="Bill of Entry Date"/>
+                                    <field name="bill_of_entry_date" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <label for="custom_currency_rate" string="Custom Currency Rate"/>
+                                    <field name="custom_currency_rate" widget="monetary" readonly="is_confirmed_boe"/>
+                                </div>
+                                <div class="col">
+                                    <label for="port_code_id" string="Port Code"/>
+                                    <field name="port_code_id" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <label for="country_id" string="Country"/>
+                                <field name="country_id" readonly="is_confirmed_boe"/>
+                                <!-- </div> -->
+                            </div>
+                        </div>
+                    </group>
+
+                    <notebook>
+                        <page name="Bill of Entry Details" readonly="is_confirmed_boe">
+                            <field name="bill_of_entry_line_ids">
+                                <list create="0" editable="bottom">
+                                    <field name="currency_id" column_invisible="1" />
+                                    <field name="product_id" readonly="1"/>
+                                    <field name="assessable_value" widget="monetary"/>
+                                    <field name="custom_duty_additional_charge" widget="monetary" readonly="is_confirmed_boe"/>
+                                    <field name="taxable_amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                    <field name="tax_id" readonly="is_confirmed_boe"/>
+                                    <field name="tax_amount"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page name="Journal Items" invisible="not is_confirmed_boe">
+                            <field name="custom_journal_entry_line_ids">
+                                <list>
+                                    <field name="currency_id" column_invisible="1"/>
+                                    <field name="name"/>
+                                    <field name="debit"/>
+                                    <field name="credit"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                    <table style="float: right; margin-top: 10px;">
+                        <tr>
+                            <td>
+                                <span>Total Custom duty + Additional Charge:</span>
+                            </td>
+                            <td>
+                                <field name="tot_custom_duty_additional_charge" widget="monetary" readonly="1"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Total Tax Amount:</span>
+                            </td>
+                            <td>
+                                <field name="total_tax_amount" widget="monetary" readonly="1"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span>Total Amount Payable:</span>
+                            </td>
+                            <td>
+                                <field name="total_amount_payable" widget="monetary" readonly="1"/>
+                            </td>
+                        </tr>
+                    </table>
+                </sheet>
+                <footer>
+                    <button type="object" name="action_confirm_boe" string="Confirm" class="btn btn-primary"/>
+                    <button string="Discard" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

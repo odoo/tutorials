@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="properties_page" name="Properties">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h1 class="text-center">Listed Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4">
+                            <div class="card mb-4 shadow-sm">
+                                <t t-if="property.image">
+                                    <img
+                                        t-att-src="'/web/image?model=estate.property&amp;id=%s&amp;field=image' % property.id"
+                                        class="card-img-top property-img"
+                                        alt="Property Image"/>
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-esc="property.name"/>
+                                    </h5>
+                                    <p class="card-text">
+                                        <strong>Expected Price:</strong> 
+                                        <t
+                                            t-esc="property.expected_price"/> USD<br/>
+                                        <strong>
+                                        Property Type:</strong> 
+                                        <t
+                                            t-esc="property.property_type_id.name"/><br/>
+                                    </p>
+                                    <a t-att-href="'/property/%s' % property.id"
+                                        class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <t t-if="pager">
+                    <div class="d-flex justify-content-center m-4">
+                        <t t-call="website.pager">
+                        </t>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

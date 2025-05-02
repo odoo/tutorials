@@ -1,0 +1,17 @@
+.o_dashboard_content {
+    background-color: #898080;
+    margin: 20px;
+    border-radius: 1px;
+}
+
+.o_dashboard_item {
+    flex: 1 1 auto;
+    width: 15rem; 
+    min-width: 200px;
+}
+
+@media (max-width: 768px) {
+    .o_dashboard_item {
+        width: 100% !important; 
+    }
+}

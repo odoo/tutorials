@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="estate_offer_report">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-set="company" t-value="property.salesperson.company_id"/>
+                    <header class="text-center">
+                        <div class="">
+                            <!-- Company Info -->
+                            <t t-if="company.logo">
+                                <img
+                                    t-att-src="'/web/image?model=res.company&amp;id=%s&amp;field=logo' % company.id"
+                                    style="max-height: 50px;" alt="Company Logo"/>
+                            </t>
+                            <div>
+                                <strong>
+                                    <t t-esc="company.name"/>
+                                </strong>
+                            </div>
+                            <div>
+                                <strong>
+                                    <t t-esc="company.email"/>
+                                </strong>
+                            </div>
+                            <div>
+                                <strong>
+                                    <t t-esc="company.phone"/>
+                                </strong>
+                            </div>
+
+                        </div>
+                        <hr class="mb-3"/>
+                    </header>
+                    <div class="page">
+
+                        <!-- Property Details Section -->
+                        <h1 class="text-center text-primary">
+                            <span t-field="property.name"/>
+                        </h1>
+                        <hr class="mb-3"/>
+
+                        <div class="p-3 border rounded bg-light">
+                            <h4 class="text-dark">Property Details</h4>
+                            <p><strong>Expected Price:</strong> <span
+                                    t-field="property.expected_price"/> USD</p>
+                            <p>
+                                <strong>Property Type:</strong>
+                                <span t-field="property.property_type_id.name"/>
+                            </p>
+                            <p>
+                                <strong>Description:</strong>
+                                <t t-esc="property.description or 'N/A'"/>
+                            </p>
+                            <p>
+                                <strong>Agent:</strong>
+                                <span t-field="property.salesperson.name"/>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div>
+                        <t t-call="real_estate.estate_offer_table"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

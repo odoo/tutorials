@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="property_details_page" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <t t-if="property.image">
+                            <img
+                                t-att-src="'/web/image?model=estate.property&amp;id=%s&amp;field=image' % property.id"
+                                class="img-fluid rounded shadow-sm mb-4"
+                                alt="Property Image"/>
+                        </t>
+                        <div class="card p-3 shadow">
+                            <h4>Contact Agent</h4>
+                            <p>
+                                <strong>Agent:</strong>
+                                <t t-esc="property.salesperson.name or 'N/A'"/>
+                            </p>
+                            <p>
+                                <strong>Email:</strong>
+                                <t t-esc="property.salesperson.email or 'Not available'"/>
+                            </p>
+                            <p>
+                                <strong>Phone:</strong>
+                                <t t-esc="property.salesperson.phone or 'Not available'"/>
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <h1>
+                            <t t-esc="property.name"/>
+                        </h1>
+                        <p>
+                            <strong>Tags:</strong>
+                            <t t-foreach="property.tags_ids" t-as="tag">
+                                <span class="badge bg-primary m-1">
+                                    <t t-esc="tag.name"/>
+                                </span>
+                            </t>
+                        </p>
+                        <p>
+                            <strong>Property Type:</strong>
+                            <t t-esc="property.property_type_id.name"/>
+                        </p>
+                        <p><strong>Exp. Price:</strong> <t t-esc="property.expected_price"/> USD</p>
+                        <p>
+                            <strong>Bedrooms:</strong>
+                            <t t-esc="property.bedrooms"/>
+                        </p>
+
+                        <p><strong>Living Area:</strong> <t t-esc="property.living_area"/> sqft</p>
+                        <p><strong>Garden Area:</strong> <t t-esc="property.garden_area or '0'"/>
+                            sqft</p>
+                        <p><strong>Total Area:</strong> <t t-esc="property.total_area"/> sqft</p>
+                        <t t-if="not garden">
+                            <p>
+                                <strong>Garden Orientation:</strong>
+                                <t t-esc="property.garden_orientation or 'None'"/>
+                            </p>
+                        </t>
+                        <p>
+                            <strong>Garage:</strong>
+                            <t t-esc="property.garage or 'False'"/>
+                        </p>
+                        <p>
+                            <strong>Facades:</strong>
+                            <t t-esc="property.facades or 'False'"/>
+                        </p>
+
+
+                        <p>
+                            <strong>State:</strong>
+                            <t t-esc="property.state"/>
+                        </p>
+                        <p>
+                            <strong>Description:</strong>
+                        </p>
+                        <p>
+                            <t t-esc="property.description"/>
+                        </p>
+
+                    </div>
+                </div>
+                <a href="/properties/available" class="btn btn-primary m-3 p-3">View Other
+                    Properties</a>
+            </div>
+        </t>
+    </template>
+</odoo>
