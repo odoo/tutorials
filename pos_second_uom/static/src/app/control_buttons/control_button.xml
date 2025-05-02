@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+  <t t-name="pos_second_uom.ControlButtons"
+     t-inherit="point_of_sale.ControlButtons"
+     t-inherit-mode="extension">
+    <xpath expr="//SelectPartnerButton" position="before">
+      <button
+        t-if="shouldShowAddQtyButton"
+        t-attf-class="{{ buttonClass }}"
+        t-on-click="onAddQuantity"
+        title="Add quantity using Secondary UoM"
+      >
+        <i class="fa fa-plus"/> Add Quantity
+      </button>
+    </xpath>
+  </t>
+</templates>
