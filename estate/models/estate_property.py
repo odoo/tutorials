@@ -1,0 +1,119 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from dateutil.relativedelta import relativedelta
+
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
+
+
+class EstateProperty(models.Model):
+    _name = 'estate.property'
+    _description = "Real Estate Property"
+    _inherit = ['mail.thread']
+    _order = 'id desc'
+    _sql_constraints = [
+        ('check_expected_price', "CHECK(expected_price > 0)", "The expected price must be strictly positive."),
+        ('check_selling_price', "CHECK(selling_price >= 0)", "The selling price must be positive."),
+    ]
+
+    name = fields.Char(string="Title", required=True)
+    description = fields.Text(string="Description")
+    postcode = fields.Char(string="Postcode")
+    date_availability = fields.Date(string="Available From", default=lambda self: fields.Date.context_today(self) + relativedelta(months=3), copy=False)
+    expected_price = fields.Float(string="Expected Price", required=True)
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False)
+    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    living_area = fields.Integer(string="Living Area (sqm)")
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area (sqm)")
+    garden_orientation = fields.Selection(selection=[
+        ('north', "North"),
+        ('south', "South"),
+        ('east', "East"),
+        ('west', "West")
+    ], string="Garden Orientation")
+    property_image = fields.Image(string="Property Image")
+
+    active = fields.Boolean(string="Active", default=True)
+    state = fields.Selection(
+        selection=[
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled")
+        ],
+        string="Status", help="New: A new property with no offers yet\n \
+            Offer Received: Offers from others are received\n \
+            Offer Accepted: An offer has been accepted\n \
+            Sold: property is sold\n \
+            Cancelled: property cancelled",
+        required=True, default='new', copy=False, tracking=True)
+
+    property_type_id = fields.Many2one(comodel_name='estate.property.type', string="Property Type")
+    tag_ids = fields.Many2many(comodel_name='estate.property.tag', string="Tags")
+    company_id = fields.Many2one(comodel_name='res.company', string="Company", required=True, default=lambda self: self.env.company)
+    salesperson_id = fields.Many2one(comodel_name='res.users', string="Salesperson", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one(comodel_name='res.partner', string="Buyer", copy=False)
+    offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id', string="Offers")
+
+    total_area = fields.Integer(string="Total Area (sqm)", compute='_compute_total_area')
+    best_price = fields.Float(string="Best Offer", help="Best offer received", compute='_compute_best_price')
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for property in self:
+            property.best_price = max(property.offer_ids.mapped('price')) if property.offer_ids else 0.0
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for property in self:
+            if (property.selling_price != 0 and
+                float_compare(property.selling_price, property.expected_price * 0.9, precision_rounding=0.01) < 0):
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        if self.filtered(lambda property: property.state not in ('new', 'cancelled')):
+            raise UserError(_("Only properties in new or cancelled state can be deleted."))
+
+    def action_sold(self):
+        if 'cancelled' in self.mapped('state'):
+            raise UserError(_("A cancelled property cannot be sold."))
+        if self.filtered(lambda property: property.state != 'offer_accepted'):
+            raise UserError(_("Cannot sell a property without an accepted offer."))
+        return self.write({'state': 'sold'})
+
+    def action_cancel(self):
+        if 'sold' in self.mapped('state'):
+            raise UserError(_("Sold properties cannot be cancelled."))
+        return self.write({'state': 'cancelled'})
+
+    def action_open_add_offer(self):
+        return {
+            'name': _("Add offer"),
+            'type': 'ir.actions.act_window',
+            'res_model': 'estate.property.add.offer',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_property_ids': self.ids,
+            }
+        }
