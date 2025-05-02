@@ -1,6 +1,17 @@
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 
 export class Card extends Component {
     static template = "Card";
-    static props = ["title", "content"];
+    static props = {
+        title: String,
+        slots: Object
+    };
+
+    setup(){
+        this.state = useState( {open: true});
+    }
+
+    changeOpenState(){
+        this.state.open = !this.state.open;
+    }
 }

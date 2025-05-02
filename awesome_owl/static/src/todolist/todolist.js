@@ -5,6 +5,7 @@ import { UseAutofocus } from "../utils";
 export class TodoList extends Component {
     static template = "TodoList";
     static components = { TodoItem };
+    static props = [];
 
     setup(){
         this.todos = useState([]);

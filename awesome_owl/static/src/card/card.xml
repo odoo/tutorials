@@ -4,8 +4,11 @@
     <t t-name="Card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title" t-esc="props.title"></h5>
-                <p class="card-text" t-out="props.content"></p>
+                <h5>
+                    <t class="card-title" t-esc="props.title"/>
+                    <span class="fa fa-bars" t-on-click="changeOpenState"/>
+                </h5>
+                <p><t t-if="state.open" t-slot="default"/></p>
             </div>
         </div>
     </t>
