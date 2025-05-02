@@ -67,7 +67,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = ''
             return {'warning': {
                 'title': _("Warning"),
-                'message': ('Unchecking the garden option removed the area value and orientation.')}}
+                'message': _('Unchecking the garden option removed the area value and orientation.')}}
 
     def action_btn_sold(self):
         for record in self:
