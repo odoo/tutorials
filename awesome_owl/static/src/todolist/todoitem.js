@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { Component } from "@odoo/owl";
 
 export class TodoItem extends Component {
@@ -11,4 +9,8 @@ export class TodoItem extends Component {
             isCompleted: Boolean,
         }
     };
+
+    toggleState(){
+        this.props.todo.isCompleted = !this.props.todo.isCompleted;
+    }
 }
