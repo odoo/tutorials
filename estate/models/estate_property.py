@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from odoo.tools import date_utils, float_utils
 from odoo.exceptions import UserError, ValidationError
 
@@ -66,7 +66,7 @@ class EstateProperty(models.Model):
         "res.users", name="Salesperson", default=lambda self: self.env.user
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offers_ids = fields.One2many(
+    offer_ids = fields.One2many(
         "estate.property.offer", "property_id", string="Offers"
     )
     best_price = fields.Float(
@@ -80,15 +80,10 @@ class EstateProperty(models.Model):
                 single_property.living_area + single_property.garden_area
             )
 
-    @api.depends("offers_ids.price")
+    @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for single_property in self:
-            if single_property.offers_ids:
-                single_property.best_price = max(
-                    single_property.offers_ids.mapped("price")
-                )
-            else:
-                single_property.best_price = 0
+            single_property.best_price = max(single_property.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -102,36 +97,28 @@ class EstateProperty(models.Model):
     def action_property_cancel(self):
         for single_property in self:
             if single_property.state == "sold":
-                raise UserError("Sold properties cannot be cancelled!")
+                raise UserError(_("Sold properties cannot be cancelled!"))
             single_property.state = "cancelled"
         return True
 
     def action_property_sold(self):
         for single_property in self:
             if single_property.state == "cancelled":
-                raise UserError("Cancelled properties cannot be sold!")
+                raise UserError(_("Cancelled properties cannot be sold!"))
             single_property.state = "sold"
         return True
 
     @api.constrains("selling_price", "expected_price")
     def check_selling_price_in_range(self):
         for single_property in self:
-            if not float_utils.float_is_zero(
-                single_property.selling_price, precision_rounding=0.1
-            ):
-                if single_property.selling_price < (
-                    0.9 * single_property.expected_price
-                ):
-                    raise ValidationError(
-                        "Selling price cannot be lower than 90%% of Expected price"
-                    )
+            if not float_utils.float_is_zero(single_property.selling_price, precision_rounding=0.1):
+                if single_property.selling_price < (0.9 * single_property.expected_price):
+                    raise ValidationError(_("Selling price cannot be lower than 90%% of Expected price"))
         return True
 
     @api.ondelete(at_uninstall=False)
     def _unlink_check_property_state(self):
         for single_property in self:
             if single_property.state not in ["new", "cancelled"]:
-                raise UserError(
-                    "Property cannot be deleted unless it is new or cancelled"
-                )
+                raise UserError(_("Property cannot be deleted unless it is new or cancelled"))
         return True

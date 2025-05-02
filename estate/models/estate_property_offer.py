@@ -1,6 +1,6 @@
 from datetime import date
 
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from odoo.tools import date_utils
 from odoo.exceptions import UserError
 
@@ -58,32 +58,24 @@ class EstatePropertyOffer(models.Model):
     def action_offer_accept(self):
         for offer in self:
             offer.status = "accepted"
-            offer._action_check_offers()
-        return True
-
-    @api.depends("status")
-    def _action_check_offers(self):
-        if self.status == "accepted":
             if self.property_id.state in ("offer-accepted", "sold"):
                 self.status = False
-                raise UserError("An offer has already been accepted!")
+                raise UserError(_("An offer has already been accepted!"))
             else:
-                self.property_id.state = "offer-accepted"
-                self.property_id.selling_price = self.price
-                self.property_id.buyer_id = self.partner_id
+                self.property_id.write({"state": "offer-accepted", "selling_price": self.price, "buyer_id": self.partner_id})
         return True
 
     @api.depends("status")
     def action_offer_refuse(self):
-        for offer in self:
-            offer.status = "refused"
+        self.status = "refused"
         return True
 
     @api.model_create_multi
-    def create(self, vals):
-        for val in vals:
-            single_property = self.env["estate.property"].browse(val["property_id"])
-            if val["price"] < single_property.best_price:
-                raise UserError("An offer cannot be lower than an existing offer")
+    def create(self, vals_list):
+        for vals in vals_list:
+            single_property = self.env["estate.property"].browse(vals["property_id"])
+            price = vals.get("price")
+            if price is not None and price < single_property.best_price:
+                raise UserError(_("An offer cannot be lower than an existing offer"))
             single_property.state = "offer-received"
-        return super().create(vals)
+        return super().create(vals_list)
