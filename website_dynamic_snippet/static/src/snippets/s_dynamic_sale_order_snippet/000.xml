@@ -4,9 +4,7 @@
         <div class="container my-5 categories_section">
             <h3 class="section_heading">Sale Order Details</h3>
             <div class="card_list_wrapper">
-                <t t-if="layout == 'list'">
-                    <!-- LIST/TABLE VIEW -->
-                    <table class="table">
+                    <table class="table list_sale_order d-none">
                         <thead>
                             <tr>
                                 <th scope="col">Number</th>
@@ -24,10 +22,7 @@
                             </t>
                         </tbody>
                     </table>
-                </t>
-                <t t-else="">
-                    <!-- GRID/CARD VIEW -->
-                    <div class="row">
+                    <div class="row card_sale_order">
                         <t t-foreach="result" t-as="sale_order" t-key="sale_order.id">
                             <div class="col-md-4 mb-4">
                                 <div class="card h-100">
@@ -40,7 +35,6 @@
                             </div>
                         </t>
                     </div>
-                </t>
 
                 <div class="text-center mt-3">
                     <button type="button" class="btn btn-primary load-more-button">
@@ -49,5 +43,5 @@
                 </div>
             </div>
         </div>
-    </t>
-</templates>
+        </t>
+    </templates>

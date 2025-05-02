@@ -4,6 +4,7 @@ import publicWidget from "@web/legacy/js/public/public_widget";
 
 publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
     selector: '.categories_section',
+    DisableinEditableMode: false,
 
     events: {
         'click .load-more-button': '_onLoadMoreClick',
@@ -17,6 +18,15 @@ publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
     },
 
     async willStart() {
+        if(this.$target[0].querySelector(".card_sale_order") && this.$target[0].querySelector(".card_sale_order")) {
+            if(this.$target[0].querySelector(".card_sale_order").classList.contains('d-none')){
+                this.layout = "list";
+            } else {
+                this.layout = "grid";
+            }
+        } else {
+            this.layout = "grid"
+        }
         await this.loadCategories();
     },
 
@@ -38,16 +48,22 @@ publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
                 { result: result }
             );
 
+            const newTableRows = content.querySelectorAll('.list_sale_order > tbody > tr');
+            const existingTableBody = this.el.querySelector('.list_sale_order > tbody');
+
+            const newCardCols = content.querySelectorAll('.card_sale_order > .col-md-4');
+            const existingCardWrapper = this.el.querySelector('.card_sale_order');
+
             if (this.offset === 0) {
                 this.el.innerHTML = '';
                 this.el.appendChild(content);
             } else {
-                const newRows = content.querySelectorAll('tbody > tr');
-                const existingTbody = this.el.querySelector('tbody');
-                if (existingTbody) {
-                    newRows.forEach(row => {
-                        existingTbody.appendChild(row);
-                    });
+                if (existingTableBody && newTableRows.length) {
+                    newTableRows.forEach(row => existingTableBody.appendChild(row));
+                }
+
+                if (existingCardWrapper && newCardCols.length) {
+                    newCardCols.forEach(card => existingCardWrapper.appendChild(card));
                 }
             }
 
@@ -58,7 +74,12 @@ publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
                 loadMoreButton.style.display = 'none';
             }
         }
+        if(this.layout === "list"){
+            this.el.querySelector('.list_sale_order').classList.remove('d-none');
+            this.el.querySelector('.card_sale_order').classList.add('d-none');
+        }
     },
+
 
     async _onLoadMoreClick(ev) {
         ev.preventDefault();

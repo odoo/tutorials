@@ -1,36 +1,40 @@
-/** @odoo-module **/
+import options from "@web_editor/js/editor/snippets.options";
 
-import publicWidget from "@web_editor/js/public/widget";
-
-publicWidget.registry.dynamic_snippet_sale_order = publicWidget.Widget.extend({
-    selector: ".categories_section",
-
-    xmlDependencies: ["/website_dynamic_snippet/static/src/xml/sale_order_snippet.xml"],
-
-    start: function () {
-        this.layout = this.el.dataset.layout || 'list';
-        this._render();
-        return this._super(...arguments);
+options.registry.DynamicSnippetOptions = options.Class.extend({
+    confirmOrderOnly(previewMode, widgetValue, params) {
+        const confirmOrderOnly = widgetValue;
+        this.$target[0].attr("data-confirm-order-only", widgetValue);
     },
 
-    _render: function () {
-        this._rpc({
-            route: '/your/data/route',
-            params: { /* your logic */ },
-        }).then(data => {
-            this.$el.find(".card_list_wrapper").html(
-                qweb.render("website_dynamic_snippet.sale_order_snippet", {
-                    result: data.orders,
-                    layout: this.layout,
-                })
-            );
-        });
-    },
-
-    onChangeOption(previewMode, widgetValue, params) {
-        if (['grid', 'list'].includes(widgetValue)) {
-            this.layout = widgetValue;
-            this._render();
+    setLayout(previewMode, widgetValue, params) {
+        const snippetList = this.$target[0].querySelector(".list_sale_order");
+        const snippetCard = this.$target[0].querySelector(".card_sale_order");
+        if (widgetValue && widgetValue === "list") {
+            snippetList.classList.remove("d-none");
+            snippetCard.classList.add("d-none");
+        } else if (widgetValue && widgetValue === "grid") {
+            snippetList.classList.add("d-none");
+            snippetCard.classList.remove("d-none");
+        } else {
+            snippetList.classList.remove("d-none");
+            snippetCard.classList.add("d-none");
         }
+    },
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    /**
+     * @override
+     */
+    _computeWidgetState(methodName, widgetName, params, widgetValue) {
+        if (methodName === "confirmOrderOnly") {
+            return this.$target[0].dataset.isConfirmOrder === 'true' || this.$target[0].dataset.isConfirmOrder === true;
+        }
+        if (methodName === "setLayout") {
+            return this.$target[0].querySelector(".list_sale_order").classList.contains('d-none') ? "grid" : "list";
+        }
+        return this._super(...arguments);
     },
 });
