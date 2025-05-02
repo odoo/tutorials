@@ -4,7 +4,7 @@ import publicWidget from "@web/legacy/js/public/public_widget";
 
 publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
     selector: '.categories_section',
-
+    disabledInEditableMode: false,
     events: {
         'click .load-more-button': '_onLoadMoreClick',
     },
@@ -21,9 +21,16 @@ publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
     },
 
     async loadCategories() {
+        if(this.$target[0].dataset.setLayout === 'list'){
+            this.layout = 'list';
+        } else {
+            this.layout = 'grid';
+            this.limit = 9;
+        }
+        const domain = this.$target[0].dataset.confirmOrderOnly === 'true' ? [['state', '=', 'sale']] : [];
         const result = await this.orm.searchRead(
             'sale.order',
-            [],
+            domain,
             ['id', 'name', 'partner_id', 'amount_total', 'state'],
             {
                 offset: this.offset,
@@ -31,23 +38,28 @@ publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
                 order: 'id ASC',
             }
         );
-
         if (result && result.length) {
             const content = await renderToElement(
                 'website_dynamic_snippet.sale_order_snippet',
-                { result: result }
+                { result: result, layout: this.layout },
             );
+
+            const newTableRows = content.querySelectorAll('.list_sale_order > tbody > tr');
+            const existingTableBody = this.el.querySelector('.list_sale_order > tbody');
+
+            const newCardCols = content.querySelectorAll('.card_sale_order > .col-md-4');
+            const existingCardWrapper = this.el.querySelector('.card_sale_order');
 
             if (this.offset === 0) {
                 this.el.innerHTML = '';
                 this.el.appendChild(content);
             } else {
-                const newRows = content.querySelectorAll('tbody > tr');
-                const existingTbody = this.el.querySelector('tbody');
-                if (existingTbody) {
-                    newRows.forEach(row => {
-                        existingTbody.appendChild(row);
-                    });
+                if (existingTableBody && newTableRows.length) {
+                    newTableRows.forEach(row => existingTableBody.appendChild(row));
+                }
+
+                if (existingCardWrapper && newCardCols.length) {
+                    newCardCols.forEach(card => existingCardWrapper.appendChild(card));
                 }
             }
 
@@ -59,6 +71,7 @@ publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
             }
         }
     },
+
 
     async _onLoadMoreClick(ev) {
         ev.preventDefault();

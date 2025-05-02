@@ -22,21 +22,14 @@
 
     <template id="s_dynamic_snippet_controller_layout" inherit_id="website.snippet_options">
         <xpath expr="." position="inside">
-            <t t-call="website.s_dynamic_snippet_options_template">
-                <t t-set="snippet_name" t-value="'dynamic_snippet_sale_order'"/>
-                <t t-set="snippet_selector" t-value="'.categories_section'"/>
-            </t>
-        </xpath>
-    </template>
-
-    <template id="s_dynamic_snippet_sale_order_template_options" inherit_id="website.s_dynamic_snippet_options_template">
-        <xpath expr="//we-select[@data-name='filter_opt']" position="after">
-            <t t-if="snippet_name == 'dynamic_snippet_sale_order'">
-                <we-select data-name="default_listing_layout" string="View" data-no-preview="true" data-reload="/">
+            <div data-js="DynamicSnippetOptions" data-selector=".categories_section">
+                <we-select data-name="snippet_data_view" string="View" data-no-preview="true" data-reload="/">
                     <we-button data-set-layout="grid" data-name="grid_view_opt">Grid</we-button>
                     <we-button data-set-layout="list" data-name="list_view_opt">List</we-button>
                 </we-select>
-            </t>
+                <we-checkbox data-confirm-order-only="true" class="btn btn-primary" data-no-preview="true">Show Confirm Orders</we-checkbox>
+            </div>
         </xpath>
     </template>
+
 </odoo>
