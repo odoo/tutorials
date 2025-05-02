@@ -3,7 +3,7 @@
 
     <t t-name="awesome_owl.counter">
         Counter: <t t-esc="state.value"/>
-        <button class="btn btn-primary bg-$purple-400 text-white ms-2" t-on-click="increment">Increment</button>
+        <button class="btn btn-primary bg-danger text-white ms-2" t-on-click="increment">Increment</button>
     </t>
 
 </templates>

@@ -6,10 +6,25 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-esc="props.title"/>
+                    
+                    <t t-if="!state.isShown">
+                        <button class="btn bg-success text-white ms-2" t-on-click="this.onClick">
+                            Show content
+                        </button>
+                    </t>
+
+                    <t t-if="state.isShown">
+                        <button class="btn bg-success text-white ms-2" t-on-click="this.onClick">
+                            Hide content
+                        </button>
+                    </t>
                 </h5>
-                <p class="card-slot">
-                    <t t-slot="default"/>
-                </p>
+
+                <t t-if="state.isShown">
+                    <p class="card-slot">
+                        <t t-slot="default"/>
+                    </p>
+                </t>
             </div>
         </div>
     </t>
