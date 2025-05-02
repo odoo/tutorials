@@ -3,7 +3,6 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { Card } from "./cards/card";
-import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -14,7 +13,7 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.stats = useService("awesome_dashboard.statistics");
         this.statistics = useState(this.stats.loadStatistics());
-        this.items = items;
+        this.items = registry.category("awesome_dashboard").get("items");
     }
 
     openCustomers() {

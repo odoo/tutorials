@@ -1,3 +1,4 @@
+import { registry } from "@web/core/registry";
 import { NumberCard } from "./cards/number_card"
 import { PieChartCard } from "./cards/pie_chart_card"
 
@@ -59,3 +60,4 @@ export const items = [
     },
 ];
 
+registry.category("awesome_dashboard").add("items", items);
