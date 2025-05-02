@@ -1,19 +1,24 @@
-import { Component, onWillStart, useState } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
+import { CheckBox } from "@web/core/checkbox/checkbox";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
+import { browser } from "@web/core/browser/browser";
+import { ConfigDialog } from "./config_dialog/config_dialog";
 import { Card } from "./cards/card";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, Card };
+    static components = { Layout, Card, ConfigDialog, CheckBox };
 
     setup() {
         this.display = { controlPanel: {} };
         this.action = useService("action");
+        this.dialogService = useService("dialog");
         this.stats = useService("awesome_dashboard.statistics");
         this.statistics = useState(this.stats.loadStatistics());
-        this.items = registry.category("awesome_dashboard").get("items");
+        this.items = useState({ value: [] });
+        this.applyVisibility(this.loadVisibility());
     }
 
     openCustomers() {
@@ -28,6 +33,46 @@ class AwesomeDashboard extends Component {
             res_model: "crm.lead",
             views: [[false, "list"],[false, "form"]],
         });
+    }
+    
+    saveVisibility(states) {
+        browser.localStorage.setItem("awesome_dashboard_visibility", JSON.stringify(states));
+        this.applyVisibility(states);
+    }
+
+    loadVisibility() {
+        const localStorage = browser.localStorage.getItem("awesome_dashboard_visibility");
+        let states = {};
+        if (localStorage) {
+            states = JSON.parse(localStorage);
+        } else {
+            registry.category("awesome_dashboard").get("items")
+            .forEach((item) => states[item.id] = true);
+        }
+        return states ;
+    }
+
+    applyVisibility(states) {
+        this.items.value = registry.category("awesome_dashboard")
+            .get("items")
+            .filter((item) => states[item.id]);
+    }
+
+    showDialog() {
+        const states = this.loadVisibility();
+        const dialogItems = registry.category("awesome_dashboard")
+            .get("items")
+            .map((item) => { return {
+                id: item.id,
+                enabled: states[item.id],
+                label: item.description
+            }});
+        this.dialogService.add(ConfigDialog, {
+            title: "Dashboard items configuration",
+            description: "Which cards do you wish to see ?",
+            items: dialogItems,
+            confirm: this.saveVisibility.bind(this)
+        })
     }
 }
 

@@ -7,13 +7,18 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            <t t-foreach="items" t-as="item" t-key="item.id">
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="d-print-none btn lh-sm p-0 border-0" t-on-click="showDialog">
+                    <i class="fa fa-fw fa-cog"/>
+                </button>
+            </t>
+            <t t-foreach="items.value" t-as="item" t-key="item.id">
                 <Card size="item.size || 1">
                    <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
                    <t t-component="item.Component" t-props="itemProp" />
                 </Card>
             </t>
-        </Layout>    
+        </Layout> 
     </t>
 
 </templates>
