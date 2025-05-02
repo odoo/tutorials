@@ -7,7 +7,7 @@
         <t t-foreach="state.todos" t-as="i" t-key="i.id">
             <div style="border: 1px solid black">
                 <div t-att-class="{'text-muted': i.isCompleted, 'text-decoration-line-through': i.isCompleted}">
-                    <TodoItem todo= "i"/>
+                    <TodoItem todo= "i" onToggleState.bind="toggleState"/>
                 </div>
             </div>
         </t>

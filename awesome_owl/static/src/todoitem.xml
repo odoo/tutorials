@@ -2,6 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todoitem">
+        <input type="checkbox" t-on-change="()=> props.onToggleState(props.todo.id)"/>
         <t t-out="props.todo.id+'. '+props.todo.description"/>
     </t>
 
