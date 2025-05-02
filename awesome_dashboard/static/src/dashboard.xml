@@ -2,12 +2,21 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
         <Layout className="'o_dashboard h-100'" display="myDisplay">
-            some content
-            <div>
+            <t t-set-slot="layout-buttons">
                 <button t-on-click="openCustomersView">Customers</button>
                 <button t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap">
+                <DashboardItem>
+                    Some content
+                </DashboardItem>
+                <DashboardItem>
+                    Ceci est un item dashboard
+                </DashboardItem>
+                <DashboardItem size="2">
+                    Some Content
+                </DashboardItem>
             </div>
         </Layout>
 

@@ -12,6 +12,6 @@ export class Card extends Component {
     }
 
     changeOpenState(){
-        this.state.open = !this.state.open;
+        this.state.open = this.state.open;
     }
 }
