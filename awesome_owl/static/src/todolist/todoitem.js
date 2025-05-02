@@ -7,10 +7,15 @@ export class TodoItem extends Component {
             id: Number,
             description: String,
             isCompleted: Boolean,
-        }
+        },
+        onRemove: Function,
     };
 
-    toggleState(){
+    toggleState() {
         this.props.todo.isCompleted = !this.props.todo.isCompleted;
+    }
+
+    onClick() {
+        this.props.onRemove(this.props.todo.id);
     }
 }

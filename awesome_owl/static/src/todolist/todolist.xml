@@ -5,7 +5,7 @@
         <div class="p-3">
             <input placeholder="Enter a new task" t-ref="task_name" t-on-keyup="event => this.addTodo(event)"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo"/>
+                <TodoItem todo="todo" onRemove.bind="removeTodo"/>
             </t>
         </div>
     </t>

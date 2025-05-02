@@ -6,15 +6,23 @@ import { TodoItem } from "./todoitem";
 export class TodoList extends Component {
     static template = "awesome_owl.todolist";
     static components = { TodoItem };
-    
-    todos = useState([]);
-    state = useState({ counter: 0 });
 
     setup() {
+        this.todos = useState([]);
+        this.state = useState({ counter: 0 });
         this.inputRef = useRef("task_name");
         onMounted(() => {
             useAutofocus(this.inputRef);
         });
+    }
+
+    removeTodo(todoId) {
+        this.todos.splice(todoId, 1);
+
+        // Reindex all the next ids
+        for (; todoId < this.todos.length; todoId++) {
+            this.todos[todoId].id = todoId;
+        }
     }
 
     addTodo(event) {
@@ -25,6 +33,7 @@ export class TodoList extends Component {
                 isCompleted: false,
             });
             this.state.counter++;
+            this.inputRef.el.value = "";
         }
     }
 }
