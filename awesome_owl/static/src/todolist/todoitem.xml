@@ -2,8 +2,8 @@
 <templates xml:space="preserve">
 
     <t t-name="TodoItem">
-        <div t-att-class="{'text-muted':props.todo.isCompleted, 'text-decoration-line-through':props.todo.isCompleted}">
-            <input type="checkbox" t-att="{'checked':props.todo.isCompleted}" t-on-change="toggleState"/>
+        <div t-att-class="{'text-muted text-decoration-line-through':props.todo.isCompleted}">
+            <input type="checkbox" t-att="{'checked': props.todo.isCompleted}" t-on-change="toggleState"/>
             <t t-esc="props.todo.id"/>. 
             <t t-esc="props.todo.description"/>
             <span class="fa fa-remove" t-on-click="deleteTodo" icon="fa-close"/>

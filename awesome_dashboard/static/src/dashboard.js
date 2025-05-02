@@ -23,7 +23,10 @@ class AwesomeDashboard extends Component {
             type: 'ir.actions.act_window',
             name: 'All leads',
             res_model: 'crm.lead',
-            views: [[false, 'list'],[false, 'form']],
+            views: [
+                [false, 'list'],
+                [false, 'form'],
+            ],
         });
     }
 }

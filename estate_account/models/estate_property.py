@@ -25,6 +25,5 @@ class InheritedEstateProperty(models.Model):
                     })
                 ]
             })
-        for val in invoice_values:
-            self.env["account.move"].create(val)
+        self.env["account.move"].create(invoice_values)
         return res

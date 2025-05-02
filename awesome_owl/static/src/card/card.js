@@ -4,11 +4,14 @@ export class Card extends Component {
     static template = "Card";
     static props = {
         title: String,
-        slots: Object
+        slots: {
+            type: Object,
+            optional: true,
+        }
     };
 
     setup(){
-        this.state = useState( {open: true});
+        this.state = useState({ open: true });
     }
 
     changeOpenState(){

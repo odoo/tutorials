@@ -26,9 +26,9 @@ export class TodoList extends Component {
     }
 
     removeTodo(todoId){
-        var todoIdInArray = this.todos.findIndex((todo) => todo.id == todoId);
-         if (todoIdInArray >= 0) {
-             this.todos.splice(todoIdInArray, 1);
-         }
+        const todoIdInArray = this.todos.findIndex((todo) => todo.id == todoId);
+        if (todoIdInArray >= 0) {
+            this.todos.splice(todoIdInArray, 1);
+        }
     }
 }
