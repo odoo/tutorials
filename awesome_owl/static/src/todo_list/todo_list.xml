@@ -5,7 +5,7 @@
             <input class="form-control" type="text" placeholder="Add a new task" t-on-keyup="addTodo" t-ref="input"/>
             <div class="m-2">
                 <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo"/>
+                    <TodoItem todo="todo" toggleState.bind="toggleTodo" removeTodo.bind="removeTodo"/>
                 </t>
             </div>
         </div>

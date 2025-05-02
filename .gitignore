@@ -1,4 +1,5 @@
 # Byte-compiled / optimized / DLL files
+.gitignore
 __pycache__/
 *.py[cod]
 *$py.class
@@ -130,4 +131,3 @@ dmypy.json
 
 .idea
 ruff.toml
-.gitignore
