@@ -1,8 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_realestate,access.realestate,model_realestate,,1,1,1,1
-access_owner,access.owner,model_owner,,1,1,1,1
-access_types,access.types,model_types,,1,1,1,1
-access_tags,access.tags,model_tags,,1,1,1,1
-access_seller,access.seller,model_seller,,1,1,1,1
-access_buyer,access.buyer,model_buyer,,1,1,1,1
-access_offer,access.offer,model_offer,,1,1,1,1
+access_realestate_property,access.realestate_property,model_realestate_property,,1,1,1,1
+access_realestate_types,access.realestate_types,model_realestate_types,,1,1,1,1
+access_realestate_tags,access.realestate_tags,model_realestate_tags,,1,1,1,1
+access_realestate_offer,access.realestate_offer,model_realestate_offer,,1,1,1,1

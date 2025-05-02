@@ -4,29 +4,33 @@ from odoo.exceptions import UserError
 
 
 class Offer(models.Model):
-    _name = "offer"
+    _name = "realestate_offer"
     _order = "price desc"
+    _description = "Offer"
     price = fields.Float()
     status = fields.Selection([("accepted", "Accepted"), ("refused", "Refused")])
     buyer_id = fields.Many2one("res.partner")
-    property_id = fields.Many2one("realestate")
+    property_id = fields.Many2one("realestate_property")
     property_type_id = fields.Many2one(related="property_id.type_id")
     state = fields.Selection(related="property_id.state")
     validity = fields.Integer()
-    deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
+    deadline_date = fields.Date(
+        compute="_compute_deadline", inverse="_inverse_deadline"
+    )
     highest_offer = fields.Float(compute="_calc_highest_price")
 
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
-            record.deadline = (
+            record.deadline_date = (
                 record.create_date or fields.Datetime.now()
             ).date() + timedelta(days=record.validity)
 
     def _inverse_deadline(self):
         for record in self:
             record.validity = (
-                record.deadline - (record.create_date or fields.Datetime.now()).date()
+                record.deadline_date
+                - (record.create_date or fields.Datetime.now()).date()
             ).days
 
     def set_offer_accepted(self):
@@ -53,7 +57,7 @@ class Offer(models.Model):
     ]
 
     def create(self, vals):
-        res = super(Offer, self).create(vals)
+        res = super().create(vals)
 
         if res.price < res.property_id.best_price:
             raise UserError("Please set a higher price!")

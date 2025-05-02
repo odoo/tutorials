@@ -2,12 +2,13 @@ from odoo import api, fields, models
 
 
 class Types(models.Model):
-    _name = "types"
+    _name = "realestate_types"
     _order = "sequence"
+    _description = "Types"
     name = fields.Char(required=True)
-    properties_ids = fields.One2many("realestate", "type_id")
+    properties_ids = fields.One2many("realestate_property", "type_id")
     sequence = fields.Integer("Sequence", default=1)
-    offer_ids = fields.One2many("offer", "property_type_id")
+    offer_ids = fields.One2many("realestate_offer", "property_type_id")
     offer_count = fields.Integer(compute="_compute_offer_count")
 
     @api.depends("offer_ids")

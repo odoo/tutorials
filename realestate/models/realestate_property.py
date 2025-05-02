@@ -3,8 +3,8 @@ from odoo.exceptions import UserError, ValidationError
 
 
 class Realestate(models.Model):
-    _name = "realestate"
-    _description = "Estate"
+    _name = "realestate_property"
+    _description = "Properties"
     _order = "type_id"
     name = fields.Char(required=True)
     description = fields.Text()
@@ -38,18 +38,15 @@ class Realestate(models.Model):
         ],
         default="new",
     )
-    owner_id = fields.Many2one("buyer")
-    type_id = fields.Many2one("types", widget="handle")
-    tag_ids = fields.Many2many("tags", string="Tags")
-    seller_id = fields.Many2one("seller")
+    owner_id = fields.Many2one("res.partner")
+    type_id = fields.Many2one("realestate_types", widget="handle")
+    tag_ids = fields.Many2many("realestate_tags", string="Tags")
+    seller_id = fields.Many2one("res.partner")
     buyer_id = fields.Many2one("res.partner")
-    offer_ids = fields.One2many("offer", "property_id")
-    status = fields.Selection(related="offer_ids.status")
-    price = fields.Float(related="offer_ids.price")
-    validity = fields.Integer(related="offer_ids.validity")
-    deadline = fields.Date(related="offer_ids.deadline")
+    offer_ids = fields.One2many("realestate_offer", "property_id")
+
     total_area = fields.Integer(compute="_compute_total")
-    best_price = fields.Float(compute="_max_offer_price")
+    best_price = fields.Float(compute="_compute_max_offer_price")
 
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -57,7 +54,7 @@ class Realestate(models.Model):
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids")
-    def _max_offer_price(self):
+    def _compute_max_offer_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
@@ -68,7 +65,7 @@ class Realestate(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = ""
+            self.garden_orientation = False
 
     def action_set_property_sold(self):
         for record in self:
@@ -82,25 +79,16 @@ class Realestate(models.Model):
                 raise UserError("Sold properties cannot be Cancelled")
             record.state = "cancelled"
 
-    # def action_set_offer_accepted(self):
-    #     for record in self:
-    #         if record.status
-
     _sql_constraints = [
         (
             "check_expected_price",
-            "CHECK(expected_price> 0)",
+            "CHECK(expected_price > 0)",
             "Expected price must be positive.",
         ),
         (
             "check_selling_price",
-            "CHECK(selling_price> 0)",
+            "CHECK(selling_price > 0)",
             "Selling price must be positive.",
-        ),
-        (
-            "check_offer_price",
-            "CHECK(price> 0)",
-            "Offer price must be positive.",
         ),
     ]
 
@@ -109,7 +97,7 @@ class Realestate(models.Model):
         for record in self:
             if record.selling_price < 0.9 * record.expected_price:
                 raise ValidationError(
-                    "Selling price must be at least 90'%' of the expected price"
+                    "Selling price must be at least 90% of the expected price"
                 )
 
     @api.constrains("offer_ids")

@@ -1,21 +1,21 @@
-from odoo import models, fields, Command
+from odoo import models, Command
 
 
 class Realestate(models.Model):
-    _name = "realestate"
-    _inherit = "realestate"
+    _name = "realestate_property"
+    _inherit = "realestate_property"
 
     def action_set_property_sold(self):
         self.env["account.move"].create(
             {
-                "partner_id": super().buyer_id.id,
+                "partner_id": self.buyer_id.id,
                 "move_type": "out_invoice",
                 "line_ids": [
                     Command.create(
                         {
                             "name": self.name,
                             "quantity": 1,
-                            "price_unit": super().selling_price,
+                            "price_unit": self.selling_price,
                         }
                     )
                 ],

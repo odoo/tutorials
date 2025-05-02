@@ -1,2 +1,2 @@
 from . import estate_account
-from . import realestate
+from . import realestate_property

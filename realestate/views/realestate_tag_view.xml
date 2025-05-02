@@ -3,7 +3,7 @@
 
     <record id="tag_action" model="ir.actions.act_window">
         <field name="name">Tags</field>
-        <field name="res_model">tags</field>
+        <field name="res_model">realestate_tags</field>
         <field name="view_mode">list,form</field>
     </record>
 
