@@ -3,9 +3,12 @@
 
     <t t-name="awesome_owl.playground">
         <div class="card d-inline-block m-4" style="width: 320px;">
-            <Card title="'card 1'" content="this.html"/>
-            <Card title="'card 2'" content="'content of card 2'"/>
+            <TodoList />
         </div>
+
+        <Card title="'Quick title'">
+            <Counter />
+        </Card>
     </t>
 
 </templates>
