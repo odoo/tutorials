@@ -3,12 +3,16 @@
 
     <t t-name="awesome_owl.playground">
         <div>
-            <h2>My Playground with Two Counters</h2>
-            <Counter />
-            <Counter />
-            <Card title='"test"' context='"test"'/>
-            <Card title='"test1"' context='"test1"'/>
+            <h2>Two Counters</h2>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <Card title='"test2"' content='"test"'/>
+            <Card title='"test1"' content='"test1"'/>
+            <h2>sum:<t t-esc="state.sum"/>
+            </h2>
+            <TodoList todo="todos"/>
+        </div>
+        <div>
         </div>
     </t>
-
 </templates>
