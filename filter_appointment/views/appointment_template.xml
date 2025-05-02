@@ -1,26 +1,26 @@
 <odoo>
-  <template id="appointment_filter_inherit" inherit_id="website_appointment.website_calendar_index_topbar">
-    <xpath expr="//h4[text()='Choose your appointment']" position="after">
-      <div class="d-flex align-items-center flex-wrap gap-2 ms-5">
+    <template id="appointment_website_filter_template" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//h4" position="after">
+            <form method="get" action="/appointment" class="d-flex align-items-center gap-2 px-2" role="search">
 
-        <select class="form-select" style="width: 160px;">
-          <option value="">All Types</option>
-          <option value="online">Online</option>
-          <option value="offline">Offline</option>
-        </select>
+                <select name="appointment_type" class="form-select" style="width: 160px;" onchange="this.form.submit()">
+                    <option value="" t-att-selected="'selected' if not request.params.get('appointment_type') else None">All Types</option>
+                    <option value="online" t-att-selected="'selected' if request.params.get('appointment_type') == 'online' else None">Online</option>
+                    <option value="offline" t-att-selected="'selected' if request.params.get('appointment_type') == 'offline' else None">Offline</option>
+                </select>
 
-        <select class="form-select" style="width: 160px;">
-          <option value="">All Schedules</option>
-          <option value="resource">By Resource</option>
-          <option value="user">By User</option>
-        </select>
+                <select name="payment_step" class="form-select" style="width: 160px;" onchange="this.form.submit()">
+                    <option value="" t-att-selected="'selected' if not request.params.get('payment_step') else None">All Payments</option>
+                    <option value="required" t-att-selected="'selected' if request.params.get('payment_step') == 'required' else None">Required</option>
+                    <option value="not_required" t-att-selected="'selected' if request.params.get('payment_step') == 'not_required' else None">Not Required</option>
+                </select>
 
-        <select class="form-select" style="width: 160px;">
-          <option value="">All Payment</option>
-          <option value="paid">Paid</option>
-          <option value="free">Free</option>
-        </select>
-      </div>
-    </xpath>
-  </template>
+                <select name="schedule_based_on" class="form-select" style="width: 160px;" onchange="this.form.submit()">
+                    <option value="" t-att-selected="'selected' if not request.params.get('schedule_based_on') else None">All</option>
+                    <option value="users" t-att-selected="'selected' if request.params.get('schedule_based_on') == 'users' else None">Users</option>
+                    <option value="resources" t-att-selected="'selected' if request.params.get('schedule_based_on') == 'resources' else None">Resources</option>
+                </select>
+            </form>
+        </xpath>
+    </template>
 </odoo>
