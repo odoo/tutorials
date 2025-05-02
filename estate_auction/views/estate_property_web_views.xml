@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="template_property_offer_success" name="Property Offer Created">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <div class="container d-flex flex-column justify-content-center align-items-center"
+                     style="height: 100vh;">
+                    <div class="mb-4 text-center">
+                        <img t-if="property.image"
+                             t-att-src="'data:image/webp;base64,%s' % property.image.decode('utf-8')"
+                             class="img-fluid rounded w-100"
+                             style="object-fit: cover; height: 400px;"
+                             t-att-alt="property.name"/>
+                        <img t-else=""
+                             t-attf-src="https://placehold.co/600x400.png/?text=No+Image&amp;font=Monsterrat"
+                             class="img-fluid rounded w-100"
+                             style="object-fit: cover; height: 400px;"
+                             t-att-alt="property.name"/>
+                        <h1 class="mt-2"><t t-out="property.name"/></h1>
+                    </div>
+                    <h3 class="text-center text-success">
+                        Congratulations! Your offer has been successfully placed.
+                        <br/>
+                        We will notify you of the results as soon as the auction ends.
+                    </h3>
+                    <a href="/properties" class="btn btn-outline-primary mt-4">
+                        <i class="fa fa-arrow-left me-2"></i> Back to Listings </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="properties_listing_auction_template" name="Estate Properties" inherit_id="estate.property_template">
+        <xpath expr="//div[@id='new_filters']" position="before">
+            <div class="col-2 d-flex flex-column justify-content-between">
+                <label for="sale_mode">Sale Mode</label>
+                <select name="sale_mode" id="sale_mode" class="form-select">
+                    <option value="all" t-att-selected="sale_mode == 'all'">All</option>
+                    <option value="regular" t-att-selected="sale_mode == 'regular'">Regular</option>
+                    <option value="auction" t-att-selected="sale_mode == 'auction'">Auction</option>
+                </select>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="property_details_auction_template" name="Property Details"
+              inherit_id="estate.property_details_template">
+        <xpath expr="//div[@id='price_card']" position="after">
+            <div class="card mt-4" t-if="property.sale_mode == 'auction'" id="auction_card">
+                <div class="card-header">
+                    <h5 class="mb-0">Property Auction</h5>
+                </div>
+                <div class="card-body">
+                    <t t-if="property.auction_state == '01_template'">
+                        <p class="text-muted mb-0">Auction has not started yet.</p>
+                    </t>
+
+                    <t t-if="property.auction_state == '02_auction'">
+                        <div t-if="property.auction_end_time">
+                            <p class="mb-2">Auction ends on: <span id="auction_end_time" class="fw-bold"><t
+                                    t-out="property.auction_end_time.strftime('%b %d, %Y %H:%M:%S')"/></span></p>
+                            <small class="text-muted">Time remaining:</small>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span id="countdown_timer" class="fw-bold fs-4 text-primary"
+                                      t-att-data-end-time="property.auction_end_time">
+                                    Loading countdown...
+                                </span>
+                                <button id="offer_modal_button" class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#newOfferModal">
+                                    Make an Offer
+                                </button>
+                            </div>
+                        </div>
+                        <p t-else="" class="text-warning mb-0">Auction end time not set.</p>
+                    </t>
+
+                    <t t-if="property.auction_state == '03_sold'">
+                        <h4 class="text-success">Auction ended. Property sold.</h4>
+                        <div t-if="property.highest_bidder_id">
+                            <p class="mb-0">Highest Bidder:
+                                <strong><t t-out="property.highest_bidder_id.name"/></strong>
+                            </p>
+                            <p class="mb-0">Highest Offer:
+                                <strong><t t-out="'{:,}'.format(int(property.highest_offer))"/></strong>
+                            </p>
+                        </div>
+                    </t>
+                </div>
+            </div>
+            <t t-if="request.params.get('error')">
+                <div class="alert alert-danger mt-2" role="alert">
+                    <button type="button" class="btn-close float-end" data-bs-dismiss="alert"
+                            aria-label="Close"></button>
+                    <h4 class="alert-heading">Error</h4>
+                    <hr/>
+                    <t t-esc="request.params.get('error')"/>
+                </div>
+            </t>
+            <div class="modal fade" id="newOfferModal" tabindex="-1" aria-labelledby="modalTitle"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalTitle">
+                                Make an Offer for
+                                <b><i>&apos;<t t-out="property.name"/>&apos;</i></b>
+                            </h5>
+                        </div>
+                        <div class="modal-body">
+                            <form id="offerForm" action="/offer/create" method="post">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                <div class="mb-3">
+                                    <label for="partnerSelect" class="form-label">Name:</label>
+                                    <select class="form-control" id="partnerSelect" name="partner_id">
+                                        <t t-set="current_user" t-value="request.env.user.partner_id.id"/>
+                                        <t t-foreach="request.env['res.partner'].search([])" t-as="partner">
+                                            <option t-att-value="partner.id"
+                                                    t-att-selected="true if partner.id == current_user else None">
+                                                <t t-esc="partner.name"/>
+                                            </option>
+                                        </t>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="offerPrice" class="form-label">Offer Price:</label>
+                                    <input name="offer_price" type="number" class="form-control" id="offerPrice"/>
+                                </div>
+                                <div class="modal-footer justify-content-center gap-2 border-0">
+                                    <button type="submit" class="btn btn-primary" id="submitOffer">Submit</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

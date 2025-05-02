@@ -94,6 +94,9 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, offers):
+        if not offers:
+            return super().create(offers)
+
         estate = self.env['estate.property'].browse(offers[0].get('property_id'))
         curr_max_price = estate.best_price or 0.0
 

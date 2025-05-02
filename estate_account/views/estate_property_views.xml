@@ -5,7 +5,7 @@
         <field name="model">estate.property</field>
         <field name="inherit_id" ref="estate.estate_property_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//sheet" position="before">
+            <xpath expr="//sheet" position="inside">
                 <div class="oe_button_box" name="button_box">
                     <button class="oe_stat_button" name="action_open_invoices" type="object" icon="fa-file-text-o">
                         <field string="Invoices" name="invoice_ids" widget="statinfo"/>
