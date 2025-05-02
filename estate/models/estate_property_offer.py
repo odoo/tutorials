@@ -29,18 +29,6 @@ class EstatePropertyOffer(models.Model):
         for record in self.filtered("create_date"):
             record.validity = (record.date_deadline - record.create_date.date()).days
 
-    def action_btn_accept(self):
-        self.ensure_one()
-        self.status = "accepted"
-        self.property_id.buyer_id = self.partner_id.id
-        self.property_id.selling_price = self.price
-        self.property_id.state = 'offer_accepted'
-
-    def action_btn_refuse(self):
-        for record in self:
-            record.status = "refused"
-        return True
-
     @api.model_create_multi
     def create(self, vals_list):
         estate_properties = self.env["estate.property"].browse([vals['property_id'] for vals in vals_list if vals['property_id']])
@@ -52,3 +40,15 @@ class EstatePropertyOffer(models.Model):
             if vals['price'] < estate_property.best_offer:
                 raise UserError("Can't make a smaller offer than the best one currently recorded!")
         return super().create(vals_list)
+
+    def action_btn_accept(self):
+        self.ensure_one()
+        self.status = "accepted"
+        self.property_id.buyer_id = self.partner_id.id
+        self.property_id.selling_price = self.price
+        self.property_id.state = 'offer_accepted'
+
+    def action_btn_refuse(self):
+        for record in self:
+            record.status = "refused"
+        return True

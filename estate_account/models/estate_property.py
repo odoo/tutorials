@@ -9,13 +9,11 @@ class EstateProperty(models.Model):
     name = fields.Char('Title', required=True, translate=True)
 
     def action_btn_sold(self):
-        # @SEDI J'ai pas réussi à faire fonctionner avec la plus simple que tu as suggérée. Elle return res.partner(3,) au lieu de res.partner() comme l'autre mais du coup ça marche pas..
-        # partner_id = self.salesman_id.partner_id
-        partner_id = self.env['estate.property'].browse(self.env.context.get('active_id')).salesman_id.partner_id
+        partner_id = self.salesman_id.partner_id
         invoicing_price = self.selling_price * 0.06
 
         values = {
-            'partner_id': partner_id,
+            'partner_id': partner_id.id,
             'move_type': 'out_invoice',
             "invoice_line_ids": [
                 Command.create({

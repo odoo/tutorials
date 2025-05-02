@@ -57,6 +57,12 @@ class EstateProperty(models.Model):
             else:
                 record.best_offer = 0.0
 
+    @api.constrains('expected_price', 'selling_price')
+    def _check_offer_price(self):
+        for record in self:
+            if tools.float_utils.float_compare((record.expected_price * 0.9), record.selling_price, precision_rounding=0.01) >= 0 and not tools.float_utils.float_is_zero(record.selling_price, precision_rounding=0.001):
+                raise ValidationError(_("Offer price cannot be lower than 90% of the expected price."))
+
     @api.onchange("garden")
     def _onchange_has_garden(self):
         if self.garden:
@@ -68,6 +74,11 @@ class EstateProperty(models.Model):
             return {'warning': {
                 'title': _("Warning"),
                 'message': _('Unchecking the garden option removed the area value and orientation.')}}
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled_property(self):
+        if any(estate_property.state in ['offer_received', 'offer_accepted', 'sold'] for estate_property in self):
+            raise UserError("Can't delete a property that is not new of cancelled!")
 
     def action_btn_sold(self):
         for record in self:
@@ -84,14 +95,3 @@ class EstateProperty(models.Model):
             else:
                 raise UserError(_("This property is already sold and thus cannot be cancelled anymore."))
         return True
-
-    @api.constrains('expected_price', 'selling_price')
-    def _check_offer_price(self):
-        for record in self:
-            if tools.float_utils.float_compare((record.expected_price * 0.9), record.selling_price, precision_rounding=0.01) >= 0 and not tools.float_utils.float_is_zero(record.selling_price, precision_rounding=0.001):
-                raise ValidationError(_("Offer price cannot be lower than 90% of the expected price."))
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_new_or_cancelled_property(self):
-        if any(estate_property.state in ['offer_received', 'offer_accepted', 'sold'] for estate_property in self):
-            raise UserError("Can't delete a property that is not new of cancelled!")
