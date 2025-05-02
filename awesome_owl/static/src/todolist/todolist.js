@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { useRef, useState, onMounted, Component } from "@odoo/owl";
 
 import { useAutofocus } from "./../utils";

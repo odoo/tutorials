@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
-export function useAutofocus(ref_element) {
-    ref_element.el.focus();
+export function useAutofocus(refEl) {
+    refEl.el.focus();
 }
