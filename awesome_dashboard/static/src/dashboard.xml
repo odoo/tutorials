@@ -9,23 +9,27 @@
             </t>
             <Card>
                 Average amount of t-shirt by order this month
-                <h1 style="color: var(--green);"><t t-esc="avg_quantity.value"/></h1>
+                <h1 style="color: var(--green);"><t t-esc="statistics.average_quantity"/></h1>
             </Card>
             <Card>
                 Average time for an order to go from 'new' to 'sent' or 'cancelled'
-                <h1 style="color: var(--green);"><t t-esc="avg_time.value"/></h1>
+                <h1 style="color: var(--green);"><t t-esc="statistics.average_time"/></h1>
             </Card>
             <Card>
                 Number of new orders this month
-                <h1 style="color: var(--green);"><t t-esc="nb_new_orders.value"/></h1>
+                <h1 style="color: var(--green);"><t t-esc="statistics.nb_new_orders"/></h1>
             </Card>
             <Card>
                 Number of cancelled orders this month
-                <h1 style="color: var(--green);"><t t-esc="nb_cancelled_orders.value"/></h1>
+                <h1 style="color: var(--green);"><t t-esc="statistics.nb_cancelled_orders"/></h1>
             </Card>
             <Card>
                 Total amount of new orders this month
-                <h1 style="color: var(--green);"><t t-esc="total_amount.value"/></h1>
+                <h1 style="color: var(--green);"><t t-esc="statistics.total_amount"/></h1>
+            </Card>
+            <Card size="2">
+                Shirt orders by size
+                <PieChart data="statistics.orders_by_size"/>
             </Card>
         </Layout>    
     </t>
