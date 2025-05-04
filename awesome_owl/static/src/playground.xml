@@ -6,12 +6,13 @@
             Counter:
             <Counter onChange.bind="incrementSum" />
             <Counter onChange.bind="incrementSum" />
-            <div>The sum is: <t t-esc="sum.value"/></div>
+            <div>The sum is: <t t-esc="sum.value"/>
+            </div>
         </div>
         <div>
-            <Card title="'card 1'" content="str1"/>
-            <Card title="'card 2'" content="str2"/>
-         </div>
+            <Card title="'card 1'" content="str1">get info</Card>
+            <Card title="'card 2'" content="str2">get second info</Card>
+        </div>
         <TodoList/>
     </t>
 
