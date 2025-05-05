@@ -1,13 +1,14 @@
 /** @odoo-module **/
 
 import { Component } from "@odoo/owl";
+import { DashboardItem } from "./dashboard_item";
 import { Layout } from "@web/search/layout";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout };
+    static components = { Layout, DashboardItem };
 
     setup() {
         this.action = useService("action");

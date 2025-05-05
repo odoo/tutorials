@@ -8,7 +8,15 @@
                 <button class="btn btn-primary" t-on-click="showLeads">Leads</button>
             </t>
 
-            hello dashboard
+            <div class="d-flex">
+                <DashboardItem>
+                    Ça c'est du contenu
+                </DashboardItem>
+                <DashboardItem size="2">
+                    I love food!
+                </DashboardItem>
+                <DashboardItem/>
+            </div>
         </Layout>
     </t>
 
