@@ -12,10 +12,49 @@
                 <DashboardItem>
                     Ça c'est du contenu
                 </DashboardItem>
+
                 <DashboardItem size="2">
                     I love food!
                 </DashboardItem>
+
                 <DashboardItem/>
+            </div>
+
+            <div class="d-flex">
+                <DashboardItem size="2">
+                    Number of new orders this month
+                    <font color="green" size="50">
+                        <t t-out="result.nb_new_orders"/>
+                    </font>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    Total amount of new orders this month
+                    <font color="green" size="50">
+                        <t t-out="result.total_amount"/>
+                    </font>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    Average amount of t-shirt by order this month
+                    <font color="green" size="50">
+                        <t t-out="result.average_quantity"/>
+                    </font>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    Number of cancelled orders this month
+                    <font color="green" size="50">
+                        <t t-out="result.nb_cancelled_orders"/>
+                    </font>
+                </DashboardItem>
+
+                <DashboardItem size="2">
+                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                    <font color="green" size="50">
+                        <t t-out="result.average_time"/>
+                    </font>
+                </DashboardItem>
             </div>
         </Layout>
     </t>

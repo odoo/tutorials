@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.DashboardItem">
-        <div class="card card-slot card-body border-dark m-3" t-attf-style="width:{{18*props.size}}rem">
+        <div class="card card-slot card-body border-dark m-3 text-center" t-attf-style="width:{{18*props.size}}rem">
             <t t-slot="default"/>
         </div>
     </t>
