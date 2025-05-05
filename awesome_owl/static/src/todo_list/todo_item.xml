@@ -3,13 +3,17 @@
 
     <t t-name="awesome_owl.todo_item">
         <div class="todo-item" t-att-class="{
-            'text-muted': props.todo_list.isCompleted,
-            'text-decoration-line-through': props.todo_list.isCompleted,
+            'text-muted': props.todoList.isCompleted,
+            'text-decoration-line-through': props.todoList.isCompleted,
         }">
-            <p>ID: <t t-esc="props.todo_list.id"/>
-            </p>
-            <p t-on-click="toggleItem">Description: <t t-esc="props.todo_list.description"/>
-            </p>
+            <div>
+                <input type="checkbox" t-att-checked="props.todoList.isCompleted" t-on-change="toggleCheckbox"/>
+                <p>ID: <t t-esc="props.todoList.id"/>
+                </p>
+                <p t-on-click="toggleItem">Description: <t t-esc="props.todoList.description"/>
+                </p>
+                <span t-on-click="removeItem" class="fa fa-remove"/>
+            </div>
         </div>
     </t>
 </templates>
