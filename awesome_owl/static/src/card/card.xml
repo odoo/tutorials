@@ -7,21 +7,14 @@
                 <h5 class="card-title">
                     <t t-esc="props.title"/>
                     
-                    <t t-if="!state.isShown">
-                        <button class="btn bg-success text-white ms-2" t-on-click="this.onClick">
-                            Show content
-                        </button>
-                    </t>
-
-                    <t t-if="state.isShown">
-                        <button class="btn bg-success text-white ms-2" t-on-click="this.onClick">
-                            Hide content
-                        </button>
-                    </t>
+                    <button class="btn bg-success text-white ms-2" t-on-click="this.onClick">
+                        <t t-if="!state.isShown">Show content</t>
+                        <t t-else="">Hide content</t>
+                    </button>
                 </h5>
 
-                <t t-if="state.isShown">
-                    <p class="card-slot">
+                <t>
+                    <p t-if="state.isShown" class="card-slot">
                         <t t-slot="default"/>
                     </p>
                 </t>
