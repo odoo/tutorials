@@ -14,11 +14,10 @@ export class DashboardItem extends Component {
 
 
     calculate_width(){
-        if (this.props.size){
-            this.width = (18*this.props.size)
-        }else{
-            this.width = 18
+        if (!this.props.size){
+            this.props.size = 1;
         }
-        return this.width
+        this.width = (18*this.props.size);
+        return this.width;
     }
 }
