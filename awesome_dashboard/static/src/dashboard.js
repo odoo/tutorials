@@ -1,14 +1,13 @@
-/** @odoo-module **/
-
 import { Component, onWillStart } from "@odoo/owl";
 import { DashboardItem } from "./dashboard_item";
+import { CamembertChart } from "./camembert_chart/camembert_chart";
 import { Layout } from "@web/search/layout";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, CamembertChart };
 
     setup() {
         this.action = useService("action");
