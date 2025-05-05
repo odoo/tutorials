@@ -1,0 +1,17 @@
+
+<odoo>
+    <!-- Extend the product.template form view to add the last_purchase_price field -->
+    <record id="view_product_template_form_inherit_last_purchase_price" model="ir.ui.view">
+        <field name="name">product.template.form.last.purchase.price</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+        <xpath expr="//sheet//group" position="inside">
+            <group>
+                <field name="last_purchase_price" readonly="1"/>
+            </group>
+        </xpath>
+        </field>
+    </record>
+</odoo>
+

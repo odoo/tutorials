@@ -1,0 +1,20 @@
+<odoo>
+    <!-- Extend the product.pricelist.item form view to add the selection for base pricing -->
+    <record id="view_product_pricelist_item_form_inherit" model="ir.ui.view">
+        <field name="name">product.pricelist.item.form.inherit</field>
+        <field name="model">product.pricelist.item</field>
+        <field name="inherit_id" ref="product.product_pricelist_item_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='base']" position="attributes">
+                <attribute name="widget">selection</attribute>
+                <attribute name="help">Choose what the pricing rule should be based on:
+                    <ul>
+                        <li>Sales Price: Uses the standard sales price from the product.</li>
+                        <li>Last Purchase Price: Uses the most recent purchase price paid for the product.</li>
+                    </ul>
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
+
