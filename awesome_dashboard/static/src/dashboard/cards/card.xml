@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.card">
-        <div class="card d-inline-block m-2" t-attf-style="width: {{size}}rem;">
+        <div class="card d-inline-block m-2 o_card" t-attf-style="width: {{size}}rem;">
             <div class="card-body d-flex flex-column align-items-center">
                 <t t-slot="default"/>
             </div>

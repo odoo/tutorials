@@ -1,3 +1,4 @@
+import { _t } from "@web/core/l10n/translation";
 import { Component, useState } from "@odoo/owl";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { registry } from "@web/core/registry";
@@ -68,8 +69,8 @@ class AwesomeDashboard extends Component {
                 label: item.description
             }});
         this.dialogService.add(ConfigDialog, {
-            title: "Dashboard items configuration",
-            description: "Which cards do you wish to see ?",
+            title: _t("Dashboard items configuration"),
+            description: _t("Which cards do you wish to see ?"),
             items: dialogItems,
             confirm: this.saveVisibility.bind(this)
         })
