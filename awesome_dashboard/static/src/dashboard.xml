@@ -2,7 +2,39 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout 
+            className="'o_dashboard h-100'"
+            display="{controlPanel: {} }"
+            >
+            <button type="button" class="btn btn-primary" t-on-click="openCustomersKanban">Customers</button>
+            <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            
+            <div class="d-flex flex-wrap gap-1">
+                <DashboardItem>
+                    <p>Average amount of t-shirt by order this month</p>
+                    <h2 class="text-success"><t t-esc="result.data.average_quantity"/></h2>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Average to time for an order to go from 'new' to 'sent' or 'cancelled'</p>
+                    <h2 class="text-success"><t t-esc="result.data.average_time"/></h2>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Number of new orders this month</p>
+                    <h2 class="text-success"><t t-esc="result.data.nb_new_orders"/></h2>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Number of cancelled orders this month</p>
+                    <h2 class="text-success"><t t-esc="result.data.nb_cancelled_orders"/></h2>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Total amount of new orders this month</p>
+                    <h2 class="text-success"><t t-esc="result.data.total_amount"/></h2>
+                </DashboardItem>
+                <DashboardItem>
+                    <PieChart label="Label" data="this.result.data.orders_by_size" />
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
