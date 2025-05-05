@@ -3,6 +3,11 @@
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="showKanbanCustomersView">Customers</button>
+                <button class="btn btn-primary" t-on-click="showLeads">Leads</button>
+            </t>
+
             hello dashboard
         </Layout>
     </t>
