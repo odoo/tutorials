@@ -11,7 +11,9 @@ export class Card extends Component {
         },
     };
 
-    state = useState({ isShown: true });
+    setup() {
+        this.state = useState({ isShown: true });
+    }
 
     onClick() {
         this.state.isShown = !this.state.isShown;

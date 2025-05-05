@@ -16,7 +16,9 @@ export class Playground extends Component {
     titleCard3 = "Basic card";
     contentCard3 = "<font color='blue'>This is not a basic card...</font>";
 
-    state = useState({ sum: 2 });
+    setup() {
+        this.state = useState({ sum: 2 });
+    }
 
     incrementSum() {
         this.state.sum++;

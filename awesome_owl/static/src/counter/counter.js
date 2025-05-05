@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { useState, Component } from "@odoo/owl";
 
 export class Counter extends Component {
@@ -11,7 +9,9 @@ export class Counter extends Component {
         }
     };
 
-    state = useState({ value: 1 });
+    setup() {
+        this.state = useState({ value: 1 });
+    }
 
     increment() {
         this.state.value++;
