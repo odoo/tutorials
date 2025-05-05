@@ -6,12 +6,12 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-esc="props.title"/>
+                    <button style="border:0.5px solid purple;" class="btn btn-primary" t-on-click="toggleState">Hide/Show</button>
                 </h5>
-                <p class="card-text">
-                    <t t-out="props.content"/>
+                <p class="card-text" t-if="state.isOpen">
+                    <t t-slot="default"/>
                 </p>
             </div>
         </div>
     </t>
-
 </templates>
