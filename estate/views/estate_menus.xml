@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Top level menu: Estate -->
+    <menuitem id="menu_estate_root" name="Estate" sequence="1"/>
+
+    <!-- Second level menu: Estate Management -->
+    <menuitem id="menu_estate_management" name="Estate Management" parent="menu_estate_root" sequence="1"/>
+
+</odoo>
+

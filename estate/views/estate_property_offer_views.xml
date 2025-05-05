@@ -1,0 +1,52 @@
+<!-- views/estate_property_offer_views.xml -->
+<odoo>
+    <!-- Estate Property Offer Form View -->
+    <record id="view_estate_property_offer_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property Offer">
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
+                        <field name="partner_id"/>
+                        <field name="property_id"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Estate Property Offer List View -->
+    <record id="view_estate_property_offer_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Estate Property Offers"
+                decoration-success="status == 'accepted'"
+                decoration-danger="status == 'refused'"
+                decoration-muted="status == 'new'">
+                <field name="price"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <field name="partner_id"/>
+                <!-- Action buttons with conditional visibility -->
+                <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="status != 'new'"/>
+                <button name="action_refuse" type="object" icon="fa-times" title="Refuse" invisible="status != 'new'"/>
+                <field name="status" widget="badge"/>
+            </list>
+        </field>
+    </record>
+
+
+    <record id="action_estate_property_offer" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+</odoo>
+
