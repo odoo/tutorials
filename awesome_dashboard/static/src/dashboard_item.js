@@ -9,15 +9,10 @@ export class DashboardItem extends Component {
         },
         size: {
             type: Number,
-            optional: true,
-            // default: 1, // doesn't work
+            optional: true
         },
     };
-
-    setup() {
-        // Default size value
-        if (!this.props.size) {
-            this.props.size = 1;
-        }
+    static defaultProps = {
+        size: 1,
     }
 }
