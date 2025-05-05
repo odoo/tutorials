@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_list">
+        <div class="card d-inline-block m-2" style="width: 300px;">
+            <input t-ref="input" t-on-keyup="onInputEnter"/>
+            <t t-foreach="this.todos" t-as="i" t-key="i.id">
+                <p t-att-class="{'text-muted': i.isCompleted, 'text-decoration-line-through': i.isCompleted}">
+                    <TodoItem id="i.id" description="i.description" isCompleted="i.isCompleted" toggle.bind="toggle" removeTodo.bind="removeTodo"/>
+                </p>
+            </t>
+        </div>
+    </t>
+
+</templates>

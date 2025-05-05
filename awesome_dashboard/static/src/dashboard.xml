@@ -2,7 +2,22 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <button t-on-click="openCustomers">Customers</button>
+        <button t-on-click="openLeads">Leads</button>
+        <Layout className="'o_dashboard h-100'" display="display">
+
+            <DashboardItem size="2">
+            the average number of t-shirts by order
+                <t t-esc="statistics.average_quantity"/>
+            </DashboardItem>
+
+            <DashboardItem size="2">
+            the average time (in hours) elapsed between the
+                moment an order is created, and the moment is it sent
+                <t t-esc="statistics.average_time"/>
+            </DashboardItem>
+
+        </Layout>
     </t>
 
 </templates>

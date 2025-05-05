@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div>
+            <input type="checkbox" t-on-change="toggle"/>
+            <t t-esc="props.id"/>
+.
+            <t t-out="props.description"/>
+            <button t-on-click="removeTodo">
+                <span class="fa fa-remove"/>
+            </button>
+
+        </div>
+    </t>
+
+</templates>
