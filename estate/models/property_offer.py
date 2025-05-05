@@ -63,9 +63,13 @@ class PropertyOffer(models.Model):
                     "There is already an accepted offer for this property"
                 )
             record.status = "accepted"
-            record.property_id.state = "offer_accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer = record.partner_id
+            record.property_id.write(
+                {
+                    "state": "offer_accepted",
+                    "selling_price": record.price,
+                    "buyer_id": record.partner_id,
+                }
+            )
 
     def action_refuse_offer(self):
         for record in self:
@@ -73,10 +77,10 @@ class PropertyOffer(models.Model):
             if record.property_id.selling_price == record.price:
                 record.property_id.selling_price = 0
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
         property_id = self.env["estate.property"].browse(vals["property_id"])
-        if property_id.best_price > vals["price"] or not vals["price"]:
+        if property_id.best_price > vals.get("price", 0):
             raise ValidationError("Offer must be higher than the best price")
         if property_id.state == "new":
             property_id.state = "offer_received"

@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare
+from odoo.tools.translate import _
 
 
 class Estate(models.Model):
@@ -15,7 +16,7 @@ class Estate(models.Model):
     description = fields.Char()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=fields.Date.today() + relativedelta(months=+3)
+        copy=False, default=lambda self: fields.Date.today() + relativedelta(months=+3)
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -113,10 +114,12 @@ class Estate(models.Model):
                     0.9 * record.expected_price,
                     precision_digits=2,
                 )
-                == -1
+                < 0
             ):
                 raise ValidationError(
-                    "The selling price can not be less than 90 percent of the expected price"
+                    _(
+                        "The selling price cannot be less than 90 percent of the expected price"
+                    )
                 )
 
     @api.ondelete(at_uninstall=False)
