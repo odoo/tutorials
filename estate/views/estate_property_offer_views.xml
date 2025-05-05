@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="estate_property_offer_list" model="ir.ui.view">
+            <field name="name">estate.property.offer.list</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <list editable="bottom"
+                      decoration-success="state == 'accepted'"
+                      decoration-danger="state == 'refused'">
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                    <field name="date_deadline"/>
+                    <field name="validity"/>
+                    <button name="action_accept" type="object" class="oe_stat_button"
+                            icon="fa-check" string=" " invisible="state=='accepted'"/>
+                    <button name="action_refuse" type="object" class="oe_stat_button"
+                            icon="fa-close" string=" " invisible="state=='refused'"/>
+                    <field name="state" column_invisible="1"/>
+                    <field name="property_type_id"/>
+                </list>
+            </field>
+        </record>
+        <record id="estate_property_offer_action" model="ir.actions.act_window">
+            <field name="name">Offers</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[("property_type_id", "=", active_id)]</field>
+        </record>
+    </data>
+</odoo>
