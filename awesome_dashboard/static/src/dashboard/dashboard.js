@@ -7,14 +7,17 @@ import { useService } from "@web/core/utils/hooks";
 import { browser } from "@web/core/browser/browser";
 import { ConfigDialog } from "./config_dialog/config_dialog";
 import { Card } from "./cards/card";
+import { session } from "@web/session";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, Card, ConfigDialog, CheckBox };
 
     setup() {
+        this.useLocalStorage = false;
         this.display = { controlPanel: {} };
         this.action = useService("action");
+        this.orm = useService("orm");
         this.dialogService = useService("dialog");
         this.stats = useService("awesome_dashboard.statistics");
         this.statistics = useState(this.stats.loadStatistics());
@@ -35,22 +38,40 @@ class AwesomeDashboard extends Component {
             views: [[false, "list"], [false, "form"]],
         });
     }
-    
+
     saveVisibility(states) {
-        browser.localStorage.setItem("awesome_dashboard_visibility", JSON.stringify(states));
+        if (this.useLocalStorage) {
+            browser.localStorage.setItem("awesome_dashboard_visibility", JSON.stringify(states));
+        } else {
+            this.orm.call(
+                "res.users.settings",
+                "set_res_users_settings",
+                [[session.storeData.Store.settings.id]],
+                {
+                    new_settings: { "dashboard_layout": JSON.stringify(states) }
+                }
+            );
+        }
         this.applyVisibility(states);
     }
 
     loadVisibility() {
-        const localStorage = browser.localStorage.getItem("awesome_dashboard_visibility");
-        let states = {};
-        if (localStorage) {
-            states = JSON.parse(localStorage);
+        let json;
+        if (this.useLocalStorage) {
+            json = browser.localStorage.getItem("awesome_dashboard_visibility");
         } else {
-            registry.category("awesome_dashboard").get("items")
-            .forEach((item) => states[item.id] = true);
+            json = session.storeData.Store.settings.dashboard_layout;
         }
-        return states ;
+
+        if (json) {
+            return JSON.parse(json);
+        } else {
+            // Not defined yet!
+            let states = {};
+            registry.category("awesome_dashboard").get("items")
+                .forEach((item) => states[item.id] = true);
+            return states;
+        }
     }
 
     applyVisibility(states) {
