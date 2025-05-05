@@ -1,8 +1,9 @@
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
+import { rpc } from "@web/core/network/rpc";
 
 
 class AwesomeDashboard extends Component {
@@ -12,6 +13,9 @@ class AwesomeDashboard extends Component {
     setup(){
         this.myDisplay = {controlPanel: {}};
         this.action = useService("action");
+        onWillStart(async () => {
+            this.statistics = await rpc("/awesome_dashboard/statistics");
+        });
     }
 
     openCustomersView(){
