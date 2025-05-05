@@ -4,9 +4,13 @@
         <div class="p-3">
             Hello world. 
         </div>
-        <Card cardtitle="'card1'" cardtext="'card-content1'"></Card> 
-        <Card cardtitle="'card'" cardtext="this.state.value"></Card>
-        <Counter onchange = "this.onchange"></Counter>
+        <Card cardtitle="'card1'">
+            <Counter onchange = "this.onchange"></Counter>
+        </Card> 
+        <Card cardtitle="'card'">
+            <Counter onchange = "this.onchange"></Counter>
+        </Card>
         <div t-esc= "state.sum"></div>
+        <Todolist></Todolist>
     </t>
 </templates>

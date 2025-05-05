@@ -1,5 +1,15 @@
-<?xml version="1.0" encoding="UTF-8" ?> <templates xml:space="preserve">
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
     <t t-name="awesome_owl.todolist">
-        
+        <input 
+            t-ref="inputRef" 
+            type="text" 
+            t-model="this.state.value" 
+            placeholder="Add a new todo" 
+            t-on-keyup="addTodo"
+        />
+        <div t-foreach="this.state.todos" t-as="todos" t-key = "todos.id">
+            <TodoItem todo="todos" toggleState= "toggleState" removeTodo="removeTodo"></TodoItem>
+        </div> 
     </t>
 </templates>

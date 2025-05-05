@@ -1,10 +1,11 @@
 import { Component, markup, useState } from "@odoo/owl";
 import { Counter } from "./counter/counter";
 import { Card } from "./Card/card";
+import { Todolist } from "./todolist/todolist";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
-    static components = { Card, Counter };
+    static components = { Card, Counter, Todolist};
     setup(){
         this.onchange = this.onchange.bind(this);
         this.state = useState({
@@ -12,7 +13,7 @@ export class Playground extends Component {
             sum: 0
         });
     }
-    
+
     onchange(){
         this.state.sum++;
     }

@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" ?> <templates xml:space="preserve">
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
     <t t-name="awesome_owl.cards">
        <div class="card d-inline-block m-2" style="width: 18rem;">
           <div class="card-body">
             <h5 class="card-title"><t t-out="props.cardtitle"/></h5>
             <p class="card-text">
-              <t t-out="props.cardtext"/>
-            </p>
+                <span t-on-click="toggleCounter"> toggle </span>
+                <t t-if="this.state.opened" t-slot="default" />
+            </p>    
         </div>
       </div>    
     </t>
 </templates>
-
