@@ -9,7 +9,7 @@ export class TodoList extends Component {
     setup() {
         this.state = useState({
             todos: [],
-            idCounter: 0
+            idCounter: 0,
         });
         useAutofocus("input_todo");
     };
@@ -18,7 +18,7 @@ export class TodoList extends Component {
         if (ev.keyCode === 13) {
             this.state.idCounter++
             this.state.todos.push({
-                'id': this.state.idCounter, 'description': ev.target.value, 'isCompleted': false
+                "id": this.state.idCounter, "description": ev.target.value, "isCompleted": false
             });
             ev.target.value = "";
         }

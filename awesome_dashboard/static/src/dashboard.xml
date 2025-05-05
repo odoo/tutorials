@@ -4,7 +4,10 @@
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <button t-on-click="openCustomersView">Customers</button>
         <button t-on-click="openLeadsView">Leads</button>
-        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">some content</Layout>
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <DashboardItem>Card 1 Content</DashboardItem>
+            <DashboardItem size="2">Card 2 Content</DashboardItem>
+        </Layout>
     </t>
 
 </templates>
