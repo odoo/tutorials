@@ -74,9 +74,7 @@ class EstatePropertyOffer(models.Model):
         if self.property_id.status == "sold":
             raise UserError(f"Property with name {self.property_id.name} has already been sold.")
 
-        has_offer_accepted = self.env["estate.property.offer"].search_count(
-            [("status", "=", "accepted"), ("property_id", "=", self.property_id.id)], limit=1
-        )
+        has_offer_accepted = self.property_id.status == "offer_accepted"
 
         if has_offer_accepted:
             raise UserError(f"Property with name {self.property_id.name} has an accepted offer.")
