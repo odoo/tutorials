@@ -38,8 +38,5 @@ class EstateProperty(models.Model):
                 ],
             }
 
-            print("Method from inherited model called from Estate Account module")
-            print(f"Journal values:${invoice_vals}")
-
             self.env["account.move"].create(invoice_vals)
         return super().action_sold()
