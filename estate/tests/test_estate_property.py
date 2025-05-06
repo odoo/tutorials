@@ -24,14 +24,12 @@ class TestEstate(TransactionCase):
             self.property.mark_as_sold()
 
     def test_create_offer_with_lower_best_price(self):
-        #define best price
         self.env["estate_property_offer"].create({
             "price": 250000,
             "partner_id": self.partner.id,
             "property_id": self.property.id,
             "date_deadline": fields.Datetime.today()
         })
-        #try to create offer less than 90% of the best price
         with self.assertRaises(UserError):
             self.env["estate_property_offer"].create({
                 "price": 20,

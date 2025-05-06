@@ -1,5 +1,5 @@
 {
-    'name': "18.0-estate-x-invoicing-umbm",
+    'name': "Estate X Invoicing",
     'summary': "Short (1 phrase/line) summary of the module's purpose",
     'author': "My Company",
     'website': "https://www.yourcompany.com",
