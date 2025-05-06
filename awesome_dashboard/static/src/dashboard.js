@@ -1,21 +1,17 @@
-import { Component, onWillStart } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { DashboardItem } from "./dashboard_item";
-import { CamembertChart } from "./camembert_chart/camembert_chart";
+import { PieChart } from "./pie_chart/pie_chart";
 import { Layout } from "@web/search/layout";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, CamembertChart };
+    static components = { Layout, DashboardItem, PieChart };
 
     setup() {
         this.action = useService("action");
-        this.statistics = useService("awesome_dashboard.statistics");
-
-        onWillStart(async () => {
-            this.statistics = await this.statistics.loadStatistics();
-        });
+        this.statistics = useState(useService("awesome_dashboard.statistics"));
     }
 
     showKanbanCustomersView() {

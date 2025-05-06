@@ -57,8 +57,8 @@
                 </DashboardItem>
 
                 <DashboardItem size="2">
-                    Beautiful CAMEMBERT 🥰
-                    <CamembertChart title="'A beautiful graph'" values="statistics['orders_by_size']"/>
+                    Beautiful  C̶A̶M̶E̶M̶B̶E̶R̶T̶ pie chart (to faire plaisir à Serge ;D ) 🥰
+                    <PieChart title="'A beautiful graph'" values="statistics['orders_by_size']"/>
                 </DashboardItem>
             </div>
         </Layout>

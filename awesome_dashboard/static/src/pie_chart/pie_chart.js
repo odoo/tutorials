@@ -1,12 +1,12 @@
 import { Component, onWillStart, onMounted, onWillUnmount, useRef } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 
-export class CamembertChart extends Component {
-    static template = "awesome_dashboard.CamembertChart";
+export class PieChart extends Component {
+    static template = "awesome_dashboard.PieChart";
     static props = {
         title: String,
         values: Object,
-    }
+    };
 
     setup() {
         this.canvasRef = useRef("canvas");
@@ -23,17 +23,17 @@ export class CamembertChart extends Component {
             if (this.chart) {
                 this.chart.destroy();
             }
-        })
+        });
     };
 
     renderChart() {
         this.chart = new Chart(this.canvasRef.el, {
-                type: 'pie',
+                type: "pie",
                 data: {
                     labels: Object.keys(this.props.values),
                     datasets: [{
                         data: Object.values(this.props.values),
-                        backgroundColor: ['green', 'blue', 'orange', 'red', 'purple'],
+                        backgroundColor: ["green", "blue", "orange", "red", "purple"],
                         hoverOffset: 3
                     }],
                 },
@@ -41,7 +41,7 @@ export class CamembertChart extends Component {
                     responsive: true,
                     plugins: {
                         legend: {
-                            position: 'top',
+                            position: "top",
                         },
                         title: {
                             display: true,
@@ -51,5 +51,5 @@ export class CamembertChart extends Component {
                 }
             }
         )
-    }
+    };
 }
