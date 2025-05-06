@@ -110,7 +110,7 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_canceled(self):
         if any(record.state not in ("new", "canceled") for record in self):
-            raise UserError(_("Can't delete an active property"))
+            raise UserError(_("Cannot delete an active property"))
 
     def action_cancel_property(self) -> bool:
         if "sold" in self.mapped("state"):
@@ -121,5 +121,7 @@ class EstateProperty(models.Model):
     def action_sold_property(self) -> bool:
         if "canceled" in self.mapped("state"):
             raise UserError(_("Cannot sell a cancel property"))
+        if not self.offer_ids:
+            raise UserError(_("Cannot sell a property without an offer"))
         self.write({"state": "sold"})
         return True

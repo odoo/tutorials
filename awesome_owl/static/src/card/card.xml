@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.card">
+    <t t-name="awesome_owl.Card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title"> 
-                    <t t-esc="props.title"/></h5>
+                    <t t-esc="props.title"/>
+                </h5>
                 <button t-on-click="toggleContent">Toggle</button>
-                <p class="card-text" t-if="state.isOpen" >
+                <p class="card-text" t-att-style=" state.isOpen ? '' : 'display: none;'" >
                     <t t-slot="default"/>
                 </p>
             </div>
