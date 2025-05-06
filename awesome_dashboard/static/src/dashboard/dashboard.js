@@ -1,6 +1,5 @@
 import { Component, useState } from "@odoo/owl";
-import { DashboardItem } from "./dashboard_item"
-import { itemsList } from "../dashboard_items";
+import { DashboardItem } from "./dashboard_item";
 import { Layout } from "@web/search/layout";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -12,7 +11,7 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
-        this.items = itemsList;
+        this.items = registry.category("awesome_dashboard").getAll();;
     }
 
     showKanbanCustomersView() {

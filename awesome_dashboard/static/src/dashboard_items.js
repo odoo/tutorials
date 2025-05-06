@@ -1,7 +1,8 @@
 import { NumberCard } from "./dashboard/cards/number_card/number_card";
 import { PieChartCard } from "./dashboard/cards/pie_chart_card/pie_chart_card";
+import { registry } from "@web/core/registry";
 
-export const itemsList = [
+const itemsList = [
     {
        id: "nb_new_orders",
        description: "Number of new orders this month",
@@ -51,13 +52,16 @@ export const itemsList = [
     },
     {
        id: "orders_by_size_chart",
-       description: "Beautiful  C̶A̶M̶E̶M̶B̶E̶R̶T̶ pie chart (to faire plaisir à Serge ;D ) 🥰",
+       description: "Beautiful C̶A̶M̶E̶M̶B̶E̶R̶T̶ pie chart (to faire plaisir à Serge ;D ) 🥰",
        Component: PieChartCard,
        size: 2,
        props: (data) => ({
-          title: "A beautiful graph",
+          title: "Beautiful C̶A̶M̶E̶M̶B̶E̶R̶T̶ pie chart (to faire plaisir à Serge ;D ) 🥰",
           values: data.orders_by_size
        }),
     }
  ];
  
+for (let index = 0 ; index < itemsList.length ; index++) {
+   registry.category("awesome_dashboard").add(index, itemsList[index]);
+};
