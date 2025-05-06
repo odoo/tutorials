@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.config_dialog">
+        <Dialog size="'md'" title="props.title" modalRef="modalRef">
+            <p t-out="props.description"/>
+            <t t-foreach="props.items" t-as="item" t-key="item.id">
+                <label class="mt-1 mb-0 flex-fill d-flex gap-2">
+                    <input class="form-check-input" type="checkbox" t-att-id="item.id" t-att-checked="item.enabled" t-on-change="onChange"/>
+                    <t t-esc="item.label"/>
+                </label>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="_confirm">Done</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
