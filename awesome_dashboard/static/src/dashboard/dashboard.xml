@@ -8,6 +8,10 @@
                 <button class="btn btn-primary" t-on-click="showLeads">Leads</button>
             </t>
 
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn fa fa-gear border-0 p-0 ms-1" t-on-click="showSettings"/>
+            </t>
+
             <t t-foreach="items" t-as="item" t-key="item.id">
                 <DashboardItem size="item.size || 1">
                     <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
