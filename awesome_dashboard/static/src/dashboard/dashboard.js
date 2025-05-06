@@ -1,17 +1,18 @@
 import { Component, useState } from "@odoo/owl";
-import { DashboardItem } from "./dashboard_item";
-import { PieChart } from "../pie_chart/pie_chart";
+import { DashboardItem } from "./dashboard_item"
+import { itemsList } from "../dashboard_items";
 import { Layout } from "@web/search/layout";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem };
 
     setup() {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
+        this.items = itemsList;
     }
 
     showKanbanCustomersView() {

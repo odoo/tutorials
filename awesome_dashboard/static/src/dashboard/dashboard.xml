@@ -8,59 +8,12 @@
                 <button class="btn btn-primary" t-on-click="showLeads">Leads</button>
             </t>
 
-            <div class="d-flex">
-                <DashboardItem>
-                    Ça c'est du contenu
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size || 1">
+                    <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                    <t t-component="item.Component" t-props="itemProp" />
                 </DashboardItem>
-
-                <DashboardItem size="2">
-                    I love food!
-                </DashboardItem>
-
-                <DashboardItem/>
-            </div>
-
-            <div class="d-flex flex-wrap">
-                <DashboardItem>
-                    Number of new orders this month
-                    <font color="green" size="50">
-                        <t t-out="statistics.nb_new_orders"/>
-                    </font>
-                </DashboardItem>
-
-                <DashboardItem>
-                    Total amount of new orders this month
-                    <font color="green" size="50">
-                        <t t-out="statistics.total_amount"/>
-                    </font>
-                </DashboardItem>
-
-                <DashboardItem size="2">
-                    Average amount of t-shirt by order this month
-                    <font color="green" size="50">
-                        <t t-out="statistics.average_quantity"/>
-                    </font>
-                </DashboardItem>
-
-                <DashboardItem>
-                    Number of cancelled orders this month
-                    <font color="green" size="50">
-                        <t t-out="statistics.nb_cancelled_orders"/>
-                    </font>
-                </DashboardItem>
-
-                <DashboardItem size="2">
-                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
-                    <font color="green" size="50">
-                        <t t-out="statistics.average_time"/>
-                    </font>
-                </DashboardItem>
-
-                <DashboardItem size="2">
-                    Beautiful  C̶A̶M̶E̶M̶B̶E̶R̶T̶ pie chart (to faire plaisir à Serge ;D ) 🥰
-                    <PieChart title="'A beautiful graph'" values="statistics['orders_by_size']"/>
-                </DashboardItem>
-            </div>
+            </t>
         </Layout>
     </t>
 
