@@ -45,6 +45,11 @@
                     </h3>
                 </div>
             </DashboardItem>
+            <DashboardItem size="2">
+                <div style="text-align: center;">
+                    <PieChart data="this.statistics"/>
+                </div>
+            </DashboardItem>
         </Layout>
     </t>
 
