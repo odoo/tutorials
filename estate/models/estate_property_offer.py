@@ -33,15 +33,17 @@ class EstatePropertyOffer(models.Model):
 
     def action_set_accepted(self):
         for record in self:
-            if any(offer.status == "accepted" for offer in record.property_id.offer_ids):
+            property_rec = record.property_id
+            if any(offer.status == "accepted" for offer in property_rec.offer_ids):
                 raise UserError("An offer was already accepted for this property")
 
             record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.status = "offer_accepted"
-
-            remaining_offers = record.property_id.offer_ids.filtered(
+            property_rec.update({
+                'selling_price': record.price,
+                'buyer_id': record.partner_id.id,
+                'status': 'offer_accepted',
+                })
+            remaining_offers = property_rec.offer_ids.filtered(
                 lambda offer: offer.id != record.id
             )
             remaining_offers.write({"status": "refused"})

@@ -29,5 +29,5 @@ class EstateProperty(models.Model):
             except AccessError:
                 raise AccessError("You don't have the permission to sold on this record")
 
-            self.env['account.move'].sudo().create(invoice_vals)
+        self.env['account.move'].sudo().create(invoice_vals)
         return super().action_set_sold()
