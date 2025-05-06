@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+    <t t-name="website_helpdesk_tickets.s_helpdesk_tickets_card">
+        <t class="s_helpdesk_tickets">
+            <div class="my-5 container">
+                <h2 class="text-center mb-4">Helpdesk Tickets</h2>
+                <div class="g-4 row">
+                    <t t-if="result.length == 0">
+                        <div class="container">
+                            <p class="text-center">No tickets to display</p>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <p class="text-center mb-5">Here are the latest support tickets for your selected team.</p>
+                        <t t-foreach="result" t-as="ticket" t-key="ticket.id">
+                            <div class="col-md-4">
+                                <div class="card h-100 shadow-lg border-1 rounded-4">
+                                    <div class="card-body d-flex flex-column p-4">
+                                        <h5 class="card-title mb-3 text-primary fw-semibold">
+                                            <t t-esc="ticket.name"/>
+                                        </h5>
+                            
+                                        <ul class="list-unstyled text-muted small mb-0">
+                                            <li class="mb-1">
+                                                <strong>Assigned To: </strong>
+                                                <t t-if="ticket.user_id">
+                                                    <t t-out="ticket.user_id[1]"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span class="fst-italic text-danger">Unassigned</span>
+                                                </t>
+                                            </li>
+                                            <li class="mb-1">
+                                                <strong>Customer: </strong>
+                                                <t t-if="ticket.partner_id">
+                                                    <t t-out="ticket.partner_id[1]"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span class="fst-italic text-muted">Not Set</span>
+                                                </t>
+                                            </li>
+                                            <li class="mb-1">
+                                                <strong>Priority: </strong>
+                                                <t t-if="ticket.priority">
+                                                    <t t-esc="ticket.priority"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <span class="text-warning">Normal</span>
+                                                </t>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </t>
+
+    <t t-name="website_helpdesk_tickets.s_helpdesk_tickets_list">
+        <t class="s_helpdesk_tickets">
+            <div class="my-5 container">
+                <h2 class="text-center mb-4">Helpdesk Tickets</h2>
+                <div>
+                    <t t-if="result.length == 0">
+                        <div class="container">
+                            <p class="text-center">No tickets to display</p>
+                        </div>
+                    </t>
+                    <t t-else="">
+                        <p class="text-center mb-4">Here are the latest support tickets for your selected team.</p>
+                        <ul class="list-group">
+                            <t t-foreach="result" t-as="ticket" t-key="ticket.id">
+                                <li class="list-group-item d-flex flex-column gap-2 py-3 px-4">
+                                    <h5 class="mb-1 text-primary fw-semibold">
+                                        <t t-esc="ticket.name"/>
+                                    </h5>
+                                    <div class="text-muted small">
+                                        <p class="mb-1">
+                                            <strong>Assigned To:</strong>
+                                            <t t-if="ticket.user_id">
+                                                <t t-out="ticket.user_id[1]"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="fst-italic text-danger">Unassigned</span>
+                                            </t>
+                                        </p>
+                                        <p class="mb-1">
+                                            <strong>Customer:</strong>
+                                            <t t-if="ticket.partner_id">
+                                                <t t-out="ticket.partner_id[1]"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="fst-italic text-muted">Not Set</span>
+                                            </t>
+                                        </p>
+                                        <p class="mb-0">
+                                            <strong>Priority:</strong>
+                                            <t t-if="ticket.priority">
+                                                <t t-esc="ticket.priority"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="text-warning">Normal</span>
+                                            </t>
+                                        </p>
+                                    </div>
+                                </li>
+                            </t>
+                        </ul>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </t>
+    
+    
+</templates>
