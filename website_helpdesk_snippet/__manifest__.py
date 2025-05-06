@@ -14,9 +14,9 @@
         ],
         'website.assets_wysiwyg': [
             'website_helpdesk_snippet/static/src/snippets/s_helpdesk_ticket/options.js',
-        ],    
+        ],
     },
     'application': False,
     'installable': True,
-    'license':"LGPL-3",
+    'license': "LGPL-3",
 }
