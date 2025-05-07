@@ -27,6 +27,11 @@ publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
             this.layout = 'grid';
             this.limit = 9;
         }
+
+        const template = this.layout === 'list'
+            ? 'website_dynamic_snippet.sale_order_snippet_list'
+            : 'website_dynamic_snippet.sale_order_snippet_grid';
+
         const domain = this.$target[0].dataset.confirmOrderOnly === 'true' ? [['state', '=', 'sale']] : [];
         const result = await this.orm.searchRead(
             'sale.order',
@@ -40,26 +45,30 @@ publicWidget.registry.get_product_tab = publicWidget.Widget.extend({
         );
         if (result && result.length) {
             const content = await renderToElement(
-                'website_dynamic_snippet.sale_order_snippet',
-                { result: result, layout: this.layout },
+                template,
+                { result: result },
             );
-
-            const newTableRows = content.querySelectorAll('.list_sale_order > tbody > tr');
-            const existingTableBody = this.el.querySelector('.list_sale_order > tbody');
-
-            const newCardCols = content.querySelectorAll('.card_sale_order > .col-md-4');
-            const existingCardWrapper = this.el.querySelector('.card_sale_order');
-
-            if (this.offset === 0) {
-                this.el.innerHTML = '';
-                this.el.appendChild(content);
-            } else {
-                if (existingTableBody && newTableRows.length) {
-                    newTableRows.forEach(row => existingTableBody.appendChild(row));
+            if(this.layout === 'list') {
+                const newTableRows = content.querySelectorAll('.list_sale_order > tbody > tr');
+                const existingTableBody = this.el.querySelector('.list_sale_order > tbody');
+                if (this.offset === 0) {
+                    this.el.innerHTML = '';
+                    this.el.appendChild(content);
+                } else {
+                    if (existingTableBody && newTableRows.length) {
+                        newTableRows.forEach(row => existingTableBody.appendChild(row));
+                    }
                 }
-
-                if (existingCardWrapper && newCardCols.length) {
-                    newCardCols.forEach(card => existingCardWrapper.appendChild(card));
+            } else {
+                const newCardCols = content.querySelectorAll('.card_sale_order > .col-md-4');
+                const existingCardWrapper = this.el.querySelector('.card_sale_order');
+                if (this.offset === 0) {
+                    this.el.innerHTML = '';
+                    this.el.appendChild(content);
+                } else {
+                    if (existingCardWrapper && newCardCols.length) {
+                        newCardCols.forEach(card => existingCardWrapper.appendChild(card));
+                    }
                 }
             }
 

@@ -1,44 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="website_dynamic_snippet.sale_order_snippet">
+    <t t-name="website_dynamic_snippet.sale_order_snippet_list">
         <div class="container my-5 categories_section">
             <h3 class="section_heading">Sale Order Details</h3>
             <div class="card_list_wrapper">
-                <t t-if="layout == 'list'">
-                    <table class="table list_sale_order">
-                        <thead>
-                            <tr>
-                                <th scope="col">Number</th>
-                                <th scope="col">Customer Name</th>
-                                <th scope="col">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <t t-foreach="result" t-as="sale_order" t-key="sale_order.id">
-                                <tr>
-                                    <th scope="row"><t t-esc="sale_order.id"/></th>
-                                    <td><t t-esc="sale_order.partner_id[1]"/></td>
-                                    <td><t t-esc="sale_order.state"/></td>
-                                </tr>
-                            </t>
-                        </tbody>
-                    </table>
-                </t>
-                <t t-else="">
-                    <div class="row card_sale_order">
+                <table class="table list_sale_order">
+                    <thead>
+                        <tr>
+                            <th scope="col">Number</th>
+                            <th scope="col">Customer Name</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <t t-foreach="result" t-as="sale_order" t-key="sale_order.id">
-                            <div class="col-md-4 mb-4">
-                                <div class="card h-100">
-                                    <div class="card-body">
-                                        <h5 class="card-title">Order #<t t-esc="sale_order.id"/></h5>
-                                        <p class="card-text"><strong>Customer:</strong> <t t-esc="sale_order.partner_id[1]"/></p>
-                                        <p class="card-text"><strong>Status:</strong> <t t-esc="sale_order.state"/></p>
-                                    </div>
-                                </div>
-                            </div>
+                            <tr>
+                                <th scope="row"><t t-esc="sale_order.id"/></th>
+                                <td><t t-esc="sale_order.partner_id[1]"/></td>
+                                <td><t t-esc="sale_order.state"/></td>
+                            </tr>
                         </t>
-                    </div>
-                </t>
+                    </tbody>
+                </table>
                 <div class="text-center mt-3">
                     <button type="button" class="btn btn-primary load-more-button">
                         Load More
@@ -46,5 +29,31 @@
                 </div>
             </div>
         </div>
-        </t>
-    </templates>
+    </t>
+
+    <t t-name="website_dynamic_snippet.sale_order_snippet_grid">
+        <div class="container my-5 categories_section">
+            <h3 class="section_heading">Sale Order Details</h3>
+            <div class="card_list_wrapper">
+                <div class="row card_sale_order">
+                    <t t-foreach="result" t-as="sale_order" t-key="sale_order.id">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Order #<t t-esc="sale_order.id"/></h5>
+                                    <p class="card-text"><strong>Customer:</strong> <t t-esc="sale_order.partner_id[1]"/></p>
+                                    <p class="card-text"><strong>Status:</strong> <t t-esc="sale_order.state"/></p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="text-center mt-3">
+                    <button type="button" class="btn btn-primary load-more-button">
+                        Load More
+                    </button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
