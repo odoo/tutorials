@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="sale_order_highlight" name="Sale Order Details">
+        <section class="categories_section">
+            <div class="container">
+                <div class="alert alert-info">
+                    <h4>Your Category Highlight Tab snippet will be displayed here...
+                        Please save to view the snippet
+                    </h4>
+                </div>
+            </div>
+        </section>
+    </template>
+
+    <template id="category_highlight_snippet" inherit_id="website.snippets"
+        name="Sale Order Details Snippet">
+        <xpath expr="//snippets[@id='snippet_groups']" position="inside">
+            <t t-snippet="website_dynamic_snippet.sale_order_highlight"/>
+        </xpath>
+    </template>
+
+    <template id="s_dynamic_snippet_controller_layout" inherit_id="website.snippet_options">
+        <xpath expr="." position="inside">
+            <div data-js="DynamicSnippetOptions" data-selector=".categories_section">
+                <we-select data-name="snippet_data_view" string="View" data-no-preview="true" data-reload="/">
+                    <we-button data-set-layout="grid" data-name="grid_view_opt">Grid</we-button>
+                    <we-button data-set-layout="list" data-name="list_view_opt">List</we-button>
+                </we-select>
+                <we-checkbox data-confirm-order-only="true" class="btn btn-primary" data-no-preview="true">Show Confirm Orders</we-checkbox>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
