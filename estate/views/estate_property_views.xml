@@ -28,7 +28,11 @@
                         <field name="x_name" placeholder="My new house"/>
                     </h1>
                     <group>
+                        <field name="x_property_tag_ids" widget="many2many_tags" string=" " options="{'color_field': 'color'}"/>
+                    </group>
+                    <group>
                         <group>
+                            <field name="x_property_type_id"/>
                             <field name="x_postcode"/>
                             <field name="x_date_availability"/>
                         </group>
@@ -48,6 +52,17 @@
                                 <field name="x_garden"/>
                                 <field name="x_garden_area" invisible="not x_garden"/>
                                 <field name="x_garden_orientation" invisible="not x_garden"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="x_offer_ids"/>
+                            </group>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="x_user_id"/>
+                                <field name="x_partner_id"/>
                             </group>
                         </page>
                     </notebook>
