@@ -7,7 +7,7 @@
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+        <field name="name">estate.property.view.list</field>
         <field name="model">x_estate.property</field>
         <field name="arch" type="xml">
             <list>
@@ -19,10 +19,40 @@
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+        <field name="name">estate.property.view.form</field>
         <field name="model">x_estate.property</field>
         <field name="arch" type="xml">
-            
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="x_name" placeholder="My new house"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="x_postcode"/>
+                            <field name="x_date_availability"/>
+                        </group>
+                        <group>
+                            <field name="x_expected_price"/>
+                            <field name="x_selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="x_description"/>
+                                <field name="x_bedrooms"/>
+                                <field name="x_living_area"/>
+                                <field name="x_facades"/>
+                                <field name="x_garage"/>
+                                <field name="x_garden"/>
+                                <field name="x_garden_area" invisible="not x_garden"/>
+                                <field name="x_garden_orientation" invisible="not x_garden"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
         </field>
     </record>
 </odoo>
