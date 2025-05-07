@@ -2,7 +2,7 @@
     'name': 'frva-estate-account',
     'license': 'LGPL-3',
     'depends': [
-        'estate',
+        'estate_classic',
         'account'
     ],
     'installable': True,

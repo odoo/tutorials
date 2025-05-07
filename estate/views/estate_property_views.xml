@@ -56,14 +56,13 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <group>
-                                <field name="x_offer_ids"/>
-                            </group>
+                            <field name="x_offer_ids"/>
                         </page>
                         <page string="Other info">
                             <group>
                                 <field name="x_user_id"/>
                                 <field name="x_partner_id"/>
+                                <field name="x_api_published"/>
                             </group>
                         </page>
                     </notebook>

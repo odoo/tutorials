@@ -2,7 +2,7 @@
     'name': 'estate',
     'license': 'LGPL-3',
     'depends': [
-        'base',
+        'website',
     ],
     'data': [
         'models/model_real_estate_property_type.xml',
