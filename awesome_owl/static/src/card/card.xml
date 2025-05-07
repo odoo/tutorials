@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <!-- Props allow to access fields in the parent. DO NOT MODIFY -->
+                    <t t-esc="props.card_title"/>
+                    <button class="btn btn-primary" t-on-click="toggleCard">Click Me!</button>
+                </h5>
+                <div t-if="this.state.opened">
+                    <t t-slot="default">
+                        <Counter/>
+                    </t>
+                    <div>
+                        <t t-out="html_bloc_1"/>
+                        <t t-out="html_bloc_2"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -44,11 +44,12 @@ class EstatePropertyOffer(models.Model):
     def action_btn_accept(self):
         self.ensure_one()
         self.status = "accepted"
-        self.property_id.buyer_id = self.partner_id.id
-        self.property_id.selling_price = self.price
-        self.property_id.state = 'offer_accepted'
+        self.property_id.write({
+            'buyer_id': self.partner_id.id,
+            'selling_price': self.price,
+            'state': 'offer_accepted'
+        })
 
     def action_btn_refuse(self):
-        for record in self:
-            record.status = "refused"
+        self.status = "refused"
         return True

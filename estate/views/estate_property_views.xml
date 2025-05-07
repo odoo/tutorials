@@ -132,7 +132,7 @@
                             Best Offer:
                             <field name="best_offer"/>€
                         </div>
-                        <div  t-if="record.state.raw_value == 'offer_accepted'">
+                        <div  t-elif="record.state.raw_value == 'offer_accepted'">
                             Selling price:
                             <field name="selling_price"/>€
                         </div>
