@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">Sale.Order.View.Form.Inherit.kit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//sheet//group[@name='sale_header']//group[@name='order_details']"
+                position="inside">
+                <field name="print_in_report" />
+            </xpath>
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <button name='open_sub_product_wizard' type="object" string="Add Sub-Product"
+                    invisible="not is_kit or state=='sale'" />
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_template_id']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product_ol</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='product_uom_qty']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product_ol</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_unit']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product_ol</attribute>
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_unit']"
+                position="after">
+                <field name="display_price" string="Unit Price" />
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='display_price']"
+                position="attributes">
+                <attribute name="readonly">is_sub_product_ol</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_subtotal']"
+                position="after">
+                <field name="display_sub_total" string="Amount" />
+            </xpath>
+            <xpath expr="//field[@name='order_line']//list//field[@name='price_subtotal']"
+                position="attributes">
+                <attribute name="column_invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
