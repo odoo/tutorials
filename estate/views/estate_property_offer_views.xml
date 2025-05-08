@@ -10,9 +10,9 @@
                     <field name="valid_until"/>
                     <field name="status"/>
                     <button name="action_accept_offer" type="object" icon="fa-check" title="Accept Offer"
-                            invisible="parent.state in ('sold', 'canceled', 'offer_accepted') or status == 'accepted'"/>
+                            invisible="partner_id.state in ('sold', 'canceled', 'offer_accepted') or status == 'accepted'"/>
                     <button name="action_refuse_offer" type="object" icon="fa-times" title="Refuse Offer"
-                            invisible="parent.state in ('sold', 'canceled', 'offer_accepted') or status == 'refused'"/>
+                            invisible="partner_id.state in ('sold', 'canceled', 'offer_accepted') or status == 'refused'"/>
                 </list>
             </field>
         </record>
