@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+    <t t-name="website_helpdesk_snippet.helpdesk_ticket_card">
+        <section class="categories_section">
+            <div class="container">
+                <h3 class="section_heading">Helpdesk Ticket</h3>
+                <div class="row">
+                    <t t-foreach="result" t-as="ticket" t-key="ticket.id">
+                        <div class="col-md-4 mb-3">
+                            <div class="card p-3 shadow-sm h-100">
+                                <h5 class="card-title" t-esc="ticket.name"/>
+                                <p><strong>Name:</strong> <t t-out="ticket.name or 'NO USER'"/></p>
+                                <p><strong>Assigned to:</strong> 
+                                    <t t-out="ticket.user_id and ticket.user_id[1] or 'Not Assigned'"/>
+                                </p>
+                                <p><strong>Customer:</strong> 
+                                    <t t-out="ticket.partner_id and ticket.partner_id[1] or 'Unknown'"/>
+                                </p>
+                                <p><strong>Priority:</strong> 
+                                    <t t-out="ticket.priority or 'Normal'"/>
+                                </p>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </section>
+    </t>
+
+    <t t-name="website_helpdesk_snippet.helpdesk_ticket_list">
+        <div class="container">
+        <div class="table-responsive">
+            <table class="table table-hover">
+            <thead>
+                <tr>
+                <th>Ticket Name</th>
+                <th>Assigned To</th>
+                <th>Customer</th>
+                <th>Priority</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="result" t-as="ticket" t-key="ticket.id">
+                <tr t-att-data-ticket-priority="ticket.priority" t-att-data-ticket-id="ticket.id">
+                    <td><t t-esc="ticket.name"/></td>
+                    <td>
+                    <t t-out="ticket.user_id and ticket.user_id[1] or 'Not Assigned'"/>
+                    </td>
+                    <td>
+                    <t t-out="ticket.partner_id and ticket.partner_id[1] or 'Unknown'"/>
+                    </td>
+                    <td><t t-esc="ticket.priority or 'Normal'"/></td>
+                </tr>
+                </t>
+            </tbody>
+            </table>
+        </div>
+        </div>
+    </t>
+    
+</templates>
