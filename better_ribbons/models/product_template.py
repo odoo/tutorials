@@ -24,27 +24,32 @@ class ProductTemplate(models.Model):
 
         def _add_ribbon(ribbon):
             if ribbon.id != self.website_ribbon_id.id:
-                self.with_context(auto_assign_ribbon=True).write({
+                self.with_context(auto_assign_ribbon=True).sudo().write({
                     'website_ribbon_id': ribbon.id
                 })
 
-        stock_ribbon = product_ribbons.search([('assign', '=', 'out_of_stock')])
-        if stock_ribbon and self._is_sold_out() and not self.allow_out_of_stock_order:
-            return _add_ribbon(stock_ribbon[0])
+        if self._is_sold_out() and not self.allow_out_of_stock_order:
+            if stock_ribbon := product_ribbons.search(
+                [('assign', '=', 'out_of_stock')], limit=1
+            ):
+                return _add_ribbon(stock_ribbon)
 
-        sale_ribbon = product_ribbons.search([('assign', '=', 'sale')])
-        if sale_ribbon and (
-            products_prices.get('price_reduce')
-            < products_prices.get('base_price', self.list_price)
+        if products_prices.get('price_reduce') < products_prices.get(
+            'base_price', self.list_price
         ):
-            return _add_ribbon(sale_ribbon[0])
+            if sale_ribbon := product_ribbons.search(
+                [('assign', '=', 'sale')], limit=1
+            ):
+                return _add_ribbon(sale_ribbon)
 
-        new_ribbon = product_ribbons.search([('assign', '=', 'new')])
-        if new_ribbon and self.publish_date:
-            if (fields.Date.today() - self.publish_date).days <= new_ribbon.new_until:
-                return _add_ribbon(new_ribbon[0])
+        if self.publish_date:
+            if new_ribbon := product_ribbons.search([('assign', '=', 'new')], limit=1):
+                if (
+                    fields.Date.today() - self.publish_date
+                ).days <= new_ribbon.new_until:
+                    return _add_ribbon(new_ribbon)
 
-        return self.write({'website_ribbon_id': False})
+        return self.sudo().write({'website_ribbon_id': False})
 
     def write(self, vals):
         if 'website_ribbon_id' in vals:
