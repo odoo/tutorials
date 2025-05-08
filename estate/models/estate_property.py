@@ -1,5 +1,8 @@
-from odoo import fields, models
+from odoo import fields, api, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -74,3 +77,97 @@ class EstateProperty(models.Model):
     )
     
     tag_ids = fields.Many2many("estate.property.tag", string="Tags", widget="many2many_tags" )
+    
+    # Computed Fields & Onchange
+    
+    total_area = fields.Float(string="Total Area",compute="_compute_total_area")
+    
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+    
+    best_price = fields.Float("Best Offer", compute="_compute_best_price", store=True)
+    
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = 0.0
+
+    # Onchange
+    
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "North"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+
+    # Add Action Logic of "Cancel" & "Sold"
+    
+    def action_set_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Canceled property cannot be sold.")
+            record.state = "sold"
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Success',
+                'message': 'The property has been marked as sold.',
+                'sticky': False,
+                'type': 'success',  
+            }
+        }
+
+    def action_set_canceled(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold property cannot be canceled.")
+            record.state = "cancelled"
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Cancelled',
+                'message': 'The property has been marked as canceled.',
+                'sticky': False,
+                'type': 'warning',  
+            }
+        }
+        
+        
+        # SQL Constraints
+        
+    _sql_constraints = [
+        (
+            "check_expected_price_positive",
+            "CHECK(expected_price > 0)",
+            "The expected price must be strictly positive.",
+        ),
+        (
+            "check_selling_price_positive",
+            "CHECK(selling_price >= 0)",
+            "The selling price must be positive.",
+        ),
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price_threshold(self):
+        for record in self:
+            if record.selling_price:
+                if float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_digits=2
+                ) < 0:
+                    raise ValidationError(
+                        "The selling price cannot be lower than 90% of the expected price."
+                    )
