@@ -1,16 +1,38 @@
-from odoo import models, fields
+from odoo import api,models, fields
 from dateutil.relativedelta import relativedelta
-
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive."),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price must be positive."),
+    ]
+    
+
+    def action_cancel(self):
+        for prop in self:
+            if prop.state == 'sold':
+                raise UserError("Sold properties cannot be canceled.")
+            prop.state = 'canceled'
+        return True
+
+    def action_sold(self):
+        for prop in self:
+            if prop.state == 'canceled':
+                raise UserError("Canceled properties cannot be sold.")
+            prop.state = 'sold'
+        return True
 
     name = fields.Char(required=True)  # Required field
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date( default=lambda self: fields.Date.today() + relativedelta(months=3),copy=False)
     expected_price = fields.Float(required=True)  # Required field
-    selling_price = fields.Float(readOnly=True,copy=False)
+    selling_price = fields.Float(readonly=True,copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -25,6 +47,9 @@ class EstateProperty(models.Model):
             ('West', 'West'),
         ],
     )
+    _sql_constraints = [
+        ("unique_name", "UNIQUE(name)", "Tag name must be unique."),
+    ]
     active = fields.Boolean(default=True),
     state = fields.Selection(
         selection=[
@@ -47,3 +72,29 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user,  # Default to current user
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+
+    # Add to EstateProperty class
+    total_area = fields.Float(compute="_compute_total_area", string="Total Area")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for prop in self:
+         prop.total_area = prop.living_area + prop.garden_area
+
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for prop in self:
+         prop.best_price = max(prop.offer_ids.mapped("price")) if prop.offer_ids else 0.0
+    
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for prop in self:
+            # Skip check if selling price is zero (not set)
+            if not float_is_zero(prop.selling_price, precision_digits=2):
+                min_price = 0.9 * prop.expected_price
+                if float_compare(prop.selling_price, min_price, precision_digits=2) < 0:
+                    raise ValidationError(
+                        f"Selling price ({prop.selling_price}) cannot be lower than 90% of "
+                        f"the expected price ({prop.expected_price}). Minimum allowed: {min_price}"
+                    )
