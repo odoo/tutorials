@@ -4,7 +4,7 @@ from odoo.tools import float_utils
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
+    _name = "estate_classic.property"
     _description = "Properties of an estate"
     _order = "id desc"
 
@@ -33,11 +33,11 @@ class EstateProperty(models.Model):
         ]
     )
 
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one("estate_classic.property.type", string="Property Type")
     salesman_id = fields.Many2one("res.partner", string="Salesman", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id")
+    tag_ids = fields.Many2many("estate_classic.property.tag")
+    offer_ids = fields.One2many("estate_classic.property.offer", "property_id")
 
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
@@ -54,6 +54,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price > 0.0 and float_utils.float_compare(record.selling_price, record.expected_price * 9.0 / 10.0, precision_rounding=0.1) < 0:
                 raise ValidationError("The selling price cannot be lower than 90 percent of the expected price.")
+
+    @api.constrains("state")
+    def _prevent_selling_with_no_accepted_offer(self):
+        for record in self:
+            if record.state == 'sold' and not next((offer for offer in record.offer_ids if offer.status == 'accepted'), False):
+                raise ValidationError("A property can only be sold if it has accepted an offer")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

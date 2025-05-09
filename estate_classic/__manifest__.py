@@ -1,8 +1,8 @@
 {
-    'name': 'frva-estate',
+    'name': 'estate_classic',
     'license': 'LGPL-3',
     'depends': [
-        'base'
+        'base',
     ],
     'data': [
         'security/ir.model.access.csv',

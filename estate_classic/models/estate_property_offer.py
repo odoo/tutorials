@@ -3,14 +3,14 @@ from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
+    _name = "estate_classic.property.offer"
     _description = "Property offer for an estate"
     _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    property_id = fields.Many2one("estate_classic.property", required=True)
 
     create_date = fields.Date(default=lambda self: self._get_current_day())
     validity = fields.Integer(default=7)
@@ -26,9 +26,11 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            offered_property = self.env['estate.property'].browse(vals['property_id'])
+            offered_property = self.env['estate_classic.property'].browse(vals['property_id'])
+            if offered_property.state == 'sold':
+                raise UserError("You cannot create an offer for a sold property.")
             if vals.get("price", 0.0) < offered_property.best_offer:
-                raise UserError("You cannot create on offer with a lower amount than an existing offer.")
+                raise UserError("You cannot create an offer with a lower amount than an existing offer.")
             if offered_property.state == 'new':
                 offered_property.state = 'offer_received'
         return super().create(vals_list)

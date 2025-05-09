@@ -2,14 +2,14 @@
 <odoo>
     <record id="estate_action" model="ir.actions.act_window">
         <field name="name">Advertisements</field>
-        <field name="res_model">estate.property</field>
+        <field name="res_model">estate_classic.property</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_state': True, 'search_default_current': True}</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
-        <field name="model">estate.property</field>
+        <field name="name">estate_classic.property.list</field>
+        <field name="model">estate_classic.property</field>
         <field name="arch" type="xml">
             <list decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state=='offer_accepted'" decoration-muted="state=='cancelled'">
                 <field name="name" string="Title"/>
@@ -24,8 +24,8 @@
         </field>
     </record>
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.view.form</field>
-        <field name="model">estate.property</field>
+        <field name="name">estate_classic.property.view.form</field>
+        <field name="model">estate_classic.property</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -83,8 +83,8 @@
         </field>
     </record>
     <record id="estate_property_view_kanban" model="ir.ui.view">
-        <field name="name">estate.property.view.kanban</field>
-        <field name="model">estate.property</field>
+        <field name="name">estate_classic.property.view.kanban</field>
+        <field name="model">estate_classic.property</field>
         <field name="arch" type="xml">
             <kanban records_draggable="False" default_group_by="property_type_id">
                 <field name="state"/>
@@ -113,8 +113,8 @@
         </field>
     </record>
     <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.view.search</field>
-        <field name="model">estate.property</field>
+        <field name="name">estate_classic.property.view.search</field>
+        <field name="model">estate_classic.property</field>
         <field name="arch" type="xml">
             <search string="Estate Property">
                 <field name="name" />
