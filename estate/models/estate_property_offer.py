@@ -1,83 +1,82 @@
-# -*- coding: utf-8 -*-
-from odoo import models, fields, api
-from odoo.exceptions import UserError, ValidationError
 from dateutil.relativedelta import relativedelta
 
+from odoo import api, fields, models
+from odoo.exceptions import UserError
+from odoo.tools import float_compare
+
+
 class EstatePropertyOffer(models.Model):
-    _name = 'estate.property.offer'
-    _description = 'Real Estate Property Offer'
-    _order = 'price desc'
 
-    price = fields.Float(string="Price", required=True)
-    status = fields.Selection(
-        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
-        string="Status", copy=False
+    _name = "estate.property.offer"
+    _description = "Real Estate Property Offer"
+    _order = "price desc"
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "The price must be strictly positive"),
+    ]
+
+    name = fields.Char("Name")
+    price = fields.Float("Price", required=True)
+    validity = fields.Integer(string="Validity (days)", default=7)
+
+    state = fields.Selection(
+        selection=[
+            ("accepted", "Accepted"),
+            ("refused", "Refused"),
+        ],
+        string="Status",
+        copy=False,
+        default=False,
     )
-    partner_id = fields.Many2one('res.partner', string="Prospective Buyer", required=True)
-    property_id = fields.Many2one('estate.property', string="Property", required=True, ondelete='cascade')
 
+    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    property_id = fields.Many2one("estate.property", string="Property", required=True)
     property_type_id = fields.Many2one(
-        related='property_id.property_type_id',
-        string="Property Type",
-        store=True
+        "estate.property.type", related="property_id.property_type_id", string="Property Type", store=True
     )
-    creation_date = fields.Date(string="Creation Date", default=fields.Date.today, readonly=True)
-    valid_until = fields.Date(string="Valid Until", compute='_compute_valid_until', inverse='_inverse_valid_until', store=True, readonly=False)
 
-    # Computed fields for button visibility
-    can_accept = fields.Boolean(string="Can Accept", compute='_compute_can_accept_refuse')
-    can_refuse = fields.Boolean(string="Can Refuse", compute='_compute_can_accept_refuse')
+    date_deadline = fields.Date(string="Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
 
-    @api.depends('property_id.state', 'status')
-    def _compute_can_accept_refuse(self):
+    @api.depends("create_date", "validity")
+    def _compute_date_deadline(self):
         for offer in self:
-            parent_state_prevents_action = offer.property_id.state in ('sold', 'canceled', 'offer_accepted')
-            offer.can_accept = not parent_state_prevents_action and offer.status != 'accepted'
-            offer.can_refuse = not parent_state_prevents_action and offer.status != 'refused'
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.date_deadline = date + relativedelta(days=offer.validity)
 
+    def _inverse_date_deadline(self):
+        for offer in self:
+            date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.validity = (offer.date_deadline - date).days
 
-    @api.depends('creation_date')
-    def _compute_valid_until(self):
-        for record in self:
-            record.valid_until = record.creation_date + relativedelta(days=7) if record.creation_date else False
+    @api.model
+    def create(self, vals):
+        if vals.get("property_id") and vals.get("price"):
+            prop = self.env["estate.property"].browse(vals["property_id"])
+            if prop.offer_ids:
+                max_offer = max(prop.mapped("offer_ids.price"))
+                if float_compare(vals["price"], max_offer, precision_rounding=0.01) <= 0:
+                    raise UserError("The offer must be higher than %.2f" % max_offer)
+            prop.state = "offer_received"
+        return super().create(vals)
 
-    def _inverse_valid_until(self):
-        for record in self:
-            record.creation_date = record.valid_until - relativedelta(days=7) if record.valid_until else False
+    def action_accept(self):
+        if "accepted" in self.mapped("property_id.offer_ids.state"):
+            raise UserError("An offer as already been accepted.")
+        self.write(
+            {
+                "state": "accepted",
+            }
+        )
+        return self.mapped("property_id").write(
+            {
+                "state": "offer_accepted",
+                "selling_price": self.price,
+                "buyer_id": self.partner_id.id,
+            }
+        )
 
-    _sql_constraints = [('check_offer_price_positive', 'CHECK(price > 0)', 'Offer price must be positive.')]
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            prop = self.env['estate.property'].browse(vals.get('property_id'))
-            existing_offer_prices = prop.offer_ids.filtered(lambda o: o.status != 'refused').mapped('price')
-            if prop and existing_offer_prices and vals.get('price') < max(existing_offer_prices):
-                 raise UserError(f"Cannot create an offer with a price lower than existing non-refused offers for this property.")
-        return super().create(vals_list)
-
-    def action_accept_offer(self):
-        self.ensure_one()
-        if not self.can_accept: # Use computed field for check
-             raise UserError("Offer cannot be accepted at this time (check property state or offer status).")
-        # Refuse other offers for the same property
-        self.property_id.offer_ids.filtered(lambda o: o.id != self.id and o.status != 'refused').action_refuse_offer()
-        self.status = 'accepted'
-        self.property_id.state = 'offer_accepted'
-        self.property_id.selling_price = self.price
-        self.property_id.buyer_id = self.partner_id
-        return True
-
-    def action_refuse_offer(self):
-        self.ensure_one()
-        # If this was the accepted offer, reset property state and selling price
-        if self.status == 'accepted' and self.property_id.state == 'offer_accepted' and self.property_id.selling_price == self.price and self.property_id.buyer_id == self.partner_id:
-            self.property_id.selling_price = 0
-            self.property_id.buyer_id = False
-            other_non_refused_offers = self.property_id.offer_ids.filtered(lambda o: o.id != self.id and o.status != 'refused')
-            if other_non_refused_offers:
-                self.property_id.state = 'offer_received'
-            else:
-                self.property_id.state = 'new'
-        self.status = 'refused'
-        return True
+    def action_refuse(self):
+        return self.write(
+            {
+                "state": "refused",
+            }
+        )
