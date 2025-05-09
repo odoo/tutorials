@@ -21,11 +21,13 @@ class EstateTestCase(TransactionCase):
 
     def test_selling_property(self):
         self.offer = self.env['estate_classic.property.offer'].create({
-            "property_id": self.property,
+            "property_id": self.property.id,
             "partner_id": self.env['res.partner'].create({
                 'name': 'partner_a',
-            }),
-        }).id
-        self.property.offer_ids = [self.offer]
+            }).id,
+        })
+        self.property.offer_ids = [self.offer.id]
         self.offer.action_accept_offer()
+        self.assertEqual(self.property.state, 'offer_accepted')
+        self.property.action_sell_property()
         self.assertEqual(self.property.state, 'sold')
