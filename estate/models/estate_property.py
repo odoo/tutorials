@@ -8,22 +8,25 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
 
     _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive."),
-        ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price must be positive."),
-    ]
+    # Combined list of all constraints
+    ("check_expected_price", "CHECK(expected_price > 0)", "Expected price must be strictly positive."),
+    ("check_selling_price", "CHECK(selling_price >= 0)", "Selling price must be positive."),
+    ("unique_name", "UNIQUE(name)", "Property name must be unique."),
+]
+    _order = "id desc"
     
 
     def action_cancel(self):
         for prop in self:
             if prop.state == 'sold':
-                raise UserError("Sold properties cannot be canceled.")
-            prop.state = 'canceled'
+                raise UserError("Sold properties cannot be cancelled.")
+            prop.state = 'cancelled'
         return True
 
     def action_sold(self):
         for prop in self:
-            if prop.state == 'canceled':
-                raise UserError("Canceled properties cannot be sold.")
+            if prop.state == 'cancelled':
+                raise UserError("Cancelled properties cannot be sold.")
             prop.state = 'sold'
         return True
 
@@ -47,9 +50,6 @@ class EstateProperty(models.Model):
             ('West', 'West'),
         ],
     )
-    _sql_constraints = [
-        ("unique_name", "UNIQUE(name)", "Tag name must be unique."),
-    ]
     active = fields.Boolean(default=True),
     state = fields.Selection(
         selection=[
@@ -75,17 +75,27 @@ class EstateProperty(models.Model):
 
     # Add to EstateProperty class
     total_area = fields.Float(compute="_compute_total_area", string="Total Area")
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for prop in self:
          prop.total_area = prop.living_area + prop.garden_area
 
-    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+    
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for prop in self:
          prop.best_price = max(prop.offer_ids.mapped("price")) if prop.offer_ids else 0.0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "North"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
     
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
