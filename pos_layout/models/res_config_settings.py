@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
@@ -19,11 +20,12 @@ class ResConfigSettings(models.TransientModel):
             'context': {'active_id': self.ids},
         }
 
+
 class PosConfig(models.Model):
-    _inherit='pos.config'
+    _inherit = 'pos.config'
 
     pos_disp_type = fields.Selection([
         ('default', 'Default'),
         ('lined', 'Lined'),
         ('boxed', 'Boxed'),
-    ],string="POS Recipt Layout",store=True)
+    ],string="POS Recipt Layout", store=True)

@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 
+
 class POSReceiptPreviewWizard(models.TransientModel):
     _name = 'pos.receipt.preview.wizard'
     _description = 'POS Receipt Preview Wizard'
@@ -15,7 +16,7 @@ class POSReceiptPreviewWizard(models.TransientModel):
     receipt_footer = fields.Text(string='Receipt Footer', help="A short text that will be inserted as a footer in the printed receipt.")
     preview = fields.Html(compute='_compute_preview', sanitize=False)
 
-    @api.onchange('receipt_header','pos_disp_type','receipt_footer','logo_image')
+    @api.onchange('receipt_header', 'pos_disp_type', 'receipt_footer', 'logo_image')
     def _compute_preview(self):
         for wizard in self:
             context = {
@@ -38,7 +39,7 @@ class POSReceiptPreviewWizard(models.TransientModel):
         res = super().default_get(fields_list)
         id = self.env.context.get('active_id')
         settings_config_id = self.env['res.config.settings'].browse(id)
-        res['pos_disp_type']  = settings_config_id.pos_config_id.pos_disp_type if settings_config_id.pos_config_id.pos_disp_type else 'default'
+        res['pos_disp_type'] = settings_config_id.pos_config_id.pos_disp_type if settings_config_id.pos_config_id.pos_disp_type else 'default'
         res['receipt_header'] = settings_config_id.pos_config_id.receipt_header
         res['receipt_footer'] = settings_config_id.pos_config_id.receipt_footer
         res['logo_image'] = self.env.company.logo
@@ -49,7 +50,7 @@ class POSReceiptPreviewWizard(models.TransientModel):
         id = self.env.context.get('active_id')
         settings_config_id = self.env['res.config.settings'].browse(id)
         settings_config_id.pos_config_id.write({
-            'pos_disp_type' : self.pos_disp_type,
+            'pos_disp_type': self.pos_disp_type,
             'receipt_header': self.receipt_header,
             'receipt_footer': self.receipt_footer
         })

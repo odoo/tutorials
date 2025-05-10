@@ -12,7 +12,11 @@
         'views/report_templates.xml',
         'wizard/pos_receipt_preview_wizard.xml',
     ],
-
+    'assets': {
+        'point_of_sale._assets_pos': [
+            'pos_layout/static/src/**/*',
+        ],
+    },
     'installable': True,
     'application': False,
     'license': 'LGPL-3',
