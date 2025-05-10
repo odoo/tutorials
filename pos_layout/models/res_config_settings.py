@@ -28,4 +28,4 @@ class PosConfig(models.Model):
         ('default', 'Default'),
         ('lined', 'Lined'),
         ('boxed', 'Boxed'),
-    ],string="POS Recipt Layout", store=True)
+    ], string="POS Recipt Layout", store=True)
