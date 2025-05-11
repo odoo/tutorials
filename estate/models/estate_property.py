@@ -81,6 +81,10 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(
         compute="_compute_total_area",
     )
+    best_price = fields.Float(
+        string="Best Price",
+        compute="_compute_best_price",
+    )
 
     @api.depends("living_area", "garden_area", "garden")
     def _compute_total_area(self):
@@ -90,11 +94,6 @@ class EstateProperty(models.Model):
                 if record.garden
                 else (record.living_area or 0)
             )
-
-    best_price = fields.Float(
-        string="Best Price",
-        compute="_compute_best_price",
-    )
 
     @api.depends("offer_ids")
     def _compute_best_price(self):
