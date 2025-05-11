@@ -19,5 +19,6 @@
         'website.backend_assets_all_wysiwyg': [
             'better_ribbons/static/src/js/components/wysiwyg_adapter/wysiwyg_adapter.js'
         ],
+        'web.assets_frontend': ['better_ribbons/static/src/scss/website_sale.scss'],
     },
 }
