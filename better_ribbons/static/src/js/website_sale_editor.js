@@ -3,21 +3,17 @@ import options from '@web_editor/js/editor/snippets.options';
 options.registry.WebsiteSaleProductsItem = options.registry.WebsiteSaleProductsItem.extend({
     willStart: async function () {
         const _super = this._super.bind(this);
-        this.ppr = this.$target.closest('[data-ppr]').data('ppr');
-        this.defaultSort = this.$target[0].closest('[data-default-sort]').dataset.defaultSort;
-        this.productTemplateID = parseInt(this.$target.find('[data-oe-model="product.template"]').data('oe-id'));
         this.ribbonPositionClasses = {'left': 'o_ribbon_left o_tag_left', 'right': 'o_ribbon_right o_tag_right'};
-        this.ribbons = await new Promise(resolve => this.trigger_up('get_ribbons', {callback: resolve}));
-        this.$ribbon = this.$target.find('.o_ribbon');
         return _super(...arguments);
     },
 
     async setRibbonPosition(previewMode, widgetValue, params) {
-        const ribbonClasses = this.$ribbon[0].classList;
+        this._super(previewMode, widgetValue, params);
         const ribbonData = this.ribbons[this.$target[0].dataset.ribbonId] || {};
-        const style = params?.style || ribbonData?.style || 'ribbon';
-        ribbonClasses.remove('o_ribbon_right', 'o_ribbon_left', 'o_tag_right', 'o_tag_left');
-        ribbonClasses.add(`o_${style}_${widgetValue}`);
+        const style = ribbonData?.style || 'ribbon'; // params?.style ||
+        this.$ribbon[0].className = this.$ribbon[0].className.replace(
+            /o_(ribbon|tag)_(left|right)/, `o_${style}_${widgetValue}`
+        );
 
         await this._saveRibbon();
     },
@@ -25,10 +21,6 @@ options.registry.WebsiteSaleProductsItem = options.registry.WebsiteSaleProductsI
     async _computeWidgetState(methodName, params) {
         const classList = this.$ribbon[0].classList;
         switch (methodName) {
-            case 'setRibbon':
-                return this.$target.attr('data-ribbon-id') || '';
-            case 'setRibbonName':
-                return this.$ribbon.text();
             case 'setRibbonPosition': {
                 return (
                     classList.contains('o_ribbon_left')
@@ -36,7 +28,7 @@ options.registry.WebsiteSaleProductsItem = options.registry.WebsiteSaleProductsI
                 ) ? 'left' : 'right';
             }
             case 'setRibbonStyle': {
-                return this.$ribbon.attr('data-style') ||
+                return this.$ribbon[0].dataset.style ||
                     ((
                         classList.contains('o_tag_left')
                         || classList.contains('o_tag_right')
@@ -47,6 +39,7 @@ options.registry.WebsiteSaleProductsItem = options.registry.WebsiteSaleProductsI
     },
 
     async _saveRibbon(isNewRibbon = false) {
+        this._super(isNewRibbon);
         const ribbonElement = this.$ribbon[0];
         const ribbon = {
             'name': this.$ribbon.text().trim(),
@@ -63,6 +56,7 @@ options.registry.WebsiteSaleProductsItem = options.registry.WebsiteSaleProductsI
     },
 
     async _setRibbon(ribbonId) {
+        this._super(ribbonId);
         this.$target[0].dataset.ribbonId = ribbonId;
         this.trigger_up('set_product_ribbon', {
             templateId: this.productTemplateID,

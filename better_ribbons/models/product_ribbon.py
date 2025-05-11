@@ -3,7 +3,7 @@ from odoo import fields, models
 
 class ProductRibbon(models.Model):
     _inherit = 'product.ribbon'
-    _order = 'sequence asc, create_date asc'
+    _order = 'sequence asc, create_date desc'
 
     style = fields.Selection(
         [('ribbon', 'Ribbon'), ('tag', 'Badge')],
