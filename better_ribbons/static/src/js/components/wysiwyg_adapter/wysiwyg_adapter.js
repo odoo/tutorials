@@ -22,8 +22,6 @@ patch(WysiwygAdapterComponent.prototype, {
             return [ribbon.id, ribbon];
         }));
         this.originalRibbons = Object.assign({}, this.ribbons);
-        this.productTemplatesRibbons = [];
-        this.deletedRibbonClasses = '';
         this.ribbonPositionClasses = {'left': 'o_ribbon_left o_tag_left', 'right': 'o_ribbon_right o_tag_right'};
     }
 });

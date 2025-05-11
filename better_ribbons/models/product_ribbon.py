@@ -3,7 +3,7 @@ from odoo import fields, models
 
 class ProductRibbon(models.Model):
     _inherit = 'product.ribbon'
-    _order = 'sequence asc, create_date asc'
+    _order = 'sequence asc, create_date desc'
 
     style = fields.Selection(
         [('ribbon', 'Ribbon'), ('tag', 'Badge')],
@@ -28,4 +28,4 @@ class ProductRibbon(models.Model):
     sequence = fields.Integer(default=10, help='Sequence to prioritize ribbons')
 
     def _get_position_class(self):
-        return f'o_{self.style}_{self.position}'
+        return f'o_{self.style or "ribbon"}_{self.position}'

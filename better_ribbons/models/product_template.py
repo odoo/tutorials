@@ -16,40 +16,48 @@ class ProductTemplate(models.Model):
                 product.has_manual_ribbon = False
 
     def _set_ribbon(self, products_prices):
-        self.ensure_one()
         product_ribbons = self.env['product.ribbon'].sudo()
 
-        if self.has_manual_ribbon:
-            return None
+        stock_ribbon = product_ribbons.search([('assign', '=', 'out_of_stock')], limit=1)
+        sale_ribbon = product_ribbons.search([('assign', '=', 'sale')], limit=1)
+        new_ribbons = product_ribbons.search([('assign', '=', 'new')])
 
-        def _add_ribbon(ribbon):
-            if ribbon.id != self.website_ribbon_id.id:
-                self.with_context(auto_assign_ribbon=True).sudo().write({
-                    'website_ribbon_id': ribbon.id
+        if not (stock_ribbon or sale_ribbon or new_ribbons):
+            return
+
+        def _add_ribbon(product, ribbon_id):
+            if ribbon_id != product.website_ribbon_id.id:
+                product.with_context(auto_assign_ribbon=True).sudo().write({
+                    'website_ribbon_id': ribbon_id
                 })
 
-        if self._is_sold_out() and not self.allow_out_of_stock_order:
-            if stock_ribbon := product_ribbons.search(
-                [('assign', '=', 'out_of_stock')], limit=1
-            ):
-                return _add_ribbon(stock_ribbon)
+        for prd in self:
+            if not prd.is_published or prd.has_manual_ribbon:
+                continue
 
-        if products_prices.get('price_reduce') < products_prices.get(
-            'base_price', self.list_price
-        ):
-            if sale_ribbon := product_ribbons.search(
-                [('assign', '=', 'sale')], limit=1
-            ):
-                return _add_ribbon(sale_ribbon)
+            if stock_ribbon:
+                if (not prd.allow_out_of_stock_order) and prd._is_sold_out():
+                    _add_ribbon(prd, stock_ribbon.id)
+                    continue
 
-        if self.publish_date:
-            if new_ribbon := product_ribbons.search([('assign', '=', 'new')], limit=1):
-                if (
-                    fields.Date.today() - self.publish_date
-                ).days <= new_ribbon.new_until:
-                    return _add_ribbon(new_ribbon)
+            if sale_ribbon:
+                prices = products_prices.get(prd.id)
+                if prices.get('price_reduce') < prices.get('base_price', prd.list_price):
+                    _add_ribbon(prd, sale_ribbon.id)
+                    continue
 
-        return self.sudo().write({'website_ribbon_id': False})
+            if prd.publish_date:
+                published_for = (fields.Date.today() - prd.publish_date).days
+                new_ribbon = False
+                for ribbon in new_ribbons:
+                    if ribbon.new_until >= published_for:
+                        new_ribbon = ribbon
+                        break
+                if new_ribbon:
+                    _add_ribbon(prd, new_ribbon.id)
+                    continue
+
+            _add_ribbon(prd, False)
 
     def write(self, vals):
         if 'website_ribbon_id' in vals:

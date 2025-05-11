@@ -21,8 +21,7 @@ class WebsiteSaleExtended(WebsiteSale):
 
         if products := response.qcontext.get('products'):
             products_prices = response.qcontext.get('products_prices')
-            for product in products:
-                product._set_ribbon(products_prices.get(product.id))
+            products._set_ribbon(products_prices)
 
         return response
 
@@ -38,6 +37,6 @@ class WebsiteSaleExtended(WebsiteSale):
 
         if prd := response.qcontext.get('product'):
             prices = prd._get_sales_prices(request.env['website'].get_current_website())
-            prd._set_ribbon(prices.get(prd.id))
+            prd._set_ribbon(prices)
 
         return response
