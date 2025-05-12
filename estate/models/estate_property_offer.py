@@ -70,7 +70,6 @@ class EstatePropertyOffer(models.Model):
         property_id = offers[0].get("property_id")
         if not property_id:
             raise ValidationError("Property ID is required.")
-
         # Fetch the related property record
         estate = self.env["estate.property"].browse(property_id)
         if not estate.exists():
@@ -82,15 +81,13 @@ class EstatePropertyOffer(models.Model):
             raise UserError(
                 "Cannot create an offer on a property with an accepted offer."
             )
-
         curr_max_price = estate.best_price or 0.0
-
         for offer in offers:
             if curr_max_price >= offer["offer_price"]:
                 raise UserError(
                     "The offer price must be higher than the current best price."
                 )
             curr_max_price = max(curr_max_price, offer["offer_price"])
-
         estate.state = "offer_received"
         return super().create(offers)
+    

@@ -5,7 +5,7 @@
     'author': 'Rajeev Aanjana',
     'category': 'Real Estate',
     'description': 'A module for managing real estate properties',
-    'data':[
+    'data': [
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
@@ -18,5 +18,3 @@
     'application': True,
     'installable': True,
 }
-
-
