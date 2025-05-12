@@ -6,8 +6,6 @@
     "author": "Abhishek Khant (abhk)",
     "depends": ["estate", "account"],
     "category": "Sales",
-    "installable": True,
     "auto_install": True,
-    "application": False,
     "license": "LGPL-3",
 }

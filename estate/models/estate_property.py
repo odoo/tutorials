@@ -55,7 +55,7 @@ class EstateProperty(models.Model):
     total_area = fields.Float(
         string="Total Area (sqm)",
         compute="_compute_total_area",
-        store=True,
+        readonly=True,
         help="Sum of living area and garden area",
     )
     best_price = fields.Float(
@@ -82,37 +82,43 @@ class EstateProperty(models.Model):
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
-        for area in self:
-            area.total_area = area.living_area + area.garden_area
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        for property in self:
-            if property.garden:
-                property.garden_area = 10
-                property.garden_orientation = "north"
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = "north"
             else:
-                property.garden_area = 0
-                property.garden_orientation = ""
+                record.garden_area = 0
+                record.garden_orientation = ""
 
     @api.depends("offer_ids.offer_price")
     def _compute_best_price(self):
-        for property in self:
-            property.best_price = max(
-                property.offer_ids.mapped("offer_price"), default=0.0
-            )
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("offer_price"), default=0.0)
 
     def action_cancel(self):
-        for property in self:
-            if property.state == "sold":
+        for record in self:
+            if record.state == "sold":
                 raise UserError("A sold property cannot be cancelled.")
-            property.state = "canceled"
+            record.state = "canceled"
 
     def action_sold(self):
-        for property in self:
-            if property.state == "canceled":
+        for record in self:
+            if record.state == "canceled":
                 raise UserError("A cancelled property cannot be sold.")
-            property.state = "sold"
+
+            if record.state != "offer_accepted":
+                raise UserError(
+                    "You cannot mark a property as sold without accepting an offer."
+                )
+
+            record.state = "sold"
+
+        return True
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
@@ -137,18 +143,3 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "You can only delete properties in 'New' or 'Cancelled' state."
                 )
-
-    # self is the recordset of estate.property
-    # price is the new offer price (offer_price)
-    # Collects all the offers for the property and checks if the new offer price is lower than any existing offer
-    def check_offer(self, price):
-        curr_offers = []
-        for property in self:
-            for offer in property.offer_ids:
-                curr_offers.append(offer.offer_price)
-            if curr_offers:
-                if price < min(curr_offers):
-                    raise exceptions.UserError(
-                        "New offer cannot be lower than other offers"
-                    )
-            property.state = "offer_received"

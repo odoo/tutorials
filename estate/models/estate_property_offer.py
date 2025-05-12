@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta
 
 
@@ -35,7 +35,7 @@ class EstatePropertyOffer(models.Model):
         ),
     ]
 
-    @api.depends("create_date", "validity")
+    @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
             create_date = record.create_date or fields.Date.context_today(record)
@@ -48,35 +48,49 @@ class EstatePropertyOffer(models.Model):
             record.validity = delta.days
 
     def action_accept(self):
-        for offer in self:
-            if offer.property_id.state in ["sold", "canceled"]:
+        for record in self:
+            if record.property_id.state in ["sold", "canceled"]:
                 raise UserError(
                     "You cannot accept an offer for a sold or cancelled property."
                 )
-            if offer.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
+            if record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
                 raise UserError("An offer has already been accepted for this property.")
-            offer.status = "accepted"
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.selling_price = offer.offer_price
-            offer.property_id.state = "offer_accepted"
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.offer_price
+            record.property_id.state = "offer_accepted"
 
     def action_refuse(self):
-        for offer in self:
-            offer.status = "refused"
+        for record in self:
+            record.status = "refused"
 
-    # api.model_create_multi is used to create multiple records at once
-    # self is the model class, not an instance of the model, Represents the model itself
-    # vals_list is a list of dictionaries, each dictionary contains the values for a new record
-    # self.env is the Odoo environment in which the model is being executed
-    # self.env['estate.property'] is used to access the estate.property model
-    # browse is used to fetch the specific property record, browse() doesn't immediately hit the database - it creates a recordset
-    # super() calls the create method of the parent class (models.Model) to actually create the records in the database
     @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            new_price = vals.get("offer_price")
-            property_id = vals.get("property_id")
-            if property_id and new_price:
-                property = self.env["estate.property"].browse(property_id)
-                property.check_offer(new_price)
-        return super().create(vals_list)
+    def create(self, offers):
+        # Extract property_id from the first offer
+        property_id = offers[0].get("property_id")
+        if not property_id:
+            raise ValidationError("Property ID is required.")
+
+        # Fetch the related property record
+        estate = self.env["estate.property"].browse(property_id)
+        if not estate.exists():
+            raise ValidationError("The specified property does not exist.")
+
+        if estate.state in ["sold", "canceled"]:
+            raise UserError("Cannot create an offer on a sold or canceled property.")
+        if estate.state == "offer_accepted":
+            raise UserError(
+                "Cannot create an offer on a property with an accepted offer."
+            )
+
+        curr_max_price = estate.best_price or 0.0
+
+        for offer in offers:
+            if curr_max_price >= offer["offer_price"]:
+                raise UserError(
+                    "The offer price must be higher than the current best price."
+                )
+            curr_max_price = max(curr_max_price, offer["offer_price"])
+
+        estate.state = "offer_received"
+        return super().create(offers)

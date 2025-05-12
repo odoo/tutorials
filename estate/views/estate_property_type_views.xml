@@ -16,7 +16,6 @@
                 <field name="description"/>
                 <field name="offer_ids" string="Properties"/>
                 <field name="offer_count" string="Number of offers"/>
-                <field name="status"/>
             </list>
         </field>
     </record>
@@ -35,7 +34,6 @@
                     <group>
                         <field name="name"/>
                         <field name="description"/>
-                        <field name="status"/>
                     </group>
                     <notebook>
                         <page string="Properties">
@@ -59,7 +57,6 @@
         <field name="arch" type="xml">
             <search string="Search Properties">
                 <field name="name"/>
-                <filter string="Active" name="active_filter" domain="[('status','=','active')]"/>
             </search>
         </field>
     </record>

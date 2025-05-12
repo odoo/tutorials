@@ -4,7 +4,7 @@
     "summary": "A basic Real Estate module",
     "description": "Manage real estate properties",
     "author": "Abhishek Khant (abhk)",
-    "depends": ["base", "mail"],
+    "depends": ["mail"],
     "category": "Sales",
     "data": [
         "security/ir.model.access.csv",
@@ -16,6 +16,5 @@
         "views/estate_property_menu.xml",
     ],
     "application": True,
-    "installable": True,
     "license": "LGPL-3",
 }
