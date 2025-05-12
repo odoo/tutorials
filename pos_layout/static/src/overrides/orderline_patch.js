@@ -10,10 +10,10 @@ patch(Orderline.prototype, {
 });
 
 Orderline.props = {
-    ...Orderline.props, // Keep existing props
+    ...Orderline.props,
     isTableFormat: { type: Boolean, optional: true, default: false },
     isBoxedFormat: { type: Boolean, optional: true, default: false },
-    lineIndex: { type: Number, optional: true }, // New prop for numbering
+    lineIndex: { type: Number, optional: true },
 };
 
 Orderline.template = xml`

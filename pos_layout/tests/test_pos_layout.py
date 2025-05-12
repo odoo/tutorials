@@ -1,4 +1,4 @@
-from odoo.tests.common import TransactionCase, HttpCase
+from odoo.tests.common import TransactionCase
 from odoo.tests import tagged
 
 

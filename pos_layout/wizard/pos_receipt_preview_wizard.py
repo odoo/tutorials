@@ -16,7 +16,7 @@ class POSReceiptPreviewWizard(models.TransientModel):
     receipt_footer = fields.Text(string='Receipt Footer', help="A short text that will be inserted as a footer in the printed receipt.")
     preview = fields.Html(compute='_compute_preview', sanitize=False)
 
-    @api.onchange('receipt_header', 'pos_disp_type', 'receipt_footer', 'logo_image')
+    @api.depends('receipt_header', 'pos_disp_type', 'receipt_footer', 'logo_image')
     def _compute_preview(self):
         for wizard in self:
             context = {
