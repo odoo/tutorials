@@ -1,8 +1,8 @@
 from dateutil.relativedelta import relativedelta
-
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
+
 
 
 class EstatePropertyOffer(models.Model):
@@ -47,16 +47,17 @@ class EstatePropertyOffer(models.Model):
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.validity = (offer.date_deadline - date).days
 
-    @api.model
-    def create(self, vals):
-        if vals.get("property_id") and vals.get("price"):
-            prop = self.env["estate.property"].browse(vals["property_id"])
-            if prop.offer_ids:
-                max_offer = max(prop.mapped("offer_ids.price"))
-                if float_compare(vals["price"], max_offer, precision_rounding=0.01) <= 0:
-                    raise UserError("The offer must be higher than %.2f" % max_offer)
-            prop.state = "offer_received"
-        return super().create(vals)
+    @api.model_create_multi 
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get("property_id") and vals.get("price"):
+                prop = self.env["estate.property"].browse(vals["property_id"])
+                if prop.offer_ids:
+                    max_offer = max(prop.mapped("offer_ids.price"))
+                    if float_compare(vals["price"], max_offer, precision_rounding=0.01) <= 0:
+                        raise UserError(f"The offer must be higher than {max_offer:.2f}")
+                prop.state = "offer_received"
+        return super().create(vals_list)  
 
     def action_accept(self):
         if "accepted" in self.mapped("property_id.offer_ids.state"):
