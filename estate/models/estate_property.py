@@ -85,6 +85,7 @@ class EstateProperty(models.Model):
         string="Best Price",
         compute="_compute_best_price",
     )
+    image = fields.Binary(string="Image", attachment=True)
 
     @api.depends("living_area", "garden_area", "garden")
     def _compute_total_area(self):
