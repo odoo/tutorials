@@ -13,7 +13,7 @@
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <list editable="top">
-                <field name="name"/>
+                <field name="name" />
             </list>
         </field>
     </record>
@@ -26,10 +26,10 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="tag_ids" 
-                       widget="many2many_tags" 
-                       options="{'color_field': 'color'}"/>
+                        <field name="name" />
+                        <field name="tag_ids"
+                            widget="many2many_tags"
+                            options="{'color_field': 'color'}" />
                     </group>
                 </sheet>
             </form>
@@ -37,6 +37,7 @@
     </record>
 
     <!-- Menus -->
-    <menuitem id="estate_property_tag_menu_root" name="Property Tags" parent="estate_menu_root"/>
-    <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action" parent="estate_property_tag_menu_root"/>
+    <menuitem id="estate_property_tag_menu_root" name="Property Tags" parent="estate_menu_root" />
+    <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"
+        parent="estate_property_tag_menu_root" />
 </odoo>
