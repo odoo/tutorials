@@ -12,9 +12,7 @@ class EstateModel(models.Model):
             self.env["account.move"].create(invoice_vals)
 
         return super().action_sold()
-        
 
-    # move_type means types of invoice
     def _prepare_invoice(self):
         invoice_vals = {
             "partner_id": self.buyer_id.id,
@@ -31,4 +29,3 @@ class EstateModel(models.Model):
             ],
         }
         return invoice_vals
-    

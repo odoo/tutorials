@@ -6,27 +6,27 @@ from odoo.exceptions import UserError,ValidationError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
-    _order="price desc"
+    _order = "price desc" 
 
-    price = fields.Float(string='Price')
-    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')],string='Status',copy=False)
-    partner_id = fields.Many2one('res.partner',string='Buyer',required=True)
-    property_id = fields.Many2one('estate.property',string='Property',required=True,ondelete='cascade')
-    validity = fields.Integer(string='Validity (days)', default=7)
-    date_deadline = fields.Date(string='Date Deadline',compute='_compute_date_deadline',inverse='_inverse_date_deadline',store=True)
+    price = fields.Float(string = 'Price')
+    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string = 'Status', copy = False)
+    partner_id = fields.Many2one('res.partner', string = 'Buyer', required = True)
+    property_id = fields.Many2one('estate.property', string = 'Property', required = True, ondelete = 'cascade')
+    validity = fields.Integer(string ='Validity (days)', default = 7)
+    date_deadline = fields.Date(string = 'Date Deadline', compute = '_compute_date_deadline', inverse = '_inverse_date_deadline', store = True)
     property_type_id = fields.Many2one(
     "estate.property.type",
-    string="Property Type",
+    string = "Property Type",
     related="property_id.property_type_id",
     store=True)
 
     _sql_constraints = [
         ('check_offer_price_positive', 'CHECK(price > 0)', 'The offer price must be strictly positive.'),
     ]
+
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
-        # Use record.create_date, fallback to today if not yet persisted
             create_date = record.create_date or fields.Date.context_today(record)
             record.date_deadline = create_date + timedelta(days=record.validity)
 
@@ -52,7 +52,7 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.status = 'refused'
             return True  # Optional but helps refresh
-    
+   
     @api.model
     def create(self, vals):
         property_id = vals.get('property_id')
@@ -66,4 +66,3 @@ class EstatePropertyOffer(models.Model):
             if prop.state != 'offer_received':
                 prop.write({'state': 'offer_received'})
         return super().create(vals)
-    

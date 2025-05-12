@@ -107,4 +107,3 @@ class EstateProperty(models.Model):
         for prop in self:
             if prop.state not in ['new', 'cancelled']:
                 raise UserError("Cannot delete properties not in 'New' or 'Cancelled' state!")
-            

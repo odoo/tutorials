@@ -6,8 +6,8 @@ class ResUsersInherit(models.Model):
 
     property_ids = fields.One2many(
         'estate.property', 
-        'salesperson_id',  # Ensure this is the correct inverse field in `estate.property`
+        
+        'salesperson_id',
         string='Managed Properties',
         domain=[('state', 'in', ['new', 'offer_received'])]
     )
-    
