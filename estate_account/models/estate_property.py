@@ -1,4 +1,3 @@
-
 from odoo import models
 
 
@@ -9,10 +8,10 @@ class EstateProperty(models.Model):
     def action_sold(self):
         res = super().action_sold()
         journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
-        for prop in self:
+        for record in self:
             self.env["account.move"].create(
                 {
-                    "partner_id": prop.buyer_id.id,
+                    "partner_id": record.buyer_id.id,
                     "move_type": "out_invoice",
                     "journal_id": journal.id,
                     "invoice_line_ids": [
@@ -20,9 +19,9 @@ class EstateProperty(models.Model):
                             0,
                             0,
                             {
-                                "name": prop.name,
+                                "name": record.name,
                                 "quantity": 1.0,
-                                "price_unit": prop.selling_price * 6.0 / 100.0,
+                                "price_unit": record.selling_price * 6.0 / 100.0,
                             },
                         ),
                         (

@@ -1,4 +1,3 @@
-
 {
     "name": "Real Estate Accounting",
     "icon": "/estate_account/static/description/icon.png",
