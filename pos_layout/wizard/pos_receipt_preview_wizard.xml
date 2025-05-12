@@ -1,0 +1,37 @@
+<odoo>
+    <record id="view_pos_receipt_preview_wizard" model="ir.ui.view">
+        <field name="name">pos.receipt.preview.wizard.form</field>
+        <field name="model">pos.receipt.preview.wizard</field>
+        <field name="arch" type="xml">
+            <form string="POS Receipt Preview">
+                <div style="display: flex; align-items: stretch; gap: 10px;">
+                    <div style="flex: 3; padding-right: 10px;">
+                        <group>
+                            <field name="pos_disp_type" widget="selection_badge"/>
+                            <field name="logo_image" widget="image" style="width:128px"/>
+                            <field name="receipt_header" placeholder="Enter your header here"/>
+                            <field name="receipt_footer" placeholder="Enter your footer here"/>
+                        </group>
+                    </div>
+                    <div style="flex: 2; display: flex; flex-direction: column;">
+                        <div class="o_preview" style="flex-grow: 1; min-height: 300px; display: flex; align-items: center; justify-content: center;">
+                            <field name="preview" widget="iframe_wrapper" style="width: 100%; height: 100%;"/>
+                        </div>
+                    </div>
+                </div>
+                <footer style="display: flex; justify-content: space-between; padding-top: 10px;">
+                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary" />
+                    <button string="Close" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_pos_receipt_preview_wizard" model="ir.actions.act_window">
+        <field name="name">POS Receipt Preview</field>
+        <field name="res_model">pos.receipt.preview.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_pos_receipt_preview_wizard"/>
+        <field name="target">new</field>
+    </record>
+</odoo>
