@@ -1,4 +1,4 @@
-from odoo import models, fields, Command
+from odoo import models, Command
 from datetime import datetime
 
 
