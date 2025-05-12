@@ -4,7 +4,7 @@
     'summary': """
         Starting module for "Master the Odoo web framework, chapter 3: Create a Gallery View"
     """,
-
+    'author': "odoo",
     'description': """
         Starting module for "Master the Odoo web framework, chapter 3: Create a Gallery View"
     """,

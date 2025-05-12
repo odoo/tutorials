@@ -4,7 +4,7 @@
     'summary': """
         Starting module for "Master the Odoo web framework, chapter 4: Customize a kanban view"
     """,
-
+    'author': "odoo",
     'description': """
         Starting module for "Master the Odoo web framework, chapter 4: Customize a kanban view.
     """,
