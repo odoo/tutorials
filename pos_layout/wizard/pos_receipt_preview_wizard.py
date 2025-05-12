@@ -50,7 +50,7 @@ class POSReceiptPreviewWizard(models.TransientModel):
         id = self.env.context.get('active_id')
         settings_config_id = self.env['res.config.settings'].browse(id)
         settings_config_id.pos_config_id.write({
-            'pos_disp_type': self.pos_disp_type,
+            'pos_disp_type' : self.pos_disp_type,
             'receipt_header': self.receipt_header,
             'receipt_footer': self.receipt_footer
         })
