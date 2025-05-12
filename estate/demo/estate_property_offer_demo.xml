@@ -71,12 +71,12 @@
             <field name="validity">7</field>
         </record>
 
-        <function model="estate.property.offer" name="action_offer_accepted">
+        <function model="estate.property.offer" name="action_accept">
             <value
                 eval="[ref('demo_property_offer_2'), ref('demo_property_offer_8'), ref('demo_property_offer_10')]" />
         </function>
 
-        <function model="estate.property.offer" name="action_offer_refused">
+        <function model="estate.property.offer" name="action_refuse">
             <value
                 eval="[ref('demo_property_offer_1'), ref('demo_property_offer_3'), ref('demo_property_offer_7'), ref('demo_property_offer_9')]" />
         </function>

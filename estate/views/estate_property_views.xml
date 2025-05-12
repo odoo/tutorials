@@ -30,14 +30,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="New Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold"
+                        invisible="state in ['sold', 'canceled']" />
+                    <button name="action_cancel" type="object" string="Cancel"
+                        invisible="state in ['sold', 'canceled']" />
+                    <field name="state" widget="statusbar" options="{'clickable':'0'}" />
+                </header>
                 <sheet>
-                    <header>
-                        <button name="action_sold" type="object" string="Sold"
-                            invisible="state in ['sold', 'cancelled']" />
-                        <button name="action_cancel" type="object" string="Cancel"
-                            invisible="state in ['sold', 'cancelled']" />
-                        <field name="state" widget="statusbar" options="{'clickable':'0'}" />
-                    </header>
                     <group>
                         <div class="oe_title">
                             <h1 class="mb16 mt16">
@@ -77,7 +77,7 @@
                         <page string="Offers">
                             <list string="Offers">
                                 <field name="offer_ids"
-                                    readonly="state in ['offer_accepted', 'sold', 'cancelled']" />
+                                    readonly="state in ['offer_accepted', 'sold', 'canceled']" />
                             </list>
                         </page>
                         <page string='Other Info'>
