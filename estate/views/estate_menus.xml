@@ -20,32 +20,3 @@
 
 </odoo>
 
-
-
-
-
-
-<!--  "Both are correct" 
-
-<odoo>
-    <menuitem id="estate_menu_root" name="Real Estate" />
-
-    <menuitem id="estate_menu_property" name="Properties"
-        parent="estate_menu_root" />
-
-    <menuitem id="estate_menu_property_action"
-        parent="estate_menu_property"
-        action="estate_property_action" />
-</odoo>
-
-________________________________________________________________________________________________
-
-<odoo>
-<menuitem id="estate_menu_root" name="Real Estate">
-    <menuitem id="estate_first_level_menu" name="Properties">
-        <menuitem id="estate_property_menu_action" action="estate_property_action"/>
-    </menuitem>
-</menuitem>
-</odoo>
-
--->
