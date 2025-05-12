@@ -9,14 +9,14 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc" 
 
     price = fields.Float(string = 'Price')
-    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string = 'Status', copy = False)
-    partner_id = fields.Many2one('res.partner', string = 'Buyer', required = True)
-    property_id = fields.Many2one('estate.property', string = 'Property', required = True, ondelete = 'cascade')
-    validity = fields.Integer(string ='Validity (days)', default = 7)
-    date_deadline = fields.Date(string = 'Date Deadline', compute = '_compute_date_deadline', inverse = '_inverse_date_deadline', store = True)
+    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], string='Status', copy=False)
+    partner_id = fields.Many2one('res.partner', string='Buyer', required=True)
+    property_id = fields.Many2one('estate.property', string='Property', required=True, ondelete='cascade')
+    validity = fields.Integer(string='Validity (days)', default=7)
+    date_deadline = fields.Date(string='Date Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline', store=True)
     property_type_id = fields.Many2one(
     "estate.property.type",
-    string = "Property Type",
+    string="Property Type",
     related="property_id.property_type_id",
     store=True)
 
@@ -52,7 +52,7 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.status = 'refused'
             return True  # Optional but helps refresh
-   
+
     @api.model
     def create(self, vals):
         property_id = vals.get('property_id')

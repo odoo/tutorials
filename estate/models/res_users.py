@@ -6,7 +6,7 @@ class ResUsersInherit(models.Model):
 
     property_ids = fields.One2many(
         'estate.property', 
-        
+
         'salesperson_id',
         string='Managed Properties',
         domain=[('state', 'in', ['new', 'offer_received'])]
