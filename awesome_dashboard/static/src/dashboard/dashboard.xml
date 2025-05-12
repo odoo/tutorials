@@ -44,7 +44,9 @@
                 </AwesomeDashboardItem>
                 <AwesomeDashboardItem size="2">
                     <h3 class="text-center">Pie Chart</h3>
-                    <PieChart data="this.result['orders_by_size']" label="'My pie label'"></PieChart>
+                    <div t-if="this.result.isReady">
+                        <PieChart  data="this.result['orders_by_size']" label="'My pie label'"></PieChart>
+                    </div>
                 </AwesomeDashboardItem>
             </div>
         </Layout>

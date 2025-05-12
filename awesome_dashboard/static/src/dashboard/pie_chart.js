@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, onWillStart, onMounted, useRef, onWillUnmount } from "@odoo/owl";
+import { Component, onWillStart, onMounted, useRef, onWillUnmount, useEffect } from "@odoo/owl";
 import { getColor } from "@web/core/colors/colors";
 import { loadJS } from "@web/core/assets";
 
@@ -14,10 +14,7 @@ export class PieChart extends Component {
 
     setup() {
         this.canvasRef = useRef("canvas");
-        onWillStart(() => {
-            // Load chartjs
-            loadJS("/web/static/lib/Chart/Chart.js");
-        });
+        onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         onMounted(() => {
            this.renderChart();
         });
@@ -27,6 +24,9 @@ export class PieChart extends Component {
     }
 
     renderChart() {
+        if(this.chart) {
+            this.chart.destroy();
+        }
         const labels = Object.keys(this.props.data);
         const data = Object.values(this.props.data);
         // const color = labels.map((_, index) => getColor(index));
@@ -37,8 +37,12 @@ export class PieChart extends Component {
                 datasets: [
                     {
                         label: this.props.label,
-                        date: data,
-                        // backgroundColor: color,
+                        data: data,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                        ],
                     },
                 ],
             },
