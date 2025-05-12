@@ -128,12 +128,12 @@ class EstateProperty(models.Model):
         return super().unlink()
 
     def action_sold(self):
-        if "canceled" in self("state"):
+        if self.state == "canceled":
             raise UserError("Canceled properties cannot be sold.")
 
         return self.write({"state": "sold"})
 
     def action_cancel(self):
-        if "sold" in self("state"):
+        if self.state == "sold":
             raise UserError("Sold properties cannot be canceled.")
         return self.write({"state": "canceled"})
