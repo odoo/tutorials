@@ -1,9 +1,7 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import ValidationError
-from odoo.tests import tagged
 
 
-@tagged('at_install')
 class EstateTestCase(TransactionCase):
 
     @classmethod
@@ -14,6 +12,9 @@ class EstateTestCase(TransactionCase):
             "state": 'new',
             "expected_price": 100000,
         })
+        cls.partner_a = cls.env['res.partner'].create({
+                'name': 'partner_a',
+            })
 
     def test_sell_property_without_offer_accepted_error(self):
         with self.assertRaises(ValidationError):
@@ -22,11 +23,9 @@ class EstateTestCase(TransactionCase):
     def test_selling_property(self):
         self.offer = self.env['estate_classic.property.offer'].create({
             "property_id": self.property.id,
-            "partner_id": self.env['res.partner'].create({
-                'name': 'partner_a',
-            }).id,
+            "partner_id": self.partner_a.id,
+            "price": 105000,
         })
-        self.property.offer_ids = [self.offer.id]
         self.offer.action_accept_offer()
         self.assertEqual(self.property.state, 'offer_accepted')
         self.property.action_sell_property()
