@@ -4,7 +4,7 @@ import { Component, useState } from "@odoo/owl";
 
 export class Counter extends Component {
     // Inline template here so I can specify it directly in xml, other option is to reference an existing template in the XML file.
-    static template = "awesome_owl.counter"
+    static template = "awesome_owl.Counter"
 
     static props = {
         onChange: { type: Function, optional: true },

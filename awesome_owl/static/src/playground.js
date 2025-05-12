@@ -7,7 +7,7 @@ import { TodoList } from "./todo/todo_list";
 import { TodoItem } from "./todo/todo_item";
 
 export class Playground extends Component {
-    static template = "awesome_owl.playground";
+    static template = "awesome_owl.Playground";
 
     static components = { Counter, Card, TodoList, TodoItem };
 

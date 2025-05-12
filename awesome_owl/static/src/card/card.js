@@ -9,7 +9,7 @@ export class Card extends Component {
 
     static components = { Counter };
 
-    static template = "awesome_owl.card"
+    static template = "awesome_owl.Card"
 
     static props = {
         card_title: String,

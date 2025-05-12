@@ -7,7 +7,7 @@ export class TodoList extends Component {
 
     static components = { TodoItem};
 
-    static template = "awesome_owl.todo_list"
+    static template = "awesome_owl.Todo_list"
 
     static props = {};
 
