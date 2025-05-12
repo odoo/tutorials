@@ -4,11 +4,10 @@ from odoo import fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    pos_disp_type = fields.Selection([
-        ('default', 'Default'),
-        ('lined', 'Lined'),
-        ('boxed', 'Boxed'),
-    ], string="POS Recipt Layout", related='pos_config_id.pos_disp_type')
+    pos_disp_type = fields.Selection(
+    related='pos_config_id.pos_disp_type',
+    string="POS Receipt Layout"
+    )
 
     def action_open_receipt_preview_wizard(self):
         return {
@@ -28,4 +27,4 @@ class PosConfig(models.Model):
         ('default', 'Default'),
         ('lined', 'Lined'),
         ('boxed', 'Boxed'),
-    ], string="POS Recipt Layout", store=True)
+    ], string="POS Recipt Layout")
