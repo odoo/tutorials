@@ -57,7 +57,7 @@ class EstateProperty(models.Model):
         required=True,
     )
     offer_ids = fields.One2many(
-    "estate.property.offer",  
+    "estate.property.offer",
     "property_id",
     string="Offers"
     )
@@ -82,6 +82,7 @@ class EstateProperty(models.Model):
         ),
     ]
     # Computed Fields & Onchange
+    
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -123,7 +124,7 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise UserError("Sold property cannot be canceled.")
             record.state = "canceled"
-        
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
@@ -132,10 +133,9 @@ class EstateProperty(models.Model):
             min_acceptable_price = 0.9 * record.expected_price
             if float_compare(record.selling_price, min_acceptable_price, precision_digits=2) < 0:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
-    
+
     @api.ondelete(at_uninstall=False)
     def _check_state_before_delete(self):
         for record in self:
             if record.state not in ('new', 'canceled'):
                 raise UserError("You can only delete properties in 'New' or 'canceled' state.")
-            

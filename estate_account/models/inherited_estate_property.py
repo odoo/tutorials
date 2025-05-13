@@ -39,4 +39,3 @@ class EstateModel(models.Model):
             ],
         }
         return invoice_vals
-    
