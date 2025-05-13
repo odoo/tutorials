@@ -9,7 +9,6 @@
     "license": "LGPL-3",
     "icon": "/estate/static/description/icon.png",
     "depends": [
-        "base",
         "mail",
     ],
     "data": [
