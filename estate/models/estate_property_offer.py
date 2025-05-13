@@ -90,4 +90,3 @@ class EstatePropertyOffer(models.Model):
             curr_max_price = max(curr_max_price, offer["offer_price"])
         estate.state = "offer_received"
         return super().create(offers)
-    
