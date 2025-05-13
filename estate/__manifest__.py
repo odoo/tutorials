@@ -9,10 +9,12 @@
     "license": "LGPL-3",
     "icon": "/estate/static/description/icon.png",
     "depends": [
+        "base",
         "mail",
     ],
     "data": [
         "security/ir.model.access.csv",
+        "security/estate_security.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
