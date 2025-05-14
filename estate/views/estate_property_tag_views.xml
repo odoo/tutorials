@@ -27,17 +27,18 @@
                 <sheet>
                     <group>
                         <field name="name" />
-                        <field name="tag_ids"
-                            widget="many2many_tags"
-                            options="{'color_field': 'color'}" />
+                        <field name="color"
+                        options="{'color_field': 'color'}"
+                        required="True" widget="color_picker" />
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <!-- Menus -->
+  
     <menuitem id="estate_property_tag_menu_root" name="Property Tags" parent="estate_menu_root" />
     <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"
         parent="estate_property_tag_menu_root" />
+
 </odoo>

@@ -9,6 +9,12 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+    _inherit = [
+        'mail.thread',
+        'mail.activity.mixin',
+       
+     ]
+
     # === Fields ===
     name = fields.Char(required=True)
     description = fields.Text()
@@ -43,7 +49,12 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-
+    company_id = fields.Many2one(
+    'res.company',
+    string='Agency',
+    required=True,
+    default=lambda self: self.env.company
+)
     total_area = fields.Float(compute="_compute_total_area", string="Total Area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 

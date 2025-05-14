@@ -58,7 +58,7 @@
         </field>
     </record>
 
-    <!-- Menus -->
+  
     <menuitem id="estate_property_type_menu_root" name="Property Types" parent="estate_menu_root" />
     <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"
         parent="estate_property_type_menu_root" />

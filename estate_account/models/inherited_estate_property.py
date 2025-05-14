@@ -4,12 +4,12 @@ from odoo import models, fields, Command
 class EstateModel(models.Model):
     _inherit = "estate.property"
 
-    # Adding a new field to store the invoice reference
-    # Creates an invoice in Accounting (account.move)
     def action_sold(self):
+        self.check_access_rights('write')
+        self.check_access_rule('write')
         for order in self:
             invoice_vals = order._prepare_invoice()
-            self.env["account.move"].create(invoice_vals)
+            self.env["account.move"].sudo().create(invoice_vals)
 
         return super().action_sold()
 

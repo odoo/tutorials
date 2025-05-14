@@ -59,6 +59,8 @@
                             <field name="date_availability" optional="show" />
                             <field name="property_type_id"
                                 options="{'no_create': True, 'no_open': True}" />
+                                <field name="tag_ids" string = "Tag" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                
                         </group>
                         <group>
                             <field name="expected_price" />
@@ -76,7 +78,7 @@
                                 <group>
                                     <group modifiers="{'invisible': [('garden','=',False)]}">
                                         <field name="garden_area" />
-                                        <field name="garden_orientation" />
+                                         <field name="garden_orientation" />
                                     </group>
                                     <group>
                                         <field name="living_area" string="Living Area (sqm)" />
@@ -107,6 +109,7 @@
                         <field name="total_area" />
                     </group>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
