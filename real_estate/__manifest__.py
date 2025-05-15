@@ -14,6 +14,7 @@
 
         # Security
         'security/res_groups.xml',
+        'security/ir_rule.xml',  # Depends on `res_groups.xml`.
         'security/res_users.xml',  # Depends on `res_partner_data.xml`, `res_groups.xml`.
         'security/ir.model.access.csv',
 
