@@ -8,8 +8,7 @@ class InheritedEstateProperty(models.Model):
     def action_sold(self):
 
         for record in self:
-            record.check_access_rights("write")
-            record.check_access_rule("write")
+            record.check_access("write")
 
         print(" reached ".center(100, "="))
 

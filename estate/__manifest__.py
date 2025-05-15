@@ -22,6 +22,8 @@
         "views/res_users_views.xml",
         "views/estate_menus.xml",
         "data/estate_data.xml",
+        "report/estate_reports.xml",
+        "report/estate_report_views.xml",
     ],
     "demo": [
         
