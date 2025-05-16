@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardSettings">
+        <Dialog size="'md'" title="'Dashboard items configuration'">
+            <p>Which cards do you wish to see?</p>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <div class="d-flex gap-2">
+                    <input type="checkbox" t-att-checked="!hiddenItems.includes(item.id)" t-on-change="()=>toggleSetting(item.id)" class="form-check-input"/>
+                    <t t-esc="item.description"/>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

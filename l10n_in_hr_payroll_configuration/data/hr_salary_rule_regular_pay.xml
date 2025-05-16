@@ -1,0 +1,125 @@
+<odoo>
+    <record id="hr_payroll_structure_in_employee_salary_pay" model="hr.payroll.structure">
+        <field name="name">India: Regular Salary Pay</field>
+        <field name="type_id" ref="l10n_in_hr_payroll.hr_payroll_salary_structure_type_ind_emp_pay"/>
+        <field name="unpaid_work_entry_type_ids" eval="[(4, ref('hr_work_entry_contract.work_entry_type_unpaid_leave'))]"/>
+        <field name="country_id" ref="base.in"/>
+        <field name="report_id" ref="l10n_in_hr_payroll.payslip_details_report"/>
+    </record>
+
+    <function model="hr.salary.rule" name="write">
+        <value model="hr.salary.rule" search="[('struct_id', '=', ref('l10n_in_hr_payroll_configuration.hr_payroll_structure_in_employee_salary_pay')),
+            ('code', '=', 'BASIC')]"/>
+        <value eval="{'amount_python_compute': &quot;result = payslip.paid_amount * contract.l10n_in_basic_salary_company&quot;}"/>
+    </function>
+
+    <record id="l10n_in_hr_salary_rule_HRA" model="hr.salary.rule">
+        <field name="code">HRA</field>
+        <field name="name">House Rent Allowance</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="sequence" eval="20"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['BASIC'] * contract.l10n_in_hra_company
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_in_employee_salary_pay"/>
+    </record>
+
+    <record id="l10n_in_hr_salary_rule_STD" model="hr.salary.rule">
+        <field name="code">STD</field>
+        <field name="name">Standard Allowance</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="sequence" eval="25"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.paid_amount * contract.l10n_in_standard_allowance_percent
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_in_employee_salary_pay"/>
+    </record>
+
+    <record id="l10n_in_hr_salary_rule_P_BONUS" model="hr.salary.rule">
+        <field name="code">P_BONUS</field>
+        <field name="name">Performance Bonus</field>
+        <field name="category_id" ref="l10n_in_hr_payroll.PBS"/>
+        <field name="sequence" eval="30"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['BASIC'] * contract.l10n_in_performance_bonus_company
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_in_employee_salary_pay"/>
+    </record>
+    <record id="l10n_in_hr_salary_rule_LTA" model="hr.salary.rule">
+        <field name="code">LTA</field>
+        <field name="name">Leave Travel Allowance</field>
+        <field name="category_id" ref="hr_payroll.ALW"/>
+        <field name="sequence" eval="35"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = categories['BASIC'] * contract.l10n_in_leave_allowance_company
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_in_employee_salary_pay"/>
+    </record>
+    <record id="l10n_in_hr_salary_rule_LEAVE" model="hr.salary.rule">
+        <field name="code">LEAVE</field>
+        <field name="name">Leave Allowance</field>
+        <field name="category_id" ref="l10n_in_hr_payroll.LEAVE"/>
+        <field name="sequence" eval="40"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.paid_amount * contract.l10n_in_leave_allowance_percent
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_in_employee_salary_pay"/>
+    </record>
+    <record id="l10n_in_hr_salary_rule_SPL" model="hr.salary.rule">
+        <field name="code">SPL</field>
+        <field name="name">Supplementary Allowance</field>
+        <field name="category_id" ref="l10n_in_hr_payroll.SPA"/>
+        <field name="sequence" eval="45"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = payslip.paid_amount * contract.l10n_in_supp_allowance_percent
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_in_employee_salary_pay"/>
+    </record>
+    <record id="l10n_in_hr_salary_rule_PT" model="hr.salary.rule">
+        <field name="code">PT</field>
+        <field name="name">Professional Tax</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="sequence" eval="50"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = -contract.l10n_in_pt
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_in_employee_salary_pay"/>
+    </record>
+    <record id="l10n_in_hr_salary_rule_GRA" model="hr.salary.rule">
+        <field name="code">GRA</field>
+        <field name="name">Gratuity</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="sequence" eval="25"/>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">
+result = -categories['BASIC'] * contract.l10n_in_gratuity_company
+        </field>
+        <field name="struct_id" ref="hr_payroll_structure_in_employee_salary_pay"/>
+    </record>
+    <record id="hr_payslip_rule_tds" model="hr.salary.rule">
+        <field name="code">TDS</field>
+        <field name="name">Tax Deducted at Source</field>
+        <field name="category_id" ref="hr_payroll.DED"/>
+        <field name="condition_select">python</field>
+        <field name="condition_python">result = bool(contract.l10n_in_tds)</field>
+        <field name="amount_select">code</field>
+        <field name="amount_python_compute">result = -(contract.l10n_in_tds)</field>
+        <field name="partner_id" ref="l10n_in_hr_payroll.hr_tds_register"/>
+        <field name="sequence" eval="140"/>
+        <field name="note">As per income tax rules, all payment which are taxable in nature should be done after deduction of taxes at the source itself. Hence employer compute income tax on salary payment and deduct it every month. This TDS is based on employee’s saving/investment declaration at the start of year. If investments for tax saving is not done, large amount may be deducted in last few months.</field>
+        <field name="struct_id" ref="hr_payroll_structure_in_employee_salary_pay"/>
+    </record>
+
+    <function model="hr.salary.rule" name="write">
+        <value model="hr.salary.rule" search="[('struct_id', '=', ref('l10n_in_hr_payroll_configuration.hr_payroll_structure_in_employee_salary_pay')),
+            ('code', '=', 'NET')]"/>
+        <value eval="{'amount_python_compute': &quot;result = categories['BASIC'] + categories['ALW'] + categories['DED']&quot;}"/>
+    </function>
+</odoo>

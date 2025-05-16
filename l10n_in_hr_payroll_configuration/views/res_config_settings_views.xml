@@ -1,0 +1,128 @@
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.l10n_in_hr_payroll_configuration</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="l10n_in_hr_payroll.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_settings_container')]" position="replace">
+                <div class="row mt16 o_settings_container">
+                    <div class="col-lg-6 col-12 o_setting_box" invisible="company_country_code != 'IN'">
+                        <div class="o_setting_left_pane">
+                            <field name="default_l10n_in_provident_fund_company"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="default_l10n_in_provident_fund_company" string="Employees' Provident Fund"/>
+                            <group class="mt16" invisible="not default_l10n_in_provident_fund_company">
+                                <field name="l10n_in_pf_employer_identification" placeholder="Code of 10 Numbers"/>
+                                <label for="default_l10n_in_pf_employee_contribution_company"/>
+                                <div class="o_row">
+                                    <field name="default_l10n_in_pf_employee_contribution_company" widget="percentage"/>
+                                </div>
+                                <label for="default_l10n_in_pf_employer_contribution_company"/>
+                                <div class="o_row">
+                                    <field name="default_l10n_in_pf_employer_contribution_company" widget="percentage"/>
+                                </div>
+                            </group>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 o_setting_box" invisible="company_country_code != 'IN'">
+                        <div class="o_setting_left_pane">
+                            <field name="default_l10n_in_esic_company"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="default_l10n_in_esic_company" string="Employees' State Insurance Corporation"/>
+                            <group class="mt16" invisible="not default_l10n_in_esic_company">
+                                <field name="l10n_in_esic_ip" placeholder="Code of 17 Numbers"/>
+                                <label for="default_l10n_in_esic_employee_contribution_company"/>
+                                <div class="o_row">
+                                    <field name="default_l10n_in_esic_employee_contribution_company" widget="percentage"/>
+                                </div>
+                                <label for="default_l10n_in_esic_employer_contribution_company"/>
+                                <div class="o_row">
+                                    <field name="default_l10n_in_esic_employer_contribution_company" widget="percentage"/>
+                                </div>
+                            </group>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 o_setting_box" invisible="company_country_code != 'IN'">
+                        <div class="o_setting_left_pane">
+                            <field name="default_l10n_in_professional_tax_company"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="default_l10n_in_professional_tax_company" string="Professional Tax"/>
+                            <group class="mt16" invisible="not default_l10n_in_professional_tax_company">
+                                <field name="l10n_in_pt_number" placeholder="Code of 11 Digits"/>
+                            </group>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12 o_setting_box" invisible="company_country_code != 'IN'">
+                        <div class="o_setting_left_pane">
+                            <field name="default_l10n_in_lwf_company"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="default_l10n_in_lwf_company" string="Labour Welfare Fund"/>
+                            <group class="mt16" invisible="not default_l10n_in_lwf_company">
+                                <label for="default_l10n_in_lwf_employee_contribution_company"/>
+                                <div class="o_row">
+                                    <field name="default_l10n_in_lwf_employee_contribution_company"/>
+                                    <field name="currency_symbol"/>
+                                    <span>  / month   </span>
+                                </div>
+                                <label for="default_l10n_in_lwf_employer_contribution_company"/>
+                                <div class="o_row">
+                                    <field name="default_l10n_in_lwf_employer_contribution_company"/>
+                                    <field name="currency_symbol"/>
+                                    <span>  / month   </span>
+                                </div>
+                            </group>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+            <xpath expr="//block[@id='hr_payroll_settings']" position="before">
+                <h2>Salary Components</h2>
+                <block invisible="company_country_code != 'IN'">
+                    <setting string="Basic Salary" help="You can define the percentage to compute basic salary based on Wages (including DA)">
+                        <field name="default_l10n_in_basic_salary_company" widget="percentage"/>
+                    </setting>
+                    <setting string="House Rent Allowance" help="You can define 50% for metro city and 40% for the non-metro city">
+                        <field name="default_l10n_in_hra_company" widget="percentage"/>
+                    </setting>
+                    <setting string="Standard Allowance">
+                        <field name="default_l10n_in_standard_allowance"/>
+                        <field name="currency_symbol" class="oe_inline"/>
+                        <span>  / month   </span>
+                    </setting>
+                    <setting string="Performance Bonus">
+                        <field name="default_l10n_in_performance_bonus_company" widget="percentage"/>
+                    </setting>
+                    <setting string="Leave Travel Allowance">
+                        <field name="default_l10n_in_leave_allowance_company" widget="percentage"/>
+                    </setting>
+                    <setting string="Leave Days">
+                        <field name="default_l10n_in_leave_days_company"/>
+                        <span>Days / month</span>
+                    </setting>
+                    <setting string="Gratuity">
+                        <field name="default_l10n_in_gratuity_company" widget="percentage"/>
+                    </setting>
+                    <setting string="Supplementary Allowance">
+                        <field name="default_l10n_in_supp_allowance"/>
+                        <field name="currency_symbol" class="oe_inline"/>
+                        <span>  / month   </span>
+                    </setting>
+                </block>
+            </xpath>
+            <xpath expr="//block[@id='hr_payroll_accountant']" position="inside">
+                <setting string="Organisation Tax Details" help="PAN and TAN number's details, used to generate the TDS reports" invisible="company_country_code != 'IN'">
+                    <field name="l10n_in_organization_tax_details"/>
+                    <group class="mt16" invisible="not l10n_in_organization_tax_details">
+                        <field name="l10n_in_pan_number"/>
+                        <field name="l10n_in_tan_number"/>
+                        <field name="l10n_in_tds_circle"/>
+                    </group>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

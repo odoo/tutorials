@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
 
+        <div class="d-flex gap-3 p-3">
+            <Counter onChange.bind="onChange"/>
+            <Counter onChange.bind="onChange"/>
+        </div>
+        <h2 class="ms-5">
+            Total Count:
+            <t t-esc="totalCount.value"/>
+        </h2>
+        <div class="d-flex gap-3 p-3">
+            <Card title="'kshitij'" html="html1">
+                <Counter onChange.bind="onChange"/>
+            </Card>
+            <Card title="'Ashutosh'" html="html2"/>
+        </div>
+        <TodoList/>
+    </t>
 </templates>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_contract_form_in_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.form.in.inherit.</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="l10n_in_hr_payroll.hr_contract_form_in_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[field[@name='l10n_in_driver_salay']]" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//group[field[@name='l10n_in_provident_fund']]" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//group[@name='salary_info']" position="inside">
+                <group string="Salary Components" invisible="country_code != 'IN'">
+                    <label for="l10n_in_basic_salary"/>
+                    <div class="o_row mw-80" name="l10n_in_basic_salary">
+                        <field name="l10n_in_basic_salary"/>
+                        <div>/ month</div>
+                        <field name="l10n_in_basic_salary_company" widget="percentage" groups="base.group_no_one"/>
+                    </div>
+                    <label for="l10n_in_hra"/>
+                    <div class="o_row mw-80" name="l10n_in_hra">
+                        <field name="l10n_in_hra"/>
+                        <div>/ month</div>
+                        <field name="l10n_in_hra_company" widget="percentage" groups="base.group_no_one"/>
+                    </div>
+
+                    <label for="l10n_in_standard_allowance"/>
+                    <div class="o_row mw-80" name="l10n_in_standard_allowance">
+                        <field name="l10n_in_standard_allowance"/>
+                        <div>/ month</div>
+                        <field name="l10n_in_standard_allowance_percent" widget="percentage" groups="base.group_no_one"/>
+                    </div>
+
+                    <label for="l10n_in_performance_bonus"/>
+                    <div class="o_row mw-80" name="l10n_in_performance_bonus">
+                        <field name="l10n_in_performance_bonus"/>
+                        <div>/ month</div>
+                        <field name="l10n_in_performance_bonus_company" widget="percentage" groups="base.group_no_one"/>
+                    </div>
+
+                    <label for="l10n_in_leave_travel_allowance"/>
+                    <div class="o_row mw-80" name="l10n_in_leave_travel_allowance">
+                        <field name="l10n_in_leave_travel_allowance"/>
+                        <div>/ month</div>
+                        <field name="l10n_in_leave_allowance_company" widget="percentage" groups="base.group_no_one"/>
+                    </div>
+
+                    <label for="l10n_in_leave_allowance"/>
+                    <div class="o_row mw-80" name="l10n_in_leave_allowance">
+                        <field name="l10n_in_leave_allowance"/>
+                        <div>/ month</div>
+                        <field name="l10n_in_leave_allowance_percent" widget="percentage" groups="base.group_no_one"/>
+                    </div>
+                    <field name="l10n_in_per_day_allowance" invisible="1"/>
+                    <label for="l10n_in_leave_days_company"/>
+                    <div class="o_row" name="l10n_in_leave_days_company">
+                        <field name="l10n_in_leave_days_company"/>
+                        <div>days</div>
+                    </div>
+
+                    <label for="l10n_in_gratuity"/>
+                    <div class="o_row mw-80" name="l10n_in_gratuity">
+                        <field name="l10n_in_gratuity"/>
+                        <div>/ month</div>
+                        <field name="l10n_in_gratuity_company" widget="percentage" groups="base.group_no_one"/>
+                    </div>
+
+                    <label for="l10n_in_supp_allowance"/>
+                    <div class="o_row mw-80" name="l10n_in_supp_allowance">
+                        <field name="l10n_in_supp_allowance"/>
+                        <div>/ month</div>
+                        <field name="l10n_in_supp_allowance_percent" widget="percentage" groups="base.group_no_one"/>
+                    </div>
+                </group>
+                <div class="d-flex flex-column">
+                    <group string="Tax Deductions" invisible="country_code != 'IN'">
+                        <label for="l10n_in_tds" string="TDS"/>
+                        <div class="d-flex gap-3">
+                            <field name="l10n_in_tds"/>
+                            <button name="%(l10n_in_hr_payroll.action_tds_calculation)d" string="TDS Calculator" type="action" class="w-75 btn btn-secondary"/>
+                        </div>
+                    </group>
+                    <group string="Other Deductions" invisible="country_code != 'IN'">
+                        <field name="l10n_in_provident_fund_company" invisible="1"/>
+                        <field name="l10n_in_esic_company" invisible="1"/>
+                        <field name="l10n_in_lwf_company" invisible="1"/>
+                        <field name="l10n_in_professional_tax_company" invisible="1"/>
+                        <label for="l10n_in_pf_employee_contribution_company" invisible="not l10n_in_provident_fund_company"/>
+                        <div class="o_row mw-80" name="l10n_in_pf_employee_contribution_company" invisible="not l10n_in_provident_fund_company">
+                            <field name="l10n_in_pf_employee_contribution_company" widget="percentage"/>
+                        </div>
+                        <label for="l10n_in_pf_employer_contribution_company" invisible="not l10n_in_provident_fund_company"/>
+                        <div class="o_row mw-80" name="l10n_in_pf_employer_contribution_company" invisible="not l10n_in_provident_fund_company">
+                            <field name="l10n_in_pf_employer_contribution_company" widget="percentage"/>
+                        </div>
+                        <label for="l10n_in_pt" invisible="not l10n_in_professional_tax_company"/>
+                        <div class="o_row mw-80" name="l10n_in_pt" invisible="not l10n_in_professional_tax_company">
+                            <field name="l10n_in_pt"/>
+                            <div>/ month</div>
+                        </div>
+                        <label for="l10n_in_esic_employee_contribution_company" invisible="not l10n_in_esic_company"/>
+                        <div class="o_row mw-80" name="l10n_in_esic_employee_contribution_company" invisible="not l10n_in_esic_company">
+                            <field name="l10n_in_esic_employee_contribution_company" widget="percentage"/>
+                        </div>
+                        <label for="l10n_in_esic_employer_contribution_company" invisible="not l10n_in_esic_company"/>
+                        <div class="o_row mw-80" name="l10n_in_esic_employer_contribution_company" invisible="not l10n_in_esic_company">
+                            <field name="l10n_in_esic_employer_contribution_company" widget="percentage"/>
+                        </div>
+                        <label for="l10n_in_lwf_employee_contribution_company" invisible="not l10n_in_lwf_company"/>
+                        <div class="o_row mw-80" name="l10n_in_lwf_employee_contribution_company" invisible="not l10n_in_lwf_company">
+                            <field name="l10n_in_lwf_employee_contribution_company"/>
+                            <div>/ month</div>
+                        </div>
+                        <label for="l10n_in_lwf_employer_contribution_company" invisible="not l10n_in_lwf_company"/>
+                        <div class="o_row mw-80" name="l10n_in_lwf_employer_contribution_company" invisible="not l10n_in_lwf_company">
+                            <field name="l10n_in_lwf_employer_contribution_company"/>
+                            <div>/ month</div>
+                        </div>
+                        <label for="l10n_in_other_deductions"/>
+                        <div class="o_row mw-80" name="l10n_in_other_deductions">
+                            <field name="l10n_in_other_deductions"/>
+                            <div>/ month</div>
+                        </div>
+                    </group>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
