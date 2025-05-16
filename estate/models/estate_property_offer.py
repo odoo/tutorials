@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -76,8 +76,9 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     "You cannot accept an offer for a sold or cancelled property."
                 )
-            if record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
+            if record.property_id.state == "offer_accepted":
                 raise UserError("An offer has already been accepted for this property.")
+
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.offer_price
