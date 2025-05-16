@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_orderline_employee.EmployeeList">
+        <Dialog bodyClass="'employee-list overflow-y-auto'" contentClass="'h-100'">
+            <t t-set-slot="header">
+                <button t-if="!ui.isSmall" class="btn btn-primary btn-lg lh-lg" role="img" aria-label="Add a employee" t-on-click="() => this.editEmployee()" title="Add a employee">Create </button>
+                <Input tModel="[state, 'query']" class="'ms-auto'" isSmall="ui.isSmall" placeholder.translate="Search Employees..." icon="{type: 'fa', value: 'fa-search'}" autofocus="true" debounceMillis="100" />
+            </t>
+            <table class="table table-hover">
+                <thead t-if="!ui.isSmall">
+                    <tr>
+                        <th class="py-2">Name</th>
+                        <th class="py-2">Contact Number</th>
+                        <th class="py-2">Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="getEmployees()" t-as="employee" t-key="employee.id">
+                        <tr t-att-class="employee.id==props.employee?.id ? 'active' : ''" t-on-click="() => this.clickEmployee(employee)">
+                            <td class="employee-name">
+                                <div t-if="employee.name">
+                                    <i class="fa fa-fw fa-user me-2"/>
+                                    <t t-esc="employee.name"/>
+                                </div>
+                            </td>
+                            <td class="employee-line-phone">
+                                <div t-if="employee.work_contact_id.phone">
+                                    <i class="fa fa-fw fa-phone me-2"/>
+                                    <t t-esc="employee.work_contact_id.phone"/>
+                                </div>
+                                <div t-if="employee.work_contact_id.mobile">
+                                    <i class="fa fa-fw fa-mobile me-2"/>
+                                    <t t-esc="employee.work_contact_id.mobile"/>
+                                </div>
+                            </td>
+                            <td class="employee-line-email">
+                                <div t-if="employee.work_contact_id.email" class="email-field">
+                                    <i class="fa fa-fw fa-paper-plane-o me-2"/>
+                                    <t t-esc="employee.work_contact_id.email" />
+                                </div>
+                            </td>
+                            <td class="employee-selection">
+                                <div t-if="employee.id == props.employee?.id" t-on-click.stop="() => this.clickEmployee()">
+                                    <i class="fa fa-times"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+
+            <t t-set-slot="footer">
+                <div class="d-flex justify-content-start flex-wrap gap-2 w-100">
+                    <button t-if="ui.isSmall" class="btn btn-primary btn-lg lh-lg" role="img" aria-label="Add a employee" t-on-click="() => this.editEmployee()" title="Add a customer">
+                    New 
+                    </button>
+                    <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="() => this.clickEmployee(this.props.employee)">Discard</button>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+</templates>

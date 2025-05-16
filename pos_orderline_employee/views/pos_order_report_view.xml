@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_report_pos_order_pivot_inherit" model="ir.ui.view">
+        <field name="name">report.pos.order.pivot.inherit</field>
+        <field name="model">report.pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_report_pos_order_pivot"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_qty']" position='after'>
+                <field name="total_order_lines" type="measure"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_report_pos_order_search_inherit" model="ir.ui.view">
+        <field name="name">report.pos.order.search.inherit</field>
+        <field name="model">report.pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_report_pos_order_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='User']" position='after'>
+                <filter string="Service Employee" name="service_employee_id" context="{'group_by':'service_employee_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="report_pos_order_view_tree" model="ir.ui.view">
+        <field name="name">report.pos.order.view.list.inherit.pos.hr</field>
+        <field name="model">report.pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.report_pos_order_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_categ_id']" position='after'>
+                <field name="service_employee_id" widget="many2one_avatar_employee"/>
+                <field name="total_order_lines" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

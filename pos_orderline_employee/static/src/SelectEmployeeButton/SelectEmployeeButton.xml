@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_orderline_employee.SelectEmployeeButton">
+        <button t-att-disabled="!this.pos.get_order()?.get_selected_orderline()" class="set-employee btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="() => this.pos.selectEmployee()">
+            <div t-if="props.employee" t-esc="props.employee.name" class="text-truncate text-action" />
+            <t t-else="">Select Employee</t>
+        </button>
+    </t>
+</templates>
