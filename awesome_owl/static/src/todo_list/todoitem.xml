@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoitem">
+        <div t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}"
+            class="d-flex align-items-center justify-content-between border rounded shadow-sm py-2 px-3 bg-light mb-2"
+        >
+            <div class="d-flex align-items-center gap-3">
+                <input type="checkbox" class="form-check-input" t-on-click="todoHandler" t-att-checked="props.todo.isCompleted"/>
+                <span class="fw-bold text-primary" t-out="props.todo.id + '.'" />
+                <span class="flex-grow-1" t-out="props.todo.description" />
+            </div>
+            <button class="btn btn-danger btn-sm px-2 py-1" t-on-click="deleteTodo">
+                <i class="fa fa-trash"></i>
+            </button>
+        </div>
+    </t>
+</templates>
