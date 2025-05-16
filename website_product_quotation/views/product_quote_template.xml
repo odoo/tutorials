@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- MeneItem in website layout  -->
+    <record id="website_property_product_quote_menu" model="website.menu">
+        <field name="name">Product Quote</field>
+        <field name="url">/product_quotation</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+
+    <!-- To make fields whitelist in crm form  -->
+    <function model="ir.model.fields" name="formbuilder_whitelist">
+        <value>crm.lead</value>
+        <value
+            eval="[
+            'contact_name',
+            'email_from',
+            'name',
+            'phone',
+            'country_id',
+            'state_id',
+            'street'
+        ]"/>
+    </function>
+
+    <template id="product_quote_template" name="Product Quotation Template">
+        <t t-call="website.layout">
+            <div class="main-container o_product_quote">
+                <div class="product-section">
+                    <div class="circle--slider">
+                        <div class="rotate--circle">
+                            <div class="prev o_prev">
+                                <span>
+                                    <img
+                                        width="37"
+                                        src="/website_product_quotation/static/src/img/arrows/previous-arrow-blue.png"
+                                    />
+                                </span>
+                            </div>
+                            <ul class="circle--rotate" id="circle--rotate">
+                                <t t-foreach="products" t-as="product">
+                                    <li
+                                        t-att-class="product == products[0] and 'block active' or 'block'">
+                                        <!-- default image will not be displayed because product
+                                        template
+                                        already provide a default image when user do not upload any
+                                        image in product section -->
+                                        <!-- <img
+                                            class="icon"
+                                            t-att-src="product['image_url'] if product.get('image_url') else
+                                        '/website_product_quotation/static/src/img/default/odoo.png'"
+                                        /> -->
+                                        <img
+                                            class="icon"
+                                            t-att-src="product['image_url']"
+                                        />
+                                    </li>
+                                </t>
+                            </ul>
+                            <div class="next o_next">
+                                <span>
+                                    <img
+                                        width="37"
+                                        height="42"
+                                        style="transform: rotate(180deg)"
+                                        src="/website_product_quotation/static/src/img/arrows/previous-arrow-blue.png"
+                                    />
+                                </span>
+                            </div>
+                        </div>
+                        <div class="animate-wrapper">
+                            <t t-foreach="products" t-as="product" key="product.id">
+                                <div
+                                    t-att-class="product == products[0] and 'animate active' or 'animate'"
+                                    t-att-data-key="product">
+                                    <div class="product-info">
+                                        <div class="product-category-slider">
+                                            <h1 class="borders o_product_name"
+                                                t-esc="product['name']">
+                                            </h1>
+                                            <t t-if="product['extra_images']">
+                                                <div class="slider">
+                                                    <div class="slick-list draggable">
+                                                        <img width="30" height="30"
+                                                            t-att-src="product['image_url']"
+                                                            t-att-data-name="product['name']"
+                                                            class="o_extra_image thumb-item activeimg"/>
+                                                        <t t-foreach="product['extra_images']"
+                                                            t-as="extra_img">
+                                                            <img width="30" height="30"
+                                                                t-att-src="extra_img['url']"
+                                                                t-att-data-name="extra_img['name']"
+                                                                class="o_extra_image thumb-item"/>
+                                                        </t>
+                                                    </div>
+                                                </div>
+                                            </t>
+                                            <div class="product-description">
+                                                <img
+                                                    width="512"
+                                                    height="512"
+                                                    t-att-src="product['image_url']"
+                                                    class="img-fluid"
+                                                />
+                                                <h4 class="extra-img-name"></h4>
+
+                                                <!-- share product link-->
+                                                <a class="o_copy_link"
+                                                    t-att-href="product['url']">
+                                                    <i
+                                                        class="fa-solid fa-share-nodes"
+                                                        style="color='#545454'"
+                                                    ></i> Share Product </a>
+
+                                                <!-- variant details  -->
+                                                <div class="diamond-info" t-if="product['size']">
+                                                    <div class="diamond-meta">
+                                                        <div class="diamond-meta-title"> Size </div>
+                                                        <div class="diamond-meta-detail"
+                                                            t-esc="', '.join(product['size']) if product['size'] else ''"></div>
+                                                    </div>
+                                                    <div class="diamond-meta"
+                                                        t-if="product['color']">
+                                                        <div class="diamond-meta-title"> Color
+                                                        </div>
+                                                        <div class="diamond-meta-detail"
+                                                            t-esc="', '.join(product['color']) if product['color'] else ''"></div>
+                                                    </div>
+                                                    <div class="diamond-meta"
+                                                        t-if="product['fabric']">
+                                                        <div class="diamond-meta-title"> Fabric
+                                                        </div>
+                                                        <div class="diamond-meta-detail"
+                                                            t-esc="', '.join(product['fabric']) if product['fabric'] else ''"></div>
+                                                    </div>
+                                                    <div class="diamond-meta"
+                                                        t-if="product['print']">
+                                                        <div class="diamond-meta-title"> Print
+                                                        </div>
+                                                        <div class="diamond-meta-detail"
+                                                            t-esc="', '.join(product['print']) if product['print'] else ''"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- learn more link -->
+                                            <a t-att-href="product['url']" class="learn_more"
+                                            >Learn
+                                                More</a>
+
+                                            <!-- Open Form button  -->
+                                            <button class="o_get_quote_btn">
+                                                <span>Get a Quote</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+
+                        <!-- Form section  -->
+                        <section
+                            class="s_website_form o_form_section pt16 pb16 form-container"
+                            data-snippet="s_website_form"
+                            data-name="Form">
+                            <div class="container-fluid o_form_container">
+                                <form action="/website/form/" method="post"
+                                    enctype="multipart/form-data"
+                                    class="o_mark_required" data-mark="*"
+                                    data-model_name="crm.lead"
+                                    data-pre-fill="false" data-success-mode="message"
+                                    hide-change-model="true">
+                                    <div
+                                        class="s_website_form_rows row s_col_no_bgcolor">
+                                        <div data-name="Field"
+                                            class="s_website_form_field mb-3 col-12 col-lg-6 s_website_form_required"
+                                            data-type="char"
+                                            data-translated-name="Field">
+                                            <label
+                                                class="s_website_form_label"
+                                                for="name">
+                                                <span
+                                                    class="s_website_form_label_content">
+                                                    Name</span>
+                                                <span
+                                                    class="s_website_form_mark">
+                                                    *</span>
+                                            </label>
+                                            <input
+                                                class="form-control s_website_form_input"
+                                                type="text"
+                                                name="contact_name"
+                                                required="1"
+                                                placeholder="Enter Your Name"
+                                                id="name"
+                                                data-fill-with="name"/>
+                                        </div>
+                                        <div data-name="Field"
+                                            class="s_website_form_field mb-3 col-12 col-lg-5 s_website_form_required"
+                                            data-type="char"
+                                            data-translated-name="Field">
+                                            <label
+                                                class="s_website_form_label"
+                                                for="company_name">
+                                                <span
+                                                    class="s_website_form_label_content">
+                                                    Company</span>
+                                                <span
+                                                    class="s_website_form_mark">
+                                                    *</span>
+                                            </label>
+                                            <input
+                                                class="form-control s_website_form_input"
+                                                type="text"
+                                                name="partner_name"
+                                                required="1"
+                                                placeholder="Enter Your Company Name"
+                                                id="company_name"
+                                                data-fill-with="commercial_company_name"/>
+                                        </div>
+                                        <div data-name="Field"
+                                            class="s_website_form_field mb-3 col-12 col-lg-6"
+                                            data-type="tel"
+                                            data-translated-name="Field">
+                                            <label
+                                                class="s_website_form_label"
+                                                for="phone">
+                                                <span
+                                                    class="s_website_form_label_content">Phone
+                                                    Number</span>
+                                            </label>
+                                            <input
+                                                class="form-control s_website_form_input"
+                                                type="tel"
+                                                name="phone" id="phone"
+                                                data-fill-with="phone"/>
+                                        </div>
+                                        <div data-name="Field"
+                                            class="s_website_form_field mb-3 col-12 col-lg-5 s_website_form_required"
+                                            data-type="email"
+                                            data-translated-name="Field">
+                                            <label
+                                                class="s_website_form_label"
+                                                for="email">
+                                                <span
+                                                    class="s_website_form_label_content">
+                                                    Email</span>
+                                                <span
+                                                    class="s_website_form_mark">
+                                                    *</span>
+                                            </label>
+                                            <input
+                                                class="form-control s_website_form_input"
+                                                type="email"
+                                                name="email_from"
+                                                required="1" id="email"
+                                                data-fill-with="email"/>
+                                        </div>
+                                        <div data-name="Field"
+                                            class="s_website_form_field mb-3 col-12 col-lg-6"
+                                            data-type="char"
+                                            data-translated-name="Field">
+                                            <label
+                                                class="s_website_form_label"
+                                                for="street">
+                                                <span
+                                                    class="s_website_form_label_content">Address
+                                                    Street</span>
+                                            </label>
+                                            <input
+                                                class="form-control s_website_form_input"
+                                                type="text"
+                                                name="street" id="street"
+                                            />
+                                        </div>
+                                        <div data-name="Field"
+                                            class="s_website_form_field mb-3 col-12 col-lg-3"
+                                            data-type="many2one"
+                                            data-translated-name="Field">
+                                            <label
+                                                class="s_website_form_label"
+                                                for="state_id">
+                                                <span
+                                                    class="s_website_form_label_content">
+                                                    State</span>
+                                            </label>
+                                            <select
+                                                class="form-select s_website_form_input"
+                                                name="state_id"
+                                                id="state_id">
+                                                <t
+                                                    t-foreach="request.env['res.country.state'].search([])"
+                                                    t-as="state">
+                                                    <option t-att-value="state.id">
+                                                        <t t-esc="state.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+                                        <div data-name="Field"
+                                            class="s_website_form_field mb-3 col-12 col-lg-2 s_website_form_required"
+                                            data-type="many2one"
+                                            data-translated-name="Field">
+                                            <label
+                                                class="s_website_form_label"
+                                                for="country_id">
+                                                <span
+                                                    class="s_website_form_label_content">
+                                                    Country</span>
+                                                <span
+                                                    class="s_website_form_mark">
+                                                    *</span>
+                                            </label>
+                                            <select
+                                                class="form-select s_website_form_input country_id"
+                                                name="country_id"
+                                                id="country_id">
+                                                <t t-foreach="request.env['res.country'].search([])"
+                                                    t-as="country">
+                                                    <option t-att-value="country.id">
+                                                        <t t-esc="country.name"/>
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div>
+
+                                        <div data-name="Field"
+                                            class="s_website_form_field mb-3 col-12 s_website_form_model_required col-lg-11"
+                                            data-type="char"
+                                            data-translated-name="Field">
+                                            <label
+                                                class="s_website_form_label"
+                                                for="product_name">
+                                                <span
+                                                    class="s_website_form_label_content">Product
+                                                    Name</span>
+                                                <span
+                                                    class="s_website_form_mark">
+                                                    *</span>
+                                            </label>
+                                            <input
+                                                class="form-control s_website_form_input"
+                                                type="text"
+                                                name="name" placeholder=""
+                                                id="product_name"
+                                                value="" readonly="1"
+                                            />
+                                        </div>
+                                        <div
+                                            class="mb-0 py-2 col-12 s_website_form_submit text-end s_website_form_no_submit_label o_form_submit"
+                                            data-name="Submit Button">
+                                            <div class="s_website_form_label"></div>
+                                            <span id="s_website_form_result"></span>
+                                            <a href="#" role="button"
+                                                class="btn btn-primary s_website_form_send">
+                                                Submit</a>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div class="s_website_form_end_message d-none">
+                                    <div class="oe_structure">
+                                        <section
+                                            class="s_text_block o_colored_level rounded px-5 text-center"
+                                            data-snippet="s_text_block">
+                                            <i
+                                                class="fa fa-paper-plane fa-2x mb-3 rounded-circle text-bg-success"
+                                                role="img" aria-hidden="true" title="Success"></i>
+                                            <h1 class="fw-bolder">Thank you for your feedback!</h1>
+                                            <p class="lead mb-0">Our team will message you back as
+                                                soon as possible.</p>
+                                            <p class="lead">In the meantime we invite you to visit
+                                                our <a href="/">website</a>.</p>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
