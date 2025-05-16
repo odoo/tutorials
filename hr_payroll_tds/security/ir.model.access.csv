@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+hr_payroll_tds_declaration,hr_payroll_tds_declaration,model_hr_tds_declaration,hr_payroll_tds.group_hr_tds_user,1,1,1,1
+hr_payroll_tds_declaration_wizard,hr_payroll_tds_declaration_wizard,model_hr_tds_declaration_wizard,base.group_user,1,1,1,0
+hr_tds_declaration_details,hr_tds_declaration_details,model_hr_tds_declaration_details,hr_payroll_tds.group_hr_tds_user,1,1,1,0
+hr_employee_tds,hr_employee_tds,model_hr_employee,hr_payroll.group_hr_payroll_user,1,1,1,0

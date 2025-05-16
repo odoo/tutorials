@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_hr_tds_declaration" model="ir.actions.act_window">
+        <field name="name">TDS Declaration</field>
+        <field name="res_model">hr.tds.declaration</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="hr_tds_declaration_list_view" model="ir.ui.view">
+        <field name="name">hr.tds.declaration.list.view</field>
+        <field name="model">hr.tds.declaration</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="financial_year"/> 
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_open_declarations" model="ir.actions.act_window">
+        <field name="name">TDS Declarations</field>
+        <field name="res_model">hr.tds.declaration.details</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    
+    <record id="hr_tds_declaration_form_view" model="ir.ui.view">
+        <field name="name">hr.tds.declaration.form.view</field>
+        <field name="model">hr.tds.declaration</field>
+        <field name="arch" type="xml">
+            <form string="TDS declaration">
+                <header>
+                    <button name="%(hr_payroll_tds.action_genreate_wizard)d" class="btn-primary" type="action" string="Generate Declarations" invisible="state != 'new'"/> 
+                    <button name="action_approved" string="Approve" class="btn-primary" type="object" invisible="state not in ('draft', 'confirmed')"/>
+                    <button name="action_set_to_draft" string="Set to Draft" type="object" invisible="state == 'new'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, draft, confirmed, accepted"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_declarations" class="oe_stat_button" icon="fa-book" type="object" help="Generated TDS Declarations" invisible="tds_declaration_count == 0">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value"><field name="tds_declaration_count"/></span>
+                                <span class="o_stat_text">TDS Declarations</span>
+                            </div>
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="name" placeholder="E.g. FY 2024-2025"/>
+                    </h1>
+                    <group>
+                        <field name="financial_year"/> 
+                        <label for="start_date" string="Period"/>
+                        <div class="o_row">
+                            <field name="start_date" class="oe_inline o_hr_narrow_field"/> - <field name="end_date" class="oe_inline o_hr_narrow_field"/>
+                        </div>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search view of declaration details  -->
+    <record id="hr_tds_declaration_search" model="ir.ui.view">
+        <field name="name">hr.tds.declaration.search.view</field>
+        <field name="model">hr.tds.declaration</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Filters -->
+                <filter name="new" string="New" domain="[('state', '=', 'new')]" />
+                <filter name="confirmed" string="Confirm" domain="[('state', '=', 'confirmed')]" />
+                <filter name="accepted" string="Approve" domain="[('state', '=', 'accepted')]" />
+                <field name="financial_year" />
+                <field name="name"/>
+                <separator />
+                <!-- Group By -->
+                <group string="Group By">
+                    <filter string="Status" name="group_status" context="{'group_by': 'state'}" />
+                    <filter string="Financial Year" name="group_financial_year" context="{'group_by': 'financial_year'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+</odoo>

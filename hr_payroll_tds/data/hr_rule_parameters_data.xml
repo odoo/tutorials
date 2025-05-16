@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="l10n_in_rule_parameter_tds_tax_slabs" model="hr.rule.parameter">
+        <field name="name">India: TDS Rate Chart New Regime</field>
+        <field name="code">l10n_in_tds_rate_chart_new_regime</field>
+        <field name="country_id" ref="base.in"/>
+    </record>
+    <record id="l10n_in_rule_parameter_tds_tax_slabs_value" model="hr.rule.parameter.value">
+        <field name="parameter_value">[
+            (0.0, (0, 300000),0),
+            (0.05, (300001, 700000),0),
+            (0.1, (700001, 1000000),20000),
+            (0.15, (1000001, 1200000),50000),
+            (0.2, (1200001, 1500000),80000),
+            (0.3, (1500001, float('inf')),140000)
+        ]</field>
+        <field name="rule_parameter_id" ref="l10n_in_rule_parameter_tds_tax_slabs"/>
+        <field name="date_from" eval="datetime(2000, 1, 1).date()"/>
+    </record>
+
+    <record id="l10n_in_rule_parameter_standard_deduction_new_regime" model="hr.rule.parameter">
+        <field name="name">India: Standard Deduction New Regime</field>
+        <field name="code">l10n_in_standard_deduction_new_regime</field>
+        <field name="country_id" ref="base.in"/>
+    </record>
+    <record id="l10n_in_rule_parameter_standard_deduction_value" model="hr.rule.parameter.value">
+        <field name="parameter_value">75000</field>
+        <field name="rule_parameter_id" ref="l10n_in_rule_parameter_standard_deduction_new_regime"/>
+        <field name="date_from" eval="datetime(2000, 1, 1).date()"/>
+    </record>
+
+</odoo>
