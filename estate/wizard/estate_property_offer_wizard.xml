@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- wizard action  -->
+        <record id="estate_property_offer_wizard_action" model="ir.actions.act_window">
+            <field name="name">Add Offer</field>
+            <field name="res_model">estate.property.offer.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_estate_property" />
+            <field name="binding_type">action</field>
+            <field name="binding_view_types">list</field>
+        </record>
+        <!-- wizard form view  -->
+        <record id="estate_property_offer_wizard_view_form" model="ir.ui.view">
+            <field name="name">estate.property.offer.wizard.form</field>
+            <field name="model">estate.property.offer.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Offers">
+                    <sheet>
+                        <group>
+                            <field name="price" />
+                            <field name="validity" />
+                            <field name="partner_id" />
+                        </group>
+                        <div>
+                            <button string="Confirm Add Offer" name="action_create_offer"
+                                type="object"
+                                class="oe_highlight btn-primary" />
+                            <button string="Cancel" type="object" class="oe_highlight btn-danger"
+                                special="cancel" />
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- inheriting estate property list view to add button  -->
+        <record id="estate_property_view_list_inherit_button" model="ir.ui.view">
+            <field name="name">estate.property.view.list.inherit.button</field>
+            <field name="model">estate.property</field>
+            <field name="inherit_id" ref="estate.estate_property_view_list" />
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="inside">
+                    <header>
+                        <button name="%(estate_property_offer_wizard_action)d"
+                            type="action"
+                            string="Add Offer"
+                            class="oe_highlight" />
+                    </header>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
