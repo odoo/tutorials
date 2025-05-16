@@ -1,1 +1,1 @@
-from . import inherited_estate_property
+from . import estate_property

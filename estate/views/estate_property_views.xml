@@ -14,6 +14,12 @@
         </field>
     </record>
 
+    <record id="open_url_action" model="ir.actions.act_url">
+        <field name="name">Open External Website</field>
+        <field name="url">/properties</field>
+        <field name="target">new</field>
+    </record>
+
     <record id="view_estate_property_list" model="ir.ui.view">
         <field name="name">state.property.list</field>
         <field name="model">estate.property</field>
@@ -48,6 +54,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
                 </header>
                 <sheet>
+                    <field name="image" widget="image" class="oe_avatar" nolabel='1' options="{'zoom': True, 'size': [0,180]}"/>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
@@ -92,7 +99,7 @@
                         <page string="Other Info">
                             <group>
                                 <field name="salesperson_id"/>
-                                <field name="buyer_id"/>
+                                <field name="buyer_id" readonly="1"/>
                             </group>
                         </page>
                         <page string="Offers">

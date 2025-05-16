@@ -2,6 +2,13 @@ from odoo import models, fields, api
 
 
 class EstatePropertyType(models.Model):
+    """Model representing types of real estate properties.
+
+    This model defines categories for properties, such as 'Apartment', 'House', etc.,
+    and tracks associated properties and offers. It includes a computed field for
+    offer count.
+    """
+
     _name = "estate.property.type"
     _description = "Real Estate Property Type"
     _order = "sequence, name"
@@ -21,5 +28,9 @@ class EstatePropertyType(models.Model):
 
     @api.depends("offer_ids")
     def _compute_offer_count(self):
+        """Compute the number of offers associated with this property type.
+
+        Updates the `offer_count` field with the count of records in `offer_ids`.
+        """
         for record in self:
             record.offer_count = len(record.offer_ids)
