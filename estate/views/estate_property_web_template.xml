@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_list_page" name="Property List page">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h1 class="text-center mb-4">Available Properties</h1>
+                <form method="GET" class="mb-4 gap-4" style="display: flex; justify-content: center;">
+                    <div>
+                        <input type="date" name="listed_after" class="form-control"/>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" type="submit">Listed After</button>
+                    </div>
+                </form>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <a t-att-href="'/property/%s' % property.id" class="col-md-4 mb-4" style="cursor: pointer; text-decoration: none;">
+                            <div class="card">
+                                <img t-if="property.property_image" t-att-src="image_data_uri(property.property_image)" class="card-img-top" style="height: 250px; object-fit: cover;" alt="Property Image"/>
+                                <div class="card-body">
+                                    <h5 class="card-title" t-field="property.name"/>
+                                    <p class="card-text">Expected Price: <span t-field="property.expected_price"/>
+                                    </p>
+                                    <p class="card-text">Best Price: <span t-field="property.best_price"/>
+                                    </p>
+                                    <p class="card-text">Available From: <span t-field="property.date_availability"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center">
+                    <t t-call="website.pager"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="estate_property_detail_page" name="Property Detail Page">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <t t-call="estate.estate_property_template"/>
+                <t t-call="estate.estate_property_report_offers_table"/>
+            </div>
+        </t>
+    </template>
+
+    <record id="menu_property_webview" model="website.menu">
+        <field name="name">Property List</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+    </record>
+
+    <record id="estate_property_manager_rule" model="ir.rule">
+        <field name="name">Managers Can See All Properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+         <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+
+    <record id="estate_property_agent_rule" model="ir.rule">
+        <field name="name">Agents Can See Their Own or Unassigned Properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
+        <field name="domain_force">[ '|', ('user_id', '=', user.id), ('user_id', '=', False)]</field>
+    </record>            
+
+    <record id="estate_property_company_rule" model="ir.rule">
+        <field name="name">Agents Can Only See Their Company's Properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[ '|', ('company_id', '=', user.company_id.id), ('company_id', '=', False)]</field>
+    </record>
+</odoo>
