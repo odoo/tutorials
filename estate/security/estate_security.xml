@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
+            <field name="name">Real Estate Brokerage</field>
+            <field name="description">Category for Real Estate Brokers as agents and managers</field>
+            <field name="sequence">1</field>
+        </record>
+
+        <!-- Agent Group -->
+        <record id="estate_group_user" model="res.groups">
+            <field name="name">Agent</field>
+            <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+            <field name="comment">The user will be able to create and manage estate properties.</field>
+        </record>
+
+        <!-- Manager Group -->
+        <record id="estate_group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+            <field name="comment">The user will be able to create and manage estate properties.</field>
+            <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Record Rule Agent -->
+        <record id="estate_group_agent_rule" model="ir.rule">
+            <field name="name">Rules Agent</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="groups" eval="[(4, ref('estate.estate_group_user'))]"/>
+            <field name="domain_force">[
+            '|', ('salesman_id', '=', user.id), ('salesman_id', '=', False)
+        ]</field>
+        </record>
+
+        <!-- Record Rule Manager -->
+        <record id="estate_group_manager_rule" model="ir.rule">
+            <field name="name">Rules Manager</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="groups" eval="[(4, ref('estate.estate_group_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <!-- Rule for Company -->
+        <record model="ir.rule" id="estate_company_rule">
+            <field name="name">Rules for multi-company</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="domain_force">[
+        '|', ('company_id', '=', False),
+             ('company_id', 'in', company_ids)
+    ]</field>
+        </record>
+    </data>
+</odoo>
