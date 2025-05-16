@@ -1,0 +1,60 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+<!--
+    <record model="ir.ui.view" id="estate_account.list">
+      <field name="name">estate_account list</field>
+      <field name="model">estate_account.estate_account</field>
+      <field name="arch" type="xml">
+        <list>
+          <field name="name"/>
+          <field name="value"/>
+          <field name="value2"/>
+        </list>
+      </field>
+    </record>
+-->
+
+    <!-- actions opening views on models -->
+<!--
+    <record model="ir.actions.act_window" id="estate_account.action_window">
+      <field name="name">estate_account window</field>
+      <field name="res_model">estate_account.estate_account</field>
+      <field name="view_mode">list,form</field>
+    </record>
+-->
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="estate_account.action_server">
+      <field name="name">estate_account server</field>
+      <field name="model_id" ref="model_estate_account_estate_account"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "list,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+<!--
+    <menuitem name="estate_account" id="estate_account.menu_root"/>
+-->
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="estate_account.menu_1" parent="estate_account.menu_root"/>
+    <menuitem name="Menu 2" id="estate_account.menu_2" parent="estate_account.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="estate_account.menu_1_list" parent="estate_account.menu_1"
+              action="estate_account.action_window"/>
+    <menuitem name="Server to list" id="estate_account" parent="estate_account.menu_2"
+              action="estate_account.action_server"/>
+-->
+  </data>
+</odoo>
