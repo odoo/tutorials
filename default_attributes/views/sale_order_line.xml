@@ -1,0 +1,23 @@
+<odoo>
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.line.get.global.info.tab</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page name="global_info" string="Global Info">
+                    <group>
+                        <field name="global_info_line_ids">
+                            <list editable="bottom" create="0" edit="1" delete="0"
+                                default_group_by="category_name">
+                                <field name="category_name" />
+                                <field name="attribute_id" />
+                                <field name="attribute_value_id" />
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

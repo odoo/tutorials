@@ -1,0 +1,31 @@
+<odoo>
+    <record id="custom_product_view_kanban_catalog" model="ir.ui.view">
+        <field name="name">custom.product.view.kanban.catalog</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//kanban" position="inside">
+                <t t-if="env.isSmall">
+                    <div class="mobile-kanban">
+                        <field name="package_field"/>
+                    </div>
+                </t>
+                <t t-else="">
+                    <div class="desktop-kanban">
+                        <field name="package_field"/>
+                    </div>
+                </t>
+            </xpath>
+
+           <xpath expr="//field[@name='image_128']" position="attributes">
+                <attribute name="class">ms-auto o_product_image_custom</attribute>
+                <attribute name="widget">image_custom</attribute>
+           </xpath>
+
+            <xpath expr="//field[@name='product_template_attribute_value_ids']" position="after">
+                <strong>Package Field : <field name="package_field"/></strong>
+            </xpath>
+        </field>
+    </record>
+</odoo>
