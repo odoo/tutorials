@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_category_form_view" model="ir.ui.view">
+        <field name="name">product.category.form.inherit.default.attribute</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <group name="first" position="after">
+                <group name="default_attributes" >
+                    <group string="Default Attributes">
+                        <field name="show_on_global_info"/>
+                        <field name="default_attribute_ids" widget="many2many_tags"/>
+                    </group>
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>
