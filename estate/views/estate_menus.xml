@@ -1,0 +1,10 @@
+<odoo>
+    <!-- Root -->
+    <menuitem id="real_estate_root_menu" name="Real Estate" sequence="10"/>
+
+    <!-- Menu -->
+    <menuitem id="advertissements_menu" name="Advertissements" parent="real_estate_root_menu" sequence="10"/>
+
+    <!-- Submenu -->
+    <menuitem id="advertissements_property_menu" name="Properties" action="estate_property_action" parent="advertissements_menu" sequence="10"/>
+</odoo>
