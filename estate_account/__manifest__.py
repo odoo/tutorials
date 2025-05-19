@@ -5,7 +5,7 @@
     "description": "This module links estate management with accounting functionalities.",
     "author": "Abhishek Khant (abhk)",
     "depends": ["estate", "account"],
-    "category": "Sales",
+    "category": "Real Estate",
     "auto_install": True,
     "license": "LGPL-3",
 }
