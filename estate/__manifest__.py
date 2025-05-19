@@ -3,26 +3,19 @@
 
 
 {
-    'name': 'Estate',
+    'name': 'estate',
     'version': '1.8',
-    'category': 'Sales/Estate',
+    'category': 'All',
     'sequence': 15,
     'summary': 'Calculate Estate',
     'website': 'https://www.odoo.com/app/estate',
     'depends': [
-        'base_setup',
-        'sales_team',
-        'mail',
-        'calendar',
-        'resource',
-        'utm',
-        'web_tour',
-        'contacts',
-        'digest',
-        'phone_validation',
+        'base'
     ],
     'data': [
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml'
     ],
     'installable': True,
     'application': True,
