@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+    <t t-name="awesome_owl.Playground">
+        <div>
+            <h1>Owl Introduction</h1>
+        </div>
+            <b><t t-esc="this.state.value"/></b>
+        <div>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+        </div>
+        <div>
+            <Card card_title="'Welcome to the playground'" />
+            <Card card_title="'Welcome to the playground'" />
+            <Card card_title="'Welcome to the playground'" />
+            <Card card_title="'Welcome to the playground'" />
+            <Card card_title="'Welcome to the playground'" />
+            <Card card_title="'Welcome to the playground'" />
+        </div>
+        <div>
+            <TodoList/>
         </div>
     </t>
-
 </templates>
