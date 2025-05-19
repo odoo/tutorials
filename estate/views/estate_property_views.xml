@@ -115,6 +115,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True"/>
             </form>
         </field>
     </record>
@@ -177,7 +178,7 @@
                 <field name="postcode"/>
                 <field name="buyer_id"/>
                 <field name="tag_ids"/>
-                <filter string="Available" name="available" domain="['|',('state','=','new'),('state','=','offer_received')]" />
+                <filter string="Available" name="available_property_filter" domain="['|',('state','=','new'),('state','=','offer_received')]" />
                 <field name="living_area"
                 filter_domain="['|',('living_area', '=', self), ('living_area', '>', self)]"/>
                 <group string="Group By">

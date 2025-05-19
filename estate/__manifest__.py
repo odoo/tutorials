@@ -1,11 +1,13 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'depends': ['base', 'sale', 'mail'],
+    'depends': ['base', 'mail'],
     'author': 'Rajeev Aanjana',
-    'category': 'Real Estate',
+    'category': 'Real Estate/Brokerage',
     'description': 'A module for managing real estate properties',
+    'application': True,
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
@@ -13,8 +15,14 @@
         'views/estate_property_tag_views.xml',
         'views/res_users_views.xml',
         'views/estate_menus.xml',
+        # 'data/master_data.xml',
+        'data/estate_property_demo.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
     ],
+    # 'demo': [
+    #     'demo/demo_data.xml',
+    # ],
     'license': 'LGPL-3',
-    'application': True,
     'installable': True,
 }

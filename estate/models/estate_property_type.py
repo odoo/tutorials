@@ -1,11 +1,11 @@
-from odoo import fields, api, models
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Real Estate Property Type"
     _order = "sequence, name"
-    
+
     sequence = fields.Integer(string="Sequence")
     # Basic Fields
     name = fields.Char(required=True)
@@ -23,8 +23,8 @@ class EstatePropertyType(models.Model):
     _sql_constraints = [
         ('unique_type_name', 'UNIQUE(name)', 'The property type name must be unique.'),
     ]
-    
+
     @api.depends("property_ids.offer_ids")
     def _compute_offer_count(self):
         for prop_type in self:
-              prop_type.offer_count = len(prop_type.mapped("property_ids.offer_ids"))
+            prop_type.offer_count = len(prop_type.mapped("property_ids.offer_ids"))
