@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+
 {
     'name': 'Real estate',
     'version': '0.0',
@@ -9,6 +10,9 @@
     'website': 'https://www.odoo.com/page/crm',
     'depends': [
         'base',
+    ],
+'data': [
+        'security/ir.model.access.csv',
     ],
     'installable': True,
     'application': True,
