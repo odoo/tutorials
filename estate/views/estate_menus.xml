@@ -1,8 +1,20 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="estate.property_menu_root" name="Estate">
-        <menuitem id="estate.property_first_level_menu" name="Advertisements">
-            <menuitem id="estate.property_menu_action" action="estate.property_model_action"/>
-        </menuitem>
-    </menuitem>
+    <!-- Root menu item -->
+    <menuitem id="estate.property_menu_root" name="Estate"/>
+
+    <!-- First level menu item under "Estate" -->
+    <menuitem id="estate.property_first_level_menu" name="Advertisements" parent="estate.property_menu_root"/>
+
+    <!-- Action for "Advertisements" -->
+    <menuitem id="estate.property_menu_action" action="estate.property_model_action" parent="estate.property_first_level_menu"/>
+
+    <!-- Another first level menu item under "Estate" -->
+    <menuitem id="estate.property_settings_first_level_menu" name="Settings" parent="estate.property_menu_root"/>
+
+    <!-- Action for "Settings" -->
+    <menuitem id="estate.property_type_menu_action" action="estate.property_type_model_action" parent="estate.property_settings_first_level_menu"/>
+
+    <!-- Action for "Settings" -->
+    <menuitem id="estate.property_tags_menu_action" action="estate.property_tags_model_action" parent="estate.property_settings_first_level_menu"/>
 </odoo>
