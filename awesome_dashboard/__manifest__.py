@@ -16,7 +16,7 @@
     'version': '0.1',
     'application': True,
     'installable': True,
-    'depends': ['base', 'web', 'mail', 'crm'],
+    'depends': ['base', 'web', 'mail', 'crm', 'sale'],
 
     'data': [
         'views/views.xml',
