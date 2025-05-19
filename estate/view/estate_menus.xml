@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id='test_menu_root' name='Estate'>
+        <menuitem id='test_first_level_menu' name='First Level'>
+            <menuitem id='test_model_menu_action' action='action_test_action'/>
+        </menuitem>
+    </menuitem>
+</odoo>
