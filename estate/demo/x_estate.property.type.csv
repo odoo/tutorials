@@ -1,0 +1,5 @@
+"id","x_name"
+real_estate_property_type_residential,"Residential"
+real_estate_property_type_commercial,"Commercial"
+real_estate_property_type_industrial,"Industrial"
+real_estate_property_type_land,"Land"
