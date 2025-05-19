@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ <templates id="template" xml:space="preserve">
+     <t t-name="pos_customer.CustomerDisplay" t-inherit="point_of_sale.CustomerDisplay" t-inherit-mode="extension">
+        <xpath expr="//div[@t-if='order.amount and !order.finalized']" position="inside">
+            <div class="d-flex flex-column justify-content-center gap-1 w-100 w-sm-50 ms-auto">
+                <div class="row fw-bolder">
+                    <div class="col text-end">Customer</div>
+                    <div class="col text-end" t-out="order.displayCustomerName"/>
+                </div>
+                <t t-if="order.amountDividedPerGuest">
+                    <div class="row fw-bolder">
+                        <div class="col text-end">Amount</div>
+                        <div class="col text-end" t-out="format_float(order.amountDividedPerGuest, 2)"/> / Guest
+                    </div>
+                </t>
+            </div>
+        </xpath>
+
+        <xpath expr="//div[hasclass('o_customer_display_main')]/OrderWidget" position="replace">
+            <OrderWidget t-if="!order.finalized" lines="order.activeItems"/>
+            
+            <t t-if="order.refundedItems">
+                <div class="mt-3 p-2 fw-bold">Refunded Items</div>
+                <OrderWidget t-if="!order.finalized" lines="order.refundedItems"/>
+            </t>
+        </xpath>
+     </t>
+</templates>
