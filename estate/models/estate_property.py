@@ -6,7 +6,7 @@ from odoo import fields, models
 
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "A real estate property"
 
     def _three_month_from_now(self):
@@ -34,7 +34,7 @@ class EstateProperty(models.Model):
 
     postcode = fields.Char()
 
-    date_availabity = fields.Date(copy=False, default=_three_month_from_now)
+    date_availability = fields.Date(string="Available From", copy=False, default=_three_month_from_now)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
 
