@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="awesome_clicker.ClientAction">
+        <div class="container">
+            <span>Level: <t t-out="clicker.level" /></span><br />
+            <span>
+                <ClickValue />
+                <button
+                    class="btn btn-primary m-2"
+                    t-on-click="() => clicker.increment(9)">
+                    Increment
+                </button>
+            </span>
+            <Notebook>
+                <t t-set-slot="clicks" title="'Clicks'" isVisible="true">
+                    <t t-foreach="clicker.clickResources" t-as="resourceType" t-key="resourceType.name">
+                        <h3><t t-out="resourceType.name" /></h3>
+                        <div class="card-group">
+                        <t t-foreach="resourceType.resources" t-as="resource" t-key="resource.name">
+                            <div t-if="clicker.level >= resource.level" class="card" style="width: 20rem">
+                                <div class="card-header">
+                                    <span class="card-title">
+                                        <t t-out="resource.count" />x 
+                                        <t t-out="resource.name" /> (<t t-out="resource.description" />)
+                                        <i t-att-class="resource.icon" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                                <div class="card-body">
+                                    <button
+                                        class="btn btn-primary"
+                                        t-att-disabled="resource.clickCost > clicker.clicks"
+                                        t-on-click="() => resource.buy(clicker)">
+                                        Buy <t t-out="resource.name" /> (<t t-out="resource.clickCost" /> clicks)
+                                    </button>
+                                </div>
+                            </div>
+                        </t>
+                        </div>
+                    </t>
+                </t>
+                <t t-set-slot="trees" title="'Trees and Fruits'" isVisible="true">
+                    <h3>Trees</h3>
+                    <div class="card-group">
+                    <t t-foreach="clicker.trees" t-as="tree" t-key="tree.name">
+                        <div t-if="clicker.level >= tree.level" class="card" style="width: 20rem">
+                            <div class="card-header">
+                                <span class="card-title">
+                                    <t t-out="tree.count" />x 
+                                    <t t-out="tree.name" /> (<t t-out="tree.description" />)
+                                    <i t-att-class="tree.icon" aria-hidden="true"></i>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <button
+                                    class="btn btn-primary"
+                                    t-att-disabled="tree.clickCost > clicker.clicks"
+                                    t-on-click="() => tree.buy(clicker)">
+                                    Buy <t t-out="tree.name" /> (<t t-out="tree.clickCost" /> clicks)
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                    </div>
+                    <h3>Fruits</h3>
+                    <div class="card-group">
+                        <t t-foreach="clicker.trees" t-as="tree" t-key="tree.name">
+                            <div t-if="clicker.level >= tree.level" class="card">
+                                <div class="card-header">
+                                    <span class="card-title">
+                                        <t t-out="tree.fruit.count" />x 
+                                        <t t-out="tree.fruit.name" /> <i t-att-class="tree.fruit.icon" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </Notebook>
+        </div>
+    </t>
+</templates>

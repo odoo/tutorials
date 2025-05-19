@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="awesome_gallery.GalleryImage">
+        <div class="card w-100 mb-3">
+            <img
+                t-ref="tooltip"
+                t-if="hasImage"
+                loading="lazy"
+                t-att-src="state.url" t-on-click="showForm" t-att-data-tooltip="props.record[props.model.tooltipField]"
+            />
+            <FileUploader onUploaded.bind="uploadImage" acceptedFileExtensions="'image/*'">
+                <t t-set-slot="toggler">
+                    <button class="btn btn-secondary">Upload image</button>
+                </t>
+            </FileUploader>
+        </div>
+    </t>
+</templates>

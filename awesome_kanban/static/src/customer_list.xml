@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="awesome_kanban.CustomerList">
+        <table class="table table-striped" style="width: 20rem; float: left">
+            <thead>
+                <tr>
+                    <th>
+                        <Pager offset="pager.offset" limit="pager.limit" total="pager.total" onUpdate.bind="changePage" />
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <input type="checkbox" t-on-change="toggleActiveFilter" t-model="state.activeFilter" /> Active customers
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <input type="text" t-on-keyup="search" t-model="state.searchPattern" />
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="state.filteredCustomers" t-as="record" t-key="record.id">
+                    <tr>
+                        <td
+                            class="cursor-pointer o_awesome_kanban_customer_list_item"
+                            t-on-click="() => props.selectCustomer(record)">
+                            <t t-out="record.display_name" />
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </t>
+</templates>

@@ -1,10 +1,10 @@
-import { whenReady } from "@odoo/owl";
-import { mountComponent } from "@web/env";
-import { Playground } from "./playground";
+import { whenReady } from '@odoo/owl';
+import { mountComponent } from '@web/env';
+import { Playground } from './playground';
 
 const config = {
     dev: true,
-    name: "Owl Tutorial",
+    name: 'Owl Tutorial',
 };
 
 // Mount the Playground component when the document.body is ready
