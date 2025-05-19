@@ -9,7 +9,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
-    _inherit = ["mail.thread"]
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     # Basic Fields
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
@@ -63,6 +63,12 @@ class EstateProperty(models.Model):
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area', store=True, help='Sum of living area and garden area')
+    company_id = fields.Many2one(
+        'res.company', 
+        string='Company', 
+        required=True, 
+        default=lambda self: self.env.company
+    )
     # SQL Constraints
     _sql_constraints = [
         (
@@ -82,7 +88,7 @@ class EstateProperty(models.Model):
         ),
     ]
     # Computed Fields & Onchange
-    
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -102,8 +108,8 @@ class EstateProperty(models.Model):
                 record.garden_orientation = 'north'
             else:
                 record.garden_area = 0
-                record.garden_orientation = ''
-                
+                record.garden_orientation = False
+           
     # Add Action Logic of "Cancel" & "Sold"
     def action_set_sold(self):
         for record in self:
@@ -139,3 +145,14 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ('new', 'canceled'):
                 raise UserError("You can only delete properties in 'New' or 'canceled' state.")
+    
+    def action_sold(self):
+    # Check the user has write access to the properties
+        self.check_access_rights('write')
+        self.check_access_rule('write')
+
+        # Create invoice with sudo to bypass access rights
+        invoice = self.env['account.move'].sudo().create({
+            # ... invoice creation data ...
+        })
+        return super().action_sold()

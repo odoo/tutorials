@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="estate_menu_root" name="Real Estate"/>
+    <menuitem id="estate_menu_root" name="Real Estate" sequence="10"/>
 
     <!-- Properties Menu -->
     <menuitem id="estate_property_menu_root" name="Properties" parent="estate_menu_root"/>
@@ -18,5 +18,7 @@
     <menuitem id="estate_property_tag_menu" name="Property Tags" parent="estate_config_menu_root"
               action="estate_property_tag_action" sequence="20"/>
 
-</odoo>
+    <menuitem id="estate_settings_menu" name="Settings" parent="estate_menu_root" sequence="100" groups="estate.estate_group_manager"
+          />
 
+</odoo>

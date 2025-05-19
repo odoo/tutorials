@@ -1,6 +1,7 @@
-from odoo import models, fields, api
-from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta
+
+from odoo import api, models, fields
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,7 +22,6 @@ class EstatePropertyOffer(models.Model):
         string="Date Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
-        store=True,
     )
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
@@ -53,8 +53,11 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(
                     "You cannot accept an offer for a sold or cancelled property."
                 )
-            if record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
+            # if record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
+            #     raise UserError("An offer has already been accepted for this property.")
+            if record.property_id.state == 'offer_accepted':
                 raise UserError("An offer has already been accepted for this property.")
+
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.offer_price
@@ -88,5 +91,6 @@ class EstatePropertyOffer(models.Model):
                     "The offer price must be higher than the current best price."
                 )
             curr_max_price = max(curr_max_price, offer["offer_price"])
+
         estate.state = "offer_received"
         return super().create(offers)
