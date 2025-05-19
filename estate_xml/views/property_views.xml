@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="real_estate_view_list" model="ir.ui.view">
+        <field name="name">real_estate_view_list</field>
+        <field name="model">x_estate_xml.property</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="x_name"/>
+                <field name="x_description"/>
+                <field name="x_postcode"/>
+                <field name="x_property_type_id"/>
+                <field name="x_bedrooms" optional="hidden"/>
+                <field name="x_living_area" optional="hidden"/>
+                <field name="x_expected_price" optional="hidden"/>
+                <field name="x_selling_price" optional="hidden"/>
+                <field name="x_availability_date" optional="hidden"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="real_estate_view_form" model="ir.ui.view">
+        <field name="name">real_estate_view_form</field>
+        <field name="model">x_estate_xml.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <header>
+                    <button name="estate_xml.estate_xml_property_refuse_offer_action" type="action" string="Cancel all offers"/>
+                </header>
+                <sheet>
+                    <div class="oe_title mb24">
+                        <h1>
+                        <field name="x_name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="x_tags_ids" widget="many2many_tags"/>
+                            <field name="x_property_type_id"/>
+                            <field name="x_postcode"/>
+                            <field name="x_availability_date"/>
+                            <field name="x_user_id"/>
+                            <field name="x_api_published"/>
+                        </group>
+                        <group>
+                            <field name="x_description"/>
+                            <field name="x_expected_price"/>
+                            <field name="x_selling_price"/>
+                            <field name="x_partner_id"/>
+                            <field name="x_country" readonly="True"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="Description">
+                            <group>
+                                <field name="x_description"/>
+                                <field name="x_bedrooms"/>
+                                <field name="x_living_area"/>
+                                <field name="x_facades"/>
+                                <field name="x_garage"/>
+                                <field name="x_garden"/>
+                                <field name="x_garden_area" invisible="not x_garden"/>
+                                <field name="x_garden_orientation" invisible="not x_garden"/>
+                                <field name="x_area_compute" readonly="True"/>
+                            </group>
+                        </page>
+                        <page name="Offers">
+                            <field name="x_offer_ids"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="property_offer_view_list" model="ir.ui.view">
+        <field name="name">property_offer_view_list</field>
+        <field name="model">x_estate_xml.property.offer</field>
+        <field name="arch" type="xml">
+            <list editable="top" decoration-success="x_state=='accepted'" decoration-danger="x_state=='refused'">
+                <field name="x_price"/>
+                <field name="x_partner_id"/>
+                <field name="x_state"/>
+                <button name="estate_xml.action_x_estate_offer_accept" type="action" string="Accept"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="real_estate_view_search" model="ir.ui.view">
+        <field name="name">real_estate_view_search</field>
+        <field name="model">x_estate_xml.property</field>
+        <field name="arch" type="xml">
+            <search string="Property Search">
+                <field name="x_postcode" string="x_postcode"/>
+                <field name="x_expected_price" string="Expected Price"/>
+                <field name="x_bedrooms" string="x_bedrooms"/>
+                <field name="x_living_area" string="Live Area" filter_domain="[('x_living_area','>=',self)]"/>
+                <field name="x_facades" string="x_facades"/>
+                <group expand="1" string="Group By">
+                    <filter string="x_postcode" name="x_postcode" context="{'group_by':'x_postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_menu_action" model="ir.actions.act_window">
+        <field name="name">Property</field>
+        <field name="res_model">x_estate_xml.property</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="search_view_id" ref="real_estate_view_search"/>
+    </record>
+
+    <record id="estate_property_type_menu_action" model="ir.actions.act_window">
+        <field name="name">Property types</field>
+        <field name="res_model">x_estate_xml.property.type</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <record id="estate_property_tags_menu_action" model="ir.actions.act_window">
+        <field name="name">Property tags</field>
+        <field name="res_model">x_estate_xml.property.tags</field>
+        <field name="view_mode">list</field>
+    </record>
+
+    <menuitem id="real_estate_main" name="Real Estate">
+        <menuitem id="real_estate_first_level" name="Estate Property">
+            <menuitem id="real_estate_action" action="estate_property_menu_action" name="Estate Property"/>
+        </menuitem>
+        <menuitem id="estate_property_settings" name="Settings">
+            <menuitem id="estate_property_type_menu" name="Property types" action="estate_property_type_menu_action"/>
+            <menuitem id="estate_property_tags_menu" name="Property tags" action="estate_property_tags_menu_action"/>
+        </menuitem>
+    </menuitem>
+
+</odoo>

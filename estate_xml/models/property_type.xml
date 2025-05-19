@@ -1,0 +1,15 @@
+<odoo>
+    <record id="estate_xml_property_type_model" model="ir.model">
+        <field name="name">Real Estate Property type</field>
+        <field name="model">x_estate_xml.property.type</field>
+    </record>
+
+    <record id="estate_xml_property__type_name_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_type_model"/>
+        <field name="name">x_name</field>
+        <field name="field_description">Name</field>
+        <field name="ttype">char</field>
+        <field name="required">True</field>
+    </record>
+
+</odoo>
