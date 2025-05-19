@@ -100,6 +100,9 @@ class EstatePropertyOffer(models.Model):
         offer. Validates that each offer's price is higher than the current best offer price.
         Updates the property's state to 'offer_received' upon successful creation.
         """
+        if not offers:
+            raise ValidationError("No offers provided for creation.")
+
         property_id = offers[0].get("property_id")
         if not property_id:
             raise ValidationError("Property ID is required.")
