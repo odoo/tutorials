@@ -1,0 +1,18 @@
+<t t-name="awesome_owl.card">
+    <div class="card">
+        <t t-if="props.title">
+            <div class="card-header">
+                <t t-esc="props.title" />
+                <button class="btn btn-sm btn-outline-secondary float-end"
+                    t-on-click="toggleContent">
+                    <t t-esc="state.isExpanded ? 'Hide' : 'Show'" />
+                </button>
+            </div>
+        </t>
+        <t t-if="this.state.isExpanded">
+            <div class="card-body">
+                <t t-slot="default" />
+            </div>
+        </t>
+    </div>
+</t>
