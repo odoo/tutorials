@@ -4,5 +4,6 @@
     'depends': [
         'base',
     ],
-    'author': "Mahdi (malj)"
+    'author': "Mahdi (malj)",
+    'license': 'LGPL-3'
 }
