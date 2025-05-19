@@ -37,7 +37,7 @@ class RealEstateController(Controller):
             .search(search_domains, order="create_date desc")
         )
 
-        items_per_page = 10
+        items_per_page = 6
         total_items = len(properties)
         start_index = items_per_page * (page - 1)
         page_items = properties[start_index : start_index + items_per_page]
@@ -64,7 +64,7 @@ class RealEstateController(Controller):
     @route("/property/<int:property_id>", auth="public", website=True)
     def property_detail(self, property_id):
         estate = request.env["estate.property"].sudo().browse(property_id)
-        if not estate.exists():
-            return request.not_found()
+        if not estate.exists() or estate.state in ["sold", "canceled"]:
+            return request.redirect("/properties")
 
         return request.render("estate.property_details_template", {"property": estate})

@@ -15,6 +15,7 @@
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
+        "wizard/estate_property_offer_wizard.xml",
         "views/estate_property_web_views.xml",
         "views/res_users_views.xml",
         "views/estate_property_menu.xml",
