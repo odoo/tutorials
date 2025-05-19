@@ -1,9 +1,9 @@
 from odoo import fields, models
 
+
 class EstateModel(models.Model):
     _name = "test_estate_model"
     _description = "Unreal estate moves a lot more than real one"
-
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -16,4 +16,4 @@ class EstateModel(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(selection = [("North","North"),("South","South"),("East","East"),("West","West")])
+    garden_orientation = fields.Selection(selection=[("North", "North"), ("South", "South"), ("East", "East"), ("West", "West")])
