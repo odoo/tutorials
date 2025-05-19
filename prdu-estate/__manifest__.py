@@ -9,7 +9,9 @@
     """,
     # data files always loaded at installation
     'data': [
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'views/estateviews.xml',
+        'views/estatemenus.xml',
     ],
     # data files containing optionally loaded demonstration data
     'demo': [
