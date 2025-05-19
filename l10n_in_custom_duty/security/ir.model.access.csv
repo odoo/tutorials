@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_move_custom_duty_wizard_readonly,account.move.custom.duty.wizard.readonly,l10n_in_custom_duty.model_account_move_custom_duty,account.group_account_readonly,1,0,0,0
+access_account_move_custom_duty_wizard_user,account.move.custom.duty.wizard.user,l10n_in_custom_duty.model_account_move_custom_duty,account.group_account_user,1,1,1,1
+access_account_move_custom_duty_wizard_manager,account.move.custom.duty.wizard.manager,l10n_in_custom_duty.model_account_move_custom_duty,account.group_account_manager,1,1,1,1
+
+access_account_move_custom_duty_wizard_line_readonly,account.move.custom.duty.wizard.line.readonly,l10n_in_custom_duty.model_account_move_custom_duty_line,account.group_account_readonly,1,0,0,0
+access_account_move_custom_duty_wizard_line_user,account.move.custom.duty.wizard.line.user,l10n_in_custom_duty.model_account_move_custom_duty_line,account.group_account_user,1,1,1,1
+access_account_move_custom_duty_wizard_line_manager,account.move.custom.duty.wizard.line.manager,l10n_in_custom_duty.model_account_move_custom_duty_line,account.group_account_manager,1,1,1,1
