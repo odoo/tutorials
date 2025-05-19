@@ -7,5 +7,7 @@
     """,
 
     'author': "Gaso",
+
+    'data': ['security/ir.model.access.csv',],
 }
 
