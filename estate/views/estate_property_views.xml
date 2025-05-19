@@ -1,5 +1,8 @@
-<record id="estate_property_model_action" model="ir.actions.act_window">
-    <field name="name">Estate Property</field>
-    <field name="res_model">Estate_property</field>
-    <field name="view_mode">list,form</field>
-</record>
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_model_action" model="ir.actions.act_window">
+        <field name="name">Property</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
