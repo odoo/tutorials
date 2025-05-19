@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="upload_invoice_template">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h2>Upload Invoice</h2>
+                <t t-if="request.params.get('success')">
+                    <div class="alert alert-success">Invoice submitted successfully!</div>
+                </t>
+                <form t-attf-action="/submit-invoice" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+
+                    <div>
+                        <label>Select Company</label>
+                        <select name="company_id" class="form-control" required="1">
+                            <t t-foreach="companies" t-as="company">
+                                <option t-att-value="company.id">
+                                    <t t-esc="company.name" />
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label>Upload PDF</label>
+                        <input type="file" name="pdf_file" accept=".pdf" class="form-control"
+                            required="1" />
+                    </div>
+                    <div>
+                        <label>Upload XML</label>
+                        <input type="file" name="xml_file" accept=".xml" class="form-control" required="1"/>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary mt-3">Submit Invoice</button>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>
