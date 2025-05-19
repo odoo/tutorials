@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="portal_access.wizard_view" model="ir.ui.view">
+        <field name="name">Grant portal access</field>
+        <field name="model">portal.wizard</field>
+        <field name="inherit_id" ref="portal.wizard_view"/>
+        <field name="arch" type="xml">
+            <button name="action_grant_access" position="before">
+                <button string="Manage Access" name="action_open_perms" type="object"
+                    class="btn-secondary" invisible="not is_portal or is_internal"/>
+            </button>
+        </field>
+    </record>
+
+    <record id="portal_wizard_user_perms_view_form" model="ir.ui.view">
+        <field name="name">portal.wizard.user.perms.view.form</field>
+        <field name="model">portal.wizard.user.perms</field>
+        <field name="arch" type="xml">
+            <form string="Pratham">
+                <sheet>
+                    <field name="partner_id"/>
+                    <group>
+                        <group name="sales" string="SALES">
+                            <field name="is_quotes_perm"/>
+                            <field name="is_so_perm"/>
+                        </group>
+                        <group name="purchase" string="PURCHASE">
+                            <field name="is_rfq_perm"/>
+                            <field name="is_po_perm"/>
+                        </group>
+                        <group name="accounting" string="ACCOUNTING">
+                            <field name="is_invoices_perm"/>
+                        </group>
+                        <group name="projects" string="PROJECTS">
+                            <field name="is_projects_perm"/>
+                            <field name="is_tasks_perm"/>
+                        </group>
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Save" class="oe_highlight" data-hotkey="s"
+                        name="action_save" type="object"/>
+                    <button string="Cancel" class="btn btn-secondary" data-hotkey="j"
+                        name="action_cancel" type="object"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

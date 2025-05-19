@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="portal_access.view_users_form" model="ir.ui.view">
+        <field name="name">res.users.view.form.inherit.portal_access</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='account_security']" position="after">
+                <page name="portal_access" string="Portal Access">
+                    <group>
+                        <group name="sales" string="SALES">
+                            <field name="is_quotes_perm"/>
+                            <field name="is_so_perm"/>
+                        </group>
+                        <group name="purchase" string="PURCHASE">
+                            <field name="is_rfq_perm"/>
+                            <field name="is_po_perm"/>
+                        </group>
+                        <group name="accounting" string="ACCOUNTING">
+                            <field name="is_invoices_perm"/>
+                        </group>
+                        <group name="projects" string="PROJECTS">
+                            <field name="is_projects_perm"/>
+                            <field name="is_tasks_perm"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
