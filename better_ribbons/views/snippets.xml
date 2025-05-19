@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="snippet_options_inherit" inherit_id="website_sale.snippet_options" name="Better Ribbons Options">
+        <xpath expr="//div[@data-name='ribbon_customize_opt']/we-input[1]" position="after">
+            <we-select string="Style" class="o_we_sublevel_1">
+                <we-button data-set-ribbon-style="tag">Badge</we-button>
+                <we-button data-set-ribbon-style="ribbon">Ribbon</we-button>
+            </we-select>
+        </xpath>
+    </template>
+</odoo>
