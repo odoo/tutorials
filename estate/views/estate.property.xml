@@ -1,0 +1,47 @@
+<?xml version='1.0'?>
+<odoo>
+    <record id='estate_property_list_view' model='ir.ui.view'>
+        <field name='name'>estate.property.list</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <list decoration-success='state in ["received", "accepted"]' decoration-bf='state == "accepted"' decoration-muted='state == "sold"'>
+                <field name='name'/>
+                <field name='postcode' />
+                <field name='tag_ids' widget='many2many_tags' options='{"color_field": "color"}'/>
+                <field name='bedrooms'/>
+                <field name='living_area' string='Living Area (sqm)' />
+                <field name='expected_price'/>
+                <field name='selling_price'/>
+                <field name='date_availability' string='Available From' optional='True'/>
+                <field name='property_type'/>
+            </list>
+        </field>
+    </record>
+
+    <record id='estate_property_search' model='ir.ui.view'>
+            <field name='name'>estate.property.search</field>
+            <field name='model'>estate.property</field>
+            <field name='arch' type='xml'>
+                <search string='Esate Property'>
+                    <field name='name' string='Title'/>
+                    <field name='postcode'/>
+                    <field name='expected_price'/>
+                    <field name='bedrooms'/>
+                    <field name='living_area' string='Living Area (sqm)' filter_domain='[("living_area", "&gt;=", self)]'/>
+                    <field name='facades'/>
+                    <field name='property_type'/>
+                    <separator/>
+                    <filter string='Available' name='active' domain='
+                        [
+                            "|",
+                            ("state", "=", "new"),
+                            ("state", "=", "received")
+                        ]'
+                    />
+                    <group expand='1' string='Group By'>
+                        <filter string='Postcode' name='postcode' context='{"group_by":"postcode"}'/>
+                    </group>
+                </search>
+            </field>
+        </record>
+</odoo>
