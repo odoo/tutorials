@@ -1,0 +1,14 @@
+.o_dashboard {
+  background-color: #e0fffa;
+  padding: 20px;
+  border-radius: 8px;
+  overflow: scroll;
+}
+
+.o_card_container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-content: start;
+  height: 100%;
+}
