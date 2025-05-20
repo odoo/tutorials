@@ -37,3 +37,6 @@ class EstateProperty(models.Model):
         default='new',
         copy=False,
     )
+    partner_type_id = fields.Many2one(comodel_name="estate.property.type")
+    buyer_id = fields.Many2one(comodel_name="res.partner")
+    user_id = fields.Many2one(comodel_name="res.users", default=lambda self: self.env.user)

@@ -6,8 +6,8 @@
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
-        'views/estate_property_views.xml',
+        'views/view_properties.xml',
+        'views/view_properties_type.xml',
         'views/estate_menus.xml',
-        'views/view_properties.xml'
     ],
 }
