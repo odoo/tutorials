@@ -2,6 +2,7 @@ import random
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -36,7 +37,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(string="Available From", copy=False, default=_three_month_from_now)
 
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    selling_price = fields.Float(readonly=True, copy=False, compute="_compute_selling_price")
     bedrooms = fields.Integer(default=random.randint(2, 6))
     facades = fields.Integer()
     living_area = fields.Integer()
@@ -56,7 +57,6 @@ class EstateProperty(models.Model):
     )
 
     # Related fields
-
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     property_type_test_value = fields.Char(
         string="Test Value",
@@ -74,7 +74,7 @@ class EstateProperty(models.Model):
 
     # Related fields RES
 
-    partner_id = fields.Many2one("res.partner", string="Partner", copy=False)
+    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     user_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
 
     # Computed Fields
@@ -92,6 +92,23 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_offer = max((offer.price for offer in record.property_offer_ids), default=0)
 
+    @api.depends('property_offer_ids.status')
+    def _compute_selling_price(self):
+        for record in self:
+            accepted_offers = [offer for offer in record.property_offer_ids if offer.status == "accepted"]
+
+            if len(accepted_offers) > 1:
+                raise UserError("Can't accept more then one offer")
+
+            elif accepted_offers:
+                record.selling_price = accepted_offers[0].price
+                record.state = "offer accepted"
+                record.partner_id = accepted_offers[0].partner_id
+            else:
+                record.selling_price = False
+                record.state = "new" if not record.property_offer_ids else "offer received"
+                record.partner_id = False
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -99,4 +116,18 @@ class EstateProperty(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = ""
+            self.garden_orientation = False
+
+    def action_cancel_listing(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("This listing is already sold and can't be cancelled")
+            record.state = "cancelled"
+        return True
+
+    def action_sell_listing(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("This listing is already cancelled and can't be sold")
+            record.state = "sold"
+        return True

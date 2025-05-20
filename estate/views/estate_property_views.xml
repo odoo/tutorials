@@ -48,6 +48,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_cancel_listing" type="object" string="Cancel"/>
+                    <button name="action_sell_listing" type="object" string="Sold"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -90,7 +94,7 @@
                         <page string="Offers">
                             <group>
 
-                                <field name="property_offer_ids"/>
+                                <field name="property_offer_ids" string=""/>
 
                             </group>
                         </page>

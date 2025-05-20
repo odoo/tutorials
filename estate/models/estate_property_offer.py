@@ -12,7 +12,7 @@ class EstatePropertyOffer(models.Model):
         copy=False,
     )
 
-    validity = fields.Integer(string="Offer validity (days)", default=7, inverse="_inverse_validity")
+    validity = fields.Integer(string="Offer validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
 
     # Relations
@@ -30,4 +30,15 @@ class EstatePropertyOffer(models.Model):
 
     def _inverse_deadline(self):
         for record in self:
-            record.validity = (record.date_deadline - record.create_date.date()).days
+            if record.create_date:
+                record.validity = (record.date_deadline - record.create_date.date()).days
+            else:
+                record.date_deadline = fields.Date.today(self) + relativedelta(days=10)
+
+    def action_accept_offer(self):
+        for record in self:
+            record.status = "accepted"
+
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = "refused"
