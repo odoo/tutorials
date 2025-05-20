@@ -6,6 +6,7 @@
         <field name="view_mode">list,form</field>
     </record>
 
+
     <record id="estate.property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -22,14 +23,14 @@
         </field>
     </record>
 
-
     <record id="estate.property_form_view" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form string="Property">
                 <sheet>
                     <h1><field name="name" nolabel="True"/></h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="postcode"/>
@@ -55,7 +56,23 @@
                             <field name="state"/>
                         </group>
                         </page>
+
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Other Info">
+                        <group>
+                            <field name="sales_id" string="Salesman"/>
+                            <field name="buyer_id" string="Buyer"/>
+                        </group>
+                        </page>
+
+
                     </notebook>
+
                 </sheet>
             </form>
         </field>
