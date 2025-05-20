@@ -1,4 +1,4 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, exceptions, tools
 from dateutil.relativedelta import relativedelta
 
 class property_offer(models.Model):
@@ -16,6 +16,10 @@ class property_offer(models.Model):
     validity =  fields.Integer(default=0, string="Validity (days)")
     date_deadline = fields.Datetime(compute="_compute_deadline", inverse="_inverse_deadline", string="Deadline")
 
+    _sql_constraints = [
+        ('positive_price', 'CHECK(price >=0)', 'The Offer\'s price must be positive.')
+    ]
+
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
@@ -30,6 +34,9 @@ class property_offer(models.Model):
         for record in self:
             if(record.property_id.has_accepted_offer()):
                 raise exceptions.UserError("Only one Offer can be accepted")
+            compute_cost = record.property_id.expected_price *90/100
+            if(tools.float_utils.float_compare(compute_cost, record.price, 2) > 0):
+                raise exceptions.ValidationError("You can't accept an offer lower than 90% of the selling price.")
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id

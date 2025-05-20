@@ -1,4 +1,4 @@
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, exceptions, tools
 from dateutil.relativedelta import relativedelta
 
 class Estate_property(models.Model):
@@ -38,6 +38,11 @@ class Estate_property(models.Model):
     total_area = fields.Float(compute="_compute_area")
     best_offer_price = fields.Float(compute="_compute_best_offer")
 
+    _sql_constraints = [
+        ('positive_expected_price', 'CHECK(expected_price >=0)', 'The Property\'s expected price must be positive.'),
+        ('positive_selling_price', 'CHECK(selling_price >=0)', 'The Property\'s selling price must be positive.')
+    ]
+
     @api.depends("garden_area", "living_area")
     def _compute_area(self):
         for record in self:
@@ -72,3 +77,12 @@ class Estate_property(models.Model):
             if(list(filter(lambda offer: offer.status == "accepted", record.property_offer_ids))):
                 return True
         return False
+
+    @api.onchange("expected_price")
+    def _onchange_partner_id(self):
+        if(self.has_accepted_offer()):
+            compute_cost = self.expected_price *90/100
+            print(compute_cost)
+            if(tools.float_utils.float_compare(compute_cost, self.selling_price, 2) > 0):
+                raise exceptions.ValidationError("The selling price must be equal or higher than 90% of the selling price.")
+        

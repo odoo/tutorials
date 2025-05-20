@@ -5,3 +5,7 @@ class property_tags(models.Model):
     _description = "Model to modelize Tags of Properties"
 
     name = fields.Char(string="Name", required=True)
+
+    _sql_constraints = [
+        ('unique_name', 'UNIQUE(name)', 'The Tag\'s name must be unique.')
+    ]
