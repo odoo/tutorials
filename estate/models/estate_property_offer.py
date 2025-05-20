@@ -28,7 +28,6 @@ class PropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date).days
 
-
     # Action methods
     def action_accept(self):
         for record in self:
