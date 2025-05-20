@@ -20,13 +20,13 @@ class Estate_property(models.Model):
     garden_orientation = fields.Selection(
         string='Orientation',
         selection=[('north','North'), ('south','South'),('east','East'),('west','West')],
-        help="Orientation is meant to describe the garden"
+        help="Orientation is meant to describe the garden."
     )
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
         string='Status',
         selection=[('new','New'), ('offer_received','Offer Received'),('offer_accepted','Offer Accepted'),('sold','Sold'),('cancelled', 'Cancelled')],
-        help="Orientation is meant to describe the garden",
+        help="State is meant to describe the evolution.",
         default='new',
         copy=False
     )
@@ -55,6 +55,7 @@ class Estate_property(models.Model):
 
     @api.onchange("garden")
     def _onchange_partner_id(self):
+        print("entered")
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = "north" if self.garden else None
 
@@ -85,4 +86,3 @@ class Estate_property(models.Model):
             print(compute_cost)
             if(tools.float_utils.float_compare(compute_cost, self.selling_price, 2) > 0):
                 raise exceptions.ValidationError("The selling price must be equal or higher than 90% of the selling price.")
-        

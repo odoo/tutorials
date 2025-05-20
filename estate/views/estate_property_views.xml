@@ -25,6 +25,7 @@
                 <header>
                     <button name="sell_property" type="object" string="Sell"/>
                     <button name="cancel_property" type="object" string="Cancel"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
                         <group>
@@ -33,7 +34,6 @@
                         </group>
                         <group>
                             <group>
-                                <field name="state" string="Status"/>
                                 <field name="property_type_id" string="Property Type"/>
                                 <field name="postcode" string="Postcode"/>
                                 <field name="date_availability" string="Available From"/>
@@ -58,15 +58,15 @@
                                     <field name="total_area" string="Total Area (sqm)"/>
                                 </group>
                             </page>
+                            <page string="Offers">
+                                <group>
+                                    <field name="property_offer_ids" string=""/>
+                                </group>
+                            </page>
                             <page string="Other Info">
                                 <group>
                                     <field name="seller_id" string="Salesman"/>
                                     <field name="buyer_id" string="Buyer"/>
-                                </group>
-                            </page>
-                            <page string="Offers">
-                                <group>
-                                    <field name="property_offer_ids" string=""/>
                                 </group>
                             </page>
                         </notebook>
