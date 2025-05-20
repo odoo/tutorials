@@ -13,6 +13,8 @@
         <field name="arch" type="xml">
             <list editable="bottom">
                 <field name="name"/>
+                <field name="average_price"/>
+                <field name="company_id"/>
             </list>
         </field>
     </record>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="real_estate.second_company" model="res.company">
+        <field name="name">YourSecondCompany</field>
+        <field name="partner_id" ref="real_estate.second_company_address"/>
+    </record>
+
+</odoo>

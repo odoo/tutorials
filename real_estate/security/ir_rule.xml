@@ -16,4 +16,28 @@
         <field name="groups" eval="[Command.link(ref('real_estate.manager_group'))]"/>
     </record>
 
+    <record id="real_estate.property_company_rule" model="ir.rule">
+        <field name="name">Real Estate: Access properties in own companies only</field>
+        <field name="model_id" ref="real_estate.model_real_estate_property"/>
+        <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+    </record>
+
+    <record id="real_estate.offer_company_rule" model="ir.rule">
+        <field name="name">Real Estate: Access offers in own companies only</field>
+        <field name="model_id" ref="real_estate.model_real_estate_offer"/>
+        <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+    </record>
+
+    <record id="real_estate.property_type_company_rule" model="ir.rule">
+        <field name="name">Real Estate: Access property types in own companies only</field>
+        <field name="model_id" ref="real_estate.model_real_estate_property_type"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+    </record>
+
+    <record id="real_estate.tag_company_rule" model="ir.rule">
+        <field name="name">Real Estate: Access tags in own companies only</field>
+        <field name="model_id" ref="real_estate.model_real_estate_tag"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+    </record>
+
 </odoo>

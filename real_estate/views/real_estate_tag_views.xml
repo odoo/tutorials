@@ -14,6 +14,7 @@
             <list editable="bottom">
                 <field name="name"/>
                 <field name="color" widget="color_picker"/>
+                <field name="company_id"/>
             </list>
         </field>
     </record>
