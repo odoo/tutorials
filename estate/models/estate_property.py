@@ -1,18 +1,12 @@
 import random
-from datetime import date
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "A real estate property"
-
-    def _three_month_from_now(self):
-        """Return as ORM date compliant value three month from today"""
-
-        return fields.Date.today(self) + relativedelta(months=3)
 
     name = fields.Char(string="Property Name", required=True)
     description = fields.Text(string="Estate Description")
@@ -34,6 +28,11 @@ class EstateProperty(models.Model):
 
     postcode = fields.Char()
 
+    def _three_month_from_now(self):
+        """Return as ORM date compliant value three month from today"""
+
+        return fields.Date.today(self) + relativedelta(months=3)
+
     date_availability = fields.Date(string="Available From", copy=False, default=_three_month_from_now)
 
     expected_price = fields.Float(required=True)
@@ -47,7 +46,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
 
     garden_orientation = fields.Selection(
-        string="Type",
+        string="Garden Orientation",
         selection=[
             ("north", "North"),
             ("east", "East"),
@@ -77,3 +76,27 @@ class EstateProperty(models.Model):
 
     partner_id = fields.Many2one("res.partner", string="Partner", copy=False)
     user_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+
+    # Computed Fields
+    total_area = fields.Integer(compute="_compute_total_area")
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    best_offer = fields.Float(compute="_compute_best_offer")
+
+    @api.depends('property_offer_ids.price')
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max((offer.price for offer in record.property_offer_ids), default=0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ""

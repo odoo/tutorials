@@ -72,13 +72,17 @@
                                 <field name="property_type_id"/>
                                 <field name="property_type_test_value"/>
                                 <field name="bedrooms"/>
-                                <field name="living_area"/>
-                                <field name="facades" string="Living Area (sqm)"/>
+        
+                                <field name="facades"/>
 
                                 <field name="garage"/>
                                 <field name="garden"/>
 
+                                <field name="best_offer"/>
+                                
+                                <field name="living_area" string="Living Area (sqm)"/>
                                 <field name="garden_area" string="Garden Area (sqm)"/>
+                                <field name="total_area" string="Total area (sqm)"/>
 
                                 <field name="garden_orientation" string="Garden Orientation"/>
                             </group>
