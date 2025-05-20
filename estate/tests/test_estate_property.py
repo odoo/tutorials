@@ -55,10 +55,10 @@ class EstateTestCase(TransactionCase):
         """
 
         with self.assertRaises(UserError):
-            self.properties[0].action_sold()
+            self.properties[0].action_set_sold()
 
         self.offers[1].action_accept()
-        self.properties[0].action_sold()
+        self.properties[0].action_set_sold()
 
         self.assertEqual(
             self.properties[0].state, "sold", "Property was not marked as sold"
