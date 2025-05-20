@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Make Buy, manufacture, resupply subcontractor and dropship subcontractor routes warehouse_selectable by default -->
+        <record id="purchase_stock.route_warehouse0_buy" model="stock.route">
+            <field name="warehouse_selectable" eval="True"/>
+        </record>
+        <record id="mrp.route_warehouse0_manufacture" model="stock.route">
+            <field name="warehouse_selectable" eval="True"/>
+        </record>
+        <record id="mrp_subcontracting.route_resupply_subcontractor_mto" model="stock.route">
+            <field name="warehouse_selectable" eval="True"/>
+        </record>
+        <record id="mrp_subcontracting_dropshipping.route_subcontracting_dropshipping" model="stock.route">
+            <field name="warehouse_selectable" eval="True"/>
+        </record>
+    </data>
+</odoo>
