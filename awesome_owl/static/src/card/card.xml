@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+
+        <div class="card d-inline-block m-2 w-100 h-100 shadow-sm">
+            <div class="card-header d-flex justify-content-between align-items-center bg-light">
+                <h5 class="mb-0" t-esc="props.title"/>
+                <span class="fa"
+                    t-att-class="{'fa-minus': !state.isMinimized, 'fa-plus': state.isMinimized, 'text-dark': true, 'p-2': true, 'rounded-circle': true}"
+                    role="button"
+                    t-on-click="toggleMinimize"
+                    style="cursor: pointer; background-color: #f0f0f0;">
+                </span>
+            </div>
+            <div t-if="!state.isMinimized" class="card-body">
+                <t t-slot="default"/>
+            </div>
+        </div>
+
+    </t>
+
+</templates>
