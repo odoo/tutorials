@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="base.user_admin" model="res.users">
+        <field name="groups_id" eval="[
+            Command.link(ref('product_tutorial.sales_representative_group')),
+            Command.link(ref('product_tutorial.product_manager_group')),
+        ]"/>
+    </record>
+
+</odoo>

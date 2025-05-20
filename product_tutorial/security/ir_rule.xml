@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_tutorial.product_active_rule" model="ir.rule">
+        <field name="name">Product: Users can only access active products</field>
+        <field name="model_id" ref="product_tutorial.model_product"/>
+        <field name="domain_force">[('active', '=', True)]</field>
+    </record>
+
+    <record id="product_tutorial.product_published_rule" model="ir.rule">
+        <field name="name">Product: Sales representatives can only access published products</field>
+        <field name="model_id" ref="product_tutorial.model_product"/>
+        <field name="domain_force">[('is_published', '=', True)]</field>
+        <field name="groups" eval="[Command.link(ref('product_tutorial.sales_representative_group'))]"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="product_tutorial.product_manager_rule" model="ir.rule">
+        <field name="name">Product: Managers can access all products</field>
+        <field name="model_id" ref="product_tutorial.model_product"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[Command.link(ref('product_tutorial.product_manager_group'))]"/>
+    </record>
+
+    <record id="product_tutorial.product_company_rule" model="ir.rule">
+        <field name="name">Product: Access products in own companies only</field>
+        <field name="model_id" ref="product_tutorial.model_product"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'parent_of', company_ids)]</field>
+    </record>
+
+    <record id="product_tutorial.product_category_company_rule" model="ir.rule">
+        <field name="name">Product: Access product categories in own companies only</field>
+        <field name="model_id" ref="product_tutorial.model_product_category"/>
+        <field name="domain_force">[('company_id', 'parent_of', company_ids)]</field>
+    </record>
+
+</odoo>

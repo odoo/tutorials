@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="category_apparel" model="product.category">
+        <field name="name">Clothing</field>
+        <field name="min_price">20</field>
+    </record>
+
+    <record id="category_electronics" model="product.category">
+        <field name="name">Electronics</field>
+        <field name="min_price">50</field>
+    </record>
+
+    <record id="category_home_decor" model="product.category">
+        <field name="name">Home Decor</field>
+        <field name="min_price">10</field>
+    </record>
+
+    <record id="category_other" model="product.category">
+        <field name="name">Other</field>
+        <field name="min_price">0</field>
+    </record>
+
+    <record id="coffee_table" model="product">
+        <field name="name">Coffee table</field>
+        <field name="description">A dark wood table easy to match with other furnishing.</field>
+        <field name="price">275</field>
+        <field name="sales_count">45</field>
+        <field name="category_id" ref="product_tutorial.category_home_decor"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="tshirt" model="product">
+        <field name="name">T-shirt</field>
+        <field name="price">29.99</field>
+        <field name="sales_count">128</field>
+        <field name="category_id" ref="product_tutorial.category_apparel"/>
+        <field name="company_id" ref="base.main_company"/>
+    </record>
+    
+    <record id="default_supplier" model="res.partner">
+        <field name="name">Default Supplier</field>
+    </record>
+
+    <record id="reassign_inactive_products_cron" model="ir.cron">
+        <field name="name">Reassign Inactive Products</field>
+        <field name="model_id" ref="model_product"/>
+        <field name="code">model._reassign_inactive_products()</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">weeks</field>
+    </record>
+
+</odoo>
