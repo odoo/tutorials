@@ -36,6 +36,7 @@ class RealEstateOffer(models.Model):
     property_id = fields.Many2one(
         string="Property", comodel_name='real.estate.property', required=True
     )
+    company_id = fields.Many2one(related='property_id.company_id')
 
     @api.depends('date', 'validity')
     def _compute_expiry_date(self):

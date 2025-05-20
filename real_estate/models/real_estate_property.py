@@ -12,6 +12,7 @@ class RealEstateProperty(models.Model):
         'CHECK (selling_price > 0)',
         "The selling price must be strictly positive.",
     )]
+    _check_company_auto = True
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
@@ -29,7 +30,11 @@ class RealEstateProperty(models.Model):
         default='new',
     )
     type_id = fields.Many2one(
-        string="Type", comodel_name='real.estate.property.type', ondelete='restrict', required=True
+        string="Type",
+        comodel_name='real.estate.property.type',
+        ondelete='restrict',
+        required=True,
+        check_company=True,
     )
     selling_price = fields.Float(
         string="Selling Price", help="The selling price excluding taxes.", required=True
@@ -49,11 +54,16 @@ class RealEstateProperty(models.Model):
         string="Garden Area", help="The garden area excluding the building."
     )
     total_area = fields.Integer(string="Total Area", compute='_compute_total_area', store=True)
-    address_id = fields.Many2one(string="Address", comodel_name='res.partner')
+    address_id = fields.Many2one(string="Address", comodel_name='res.partner', check_company=True)
     street = fields.Char(string="Street", related='address_id.street', readonly=False, store=True)
-    seller_id = fields.Many2one(string="Seller", comodel_name='res.partner', required=True)
+    seller_id = fields.Many2one(
+        string="Seller", comodel_name='res.partner', required=True, check_company=True
+    )
     salesperson_id = fields.Many2one(
-        string="Salesperson", comodel_name='res.users', default=lambda self: self.env.user
+        string="Salesperson",
+        comodel_name='res.users',
+        default=lambda self: self.env.user,
+        check_company=True,
     )
     offer_ids = fields.One2many(
         string="Offers", comodel_name='real.estate.offer', inverse_name='property_id'
@@ -63,7 +73,13 @@ class RealEstateProperty(models.Model):
         string="Priority", compute='_compute_is_priority', search='_search_is_priority'
     )
     best_offer_amount = fields.Float(string="Best Offer", compute='_compute_best_offer_amount')
-    tag_ids = fields.Many2many(string="Tags", comodel_name='real.estate.tag')
+    tag_ids = fields.Many2many(string="Tags", comodel_name='real.estate.tag', check_company=True)
+    company_id = fields.Many2one(
+        string="Company",
+        comodel_name='res.company',
+        required=True,
+        default=lambda self: self.env.company.id,
+    )
     active = fields.Boolean(string="Active", default=True)
 
     @api.depends('availability_date')

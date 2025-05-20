@@ -37,4 +37,8 @@
         <field name="name">AmyFromTheVideos</field>
     </record>
 
+    <record id="real_estate.second_company_address" model="res.partner">
+        <field name="name">YourSecondCompany Address</field>
+    </record>
+
 </odoo>

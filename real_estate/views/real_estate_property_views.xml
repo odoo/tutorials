@@ -74,6 +74,7 @@
                             <field name="selling_price"/>
                             <field name="best_offer_amount"/>
                             <field name="availability_date"/>
+                            <field name="company_id"/>
                             <field name="active"/>
                         </group>
                         <group string="Building Specifications">
