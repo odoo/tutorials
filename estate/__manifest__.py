@@ -6,7 +6,7 @@
         Module to deal with estate sales"
     """,
 
-    'author': "Gaso",
+    'author': "Odoo S.A.",
 
     'data': [
         'security/ir.model.access.csv',

@@ -28,6 +28,7 @@ class property_offer(models.Model):
 
     def _inverse_deadline(self):
         for record in self:
+            computation_date = record.create_date if record.create_date else fields.date.today()
             record.validity = (record.date_deadline.date() - record.create_date.date()).days
 
     def accept_offer(self):
