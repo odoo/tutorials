@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 class Estate_property(models.Model):
     _name = "estate.property"
     _description = "Model to modelize Real Estate objects"
+    _order= "id desc"
 
     name = fields.Char(string="Name", required=True)
     description  = fields.Text()
@@ -54,7 +55,7 @@ class Estate_property(models.Model):
             record.best_offer_price = max(p.price for p in record.property_offer_ids) if record.property_offer_ids else 0
 
     @api.onchange("garden")
-    def _onchange_partner_id(self):
+    def _onchange_garden(self):
         print("entered")
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = "north" if self.garden else None
@@ -80,9 +81,17 @@ class Estate_property(models.Model):
         return False
 
     @api.onchange("expected_price")
-    def _onchange_partner_id(self):
+    def _onchange_expected_price(self):
         if(self.has_accepted_offer()):
             compute_cost = self.expected_price *90/100
             print(compute_cost)
             if(tools.float_utils.float_compare(compute_cost, self.selling_price, 2) > 0):
                 raise exceptions.ValidationError("The selling price must be equal or higher than 90% of the selling price.")
+
+    @api.model
+    def ondelete(self):
+        print("deletion")
+        for record in self:
+            if(not record.state in ['new','cancelled']):
+                raise exceptions.UserError("Only new or cancelled Property can be deleted.")
+        return super().ondelete()

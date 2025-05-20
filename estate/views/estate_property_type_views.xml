@@ -7,26 +7,48 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
-                        <group>
-                            <h1><field name="name"/></h1>
-                        </group>
-                        <notebook>
-                            <page string="Properties">
-                                <group>
-                                    <field name="property_ids" string="">
-                                        <list>
-                                            <field name="name" string="Title"/>
-                                            <field name="expected_price" string="Expected Price"/>
-                                            <field name="state" string="Status"/>
-                                        </list>
-                                    </field>
-                                </group>
-                            </page>
-                        </notebook>
+                    <header>
+                        <button
+                            type="action"
+                            name="estate.property_offer_model_action"
+                            icon="fa-money"
+                            class="oe_stat_button">
+                            <field name="offer_count" widget="statinfo" string=""/>
+                            <h5>Offers</h5>
+                        </button>
+                    </header>
+                    <group>
+                        <h1><field name="name"/></h1>
+                    </group>
+                    <notebook>
+                        <page string="Properties">
+                            <group>
+                                <field name="property_ids" string="">
+                                    <list>
+                                        <field name="name" string="Title"/>
+                                        <field name="expected_price" string="Expected Price"/>
+                                        <field name="state" string="Status"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
+
+    <record id="estate.property_type_view_tree" model="ir.ui.view">
+        <field name="name">Property Type List</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="sequence" widget="handle"/>
+                <field name="name" string="Name"/>
+            </list>
+        </field>
+    </record>
+        
 
     <record id="estate.property_type_model_action" model="ir.actions.act_window">
         <field name="name">Type</field>

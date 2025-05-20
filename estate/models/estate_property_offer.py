@@ -4,6 +4,7 @@ from dateutil.relativedelta import relativedelta
 class property_offer(models.Model):
     _name = "estate.property.offer"
     _description = "Model to modelize Offer for Properties"
+    _order= "price DESC"
 
     price = fields.Float()
     status= fields.Selection(
@@ -12,9 +13,10 @@ class property_offer(models.Model):
         help="The Status of the offer"
     )
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    property_id = fields.Many2one("estate.property", required=True, ondelete='cascade')
     validity =  fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Datetime(compute="_compute_deadline", inverse="_inverse_deadline", string="Deadline")
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _sql_constraints = [
         ('positive_price', 'CHECK(price >=0)', 'The Offer\'s price must be positive.')
@@ -47,3 +49,12 @@ class property_offer(models.Model):
         for record in self:
             record.status = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_offering = self.env['estate.property'].browse(vals['property_id'])
+            if vals['price'] < property_offering.best_offer_price:
+                raise exceptions.ValidationError("You can't create an offer with a lower price than already existing offer.")
+            property_offering.state = "offer_received"
+        return super().create(vals)
