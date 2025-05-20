@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_tutorial.view_products_action" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">product</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new product_tutorial.
+            </p>
+        </field>
+    </record>
+
+    <record id="product_tutorial.view_similar_products_action" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="res_model">product</field>
+        <field name="domain">
+            [("id", "!=", active_id), ("category_id", "=", context.get('current_category_id'))]
+        </field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="product_tutorial.product_list" model="ir.ui.view">
+        <field name="name">Product List</field>
+        <field name="model">product</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="price"/>
+                <field name="category_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="product_tutorial.product_form" model="ir.ui.view">
+        <field name="name">Product Form</field>
+        <field name="model">product</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div name="button_box">
+                        <button
+                            string="Similar Products"
+                            type="action"
+                            name="product_tutorial.view_similar_products_action"
+                            context="{
+                                'current_category_id': category_id,
+                                'create': False,
+                                'edit': False,
+                            }"
+                        />
+                    </div>
+                    <div class="oe_title">
+                        <label for="breadcrumb" string="Full Name"/>
+                        <h1>
+                            <field name="breadcrumb"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                        <field name="is_published"/>
+                        <field name="price"/>
+                        <field name="cost"/>
+                        <field name="margin"/>
+                        <field name="is_profitable"/>
+                        <field name="sales_count"/>
+                        <field name="category_id"/>
+                        <field name="company_id"/>
+                        <field name="active"/>
+                        <field name="supplier_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_tutorial.product_search" model="ir.ui.view">
+        <field name="name">Product Search</field>
+        <field name="model">product</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="description"/>
+                <filter name="filter_profitable" string="Profitable" domain="[('is_profitable', '=', True)]"/>
+                <filter name="filter_not_profitable" string="Not Profitable" domain="[('is_profitable', '=', False)]"/>
+            </search>
+        </field>
+    </record>
+
+</odoo>

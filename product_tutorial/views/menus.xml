@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <menuitem id="product_tutorial.root_menu" name="Product">
+        <menuitem id="product_tutorial.all_products_menu" name="All Products" sequence="1" action="product_tutorial.view_products_action"/>
+        <menuitem id="product_tutorial.categories_menu" name="Categories" sequence="2" action="product_tutorial.view_categories_action"/>
+    </menuitem>
+
+</odoo>

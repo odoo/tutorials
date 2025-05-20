@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_tutorial.sales_representative_group" model="res.groups">
+        <field name="name">Sales Representative</field>
+    </record>
+
+    <record id="product_tutorial.product_manager_group" model="res.groups">
+        <field name="name">Product Manager</field>
+    </record>
+
+</odoo>
