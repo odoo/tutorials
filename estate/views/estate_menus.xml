@@ -1,11 +1,25 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- Menu Structure -->
-    <menuitem id="estate_menu_root" name="Real Estate">
-        <menuitem id="estate_properties_menu" name="Properties">
-            <menuitem id="estate_property_menu_action" action="estate_property_action" />
-        </menuitem> 
+    <!-- Main Menu -->
+    <menuitem id="estate_menu_root" name="Real Estate"/>
+
+    <!-- Properties Submenu -->
+    <menuitem id="estate_properties_menu" name="Properties" parent="estate_menu_root">
+        <!-- Backend action to see properties in Odoo -->
+        <menuitem id="estate_property_menu_action" name="Backend List"
+                  action="estate_property_action"/>
+        
+        <!-- Website route to see properties -->
+        <menuitem id="estate_property_website_menu_action"
+                  name="Website List"
+                  action="estate.action_open_properties_page"
+                  sequence="20"/>
     </menuitem>
-    <menuitem id="estate_settings_menu" name="Settings" parent="estate_menu_root" sequence="100" groups="estate.estate_group_manager"
-          />
+
+    <!-- Settings (Only for Managers) -->
+    <menuitem id="estate_settings_menu"
+              name="Settings"
+              parent="estate_menu_root"
+              sequence="100"
+              groups="estate.estate_group_manager"/>
 </odoo>

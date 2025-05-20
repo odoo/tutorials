@@ -58,6 +58,8 @@ class EstatePropertyOffer(models.Model):
         property_id = vals.get('property_id')
         if property_id:
             prop = self.env['estate.property'].browse(property_id)
+            if prop.state in ['sold', 'cancelled']:
+                raise ValidationError("Cannot create an offer on a sold or cancelled property.")
             # Check for existing higher offers
             existing_offers = self.search([('property_id', '=', property_id)])
             if existing_offers and vals.get('price', 0.0) < max(existing_offers.mapped('price')):
@@ -66,3 +68,9 @@ class EstatePropertyOffer(models.Model):
             if prop.state != 'offer_received':
                 prop.write({'state': 'offer_received'})
         return super().create(vals)
+    
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if not self.garden:
+          self.garden_area = 0
+          self.garden_orientation = False
