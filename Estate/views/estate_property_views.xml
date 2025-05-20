@@ -21,24 +21,26 @@
                 <field name="garden"/>
                 <field name="garden_area"/>
                 <field name="garden_orientation"/>
+                <field name="property_type_id"/>
             </list>
-
         </field>
-
     </record>
+
     <record id="estate_property_form_view" model="ir.ui.view">
         <field name="name">Real Estate Management</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string = "estate form">
                 <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <field name="tags" widget="many2many_tags"/>
                     <group>
-                        <h1>
-                            <field name="name"/>
-                        </h1>
                         <group>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="property_type_id"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -48,24 +50,34 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                            <field name="description"/>
-                            <field name="bedrooms"/>
-                            <field name="living_area"/>
-                            <field name="facades"/>
-                            <field name="garage"/>
-                            <field name="garden"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
-                        </group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
                         </page>
-
+                        <page string="Other info">
+                            <group>
+                                <field name="buyer"/>
+                                <field name="seller"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
 
         </field>
-
     </record>
+
     <record id="estate_property_search" model="ir.ui.view">
         <field name="name">Real Estate Search</field>
         <field name="model">estate_property</field>
@@ -80,6 +92,21 @@
                 <filter name="Available" string="Available" domain="[('date_availability', '&lt;', context_today())]"/>
                 <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>
             </search>
+
+        </field>
+
+    </record>
+    <record id="estate_property_offer" model="ir.ui.view">
+        <field name="name">Offers</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string = "Offers">
+                <field name="name" string="Name"/>
+                <field name="price"/>
+                <field name="status" string="Expected Price"/>
+                <field name="partner_id"/>
+                <field name="property_id"/>
+            </list>
 
         </field>
 
