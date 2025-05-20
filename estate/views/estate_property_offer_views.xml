@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_offer_view_search" model="ir.ui.view">
+        <field name="name">estate.property.offer.search</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <search string="Property offer Search">
+                <field name="partner_id" string="Partner"/>
+                <field name="property_id" string="Property"/>
+                <field name="price" string="Price"/>
+                <separator/>
+                <group expand="1" string="Group By">
+                    <filter name="status" string="Status" context="{'group_by':'status'}"/>
+                </group> 
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property tag Form">
+                <sheet>
+                    <group>
+                        <field name="price" string="Price"/>
+                        <field name="status" string="Status"/>
+                        <field name="partner_id" string="Partner"/>
+                        <field name="property_id" string="Property"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Tags">
+                <field name="price" string="Price"/>
+                <field name="status" string="Status"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="property_id" string="Property"/>
+            </list>
+        </field>
+    </record>
+</odoo>
