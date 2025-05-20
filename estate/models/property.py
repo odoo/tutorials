@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models
 
+
 class Property(models.Model):
     _name = "estate.property"
     _description = "this is a estate_property"
@@ -27,3 +28,7 @@ class Property(models.Model):
         copy=False
     )
     active = fields.Boolean(default=True)
+    property_type = fields.Many2one('estate.property.type')
+    salesperson_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', copy=False)
+    tag_ids = fields.Many2many('estate.property.tag')

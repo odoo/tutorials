@@ -35,6 +35,13 @@
                                 <field name="garage"/>
                                 <field name="garden_area" string="Garden Area (sqm)" />
                                 <field name="garden_orientation" />
+                                <field name="property_type" />
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" string="Salesman" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
