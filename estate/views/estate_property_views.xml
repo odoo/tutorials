@@ -30,9 +30,10 @@
                     <div class="oe_title">
                         <h1><field name="name" placeholder="Title" /></h1>
                     </div>
-                    <field name="state" />
+                    <field name="tag_ids" widget="many2many_tags" />
                     <group>
                         <group>
+                            <field name="type_id" />
                             <field name="postcode" />
                             <field name="date_availability" string="Available from" />
                         </group>
@@ -52,7 +53,24 @@
                                     <field name="garage" />
                                     <field name="garden" />
                                     <field name="garden_area" string="Garden Area (sqm)" invisible="not garden" />
-                                    <field name="garden_orientation" />
+                                    <field name="garden_orientation" invisible="not garden" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" />
+                                    <field name="partner_id" string="Partner" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group col="2">
+                                <group colspan="1">
+                                    <field name="salesperson_id" string="Salesman" />
+                                    <field name="buyer_id" string="Buyer" />
                                 </group>
                             </group>
                         </page>
