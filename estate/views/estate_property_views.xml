@@ -7,12 +7,14 @@
     </record>
 
 
+
     <record id="estate.property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Channel">
                 <field name="name"/>
+                <field name="property_type_id" string="Property Type"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
@@ -28,11 +30,14 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+            <form string="Property">
                 <sheet>
                     <h1><field name="name" nolabel="True"/></h1>
                     <field name="tag_ids" widget="many2many_tags"/>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="property_type_id" string="Property Type"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -53,7 +58,7 @@
                             <field name="garden"/>
                             <field name="garden_area" string="Garden Area (sqm)"/>
                             <field name="garden_orientation"/>
-                            <field name="state"/>
+                            <field name="total_area"/>
                         </group>
                         </page>
 
@@ -62,7 +67,7 @@
                                 <field name="offer_ids"/>
                             </group>
                         </page>
-                        
+
                         <page string="Other Info">
                         <group>
                             <field name="sales_id" string="Salesman"/>
@@ -72,6 +77,7 @@
 
 
                     </notebook>
+
 
                 </sheet>
             </form>
@@ -93,6 +99,7 @@
                 <filter name="available" string="Available" domain="['|',('state', '=', 'new'),('state', '=', 'offer_received')]"/>
                 <group expand="1" string="Group By">
                     <filter name="bypostcode" string="Postcode" context="{'group_by':'postcode'}"/>
+                    <filter name="bypropertytype" string="Property Type" context="{'group_by':'property_type_id'}"/>
                 </group>
             </search>
         </field>

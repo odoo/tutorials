@@ -1,10 +1,13 @@
-from odoo import fields, models
+from odoo import  api, fields, models
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "its just an estate property"
+
+
+    # Basic fields
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -30,7 +33,24 @@ class EstateProperty(models.Model):
         default= 'new'
         )   
 
+
+    # Relational fields
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     sales_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+
+    # Computed fields
+    total_area = fields.Integer(compute="_compute_total_area",readonly=True)
+
+
+
+
+    # COMPUTE METHODS
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
