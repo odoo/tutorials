@@ -1,10 +1,10 @@
-from odoo import fields, models
 from dateutil.relativedelta import relativedelta
+from odoo import fields, models
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "this is a estate_property"
-    
+
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -27,5 +27,3 @@ class Property(models.Model):
         copy=False
     )
     active = fields.Boolean(default=True)
-
-

@@ -7,6 +7,7 @@
     'data': [
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'views/estate.property.xml',
         'security/ir.model.access.csv',
     ],
     'author': "Mahdi (malj)",
