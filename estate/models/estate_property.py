@@ -30,3 +30,6 @@ class EstateProperty(models.Model):
         default='new'
     )
 
+    # Foreign keys
+    property_type_id = fields.Many2one("estate.property.type")
+
