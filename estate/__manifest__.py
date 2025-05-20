@@ -1,12 +1,6 @@
 {
     "name": "Real Estate",
-    "description": """
-Assets management
-=================
-Manage assets owned by a company or a person.
-Keeps track of depreciations, and creates corresponding journal entries.
-
-    """,
+    "description": " Make a fortune managing your real estate simply with Odoo",
     "version": "1.8",
     "category": "All",
     "sequence": 15,
@@ -17,6 +11,9 @@ Keeps track of depreciations, and creates corresponding journal entries.
     "data": [
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
+        "views/estate_property_type_views.xml",
+        "views/estate_property_tag_views.xml",
+        "views/estate_property_offer_views.xml",
         "views/estate_menus.xml",
     ],
     "demo": [],

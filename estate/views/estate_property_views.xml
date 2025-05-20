@@ -13,6 +13,7 @@
         <field name="arch" type="xml">
             <list string="Property">
                 <field name="name"/>
+                <field name="property_tag_ids" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="date_availability"/>
                 <field name="living_area" string="Living Area (sqm)"/>
@@ -28,6 +29,7 @@
                 <field name="name" string="Title"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
+                <field name="property_type_id"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
@@ -50,6 +52,7 @@
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="property_tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="postcode"/>
@@ -66,6 +69,8 @@
                                 <field name="description" string="Description"/>
 
                                 <field name="state"/>
+                                <field name="property_type_id"/>
+                                <field name="property_type_test_value"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
                                 <field name="facades" string="Living Area (sqm)"/>
@@ -76,6 +81,21 @@
                                 <field name="garden_area" string="Garden Area (sqm)"/>
 
                                 <field name="garden_orientation" string="Garden Orientation"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+
+                                <field name="property_offer_ids"/>
+
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+
+                                <field name="user_id" string="Salesman"/>
+                                <field name="partner_id" string="Buyer"/>
+
                             </group>
                         </page>
                     </notebook>

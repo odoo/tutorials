@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="estate_settings_property_type_action" model="ir.actions.act_window">
+        <field name="name">Properties Settings</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">form</field>
+    </record>
+
+
+    <record id="estate_property_type_form_view" model="ir.ui.view">
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="test_value"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

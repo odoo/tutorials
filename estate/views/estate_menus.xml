@@ -1,8 +1,38 @@
 <?xml version="1.0"?>
 <odoo>
-    <menuitem id="test_menu_root" name="Estates">
-        <menuitem id="test_first_level_menu" name="Properties">
-            <menuitem id="test_model_menu_action" action="estate_property_action"/>
-        </menuitem>
-    </menuitem>
+    <menuitem id="estate_menu_root" name="Estates"/>
+
+    <!-- PROPERTIES MENU -->
+    <menuitem
+        id="estate_menu_properties_root"
+        name="Properties"
+        parent="estate_menu_root"
+    />
+    <menuitem
+        id="estate_menu_properties"
+        action="estate_property_action"
+        parent="estate_menu_properties_root"
+    />
+
+    <!-- SETTINGS MEMU -->
+
+    <menuitem
+        id="estate_settings_menu"
+        name="Settings"
+        parent="estate_menu_root"
+    />
+    <menuitem
+        id="settings_menu_property_type"
+        name="Properties Type"
+        action="estate_settings_property_type_action"
+        parent="estate_settings_menu"
+    />
+
+    <menuitem
+        id="settings_menu_property_tag"
+        name="Properties Tag"
+        action="estate_settings_property_tag_action"
+        parent="estate_settings_menu"
+    />
+
 </odoo>
