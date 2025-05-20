@@ -6,23 +6,32 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
 
-    name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Char()
-    date_availability = fields.Date(default=fields.Date.today() + relativedelta(months=3), copy=False)
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+    name = fields.Char('Name', required=True)
+    description = fields.Text('Description')
+    postcode = fields.Char('Postcode')
+    date_availability = fields.Date('Available From', default=fields.Date.today() + relativedelta(months=3), copy=False)
+    expected_price = fields.Float('Expected Price', required=True)
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    bedrooms = fields.Integer('Bedrooms', default=2)
+    living_area = fields.Integer('Living Area (sqm)')
+    facades = fields.Integer('Facades')
+    garage = fields.Boolean('Has Garage')
+    garden = fields.Boolean('Has Garden')
+    garden_area = fields.Integer('Garden Area (sqm)')
     garden_orientation = fields.Selection(
         string='Garden Orientation', selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
     )
     state = fields.Selection(
-        [('new', 'New'), ('offer-received', 'Offer Received'), ('offer-accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
-        required=True, copy=False, default='new'
+        string='State',
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+        required=True,
+        copy=False,
+        default='new',
     )
-    active = fields.Boolean(default=True)
+    active = fields.Boolean('Active', default=True)
