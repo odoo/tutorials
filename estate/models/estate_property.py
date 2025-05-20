@@ -145,14 +145,3 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ('new', 'canceled'):
                 raise UserError("You can only delete properties in 'New' or 'canceled' state.")
-    
-    def action_sold(self):
-    # Check the user has write access to the properties
-        self.check_access_rights('write')
-        self.check_access_rule('write')
-
-        # Create invoice with sudo to bypass access rights
-        invoice = self.env['account.move'].sudo().create({
-            # ... invoice creation data ...
-        })
-        return super().action_sold()
