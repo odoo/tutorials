@@ -8,7 +8,7 @@
         <field name="name">Real Estate Management</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <list>
+            <list string = "estate">
                 <field name="description"/>
                 <field name="postcode"/>
                 <field name="date_availability"/>
@@ -22,6 +22,65 @@
                 <field name="garden_area"/>
                 <field name="garden_orientation"/>
             </list>
+
+        </field>
+
+    </record>
+    <record id="estate_property_form_view" model="ir.ui.view">
+        <field name="name">Real Estate Management</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <form string = "estate form">
+                <sheet>
+                    <group>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <group>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                            <field name="description"/>
+                            <field name="bedrooms"/>
+                            <field name="living_area"/>
+                            <field name="facades"/>
+                            <field name="garage"/>
+                            <field name="garden"/>
+                            <field name="garden_area"/>
+                            <field name="garden_orientation"/>
+                        </group>
+                        </page>
+
+                    </notebook>
+                </sheet>
+            </form>
+
+        </field>
+
+    </record>
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">Real Estate Search</field>
+        <field name="model">estate_property</field>
+        <field name="arch" type="xml">
+            <search string = "Search">
+                <field name="name" string="Name"/>
+                <field name="postcode"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <separator/>
+                <filter name="Available" string="Available" domain="[('date_availability', '&lt;', context_today())]"/>
+                <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>
+            </search>
+
         </field>
 
     </record>
