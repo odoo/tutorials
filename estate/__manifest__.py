@@ -4,5 +4,8 @@
     'depends': [
         'base'
     ],
+    'data': [
+        'ir.model.access.csv',
+    ],
     'application': True
 }
