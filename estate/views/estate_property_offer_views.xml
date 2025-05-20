@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-   <record id="estate.property_offer_form_view" model="ir.ui.view">
+    <record id="estate.property_offer_form_view" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
@@ -8,9 +8,11 @@
                 <sheet>
                     <group>
                         <group>
-                            <field name="price"/>
-                            <field name="partner_id"/>
-                            <field name="status"/>
+                            <field name="price" />
+                            <field name="partner_id" />
+                            <field name="validity" />
+                            <field name="date_deadline" />
+                            <field name="status" />
                         </group>
                     </group>
                 </sheet>
@@ -23,9 +25,11 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="List">
-                <field name="price"/>
-                <field name="partner_id"/>
-                <field name="status"/>
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="validity" />
+                <field name="date_deadline" />
+                <field name="status" />
             </list>
         </field>
     </record>
