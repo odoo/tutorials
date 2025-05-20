@@ -5,7 +5,7 @@ class EstateProperty(models.Model):
     _description = "ch3 exercise tutorial"
 
     name = fields.Char(required=True)
-    active = False
+    active = fields.Boolean(default=False)
     state = fields.Selection(
         string='Property State',
         selection= [('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')]
