@@ -59,6 +59,11 @@
                                 <field name="tag_ids" widget="many2many_tags"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" string=''/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
