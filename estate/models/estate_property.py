@@ -7,6 +7,7 @@ class Estate(models.Model):
     _description = 'It allows to manage your properties'
 
     name = fields.Char(required=True, default='Unknown')
+    property_type_id = fields.Many2one('estate.property.type')
     last_seen = fields.Datetime('Last Seen', default=fields.Datetime.now)
     description = fields.Char(required=True)
     postcode = fields.Char()

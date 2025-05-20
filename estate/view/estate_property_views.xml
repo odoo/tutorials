@@ -1,11 +1,4 @@
-
 <odoo>
-    <record id='action_test_action' model='ir.actions.act_window'>
-        <field name='name'>action_test_action</field>
-        <field name='res_model'>estate.property</field>
-        <field name='view_mode'>list,form</field>
-    </record>
-
     <record id="estate_list_view_tree" model="ir.ui.view">
         <field name="name">estate.main.list</field>
         <field name="model">estate.property</field>
@@ -20,5 +13,70 @@
                 <field name="date_availability"/>
             </list>
         </field>
+    </record>
+
+    <record id="estate_view_form" model="ir.ui.view">
+        <field name="name">estate.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate">
+                <sheet>
+                    <h1 class="oe_title">
+                        <field name="name" class="mb16"/>
+                    </h1>
+                    <div class="row">
+                        <div class="col-6">
+                            <group>
+                                <field name="postcode"/>
+                                <field name="date_availability"/>
+                            </group>
+                        </div>
+                        <div class="col-6">
+                            <group>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </group>
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="property_type_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id='estate_view_search' model="ir.ui.view">
+        <field name="name">estate.view.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Estates">
+                <field name="name"/>
+                <filter string="Available" name="available" domain="[('state', '!=', 'sold' ), ('state', '!=', 'cancelled'), ('state', '!=', 'offer_accepted')]"/>
+                <filter string="Garage" name="garage" domain="[('garage', '!=', True )]"/>
+                <group expand="True" string="Group By">
+                        <filter string="Poscode" name="postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+
+    <record id='action_test_action' model='ir.actions.act_window'>
+        <field name='name'>property_action</field>
+        <field name='res_model'>estate.property</field>
+        <field name='view_mode'>list,form</field>
     </record>
 </odoo>
