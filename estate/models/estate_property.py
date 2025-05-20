@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
 
 class Estate_property(models.Model):
@@ -46,9 +46,29 @@ class Estate_property(models.Model):
     @api.depends("property_offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer_price = max(p.price for p in record.property_offer_ids)
+            record.best_offer_price = max(p.price for p in record.property_offer_ids) if record.property_offer_ids else 0
 
     @api.onchange("garden")
     def _onchange_partner_id(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = "north" if self.garden else None
+
+    def sell_property(self):
+        for record in self:
+            if(record.state == "cancelled"):
+                raise exceptions.UserError("A Cancelled Property can't be sold")
+            record.state = "sold"
+        return True
+
+    def cancel_property(self):
+        for record in self:
+            if(record.state == "sold"):
+                raise exceptions.UserError("A Sold Property can't be cancelled")
+            record.state = "cancelled"
+        return True
+
+    def has_accepted_offer(self):
+        for record in self:
+            if(list(filter(lambda offer: offer.status == "accepted", record.property_offer_ids))):
+                return True
+        return False
