@@ -14,6 +14,12 @@
         </field>
     </record>
 
+    <record id="open_url_action" model="ir.actions.act_url">
+        <field name="name">Open External Website</field>
+        <field name="url">/properties</field>
+        <field name="target">new</field>
+    </record>
+
     <!-- List View -->
     <record id="view_estate_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
@@ -21,7 +27,10 @@
         <field name="arch" type="xml">
             <list string="Properties"
             decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'" decoration-danger="state == 'canceled'">
-                <field name="name" string="Name" />
+            <header>
+                <button name="%(action_add_offer_wizard)d" string="Add Offer" type="action" class="btn-primary"/>
+            </header>    
+            <field name="name" string="Name" />
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price"/>
                 <field name="selling_price" string="Selling Price"/>
