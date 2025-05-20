@@ -3,11 +3,15 @@ from odoo import fields, models
 
 
 class Property(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "a real estate property"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    salesperson_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     postcode = fields.Char()
     date_availability = fields.Date(string="Available From", default=fields.Date.today() + relativedelta(months=3), copy=False)
     expected_price = fields.Float(required=True)
@@ -21,3 +25,4 @@ class Property(models.Model):
     garden_orientation = fields.Selection(selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
     active = fields.Boolean(default=True)
     state = fields.Selection([("new", "New"), ("received", "Offer Received"), ("accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], default="new")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
