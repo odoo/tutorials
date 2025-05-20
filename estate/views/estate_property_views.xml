@@ -30,7 +30,6 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
-            <form string="Property">
                 <sheet>
                     <h1><field name="name" nolabel="True"/></h1>
                     <field name="tag_ids" widget="many2many_tags"/>
