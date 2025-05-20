@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_make_offer_form" name="Property Make Offer">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <t t-if="not offer_exists">
+                            <h1 class="text-center">Make an Offer for <t t-esc="property.name" /></h1>
+                            <form action="/property/make_offer" method="post">
+                                <div class="my-3">
+                                    <label for="buyer_name">Your Name</label>
+                                    <input type="text" id="buyer_name" name="buyer_name" class="form-control mt-1" readonly="1" t-att-value="request.env.user.name" />
+                                </div>
+
+                                <div class="my-3">
+                                    <label for="offer_amount">Offer Amount</label>
+                                    <input type="number" id="offer_amount" name="offer_amount" class="form-control mt-1" required="" />
+                                    <p class="small text-muted mt-1">Offer price must be more than <t t-esc="property.expected_price if not property.best_price else property.best_price" /></p>
+                                </div>
+
+                                <input type="hidden" name="property_id" t-att-value="property.id" />
+                                <input type="hidden" name="property_expected_price" t-att-value="property.expected_price" />
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+
+                                <button type="submit" class="btn btn-success w-100 mt-3">Submit Offer</button>
+                            </form>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info mt-3">We have received your offer, will notify you soon !!</div>
+                            <div class="card border-primary my-3 p-3 shadow-sm">
+                                <h5 class="text-primary fw-bold">Your Offer Details</h5>
+                                <hr class="mt-1 mb-3"/>
+                                <div class="d-flex flex-column gap-2">
+                                    <p class="mb-1"><strong>Offer Price:</strong> <span class="text-success fw-semibold" t-field="offer_exists.price" /></p>
+                                    <p class="mb-1">
+                                        <strong>Status:</strong>
+                                        <t t-if="offer_exists.status == 'accepted'">
+                                            <span class="badge bg-success">Accepted</span>
+                                        </t>
+                                        <t t-elif="offer_exists.status == 'refused'">
+                                            <span class="badge bg-danger">Refused</span>
+                                        </t>
+                                        <t t-else="">
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        </t>
+                                    </p>
+                                    <p class="mb-0"><strong>Submitted On:</strong> <span class="text-muted" t-field="offer_exists.create_date" /></p>
+                                </div>
+                            </div>
+                        </t>
+
+                        <div class="d-flex gap-3 mt-2">
+                            <a t-attf-href="/property/{{property.id}}" class="btn btn-secondary w-100">Property</a>
+                            <a href="/properties" class="btn btn-secondary w-100">Listings</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="message_template" name="Message Template">
+        <t t-call="website.layout">
+            <div class="container">
+                <t t-if="message">
+                    <div t-attf-class="alert mt-4 w-50 mx-auto alert-{{message_type}}">
+                        <h3>
+                            <t t-esc="message_title" />
+                        </h3>
+                        <div>
+                            <t t-esc="message" />
+                        </div>
+                    </div>
+                </t>
+                <div class="w-50 mx-auto">
+                    <a t-att-href="'/property/%s' % property_id if property_id else '/properties'" class="btn btn-primary">Back to property</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

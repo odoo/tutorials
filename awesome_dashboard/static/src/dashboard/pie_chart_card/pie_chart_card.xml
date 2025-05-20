@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<template xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChartCard">
+        <t t-esc="props.title"/>
+        <PieChart
+            chartLabel="'Order by sizes'"
+            data="props.value"
+            colors="['red', 'orange', 'steelblue']"
+        />
+    </t>
+</template>

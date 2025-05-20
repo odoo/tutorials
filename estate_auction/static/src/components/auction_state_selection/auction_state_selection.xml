@@ -1,0 +1,37 @@
+<templates>
+    <t t-name="estate_auction.AuctionStateSelection" t-inherit="web.StateSelectionField" t-inherit-mode="primary">
+        <xpath expr="//t[@t-if='props.readonly']/button/span[1]" position="attributes">
+            <attribute name="t-attf-class">{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}</attribute>
+        </xpath>
+
+        <xpath expr="//t[@t-if='props.readonly']/button" position="attributes">
+            <attribute name="t-att-title">label</attribute>
+        </xpath>
+
+        <xpath expr="//Dropdown/button/div" position="replace">
+            <div class="d-flex align-items-center">
+                <i t-attf-class="{{ stateIcon(currentValue) }} {{ statusColor(currentValue) }}"/>
+            </div>
+            <div class="d-flex align-items-center">
+                <span t-if="isView('form')" class="o_status_label" t-out="label"/>
+            </div>
+        </xpath>
+
+        <xpath expr="//Dropdown" position="attributes">
+            <attribute name="menuClass" separator=" + " add="' auction_state_selection_menu'"></attribute>
+        </xpath>
+
+        <xpath expr="//Dropdown/button" position="attributes">
+            <attribute name="class" remove="p-0" add="shadow-none" separator=" "/>
+            <attribute name="t-att-class">getTogglerClass(currentValue)</attribute>
+        </xpath>
+
+        <xpath expr="//DropdownItem/span[1]" position="attributes">
+            <attribute name="t-attf-class" separator=" " add="{{ stateIcon(option[0]) }}" remove="o_status"></attribute>
+        </xpath>
+
+        <xpath expr="//DropdownItem/span[2]" position="attributes">
+            <attribute name="t-attf-class">{{ statusColor(option[0]) }}</attribute>
+        </xpath>
+    </t>
+</templates>
