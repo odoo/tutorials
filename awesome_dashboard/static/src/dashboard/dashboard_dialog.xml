@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboardSettingsDialog">
+    <Dialog>
+        <div>
+        <!-- <t t-log="this.props.items"/> -->
+            <t t-foreach="this.props.items" t-as="entry" t-key="entry[0]">
+                    <t t-set="itemO" t-value="entry[1]" />
+                    <t t-set="item" t-value="{...itemO}"/>
+                <div>
+                <!-- <t t-log="item.id"/> -->
+                    <input type="checkbox" 
+                        t-att-checked="!this.state.hiddenItems.has(item.id)" 
+                        t-on-click="() => this.toggleItem(item.id)"/>
+                    <label t-esc="item.id"/>
+                    
+                </div>
+            </t>
+             <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="applySettings" special="cancel">Apply</button>
+            </t>
+        </div>
+    </Dialog>
+    </t>
+</templates>

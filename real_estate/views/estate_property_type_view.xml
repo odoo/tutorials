@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<odoo>
+    <!--Estate Property Type Action -->
+    <record id="estate_property_action_setting" model="ir.actions.act_window">
+        <field name="name">Estate Property Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_view_offers" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[("property_type_id", "=", active_id)]</field>
+    </record>
+
+
+    <!--Estate
+    Property Type List View -->
+    <record id="estate_proprty_type_list" model="ir.ui.view">
+        <field name="name">Property Type List View</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name='sequence' widget='handle'/>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <!--Estate
+    Property Type Form View -->
+    <record id="estate_proprty_type_form" model="ir.ui.view">
+        <field name="name">Property Type Form View</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" name="%(real_estate.action_view_offers)d"
+                            type="action" icon="fa-star">
+                            <field string="Offers" name="offer_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <field name="name" string="" nolabel="1" class="fs-1 fw-bold m-2"/>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list class="m-2 d-flex justify-content-center align-items-center">
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Estate Property Type Search View -->
+    <record id="estate_property_type_search_view" model="ir.ui.view">
+        <field name="name">Estate Property Type Search View</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Property Types">
+                <field name="name" string="Name"/>
+            </search>
+        </field>
+    </record>
+</odoo>

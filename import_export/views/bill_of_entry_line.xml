@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="view_boe_line_pivot" model="ir.ui.view">
+            <field name="name">bill.of.entry.line.pivot</field>
+            <field name="model">bill.of.entry.line</field>
+            <field name="arch" type="xml">
+                <pivot string="Import Duty Report" disable_linking="1">
+                    <field name="custom_duty_additional_charge" type="measure"/>
+                    <field name="assessable_value" type="measure" />
+                    <field name="country_id" type="row"/>
+                    <field name="journal_date" type="col"/>
+                </pivot>
+            </field>
+        </record>
+        
+        <record id="action_boe_line_pivot" model="ir.actions.act_window">
+            <field name="name">Import Duty Report</field>
+            <field name="res_model">bill.of.entry.line</field>
+            <field name="view_mode">pivot</field>
+            <field name="view_id" ref="import_export.view_boe_line_pivot"/>
+            <field name="context">{'group_by': ['journal_date','country_id']}</field>
+        </record>
+    </data>
+</odoo>

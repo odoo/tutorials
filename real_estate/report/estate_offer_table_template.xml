@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<odoo>
+ <template id="estate_offer_table">
+        <t t-if="not property.offer_ids">
+            <h3 class="text-center">
+                <strong>
+                    <t t-esc="'No offers yet for %s!' %property.name"/>
+                </strong>
+            </h3>
+        </t>
+        <t t-else="">
+            <h3 class="mt-4 text-center">
+                <t t-esc="'Offers for %s'%property.name"/>
+            </h3>
+            <table class="table table-hover table-bordered mt-2">
+                <thead class="thead-dark">
+                    <tr>
+                        <th style="font-weight:bold " class="text-center">Price</th>
+                        <th style="font-weight:bold " class="text-center">Partner</th>
+                        <th style="font-weight:bold " class="text-center">Validity
+                            (Days)</th>
+                        <th style="font-weight:bold " class="text-center">Deadline</th>
+                        <th style="font-weight:bold " class="text-center">Status</th>
+                        <th style="font-weight:bold " class="text-center">Created On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="property.offer_ids" t-as="offer">
+                        <td class="text-center">
+                            <span t-field="offer.price"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="offer.partner_id.name"
+                           />
+                        </td>
+                        <td class="text-center">
+                            <span t-field="offer.validity"/>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="offer.deadline"/>
+                        </td>
+                        <td class="text-center">
+                            <t t-if="offer.status == 'accepted'">
+                                <span class="text-success">Accepted</span>
+                            </t>
+                            <t t-elif="offer.status == 'refused'">
+                                <span class="text-danger">Refused</span>
+                            </t>
+                            <t t-else="">
+                                <span>Pending</span>
+                            </t>
+                        </td>
+                        <td class="text-center">
+                            <span t-field="offer.create_date"/>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+    </template>
+
+</odoo>

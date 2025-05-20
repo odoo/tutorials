@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="res_config_settings_view_form_inherit_l10n_in" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.import.export</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="l10n_in.res_config_settings_view_form_inherit_l10n_in"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='india_localization']" position="inside">
+                <setting string="Import-Export Duty" name="import_export" help="Enable this feature to apply custom duty on import/export transactions,including Bill of Entry and Shipping Bills">
+                    <field name="import_export_duty"/>
+                    <div class="content-group" invisible="not import_export_duty">
+                        <div class="row mt8">
+                            <label for="import_journal_id" class="col-lg-5 o_light_label" string="Import Journal"/>
+                            <field name="import_journal_id" />
+                        </div>
+                        <div class="row mt8">
+                            <label for="import_custom_duty_account_id" class="col-lg-5 o_light_label" string="Import Custom Duty Account"/>
+                            <field name="import_custom_duty_account_id" />
+                        </div>
+                        <div class="row mt8">
+                            <label for="import_default_tax_account_id" class="col-lg-5 o_light_label" string="Import Default Tax Account"/>
+                            <field name="import_default_tax_account_id" />
+                        </div>
+                    </div>
+                    <div class="content-group" invisible="not import_export_duty">
+                        <div class="row mt8">
+                            <label for="export_journal_id" class="col-lg-5 o_light_label" string="Export Journal"/>
+                            <field name="export_journal_id" />
+                        </div>
+                        <div class="row mt8">
+                            <label for="export_custom_duty_account_id" class="col-lg-5 o_light_label" string="Export Custom Duty Account"/>
+                            <field name="export_custom_duty_account_id" />
+                        </div>
+                        <div class="row mt8">
+                            <label for="export_default_tax_account_id" class="col-lg-5 o_light_label" string="Export Default Tax Account"/>
+                            <field name="export_default_tax_account_id" />
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
