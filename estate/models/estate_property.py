@@ -9,8 +9,8 @@ class EstateProperty(models.Model):
     address = fields.Char('Property Address', required=True)
     postcode = fields.Char('Property Postcode', required=True)
     expected_price = fields.Float('Property Expected Price', digits=(16, 2), required=True)
-    availability_date = fields.Date('Property Available', required=True, copy=False, default=lambda _ : fields.Date.today() + relativedelta(months=3))
-    furnished = fields.Boolean('Property Furnished', required=True, default=False)
+    availability_date = fields.Date('Property Available', required=True, copy=False, default=lambda _: fields.Date.today() + relativedelta(months=3))
+    furnished = fields.Boolean('Property Furnished', default=False)
     bedrooms = fields.Integer('Property Bedrooms', required=True, default=2)
     bathrooms = fields.Integer('Property Bathrooms', required=False, default=1)
     selling_price = fields.Float('Property Selling Price', digits=(16, 2), required=False, readonly=True, copy=False)
@@ -23,10 +23,23 @@ class EstateProperty(models.Model):
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="orientation of the garden")
     active = fields.Boolean('Property Active', default=True)
-    state = fields.Selection(string='Property State', selection=[('new', 'New'),
-                                                                 ('offer_received', 'Offer Received'),
-                                                                 ('offer_accepted', 'Offer Accepted'),
-                                                             ('sold', 'Sold'), ('cancelled', 'Cancelled')],
-                             default='new', required=True, copy=False)
+    state = fields.Selection(
+        string='Property State',
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        default='new',
+        required=True,
+        copy=False
+    )
     facades = fields.Integer('Property Facades')
     description = fields.Text('Property Description', default="No description provided.")
+
+    # Many-To-One Relations
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type', required=False)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    salesman_id = fields.Many2one('res.users', string='Salesman', required=True, default=lambda self: self.env.uid)
+
+    # Many-To-Many Relations
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
+
+    # One-To-Many Relations
+    offer_ids = fields.One2many('estate.property.offer', 'property_id',string='Offers')
