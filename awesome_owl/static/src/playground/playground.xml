@@ -1,0 +1,47 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.playground.view" owl="1">
+        <div class="container mt-5">
+            <h2 class="mb-4 text-center">Welcome to the Owl Playground</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">Counter 1</div>
+                        <div class="card-body">
+                            <Counter onChange.bind="updateCount1"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-header">Counter 2</div>
+                        <div class="card-body">
+                            <Counter onChange.bind="updateCount2"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <h4 class="card-title">Total Sum</h4>
+                            <p class="card-text display-4">
+                                <t t-esc="sum"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <div class="card">
+                        <div class="card-header">Todo List</div>
+                        <div class="card-body">
+                            <TodoList/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
