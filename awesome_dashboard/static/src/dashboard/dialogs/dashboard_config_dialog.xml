@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboardConfigDialog">
+        <Dialog size="'md'" title.translate="Dashboard Items Configuration">
+            <div class="d-flex flex-column gap-2">
+                <div class="form-check" t-foreach="Object.entries(configItems)" t-as="entry" t-key="entry[0]">
+                    <t t-set="key" t-value="entry[0]"/>
+                    <t t-set="item" t-value="entry[1]"/>
+                    <input class="form-check-input" type="checkbox" t-att-checked="item.active" t-attf-id="awesome_dashboard_config_{{key}}" t-on-change="() => this.configItems[key].active = !this.configItems[key].active"/>
+                    <label class="form-check-label" t-attf-for="awesome_dashboard_config_{{key}}" t-esc="item.title"/>
+                </div>
+                <t t-set-slot="footer">
+                    <button class="btn btn-primary" t-on-click="onSave">Save</button>
+                    <button class="btn btn-secondary" t-on-click="props.close">Discard</button>
+                </t>
+            </div>
+        </Dialog>
+    </t>
+
+</templates>
