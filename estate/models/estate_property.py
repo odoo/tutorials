@@ -32,6 +32,11 @@ class EstateProperty(models.Model):
         default='new'
     )
 
+    _sql_constraints = [
+        ("positive_expected_price", "CHECK(expected_price >= 0)", "The expected price must be positive."),
+        ("positive_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive."),
+    ]
+
     # Foreign keys
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer")
