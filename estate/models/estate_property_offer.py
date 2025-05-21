@@ -1,5 +1,7 @@
-from odoo import models, fields, api
 from datetime import timedelta
+
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -27,3 +29,29 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             create_date = offer.create_date or fields.Datetime.now()
             offer.validity = (offer.date_deadline - create_date.date()).days if offer.date_deadline else 0
+
+    def action_set_accept(self):
+        for record in self:
+            if (record.property_id.state in ('offer accepted', 'sold')):
+                raise UserError('An offer already accepted for this property')
+            if (record.property_id.state == 'canceled'):
+                raise UserError('Property canceled')
+            if (record.status in ('refused', 'accepted')):
+                raise UserError('Offer already accepted/refused')
+
+            record.property_id.selling_price = record.price
+            record.property_id.state = 'offer accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.status = 'accepted'
+        return True
+
+    def action_set_refuse(self):
+        for record in self:
+            if (record.property_id.state in ('offer accepted', 'sold')):
+                raise UserError('An offer already accepted for this property')
+            if (record.property_id.state == 'canceled'):
+                raise UserError('Property canceled')
+            if (record.status in ('accepted', 'refused')):
+                raise UserError('Offer already accepted/refused')
+            record.status = 'refused'
+        return True
