@@ -109,6 +109,11 @@
                         ('state', '=', 'New'),
                         ('state', '=', 'Offer Received')
                     ]" />
+
+                <filter name="inactive_properties" string="Inactive"
+                    domain="[
+                        ('active', '=', False)
+                    ]" />
                 
                 <filter name="postcode_group" string="Postcode" context="{'group_by': 'postcode'}" />
 
