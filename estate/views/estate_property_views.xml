@@ -5,13 +5,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Estate Property">
-                <field name="name"/>
-                <field name="property_type_id"/>
-                <field name="tag_ids" widget="many2many_tags"/>
-                <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="name" width="20%"/>
+                <field name="property_type_id" width="20%"/>
+                <field name="tag_ids" widget="many2many_tags" width="10%"/>
+                <field name="living_area" width="10%"/>
+                <field name="expected_price" width="10%"/>
+                <field name="selling_price" width="10%"/>
+                <field name="date_availability" width="20%"/>
             </list>
         </field>
     </record>
