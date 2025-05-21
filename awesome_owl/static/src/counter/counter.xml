@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.counter">
+        <div class="card" style="width: 200px;">
+            <div class="card-header">
+                <h5 t-esc="props.title || 'Counter'"/>
+            </div>
+            <div class="card-body">
+                <div>
+                    <button class="btn btn-primary w-100" t-on-click="increment">
+                        Increment ++
+                    </button>
+                </div>
+
+                <t t-if="props.extraContent" t-out="props.extraContent"/>
+            </div>
+            <div class="card-footer">
+                <div class="text-center fs-3" t-esc="state.count"/>
+            </div>
+        </div>
+    </t>
+
+</templates>
