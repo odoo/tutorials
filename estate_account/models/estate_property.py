@@ -4,7 +4,13 @@ class EstateAccount(models.Model):
     _inherit = "estate.property"
 
     def sell_property(self):
-        line_ids = [
+        if  not self.buyer_id:
+            raise exceptions.UserError("Can't sell a property without a buyer.")
+
+        self.env["account.move"].create({
+            "partner_id": self.buyer_id.id,
+            "move_type": "out_invoice",
+            "invoice_line_ids": [
             Command.create({
                 "name": "Price Percentage",
                 "quantity": 1,
@@ -16,13 +22,6 @@ class EstateAccount(models.Model):
                 "price_unit": 100.00,
             })
         ]
-        if  not self.buyer_id:
-            raise exceptions.UserError("Can't sell a property without a buyer.")
-        dictionary = {
-            "partner_id": self.buyer_id.id,
-            "move_type": "out_invoice",
-            "invoice_line_ids": line_ids
-        }
-        self.env["account.move"].create(dictionary)
+        })
 
         return super().sell_property()
