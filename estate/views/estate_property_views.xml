@@ -4,9 +4,10 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Estate Property">
                 <field name="name"/>
                 <field name="property_type_id"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
@@ -43,10 +44,11 @@
             <form string="Estate Property">
                 <sheet>
                     <div class="row">
-                        <div class="oe_title">
-                            <h1 class="mb32">
-                                <field name="name" class="mb16"/>
+                        <div class="oe_title mb32">
+                            <h1>
+                                <field name="name"/>
                             </h1>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="active" invisible="1"/>
                         </div>
                     </div>
@@ -77,6 +79,9 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
                         </page>
                         <page string="Other Info">
                             <group>
