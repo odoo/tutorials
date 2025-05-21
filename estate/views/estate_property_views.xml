@@ -33,13 +33,13 @@
                 <header>
                     <button name="set_canceled" type="object" string="Cancel"/>
                     <button name="set_sold" type="object" string="Sold"/>
-                </header>
+                    <field name="state" widget="statusbar"/>
+            </header>
                 <sheet>
                     <h1><field name="name" nolabel="True"/></h1>
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group> 
-                            <field name="state"/>
                             <field name="property_type_id" string="Property Type"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>

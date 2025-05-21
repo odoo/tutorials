@@ -23,6 +23,13 @@
             <form string="Property Type">
                 <sheet>
                     <h1><field name="name" nolabel="True"/></h1>
+                    <field name="property_ids">
+                        <list>
+                            <field name="name"/>
+                            <field name="expected_price"/>
+                            <field name="state"/>
+                        </list>
+                    </field>
                 </sheet>
             </form>
         </field>

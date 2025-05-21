@@ -33,6 +33,17 @@ class EstateProperty(models.Model):
         copy=False,
         default='new')
 
+    # Relational fields
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    sales_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    # Computed fields
+    total_area = fields.Integer(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_offer", default=0)
+
     # Constraints
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)',
@@ -48,17 +59,6 @@ class EstateProperty(models.Model):
                 if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
                     raise ValidationError("The selling price cannot be less than 90% of the expected price")
 
-    # Relational fields
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    sales_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-
-    # Computed fields
-    total_area = fields.Integer(compute="_compute_total_area")
-    best_price = fields.Float(compute="_compute_best_offer", default=0)
-
     # Compute Methods
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -68,7 +68,7 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
+            record.best_price = max(record.offer_ids.mapped('price'), default=0)
 
     # On Changes
     @api.onchange('garden')
