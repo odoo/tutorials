@@ -1,5 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
+from odoo import exceptions
+
 from odoo import fields, models, api
 
 
@@ -8,22 +10,20 @@ class EstateProperty(models.Model):
     _description = 'estate property module'
 
     name = fields.Char(required=True)
-    description = fields.Text("Description")
+    description = fields.Text('Description')
     date_availability = fields.Date(
-        "Date Availability", default=fields.Date.today() + relativedelta(months=3), copy=False
+        'Date Availability', default=fields.Date.today() + relativedelta(months=3), copy=False
     )
-    expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price", default=0, readonly=True, copy=False)
+    expected_price = fields.Float('Expected Price', required=True)
+    selling_price = fields.Float('Selling Price', default=0, readonly=True, copy=False)
     bedrooms = fields.Integer(required=True, default=2)
-    living_area = fields.Integer("Living Area (sqm)", required=True)
+    living_area = fields.Integer('Living Area (sqm)', required=True)
     facades = fields.Integer(default=0)
     garage = fields.Boolean(default=False)
     garden = fields.Boolean(default=False)
-    garden_area = fields.Integer("Garden Area (sqm)")
-    garden_orientation = fields.Selection(
-        [('north', 'North'), ('east', 'East'), ('south', 'South'), ('west', 'West')]
-    )
-    total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
+    garden_area = fields.Integer('Garden Area (sqm)')
+    garden_orientation = fields.Selection([('north', 'North'), ('east', 'East'), ('south', 'South'), ('west', 'West')])
+    total_area = fields.Integer('Total Area (sqm)', compute='_compute_total_area')
     postcode = fields.Integer()
     active = fields.Boolean(default=True)
     status = fields.Selection(
@@ -37,12 +37,12 @@ class EstateProperty(models.Model):
         default='new',
         copy=False,
     )
-    estate_type_id = fields.Many2one(comodel_name="estate.property.type")
-    estate_tag_ids = fields.Many2many(comodel_name="estate.property.tag")
-    estate_offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    partner_id = fields.Many2one(comodel_name="res.partner")
-    user_id = fields.Many2one(comodel_name="res.users", default=lambda self: self.env.user)
-    best_offer = fields.Float(compute="_compute_best_price")
+    estate_type_id = fields.Many2one(comodel_name='estate.property.type')
+    estate_tag_ids = fields.Many2many(comodel_name='estate.property.tag')
+    estate_offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    partner_id = fields.Many2one(comodel_name='res.partner')
+    user_id = fields.Many2one(comodel_name='res.users', default=lambda self: self.env.user)
+    best_offer = fields.Float(compute='_compute_best_price')
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
@@ -57,7 +57,7 @@ class EstateProperty(models.Model):
             else:
                 record.best_offer = max(record.estate_offer_ids.mapped('price'))
 
-    @api.onchange("garden")
+    @api.onchange('garden')
     def _onchange_partner_id(self):
         if self.garden:
             self.garden_orientation = 'north'
@@ -66,4 +66,14 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
             self.garden_area = 0
 
-    
+    def action_cancel(self):
+        if self.status == 'sold':
+            raise exceptions.UserError('A sold property cannot be cancelled')
+
+        self.status = 'cancelled'
+
+    def action_sold(self):
+        if self.status == 'cancelled':
+            raise exceptions.UserError('A cancelled property cannot be sold')
+
+        self.status = 'sold'

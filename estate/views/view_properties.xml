@@ -31,6 +31,11 @@
                         <h1 class="oe_title">
                             <field name="name" class="mb16"/>
                         </h1>
+                        <header>
+                            <button name="action_cancel" type="object" string="Cancel"/>
+                            <button name="action_sold" type="object" string="Sold"/>
+                        </header>
+                       
                         <field name="estate_tag_ids" widget="many2many_tags"/>
                         <div class="row">
                             <div class="col-6">
@@ -85,6 +90,8 @@
                 <field name="price"/>
                 <field name="partner_id" string="Partner"/>
                 <field name="status"/>
+                <button name="action_accepted" title="accepted" type="object" icon="fa-check"/>
+                <button name="action_refused" title="refused" type="object" icon="oi-close"/>
             </list>
         </field>
     </record>
