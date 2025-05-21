@@ -1,0 +1,7 @@
+<odoo>
+  <menuitem id="root_level" name="Real Estate" >
+    <menuitem id="second_level" name="Estate">
+      <menuitem id="third_level" name="Real Estate" action="test_record" />
+    </menuitem>
+  </menuitem>
+</odoo>

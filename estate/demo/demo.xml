@@ -1,0 +1,12 @@
+<odoo>
+  <data noupdate="1">
+    <record id="house_1" model="real.estate">
+      <field name="name">House Number 1</field>
+      <field name="price">100000</field>
+    </record>
+    <record id="estate_1" model="estate.property">
+      <field name="name">Estate Number 1</field>
+      <field name="expected_price">200000</field>
+    </record>
+  </data>
+</odoo>
