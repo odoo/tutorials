@@ -5,7 +5,7 @@ class EstateProperty(models.Model):
     _description = "ch3 exercise tutorial"
 
     name = fields.Char(required=True)
-    active = fields.Boolean(default=False)
+    # active = fields.Boolean(default=False)
     state = fields.Selection(
         string='Property State',
         selection= [('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')]
@@ -25,6 +25,8 @@ class EstateProperty(models.Model):
         string = 'Garden Orientation',
         selection = [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
     )
-
-
-    
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
+    sales_person = fields.Many2one("res.users", string="Sales Person", default=lambda self: self.env.user)
+    property_tag_ids = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
