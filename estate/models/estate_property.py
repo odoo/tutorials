@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -28,7 +28,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean()
     state = fields.Selection(
         string='Status',
-        selection=[('new', 'New'), ('received', 'Offer received'), ('accepted', 'Offer accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[('new', 'New'), ('received', 'Offer received'), ('accepted', 'Offer accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
         default='new'
     )
 
@@ -55,3 +55,20 @@ class EstateProperty(models.Model):
         for record in self:
             record.garden_area = 10 if record.garden else None
             record.garden_orientation = "north" if record.garden else None
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "canceled":
+                raise exceptions.UserError("Canceled properties cannot be sold.")
+
+            record.state = "sold";
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise exceptions.UserError("Sold properties cannot be canceled.")
+
+            record.state = "canceled";
+        return True
+
