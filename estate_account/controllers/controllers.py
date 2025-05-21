@@ -19,4 +19,3 @@
 #         return http.request.render('estate_account.object', {
 #             'object': obj
 #         })
-
