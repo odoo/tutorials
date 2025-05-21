@@ -17,6 +17,12 @@ class PropertyOffer(models.Model):
 
     _sql_constraints = [("positive_price", "CHECK(price > 0)", "The offer price must be positive.")]
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            self.env["estate.property"].browse(vals["property_id"]).state = "received"
+        return super().create(vals_list)
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for offer in self:

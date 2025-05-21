@@ -36,6 +36,11 @@ class Property(models.Model):
         ("positive_selling_price", "CHECK(selling_price > 0)", "The selling price should be strictly positive."),
     ]
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_property_with_offers(self):
+        if any(property.state != "cancelled" and property.state != "new" for property in self):
+            raise exceptions.UserError("Can't delete a property that have offers, or that isn't cancelled.")
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for property in self:
