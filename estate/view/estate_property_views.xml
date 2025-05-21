@@ -22,8 +22,9 @@
             <form string="Estate">
                 <sheet>
                     <h1 class="oe_title">
-                        <field name="name" class="mb16"/>
+                        <field name="name"/>
                     </h1>
+                    <field name="tag_ids"  widget="many2many_tags" class="mb16"/>
                     <div class="row">
                         <div class="col-6">
                             <group>
@@ -35,6 +36,7 @@
                             <group>
                                 <field name="expected_price"/>
                                 <field name="selling_price"/>
+                                <field name="best_offer"/>
                             </group>
                         </div>
                     </div>
@@ -43,14 +45,24 @@
                             <group>
                                 <field name="description"/>
                                 <field name="bedrooms"/>
-                                <field name="living_area"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="garden_area"/>
+                                <field name="living_area"/>
+                                <field name="total_area"/>
                                 <field name="property_type_id"/>
                             </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="sales_person_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
                         </page>
                     </notebook>
                 </sheet>
