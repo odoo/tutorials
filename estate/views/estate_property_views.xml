@@ -23,7 +23,7 @@
     </record>
 
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Show estate property</field>
+        <field name="name">Estate property</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">list,form</field>
     </record>
@@ -41,6 +41,8 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+                <field name="property_type_id"/>
+                <field name="tag_ids"/>
             </list>
         </field>
     </record>
@@ -53,6 +55,7 @@
             <form string="Property">
                 <sheet>
                     <h1><field name="name"/></h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="postcode"/>
@@ -75,6 +78,22 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
+                                <field name="property_type_id"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list string="Offers">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Others Info">
+                            <group>
+                                <field name="buyer"/>
+                                <field name="salesperson"/>
                             </group>
                         </page>
                     </notebook>
