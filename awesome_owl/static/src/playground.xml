@@ -2,8 +2,28 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="p-3 d-flex gap-3">
+            <Counter title="'Title'" onIncrement.bind="incrementSum">
+                <div class="text-center my-2">
+                    <strong>EXTRA content strong</strong>
+                </div>
+            </Counter>
+            <Counter onIncrement.bind="incrementSum">
+                <div class="text-center my-2">
+                    <i class="fa fa-cog fa-spin" aria-hidden="true" />
+                </div>
+            </Counter>
+            <Counter onIncrement.bind="incrementSum">
+                <div>HELLO WORLD</div>
+            </Counter>
+        </div>
+
+        <div class="mt-2 text-center fs-2">
+            <t t-esc="state.sum"/>
+        </div>
+
+        <div class="mt-2">
+            <TodoList items="state.todos"/>
         </div>
     </t>
 

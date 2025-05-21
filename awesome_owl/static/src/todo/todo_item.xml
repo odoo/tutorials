@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="d-flex justify-content-between align-items-center border-bottom py-2">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" t-att-checked="props.item.isCompleted ? 'checked' : ''" t-att-id="`todo_item_${props.item.id}`" t-on-change="toggleCompleted"/>
+                <label class="form-check-label" t-att-for="`todo_item_${props.item.id}`" t-esc="props.item.description" t-att-class="props.item.isCompleted ? 'text-decoration-line-through text-muted' : ''"/>
+            </div>
+            <button t-if="props.onDelete" class="btn fa fa-trash" type="button" t-on-click="onDelete" t-att-title="'Delete ' + props.item.description"/>
+        </div>
+    </t>
+
+</templates>
