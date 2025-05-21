@@ -36,7 +36,7 @@ class property_offer(models.Model):
         for record in self:
             if (record.property_id.has_accepted_offer()):
                 raise exceptions.UserError("Only one Offer can be accepted")
-            if (tools.float_utils.float_compare(record.property_id.expected_price *90/100, record.price, 2) > 0):
+            if (tools.float_utils.float_compare(record.property_id.expected_price * 90 / 100, record.price, 2) > 0):
                 raise exceptions.ValidationError("You can't accept an offer lower than 90% of the selling price.")
             record.status = "accepted"
             record.property_id.selling_price = record.price

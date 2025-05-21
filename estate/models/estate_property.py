@@ -8,7 +8,7 @@ class Estate_property(models.Model):
     _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
-    description  = fields.Text()
+    description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Datetime(copy=False, default=fields.date.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
@@ -21,7 +21,7 @@ class Estate_property(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string='Orientation',
-        selection=[('north', 'North'), ('south', 'South'), ('east','East'), ('west', 'West')],
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Orientation is meant to describe the garden."
     )
     active = fields.Boolean('Active', default=True)
@@ -83,9 +83,7 @@ class Estate_property(models.Model):
     @api.onchange("expected_price")
     def _onchange_expected_price(self):
         if (self.has_accepted_offer()):
-            compute_cost = self.expected_price *90/100
-            print(compute_cost)
-            if (tools.float_utils.float_compare(compute_cost, self.selling_price, 2) > 0):
+            if (tools.float_utils.float_compare(self.expected_price * 90 / 100, self.selling_price, 2) > 0):
                 raise exceptions.ValidationError("The selling price must be equal or higher than 90% of the selling price.")
 
     @api.ondelete(at_uninstall=False)
