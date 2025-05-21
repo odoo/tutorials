@@ -31,9 +31,11 @@
                         <h1 class="oe_title">
                             <field name="name" class="mb16"/>
                         </h1>
+                        <field name="estate_tag_ids" widget="many2many_tags"/>
                         <div class="row">
                             <div class="col-6">
-                                <group>    
+                                <group>
+                                    <field name="estate_type_id" string="Property type"/>
                                     <field name="postcode"/>
                                     <field name="date_availability"/>
                                 </group>
@@ -56,12 +58,14 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
-                                    <field name="partner_type_id"/>
                                 </group>
+                            </page>
+                            <page string="Offers">
+                                <field name="estate_offer_ids" widget="one2many_tags"/>
                             </page>
                             <page string="Other info">
                                 <group>
-                                    <field name="buyer_id" string="buyer"/>
+                                    <field name="partner_id" string="buyer"/>
                                     <field name="user_id" string="salesman"/>
                                 </group>
                             </page>
@@ -69,6 +73,18 @@
                     </sheet>
                 </form>
             </field>
+    </record>
+
+    <record id="estate_offer_list_view_tree" model="ir.ui.view">
+        <field name="name">estate.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="price"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="status"/>
+            </list>
+        </field>
     </record>
 
     <record id="estate_search" model="ir.ui.view">

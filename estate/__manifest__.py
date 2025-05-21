@@ -8,6 +8,7 @@
         'security/ir.model.access.csv',
         'views/view_properties.xml',
         'views/view_properties_type.xml',
+        'views/view_properties_tag.xml',
         'views/estate_menus.xml',
     ],
 }
