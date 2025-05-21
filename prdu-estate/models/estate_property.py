@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 from dateutil.relativedelta import relativedelta
 
 
@@ -28,7 +28,7 @@ class estateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer(compute="_compute_total_area")
     
-    @api.depends("living_area","garden_area")
+    @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -36,16 +36,32 @@ class estateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            temp_best_price=record.offer_ids[0].price
-            for i in range(1,len(record.offer_ids)):
-                temp_best_price=max(record.offer_ids[i].price,temp_best_price)
-            record.best_price=temp_best_price
+            temp_best_price = 0
+            for i in range(len(record.offer_ids)):
+                temp_best_price = max(record.offer_ids[i].price, temp_best_price)
+            record.best_price = temp_best_price
     
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area=10
-            self.garden_orientation="north"
+            self.garden_area = 10
+            self.garden_orientation = "north"
         else:
-            self.garden_area=None
-            self.garden_orientation=None    
+            self.garden_area = None
+            self.garden_orientation= None
+
+    def action_property_cancel(self):
+        for record in self:
+            if record.state != "sold" and record.state != "cancelled":
+                record.state = "cancelled"
+            else:
+                raise exceptions.UserError("Redundant stage change, not permitter")
+        return True
+
+    def action_property_sell(self):
+        for record in self:
+            if record.state != "sold" and record.state != "cancelled":
+                record.state = "sold"
+            else:
+                raise exceptions.UserError("Redundant stage change, not permitter")
+        return True
