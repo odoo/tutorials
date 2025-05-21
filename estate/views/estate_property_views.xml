@@ -12,12 +12,17 @@
         <field name="arch" type="xml">
             <form string="new house" edit="True">
                 <sheet>
+                    <header>
+                        <button name="sold_button_action" type="object" string="sold" />
+                        <button name="cancel_button_action" type="object" string="cancel" />
+                    </header>
                     <div class="oe_title">
                         <h1><field name="name"/></h1>
                     </div>
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="state" string= "Status" />
                             <field name="property_type" />
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From" />
