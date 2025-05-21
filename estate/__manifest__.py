@@ -3,10 +3,12 @@
     'name': "estate",
 
     'description': """
-        Module to deal with estate sales"
+        Module to deal with estate sales."
     """,
 
     'author': "Odoo S.A.",
+
+    "license" : "LGPL-3",
 
     'data': [
         'security/ir.model.access.csv',
