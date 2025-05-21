@@ -88,10 +88,8 @@ class Estate_property(models.Model):
             if(tools.float_utils.float_compare(compute_cost, self.selling_price, 2) > 0):
                 raise exceptions.ValidationError("The selling price must be equal or higher than 90% of the selling price.")
 
-    @api.model
-    def ondelete(self):
-        print("deletion")
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_user_inactive(self):
         for record in self:
             if(not record.state in ['new','cancelled']):
                 raise exceptions.UserError("Only new or cancelled Property can be deleted.")
-        return super().ondelete()

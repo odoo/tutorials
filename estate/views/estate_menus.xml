@@ -17,4 +17,5 @@
 
     <!-- Action for "Settings" -->
     <menuitem id="estate.property_tags_menu_action" action="estate.property_tags_model_action" parent="estate.property_settings_first_level_menu"/>
+
 </odoo>
