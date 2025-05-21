@@ -53,8 +53,9 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area" string="Total area (sqm)"/>
                                 <field name="state"/>
                                 <field name="tag_ids" widget="many2many_tags"/>
                             </group>
