@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 from datetime import date, timedelta
 
 class EstatePropertyOffer(models.Model):
@@ -17,14 +17,35 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
-            creation_date = record.create_date.date() or date.today()
+            creation_date = record.create_date.date() if record.create_date else date.today()
             validity_time = timedelta(days=record.validity)
             record.date_deadline = creation_date + validity_time
 
     def _inverse_deadline(self):
         for record in self:
-            creation_date = record.create_date.date() or date.today()
+            creation_date = record.create_date.date() if record.create_date else date.today()
             validity_time = record.date_deadline - creation_date
-            print("Setting validity to: " + str(validity_time))
             record.validity = validity_time.days
+
+    def action_accept_offer(self):
+        for record in self:
+            if record.property_id.state in ["accepted", "canceled", "sold"]:
+                raise exceptions.UserError("Cannot accept an offer for an unavailable property.")
+
+            record.property_id.state = "accepted"
+            record.status = "accepted"
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
+            for offer in record.property_id.offer_ids:
+                if offer.id != record.id:
+                    offer.status = "refused"
+
+        return True
+
+    def action_refuse_offer(self):
+        for record in self:
+            if record.status == "accepted":
+                raise exceptions.UserError("Cannot refuse an offer that was already accepted.")
+            record.status = "refused"
+        return True
 
