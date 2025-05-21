@@ -4,6 +4,9 @@ from odoo import fields, models
 class PropertyType(models.Model):
     _name = "estate.property.type"
     _description = "describe the type property"
+    _order = "sequence"
+
+    sequence = fields.Integer('Sequence', default=1)
 
     name = fields.Char(required=True)
     property_ids = fields.One2many("estate.property", "property_type_id")
