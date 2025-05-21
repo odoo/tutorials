@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "An offer made by a buyer to acquire a property"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection([("accepted", "Accepted"), ("refused", "Refused")], copy=False)
@@ -12,6 +13,7 @@ class PropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Property Type")
 
     _sql_constraints = [("positive_price", "CHECK(price > 0)", "The offer price must be positive.")]
 
@@ -29,7 +31,7 @@ class PropertyOffer(models.Model):
             if offer.property_id.state == "sold" or offer.property_id.state == "cancelled":
                 raise exceptions.UserError("You can accept an offer on a properties that is cancelled or already sold !")
             offer.status = "accepted"
-            offer.property_id.state = "sold"
+            offer.property_id.state = "accepted"
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
 
