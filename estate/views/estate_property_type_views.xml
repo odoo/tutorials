@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <form string="property form">
                 <sheet>
-                    <field name="name" style="font-size:50px;" />
+                    <field name="name" class="display-4" />
                 </sheet>
             </form>
         </field>
