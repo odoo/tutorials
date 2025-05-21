@@ -5,18 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="220cc7af-189d-4308-a076-352279cfe564" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/estate/models/estate_property_offer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/estate/models/estate_property_tag.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/estate/models/estate_property_type.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/estate/views/estate_property_offer_views.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/estate/views/estate_property_tag_views.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/estate/views/estate_property_type_views.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/__manifest__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/ir.model.access.csv" beforeDir="false" afterPath="$PROJECT_DIR$/estate/ir.model.access.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/estate/views/estate_menus.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_menus.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/models/estate_property_offer.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_offer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_offer_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_offer_views.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/views/estate_property_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_views.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,22 +37,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "18.0-tutorial-thha",
-    "last_opened_file_path": "/home/odoo/Code/tutorials/estate/views",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "DotEnv.SettingsForm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;18.0-tutorial-thha&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/odoo/Code/tutorials/estate/views&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;DotEnv.SettingsForm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/estate/views" />
@@ -89,7 +81,8 @@
       <workItem from="1747739728417" duration="6510000" />
       <workItem from="1747746273434" duration="7660000" />
       <workItem from="1747810662813" duration="332000" />
-      <workItem from="1747811158686" duration="7666000" />
+      <workItem from="1747811158686" duration="10232000" />
+      <workItem from="1747825854580" duration="6068000" />
     </task>
     <servers />
   </component>
