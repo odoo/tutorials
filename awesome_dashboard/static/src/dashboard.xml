@@ -2,7 +2,50 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <div class="o_list_buttons d-flex gap-1 d-empty-none align-items-baseline" role="toolbar" aria-label="Main actions">
+                    <button type="button" class="btn btn-primary" t-on-click="onClickCustomers">
+                        Customers
+                    </button>
+                    <button type="button" class="btn btn-primary" t-on-click="onClickLeads">
+                        Leads
+                    </button>
+                </div>
+            </t>
+            <div class="o_dashboard_items">
+                <AwesomeDashboardItem>
+                    <div class="text-center">
+                        <div class="fs-3">Average amount of t-shirt by order this month</div>
+                        <div class="text-success fs-1" t-esc="data.average_quantity" />
+                    </div>
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem size="3">
+                    <div class="text-center">
+                        <div class="fs-3">Average time for an order to go from 'new' to 'sent' or 'cancelled'</div>
+                        <div class="text-success fs-1" t-esc="data.average_time" />
+                    </div>
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem>
+                    <div class="text-center">
+                        <div class="fs-3">Number of new orders this month</div>
+                        <div class="text-success fs-1" t-esc="data.nb_new_orders" />
+                    </div>
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem size="1.5">
+                    <div class="text-center">
+                        <div class="fs-3">number of cancelled orders this month</div>
+                        <div class="text-success fs-1" t-esc="data.nb_cancelled_orders" />
+                    </div>
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem size="1.5">
+                    <div class="text-center">
+                        <div class="fs-3">total amount of new orders this month</div>
+                        <div class="text-success fs-1" t-esc="data.total_amount" />
+                    </div>
+                </AwesomeDashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
