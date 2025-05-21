@@ -6,3 +6,9 @@ class PropertyType(models.Model):
     _description = "describe the type property"
 
     name = fields.Char(required=True)
+
+    # SQL constraints
+    _sql_constraints = [
+        ('name_unique', 'unique(name)',
+         'The name of a property type should be unique'),
+    ]

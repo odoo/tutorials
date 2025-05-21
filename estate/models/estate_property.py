@@ -1,6 +1,8 @@
 from odoo import api, fields, models, exceptions
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
@@ -30,6 +32,21 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new')
+
+    # Constraints
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price of a property should be strictly positive'),
+         ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price of a property should be positive')
+    ]
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
+                    raise ValidationError("The selling price cannot be less than 90% of the expected price")
 
     # Relational fields
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
