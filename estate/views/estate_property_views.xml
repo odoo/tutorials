@@ -47,12 +47,16 @@
         </field>
     </record>
 
-    <!-- Usual view -->
+    <!-- Form view -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_sold" type="object" string="Sold"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1><field name="name"/></h1>
                     <field name="tag_ids" widget="many2many_tags"/>
@@ -88,6 +92,8 @@
                                 <list string="Offers">
                                     <field name="price"/>
                                     <field name="partner_id"/>
+                                    <button name="action_confirm" string="Accept" states="draft" type="object" icon="fa-check"/>
+                                    <button name="action_cancel" string="Refuse" states="draft,open" type="object" icon="fa-times"/>
                                     <field name="status"/>
                                 </list>
                             </field>

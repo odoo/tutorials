@@ -1,6 +1,7 @@
 
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class Properties(models.Model):
@@ -62,3 +63,19 @@ class Properties(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    def action_sold(self):
+        for a_property in self:
+            if a_property.state not in ["cancelled"]:
+                a_property.state = "sold"
+            else:
+                raise UserError("Property is already cancelled")
+        return True
+
+    def action_cancel(self):
+        for a_property in self:
+            if a_property.state not in ["sold"]:
+                a_property.state = "cancelled"
+            else:
+                raise UserError("Property is already sold")
+        return True

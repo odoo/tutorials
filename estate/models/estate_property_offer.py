@@ -1,5 +1,6 @@
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class PropertyOffer(models.Model):
@@ -24,3 +25,28 @@ class PropertyOffer(models.Model):
         for offer in self:
             if offer.create_date:
                 offer.validity = (offer.date_deadline - offer.create_date.date()).days
+
+    def action_confirm(self):
+        for offer in self:
+
+            for other_offer in offer.property_id.offer_ids:
+                if other_offer.status == "accepted":
+                    offer.status = "refused"
+
+            if offer.status == "refused":
+                raise UserError("Offer already refused")
+
+            offer.status = "accepted"
+            offer.property_id.buyer = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            for other_offer in offer.property_id.mapped("offer_ids"):
+                if other_offer.id != offer.id:
+                    other_offer.status = "refused"
+        return True
+
+    def action_cancel(self):
+        for offer in self:
+            if offer.status == "accepted":
+                raise UserError("Offer already accepted")
+            offer.status = "refused"
+        return True
