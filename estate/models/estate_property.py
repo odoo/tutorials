@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 
 
 class EstateProperty(models.Model):
@@ -41,20 +41,47 @@ class EstateProperty(models.Model):
     @api.depends("offers_ids")
     def _compute_best_price(self):
         for record in self:
-            if len(record.offers_ids) == 0:
+            best_offer = record._get_best_offer()
+            if best_offer is None:
                 record.best_price = 0
                 return
-            prices = record.offers_ids.mapped("price")
-            for price in prices:
-                if 0 < price < record.best_price:
-                    record.best_price = price
+            record.best_price = best_offer.price
+
+    def _get_best_offer(self):
+        if len(self.offers_ids) == 0:
+            return None
+        best_offer = self.offers_ids[0]
+        for offer in self.offers_ids:
+            if offer.price < best_offer.price:
+                best_offer = offer
+        return best_offer
 
     @api.onchange("garden")
     def _onchange_partner_id(self):
-        if self.garden:
-            self.garden_orientation = 'North'
-            self.garden_area = 10
-        else:
-            self.garden_orientation = None
-            self.garden_area = 0
+        for record in self:
+            if record.garden:
+                record.garden_orientation = 'North'
+                record.garden_area = 10
+            else:
+                record.garden_orientation = None
+                record.garden_area = 0
 
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError("Can't sell a cancelled offer")
+            best_offer = record._get_best_offer()
+            if best_offer is None:
+                raise exceptions.UserError("The offers for this property are empty")
+            self.sold(best_offer)
+
+    def sold(self, offer):
+        offer.status = 'accepted'
+        self.buyer_id = offer.partner_id
+        self.selling_price = offer.price
+
+    def action_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError("Can't cancel a sold offer")
+            record.state = 'cancelled'
