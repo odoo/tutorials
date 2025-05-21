@@ -1,7 +1,11 @@
 <odoo>
     <menuitem id="estate_menu_root" name="Real Estate">
-        <menuitem id="estate_property_menu" name="Advertisements">
-            <menuitem id="add_estate_menu_action" action="add_estate_property_action" name="Properties"/>
+        <menuitem id="estate_ads_property_menu" name="Advertisements">
+            <menuitem id="estate_menu_action" action="estate_property_action" name="Properties"/>
+        </menuitem>
+        <menuitem id="estate_settings_property_menu" name="Settings">
+            <menuitem id="estate_type_menu_action" action="estate_property_type_action" name="Property Types"/>
+            <menuitem id="estate_tag_menu_action" action="estate_property_tag_action" name="Property Tags"/>
         </menuitem>
     </menuitem>
 </odoo>
