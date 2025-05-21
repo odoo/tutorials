@@ -1,4 +1,4 @@
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api, exceptions, tools
 from dateutil.relativedelta import relativedelta
 
 
@@ -27,6 +27,10 @@ class estateProperty(models.Model):
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer(compute="_compute_total_area")
+    _sql_constraints = [
+        ("check_expected_price","CHECK(expected_price >= 0)","Expected price must not be negative"),
+        ("check_selling_price","CHECK(selling_price >= 0)","Sale price must not be negative") # Should not be necessary, as offers are already constrained, but it's safer to make sure.
+    ]
     
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -48,7 +52,7 @@ class estateProperty(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = None
-            self.garden_orientation= None
+            self.garden_orientation = None
 
     def action_property_cancel(self):
         for record in self:
@@ -65,3 +69,9 @@ class estateProperty(models.Model):
             else:
                 raise exceptions.UserError("Redundant stage change, not permitter")
         return True
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if not tools.float_utils.float_is_zero(record.selling_price,precision_digits=10) and tools.float_utils.float_compare(record.selling_price, record.expected_price*0.9,precision_digits=10) == -1:
+                raise exceptions.UserError("The selling price must be at least 90% of the expected price. Consult your supervisor.")

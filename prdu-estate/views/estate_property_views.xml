@@ -32,7 +32,7 @@
                 <field name="price"/>
                 <field name="partner_id"/>
                 <button name="action_offer_accept" type="object" string="Accept" icon="fa-check"/>
-                <button name="action_offer_refuse" type="object" string="Refuse" icon="fa-cross"/>
+                <button name="action_offer_refuse" type="object" string="Refuse" icon="fa-close"/>
                 <field name="status"/>
             </list>
         </field>
