@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class Property(models.Model):
@@ -33,3 +33,24 @@ class Property(models.Model):
     buyer_id = fields.Many2one('res.partner', copy=False)
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
+    total_area = fields.Integer(compute="_compute_area")
+    best_price = fields.Float(compute="_compute_best_price")
+
+    @api.depends("garden_area", "living_area")
+    def _compute_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_ids")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'), default=None)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
