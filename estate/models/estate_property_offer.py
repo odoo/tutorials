@@ -1,6 +1,7 @@
 from odoo import fields, models, api, exceptions
 from datetime import date, timedelta
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate property offer"
@@ -52,4 +53,3 @@ class EstatePropertyOffer(models.Model):
                 raise exceptions.UserError("Cannot refuse an offer that was already accepted.")
             record.status = "refused"
         return True
-
