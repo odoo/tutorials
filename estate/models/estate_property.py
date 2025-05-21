@@ -1,5 +1,7 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, tools
 from dateutil.relativedelta import relativedelta
+
+from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
@@ -47,6 +49,22 @@ class EstateProperty(models.Model):
     # Computed Fields
     total_area =fields.Integer('Property Total Area', compute='_calculate_total_area')
     best_price = fields.Float('Property Best Offer', digits=(16, 2), readonly=True, copy=False, compute='_get_best_price')
+
+    # DB Constraints
+    _sql_constraints = [
+        ("check_expected_price_is_positive", "CHECK(expected_price > 0)", "The expected price must be positive."),
+        ("check_selling_price_is_positive", "CHECK(selling_price >= 0)", "The selling price must be positive."),
+    ]
+
+    # Python Constraints
+    @api.constrains('selling_price')
+    def _check_selling_price_not_lower_90p_expected_price(self):
+        for property in self:
+            if property.selling_price==0:
+                continue
+            comparing_result = tools.float_compare(property.selling_price, 0.9 * property.expected_price, precision_digits=6)
+            if comparing_result < 0:
+                raise ValidationError("The selling price can't be less than 90% of the expected price.")
 
     @api.depends('offer_ids')
     def _get_best_price(self):
@@ -122,17 +140,20 @@ class EstateProperty(models.Model):
 
     def _notify_offer_accepted(self, accepted_offer):
         if self.state == 'sold' or self.state == 'cancelled':
-            return self._make_effect(f"Warning: The property is already {self.state}.")
+            return self._make_effect(f"The property is already {self.state}.")
 
+        self.state = 'offer_accepted'
+        self.selling_price = accepted_offer.price
         for offer in self.offer_ids:
             if offer.status == 'accepted':
                 offer.status = 'refused'
-
         accepted_offer.status = 'accepted'
-        self.state = 'offer_accepted'
+        return None
 
     def _notify_offer_refused(self, refused_offer):
         refused_offer.status = 'refused'
         if self.state == 'sold' or self.state == 'cancelled':
             return self._make_effect(f"Warning: The property is already {self.state}.")
         self.state = 'offer_received'
+        self.selling_price = 0
+        return None
