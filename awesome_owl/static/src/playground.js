@@ -2,10 +2,11 @@
 
 import { Component, markup, useState } from "@odoo/owl";
 import { Counter } from "@awesome_owl/counter/counter";
+import { TodoList } from "@awesome_owl/todo/todo_list";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
-    static components = { Counter };
+    static components = { Counter, TodoList };
 
     setup() {
         this.extraContent1 = "Extra content 1";
@@ -13,6 +14,7 @@ export class Playground extends Component {
 
         this.state = useState({
             sum: 0,
+            todos: [],
         });
     }
 

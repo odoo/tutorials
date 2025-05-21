@@ -11,6 +11,10 @@
         <div class="mt-2 text-center fs-2">
             <t t-esc="state.sum"/>
         </div>
+
+        <div class="mt-2">
+            <TodoList items="state.todos"/>
+        </div>
     </t>
 
 </templates>
