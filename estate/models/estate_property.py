@@ -21,7 +21,8 @@ class EstateProperty(models.Model):
         selection=[('north', 'North'), ('east', 'East'), ('west', 'West'), ('south', 'South')],
         help="Orientation is used to tell which way the garden is, relative to the house"
     )
-    total_area = fields.Integer("Total Area", readonly=True, compute="_compute_total_area")
+    total_area = fields.Integer(compute="_compute_total_area")
+    best_price = fields.Float("Best Offer", compute="_compute_best_price")
 
     # Reserved Fields
     active = fields.Boolean()
@@ -43,3 +44,8 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
+    @api.depends("offer_ids.price") # Still computed even without offers
+    def _compute_best_price(self):
+        for record in self:
+            prices = record.mapped("offer_ids.price")
+            record.best_price = max(prices, default=0)
