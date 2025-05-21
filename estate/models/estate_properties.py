@@ -1,7 +1,8 @@
 
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class Properties(models.Model):
@@ -45,6 +46,11 @@ class Properties(models.Model):
     total_area = fields.Float("Total Area", compute="_compute_area")
     best_price = fields.Float("Best Price", compute="_find_best_price")
 
+    _sql_constraints = [
+        ('positive_expecting_price', "CHECK(expected_price > 0)", "Property should have a strictly positive expected price !"),
+        ("positive_sell_price", "CHECK(selling_price > 0)", "Property should have a strictly positive selling price !"),
+        ]
+
     @api.depends("garden_area", "living_area")
     def _compute_area(self):
         for record in self:
@@ -79,3 +85,9 @@ class Properties(models.Model):
             else:
                 raise UserError("Property is already sold")
         return True
+
+    @api.constrains("selling_price")
+    def _check_minimum_sell_price(self):
+        for a_property in self:
+            if float_compare(a_property.selling_price, a_property.expected_price * 0.9, 2) == -1:
+                raise ValidationError("The seling prce can not be lower than 90% of the expected price")
