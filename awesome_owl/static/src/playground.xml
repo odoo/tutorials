@@ -3,9 +3,19 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3 d-flex gap-3">
-            <Counter title="'Title'" extraContent="extraContent1" onIncrement.bind="incrementSum"/>
-            <Counter extraContent="extraContent2" onIncrement.bind="incrementSum"/>
-            <Counter onIncrement.bind="incrementSum"/>
+            <Counter title="'Title'" onIncrement.bind="incrementSum">
+                <div class="text-center my-2">
+                    <strong>EXTRA content strong</strong>
+                </div>
+            </Counter>
+            <Counter onIncrement.bind="incrementSum">
+                <div class="text-center my-2">
+                    <i class="fa fa-cog fa-spin" aria-hidden="true" />
+                </div>
+            </Counter>
+            <Counter onIncrement.bind="incrementSum">
+                <div>HELLO WORLD</div>
+            </Counter>
         </div>
 
         <div class="mt-2 text-center fs-2">

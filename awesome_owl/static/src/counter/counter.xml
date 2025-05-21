@@ -3,21 +3,23 @@
 
     <t t-name="awesome_owl.counter">
         <div class="card" style="width: 200px;">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h5 t-esc="props.title || 'Counter'"/>
+                <button class="btn fa" t-att-class="state.show ? 'fa-caret-up': 'fa-caret-down'" type="button" t-on-click="toggleShow" title="'Toggle Card'"/>
             </div>
-            <div class="card-body">
-                <div>
-                    <button class="btn btn-primary w-100" t-on-click="increment">
+            <t t-if="state.show">
+                <div class="card-body">
+                    <div>
+                        <button class="btn btn-primary w-100" t-on-click="increment">
                         Increment ++
-                    </button>
+                        </button>
+                    </div>
+                    <t t-slot="default"/>
                 </div>
-
-                <t t-if="props.extraContent" t-out="props.extraContent"/>
-            </div>
-            <div class="card-footer">
-                <div class="text-center fs-3" t-esc="state.count"/>
-            </div>
+                <div class="card-footer">
+                    <div class="text-center fs-3" t-esc="state.count"/>
+                </div>
+            </t>
         </div>
     </t>
 
