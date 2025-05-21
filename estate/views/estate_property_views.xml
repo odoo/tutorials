@@ -58,10 +58,12 @@
                     <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
+                            <field name="best_price"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                         </group>
@@ -78,7 +80,7 @@
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                                 <field name="state"/>
-                                <field name="property_type_id"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">

@@ -38,10 +38,17 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                    <group>
                     <field name="status"/>
                     <field name="partner_id"/>
                     <field name="property_id"/>
                     <field name="price"/>
+                    <field name="date_deadline"/>
+                    <field name="create_date"/>
+                    </group>
+                    <group>
+                        <field name="validity"/>
+                    </group>
                 </sheet>
             </form>
         </field>
