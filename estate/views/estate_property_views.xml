@@ -40,12 +40,15 @@
         <field name="arch" type="xml">
             <form string="estate_property_form">
                 <sheet>
-                    <div>
                     <group>
-                        <field name="name"/>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
+                        </group>
+                        <group>
+                            <field name="best_price"/>
+                        </group>
                     </group>
-                    </div>
                     <group>
                         <group>
                             <field name="address"/>
@@ -63,11 +66,18 @@
                             <group>
                                 <field name="description"></field>
                                 <field name="bedrooms"></field>
+                                <field name="living_area"></field>
+                                <field name="facades"></field>
+
                                 <field name="garage"></field>
                                 <field name="garden"></field>
                                 <field name="garden_area"></field>
                                 <field name="garden_orientation"></field>
+                                <field name="total_area"></field>
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
                         </page>
                         <page string="Other info">
                             <group>

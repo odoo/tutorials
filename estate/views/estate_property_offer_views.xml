@@ -5,9 +5,10 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Channel">
-                <field name="price" string="Offered Amount" />
-                <field name="partner_id" string="Buyer" />
-                <field name="status" string="State" />
+                <field name="partner_id" string="Partner" width='15'/>
+                <field name="price" string="Amount" width="15"/>
+                <field name="validity_days" string="Validity (days)" width="15"/>
+                <field name="deadline" string="Deadline" width="20"/>
             </list>
         </field>
     </record>
@@ -20,7 +21,11 @@
                 <sheet>
                     <div>
                     <group>
-                        <field name="name"/>
+<!--                        <field name="name"/>-->
+                        <field name="partner_id"/>
+                        <field name="price"/>
+                        <field name="validity_days"/>
+                        <field name="deadline"/>
                     </group>
                     </div>
                 </sheet>
