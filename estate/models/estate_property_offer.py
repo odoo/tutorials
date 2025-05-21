@@ -6,6 +6,7 @@ from datetime import date, timedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate property offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(copy=False, selection=[('Accepted', 'Accepted'), ('Refused', 'Refused')])
@@ -15,6 +16,8 @@ class EstatePropertyOffer(models.Model):
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+
+    property_type_id = fields.Many2one(related="property_id.type_id", store=True)
 
     @api.depends('validity')
     def _compute_date_deadline(self):
