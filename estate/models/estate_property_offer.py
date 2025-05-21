@@ -42,3 +42,7 @@ class EstatePropertyOffer(models.Model):
     def action_refuse_offer(self):
         for record in self:
             record.status = "refused"
+
+    _sql_constraints = [
+        ('positive_offer_price', 'CHECK(price >= 0)', 'Offer price should be > 0'),
+    ]

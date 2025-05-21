@@ -2,7 +2,8 @@ import random
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -109,6 +110,12 @@ class EstateProperty(models.Model):
                 record.state = "new" if not record.property_offer_ids else "offer received"
                 record.partner_id = False
 
+    # Constraining on state instead of selling price because selling price is not a writable field
+    @api.constrains("state", "expected_price")
+    def _onchange_price(self):
+        if not float_is_zero(self.selling_price, 10) and self.selling_price < 0.9 * self.expected_price:
+            raise ValidationError("Selling price can't be lower then 0.9 * expected price")
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -131,3 +138,8 @@ class EstateProperty(models.Model):
                 raise UserError("This listing is already cancelled and can't be sold")
             record.state = "sold"
         return True
+
+    _sql_constraints = [
+        ('unique_name', 'UNIQUE(name)', 'Property name should be unique'),
+        ('positive_expected_price', 'CHECK(expected_price >= 0)', 'Expected price should be > 0'),
+    ]
