@@ -1,11 +1,16 @@
 from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positve'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive')
+    ]
 
     name = fields.Char('Name', required=True)
     description = fields.Char('Description')
@@ -41,7 +46,8 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
-    @api.depends('living_area', 'garden_area')
+
+    @api.depends('living_area','garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -57,12 +63,20 @@ class EstateProperty(models.Model):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north' if self.garden else None
 
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+
     def action_set_sold(self):
         for record in self:
             if (record.state == 'sold'):
                 raise UserError('Property Already Sold')
             if record.state != 'canceled':
-                record.active = False
                 record.state = 'sold'
             else:
                 raise UserError("Cannot sell a canceled property")
@@ -74,6 +88,5 @@ class EstateProperty(models.Model):
                 raise UserError('Cannot cancel a sold property')
             if (record.state == 'canceled'):
                 raise UserError("Property Already canceled")
-            record.active = False
             record.state = 'canceled'
         return True
