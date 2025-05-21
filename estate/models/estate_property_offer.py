@@ -1,20 +1,21 @@
 from odoo import api, fields, models, exceptions, tools
 from dateutil.relativedelta import relativedelta
 
+
 class property_offer(models.Model):
     _name = "estate.property.offer"
     _description = "Model to modelize Offer for Properties"
-    _order= "price DESC"
+    _order = "price DESC"
 
     price = fields.Float()
-    status= fields.Selection(
+    status = fields.Selection(
         string='Status',
-        selection=[('accepted','Accepted'), ('refused','Refused')],
+        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         help="The Status of the offer"
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True, ondelete='cascade')
-    validity =  fields.Integer(default=7, string="Validity (days)")
+    validity = fields.Integer(default=7, string="Validity (days)")
     date_deadline = fields.Datetime(compute="_compute_deadline", inverse="_inverse_deadline", string="Deadline")
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
@@ -33,9 +34,9 @@ class property_offer(models.Model):
 
     def accept_offer(self):
         for record in self:
-            if(record.property_id.has_accepted_offer()):
+            if (record.property_id.has_accepted_offer()):
                 raise exceptions.UserError("Only one Offer can be accepted")
-            if(tools.float_utils.float_compare( record.property_id.expected_price *90/100 , record.price, 2) > 0):
+            if (tools.float_utils.float_compare(record.property_id.expected_price *90/100, record.price, 2) > 0):
                 raise exceptions.ValidationError("You can't accept an offer lower than 90% of the selling price.")
             record.status = "accepted"
             record.property_id.selling_price = record.price

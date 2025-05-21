@@ -1,10 +1,11 @@
 from odoo import api, fields, models, exceptions, tools
 from dateutil.relativedelta import relativedelta
 
+
 class Estate_property(models.Model):
     _name = "estate.property"
     _description = "Model to modelize Real Estate objects"
-    _order= "id desc"
+    _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
     description  = fields.Text()
@@ -20,13 +21,13 @@ class Estate_property(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string='Orientation',
-        selection=[('north','North'), ('south','South'),('east','East'),('west','West')],
+        selection=[('north', 'North'), ('south', 'South'), ('east','East'), ('west', 'West')],
         help="Orientation is meant to describe the garden."
     )
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
         string='Status',
-        selection=[('new','New'), ('offer_received','Offer Received'),('offer_accepted','Offer Accepted'),('sold','Sold'),('cancelled', 'Cancelled')],
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
         help="State is meant to describe the evolution.",
         default='new',
         copy=False
@@ -56,40 +57,39 @@ class Estate_property(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        print("entered")
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = "north" if self.garden else None
 
     def sell_property(self):
         for record in self:
-            if(record.state == "cancelled"):
+            if (record.state == "cancelled"):
                 raise exceptions.UserError("A Cancelled Property can't be sold")
             record.state = "sold"
         return True
 
     def cancel_property(self):
         for record in self:
-            if(record.state == "sold"):
+            if (record.state == "sold"):
                 raise exceptions.UserError("A Sold Property can't be cancelled")
             record.state = "cancelled"
         return True
 
     def has_accepted_offer(self):
         for record in self:
-            if(list(filter(lambda offer: offer.status == "accepted", record.property_offer_ids))):
+            if (list(filter(lambda offer: offer.status == "accepted", record.property_offer_ids))):
                 return True
         return False
 
     @api.onchange("expected_price")
     def _onchange_expected_price(self):
-        if(self.has_accepted_offer()):
+        if (self.has_accepted_offer()):
             compute_cost = self.expected_price *90/100
             print(compute_cost)
-            if(tools.float_utils.float_compare(compute_cost, self.selling_price, 2) > 0):
+            if (tools.float_utils.float_compare(compute_cost, self.selling_price, 2) > 0):
                 raise exceptions.ValidationError("The selling price must be equal or higher than 90% of the selling price.")
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_user_inactive(self):
         for record in self:
-            if(not record.state in ['new','cancelled']):
+            if (not record.state in ['new', 'cancelled']):
                 raise exceptions.UserError("Only new or cancelled Property can be deleted.")

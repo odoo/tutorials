@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "estate",
 
@@ -8,7 +7,7 @@
 
     'author': "Odoo S.A.",
 
-    "license" : "LGPL-3",
+    "license": "LGPL-3",
 
     'data': [
         'security/ir.model.access.csv',

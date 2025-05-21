@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class EstateUser(models.Model):
     _inherit = "res.users"
 

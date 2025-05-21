@@ -1,10 +1,11 @@
-from odoo import fields, models, exceptions, Command
+from odoo import models, exceptions, Command
+
 
 class EstateAccount(models.Model):
     _inherit = "estate.property"
 
     def sell_property(self):
-        if  not self.buyer_id:
+        if not self.buyer_id:
             raise exceptions.UserError("Can't sell a property without a buyer.")
 
         self.env["account.move"].create({
@@ -14,7 +15,7 @@ class EstateAccount(models.Model):
             Command.create({
                 "name": "Price Percentage",
                 "quantity": 1,
-                "price_unit": self.selling_price * 6 /100,
+                "price_unit": self.selling_price * 6 / 100,
             }),
             Command.create({
                 "name": "Administrative Fees",

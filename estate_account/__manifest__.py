@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "estate_account",
 
@@ -10,7 +9,7 @@
 
     'depends': ['estate', 'account'],
 
-    "license" : "LGPL-3",
+    "license": "LGPL-3",
 
     'data': [
     ],
