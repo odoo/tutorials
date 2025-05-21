@@ -7,6 +7,7 @@
         <field name="view_mode">form</field>
     </record>
 
+    <!-- FORM VIEW -->
 
     <record id="estate_property_tag_form_view" model="ir.ui.view">
         <field name="model">estate.property.tag</field>

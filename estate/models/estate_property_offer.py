@@ -1,10 +1,13 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "An Offer on a property"
+    _order = "price desc"
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -17,9 +20,12 @@ class EstatePropertyOffer(models.Model):
 
     # Relations
     property_id = fields.Many2one(comodel_name="estate.property", string="Property")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
+
     partner_id = fields.Many2one("res.partner", string="Partner", copy=False)
 
-    # Computed Fields
+    # -----------  BUSINESS LOGIC -------------- #
+
     @api.depends('validity')
     def _compute_deadline(self):
         for record in self:
@@ -35,13 +41,35 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.date_deadline = fields.Date.today(self) + relativedelta(days=10)
 
+    # -----------  MODELS ACTIONS  -------------- #
+
     def action_accept_offer(self):
-        for record in self:
-            record.status = "accepted"
+        """ Accepts an offer on a property setting the states of offer and parent property """
+
+        if self.property_id.state in ["offer_accepted", "sold"]:
+            raise UserError("Can't accept 2 offers")
+
+        self.write({
+            "status": "accepted",
+        })
+        self.property_id.write({
+            "selling_price": self.price,
+            "state": "offer_accepted",
+            "partner_id": self.partner_id,
+        })
 
     def action_refuse_offer(self):
-        for record in self:
-            record.status = "refused"
+        """ Refuses an offer on a property setting the states of offer and parent property """
+
+        self.write({
+            "status": "refused",
+        })
+        self.property_id.write({
+            "selling_price": 0.0,
+            "partner_id": False,
+        })
+
+    # -----------  MODEL CONSTRAINTS  -------------- #
 
     _sql_constraints = [
         ('positive_offer_price', 'CHECK(price >= 0)', 'Offer price should be > 0'),

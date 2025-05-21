@@ -14,6 +14,12 @@
         parent="estate_menu_properties_root"
     />
 
+    <menuitem
+        id="estate_menu_offers"
+        action="estate_property_offers_action"
+        parent="estate_menu_properties_root"
+    />
+
     <!-- SETTINGS MEMU -->
 
     <menuitem
