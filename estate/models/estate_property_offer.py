@@ -1,7 +1,4 @@
 from datetime import timedelta, datetime
-
-from dateutil.utils import today
-
 from odoo import fields, models, api
 
 
@@ -14,10 +11,10 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         string='Offer State',
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
-        default='accepted',
+        default='refused',
     )
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
-    property_id = fields.Many2one('estate.property', string='Property', required=True)
+    property_id = fields.Many2one('estate.property', string='Property', required=True, ondelete='cascade')
 
     # Chapter 8
     validity_days = fields.Integer('Validity (Days)')
@@ -33,10 +30,22 @@ class EstatePropertyOffer(models.Model):
             offer.deadline = _create_date + timedelta(days=offer.validity_days)
 
     def _inverse_offer_deadline(self):
-        print("inverse_offer_deadline got called")
         for offer in self:
             if not offer.create_date:
                 _create_date = fields.Date.today()
             else:
                 _create_date = offer.create_date.date()
             offer.validity_days = (offer.deadline - _create_date).days
+
+    # Actions
+    def action_offer_accept(self):
+        for offer in self:
+            if not offer.status == 'accepted':
+                offer.property_id._notify_offer_accepted(offer)
+        return True
+
+    def action_offer_refuse(self):
+        for offer in self:
+            if not offer.status == 'refused':
+                offer.property_id._notify_offer_refused(offer)
+        return True

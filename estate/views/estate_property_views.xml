@@ -13,7 +13,6 @@
                 <field name="expected_price" string="Expected Price" />
                 <field name="selling_price" string="Selling Price" />
                 <field name="availability_date" string="Available From" />
-
             </list>
         </field>
     </record>
@@ -39,6 +38,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="estate_property_form">
+                <header>
+                    <button name="action_property_sold" type="object" string="SOLD"/>
+                    <button name="action_property_cancel" type="object" string="CANCEL"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -51,29 +54,30 @@
                     </group>
                     <group>
                         <group>
-                            <field name="address"/>
+                            <field name="state" string="Status"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="availability_date"/>
                         </group>
                         <group>
+                            <field name="address"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
-                            <field name="furnished"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description"></field>
-                                <field name="bedrooms"></field>
-                                <field name="living_area"></field>
-                                <field name="facades"></field>
-
-                                <field name="garage"></field>
-                                <field name="garden"></field>
-                                <field name="garden_area"></field>
-                                <field name="garden_orientation"></field>
-                                <field name="total_area"></field>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="furnished"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">

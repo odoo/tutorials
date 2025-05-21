@@ -46,10 +46,10 @@ class EstateProperty(models.Model):
 
     # Computed Fields
     total_area =fields.Integer('Property Total Area', compute='_calculate_total_area')
-    best_price = fields.Float('Property Best Offer', digits=(16, 2), readonly=True, copy=False, compute='get_best_price')
+    best_price = fields.Float('Property Best Offer', digits=(16, 2), readonly=True, copy=False, compute='_get_best_price')
 
     @api.depends('offer_ids')
-    def get_best_price(self):
+    def _get_best_price(self):
         _best_offer = 0
         for property in self:
             for offer in property.offer_ids:
@@ -69,3 +69,70 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    # Actions
+    def action_property_sold(self):
+        for property in self:
+            if property.state == 'cancelled':
+                return {
+                    'effect': {
+                        'fadeout': 'slow',
+                        'message': "It's not possible to sell a cancelled property ;)",
+                        'type': 'rainbow_man',
+                    }
+                }
+            property.state = 'sold'
+            return True
+
+    def action_property_cancel(self):
+        for property in self:
+            if property.state == 'sold':
+                return {
+                    'effect': {
+                        'fadeout': 'slow',
+                        'message': "It's not possible to cancel a sold property ;)",
+                        'type': 'rainbow_man',
+                    }
+                }
+            property.state = 'cancelled'
+            return True
+
+    # Offers Interactions
+    # Update Property Status based on offer creations/removals
+    @api.onchange('offer_ids')
+    def _update_property_state(self):
+        if self.state in ('sold', 'cancelled'):
+            return
+        if self.state == 'new' and self.offer_ids:
+            self.state = 'offer_received'
+        if not self.offer_ids:
+            self.state = 'new'
+
+    def _make_effect(self, message):
+        return {
+            'effect': {
+                'fadeout': 'fast',
+                'message': message,
+                'type': 'rainbow_man',
+            }
+        }
+
+    def _notify_offer_received(self, received_offer):
+        self.state = 'offer_received'
+
+    def _notify_offer_accepted(self, accepted_offer):
+        if self.state == 'sold' or self.state == 'cancelled':
+            return self._make_effect(f"Warning: The property is already {self.state}.")
+
+        for offer in self.offer_ids:
+            if offer.status == 'accepted':
+                offer.status = 'refused'
+
+        accepted_offer.status = 'accepted'
+        self.state = 'offer_accepted'
+
+    def _notify_offer_refused(self, refused_offer):
+        refused_offer.status = 'refused'
+        if self.state == 'sold' or self.state == 'cancelled':
+            return self._make_effect(f"Warning: The property is already {self.state}.")
+        self.state = 'offer_received'
