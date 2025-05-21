@@ -17,5 +17,12 @@
         'views/estate_property_tags_views.xml',
         'views/estate_user.xml',
         'views/estate_menus.xml',
+        'data/master_data.xml',
     ],
+
+    'demo': [
+        'demo/demo_data.xml'
+    ],
+
+    "application": True,
 }
