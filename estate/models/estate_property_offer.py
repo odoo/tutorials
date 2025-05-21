@@ -56,4 +56,4 @@ class property_offer(models.Model):
             if vals['price'] < property_offering.best_offer_price:
                 raise exceptions.ValidationError("You can't create an offer with a lower price than already existing offer.")
             property_offering.state = "offer_received"
-        return super().create(vals)
+        return super().create(vals_list)
