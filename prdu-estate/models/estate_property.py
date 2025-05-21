@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 class estateProperty(models.Model):
     _name = "estate.property"
     _description = "Unreal estate moves a lot more than real one"
+    _order = "id desc"
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -28,15 +29,15 @@ class estateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer(compute="_compute_total_area")
     _sql_constraints = [
-        ("check_expected_price","CHECK(expected_price >= 0)","Expected price must not be negative"),
-        ("check_selling_price","CHECK(selling_price >= 0)","Sale price must not be negative") # Should not be necessary, as offers are already constrained, but it's safer to make sure.
+        ("check_expected_price", "CHECK(expected_price >= 0)", "Expected price must not be negative"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "Sale price must not be negative") # Should not be necessary, as offers are already constrained, but it's safer to make sure.
     ]
-    
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-    
+
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
@@ -44,7 +45,7 @@ class estateProperty(models.Model):
             for i in range(len(record.offer_ids)):
                 temp_best_price = max(record.offer_ids[i].price, temp_best_price)
             record.best_price = temp_best_price
-    
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -73,5 +74,5 @@ class estateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if not tools.float_utils.float_is_zero(record.selling_price,precision_digits=10) and tools.float_utils.float_compare(record.selling_price, record.expected_price*0.9,precision_digits=10) == -1:
+            if not tools.float_utils.float_is_zero(record.selling_price, precision_digits=10) and tools.float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=10) == -1:
                 raise exceptions.UserError("The selling price must be at least 90% of the expected price. Consult your supervisor.")
