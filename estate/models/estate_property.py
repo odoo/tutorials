@@ -1,4 +1,5 @@
 from odoo import fields, models, api, exceptions
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -77,3 +78,15 @@ class EstateProperty(models.Model):
             record.state = "canceled";
         return True
 
+    @api.constrains('selling_price')
+    def check_price(self):
+        flag_less_than = -1
+        precision_digits = 2
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits):
+                continue
+
+            minimum_price = record.expected_price * 0.9
+            is_below_minimum = float_compare(record.selling_price, minimum_price, precision_digits) == flag_less_than
+            if is_below_minimum:
+                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price. You must reduce the expected price to accept this offer.")
