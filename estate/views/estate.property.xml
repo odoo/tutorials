@@ -23,7 +23,6 @@
             <field name="arch" type="xml">
                 <search string="Esate Property">
                     <field name="name" string="Title"/>
-                    <field name="tag_ids" widget="many2many_tags"/>
                     <field name="postcode"/>
                     <field name="expected_price"/>
                     <field name="bedrooms"/>
