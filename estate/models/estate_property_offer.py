@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from datetime import date, timedelta
 
 
@@ -29,3 +30,21 @@ class EstatePropertyOffer(models.Model):
                 offer.validity = max(0, (offer.date_deadline - offer.create_date.date()).days)
             else:
                 offer.validity = max(0, (offer.date_deadline - date.today()).days)
+
+    def accept_offer(self):
+        for offer in self:
+            if offer.status == "Accepted":
+                return True
+            if len(list(filter(lambda order: order.status == "Accepted", offer.property_id.offer_ids))) > 0:
+                raise UserError("You can't accept more than One offer by property")
+            offer.status = "Accepted"
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
+        return True
+
+    def refuse_offer(self):
+        for offer in self:
+            offer.status = "Refused"
+            offer.property_id.selling_price = 0
+            offer.property_id.buyer_id = None
+        return True
