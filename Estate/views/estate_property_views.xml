@@ -31,6 +31,10 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string = "estate form">
+                <header>
+                    <button name="sold" type="object" string="Sold"/>
+                    <button name="cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -41,10 +45,12 @@
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="property_type_id"/>
+                            <field name="state" readonly="state in ['cancelled', 'sold']"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_offer"/>
                         </group>
                     </group>
                     <notebook>
@@ -58,6 +64,8 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
+
                             </group>
                         </page>
                         <page string="Other info">
@@ -103,9 +111,13 @@
             <list string = "Offers">
                 <field name="name" string="Name"/>
                 <field name="price"/>
-                <field name="status" string="Expected Price"/>
+                <field name="status"/>
                 <field name="partner_id"/>
                 <field name="property_id"/>
+                <field name="validity"/>
+                <field name="deadline"/>
+                <button name="action_accept" string="Confirm" type="object" icon="fa-check"/>
+                <button name="action_refuse" string="Decline" type="object" icon="fa-times"/>
             </list>
 
         </field>
