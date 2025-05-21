@@ -6,7 +6,8 @@
         <field name="arch" type="xml">
             <list string="property list">
                 <field name="name" />
-                <field name="date_availability" width="400" />
+                <field name="property_type_id" />
+                <field name="date_availability" width="200vw" />
             </list>
         </field>
     </record>
@@ -19,7 +20,10 @@
                 <sheet>
                     <group>
                         <field name="name" style="font-size:50px;" />
+                        <field name="tag_ids" widget="many2many_tags" />
+                        <separator />
                         <group>
+                            <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -39,6 +43,15 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="seller_id" />
+                                <field name="buyer_id" />
                             </group>
                         </page>
                     </notebook>
@@ -68,7 +81,7 @@
     </record>
 
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">properties</field>
+        <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
