@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Website Menu -->
+    <record id="menu_website_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">50</field>
+    </record>
+
+    <!-- Property List Template -->
+    <template id="property_list" name="Properties">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="row mb-5">
+                    <div class="col-lg-6 mx-auto text-center">
+                        <h1 class="display-5 fw-bold mb-3">Find Your Dream Home</h1>
+                        <p class="lead text-muted">Browse our collection of available properties</p>
+                    </div>
+                </div>
+                
+                <div class="row g-4">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <a t-attf-href="/properties/#{property.id}" class="text-decoration-none text-reset h-100">
+                                <div class="card h-100 border-0 shadow-sm hover-shadow transition-300 overflow-hidden">
+                                    <!-- Property Image with Status Badge -->
+                                    <div class="position-relative">
+                                        <t t-if="property.image">
+                                            <img t-att-src="image_data_uri(property.image)" class="card-img-top" alt="Property Image" style="height: 220px; object-fit: cover;"/>
+                                        </t>
+                                        <t t-else="">
+                                            <img src="/web/static/img/placeholder.png" class="card-img-top" alt="No Image" style="height: 220px; object-fit: cover;"/>
+                                        </t>
+                                        
+                                        <!-- Status Badge -->
+                                        <div class="position-absolute top-0 start-0 m-3">
+                                            <span t-if="property.state == 'new'" class="badge bg-success px-3 py-2 rounded-pill">New</span>
+                                            <span t-if="property.state == 'offer_received'" class="badge bg-warning px-3 py-2 rounded-pill">Offer Received</span>
+                                        </div>
+                                        
+                                        <!-- Price Badge -->
+                                        <div class="position-absolute bottom-0 end-0 m-3">
+                                            <span class="badge bg-primary px-3 py-2 rounded-pill fs-6 fw-bold">
+                                                <span t-field="property.expected_price" t-options='{"widget": "monetary", "display_currency": property.currency_id}'/>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="card-body p-4">
+                                        <h5 class="card-title fw-bold mb-3" t-field="property.name"/>
+                                        
+                                        <!-- Key Features with Icons -->
+                                        <div class="d-flex text-muted mb-3 flex-wrap">
+                                            <div class="me-4 mb-2">
+                                                <span class="feature-icon bg-light-blue">
+                                                    <i class="fa fa-bed text-primary"></i>
+                                                </span>
+                                                <span><t t-esc="property.bedrooms"/> beds</span>
+                                            </div>
+                                            <div class="me-4 mb-2">
+                                                <span class="feature-icon bg-light-green">
+                                                    <i class="fa fa-expand text-success"></i>
+                                                </span>
+                                                <span><t t-esc="property.living_area"/> m²</span>
+                                            </div>
+                                            <t t-if="property.garage">
+                                                <div class="me-4 mb-2">
+                                                    <span class="feature-icon bg-light-purple">
+                                                        <i class="fa fa-car text-danger"></i>
+                                                    </span>
+                                                    <span>Garage</span>
+                                                </div>
+                                            </t>
+                                        </div>
+                                        
+                                        <!-- Location -->
+                                        <div class="text-muted">
+                                            <i class="fa fa-map-marker me-2 text-secondary"></i>
+                                            <span t-field="property.city"/>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- View Details Button -->
+                                    <div class="card-footer bg-white border-0 pt-0 pb-3 px-4">
+                                        <div class="d-grid">
+                                            <div class="btn btn-sm btn-outline-primary rounded-pill">View Details</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+                
+                <!-- Pager -->
+                <div class="row justify-content-center mt-5">
+                    <t t-call="website.pager"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Property Detail Template -->
+    <template id="property_detail" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/properties" class="text-decoration-none">Properties</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            <span t-field="property.name"/>
+                        </li>
+                    </ol>
+                </nav>
+
+                <div class="row g-5">
+                    <!-- Property Images -->
+                    <div class="col-lg-7">
+                        <div class="card border-0 shadow overflow-hidden">
+                            <div class="position-relative">
+                                <t t-if="property.image">
+                                    <img t-att-src="image_data_uri(property.image)" 
+                                         class="img-fluid rounded-0" alt="Property Image"/>
+                                </t>
+                                <t t-else="">
+                                    <img src="/web/static/img/placeholder.png" 
+                                         class="img-fluid rounded-0" alt="No Image"/>
+                                </t>
+                                
+                                <!-- Status Badge -->
+                                <div class="position-absolute top-0 start-0 m-4">
+                                    <span t-if="property.state == 'new'" class="badge bg-success px-3 py-2 fs-6 rounded-pill">New Listing</span>
+                                    <span t-if="property.state == 'offer_received'" class="badge bg-warning px-3 py-2 fs-6 rounded-pill">Offer Received</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Property Description -->
+                        <div class="card border-0 shadow mt-4 p-4">
+                            <h5 class="text-primary mb-3">About This Property</h5>
+                            <p class="text-muted mb-0" t-field="property.description"/>
+                        </div>
+                    </div>
+
+                    <!-- Property Details -->
+                    <div class="col-lg-5">
+                        <div class="card border-0 shadow p-4 mb-4">
+                            <h1 t-field="property.name" class="fw-bold mb-3"/>
+                            
+                            <!-- Price -->
+                            <div class="d-flex align-items-center mb-4">
+                                <h2 class="text-primary fw-bold mb-0">
+                                    <span t-field="property.expected_price" 
+                                          t-options='{"widget": "monetary", "display_currency": property.currency_id}'/>
+                                </h2>
+                                <div class="ms-auto">
+                                    <span t-if="property.state == 'new'" class="badge bg-success px-3 py-2 rounded-pill">Available</span>
+                                    <span t-if="property.state == 'offer_received'" class="badge bg-warning px-3 py-2 rounded-pill">Offer Pending</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Key features -->
+                            <div class="row mb-4">
+                                <div class="col-6 mb-3">
+                                    <div class="feature-card">
+                                        <div class="feature-icon bg-light-blue">
+                                            <i class="fa fa-bed text-primary"></i>
+                                        </div>
+                                        <div class="feature-text">
+                                            <div class="fw-bold"><t t-esc="property.bedrooms"/></div>
+                                            <div class="text-muted small">Bedrooms</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="feature-card">
+                                        <div class="feature-icon bg-light-green">
+                                            <i class="fa fa-expand text-success"></i>
+                                        </div>
+                                        <div class="feature-text">
+                                            <div class="fw-bold"><t t-esc="property.living_area"/></div>
+                                            <div class="text-muted small">m² Living</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="feature-card">
+                                        <div class="feature-icon bg-light-orange">
+                                            <i class="fa fa-building text-warning"></i>
+                                        </div>
+                                        <div class="feature-text">
+                                            <div class="fw-bold"><t t-esc="property.facades"/></div>
+                                            <div class="text-muted small">Facades</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <div class="feature-card">
+                                        <div class="feature-icon bg-light-purple">
+                                            <i class="fa fa-car text-danger"></i>
+                                        </div>
+                                        <div class="feature-text">
+                                            <div class="fw-bold"><t t-if="property.garage">Yes</t><t t-else="">No</t></div>
+                                            <div class="text-muted small">Garage</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <t t-if="property.garden">
+                                    <div class="col-6 mb-3">
+                                        <div class="feature-card">
+                                            <div class="feature-icon bg-light-green">
+                                                <i class="fa fa-tree text-success"></i>
+                                            </div>
+                                            <div class="feature-text">
+                                                <div class="fw-bold"><t t-esc="property.garden_area"/></div>
+                                                <div class="text-muted small">m² Garden</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                                <div class="col-6 mb-3">
+                                    <div class="feature-card">
+                                        <div class="feature-icon bg-light-blue">
+                                            <i class="fa fa-arrows-alt text-info"></i>
+                                        </div>
+                                        <div class="feature-text">
+                                            <div class="fw-bold"><t t-esc="property.total_area"/></div>
+                                            <div class="text-muted small">m² Total</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Tags -->
+                            <h6 class="text-uppercase text-muted mb-3">Features</h6>
+                            <div class="mb-4">
+                                <t t-foreach="property.tag_ids" t-as="tag">
+                                    <span class="badge bg-light text-dark border me-2 mb-2 px-3 py-2 rounded-pill" t-field="tag.name"/>
+                                </t>
+                            </div>
+                        </div>
+                        
+                        <!-- Location Info -->
+                        <div class="card border-0 shadow p-4">
+                            <h5 class="text-primary mb-3">Location &amp; Details</h5>
+                            
+                            <div class="info-item mb-3">
+                                <div class="info-icon bg-light-blue">
+                                    <i class="fa fa-map-marker text-primary"></i>
+                                </div>
+                                <div class="info-text">
+                                    <span class="fw-bold">Address</span>
+                                    <div class="text-muted">
+                                        <span t-if="property.city" t-field="property.city"/> 
+                                        <span t-if="property.city and property.postcode">, </span>
+                                        <span t-if="property.postcode" t-field="property.postcode"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item mb-3">
+                                <div class="info-icon bg-light-green">
+                                    <i class="fa fa-calendar text-success"></i>
+                                </div>
+                                <div class="info-text">
+                                    <span class="fw-bold">Available From</span>
+                                    <div class="text-muted">
+                                        <span t-field="property.date_availability" t-options='{"widget": "date"}'/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="info-item">
+                                <div class="info-icon bg-light-purple">
+                                    <i class="fa fa-tag text-danger"></i>
+                                </div>
+                                <div class="info-text">
+                                    <span class="fw-bold">Property Type</span>
+                                    <div class="text-muted">
+                                        <span t-field="property.property_type_id"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- CSS for the custom elements -->
+            <style>
+                /* Hover effect for property cards */
+                .hover-shadow:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+                }
+                
+                .transition-300 {
+                    transition: all 0.3s ease;
+                }
+                
+                /* Feature icons */
+                .feature-icon {
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    margin-right: 8px;
+                }
+                
+                /* Feature cards */
+                .feature-card {
+                    display: flex;
+                    align-items: center;
+                    padding: 10px;
+                    border-radius: 8px;
+                    background-color: #f8f9fa;
+                }
+                
+                .feature-text {
+                    flex: 1;
+                }
+                
+                /* Info items */
+                .info-item {
+                    display: flex;
+                    align-items: center;
+                    margin-bottom: 15px;
+                }
+                
+                .info-icon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    margin-right: 15px;
+                }
+                
+                .info-text {
+                    flex: 1;
+                }
+                
+                /* Background colors */
+                .bg-light-blue {
+                    background-color: rgba(13, 110, 253, 0.1);
+                }
+                
+                .bg-light-green {
+                    background-color: rgba(25, 135, 84, 0.1);
+                }
+                
+                .bg-light-orange {
+                    background-color: rgba(255, 193, 7, 0.1);
+                }
+                
+                .bg-light-purple {
+                    background-color: rgba(220, 53, 69, 0.1);
+                }
+            </style>
+        </t>
+    </template>
+</odoo> 
