@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api, exceptions, tools
 
 
 class Property(models.Model):
@@ -36,6 +36,10 @@ class Property(models.Model):
     total_area = fields.Integer(compute="_compute_area")
     best_price = fields.Float(compute="_compute_best_price")
 
+    _sql_constraints = [
+        ('check_expected_price_strictly_positive', 'CHECK (expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price_positive', 'CHECK (selling_price >= 0)', 'The selling price must be positive.')]
+
     @api.depends("garden_area", "living_area")
     def _compute_area(self):
         for record in self:
@@ -66,3 +70,12 @@ class Property(models.Model):
             if record.state == "sold":
                 raise exceptions.UserError("Sold properties cannot be cancelled")
             record.state = "cancelled"
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price_minimum_threshold(self):
+        for record in self:
+            if tools.float_utils.float_is_zero(record.selling_price, precision_rounding=.01):
+                continue
+            if tools.float_utils.float_compare(record.expected_price * .9, record.selling_price, precision_rounding=.01) > 0:
+                raise exceptions.ValidationError('The selling price should be at least 90% of the expected price.'
+                                                 'Lower the expected price if you want to accept the offer.')
