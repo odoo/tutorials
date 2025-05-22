@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -18,9 +18,26 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
-        for offer in self:
-            offer.date_deadline = fields.Date.add(offer.create_date, days=offer.validity)
+        for record in self:
+            record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
 
     def _inverse_date_deadline(self):
-        for offer in self:
-            offer.validity = (offer.date_deadline - offer.create_date).days
+        for record in self:
+            record.validity = (record.date_deadline - record.create_date).days
+
+    def action_offer_accept(self):
+        for record in self:
+            if record.status == 'accepted':
+                raise exceptions.UserError("A offer has already been accepted.")
+            record.status = 'accepted'
+            for id in record.property_id:
+                id.selling_price = record.price
+                id.buyer = record.partner_id
+        return True
+
+    def action_offer_refuse(self):
+        for record in self:
+            if record.status == 'accepted':
+                raise exceptions.UserError("You cannot refuse an accepted offer.")
+            record.status = 'refused'
+        return True

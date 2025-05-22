@@ -10,6 +10,8 @@
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
+                <button name="action_offer_accept" type="object" icon="fa-check" title="accept"/>
+                <button name="action_offer_refuse" type="object" icon="fa-close" title="refuse"/>
                 <field name="status"/>
             </list>
         </field>
