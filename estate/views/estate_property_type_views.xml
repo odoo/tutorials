@@ -13,7 +13,7 @@
             <form string="Types">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="estate.property_offer_action" type="action"
+                        <button name="property_offer_action" type="action"
                             class="oe_stat_button" icon="fa-bartype_action"
                             invisible="offer_count == 0">
                             <field string="Offer(s)" name="offer_count" widget="statinfo" />
