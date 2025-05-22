@@ -45,7 +45,7 @@ class PropertyOffer(models.Model):
                 raise exceptions.UserError("Cannot create an offer with a lower amount than an existing offer")
             prop.state = 'offer_received'
 
-        return super().create(vals)
+        return super().create(vals_list)
 
     # Action methods
     def action_accept(self):

@@ -98,7 +98,7 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Sold properties cannot be canceled")
 
             record.state = 'canceled'
-            return True
+        return True
 
     def set_sold(self):
         for record in self:
@@ -106,4 +106,4 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Canceled properties cannot be sold")
 
             record.state = 'sold'
-            return True
+        return True
