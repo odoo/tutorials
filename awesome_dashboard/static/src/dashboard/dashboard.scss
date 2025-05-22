@@ -1,0 +1,19 @@
+.o_dashboard {
+    background-color: #f0f0f0;
+    padding: 20px;
+
+    .o_dashboard_items {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        gap: 20px;
+
+        .o_dashboard_item {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+    }
+}
