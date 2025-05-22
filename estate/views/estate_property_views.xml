@@ -36,6 +36,7 @@
                         </group>
                         <group>
                             <group>
+                                <field name="agency_id" string="Agency"/>
                                 <field name="property_type_id" string="Property Type" options="{'no_create': true}"/>
                                 <field name="postcode" string="Postcode"/>
                                 <field name="date_availability" string="Available From"/>
