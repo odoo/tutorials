@@ -29,8 +29,8 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <header>
-                    <button name="action_sold" type="object" string="Sold"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'canceled']"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold', 'canceled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,received,accepted,sold"/> 
                 </header>
                 <sheet>
