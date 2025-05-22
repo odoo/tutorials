@@ -1,4 +1,6 @@
-from odoo import fields, models, api, exceptions
+from odoo import api, fields, models
+from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -8,13 +10,18 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         copy=False,
         string='Offer Status',
-        selection= [('accepted', 'Accepted'), ('refused', 'Refused')]
+        selection=[('accepted', 'Accepted'), ('refused', 'Refused')]
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(default=7, string="Validity")
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
     create_date = fields.Date(default=fields.Date.today)
+
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)',
+         'The Price offered for an estate should be positive.'),
+    ]
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -28,7 +35,7 @@ class EstatePropertyOffer(models.Model):
     def action_offer_accept(self):
         for record in self:
             if record.status == 'accepted':
-                raise exceptions.UserError("A offer has already been accepted.")
+                raise UserError("A offer has already been accepted.")
             record.status = 'accepted'
             for id in record.property_id:
                 id.selling_price = record.price
@@ -38,6 +45,6 @@ class EstatePropertyOffer(models.Model):
     def action_offer_refuse(self):
         for record in self:
             if record.status == 'accepted':
-                raise exceptions.UserError("You cannot refuse an accepted offer.")
+                raise UserError("You cannot refuse an accepted offer.")
             record.status = 'refused'
         return True
