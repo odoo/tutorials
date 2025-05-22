@@ -120,6 +120,11 @@ class EstateProperty(models.Model):
 
     # -----------  MODEL CONSTRAINTS  -------------- #
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_valid(self):
+        if any(property.state not in ["new", "cancelled"] for property in self):
+            raise UserError("Can't delete an active property listing!")
+
     # Constraining on state instead of selling price because selling price is not a writable field
     @api.constrains("state", "expected_price")
     def _onchange_price(self):
@@ -130,3 +135,9 @@ class EstateProperty(models.Model):
         ('unique_name', 'UNIQUE(name)', 'Property name should be unique'),
         ('positive_expected_price', 'CHECK(expected_price >= 0)', 'Expected price should be > 0'),
     ]
+
+    # ------------- HELPERS --------------- #
+
+    def set_offer_received(self):
+        if self.state == "new":
+            self.write({"state": "offer_received"})

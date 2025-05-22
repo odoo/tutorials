@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -25,6 +25,18 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner", copy=False)
 
     # -----------  BUSINESS LOGIC -------------- #
+
+    @api.model_create_multi
+    def create(self, vals_list):
+
+        price, property_id = vals_list.get("price"), vals_list.get("property_id")
+
+        if price and property_id:
+            property = self.env["estate.property"].browse(property_id)
+            if self._check_not_lowest_offer(price, property_id):
+                property.set_offer_received()
+
+        return super().create(vals_list)
 
     @api.depends('validity')
     def _compute_deadline(self):
@@ -74,3 +86,22 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ('positive_offer_price', 'CHECK(price >= 0)', 'Offer price should be > 0'),
     ]
+
+    # -----------  HELPERS  -------------- #
+
+    def _check_not_lowest_offer(self, price, property_id):
+        """Raise if price is lower than any existing offer."""
+
+        Offer = self.env["estate.property.offer"]
+
+        # Get the lowest offer for that property
+        lowest_offer = Offer.search(
+            [("property_id", "=", property_id)],
+            order="price asc",
+            limit=1,
+        )
+
+        if lowest_offer and price < lowest_offer.price:
+            raise ValidationError("Can't create an offer lower than an existing offer ")
+
+        return True
