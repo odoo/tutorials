@@ -4,7 +4,10 @@
     'category': 'Tutorials/Estate',
     'summary': "Real estating module",
 
-    'data': ['security/ir.model.access.csv'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+    ],
     'installable': True,
     'depends': ['base'],
     'license': 'AGPL-3'
