@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.playground">
+        <div class="container py-4">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="card p-4">
+                        <h3 class="accent-color mb-4">Dashboard</h3>
+                        <div class="d-flex flex-wrap gap-3">
+                            <Counter onChange.bind="incrementSum" />
+                            <Counter onChange.bind="incrementSum" />
+                            <div class="card p-3">
+                                <div class="accent-color fw-bold">
+                                    Total Sum: <span class="fs-5"><t t-esc="sum.value"/></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <Card title="'Show Card'">
+                        <p>Showing you Hidden Content</p>
+                    </Card>
+                </div>
+                <div class="col-md-6">
+                    <Card title="'Counter Card'">
+                        <Counter />
+                    </Card>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <TodoList />
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

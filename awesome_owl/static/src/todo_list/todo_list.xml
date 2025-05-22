@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="accent-color mb-3">Task List</h4>
+                <div class="input-group mb-3">
+                    <input class="form-control" type="text" placeholder="Add a new task..." t-on-keyup="addTodo" t-ref="input"/>
+                    <button class="btn" t-on-click="addTodoBtn">Add</button>
+                </div>
+                <div>
+                    <t t-if="model.todos.length === 0">
+                        <p class="text-muted text-center fst-italic">No tasks yet. Add one to get started.</p>
+                    </t>
+                    <t t-foreach="model.todos" t-as="todo" t-key="todo.id">
+                        <TodoItem todo="todo"/>
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

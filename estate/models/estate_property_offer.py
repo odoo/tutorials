@@ -5,7 +5,6 @@ from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
-
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
     _order = "price desc"
@@ -44,7 +43,6 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
-
             date = (
                 record.create_date.date() if record.create_date else fields.Date.today()
             )
@@ -62,7 +60,6 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             if vals.get("property_id") and vals.get("price"):
-
                 prop = self.env["estate.property"].browse(vals["property_id"])
                 if prop.offer_ids:
                     max_offer = max(prop.mapped("offer_ids.price"))
@@ -72,13 +69,12 @@ class EstatePropertyOffer(models.Model):
                         <= 0
                     ):
                         raise UserError(
-                            f"The offer must be higher than {max_offer:.2f}"
+                            f"The offer must be higher than {max_offer:.2f}",
                         )
                 prop.state = "offer_received"
         return super().create(vals_list)
 
     def action_accept(self):
-
         if "accepted" in self.mapped("property_id.offer_ids.state"):
             raise UserError("An offer as already been accepted.")
         self.state = "accepted"
@@ -88,7 +84,7 @@ class EstatePropertyOffer(models.Model):
                 "state": "offer_accepted",
                 "selling_price": self.price,
                 "buyer_id": self.partner_id.id,
-            }
+            },
         )
 
     def action_refuse(self):

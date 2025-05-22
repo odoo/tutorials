@@ -73,7 +73,7 @@
         <field name="arch" type="xml">
             <list string="Properties List" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
                 <header>
-                <button name="%(action_open_wizard)d" 
+                <button name="%(estate.action_open_wizard)d" 
                         string="Add Offer" 
                         type="action" 
                         class="btn-primary"/>
@@ -87,6 +87,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" optional="hide"/>
+                <!-- State field is invisible but required for decoration attributes and conditional logic -->
                 <field name="state" invisible="1"/>
             </list>
         </field>

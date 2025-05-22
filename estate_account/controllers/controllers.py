@@ -1,6 +1,4 @@
-# -*- coding: utf-8 -*-
 # from odoo import http
-
 
 # class EstateAccount(http.Controller):
 #     @http.route('/estate_account/estate_account', auth='public')

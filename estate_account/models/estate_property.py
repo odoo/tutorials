@@ -1,4 +1,4 @@
-from odoo import api, Command, fields, models
+from odoo import Command, fields, models
 from odoo.exceptions import UserError
 
 
@@ -6,15 +6,11 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        
-        record.check_access("write")
-
-        print(" reached ".center(100, "="))
+        self.check_access("write")
 
         super().action_sold()
 
         for prop in self:
-
             journal = self.env["account.journal"].search(
                 [("type", "=", "sale")],
                 limit=1,
@@ -30,7 +26,7 @@ class EstateProperty(models.Model):
                         "quantity": 1.0,
                         "price_unit": prop.selling_price * 0.06,
                         "account_id": journal.default_account_id.id,
-                    }
+                    },
                 ),
                 Command.create(
                     {
@@ -38,7 +34,7 @@ class EstateProperty(models.Model):
                         "quantity": 1.0,
                         "price_unit": 100.0,
                         "account_id": journal.default_account_id.id,
-                    }
+                    },
                 ),
             ]
 
@@ -49,7 +45,7 @@ class EstateProperty(models.Model):
                     "journal_id": journal.id,
                     "invoice_date": fields.Date.context_today(self),
                     "invoice_line_ids": invoice_lines,
-                }
+                },
             )
 
         return True

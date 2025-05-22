@@ -5,8 +5,8 @@
         "estate",
         "account",
     ],
-    "data":[
-         "report/estate_reports.xml",
+    "data": [
+        "report/estate_reports.xml",
     ],
     "auto_install": True,
 }

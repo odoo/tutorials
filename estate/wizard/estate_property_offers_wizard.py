@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import fields, models
 
 
 class PropertyOfferWizard(models.TransientModel):
@@ -21,8 +21,7 @@ class PropertyOfferWizard(models.TransientModel):
                     "property_id": pid,
                 }
                 for pid in properties
-            ]
+            ],
         )
 
         return {"type": "ir.actions.act_window_close"}
-        

@@ -1,12 +1,9 @@
 from dateutil.relativedelta import relativedelta
-
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero
 
-
 class EstateProperty(models.Model):
-
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
@@ -57,7 +54,9 @@ class EstateProperty(models.Model):
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     user_id = fields.Many2one(
-        "res.users", string="Salesman", default=lambda self: self.env.user
+        "res.users",
+        string="Salesman",
+        default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", readonly=True, copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -71,9 +70,9 @@ class EstateProperty(models.Model):
     )
 
     currency_id = fields.Many2one(
-        "res.currency", 
+        "res.currency",
         string="Currency",
-        related="company_id.currency_id", 
+        related="company_id.currency_id",
         readonly=True,
     )
 
@@ -83,7 +82,9 @@ class EstateProperty(models.Model):
         help="Total area computed by summing the living area and the garden area",
     )
     best_price = fields.Float(
-        "Best Offer", compute="_compute_best_price", help="Best offer received"
+        "Best Offer",
+        compute="_compute_best_price",
+        help="Best offer received",
     )
 
     _sql_constraints = [
@@ -125,7 +126,7 @@ class EstateProperty(models.Model):
             ):
                 raise ValidationError(
                     "The selling price must be at least 90% of the expected price! "
-                    + "You must reduce the expected price if you want to accept this offer."
+                    "You must reduce the expected price if you want to accept this offer.",
                 )
 
     @api.onchange("garden")
@@ -140,13 +141,13 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _check_deletion_state(self):
         invalid_properties = self.filtered(
-            lambda prop: prop.state not in {"new", "canceled"}
+            lambda prop: prop.state not in {"new", "canceled"},
         )
         if invalid_properties:
             invalid_names = invalid_properties.mapped("name")
             raise UserError(
                 f"Only new/canceled properties can be deleted. Invalid records:\n"
-                f"{', '.join(invalid_names)}"
+                f"{', '.join(invalid_names)}",
             )
 
     def action_sold(self):

@@ -27,9 +27,7 @@
         "report/estate_reports.xml",
         "report/estate_report_views.xml",
     ],
-    "demo": [
-        
-    ],
+    "demo": [],
     "application": True,
     "installable": True,
     "auto_install": False,
