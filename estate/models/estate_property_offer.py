@@ -67,10 +67,9 @@ class EstatePropertyOffer(models.Model):
             # Update property state
             if prop.state != 'offer_received':
                 prop.write({'state': 'offer_received'})
-        return super().create(vals)
-    
+        return super().create(vals)  
     @api.onchange('garden')
     def _onchange_garden(self):
         if not self.garden:
-          self.garden_area = 0
-          self.garden_orientation = False
+            self.garden_area = 0
+            self.garden_orientation = False

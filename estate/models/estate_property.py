@@ -12,7 +12,6 @@ class EstateProperty(models.Model):
     _inherit = [
         'mail.thread',
         'mail.activity.mixin',
-       
      ]
 
     # === Fields ===
@@ -109,16 +108,12 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold.")
-                    # ✅ Check for accepted offer
             if not any(offer.status == 'accepted' for offer in record.offer_ids):
                 raise UserError("Cannot sell a property without an accepted offer.")
-            
             if record.state == 'sold':
-               raise UserError("Property is already sold.")
-            
+                raise UserError("Property is already sold.")
             record.state = 'sold'
         return True
-
     # === Deletion Rule ===
     @api.ondelete(at_uninstall=False)
     def _check_state_before_deletion(self):

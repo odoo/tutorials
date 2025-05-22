@@ -1,6 +1,7 @@
 from odoo import http
 from odoo.http import request
 
+
 class EstateWebsiteController(http.Controller):
 
     @http.route('/properties', type='http', auth='public', website=True)
@@ -27,13 +28,11 @@ class EstateWebsiteController(http.Controller):
             'min_price': min_price,
             'max_price': max_price,
         })
-   
     @http.route('/properties/<int:property_id>', type='http', auth='public', website=True)
     def property_detail(self, property_id, **kwargs):
         property_rec = request.env['estate.property'].sudo().browse(property_id)
         if not property_rec.exists():
             return request.not_found()
-        
         return request.render('estate.property_detail', {
             'property': property_rec
         })

@@ -1,5 +1,3 @@
-from xml.dom import ValidationErr
-from odoo import Command
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
@@ -94,7 +92,6 @@ class EstateTestCase(TransactionCase):
 
         self.assertEqual(property.garden_area, 0, "Garden area should be 0 when garden is disabled")
         self.assertFalse(property.garden_orientation, "Orientation should be False when garden is disabled")
-    
     def test_offer_price_must_be_positive(self):
         """
         Test that creating an offer with zero or negative price fails.
@@ -105,4 +102,3 @@ class EstateTestCase(TransactionCase):
                 "price": 0,
                 "property_id": self.properties[1].id,
             })
-
