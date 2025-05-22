@@ -15,10 +15,32 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property type Form">
+                <header>
+                    <button type="action"
+                            name="%(estate.action_estate_property_offer)d"
+                            string="Offers"
+                            icon="fa-envelope"
+                            context="{'search_default_property_type_id': 1}"
+                            domain="[('property_type_id', '=', active_id)]"
+                            class="oe_stat_button"/>
+                </header>
                 <sheet>
                     <group>
-                        <field name="name" string="Name"/>
+                        <h1>
+                            <field name="name" string="Name"/>
+                        </h1>
                     </group>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" string="Name"/>
+                                    <field name="expected_price" string="Expected Price"/>
+                                    <field name="state" string="State"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -29,6 +51,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Types">
+                <field name="sequence" widget="handle"/>
                 <field name="name" string="Name"/>
             </list>
         </field>

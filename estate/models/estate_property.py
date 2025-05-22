@@ -11,6 +11,7 @@ class EstateProperty(models.Model):
         ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positve'),
         ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price must be positive')
     ]
+    _order = 'id desc'
 
     name = fields.Char('Name', required=True)
     description = fields.Char('Description')
@@ -46,8 +47,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
-
-    @api.depends('living_area','garden_area')
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
@@ -63,7 +63,7 @@ class EstateProperty(models.Model):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = 'north' if self.garden else None
 
-    @api.constrains('selling_price','expected_price')
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
             if float_is_zero(record.selling_price, precision_digits=2):
