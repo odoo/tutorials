@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
+from odoo.tools.float_utils import float_compare
 
 
 class TestModel(models.Model):
@@ -33,14 +34,28 @@ class TestModel(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled'),
         ],
+        default='new',
+        readonly=True,
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     seller_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False, readonly=True)
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer(compute='_compute_total_area', string='Total Area (sqm)')
     best_price = fields.Float(compute='_compute_best_price')
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be a strictly positive value.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The expected price must be a positive value'),
+        ('unique_tag_name_and_type', 'UNIQUE(name, property_type_id)', 'The Name and the type should be unique.'),
+    ]
+
+    @api.constrains('selling_price')
+    def _check_date_end(self):
+        for record in self:
+            if record.state == 'offer_accepted' and float_compare(record.selling_price, 0.9 * record.expected_price, 2):
+                raise exceptions.UserError(message='the seeling price must be atleast 90% of the expected price.')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -64,3 +79,19 @@ class TestModel(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = ''
+
+    def action_sell_property(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError(message='Cancelled properties cant be sold')
+            else:
+                record.state = 'sold'
+        return True
+
+    def action_cancel_property(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError(message='Sold properties cant be cancelled')
+            else:
+                record.state = 'cancelled'
+        return True

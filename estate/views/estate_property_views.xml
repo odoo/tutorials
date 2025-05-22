@@ -17,12 +17,17 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="property form">
+                <header>
+                    <button name="action_sell_property" type="object" string="SOLD" />
+                    <button name="action_cancel_property" type="object" string="CANCEL" />
+                </header>
                 <sheet>
                     <group>
                         <field name="name" class="display-4" />
                         <field name="tag_ids" widget="many2many_tags" />
                         <separator />
                         <group>
+                            <field name="state" />
                             <field name="property_type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
