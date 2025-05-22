@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools.date_utils import relativedelta
 
 
@@ -89,3 +90,24 @@ class EstateProperty(models.Model):
     def _onchange_garden_orientation(self):
         if self.garden_orientation:
             self.garden = True
+
+    @api.onchange('offer_ids')
+    def _onchange_offer_ids(self):
+        if self.state == 'new':
+            self.state = 'offer_received'
+
+    def action_set_sold(self):
+        self.ensure_one()
+
+        if self.state == 'cancelled':
+            raise UserError(_('Cancelled properties cannot be sold.'))
+
+        self.state = 'sold'
+
+    def action_set_cancelled(self):
+        self.ensure_one()
+
+        if self.state == 'sold':
+            raise UserError(_('Sold properties cannot be cancelled.'))
+
+        self.state = 'cancelled'

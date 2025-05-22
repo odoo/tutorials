@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools.date_utils import relativedelta
 
 
@@ -19,6 +20,7 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False,
     )
+    property_state = fields.Selection('Property State', related='property_id.state')
     active = fields.Boolean('Active', default=True)
 
     @api.depends('date_deadline')
@@ -31,3 +33,22 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if isinstance(record.validity, int):
                 record.date_deadline = fields.date.today() + relativedelta(days=record.validity)
+
+    def action_accept(self):
+        if self.property_id.state in ['offer_accepted', 'sold'] and self.status != 'accepted':
+            raise UserError(_('Another offer has already been accepted.'))
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
+        self.property_id.state = 'offer_accepted'
+        for offer in self.property_id.offer_ids:
+            offer.status = 'refused'
+        self.status = 'accepted'
+
+    def action_refuse(self):
+        if self.status == 'accepted':
+            if self.property_id.state == 'sold':
+                raise UserError(_('The property has already been sold.'))
+            self.property_id.buyer_id = None
+            self.property_id.selling_price = None
+            self.property_id.state = 'offer_received'
+        self.status = 'refused'
