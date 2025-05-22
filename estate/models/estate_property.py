@@ -51,8 +51,8 @@ class Property(models.Model):
         ),
         (
             "positive_selling_price",
-            "CHECK(selling_price > 0)",
-            "The selling price should be strictly positive.",
+            "CHECK(selling_price >= 0)",
+            "The selling price should be positive.",
         ),
     ]
 
@@ -73,7 +73,7 @@ class Property(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = None
+            self.garden_orientation = False
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

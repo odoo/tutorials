@@ -50,7 +50,7 @@
         <field name="arch" type="xml">
             <list string="Properties"
                 decoration-bf="state =='accepted'"
-                decoration-success="state == 'received' or state == 'accepted'"
+                decoration-success="state in ('received', 'accepted')"
                 decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="property_type_id" />
@@ -74,7 +74,7 @@
                     <button name="action_sold" type="object" string="Sold" class="btn btn-primary"
                         invisible="state != 'accepted'" />
                     <button name="action_sold" type="object" string="Sold" class="btn btn-secondary"
-                        invisible="state == 'sold' or state == 'accepted'" />
+                        invisible="state in ('sold', 'accepted')" />
                     <button name="action_cancel" type="object" string="Cancel"
                         invisible="state == 'sold'" />
                     <field name="state" widget="statusbar"
@@ -115,7 +115,7 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"
-                                readonly="state == 'cancelled' or state == 'sold' or state == 'accepted'" />
+                                readonly="state in ('cancelled', 'sold', 'accepted')" />
                         </page>
                         <page string="Other Info">
                             <group>

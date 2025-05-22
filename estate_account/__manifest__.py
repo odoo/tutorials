@@ -2,7 +2,7 @@
     "name": "Real Estate Accounting",
     "category": "Real Estate/Accounting",
     "license": "LGPL-3",
-    "depends": ["base", "account", "estate"],
+    "depends": ["account", "estate"],
     "application": False,
     "data": [],
 }
