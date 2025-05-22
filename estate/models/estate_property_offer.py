@@ -1,5 +1,6 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from dateutil.relativedelta import relativedelta
+from odoo.tools.float_utils import float_compare
 
 
 class PropertyOffer(models.Model):
@@ -34,6 +35,17 @@ class PropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date).days
+
+    # CRUD methods
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            prop = self.env['estate.property'].browse(vals['property_id'])
+            if float_compare(vals['price'], prop.best_price, precision_digits=2) == -1:
+                raise exceptions.UserError("Cannot create an offer with a lower amount than an existing offer")
+            prop.state = 'offer_received'
+
+        return super().create(vals)
 
     # Action methods
     def action_accept(self):

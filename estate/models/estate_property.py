@@ -84,6 +84,13 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
+    # CRUD methods
+    @api.ondelete(at_uninstall=False)
+    def _chek_state(self):
+        for record in self:
+            if record.state != 'new' and record.state != 'canceled':
+                raise exceptions.UserError("A property must be newly created or canceld to be deleted")
+
     # Buttons methods
     def set_canceled(self):
         for record in self:
