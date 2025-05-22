@@ -24,7 +24,7 @@ export const awesomeDashboardStatisticsService = {
 
         // Setup interval
         fetchStatistics();
-        setInterval(fetchStatistics, 3000);
+        setInterval(fetchStatistics, 600000);
 
         return stats;
     },
