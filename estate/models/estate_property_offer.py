@@ -93,48 +93,35 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
 
     @api.model_create_multi
-    def create(self, offers):
+    def create(self, vals_list):
         """Create one or more offers with validation checks.
 
         Ensures the property exists, is not sold or canceled, and does not have an accepted
         offer. Validates that each offer's price is higher than the current best offer price.
         Updates the property's state to 'offer_received' upon successful creation.
         """
-
-        property_offers = {}
-
-        for offer in offers:
-            property_id = offer.get("property_id")
-            if property_id not in property_offers:
-                property_offers[property_id] = []
-            property_offers[property_id].append(offer)
-
-        for property_id, property_offers_list in property_offers.items():
-            estate = self.env["estate.property"].browse(property_id)
+        for vals in vals_list:
+            estate = self.env["estate.property"].browse(vals.get("property_id"))
 
             if not estate.exists():
-                raise ValidationError(
-                    f"The specified property (ID: {property_id}) does not exist."
-                )
+                raise ValidationError("The specified property does not exist.")
 
             if estate.state in ["sold", "canceled"]:
                 raise UserError(
-                    f"Cannot create an offer on a sold or canceled property (ID: {property_id})."
+                    "Cannot create an offer on a sold or canceled property."
                 )
+
             if estate.state == "offer_accepted":
                 raise UserError(
-                    f"Cannot create an offer on a property with an accepted offer (ID: {property_id})."
+                    "Cannot create an offer on a property with an accepted offer."
                 )
 
-            curr_max_price = estate.best_price or 0.0
-
-            for offer in property_offers_list:
-                if curr_max_price >= offer["offer_price"]:
-                    raise UserError(
-                        f"The offer price must be higher than the current best price for property (ID: {property_id})."
-                    )
-                curr_max_price = max(curr_max_price, offer["offer_price"])
+            existing_offers = estate.mapped("offer_ids.offer_price")
+            if existing_offers and vals["offer_price"] < max(existing_offers):
+                raise UserError(
+                    "Cannot create an offer with a lower price than an existing offer."
+                )
 
             estate.state = "offer_received"
 
-        return super().create(offers)
+        return super().create(vals_list)
