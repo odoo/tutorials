@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import _, fields, models
 
 
 class EstatePropertyType(models.Model):
@@ -7,3 +7,5 @@ class EstatePropertyType(models.Model):
 
     name = fields.Char('Name', required=True)
     active = fields.Boolean('Active', default=True)
+
+    _sql_constraints = [('unique_type_name', 'UNIQUE(name)', _('Type name should be unique.'))]

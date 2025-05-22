@@ -23,6 +23,8 @@ class EstatePropertyOffer(models.Model):
     property_state = fields.Selection('Property State', related='property_id.state')
     active = fields.Boolean('Active', default=True)
 
+    _sql_constraints = [('check_price', 'CHECK(price > 0)', _('The price must be strictly positive.'))]
+
     @api.depends('date_deadline')
     def _compute_validity(self):
         for record in self:
