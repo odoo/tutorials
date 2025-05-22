@@ -36,6 +36,36 @@
       <field name="property_type_id" ref="estate.estate_property_type_1"/>
     </record>
 
+    <record id="estate_property_3" model="estate.property">
+      <field name="name">Acorn Field</field>
+      <field name="state">new</field>
+      <field name="description">Large field of Acorn</field>
+      <field name="postcode">67890</field>
+      <field name="date_availability">2000-01-01</field>
+      <field name="expected_price" eval="100000"/>
+      <field name="selling_price" eval="0"/>
+      <field name="bedrooms" eval="0"/>
+      <field name="living_area" eval="0"/>
+      <field name="facades" eval="0"/>
+      <field name="garage" eval="False"/>
+      <field name="garden" eval="True"/>
+      <field name="garden_area" eval="1000"/>
+      <field name="garden_orientation"></field>
+      <field name="property_type_id" ref="estate.estate_property_type_4"/>
+      <field name="property_offer_ids" eval="[
+          Command.create({
+              'partner_id': ref('base.res_partner_2'),
+              'price': 100001.0,
+              'validity': 10
+          }),
+          Command.create({
+              'partner_id': ref('base.res_partner_1'),
+              'price': 99999.0,
+              'validity': 10
+          }),
+      ]"/>
+    </record>
+
     <record id="estate_property_offer_1" model="estate.property.offer">
       <field name="property_id" ref="estate_property_1"/>
       <field name="partner_id" ref="base.res_partner_2"/>

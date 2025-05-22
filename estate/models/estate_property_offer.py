@@ -50,7 +50,7 @@ class property_offer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_offering = self.env['estate.property'].browse(vals['property_id'])
-            if vals['price'] < property_offering.best_offer_price:
+            if tools.float_utils.float_compare(vals['price'], property_offering.best_offer_price, 2) < 0 :
                 raise exceptions.ValidationError("You can't create an offer with a lower price than already existing offer.")
             property_offering.state = "offer_received"
         return super().create(vals_list)
