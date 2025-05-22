@@ -33,7 +33,7 @@
                 <header>
                     <button name="sold_property" type="object" string="SOLD" invisible="state in ('Sold', 'Cancelled')" />
                     <button name="cancel_property" type="object" string="CANCEL" invisible="state in ('Sold', 'Cancelled')" />
-                    <field name="state" string="Status" widget="statusbar" statusbar_visible="New, Offer Received, Offer Accepted, Sold" options="{'clickable':'1'}" />
+                    <field name="state" string="Status" widget="statusbar" statusbar_visible="New,Offer Received,Offer Accepted,Sold" options="{'clickable':'1'}" />
                 </header>
                 <sheet>
                     <div class="oe_title">

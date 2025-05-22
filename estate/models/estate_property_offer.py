@@ -43,6 +43,7 @@ class EstatePropertyOffer(models.Model):
             offer.status = "Accepted"
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.state = "Offer Accepted"
         return True
 
     def refuse_offer(self):
@@ -56,3 +57,14 @@ class EstatePropertyOffer(models.Model):
         ('check_price_positive', 'CHECK(price >= 0)',
         'The offer price must be strictly positive')
     ]
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        newOffers = super().create(vals_list)
+        for newOffer in newOffers:
+            if newOffer.price < newOffer.property_id.best_price:
+                raise UserError("The offer price cannot be lower than the highest existing")
+            else:
+                if newOffer.property_id.state == 'New':
+                    newOffer.property_id.state = 'Offer Received'
+        return newOffers
