@@ -8,7 +8,7 @@ class EstateTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EstateTestCase, cls).setUpClass()
+        super().setUpClass()
         # Création de deux propriétés de test
         cls.properties = cls.env['estate.property'].create([
             {
@@ -29,7 +29,6 @@ class EstateTestCase(TransactionCase):
 
     def test_creation_area(self):
         """Test que le champ total_area est correctement calculé."""
-        
         self.properties[0].living_area = 120
         self.properties[0].garden_area = 30
         self.properties[1].living_area = 60
@@ -56,7 +55,7 @@ class EstateTestCase(TransactionCase):
         # Vérifie qu'une UserError est levée si on tente une action interdite
         with self.assertRaises(UserError):
             self.properties.cancel_property()
-            
+    
     def test_garden_onchange_resets_fields(self):
         """Ensure that unchecking garden resets garden_area and garden_orientation."""
         property = self.env['estate.property'].create({
