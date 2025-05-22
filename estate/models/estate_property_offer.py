@@ -30,6 +30,16 @@ class EstatePropertyOffer(models.Model):
             create_date = offer.create_date or fields.Datetime.now()
             offer.date_deadline = create_date.date() + timedelta(days=offer.validity)
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if property.state == 'new':
+                property.state = 'offer received'
+            if any(offer.price >= vals['price'] for offer in property.offer_ids):
+                raise UserError("Cannot create offer: there is already an offer with an equal or higher price.")
+        return super().create(vals_list)
+
     def _inverse_date_deadline(self):
         for offer in self:
             create_date = offer.create_date or fields.Datetime.now()
