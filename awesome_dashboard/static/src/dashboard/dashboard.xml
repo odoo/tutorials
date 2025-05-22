@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="displayOptions" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <div class="d-flex flex-wrap">
+                    <button class="btn btn-primary me-2 mb-2 mb-sm-0" t-on-click="openCustomerView">
+                        <i class="fa fa-users me-1"></i> Customers
+                    </button>
+                    <button class="btn btn-success mb-2 mb-sm-0" t-on-click="openLeads">
+                        <i class="fa fa-filter me-1"></i> Leads
+                    </button>
+                </div>
+            </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn btn-light ms-1 border-0" title="Configure Dashboard">
+                    <i class="fa fa-gear"></i>
+                </button>
+            </t>
+            
+            <div t-if="!statisticsService.isReady" class="d-flex align-items-center justify-content-center h-100">
+                <div class="text-center">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted">Loading dashboard data...</p>
+                </div>
+            </div>
+            
+            <div class="container-fluid p-3 p-md-4" t-if="statisticsService.isReady">
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h4 class="text-muted mb-0 dashboard-title">
+                            <i class="fa fa-dashboard me-2"></i>
+                            Dashboard Overview
+                        </h4>
+                    </div>
+                </div>
+                <div class="row row-dashboard">
+                    <t t-foreach="dashboardItems" t-as="item" t-key="item.id">
+                        <t t-if="!state.disabledItems.includes(item.id)">
+                            <div t-attf-class="col-12 col-sm-6 col-md-{{item.size ? 6 : 3}} mb-4">
+                                <t t-set="itemProps" t-value="item.props ? item.props(statisticsService) : {'data': statisticsService}"/>
+                                <t t-component="item.Component" t-props="itemProps" />
+                            </div>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </Layout>    
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard Configuration'">
+            <div class="p-3">
+                <p class="text-muted mb-3">Select which widgets you want to display on your dashboard:</p>
+                <div class="list-group">
+                    <t t-foreach="configItems" t-as="item" t-key="item.id">
+                        <div class="list-group-item d-flex align-items-center border-0 mb-2 rounded">
+                            <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                                <t t-esc="item.description"/>
+                            </CheckBox>
+                        </div>
+                    </t>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-secondary me-2" t-on-click="props.close">
+                    Cancel
+                </button>
+                <button class="btn btn-primary" t-on-click="done">
+                    <i class="fa fa-check me-1"></i> Apply
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

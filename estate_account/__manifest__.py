@@ -9,4 +9,5 @@
         "report/estate_reports.xml",
     ],
     "auto_install": True,
+    "license": "LGPL-3",
 }

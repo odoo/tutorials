@@ -8,25 +8,27 @@ export class TodoList extends Component {
     static components = { TodoItem };
 
     setup() {
-        this.model = new TodoModel();
+        this.todoModel = new TodoModel();
         onWillStart(() => {
-            return this.model.load();
+            return this.todoModel.load();
         });
         useAutofocus("input")
     }
 
-    addTodo(ev) {
+    handleKeypress(ev) {
         if (ev.key === "Enter") {
             const input = ev.target;
-            this.model.createTodo(input.value);
-            input.value = "";
+            if (input.value.trim()) {
+                this.todoModel.createTodo(input.value);
+                input.value = "";
+            }
         }
     }
 
-    addTodoBtn() {
+    createTask() {
         const input = this.refs.input;
         if (input.value.trim()) {
-            this.model.createTodo(input.value);
+            this.todoModel.createTodo(input.value);
             input.value = "";
         }
         input.focus();

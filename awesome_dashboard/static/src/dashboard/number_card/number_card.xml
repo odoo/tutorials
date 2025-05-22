@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.NumberCard" owl="1">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body p-3">
+                <h6 class="card-subtitle mb-2 text-muted" t-esc="props.title"/>
+                <div class="d-flex align-items-center mt-3">
+                    <div t-if="props.icon" t-attf-class="d-flex align-items-center justify-content-center bg-#{props.color || 'primary'}-subtle rounded-circle me-3" 
+                         style="width: 64px; height: 64px; min-width: 64px;">
+                        <i t-attf-class="fa fa-{{props.icon}} fa-2x" t-attf-style="color: var(--#{props.color || 'primary'})"/>
+                    </div>
+                    <div t-attf-class="fs-1 fw-bold text-#{props.color || 'primary'}">
+                        <t t-if="props.prefix" t-esc="props.prefix"/>
+                        <t t-esc="props.value"/>
+                        <t t-if="props.suffix"><span class="fs-6 ms-1" t-esc="props.suffix"/></t>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
