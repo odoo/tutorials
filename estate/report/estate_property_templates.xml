@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <!-- Property offer report template -->
+    <template id="property_offers_report_template">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.user_id"/>
+                        </h1>
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/>
+                        </div>
+                        <div>
+                            <strong>Status: </strong>
+                            <span t-field="property.state"/>
+                        </div>
+
+                        <t t-call="estate.property_offers_table_template"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <!-- Salesperson's property report template -->
+    <template id="res_users_estate_report_template">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <strong>Salesman: </strong>
+                            <span t-field="user.name"/>
+                        </h1>
+                        <t t-set="properties" t-value="user.mapped('property_ids')"/>
+                        <t t-if="properties">
+                            <t t-foreach="properties" t-as="property">
+                                <div style="margin-bottom: 20px; border-bottom: 1px solid #ddd;">
+                                    <h2><span t-field="property.name"/></h2>
+                                    <div><strong>Expected Price: </strong><span t-field="property.expected_price"/></div>
+                                    <div><strong>Status: </strong><span t-field="property.state"/></div>
+                                    <t t-call="estate.property_offers_table_template"/>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p>No properties found for this user.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+    <!-- offer table template -->
+    <template id="property_offers_table_template">
+        <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+        <t t-if="offers">
+            <table class="table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr style="background-color: #f2f2f2; font-weight: bold;">
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity (days)</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr t-foreach="offers" t-as="offer">
+                        <td><span t-field="offer.price"/></td>
+                        <td><span t-field="offer.partner_id.name"/></td>
+                        <td><span t-field="offer.validity"/></td>
+                        <td><span t-field="offer.date_deadline"/></td>
+                        <td><span t-field="offer.status"/></td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <p>No offers available for this property.</p>
+        </t>
+    </template>
+</odoo>
