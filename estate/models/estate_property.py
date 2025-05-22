@@ -2,7 +2,7 @@ from odoo import models, fields
 
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "real estate properties"
 
     name = fields.Char('Title', default="Unknown", required=True)
@@ -38,4 +38,6 @@ class EstateProperty(models.Model):
             ('cancelled', 'Cancelled')
         ],
     )
-    Property_type_id = fields.Many2one('estate_property_type', 'Property Type')
+    Property_type_id = fields.Many2one('estate.property.type', 'Property Type')
+    partner_id = fields.Many2one('res.partner', 'Partner')
+    seller_id = fields.Many2one('res.users', 'Salesperson', default=lambda self: self.env.user)
