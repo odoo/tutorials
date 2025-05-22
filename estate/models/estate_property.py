@@ -1,10 +1,14 @@
 from datetime import datetime, timedelta
-from odoo import api, fields, models, exceptions
+from odoo import api, fields, models, exceptions, tools
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property's properties"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK (expected_price > 0)', 'The expected price must be greater than 0'),
+        ('check_selling_price', 'CHECK (selling_price >= 0)', 'The selling price must be greater than 0'),
+    ]
 
     name = fields.Char('Property name', required=True, default='Unknown')
     description = fields.Text('Property Description')
@@ -52,7 +56,7 @@ class EstateProperty(models.Model):
             return None
         best_offer = self.offers_ids[0]
         for offer in self.offers_ids:
-            if offer.price < best_offer.price:
+            if offer.price > best_offer.price:
                 best_offer = offer
         return best_offer
 
@@ -85,3 +89,10 @@ class EstateProperty(models.Model):
             if record.state == 'sold':
                 raise exceptions.UserError("Can't cancel a sold offer")
             record.state = 'cancelled'
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_date_end(self):
+        for record in self:
+            if not tools.float_is_zero(record.selling_price, 0e-4) and record.selling_price < record.expected_price * 0.9:
+                raise exceptions.ValidationError(
+                    f"The selling price cannot be lower than 90% of the expected price (min ${record.expected_price * 0.9}€)")
