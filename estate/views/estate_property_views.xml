@@ -29,6 +29,7 @@
                 <field name='postcode'/>
                 <field name='bedrooms'/>
                 <field name='living_area'/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name='expected_price'/>
                 <field name='selling_price'/>
                 <field name="availability_date"/>
@@ -48,6 +49,7 @@
                             </h1>
                         </group>
                         <b></b>
+                        <field name="tag_ids" widget="many2many_tags"/>
                         <group>
                             <field name="postcode"/>
                             <field name="availability_date"/>
@@ -68,6 +70,11 @@
                                 <field name="garden"/>
                                 <field name="garden_orientation"/>
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <list>
+                                <field name="offer_ids"/>
+                            </list>
                         </page>
                         <page string="Other Info">
                             <group>
