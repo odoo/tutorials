@@ -1,12 +1,14 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
 
 
 class TestModel(models.Model):
     _name = 'estate.property'
     _description = 'Test Estate Model'
+    _order = 'id desc'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -55,7 +57,7 @@ class TestModel(models.Model):
     def _check_date_end(self):
         for record in self:
             if record.state == 'offer_accepted' and float_compare(record.selling_price, 0.9 * record.expected_price, 2):
-                raise exceptions.UserError(message='the seeling price must be atleast 90% of the expected price.')
+                raise UserError(self.env._('the seeling price must be atleast 90% of the expected price.'))
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -83,7 +85,7 @@ class TestModel(models.Model):
     def action_sell_property(self):
         for record in self:
             if record.state == 'cancelled':
-                raise exceptions.UserError(message='Cancelled properties cant be sold')
+                raise UserError(self.env._('Cancelled properties cant be sold'))
             else:
                 record.state = 'sold'
         return True
@@ -91,7 +93,7 @@ class TestModel(models.Model):
     def action_cancel_property(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError(message='Sold properties cant be cancelled')
+                raise UserError(self.env._('Sold properties cant be cancelled'))
             else:
                 record.state = 'cancelled'
         return True

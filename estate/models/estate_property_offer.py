@@ -1,11 +1,13 @@
 from datetime import timedelta
 
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class TestModel(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Model Offer'
+    _order = 'price desc'
 
     price = fields.Float(default=0.00)
     status = fields.Selection(copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
@@ -13,6 +15,7 @@ class TestModel(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(compute='_compute_validity', inverse='_inverse_validity', string='Validity (days)')
     date_deadline = fields.Date(string='Deadline')
+    property_type_id = fields.Many2one(related='property_id.property_type_id', string='Property Type', store=True)
 
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)', 'The offer price must be a strictly positive value.'),
@@ -36,16 +39,16 @@ class TestModel(models.Model):
     def action_accept_offer(self):
         for record in self:
             if record.property_id.state in ['new', 'offer_received'] and record.status != 'refused':
+                record.property_id.selling_price = record.price
                 record.status = 'accepted'
                 record.property_id.state = 'offer_accepted'
-                record.property_id.selling_price = record.price
             else:
                 message = {
                     'sold': 'cannot accept an offer on a sold property',
                     'cancelled': 'cannot accept an offer on a cancelled property',
                     'offer_accepted': 'cannot accept another offer on an accepted property',
                 }
-                raise exceptions.UserError(message=message[record.property_id.state])
+                raise UserError(self.env._(message[record.property_id.state]))
         return True
 
     def action_refuse_offer(self):
