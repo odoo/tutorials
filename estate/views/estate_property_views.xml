@@ -60,14 +60,14 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" string="Garden Area (sqm)" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area" string="Total area (sqm)"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" string=''/>
+                                <field name="offer_ids" string='' readonly="state in ['accepted', 'sold', 'canceled']"/>
                             </group>
                         </page>
                     </notebook>
