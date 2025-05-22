@@ -36,7 +36,6 @@
                 <button name="accept_offer" type="object" icon="fa-check" invisible="status" />
                 <button name="refuse_offer" type="object" icon="fa-close" invisible="status" />
                 <field name="property_type_id" />
-                <field name="status" column_invisible="True" />
             </list>
         </field>
     </record>
