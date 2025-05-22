@@ -76,3 +76,9 @@ class estateProperty(models.Model):
         for record in self:
             if not tools.float_utils.float_is_zero(record.selling_price, precision_digits=10) and tools.float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=10) == -1:
                 raise exceptions.UserError("The selling price must be at least 90% of the expected price. Consult your supervisor.")
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property_estate(self):
+        for record in self:
+            if not record.state in ["new","cancelled"]:
+                raise exceptions.UserError("Only new and cancelled properties can be deleted.")

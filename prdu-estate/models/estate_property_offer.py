@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, tools, exceptions
 from dateutil.relativedelta import relativedelta
 
 
@@ -42,3 +42,13 @@ class estatePropertyOffer(models.Model):
     def action_offer_refuse(self):
         for record in self:
             record.status = "refused"
+            
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if self.env["estate.property"].browse(vals["property_id"]).state == "offer_received":
+                if tools.float_utils.float_compare(self.env["estate.property"].browse(vals["property_id"]).best_price, vals["price"], precision_digits=10) == 1:
+                    raise exceptions.UserError("Offer cannot be lower than current best price.")
+            else:
+                self.env["estate.property"].browse(vals["property_id"]).state = "offer_received"
+        return super().create(vals)
