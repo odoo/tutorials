@@ -4,52 +4,51 @@ import { registry } from "@web/core/registry";
 import { PieChartCard } from "@awesome_dashboard/dashboard/cards/pie_chart_card";
 import { NumberCard } from "@awesome_dashboard/dashboard/cards/number_card";
 
-registry.category("awesome_dashboard").add("data", [
-    {
-        id: "average_quantity",
+registry.category("awesome_dashboard").add("data", {
+    average_quantity: {
         Component: NumberCard,
         props: (stats) => ({
             title: "Average amount of t-shirt by order this month",
             value: stats.data.average_quantity,
         }),
+        active: true,
     },
-    {
-        id: "average_time",
+    average_time: {
         Component: NumberCard,
         props: (stats) => ({
             title: "Average time to deliver an order this month",
             value: stats.data.average_time,
         }),
+        active: true,
     },
-    {
-        id: "nb_cancelled_orders",
+    nb_cancelled_orders: {
         Component: NumberCard,
         size: 2.5,
         props: (stats) => ({
             title: "Number of cancelled orders this month",
             value: stats.data.nb_cancelled_orders,
         }),
+        active: true,
     },
-    {
-        id: "nb_new_orders",
+    nb_new_orders: {
         Component: NumberCard,
         size: 2.5,
         props: (stats) => ({
             title: "Number of new orders this month",
             value: stats.data.nb_new_orders,
         }),
+        active: true,
     },
-    {
-        id: "total_amount",
+    total_amount: {
         Component: NumberCard,
         size: 2.5,
         props: (stats) => ({
             title: "Total amount of orders this month",
             value: stats.data.total_amount,
         }),
+        active: true,
     },
-    {
-        id: "orders_by_size",
+    orders_by_size: {
         Component: PieChartCard,
         props: (stats) => ({
             title: "Orders by size",
@@ -68,5 +67,6 @@ registry.category("awesome_dashboard").add("data", [
                 },
             },
         }),
+        active: true,
     },
-]);
+});
