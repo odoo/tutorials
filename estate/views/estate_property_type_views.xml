@@ -2,8 +2,8 @@
 <odoo>
 
     <record id="estate_property_type_view_search" model="ir.ui.view">
-        <field name="name">estate.property.view.search</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.type.view.search</field>
+        <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <search string="Search Property">
                 <field string="Title" name="name"/>
@@ -23,7 +23,9 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Channel">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
+                <field name="offer_count"/>
             </list>
         </field>
     </record>
@@ -35,7 +37,32 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                <div name="button_box">
+                    <button class="oe_stat_button"
+                        name="estate.estate_property_offer_filter_action"
+                        type="action" string="test">
+                        <!-- 
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value d-flex gap-1">
+                                <field name="offer_count" widget="statinfo" nolabel="1" class="oe_inline"/>
+                                <field name="name" class="oe_inline"/>
+                            </span>
+                        </div>
+                        -->
+                    </button>
+                </div>
                     <h1><field name="name"/></h1>
+                <notebook>
+                    <page string="Properties">
+                        <field name="property_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="expected_price"/>
+                                <field name="state"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
                 </sheet>
             </form>
         </field>

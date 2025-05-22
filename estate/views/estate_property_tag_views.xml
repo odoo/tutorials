@@ -3,7 +3,7 @@
 
     <record id="estate_property_tag_view_search" model="ir.ui.view">
         <field name="name">estate.property.tag.view.search</field>
-        <field name="model">estate_property</field>
+        <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <search string="Search Property">
                 <field string="Title" name="name"/>
@@ -22,7 +22,7 @@
         <field name="name">estate.property.tag.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Channel" editable="bottom">
                 <field name="name"/>
             </list>
         </field>
