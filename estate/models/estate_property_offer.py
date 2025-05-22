@@ -100,32 +100,41 @@ class EstatePropertyOffer(models.Model):
         offer. Validates that each offer's price is higher than the current best offer price.
         Updates the property's state to 'offer_received' upon successful creation.
         """
-        if not offers:
-            raise ValidationError("No offers provided for creation.")
 
-        property_id = offers[0].get("property_id")
-        if not property_id:
-            raise ValidationError("Property ID is required.")
-
-        estate = self.env["estate.property"].browse(property_id)
-        if not estate.exists():
-            raise ValidationError("The specified property does not exist.")
-
-        if estate.state in ["sold", "canceled"]:
-            raise UserError("Cannot create an offer on a sold or canceled property.")
-        if estate.state == "offer_accepted":
-            raise UserError(
-                "Cannot create an offer on a property with an accepted offer."
-            )
-
-        curr_max_price = estate.best_price or 0.0
+        property_offers = {}
 
         for offer in offers:
-            if curr_max_price >= offer["offer_price"]:
-                raise UserError(
-                    "The offer price must be higher than the current best price."
-                )
-            curr_max_price = max(curr_max_price, offer["offer_price"])
+            property_id = offer.get("property_id")
+            if property_id not in property_offers:
+                property_offers[property_id] = []
+            property_offers[property_id].append(offer)
 
-        estate.state = "offer_received"
+        for property_id, property_offers_list in property_offers.items():
+            estate = self.env["estate.property"].browse(property_id)
+
+            if not estate.exists():
+                raise ValidationError(
+                    f"The specified property (ID: {property_id}) does not exist."
+                )
+
+            if estate.state in ["sold", "canceled"]:
+                raise UserError(
+                    f"Cannot create an offer on a sold or canceled property (ID: {property_id})."
+                )
+            if estate.state == "offer_accepted":
+                raise UserError(
+                    f"Cannot create an offer on a property with an accepted offer (ID: {property_id})."
+                )
+
+            curr_max_price = estate.best_price or 0.0
+
+            for offer in property_offers_list:
+                if curr_max_price >= offer["offer_price"]:
+                    raise UserError(
+                        f"The offer price must be higher than the current best price for property (ID: {property_id})."
+                    )
+                curr_max_price = max(curr_max_price, offer["offer_price"])
+
+            estate.state = "offer_received"
+
         return super().create(offers)
