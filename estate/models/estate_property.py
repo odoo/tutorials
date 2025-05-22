@@ -39,7 +39,7 @@ class Estate_property(models.Model):
     property_offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_area")
     best_offer_price = fields.Float(compute="_compute_best_offer")
-    agency_id = fields.Many2one("res.company",required=True, default=lambda self: self.env.user.company_id)
+    agency_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.user.company_id)
 
     _sql_constraints = [
         ('positive_expected_price', 'CHECK(expected_price >0)', 'The Property\'s expected price must be positive.'),
@@ -80,9 +80,9 @@ class Estate_property(models.Model):
 
     @api.constrains("expected_price", "selling_price")
     def _onchange_expected_price(self):
-        if (self.state in ['offer_accepted', 'sold']):
-            if (tools.float_utils.float_compare(self.expected_price * 90 / 100, self.selling_price, 2) > 0):
-                raise exceptions.ValidationError("The selling price must be equal or higher than 90% of the selling price.")
+        for record in self:
+            if record.state in ['offer_accepted', 'sold'] and record.expected_price * 90 / 100 > record.selling_price:
+                raise exceptions.ValidationError("The selling price must be equal or higher than 90% of the expected price.")
 
     def unlink(self):
         for record in self:
