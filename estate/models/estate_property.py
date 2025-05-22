@@ -1,5 +1,7 @@
 from odoo import api, fields, models, exceptions, tools
 from datetime import timedelta
+
+
 class Estate_property(models.Model):
     _name = "estate.property"
     _description = "Model to modelize Real Estate objects"
@@ -37,7 +39,7 @@ class Estate_property(models.Model):
     property_offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(compute="_compute_area")
     best_offer_price = fields.Float(compute="_compute_best_offer")
-    agency_id = fields.Many2one("res.company",required=True,  default=lambda self: self.env.user.company_id)
+    agency_id = fields.Many2one("res.company",required=True, default=lambda self: self.env.user.company_id)
 
     _sql_constraints = [
         ('positive_expected_price', 'CHECK(expected_price >0)', 'The Property\'s expected price must be positive.'),
@@ -52,7 +54,7 @@ class Estate_property(models.Model):
     @api.depends("property_offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            if(record.state in ['offer_accepted', 'sold']):
+            if (record.state in ['offer_accepted', 'sold']):
                 record.best_offer_price = max(record.property_offer_ids.mapped("price"))
             else:
                 record.best_offer_price = 0

@@ -1,6 +1,7 @@
 from odoo import api, fields, models, exceptions, tools
 from datetime import datetime, timedelta
 
+
 class property_offer(models.Model):
     _name = "estate.property.offer"
     _description = "Model to modelize Offer for Properties"
@@ -33,7 +34,7 @@ class property_offer(models.Model):
 
     def accept_offer(self):
         for record in self:
-            if(self.property_id.state in ['offer_accepted', 'sold']):
+            if (self.property_id.state in ['offer_accepted', 'sold']):
                 raise exceptions.UserError("Only one Offer can be accepted.")
             record.status = 'accepted'
             record.property_id.selling_price = record.price
@@ -50,7 +51,7 @@ class property_offer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_offering = self.env['estate.property'].browse(vals['property_id'])
-            if tools.float_utils.float_compare(vals['price'], property_offering.best_offer_price, 2) < 0 :
+            if tools.float_utils.float_compare(vals['price'], property_offering.best_offer_price, 2) < 0:
                 raise exceptions.ValidationError("You can't create an offer with a lower price than already existing offer.")
             property_offering.state = "offer_received"
         return super().create(vals_list)
