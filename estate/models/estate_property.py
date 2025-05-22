@@ -50,6 +50,9 @@ class EstateProperty(models.Model):
     total_area =fields.Integer('Property Total Area', compute='_calculate_total_area')
     best_price = fields.Float('Property Best Offer', digits=(16, 2), readonly=True, copy=False, compute='_get_best_price')
 
+    # Ordering
+    _order = "id desc"
+
     # DB Constraints
     _sql_constraints = [
         ("check_expected_price_is_positive", "CHECK(expected_price > 0)", "The expected price must be positive."),
@@ -92,28 +95,16 @@ class EstateProperty(models.Model):
     def action_property_sold(self):
         for property in self:
             if property.state == 'cancelled':
-                return {
-                    'effect': {
-                        'fadeout': 'slow',
-                        'message': "It's not possible to sell a cancelled property ;)",
-                        'type': 'rainbow_man',
-                    }
-                }
+                raise ValidationError("cancelled properties can't be set to `sold`.")
             property.state = 'sold'
-            return True
+        return True
 
     def action_property_cancel(self):
         for property in self:
             if property.state == 'sold':
-                return {
-                    'effect': {
-                        'fadeout': 'slow',
-                        'message': "It's not possible to cancel a sold property ;)",
-                        'type': 'rainbow_man',
-                    }
-                }
+                raise ValidationError("`sold` properties can't be cancelled.")
             property.state = 'cancelled'
-            return True
+        return True
 
     # Offers Interactions
     # Update Property Status based on offer creations/removals
@@ -151,9 +142,9 @@ class EstateProperty(models.Model):
         return None
 
     def _notify_offer_refused(self, refused_offer):
-        refused_offer.status = 'refused'
         if self.state == 'sold' or self.state == 'cancelled':
             return self._make_effect(f"Warning: The property is already {self.state}.")
+        refused_offer.status = 'refused'
         self.state = 'offer_received'
         self.selling_price = 0
         return None

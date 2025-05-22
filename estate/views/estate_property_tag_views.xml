@@ -4,23 +4,21 @@
         <field name="name">estate.property.tag.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Channel" editable="bottom">
                 <field name="name" string="Tag" />
             </list>
         </field>
     </record>
 
-    <record id="estate_property_type_view_form" model="ir.ui.view">
+    <record id="estate_property_tag_view_form" model="ir.ui.view">
         <field name="name">estate.property.tag.form</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <form string="estate_property_tag_form">
                 <sheet>
-                    <div>
                     <group>
                         <field name="name"/>
                     </group>
-                    </div>
                 </sheet>
             </form>
         </field>
