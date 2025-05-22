@@ -20,11 +20,16 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate">
+            <header>
+                <button name="action_property_sold" type="object" string="SOLD" invisible="state in ['sold', 'cancelled']"/>
+                <button name="action_property_cancelled" type="object" string="CANCELLED" invisible="state in ['sold', 'cancelled']"/>
+                <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold" options="{'clickable': 1}"/>
+            </header>
                 <sheet>
                     <h1 class="oe_title">
                         <field name="name"/>
                     </h1>
-                    <field name="tag_ids"  widget="many2many_tags" class="mb16"/>
+                    <field name="tag_ids"  widget="many2many_tags" class="mb16" options="{'color_field': 'color'}"/>
                     <div class="row">
                         <div class="col-6">
                             <group>
@@ -48,8 +53,8 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_orientation"/>
-                                <field name="garden_area"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="garden_area" invisible="not garden"/>
                                 <field name="living_area"/>
                                 <field name="total_area"/>
                                 <field name="property_type_id"/>
@@ -62,7 +67,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state not in ['new', 'offer received']"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -76,7 +81,7 @@
         <field name="arch" type="xml">
             <search string="Search Estates">
                 <field name="name"/>
-                <filter string="Available" name="available" domain="[('state', '!=', 'sold' ), ('state', '!=', 'cancelled'), ('state', '!=', 'offer_accepted')]"/>
+                <filter string="Available" name="available" domain="[('state', 'not in', ['sold','cancelled','offer_accepted'] )]"/>
                 <filter string="Garage" name="garage" domain="[('garage', '!=', True )]"/>
                 <group expand="True" string="Group By">
                         <filter string="Poscode" name="postcode" context="{'group_by':'postcode'}"/>

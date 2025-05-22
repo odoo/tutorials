@@ -3,7 +3,8 @@
         <field name="name">estate.type.main.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="top">
+            <list string="Channel">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -12,6 +13,31 @@
     <record id='estate_property_type_action' model='ir.actions.act_window'>
         <field name='name'>property_type_action</field>
         <field name='res_model'>estate.property.type</field>
-        <field name='view_mode'>list</field>
+        <field name='view_mode'>list,form</field>
+    </record>
+
+        <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Estate Offer">
+                <sheet>
+                    <h1 class="oe_title">
+                        <field name="name"/>
+                    </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="properties_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
     </record>
 </odoo>

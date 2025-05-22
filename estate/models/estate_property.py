@@ -1,10 +1,11 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class Estate(models.Model):
     _name = 'estate.property'
     _description = 'It allows to manage your properties'
+    _order = 'id desc'
 
     name = fields.Char(required=True, default='Unknown')
     property_type_id = fields.Many2one('estate.property.type')
@@ -44,10 +45,25 @@ class Estate(models.Model):
         readonly=True,
     )
 
+    _sql_constraints = [
+        ('expected_price', 'CHECK(expected_price >= 0 )', 'A price should always be possitive'),
+        ('selling_price', 'CHECK(selling_price >= 0 )', 'A price should always be possitive'),
+    ]
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    @api.onchange('offer_ids')
+    def _onchange_status(self):
+        for record in self:
+            if record.state not in ['offer accepted', 'sold', 'cancelled']:
+                all_status = record.offer_ids.mapped('status')
+                new_state = 'new'
+                if all_status:
+                    new_state = 'offer received'
+            record.state = new_state
 
     @api.depends('offer_ids')
     def _compute_best_offer(self):
@@ -58,3 +74,23 @@ class Estate(models.Model):
             else:
                 record.best_offer = 0
 
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
+
+    def action_property_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise exceptions.UserError('property already cancelled')
+            record.state = 'sold'
+
+    def action_property_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError('property already sold')
+            record.state = 'cancelled'
