@@ -29,12 +29,14 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
 
-        price, property_id = vals_list.get("price"), vals_list.get("property_id")
+        for val in vals_list:
 
-        if price and property_id:
-            property = self.env["estate.property"].browse(property_id)
-            if self._check_not_lowest_offer(price, property_id):
-                property.set_offer_received()
+            price, property_id = val.get("price"), val.get("property_id")
+
+            if price and property_id:
+                property = self.env["estate.property"].browse(property_id)
+                if self._check_not_lowest_offer(price, property_id):
+                    property.set_offer_received()
 
         return super().create(vals_list)
 
