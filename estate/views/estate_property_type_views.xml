@@ -1,33 +1,34 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="property_types_action" model="ir.actions.act_window">
+    <record id="property_type_action" model="ir.actions.act_window">
         <field name="name">Property Type</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="property_types_form_view" model="ir.ui.view">
-        <field name="name">estate.property.type.form</field>
+    <record id="property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Types">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="estate.property_offer_action" type="action"
-                            class="oe_stat_button" icon="fa-bar" invisible="offer_count == 0">
-                            <field string="Offer(s)" name="offer_count" widget="statinfo"/>  
+                            class="oe_stat_button" icon="fa-bartype_action"
+                            invisible="offer_count == 0">
+                            <field string="Offer(s)" name="offer_count" widget="statinfo" />
                         </button>
                     </div>
                     <h1>
-                        <field name="name" nolabel="True"/>
+                        <field name="name" nolabel="True" />
                     </h1>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
                                 <list>
-                                    <field name="name"/>
-                                    <field name="expected_price"/>
-                                    <field name="state"/>
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
                                 </list>
                             </field>
                         </page>
@@ -37,13 +38,13 @@
         </field>
     </record>
 
-    <record id="estate_property_types_list_view" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Types">
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
             </list>
         </field>
     </record>

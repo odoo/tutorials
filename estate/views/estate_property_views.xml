@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="properties_action" model="ir.actions.act_window">
+    <record id="property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">kanban,list,form,search</field>
+        <field name="view_mode">list,kanban,form,search</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
 
-    <record id="estate_properties_kanban_view" model="ir.ui.view">
+    <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -18,23 +18,20 @@
                         <div t-attf-class="oe_kanban_global_click">
                             <div class="o_kanban_record_title">
                                 <h2>
-                                <strong>
-                                    <field name="name" />
-                                </strong>
+                                    <strong>
+                                        <field name="name" />
+                                    </strong>
                                 </h2>
                             </div>
                             <div class="o_kanban_record_subtitle">
                                 <div class="o_kanban_field" t-if="record.state.raw_value != 'new'">
-                                    best offer:
-                                    <field name="best_offer" />
+                                    best offer: <field name="best_offer" />
                                 </div>
-                                <div class="o_kanban_field">
-                                    expected price:
-                                    <field name="expected_price" />
+                                <div class="o_kanban_field"> expected price: <field
+                                        name="expected_price" />
                                 </div>
-                                <div class="o_kanban_field">
-                                    selling price:
-                                    <field name="selling_price" />
+                                <div class="o_kanban_field"> selling price: <field
+                                        name="selling_price" />
                                 </div>
                                 <div class="o_kanban_field">
                                     <field name="tag_ids" />
@@ -47,8 +44,8 @@
         </field>
     </record>
 
-    <record id="estate_properties_list_view" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties"
@@ -68,11 +65,11 @@
         </field>
     </record>
 
-    <record id="estate.property_form_view" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+    <record id="estate.property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Truc">
+            <form string="View Form">
                 <header>
                     <button name="action_sold" type="object" string="Sold" class="btn btn-primary"
                         invisible="state != 'accepted'" />
@@ -131,11 +128,11 @@
             </form>
         </field>
     </record>
-    <record id="estate.property_search_view" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+    <record id="estate.property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Tests">
+            <search string="Search Properties">
                 <field name="name" />
                 <field name="postcode" />
                 <field name="expected_price" />

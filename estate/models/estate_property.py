@@ -10,36 +10,51 @@ class Property(models.Model):
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    active = fields.Boolean(default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Type")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    state = fields.Selection(
+        [
+            ("new", "New"),
+            ("received", "Offer Received"),
+            ("accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        default="new",
+    )
+
+    date_availability = fields.Date(string="Available From", default=fields.Date.today() + relativedelta(months=3), copy=False)
+
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
-    postcode = fields.Char()
-    date_availability = fields.Date(string="Available From", default=fields.Date.today() + relativedelta(months=3), copy=False)
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    best_offer = fields.Float(compute="_compute_best_offer")
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True)
+
+    postcode = fields.Char()
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(string="Living Area (sqm)")
-    facades = fields.Integer()
     garage = fields.Boolean()
+    facades = fields.Integer()
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
-    active = fields.Boolean(default=True)
-    state = fields.Selection([("new", "New"), ("received", "Offer Received"), ("accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], default="new")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    living_area = fields.Integer(string="Living Area (sqm)")
     total_area = fields.Float(compute="_compute_total_area")
-    best_offer = fields.Float(compute="_compute_best_offer")
 
     _sql_constraints = [
-        ("positive_expected_price", "CHECK(expected_price > 0)", "The expected price should be stricly positive."),
-        ("positive_selling_price", "CHECK(selling_price > 0)", "The selling price should be strictly positive."),
+        (
+            "positive_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price should be stricly positive.",
+        ),
+        (
+            "positive_selling_price",
+            "CHECK(selling_price > 0)",
+            "The selling price should be strictly positive.",
+        ),
     ]
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_except_property_with_offers(self):
-        if any(property.state != "cancelled" and property.state != "new" for property in self):
-            raise exceptions.UserError("Can't delete a property that have offers, or that isn't cancelled.")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -60,6 +75,18 @@ class Property(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for property in self:
+            if property.state == "sold":
+                if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) > 0:
+                    raise exceptions.ValidationError("We can't sell at a price lower than 90% of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_property_with_offers(self):
+        if any(property.state != "cancelled" and property.state != "new" for property in self):
+            raise exceptions.UserError("Can't delete a property that have offers, or that isn't cancelled.")
+
     def action_sold(self):
         for property in self:
             if property.state == "cancelled":
@@ -73,10 +100,3 @@ class Property(models.Model):
                 raise exceptions.UserError("Sold properties cannot be cancelled.")
             else:
                 property.state = "cancelled"
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        for property in self:
-            if property.state == "sold":
-                if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) > 0:
-                    raise exceptions.ValidationError("We can't sell at a price lower than 90% of the expected price")

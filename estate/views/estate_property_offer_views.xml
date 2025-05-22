@@ -7,8 +7,8 @@
         <field name="domain">[('property_type_id','=', active_id)]</field>
     </record>
 
-    <record id="estate.property_offer_form_view" model="ir.ui.view">
-        <field name="name">estate.property.offer.form</field>
+    <record id="estate.property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Form">
@@ -27,20 +27,22 @@
         </field>
     </record>
 
-    <record id="estate_property_offer_list_view" model="ir.ui.view">
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="List" editable="bottom" 
+            <list string="List" editable="bottom"
                 decoration-success="status == 'accepted'"
                 decoration-danger="status == 'refused'">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="validity" />
                 <field name="date_deadline" />
-                <button name="action_confirm" string="Confirm" type="object" icon="fa-check" invisible="status"/>
-                <button name="action_refuse" string="Refuse" type="object" icon="fa-xmark" invisible="status"/>
-                <field name="status" column_invisible="1"/>
+                <button name="action_confirm" string="Confirm" type="object" icon="fa-check"
+                    invisible="status" />
+                <button name="action_refuse" string="Refuse" type="object" icon="fa-xmark"
+                    invisible="status" />
+                <field name="status" column_invisible="1" />
             </list>
         </field>
     </record>
