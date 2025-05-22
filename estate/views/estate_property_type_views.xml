@@ -24,9 +24,12 @@
             <form string="Property Type">
                 <sheet>
                     <header>
-                        <button type="action" class="oe_stat_button" name="%(estate.property_offer_action)d" icon="fa-money"  >
-                            <field name="offer_count" widget="statinfo" string=""/>
-                            <h5>Offers</h5>
+                        <button name="%(estate.property_offer_action)d" class="oe_stat_button" type="action"  icon="fa-money">
+                            <div class="o_stat_info">
+                                <field name="offer_count"/>
+                                <span class="o_stat_text"> Offers</span>
+                            </div>
+                            
                         </button> 
                     </header>
                     <h1><field name="name" nolabel="True"/></h1>
