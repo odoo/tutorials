@@ -1,4 +1,4 @@
-from odoo import Command, fields, models
+from odoo import Command, models
 
 
 class EstateProperty(models.Model):
@@ -8,8 +8,8 @@ class EstateProperty(models.Model):
         super().sold_property()
         for estateProperty in self:
             if not estateProperty.buyer_id:
-                #Create invoice with no buyer doesn't make sense 
-                #Skip but could raise an error
+                # Create invoice with no buyer doesn't make sense
+                # Skip but could raise an error
                 continue
             selling_price = estateProperty.best_price if estateProperty.best_price > 0.00 else estateProperty.expected_price
             accepted_offer = next(filter(lambda x: x.status == "Accepted", estateProperty.offer_ids), None)

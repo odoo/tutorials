@@ -33,8 +33,8 @@
                 <field name="partner_id" string="Partner" />
                 <field name="validity" string="Validity (days)" />
                 <field name="date_deadline" string="Deadline" />
-                <button name="accept_offer" type="object" icon="fa-check" invisible="status" />
-                <button name="refuse_offer" type="object" icon="fa-close" invisible="status" />
+                <button name="accept_offer" type="object" icon="fa-check" invisible="status" title="Accept Offer" />
+                <button name="refuse_offer" type="object" icon="fa-close" invisible="status" title="Refuse Offer" />
                 <field name="property_type_id" />
             </list>
         </field>
