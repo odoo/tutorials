@@ -42,7 +42,7 @@
                     invisible="status" />
                 <button name="action_refuse" string="Refuse" type="object" icon="fa-xmark"
                     invisible="status" />
-                <field name="status" column_invisible="1" />
+                <field name="status" column_invisible="1" /> <!--We need status field in here because its used to hide buttons-->
             </list>
         </field>
     </record>
