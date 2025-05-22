@@ -25,9 +25,10 @@
       <form string="Estate Property">
         <sheet>
           <group>
-            <h1>
+            <h1 string="Name">
               <field name="name" />
             </h1>
+            <field name="tag_ids" widget="many2many_tags"/>
           </group>
 
           <group>
@@ -38,6 +39,7 @@
             </group>
             <group>
               <field name="expected_price" />
+              <field name="best_price" string="Best Offer"/>
               <field name="selling_price" />
             </group>
           </group>
@@ -54,6 +56,18 @@
                 <field name="garden" string="Garden"/>
                 <field name="garden_area" string="Garden Area(sqm)"/>
                 <field name="garden_orientation" string="Garden Orientation"/>
+                <field name="total_area" string="Total Area(sqm)"/>
+              </group>
+            </page>
+            <page string="Offers">
+              <group>
+                <field name="offer_ids" widget="one2many" options="{'no_create': True, 'no_quick_create': True, 'no_create_edit': True}" />
+              </group>
+            </page>
+            <page string="Other Info">
+              <group>
+                <field name="user_id" string="Salesperson"/>
+                <field name="buyer_id" string="Buyer"/>
               </group>
             </page>
           </notebook>
@@ -68,6 +82,7 @@
     <field name="arch" type="xml">
       <list string="Estate Properties">
         <field name="name" string="Title"/>
+        <field name="property_type_id" />
         <field name="postcode" />
         <field name="bedrooms" />
         <field name="living_area" string="Living Area(sqm)"/>
@@ -79,7 +94,7 @@
   </record>
 
   <record id="test_record" model="ir.actions.act_window">
-    <field name="name">Test</field>
+    <field name="name">Properties</field>
     <field name="res_model">estate.property</field>
     <field name="view_mode">list,form</field>
   </record>
