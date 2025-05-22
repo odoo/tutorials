@@ -1,7 +1,5 @@
 from odoo import api, fields, models, exceptions, tools
-from dateutil.relativedelta import relativedelta
-
-
+from datetime import timedelta
 class Estate_property(models.Model):
     _name = "estate.property"
     _description = "Model to modelize Real Estate objects"
@@ -10,7 +8,7 @@ class Estate_property(models.Model):
     name = fields.Char(string="Name", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Datetime(copy=False, default=fields.date.today() + relativedelta(months=3))
+    date_availability = fields.Datetime(copy=False, default=fields.date.today() + timedelta(days=90))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -41,7 +39,7 @@ class Estate_property(models.Model):
     best_offer_price = fields.Float(compute="_compute_best_offer")
 
     _sql_constraints = [
-        ('positive_expected_price', 'CHECK(expected_price >=0)', 'The Property\'s expected price must be positive.'),
+        ('positive_expected_price', 'CHECK(expected_price >0)', 'The Property\'s expected price must be positive.'),
         ('positive_selling_price', 'CHECK(selling_price >=0)', 'The Property\'s selling price must be positive.')
     ]
 
@@ -53,12 +51,15 @@ class Estate_property(models.Model):
     @api.depends("property_offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer_price = max(p.price for p in record.property_offer_ids) if record.property_offer_ids else 0
+            if(record.state in ['offer_accepted', 'sold']):
+                record.best_offer_price = max(record.property_offer_ids.mapped("price"))
+            else:
+                record.best_offer_price = 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0
-        self.garden_orientation = "north" if self.garden else None
+        self.garden_orientation = "north" if self.garden else False
 
     def sell_property(self):
         for record in self:
@@ -74,20 +75,14 @@ class Estate_property(models.Model):
             record.state = "cancelled"
         return True
 
-    def has_accepted_offer(self):
-        for record in self:
-            if (list(filter(lambda offer: offer.status == "accepted", record.property_offer_ids))):
-                return True
-        return False
-
-    @api.onchange("expected_price")
+    @api.constrains("expected_price", "selling_price")
     def _onchange_expected_price(self):
-        if (self.has_accepted_offer()):
+        if (self.state in ['offer_accepted', 'sold']):
             if (tools.float_utils.float_compare(self.expected_price * 90 / 100, self.selling_price, 2) > 0):
                 raise exceptions.ValidationError("The selling price must be equal or higher than 90% of the selling price.")
 
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_user_inactive(self):
+    def unlink(self):
         for record in self:
-            if (not record.state in ['new', 'cancelled']):
-                raise exceptions.UserError("Only new or cancelled Property can be deleted.")
+            if record.state not in ['new', 'cancelled']:
+                raise exceptions.UserError("Only new or cancelled properties can be deleted.")
+        return super().unlink()
