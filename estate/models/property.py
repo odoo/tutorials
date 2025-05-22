@@ -5,6 +5,7 @@ from odoo import fields, models, api, exceptions, tools
 class Property(models.Model):
     _name = "estate.property"
     _description = "this is a estate_property"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
@@ -59,6 +60,11 @@ class Property(models.Model):
             self.garden_area = None
             self.garden_orientation = None
 
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        if self.state == 'new' and len(self.offer_ids) > 0:
+            self.state = 'received'
+
     def sold_button_action(self):
         for record in self:
             if record.state == "cancelled":
@@ -79,3 +85,8 @@ class Property(models.Model):
             if tools.float_utils.float_compare(record.expected_price * .9, record.selling_price, precision_rounding=.01) > 0:
                 raise exceptions.ValidationError('The selling price should be at least 90% of the expected price.'
                                                  'Lower the expected price if you want to accept the offer.')
+    @api.ondelete(at_uninstall=False)
+    def _check_state(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise exceptions.UserError("Only new and cancelled propoerties can be deleted!")
