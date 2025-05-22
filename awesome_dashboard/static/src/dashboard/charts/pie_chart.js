@@ -27,10 +27,6 @@ export class PieChart extends Component {
         }
     }
 
-    /**
-     * Instantiates a Chart (Chart.js lib) to render the graph according to
-     * the current config.
-     */
     renderChart() {
         if (this.chart) {
             this.chart.destroy();

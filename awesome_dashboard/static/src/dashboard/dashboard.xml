@@ -14,42 +14,11 @@
                 </div>
             </t>
             <div class="o_dashboard_items">
-                <AwesomeDashboardItem>
-                    <div class="text-center">
-                        <div class="fs-3">Average amount of t-shirt by order this month</div>
-                        <div class="text-success fs-1" t-esc="data.average_quantity" />
-                    </div>
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem size="3">
-                    <div class="text-center">
-                        <div class="fs-3">Average time for an order to go from 'new' to 'sent' or 'cancelled'</div>
-                        <div class="text-success fs-1" t-esc="data.average_time" />
-                    </div>
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem>
-                    <div class="text-center">
-                        <div class="fs-3">Number of new orders this month</div>
-                        <div class="text-success fs-1" t-esc="data.nb_new_orders" />
-                    </div>
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem size="2">
-                    <div class="text-center">
-                        <div class="fs-3">Number of cancelled orders this month</div>
-                        <div class="text-success fs-1" t-esc="data.nb_cancelled_orders" />
-                    </div>
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem size="2">
-                    <div class="text-center">
-                        <div class="fs-3">Total amount of new orders this month</div>
-                        <div class="text-success fs-1" t-esc="data.total_amount" />
-                    </div>
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem size="1.5">
-                    <div class="text-center">
-                        <div class="fs-3">Shirt orders by size</div>
-                        <PieChart data="data.orders_by_size.data" options="data.orders_by_size.options" />
-                    </div>
-                </AwesomeDashboardItem>
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <AwesomeDashboardItem size="item.size">
+                        <t t-component="item.Component" t-props="item.props(stats)" />
+                    </AwesomeDashboardItem>
+                </t>
             </div>
         </Layout>
     </t>
