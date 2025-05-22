@@ -8,7 +8,7 @@ class EstateModel(models.Model):
 
     def action_set_sold(self):
         self.check_access("write")
-        if super().action_sold() is True:
+        if super().action_set_sold() is True:
             invoice_vals = self._prepare_invoice()
             self.env["account.move"].sudo().create(invoice_vals)
 

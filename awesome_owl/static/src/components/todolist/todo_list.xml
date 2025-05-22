@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+  <t t-name="awesome_owl.todoList">
+    <div class="border rounded shadow-sm bg-white overflow-hidden">
+      
+      <!-- Header with task count -->
+      <div class="d-flex justify-content-between align-items-center p-3 border-bottom bg-light">
+        <h4 class="text-primary fw-semibold m-0">📝 Todo List</h4>
+        <span class="badge bg-primary rounded-pill">
+          <t t-esc="todos.length"/> Task<t t-if="todos.length !== 1">s</t>
+        </span>
+      </div>
+
+      <!-- Input Field -->
+      <div class="px-3 pt-3">
+        <input 
+          type="text" 
+          t-ref="input"
+          class="form-control form-control-lg"
+          placeholder="What do you need to do?"
+          t-on-keyup="addTodo"
+        />
+      </div>
+
+      <!-- Todo Items -->
+      <div class="px-3 pt-3 pb-3">
+        <t t-if="todos.length === 0">
+          <p class="text-center text-muted fst-italic">No tasks yet. Add one above ⬆️</p>
+        </t>
+        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+          <TodoItem todo="todo" toggleState="toggleTodo" removeTodo="removeTodoItem"/>
+        </t>
+      </div>
+    </div>
+  </t>
+</templates>

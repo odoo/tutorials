@@ -30,7 +30,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean(string="Garage")
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Float(string="Garden Area (sqm)")
-    best_price = fields.Float("Best Offer", compute="_compute_best_price", store=True)
+    best_price = fields.Float("Best Offer", compute="_compute_best_price")
     # Selection Fields
     garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')], string='Garden Orientation')
     state = fields.Selection(
@@ -62,7 +62,7 @@ class EstateProperty(models.Model):
     string="Offers"
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area', store=True, help='Sum of living area and garden area')
+    total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area', help='Sum of living area and garden area')
     company_id = fields.Many2one(
         'res.company', 
         string='Company', 
