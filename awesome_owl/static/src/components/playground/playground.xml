@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-name="awesome_owl.playground">
+    <div class="container my-5">
+      
+      <!-- 🧮 Counter Playground -->
+      <section class="mb-5">
+        <h1 class="text-center mb-4 text-primary fw-bold">🧮 Owl Counter Playground</h1>
+        <div class="d-flex justify-content-center gap-4 flex-wrap">
+          <Counter title="'Counter 1'" onChange="(val)=>calculateSum('counter1', val)"/>
+          <Counter title="'Counter 2'" onChange="(val)=>calculateSum('counter2', val)"/>
+        </div>
+        <p class="text-center mt-3 fs-5">
+          <strong class="text-success">The sum is:</strong>
+          <span class="text-dark"><t t-esc="state.sum"/></span>
+        </p>
+      </section>
+
+      <!-- 🃏 Static Card Section -->
+      <section class="mb-5">
+        <h2 class="text-center mb-4 text-info">🃏 Dynamic Cards (Loop)</h2>
+        <div class="d-flex justify-content-center flex-wrap">
+          <t t-foreach="cards" t-as="card" t-key="card.title">
+            <Card title="card.title">
+              <p class="text-secondary"><t t-esc="card.content"/></p>
+            </Card>
+          </t>
+        </div>
+      </section>
+
+      <!-- 🧩 Slot-based Cards -->
+      <section class="mb-5">
+        <h2 class="text-center mb-4 text-warning">🧩 Custom Cards with Slots</h2>
+        <div class="d-flex justify-content-center flex-wrap gap-3">
+          <Card title="'Counter Card'">
+            <Counter title="'Card Counter'" onChange="(val)=>console.log('CardCounter:', val)"/>
+          </Card>
+
+          <Card title="'Welcome Card'">
+            <div class="text-dark">
+              <h5>Hello Owl 🦉!</h5>
+              <p>This is a card with <strong>custom slot content</strong>.</p>
+            </div>
+          </Card>
+
+          <Card title="'Info Card'">
+            <ul class="list-unstyled text-muted">
+              <li>✅ Uses Bootstrap styling</li>
+              <li>🎨 Supports any component inside</li>
+              <li>🧩 Built using <code>&lt;t-slot&gt;</code></li>
+            </ul>
+          </Card>
+        </div>
+      </section>
+
+      <!-- ✅ Todo List Section -->
+      <section class="mb-5">
+        <h2 class="text-center mb-4 text-success">✅ Your Task List</h2>
+        <div class="card p-4 shadow-lg border-0 bg-light">
+          <TodoList />
+        </div>
+      </section>
+    </div>
+  </t>
+</templates>

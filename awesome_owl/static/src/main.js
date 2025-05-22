@@ -1,6 +1,8 @@
 import { whenReady } from "@odoo/owl";
 import { mountComponent } from "@web/env";
-import { Playground } from "./playground";
+import { Playground } from "./components/playground/playground";
+import "@web/core/assets";
+
 
 const config = {
     dev: true,

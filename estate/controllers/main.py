@@ -6,14 +6,14 @@ class EstateWebsiteController(http.Controller):
     @http.route('/properties', type='http', auth='public', website=True)
     def list_properties(self, min_price=0, max_price=0, **kwargs):
         domain = []
-        try:
-            min_price = float(min_price)
-        except (ValueError, TypeError):
-            min_price = 0
-        try:
-            max_price = float(max_price)
-        except (ValueError, TypeError):
-            max_price = 0
+        # try:
+        #     min_price = float(min_price)
+        # except (ValueError, TypeError):
+        #     min_price = 0
+        # try:
+        #     max_price = float(max_price)
+        # except (ValueError, TypeError):
+        #     max_price = 0
 
         if min_price:
             domain.append(('selling_price', '>=', min_price))

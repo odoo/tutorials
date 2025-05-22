@@ -9,6 +9,8 @@ class EstateTestCase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        
+        cls.property_type = cls.env["estate.property.type"].create({"name": "House Test Type"})
 
         cls.properties = cls.env["estate.property"].create(
             [
@@ -17,12 +19,14 @@ class EstateTestCase(TransactionCase):
                     "description": "Test Description",
                     "expected_price": 100000,
                     "living_area": 50,
+                     "property_type_id": cls.property_type.id,
                 },
                 {
                     "name": "Garden Test Property",
                     "description": "Test Description Garden",
                     "expected_price": 200000,
                     "living_area": 100,
+                    "property_type_id": cls.property_type.id,
                 },
             ]
         )
