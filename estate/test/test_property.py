@@ -39,7 +39,9 @@ class EstatePropertyTest(TransactionCase):
             },
         )
 
+        # Verify first offer was created and state changed
         self.assertEqual(self.test_property.state, "offer_received")
+        self.assertEqual(first_offer.price, 90000)
 
         second_offer = self.env["estate.property.offer"].create(
             {
@@ -49,8 +51,9 @@ class EstatePropertyTest(TransactionCase):
             },
         )
 
+        # Verify both offers exist and second offer is higher
         self.assertEqual(len(self.test_property.offer_ids), 2)
-
+        self.assertGreater(second_offer.price, first_offer.price)
         self.assertEqual(self.test_property.best_price, 110000)
 
     def test_accept_offer_and_sell(self):
