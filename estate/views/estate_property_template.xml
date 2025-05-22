@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="estate_property_template" name="Properties_grid">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1 class="mb-4">Available Properties</h1>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <input type="text" id="property_name" name="property_name" class="form-control" placeholder="Search by property name" t-att-value="property_name"/>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary" onclick="window.location.href='/properties?property_name=' + document.getElementById('property_name').value;">
+                            Search
+                        </button>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <input type="date" id="listed_after" name="listed_after" class="form-control" t-att-value="listed_after"/>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary" onclick="window.location.href='/properties?listed_after=' + document.getElementById('listed_after').value;">
+                            Listed After
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <t t-foreach="properties" t-as="prop">
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <img t-if="prop.property_image" class="card-img-top" t-att-src="image_data_uri(prop.property_image)" style="height: 200px; object-fit: cover;" alt="Property Image"></img>
+                                <div class="card-body">
+                                    <h5 class="card-title" t-field="prop.name"></h5>
+                                    <p class="card-text">
+                                        Expected Price: <span t-field="prop.expected_price"></span>
+                                    </p>
+                                    <p class="card-text">
+                                        Date: <span t-field="prop.create_date"></span>
+                                    </p>
+                                    <p class="card-text" t-if="prop.state == 'offer_received'">
+                                        Best offer: <span t-field="prop.best_price"></span>
+                                    </p>
+                                    <p class="card-text" t-if="prop.state == 'offer_accepted'">
+                                        Selling Price: <span t-field="prop.selling_price"></span>
+                                    </p>
+                                    <a t-att-href="'/property/%s' % prop.id" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <div>
+                        <t t-call="portal.pager"/>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
