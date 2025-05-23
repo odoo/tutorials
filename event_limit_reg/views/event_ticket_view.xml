@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_event_event_ticket_form_custom" model="ir.ui.view">
+        <field name="name">event.event.ticket.form.inherit.custom</field>
+        <field name="model">event.event.ticket</field>
+        <field name = "inherit_id" ref = "event.event_event_ticket_view_tree_from_event"/>
+        <field name = "arch" type = "xml">
+            <xpath expr="//list" position="inside">
+                <field name="max_registration_per_user_limit"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
