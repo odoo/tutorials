@@ -4,9 +4,10 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 
-class EstatePropertyTag(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "real esate properties offers"
+    _order = "price desc"
 
     price = fields.Float('Price')
     status = fields.Selection(
@@ -22,6 +23,7 @@ class EstatePropertyTag(models.Model):
     )
     partner_id = fields.Many2one('res.partner', 'Partner', required=True)
     property_id = fields.Many2one('estate.property', 'Property', required=True)
+    property_type_id = fields.Many2one('estate.property.type', 'Property Type')
 
     validity = fields.Integer('Validity (Days)', default=7)
     date_deadline = fields.Date('Deadline', compute="_compute_deadline", inverse="_inverse_deadline")
@@ -82,9 +84,4 @@ class EstatePropertyTag(models.Model):
             min_acceptable_price = expected_price * 0.9
 
             if float_compare(record.price, min_acceptable_price, precision_digits=2) < 0:
-                raise ValidationError(
-                    _(
-                        "Offer rejected: The proposed price must be at least 90%% of the property's expected price "
-                        "(minimum required: $%.2f)."
-                    ) % min_acceptable_price
-                )
+                raise ValidationError(_("Offer rejected: The proposed price must be at least 90%% of the property's expected price "))
