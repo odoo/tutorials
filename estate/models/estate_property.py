@@ -61,8 +61,8 @@ class EstateProperty(models.Model):
     @api.onchange("garden")
     def _onchange_garden(self):
         for record in self:
-            record.garden_area = 10 if record.garden else False 
-            record.garden_orientation = "north" if record.garden else False 
+            record.garden_area = 10 if record.garden else False
+            record.garden_orientation = "north" if record.garden else False
 
     def action_sold(self):
         for record in self:
