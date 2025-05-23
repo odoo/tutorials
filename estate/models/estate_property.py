@@ -115,6 +115,7 @@ class EstateProperty(models.Model):
             record.state = 'sold'
         return True
     # === Deletion Rule ===
+    
     @api.ondelete(at_uninstall=False)
     def _check_state_before_deletion(self):
         for prop in self:

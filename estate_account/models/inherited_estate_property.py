@@ -5,8 +5,7 @@ class EstateModel(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        self.check_access_rights('write')
-        self.check_access_rule('write')
+        self.check_access('write')
         for order in self:
             invoice_vals = order._prepare_invoice()
             self.env["account.move"].sudo().create(invoice_vals)
