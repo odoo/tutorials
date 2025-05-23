@@ -1,0 +1,60 @@
+<odoo>
+    <template id="property_listing" name="Property Listings">
+        <t t-call="website.layout">
+          <div class="container mt-5">
+            <h1 class="mb-4">Available Properties</h1>
+      
+            <!-- Filter Form -->
+            <form method="get" class="row g-3 mb-4">
+              <div class="col-md-4">
+                <input type="number" name="min_price" class="form-control" placeholder="Min Price" t-att-value="request.params.get('min_price', '')"/>
+              </div>
+              <div class="col-md-4">
+                <input type="number" name="max_price" class="form-control" placeholder="Max Price" t-att-value="request.params.get('max_price', '')"/>
+              </div>
+              <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+              </div>
+            </form>
+      
+            <!-- Property Cards -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+              <t t-foreach="properties" t-as="property">
+                <div class="col">
+                  <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                      <h5 class="card-title">
+                        <a t-attf-href="/properties/{{ property.id }}" class="text-decoration-none">
+                          <t t-esc="property.name"/>
+                        </a>
+                      </h5>
+                      <p class="card-text">Price: <strong><t t-esc="property.selling_price"/></strong></p>
+                      <p class="card-text">Bedrooms: <t t-esc="property.bedrooms"/></p>
+                      <p class="card-text">Living Area: <t t-esc="property.living_area"/> m²</p>
+                    </div>
+                  </div>
+                </div>
+              </t>
+            </div>
+          </div>
+        </t>
+      </template>
+      
+    <template id="property_detail" name="Property Detail">
+        <t t-call="website.layout">
+          <div class="container mt-5">
+            <div class="card shadow p-4">
+              <h1 class="mb-3"><t t-esc="property.name"/></h1>
+              <p><strong>Price:</strong> <t t-esc="property.selling_price"/></p>
+              <p><strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/></p>
+              <p><strong>Living Area:</strong> <t t-esc="property.living_area"/> m²</p>
+              <p><strong>Garden:</strong> <t t-esc="property.garden and 'Yes' or 'No'"/></p>
+              <p><strong>Description:</strong> <t t-esc="property.description"/></p>
+              <a href="/properties" class="btn btn-outline-secondary mt-3">← Back to Listings</a>
+            </div>
+          </div>
+        </t>
+      </template>
+      
+  </odoo>
+  
