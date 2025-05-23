@@ -30,7 +30,7 @@ class estateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     _sql_constraints = [
         ("check_expected_price", "CHECK(expected_price >= 0)", "Expected price must not be negative"),
-        ("check_selling_price", "CHECK(selling_price >= 0)", "Sale price must not be negative") # Should not be necessary, as offers are already constrained, but it's safer to make sure.
+        ("check_selling_price", "CHECK(selling_price >= 0)", "Sale price must not be negative")  # Should not be necessary, as offers are already constrained, but it's safer to make sure.
     ]
 
     @api.depends("living_area", "garden_area")
