@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(default=datetime.now() + relativedelta(months=3), copy=False)
+    date_availability = fields.Date(default=fields.Date.today()+ relativedelta(months=3), copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -53,11 +53,11 @@ class EstateProperty(models.Model):
          'The selling price of a property should be positive')
     ]
 
-    @api.constrains('selling_price')
+    @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):
-                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
+                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
                     raise ValidationError("The selling price cannot be less than 90% of the expected price")
 
     # Compute Methods
@@ -82,13 +82,13 @@ class EstateProperty(models.Model):
         # clear values
         else:
             self.garden_area = 0
-            self.garden_orientation = None
+            self.garden_orientation = False
 
     # CRUD methods
     @api.ondelete(at_uninstall=False)
     def _chek_state(self):
         for record in self:
-            if record.state != 'new' and record.state != 'canceled':
+             if record.state in ['new', 'canceled']:
                 raise exceptions.UserError("A property must be newly created or canceld to be deleted")
 
     # Buttons methods

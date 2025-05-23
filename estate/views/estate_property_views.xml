@@ -13,7 +13,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" decoration-success="state=='offer_received' or state=='offer_accepted'" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
+            <list string="Properties" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
                 <field name="name"/>
                 <field name="property_type_id" string="Property Type"/>
                 <field name="postcode"/>
@@ -32,7 +32,7 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="set_canceled" type="object" string="Cancel" invisible="state=='canceled' or state=='sold'"/>
+                    <button name="set_canceled" type="object" string="Cancel" invisible="state in ['canceled', 'sold']"/>
                     <button name="set_sold" type="object" string="Sold" invisible="state=='canceled' or state=='sold'"/>
                     <field name="state" widget="statusbar"/>
             </header>
@@ -69,9 +69,7 @@
                         </page>
 
                         <page string="Offers">
-                            <group>
                                 <field name="offer_ids" readonly="state=='canceled' or state=='sold' or state=='offer_accepted'"/>
-                            </group>
                         </page>
 
                         <page string="Other Info">

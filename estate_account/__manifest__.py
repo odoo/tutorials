@@ -1,7 +1,6 @@
 {
     'name': 'estate_account',
     'depends': [
-        'base',
         'account',
         'estate'
     ],

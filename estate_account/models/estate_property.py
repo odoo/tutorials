@@ -5,7 +5,6 @@ class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def set_sold(self):
-        # print("test")
         if not self.buyer_id:
             raise exceptions.UserError("A buyer is needed to sell a property")
 

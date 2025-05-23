@@ -15,7 +15,7 @@ class PropertyOffer(models.Model):
     property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", store=True)
 
     validity = fields.Integer(default=7)
-    date_deadline = fields.Datetime(compute="_compute_deadline", inverse="_inverse_deadline")
+    date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
 
     # Constraints
     _sql_constraints = [
@@ -34,14 +34,15 @@ class PropertyOffer(models.Model):
 
     def _inverse_deadline(self):
         for record in self:
-            record.validity = (record.date_deadline - record.create_date).days
+            if record.create_date:
+                record.validity = (record.date_deadline - record.create_date.date()).days
 
     # CRUD methods
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
             prop = self.env['estate.property'].browse(vals['property_id'])
-            if float_compare(vals['price'], prop.best_price, precision_digits=2) == -1:
+            if float_compare(vals['price'], prop.best_price, precision_digits=2) < 0:
                 raise exceptions.UserError("Cannot create an offer with a lower amount than an existing offer")
             prop.state = 'offer_received'
 

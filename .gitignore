@@ -132,3 +132,6 @@ dmypy.json
 #pre commit
 .pre-commit-config.yaml
 ruff.toml
+
+
+.vscode/
