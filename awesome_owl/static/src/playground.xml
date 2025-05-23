@@ -4,7 +4,13 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
 
-            <!-- <Counter/> -->
+            <Counter id="1" val="state.counter1" callback.bind="increment_counters"/>
+            <Counter id="2" val="state.counter2" callback.bind="increment_counters"/>
+                
+            <div> 
+                sum = <t t-esc="sum_counters"/>
+            </div>
+
             <Card title="'Hello'" content="'World'"/>
             <Card title="'This is'" content="'a card'"/>
 

@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.counter">
-        <p>Counter: <t t-esc="state.value"/></p>
+        <p>Counter: <t t-esc="props.val"/></p>
         <button class="btn btn-primary" t-on-click="increment">Increment</button>
     </t>
 

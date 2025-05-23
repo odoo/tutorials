@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, markup} from "@odoo/owl";
+import { Component, markup, useState} from "@odoo/owl";
 
 import { Counter } from "./counter";
 import { Card } from "./card";
@@ -9,11 +9,27 @@ import { Card } from "./card";
 export class Playground extends Component {
     static template = "awesome_owl.playground";
 
+    static components = { Counter, Card }
+
     title = "<div style='color:blue'> Title </div>"
     content = "<div style='color:blue'> content </div>"
-
+    
     safe_title = markup("<div style='color:blue'> Title </div>")
     safe_content = markup("<div style='color:blue'> content </div>")
 
-    static components = { Counter, Card }
+
+    setup() {
+        this.state = useState({ 
+            counter1: 0, 
+            counter2: 0,
+        });
+    }
+
+    get sum_counters() {
+        return this.state.counter1 + this.state.counter2
+    }
+
+    increment_counters(counter_number) {
+        counter_number == 1 ? this.state.counter1++ : this.state.counter2++ 
+    }
 }
