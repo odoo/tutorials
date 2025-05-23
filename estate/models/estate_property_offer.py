@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyTag(models.Model):
@@ -24,6 +25,10 @@ class EstatePropertyTag(models.Model):
 
     validity = fields.Integer('Validity (Days)', default=7)
     date_deadline = fields.Date('Deadline', compute="_compute_deadline", inverse="_inverse_deadline")
+
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', 'An offer price must be strictly positive!'),
+    ]
 
     @api.depends('validity')
     def _compute_deadline(self):
@@ -69,3 +74,17 @@ class EstatePropertyTag(models.Model):
 
             record.status = 'pending'
         return True
+
+    @api.constrains('price')
+    def _check_minimum_price(self):
+        for record in self:
+            expected_price = record.property_id.expected_price
+            min_acceptable_price = expected_price * 0.9
+
+            if float_compare(record.price, min_acceptable_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    _(
+                        "Offer rejected: The proposed price must be at least 90%% of the property's expected price "
+                        "(minimum required: $%.2f)."
+                    ) % min_acceptable_price
+                )
