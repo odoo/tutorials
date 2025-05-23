@@ -3,7 +3,7 @@
         <field name="name">estate.main.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Channel" decoration-success="state in ['offer received', 'offer accepted']"  decoration-bf="state=='offer accepted'">
                 <field name="name"/>
                 <field name="last_seen"/>
                 <field name="bedrooms"/>
@@ -23,7 +23,7 @@
             <header>
                 <button name="action_property_sold" type="object" string="SOLD" invisible="state in ['sold', 'cancelled']"/>
                 <button name="action_property_cancelled" type="object" string="CANCELLED" invisible="state in ['sold', 'cancelled']"/>
-                <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold" options="{'clickable': 1}"/>
+                <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted,sold"/>
             </header>
                 <sheet>
                     <h1 class="oe_title">
@@ -81,6 +81,7 @@
         <field name="arch" type="xml">
             <search string="Search Estates">
                 <field name="name"/>
+                <field name="living_area" string="filter on living area size" filter_domain="[('living_area', '>=', self)]"/>
                 <filter string="Available" name="available" domain="[('state', 'not in', ['sold','cancelled','offer_accepted'] )]"/>
                 <filter string="Garage" name="garage" domain="[('garage', '!=', True )]"/>
                 <group expand="True" string="Group By">
@@ -95,5 +96,6 @@
         <field name='name'>property_action</field>
         <field name='res_model'>estate.property</field>
         <field name='view_mode'>list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 </odoo>

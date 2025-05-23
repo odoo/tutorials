@@ -23,6 +23,7 @@ class EstateOffer(models.Model):
         ],
         default='pending',
     )
+    property_type_id = fields.Many2one(related='property_id.property_type_id')
 
     _sql_constraints = [('price', 'CHECK(price >= 0 )', 'A price should always be possitive')]
 
@@ -30,7 +31,6 @@ class EstateOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             record.date_deadline = (record.create_date or fields.Date.today()) + relativedelta(days=record.validity)
-
 
     def _inverse_date(self):
         for record in self:

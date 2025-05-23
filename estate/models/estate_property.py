@@ -42,8 +42,8 @@ class Estate(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled'),
         ],
-        default='new',
         readonly=True,
+        default='new'
     )
 
     _sql_constraints = [
@@ -57,14 +57,11 @@ class Estate(models.Model):
             record.total_area = record.living_area + record.garden_area
 
     @api.onchange('offer_ids')
-    def _onchange_status(self):
-        for record in self:
-            if record.state not in ['offer accepted', 'sold', 'cancelled']:
-                all_status = record.offer_ids.mapped('status')
-                new_state = 'new'
-                if all_status:
-                    new_state = 'offer received'
-            record.state = new_state
+    def _onchange_offer_ids(self):
+        if self.state == 'new':
+            if len(self.offer_ids):
+                self.state = 'offer received'
+                self._origin.state = 'offer received'  #error,  didn't found the source, fix, I'm a bugfixer
 
     @api.depends('offer_ids')
     def _compute_best_offer(self):

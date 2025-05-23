@@ -1,13 +1,14 @@
 <odoo>
+
+
     <record id="estate_offer_list_view_tree" model="ir.ui.view">
         <field name="name">estate.offer.main.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Channel">
+            <list string="Channel" editable="top" decoration-success="status=='accepted'" decoration-bf="status=='accepted'" decoration-muted="status=='sold'">
                 <field name="property_id"/>
                 <field name="partner_id"/>
                 <field name="price"/>
-                <field name="status"/>
                 <button name="action_accept_offer" title="allows to accept an offer" type="object" class="fa fa-check" invisible="status in ['accepted', 'refused']"/>
                 <button name="action_refuse_offer" title="allows to refuse an offer" type="object" class="fa fa-times" invisible="status in ['accepted', 'refused']"/>
             </list>
