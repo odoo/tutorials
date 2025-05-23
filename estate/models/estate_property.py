@@ -90,7 +90,7 @@ class EstateProperty(models.Model):
     def _onchange_received_offer(self):
         if len(self.estate_offer_ids) == 1 and self.status == 'new':
             self.status = 'offer received'
-        
+
     def action_cancel(self):
         if self.status == 'sold':
             raise exceptions.UserError('A sold property cannot be cancelled')
