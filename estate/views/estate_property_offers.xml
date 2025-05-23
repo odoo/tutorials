@@ -10,6 +10,9 @@
                     <field name='status'/>
                     <field name='validity'/>
                     <field name='date_deadline'/>
+                    <button name="action_to_accept" icon="fa-check" type="object" title="Accept" invisible="status != 'pending'"/>
+                    <button name="action_to_refuse" icon="fa-times" type="object" title="Refused" invisible="status != 'pending'"/>
+                    <button name="action_to_undo" icon="fa-undo" type="object" title="Revert" invisible="status == 'pending'"/>
                 </list>
             </field>
     </record>

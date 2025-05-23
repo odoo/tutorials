@@ -1,6 +1,6 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -35,11 +35,12 @@ class EstateProperty(models.Model):
         string='Property State',
         selection=[
             ('new', 'New'),
-            ('offer Received', 'Offer Received'),
-            ('offer Accepted', 'Offer Accepted'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
+        default='new'
     )
 
     Property_type_id = fields.Many2one('estate.property.type', 'Property Type')
@@ -58,7 +59,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            if record.offer_ids and record.offer_ids.price:
+            if record.offer_ids:
                 record.best_offer = max(record.offer_ids.mapped('price'))
             else:
                 record.best_offer = 0
@@ -71,3 +72,30 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def unlink(self):
+        if any(record.state not in ('new', 'cancelled') for record in self):
+            raise UserError(_('Only properties in "New" or "Cancelled" state can be deleted.'))
+        return super().unlink()
+    
+    def action_to_sell(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(_('This property is already taken.'))
+            if record.state == 'cancelled':
+                raise UserError(_('Property is no longer listed'))
+            if record.state != 'offer_accepted':
+                raise UserError(_('No offers to accept'))
+
+            record.state = 'sold'
+        return True
+
+    def action_to_cancel(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError(_('This Property is already cancelled.'))
+            if record.state == 'sold':
+                raise UserError(_('Property already sold cannot cancel it.'))
+
+            record.state = 'cancelled'
+        return True
