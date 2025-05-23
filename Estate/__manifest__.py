@@ -16,10 +16,12 @@
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_views.xml',
+        'views/estate_property_user_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_menus.xml',
 
     ],
+    'license': 'AGPL-3',
     'installable': True,
     'application': True,
     'auto_install': False

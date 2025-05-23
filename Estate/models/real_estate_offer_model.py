@@ -46,3 +46,15 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             record.status = "refused"
+
+    @api.model
+    def create(self, vals):
+        new_offer = super(EstatePropertyOffer, self).create(vals)
+        propertyID = self.env['estate_property'].browse(vals['property_id'])
+        print(type(propertyID))
+        print(propertyID)
+        if new_offer.price < propertyID.best_offer:
+            raise UserError("The offer must be higher than " + str(propertyID.best_offer))
+
+        return new_offer
+

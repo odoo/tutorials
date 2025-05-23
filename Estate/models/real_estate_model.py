@@ -42,13 +42,14 @@ class EstateProperty(models.Model):
     _order = 'id desc'
 
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)','The expected price must be strictly positive.'),
-        ('check_selling_price', 'CHECK(selling_price > 0)','The selling price must be strictly positive.'),
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must be strictly positive.'),
     ]
+
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if float_compare(record.selling_price, (record.expected_price/10)*9, 4) == -1:
+            if float_compare(record.selling_price, (record.expected_price/ 10)* 9, 4) == -1:
                 raise ValidationError("The selling price must be at least 90% of the expected price.")
 
     @api.depends("living_area", "garden_area")
@@ -63,7 +64,6 @@ class EstateProperty(models.Model):
                 record.best_offer = max(record.offer_ids.mapped("price"))
             else:
                 record.best_offer = 0
-
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -96,3 +96,10 @@ class EstateProperty(models.Model):
             self.state = 'offer_received'
         else:
             self.state = 'new'
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete(self):
+        for record in self:
+            if record.state != 'new' and record.state != 'cancelled':
+                raise UserError("Only new and cancelled properties can be deleted.")
+
