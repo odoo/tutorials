@@ -12,6 +12,9 @@
             <Card title="raw_card_title" text="raw_card_text"/>
             <Card title="card_title" text="card_text"/>
         </div>
+        <div>
+            <TodoList/>
+        </div>
     </t>
 
 </templates>
