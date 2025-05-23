@@ -66,9 +66,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <group>
-                                <field name="offer_ids" string='' readonly="state in ['accepted', 'sold', 'canceled']"/>
-                            </group>
+                            <field name="offer_ids" readonly="state in ['accepted', 'sold', 'canceled']"/>
                         </page>
                     </notebook>
                 </sheet>
