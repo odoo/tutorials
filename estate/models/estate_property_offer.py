@@ -1,5 +1,6 @@
 from datetime import timedelta, datetime
 from odoo import fields, models, api
+from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -57,3 +58,13 @@ class EstatePropertyOffer(models.Model):
             if not offer.status == 'refused':
                 offer.property_id._notify_offer_refused(offer)
         return True
+
+    # CRUD overrides
+    @api.model_create_multi
+    def create(self, vals):
+        for offer in vals:
+            associated_property = self.env['estate.property'].browse(offer['property_id'])
+            if offer['price'] < associated_property.best_price:
+                raise ValidationError("You can't create an offer with a lower amount than an existing offer")
+            associated_property._notify_offer_received(offer)
+        return super().create(vals)

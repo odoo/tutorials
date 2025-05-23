@@ -67,7 +67,7 @@ class EstateProperty(models.Model):
                 continue
             comparing_result = tools.float_compare(property.selling_price, 0.9 * property.expected_price, precision_digits=6)
             if comparing_result < 0:
-                raise ValidationError("The selling price can't be less than 90% of the expected price.")
+                raise ValidationError("Can't accept an offer with an amount less than 90% of the expected price.")
 
     @api.depends('offer_ids')
     def _get_best_price(self):
@@ -96,7 +96,13 @@ class EstateProperty(models.Model):
         for property in self:
             if property.state == 'cancelled':
                 raise ValidationError("cancelled properties can't be set to `sold`.")
-            property.state = 'sold'
+            if property.state != 'offer_accepted':
+                raise ValidationError("You need to accept an offer for the property first.")
+            for offer in property.offer_ids:
+                if offer.status == 'accepted':
+                    property.buyer_id = offer.partner_id
+                    property.state = 'sold'
+                    break
         return True
 
     def action_property_cancel(self):
@@ -126,8 +132,9 @@ class EstateProperty(models.Model):
             }
         }
 
-    def _notify_offer_received(self, received_offer):
-        self.state = 'offer_received'
+    def _notify_offer_received(self, offer):
+        if self.state == 'new':
+            self.state = 'offer_received'
 
     def _notify_offer_accepted(self, accepted_offer):
         if self.state == 'sold' or self.state == 'cancelled':
@@ -148,3 +155,11 @@ class EstateProperty(models.Model):
         self.state = 'offer_received'
         self.selling_price = 0
         return None
+
+    # CRUD overrides
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_cancelled(self):
+        for property in self:
+            if property.state not in ('new', 'cancelled'):
+                raise ValidationError("You can't delete properties that are neither new nor cancelled.")
+
