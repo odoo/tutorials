@@ -1,5 +1,6 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class Estate(models.Model):
@@ -86,11 +87,11 @@ class Estate(models.Model):
     def action_property_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise exceptions.UserError('property already cancelled')
+                raise UserError(self.env._('property already sold'))
             record.state = 'sold'
 
     def action_property_cancelled(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError('property already sold')
+                raise UserError(self.env._('property already sold'))
             record.state = 'cancelled'
