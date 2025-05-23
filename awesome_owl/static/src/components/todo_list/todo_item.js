@@ -14,5 +14,15 @@ export class TodoItem extends Component {
                 isCompleted: Boolean,
             },
         },
+        onToggle: Function,
+        onRemove: Function,
     };
+
+    toggle() {
+        this.props.onToggle();
+    }
+
+    onRemove() {
+        this.props.onRemove();
+    }
 }

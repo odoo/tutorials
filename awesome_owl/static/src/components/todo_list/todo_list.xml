@@ -1,11 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoList" owl="1">
         <div class="todo-list">
             <h3>Todo List</h3>
+            <form t-on-submit.prevent="addTodo" class="mb-3 d-flex">
+                <input type="text" class="form-control me-2" placeholder="Add new todo" t-model="state.newTodo" />
+                <button type="submit" class="btn btn-primary">Add</button>
+            </form>
             <div>
-                <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo"/>
+                <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+                    <TodoItem todo="todo" onToggle="() => toggleTodo(todo.id)" onRemove="() => removeTodo(todo.id)" />
                 </t>
             </div>
         </div>
