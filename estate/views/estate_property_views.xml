@@ -87,9 +87,7 @@
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" optional="hide"/>
-                <!-- State field is invisible but required for decoration attributes (decoration-success, decoration-muted, decoration-bf) 
-                     used for conditional row formatting based on state values -->
-                <field name="state" invisible="1"/>
+                <field name="state" invisible="1"/> <!-- State field is invisible but required for decoration attributes (decoration-success, decoration-muted, decoration-bf) used for conditional row formatting -->
             </list>
         </field>
     </record>
