@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_preparation_cleanup" model="product.product">
+        <field name="name">Preparation/Cleanup</field>
+        <field name="type">service</field>
+        <field name="list_price">40.00</field>
+        <field name="uom_id" ref="uom.product_uom_hour"/>
+        <field name="uom_po_id" ref="uom.product_uom_hour"/>
+    </record>
+    <record id="product_painting_epo" model="product.product">
+        <field name="name">Painting with EPO</field>
+        <field name="type">service</field>
+        <field name="list_price">14.79</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+    <record id="product_paint" model="product.product">
+        <field name="name">Paint</field>
+        <field name="type">consu</field>
+        <field name="list_price">38.84</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+    <record id="product_paint_brush" model="product.product">
+        <field name="name">Paint Brush</field>
+        <field name="type">consu</field>
+        <field name="list_price">7.50</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+
+    <record id="product_floor_painting" model="product.template">
+        <field name="name">Floor Painting</field>
+        <field name="type">service</field>
+        <field name="standard_price">2.0</field>
+        <field name="list_price">1.0</field>
+        <field name="uom_id" ref="uom.product_uom_hour"/>
+        <field name="uom_po_id" ref="uom.product_uom_hour"/>
+        <field name="description_sale">Service of painting floors with epoxy</field>
+        <field name="is_kit">True</field>
+        <field name="sub_product_ids" eval="[
+            Command.link(ref('product_preparation_cleanup')),
+            Command.link(ref('product_painting_epo')),
+            Command.link(ref('product_paint')),
+            Command.link(ref('product_paint_brush')),
+        ]"/>
+    </record>
+</odoo>
