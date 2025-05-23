@@ -62,7 +62,7 @@ class EstateTestCase(TransactionCase):
             "Property was not marked as sold"
         )
 
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(UserError):
             self.env["estate.property.offer"].create({
                 "partner_id": self.env.ref("base.res_partner_2").id,
                 "price": 200000,
