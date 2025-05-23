@@ -1,4 +1,5 @@
-from odoo import Command, fields, models
+from odoo import Command, models
+
 
 class EstateInvoice(models.Model):
     _inherit = "estate_property"
@@ -7,8 +8,6 @@ class EstateInvoice(models.Model):
         super().sold()
         for estateProperty in self:
             if not estateProperty.buyer:
-                #Create invoice with no buyer doesn't make sense
-                #Skip but could raise an error
                 continue
             selling_price = estateProperty.expected_price
             accepted_offer = next(filter(lambda x: x.status == "Accepted", estateProperty.offer_ids), None)
