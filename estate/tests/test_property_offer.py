@@ -98,7 +98,7 @@ class EstateTestCase(TransactionCase):
         """
         Test that creating an offer with zero or negative price fails.
         """
-        with self.assertRaises(CheckViolation):
+        with self.assertRaises(ValidationError):
             self.env["estate.property.offer"].create({
                 "partner_id": self.env.ref("base.res_partner_2").id,
                 "price": 0,
