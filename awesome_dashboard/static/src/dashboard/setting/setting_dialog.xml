@@ -8,7 +8,7 @@
                     <li class="list-group-item d-flex gap-2 align-items-center">
                         <input type="checkbox" t-att-id="'item-' + item.id" class="form-check-input" t-model="item.enabled"/>
                         <label class="form-check-label" t-att-for="'item-' + item.id">
-                            <t t-esc="item.description" />
+                            <t t-out="item.description" />
                         </label>
                     </li>
                 </t>

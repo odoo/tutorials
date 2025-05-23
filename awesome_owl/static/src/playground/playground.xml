@@ -18,7 +18,7 @@
                         <div class="card-body">
                             <h4 class="card-title">Total Sum</h4>
                             <p class="card-text display-4">
-                                <t t-esc="sum"/>
+                                <t t-out="sum"/>
                             </p>
                         </div>
                     </div>
