@@ -7,9 +7,7 @@
             <form string="property type form">
                 <sheet>
                     <field name="name" class="display-4" />
-                    <!-- TODO: modify the ction button to move to the offers and show the domain
-                    (AKA: last step in last step)-->
-                    <!-- <button type="action" name="%(estate_property_action)d" string="Offers"/> -->
+                    <button type="action" name="%(estate_property_offer_action)d" string="Offers"/>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids" />
