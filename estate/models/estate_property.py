@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "real estate properties"
+    _order = "id desc"
 
     name = fields.Char('Title', default="Unknown", required=True)
     description = fields.Char('Descrption')
@@ -52,8 +53,8 @@ class EstateProperty(models.Model):
     best_offer = fields.Float('Best Offer', compute="_compute_best_offer")
 
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'A property expected price must be strictly positive!'),
-        ('check_selling_price', 'CHECK(selling_price > 0)', 'A property selling price must be positive!'),
+        ('check_expected_price', 'CHECK(expected_price >= 0)', 'A property expected price must be strictly positive!'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'A property selling price must be positive!'),
     ]
 
     @api.depends("garden_area", "living_area")
@@ -82,7 +83,7 @@ class EstateProperty(models.Model):
         if any(record.state not in ('new', 'cancelled') for record in self):
             raise UserError(_('Only properties in "New" or "Cancelled" state can be deleted.'))
         return super().unlink()
-    
+
     def action_to_sell(self):
         for record in self:
             if record.state == 'sold':
