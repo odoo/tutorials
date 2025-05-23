@@ -23,7 +23,7 @@
         <field name="name">Property Form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Propertiy">
+            <form string="Property">
                 <header>
                     <button name="sell_property" type="object" string="Sell" invisible="state in ['sold','cancelled']"/>
                     <button name="cancel_property" type="object" string="Cancel" invisible="state in ['sold','cancelled']"/>

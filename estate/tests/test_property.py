@@ -55,7 +55,7 @@ class EstateTestCase(TransactionCase):
         # Vérifie qu'une UserError est levée si on tente une action interdite
         with self.assertRaises(UserError):
             self.properties.cancel_property()
-    
+
     def test_garden_onchange_resets_fields(self):
         """Ensure that unchecking garden resets garden_area and garden_orientation."""
         property = self.env['estate.property'].create({

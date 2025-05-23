@@ -15,5 +15,9 @@
         <record id="estate_property_type_4" model="estate.property.type">
             <field name="name">Land</field>
         </record>
+
+        <record id="base.user_admin" model="res.users">
+            <field name="groups_id" eval="[(4, ref('estate.estate_group_manager'))]"/>
+        </record>
     </data>
 </odoo>
