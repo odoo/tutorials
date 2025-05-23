@@ -59,6 +59,7 @@
                             <field name="postcode"/>
                             <field name="availability_date"/>
                             <field name='Property_type_id' options="{'no_create': True}"/>
+                            <field name="state"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -81,7 +82,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" ref="estate_property_offer_list" readonly="state not in ['offer_recieved', 'new']"/>
+                            <field name="offer_ids" ref="estate_property_offer_list" readonly="state not in ['offer_received', 'new']"/>
                         </page>
                         <page string="Other Info">
                             <group>
