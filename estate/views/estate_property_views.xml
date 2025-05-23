@@ -41,6 +41,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="action_to_sell" string="Sold" type="object" class="oe_highlight" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_to_cancel" string="Cancel" type="object" invisible="state in ['sold', 'cancelled']" />
+                </header>
                 <sheet>
                     <group>
                         <group>

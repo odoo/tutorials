@@ -1,5 +1,6 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyTag(models.Model):
@@ -11,15 +12,18 @@ class EstatePropertyTag(models.Model):
         string='Status',
         selection=[
             ('accepted', 'Accepted'),
-            ('refused', 'Refused')
+            ('refused', 'Refused'),
+            ('pending', 'Pending')
         ],
-        copy=False
+        copy=False,
+        default='pending',
+        required=True
     )
     partner_id = fields.Many2one('res.partner', 'Partner', required=True)
     property_id = fields.Many2one('estate.property', 'Property', required=True)
 
     validity = fields.Integer('Validity (Days)', default=7)
-    date_deadline = fields.Date('Deadline',compute="_compute_deadline", inverse="_inverse_deadline")
+    date_deadline = fields.Date('Deadline', compute="_compute_deadline", inverse="_inverse_deadline")
 
     @api.depends('validity')
     def _compute_deadline(self):
@@ -35,3 +39,33 @@ class EstatePropertyTag(models.Model):
                 record.validity = 0
             else:
                 record.validity = (record.date_deadline - fields.Date.today()).days
+
+    def action_to_accept(self):
+        for record in self:
+            property_obj = record.property_id
+            if property_obj.state in ["sold", "offer_accepted"]:
+                raise UserError(_('Property already accepted an offer.'))
+            record.status = 'accepted'
+            property_obj.selling_price = record.price
+            property_obj.partner_id = record.partner_id
+            property_obj.state = 'offer_accepted'
+
+            (property_obj.offer_ids - record).action_to_refuse()
+        return True
+
+    def action_to_refuse(self):
+        for record in self:
+            record.status = 'refused'
+        return True
+
+    def action_to_undo(self):
+        for record in self:
+            property_obj = record.property_id
+
+            if record.status == 'accepted':
+                property_obj.state = 'offer_received'
+                property_obj.partner_id = False
+                property_obj.selling_price = 0
+
+            record.status = 'pending'
+        return True
