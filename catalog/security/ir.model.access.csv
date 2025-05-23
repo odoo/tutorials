@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_catalog_catalog,access_catalog_catalog,model_catalog_catalog,base.group_user,1,1,1,1
+access_catalog_lines,access_catalog_lines,model_catalog_lines,base.group_user,1,1,0,1
+access_catalog_fields,access_catalog_fields,model_catalog_fields,base.group_user,1,1,1,1
+access_price_list_wizard_user,access_price_list_wizard_user,model_price_list_wizard,sales_team.group_sale_salesman,1,1,1,1
+access_price_list_wizard_manager,access_price_list_wizard_manager,model_price_list_wizard,sales_team.group_sale_manager,1,1,1,1
+access_price_list_wizard_line_user,access_price_list_wizard_line_user,model_price_list_wizard_line,sales_team.group_sale_salesman,1,1,0,1
+access_price_list_wizard_line_manager,access_price_list_wizard_line_manager,model_price_list_wizard_line,sales_team.group_sale_manager,1,1,0,1
