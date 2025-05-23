@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="commission_list" model="ir.actions.act_window">
+        <field name="name">Commission List</field>
+        <field name="res_model">commission.list</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
+        <field name="context">{'group_by': ['date', 'salesperson', 'sales_team'], 'set_visible':True}</field>
+    </record>
+    <record id="commission_list_list_view" model="ir.ui.view">
+        <field name="name">commission.list.list</field>
+        <field name="model">commission.list</field>
+        <field name="arch" type="xml">
+            <tree string="Commission List" edit="False" create="False">
+                <field name="date"/>
+                <field name="salesperson"/>
+                <field name="sales_team"/>
+                <field name="invoice"/>
+                <field name="display_amount"/>
+            </tree>
+        </field>
+    </record>
+    <record id="commission_list_form_view" model="ir.ui.view">
+        <field name="name">.commission.list.form</field>
+        <field name="model">commission.list</field>
+        <field name="arch" type="xml">
+            <form string="Commission List" edit="False">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="salesperson" invisible="not salesperson"/>
+                            <field name="sales_team" invisible="not sales_team"/>
+                        </group>
+                        <group>
+                            <field name="invoice"/>
+                            <field name="display_amount"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="commission_list_search_view" model="ir.ui.view">
+        <field name="name">commission.list.search</field>
+        <field name="model">commission.list</field>
+        <field name="arch" type="xml">
+            <search string="Commission List Search">
+                <field name="salesperson" string="User"/>
+                <field name="sales_team" string="Team"/>
+                <filter string="Create Date" name="filter_create_date" date="create_date"/>
+                <group expand="1">
+                    <filter string="salesperson" name="filter for group by salesperson" context="{'group_by':'salesperson'}"/>
+                    <filter string="sales team" name="filter for group by sales team" context="{'group_by':'sales_team'}"/>
+                    <filter string="create date" name="filter for group by create date" context="{'group_by':'create_date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="commission_list_graph_view" model="ir.ui.view">
+        <field name="name">commission.list.graph</field>
+        <field name="model">commission.list</field>
+        <field name="arch" type="xml">
+            <graph string="Commission List" sample="1">
+                <field name="salesperson" type="col" invisible="not salesperson"/>
+                <field name="sales_team" type="col" invisible="not sales_team"/>
+                <field name="date" type="row"/>
+                <field name="Amount" type="measure"/>
+            </graph>
+        </field>
+    </record>
+    <record id="commission_list_pivot_view" model="ir.ui.view">
+        <field name="name">commission.list.pivot</field>
+        <field name="model">commission.list</field>
+        <field name="arch" type="xml">
+            <pivot string="Commission List" sample="1">
+                <field name="salesperson" type="col" invisible="not salesperson"/>
+                <field name="sales_team" type="col" invisible="not sales_team"/>
+                <field name="date" type="row"/>
+                <field name="Amount" type="measure"/>
+            </pivot>
+        </field>
+   </record>
+</odoo>
