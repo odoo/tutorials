@@ -5,6 +5,7 @@ from odoo import api, exceptions, fields, models
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'estate property offer module'
+    _order = 'price desc'
 
     name = fields.Char(required=True)
     price = fields.Float()
@@ -22,6 +23,7 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one(comodel_name='res.partner', required=True)
     property_id = fields.Many2one(comodel_name='estate.property', required=True)
+    property_type_id = fields.Many2one(comodel_name='estate.property.type', related='property_id.estate_type_id')
 
     _sql_constraints = [
         ('check_stricly_positive_price', 'CHECK(price > 0)',
@@ -47,11 +49,15 @@ class EstatePropertyOffer(models.Model):
         self.status = 'accepted'
         self.property_id.selling_price = self.price
         self.property_id.partner_id = self.partner_id
+        if self.status != 'sold':
+            self.property_id.status = 'offer accepted'
 
     def action_refused(self):
         if self.status == 'refuse':
             return
 
+        if self.status == 'accepted':
+            self.property_id.selling_price = 0
+            self.property_id.partner_id = None
+        
         self.status = 'refused'
-        self.property_id.selling_price = 0
-        self.property_id.partner_id = None

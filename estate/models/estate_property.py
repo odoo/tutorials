@@ -6,22 +6,23 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'estate property module'
+    _order = 'id desc'
 
     name = fields.Char(required=True)
-    description = fields.Text('Description')
+    description = fields.Text("Description")
     date_availability = fields.Date(
-        'Date Availability', default=fields.Date.today() + relativedelta(months=3), copy=False
+        "Date Availability", default=fields.Date.today() + relativedelta(months=3), copy=False
     )
-    expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', default=0, readonly=True, copy=False)
+    expected_price = fields.Float("Expected Price", required=True)
+    selling_price = fields.Float("Selling Price", default=0, readonly=True, copy=False)
     bedrooms = fields.Integer(required=True, default=2)
-    living_area = fields.Integer('Living Area (sqm)', required=True)
+    living_area = fields.Integer("Living Area (sqm)", required=True)
     facades = fields.Integer(default=0)
     garage = fields.Boolean(default=False)
     garden = fields.Boolean(default=False)
-    garden_area = fields.Integer('Garden Area (sqm)')
+    garden_area = fields.Integer("Garden Area (sqm)")
     garden_orientation = fields.Selection([('north', 'North'), ('east', 'East'), ('south', 'South'), ('west', 'West')])
-    total_area = fields.Integer('Total Area (sqm)', compute='_compute_total_area')
+    total_area = fields.Integer("Total Area (sqm)", compute='_compute_total_area')
     postcode = fields.Integer()
     active = fields.Boolean(default=True)
     status = fields.Selection(
@@ -51,7 +52,7 @@ class EstateProperty(models.Model):
     ]
 
     @api.constrains('selling_price', 'expected_price')
-    def _check_date_end(self):
+    def _check_valid_selling_price(self):
         for record in self:
             if not(any(offer.status == 'accepted' for offer in self.estate_offer_ids)):
                 continue
@@ -81,6 +82,11 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
             self.garden_area = 0
 
+    @api.onchange('estate_offer_ids')
+    def _onchange_received_offer(self):
+        if len(self.estate_offer_ids) == 1 and self.status == 'new':
+            self.status = 'offer received'
+        
     def action_cancel(self):
         if self.status == 'sold':
             raise exceptions.UserError('A sold property cannot be cancelled')
