@@ -42,22 +42,26 @@ class EstateProperty(models.Model):
     partner_id = fields.Many2one(comodel_name='res.partner')
     user_id = fields.Many2one(comodel_name='res.users', default=lambda self: self.env.user)
     best_offer = fields.Float(compute='_compute_best_price')
-
-
     _sql_constraints = [
-        ('check_stricly_positive_expected_price', 'CHECK(expected_price > 0)',
-         'The expected price of an estate property must be strictly positive.'),
-        ('check_positive_selling_price', 'CHECK(selling_price >= 0)',
-         'The selling price of an estate property must be positive.'),
+        (
+            'check_stricly_positive_expected_price',
+            'CHECK(expected_price > 0)',
+            'The expected price of an estate property must be strictly positive.',
+        ),
+        (
+            'check_positive_selling_price',
+            'CHECK(selling_price >= 0)',
+            'The selling price of an estate property must be positive.',
+        ),
     ]
 
     @api.constrains('selling_price', 'expected_price')
     def _check_valid_selling_price(self):
         for record in self:
-            if not(any(offer.status == 'accepted' for offer in self.estate_offer_ids)):
+            if not (any(offer.status == 'accepted' for offer in self.estate_offer_ids)):
                 continue
 
-            if float_compare(record.selling_price, 0.9*record.expected_price, precision_digits=2) < 0:
+            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
                 raise exceptions.ValidationError("The selling price must not be below 90 % of the expected price")
 
     @api.depends('garden_area', 'living_area')
