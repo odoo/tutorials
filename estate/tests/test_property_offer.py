@@ -4,6 +4,7 @@ from odoo.tests.common import TransactionCase
 from odoo.exceptions import ValidationError
 from psycopg2.errors import CheckViolation
 
+
 @tagged("post_install", "-at_install")
 class EstateTestCase(TransactionCase):
     @classmethod
@@ -91,6 +92,7 @@ class EstateTestCase(TransactionCase):
 
         self.assertEqual(property.garden_area, 0, "Garden area should be 0 when garden is disabled")
         self.assertFalse(property.garden_orientation, "Orientation should be False when garden is disabled")
+
     def test_offer_price_must_be_positive(self):
 
         """

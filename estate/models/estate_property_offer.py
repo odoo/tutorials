@@ -75,6 +75,8 @@ class EstatePropertyOffer(models.Model):
         current_max_price = estate.best_price or 0.0
         for offer in offers:
             offer_price = offer.get("price", 0.0)
+            if offer_price <= 0:
+                raise ValidationError("The offer price must be strictly positive.")
             if offer_price <= current_max_price:
                 raise UserError("The offer price must be higher than the current best price.")
             current_max_price = max(current_max_price, offer_price)
@@ -84,8 +86,8 @@ class EstatePropertyOffer(models.Model):
             estate.state = "offer_received"
 
         return super().create(offers)
-    @api.onchange('garden')
 
+    @api.onchange('garden')
     def _onchange_garden(self):
         if not self.garden:
             self.garden_area = 0

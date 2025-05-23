@@ -28,8 +28,8 @@ class EstateWebsiteController(http.Controller):
             'min_price': min_price,
             'max_price': max_price,
         })
-    @http.route('/properties/<int:property_id>', type='http', auth='public', website=True)
 
+    @http.route('/properties/<int:property_id>', type='http', auth='public', website=True)
     def property_detail(self, property_id, **kwargs):
         property_rec = request.env['estate.property'].sudo().browse(property_id)
         if not property_rec.exists():
