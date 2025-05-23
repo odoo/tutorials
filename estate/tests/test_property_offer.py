@@ -2,7 +2,7 @@ from odoo.exceptions import UserError
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import ValidationError
-
+from psycopg2.errors import CheckViolation
 
 @tagged("post_install", "-at_install")
 class EstateTestCase(TransactionCase):
@@ -85,7 +85,6 @@ class EstateTestCase(TransactionCase):
 
         self.assertEqual(property.garden_area, 10, "Garden area should be 10 when garden is enabled")
         self.assertEqual(property.garden_orientation, "North", "Orientation should be North when garden is enabled")
-
         # Disable garden
         property.garden = False
         property._onchange_garden()
@@ -93,10 +92,11 @@ class EstateTestCase(TransactionCase):
         self.assertEqual(property.garden_area, 0, "Garden area should be 0 when garden is disabled")
         self.assertFalse(property.garden_orientation, "Orientation should be False when garden is disabled")
     def test_offer_price_must_be_positive(self):
+
         """
         Test that creating an offer with zero or negative price fails.
         """
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(CheckViolation):
             self.env["estate.property.offer"].create({
                 "partner_id": self.env.ref("base.res_partner_2").id,
                 "price": 0,

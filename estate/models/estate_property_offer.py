@@ -53,22 +53,39 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'refused'
             return True  # Optional but helps refresh
 
-    @api.model
-    def create(self, vals):
-        property_id = vals.get('property_id')
-        if property_id:
-            prop = self.env['estate.property'].browse(property_id)
-            if prop.state in ['sold', 'cancelled']:
-                raise ValidationError("Cannot create an offer on a sold or cancelled property.")
-            # Check for existing higher offers
-            existing_offers = self.search([('property_id', '=', property_id)])
-            if existing_offers and vals.get('price', 0.0) < max(existing_offers.mapped('price')):
-                raise ValidationError("Offer price must exceed existing offers!")
-            # Update property state
-            if prop.state != 'offer_received':
-                prop.write({'state': 'offer_received'})
-        return super().create(vals)  
+    @api.model_create_multi
+    def create(self, offers):
+        if not offers:
+            return super().create(offers)
+
+        property_id = offers[0].get("property_id")
+        if not property_id:
+            raise ValidationError("Property ID is required.")
+
+        estate = self.env["estate.property"].browse(property_id)
+        if not estate.exists():
+            raise ValidationError("The specified property does not exist.")
+
+        if estate.state in ["sold", "cancelled"]:
+            raise UserError("Cannot create an offer on a sold or cancelled property.")
+
+        if estate.state == "offer_accepted":
+            raise UserError("Cannot create an offer on a property with an accepted offer.")
+
+        current_max_price = estate.best_price or 0.0
+        for offer in offers:
+            offer_price = offer.get("price", 0.0)
+            if offer_price <= current_max_price:
+                raise UserError("The offer price must be higher than the current best price.")
+            current_max_price = max(current_max_price, offer_price)
+
+        # Change state only once, not per offer
+        if estate.state != "offer_received":
+            estate.state = "offer_received"
+
+        return super().create(offers)
     @api.onchange('garden')
+
     def _onchange_garden(self):
         if not self.garden:
             self.garden_area = 0

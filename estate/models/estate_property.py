@@ -116,6 +116,7 @@ class EstateProperty(models.Model):
         return True
     # === Deletion Rule ===
     @api.ondelete(at_uninstall=False)
+
     def _check_state_before_deletion(self):
         for prop in self:
             if prop.state not in ['new', 'cancelled']:
