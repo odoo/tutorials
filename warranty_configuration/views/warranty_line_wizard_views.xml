@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="warranty_line_wizard_list_view" model="ir.ui.view">
+        <field name="name">warranty.line.wizard.list</field>
+        <field name="model">warranty.line.wizard</field>
+        <field name="arch" type="xml">
+            <list string="warranty lines" create="False" edit="True" editable="bottom">
+                <field name="product_id" force_save="1"/>
+                <field name="warranty_configuration_id"/>
+                <field name="end_date"/>
+                <field name="sale_order_line_id" column_invisible="1"/>
+            </list>
+        </field>
+    </record>
+</odoo>

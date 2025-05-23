@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_sub_product_wizard" model="ir.actions.act_window">
+        <field name="name">Sub Products</field>
+        <field name="res_model">sub.product.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="sub_product_wizard_form_view" model="ir.ui.view">
+        <field name="name">sub.product.wizard.fom</field>
+        <field name="model">sub.product.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <b>Product</b> <field name="product_id" readonly="1"/>
+                <br/>
+                <field name="sub_product_wizard_line_ids"/>
+                <footer>
+                    <button name="confirm_subproducts" type="object" string="Confirm" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
