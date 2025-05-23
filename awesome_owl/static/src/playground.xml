@@ -6,6 +6,10 @@
             <Counter/>
             <Counter/>
         </div>
+        <div class="p-3">
+            <Card title="'Hello'" text="'Hello world'"/>
+            <Card title="'Goodbye'" text="'Goodbye world'"/>
+        </div>
     </t>
 
 </templates>
