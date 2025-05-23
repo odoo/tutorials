@@ -102,4 +102,3 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state != 'new' and record.state != 'cancelled':
                 raise UserError("Only new and cancelled properties can be deleted.")
-
