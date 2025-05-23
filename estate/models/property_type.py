@@ -18,6 +18,3 @@ class PropertyType(models.Model):
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
-
-    def test(self):
-        print("test")

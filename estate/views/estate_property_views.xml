@@ -70,7 +70,7 @@
                 <kanban default_group_by="property_type" records_draggable="False">
                     <field name="state" />
                     <templates>
-                        <t t-name="kanban-box">
+                        <t t-name="card">
                             <div>
                                 <h4>
                                     <field name="name"/>

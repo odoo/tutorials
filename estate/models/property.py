@@ -85,6 +85,7 @@ class Property(models.Model):
             if tools.float_utils.float_compare(record.expected_price * .9, record.selling_price, precision_rounding=.01) > 0:
                 raise exceptions.ValidationError('The selling price should be at least 90% of the expected price.'
                                                  'Lower the expected price if you want to accept the offer.')
+
     @api.ondelete(at_uninstall=False)
     def _check_state(self):
         for record in self:

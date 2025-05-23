@@ -1,4 +1,4 @@
-from odoo import models, exceptions, Command
+from odoo import models, Command
 
 
 class InheritedModel(models.Model):

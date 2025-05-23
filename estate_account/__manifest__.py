@@ -6,6 +6,7 @@
         'account'
     ],
     'data': [
+        'security/ir.model.access.csv',
     ],
     'author': "Mahdi (malj)",
     'license': 'LGPL-3'

@@ -42,11 +42,12 @@ class PropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals):
-        property_id = self.env['estate.property'].browse(vals['property_id'])
-        if property_id.offer_ids:
-            minOffer = min(property_id.offer_ids.mapped('price'))
-            if vals['price'] < minOffer:
-                raise exceptions.UserError(f'The offer must be higher than {minOffer}')
+        for record in self:
+            property_id = record.env['estate.property'].browse(vals['property_id'])
+            if property_id.offer_ids:
+                minOffer = min(property_id.offer_ids.mapped('price'))
+                if vals['price'] < minOffer:
+                    raise exceptions.UserError(f'The offer must be higher than {minOffer}')
         return super().create(vals)
