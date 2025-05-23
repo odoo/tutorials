@@ -67,6 +67,9 @@ class EstatePropertyOffer(models.Model):
             best_price = property_id.best_price
             if float_compare(val_price, best_price, precision_digits=2) <= 0:
                 raise ValidationError(_(f'The offer price must be higher than the current best price (${best_price}).'))
+
+            if property_id.state == 'new':
+                property_id.state = 'offer_received'
         return super().create(vals)
 
     ###### ACTIONS ######

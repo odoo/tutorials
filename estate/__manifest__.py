@@ -13,6 +13,11 @@
         'views/estate_property.xml',
         'views/estate_menus.xml',
         'views/res_user.xml',
+        'data/estate.property.type.csv',
+    ],
+    'demo': [
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml',
     ],
     'auto_install': False,
     'application': True,

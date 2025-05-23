@@ -51,8 +51,6 @@ class EstateProperty(models.Model):
         default='new',
         required=True,
         copy=False,
-        compute='_compute_state',
-        store=True,
     )
     offer_ids = fields.One2many('estate.property.offer', 'property_id', 'Offers')
     active = fields.Boolean('Active', default=True)
@@ -71,14 +69,6 @@ class EstateProperty(models.Model):
                 record.best_price = max(prices)
             else:
                 record.best_price = 0.0
-
-    @api.depends('offer_ids')
-    def _compute_state(self):
-        for record in self:
-            if not record.offer_ids:
-                record.state = 'new'
-            elif record.state == 'new':
-                record.state = 'offer_received'
 
     ###### ONCHANGE ######
     @api.onchange('garden')
