@@ -6,6 +6,7 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'An offer'
+    _order = "price desc"
     _sql_constraints = [
         ('check_price', 'CHECK (price > 0)', 'The price must be greater than 0'),
     ]
@@ -13,12 +14,13 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float('Price', required=True)
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     create_date = fields.Date(string="Creation Date", default=lambda self: datetime.now())
+    validity = fields.Integer("Validity (days)")
+
+    date_deadline = fields.Date("Deadline", readonly=False, compute="_compute_date_deadline")
 
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
-
-    validity = fields.Integer("Validity (days)")
-    date_deadline = fields.Date("Deadline", readonly=False, compute="_compute_date_deadline")
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type", related='property_id.property_type_id')
 
     @api.depends("validity")
     def _compute_date_deadline(self):

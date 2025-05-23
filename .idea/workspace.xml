@@ -10,6 +10,10 @@
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property_offer.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_offer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property_tag.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_tag.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/estate/models/estate_property_type.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property_type.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_offer_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_offer_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_tag_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_tag_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_type_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_type_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_views.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +47,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;18.0-tutorial-thha&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/odoo/Code/tutorials&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/odoo/Code/odoo&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -84,7 +88,10 @@
       <workItem from="1747811158686" duration="10232000" />
       <workItem from="1747825854580" duration="12429000" />
       <workItem from="1747840741539" duration="837000" />
-      <workItem from="1747897554866" duration="2579000" />
+      <workItem from="1747897554866" duration="10376000" />
+      <workItem from="1747912091356" duration="7274000" />
+      <workItem from="1747928515945" duration="102000" />
+      <workItem from="1747982606589" duration="716000" />
     </task>
     <servers />
   </component>

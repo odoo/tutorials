@@ -5,6 +5,7 @@ from odoo import api, fields, models, exceptions, tools
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property's properties"
+    _order = "id desc"
     _sql_constraints = [
         ('check_expected_price', 'CHECK (expected_price > 0)', 'The expected price must be greater than 0'),
         ('check_selling_price', 'CHECK (selling_price >= 0)', 'The selling price must be greater than 0'),
@@ -30,19 +31,20 @@ class EstateProperty(models.Model):
 
     total_area = fields.Float("Total Area", compute="_compute_total_area")
     best_price = fields.Float("Best Offer", compute="_compute_best_price")
+    is_state_set = fields.Boolean("Is State Set", compute="_compute_is_state_set")
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     salesperson_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     tags_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offers_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    @api.depends("offers_ids")
+    @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
             best_offer = record._get_best_offer()
@@ -52,10 +54,10 @@ class EstateProperty(models.Model):
             record.best_price = best_offer.price
 
     def _get_best_offer(self):
-        if len(self.offers_ids) == 0:
+        if len(self.offer_ids) == 0:
             return None
-        best_offer = self.offers_ids[0]
-        for offer in self.offers_ids:
+        best_offer = self.offer_ids[0]
+        for offer in self.offer_ids:
             if offer.price > best_offer.price:
                 best_offer = offer
         return best_offer
@@ -96,3 +98,8 @@ class EstateProperty(models.Model):
             if not tools.float_is_zero(record.selling_price, 0e-4) and record.selling_price < record.expected_price * 0.9:
                 raise exceptions.ValidationError(
                     f"The selling price cannot be lower than 90% of the expected price (min ${record.expected_price * 0.9}€)")
+
+    @api.depends('state')
+    def _compute_is_state_set(self):
+        for record in self:
+            record.is_state_set = record.state == 'cancelled' or record.state == 'sold'
