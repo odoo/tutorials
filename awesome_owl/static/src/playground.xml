@@ -6,6 +6,11 @@
             <Counter />
             <Counter />
         </div>
+
+        <div>
+            <Card title="'card 1'" content = "'content card 1'"/>
+            <Card title="'card 2'" content = "'content card 2'"/>
+        </div>
     </t>
 
 </templates>

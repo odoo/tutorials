@@ -1,7 +1,6 @@
 import { whenReady } from "@odoo/owl";
 import { mountComponent } from "@web/env";
 import { Playground } from "./playground";
-import { Counter } from "./counter/counter"
 
 const config = {
     dev: true,
