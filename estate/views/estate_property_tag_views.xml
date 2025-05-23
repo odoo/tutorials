@@ -35,10 +35,4 @@
             </form>
         </field>
     </record>
-
-  
-    <menuitem id="estate_property_tag_menu_root" name="Property Tags" parent="estate_menu_root" />
-    <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"
-        parent="estate_property_tag_menu_root" />
-
 </odoo>
