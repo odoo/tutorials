@@ -2,13 +2,7 @@ import { registry } from "@web/core/registry";
 import { reactive } from "@odoo/owl";
 import { rpc } from "@web/core/network/rpc";
 
-/**
- * Service to fetch and manage dashboard statistics
- * 
- * This service fetches dashboard data from the server and
- * provides it to dashboard components. Data is automatically
- * refreshed at regular intervals.
- */
+// Service for fetching and managing dashboard statistics with auto-refresh
 const statisticsService = {
     /**
      * Initialize the statistics service
@@ -18,10 +12,7 @@ const statisticsService = {
         // Create a reactive statistics object
         const statistics = reactive({ isReady: false });
 
-        /**
-         * Fetch fresh data from server
-         * @returns {Promise} Promise that resolves when data is loaded
-         */
+        // Fetch fresh statistics from server
         async function fetchStatistics() {
             try {
                 const data = await rpc("/awesome_dashboard/statistics");
@@ -32,8 +23,8 @@ const statisticsService = {
             }
         }
 
-        // Refresh data every 10 minutes
-        const REFRESH_INTERVAL = 10 * 60 * 1000; // 10 minutes
+        // Refresh interval: 10 minutes
+        const REFRESH_INTERVAL = 10 * 60 * 1000;
         const intervalId = setInterval(fetchStatistics, REFRESH_INTERVAL);
         
         // Load data immediately

@@ -7,9 +7,7 @@ import { Dialog } from "@web/core/dialog/dialog";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { browser } from "@web/core/browser/browser";
 
-/**
- * Main dashboard component that displays configurable widgets
- */
+// Main dashboard with configurable widgets
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, DashboardItem };
@@ -33,19 +31,13 @@ class AwesomeDashboard extends Component {
         });
     }
 
-    /**
-     * Load disabled dashboard items from localStorage
-     * @returns {Array} Array of disabled item IDs
-     * @private
-     */
+    // Get disabled items from localStorage
     _loadDisabledItems() {
         const savedItems = browser.localStorage.getItem("disabledDashboardItems");
         return savedItems ? savedItems.split(",") : [];
     }
 
-    /**
-     * Open dashboard configuration dialog
-     */
+    // Show dashboard config dialog
     openConfiguration() {
         this.dialogService.add(DashboardConfigDialog, {
             items: this.dashboardItems,
@@ -85,9 +77,7 @@ class AwesomeDashboard extends Component {
     }
 }
 
-/**
- * Dialog component for dashboard configuration
- */
+// Dialog for configuring dashboard items
 class DashboardConfigDialog extends Component {
     static template = "awesome_dashboard.ConfigurationDialog";
     static components = { Dialog, CheckBox };
@@ -97,7 +87,7 @@ class DashboardConfigDialog extends Component {
         this.configItems = useState(this.props.items.map((item) => {
             return {
                 ...item,
-                enabled: !this.props.disabledItems.includes(item.id),
+                isEnabled: !this.props.disabledItems.includes(item.id),
             };
         }));
     }
@@ -105,31 +95,32 @@ class DashboardConfigDialog extends Component {
     /**
      * Close the dialog
      */
-    done() {
+    // Close the configuration dialog
+    closeConfig() {
         this.props.close();
     }
 
     /**
-     * Handle checkbox change events
-     * @param {boolean} checked - New checkbox state
-     * @param {Object} changedItem - Item being toggled
+     * Handle item toggle
+     * @param {boolean} isChecked - New checkbox state
+     * @param {Object} toggledItem - Item being toggled
      */
-    onChange(checked, changedItem) {
-        changedItem.enabled = checked;
+    onItemToggle(isChecked, toggledItem) {
+        toggledItem.isEnabled = isChecked;
         
         // Create array of disabled item IDs
-        const newDisabledItems = Object.values(this.configItems)
-            .filter(item => !item.enabled)
+        const newDisabledItemIds = Object.values(this.configItems)
+            .filter(item => !item.isEnabled)
             .map(item => item.id);
 
         // Save to localStorage
         browser.localStorage.setItem(
             "disabledDashboardItems",
-            newDisabledItems,
+            newDisabledItemIds.join(',')
         );
 
         // Update parent component
-        this.props.onUpdateConfiguration(newDisabledItems);
+        this.props.onUpdateConfiguration(newDisabledItemIds);
     }
 }
 

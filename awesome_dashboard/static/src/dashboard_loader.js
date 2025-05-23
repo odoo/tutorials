@@ -4,6 +4,7 @@ import { registry } from "@web/core/registry";
 import { LazyComponent } from "@web/core/assets";
 import { Component, xml } from "@odoo/owl";
 
+// Lazy loads the main dashboard component
 class AwesomeDashboardLoader extends Component {
     static components = { LazyComponent };
     static template = xml`

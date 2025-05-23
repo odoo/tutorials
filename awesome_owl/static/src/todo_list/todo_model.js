@@ -1,5 +1,6 @@
 import { useState } from "@odoo/owl";
 
+// Represents a single todo item
 export class Todo {
     static nextId = 1;
 
@@ -19,33 +20,43 @@ export class Todo {
     }
 }
 
+// Manages a collection of Todo items
 export class TodoModel {
     constructor() {
         this.todos = useState([]);
+        this.nextId = 1;
     }
 
+    // Create and add a new todo
     createTodo(description) {
-        if (description.trim()) {
-            const todo = new Todo(this, description.trim());
-            this.todos.push(todo);
+        const desc = description.trim();
+        if (desc) {
+            const newTodo = new Todo(this, desc);
+            newTodo.id = this.nextId++;
+            this.todos.push(newTodo);
         }
     }
 
+    // Add a new todo (alias for createTodo)
     add(description) {
         this.createTodo(description);
     }
 
+    // Remove a todo by ID
     remove(id) {
-        const todoIndex = this.todos.findIndex((todo) => todo.id === id);
-        if (todoIndex >= 0) {
-            this.todos.splice(todoIndex, 1);
+        const index = this.todos.findIndex(todo => todo.id === id);
+        if (index >= 0) {
+            this.todos.splice(index, 1);
         }
     }
 
+    // Load initial demo data
     load() {
-        // Simulating initial data
-        this.createTodo("Review documentation");
-        this.createTodo("Complete tutorial exercise");
+        const initialTasks = [
+            "Review documentation",
+            "Complete tutorial exercise"
+        ];
+        initialTasks.forEach(task => this.createTodo(task));
         return Promise.resolve();
     }
 }

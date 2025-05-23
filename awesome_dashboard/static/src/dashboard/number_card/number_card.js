@@ -1,5 +1,6 @@
 import { Component } from "@odoo/owl";
 
+// Displays a numeric value with title and optional formatting
 export class NumberCard extends Component {
     static template = "awesome_dashboard.NumberCard";
     static props = {

@@ -3,6 +3,7 @@ import { TodoItem } from "./todo_item";
 import { useAutofocus } from "../utils";
 import { TodoModel } from "./todo_model";
 
+// Main todo list component with task management
 export class TodoList extends Component {
     static template = "awesome_owl.TodoList";
     static components = { TodoItem };
@@ -15,22 +16,26 @@ export class TodoList extends Component {
         useAutofocus("input")
     }
 
-    handleKeypress(ev) {
-        if (ev.key === "Enter") {
-            const input = ev.target;
-            if (input.value.trim()) {
-                this.todoModel.createTodo(input.value);
-                input.value = "";
-            }
+    // Handle Enter key press in input
+    handleKeypress(event) {
+        if (event.key === "Enter") {
+            this.addNewTask(event.target);
         }
     }
 
+    // Add a new task from input
     createTask() {
-        const input = this.refs.input;
-        if (input.value.trim()) {
-            this.todoModel.createTodo(input.value);
-            input.value = "";
+        const inputEl = this.refs.input;
+        this.addNewTask(inputEl);
+        inputEl.focus();
+    }
+    
+    // Helper to add a new task
+    addNewTask(inputElement) {
+        const taskText = inputElement.value.trim();
+        if (taskText) {
+            this.todoModel.createTodo(taskText);
+            inputElement.value = "";
         }
-        input.focus();
     }
 }

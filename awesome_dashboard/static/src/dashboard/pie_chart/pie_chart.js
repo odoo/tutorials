@@ -2,6 +2,7 @@ import { loadJS } from "@web/core/assets";
 import { getColor } from "@web/core/colors/colors";
 import { Component, onWillStart, useRef, onMounted, onWillUnmount } from "@odoo/owl";
 
+// Interactive pie chart component using Chart.js
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
     static props = {
