@@ -1,6 +1,5 @@
 from datetime import datetime
-from odoo import models, Command, api, _
-from odoo.exceptions import AccessError, UserError
+from odoo import models, Command
 
 
 class EstateModel(models.Model):
@@ -11,7 +10,6 @@ class EstateModel(models.Model):
         if super().action_set_sold() is True:
             invoice_vals = self._prepare_invoice()
             self.env["account.move"].sudo().create(invoice_vals)
-
 
     def _prepare_invoice(self):
         """Prepare invoice vals with strict field control"""

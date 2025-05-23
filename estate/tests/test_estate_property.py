@@ -9,7 +9,7 @@ class EstateTestCase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        
+
         cls.property_type = cls.env["estate.property.type"].create({"name": "House Test Type"})
 
         cls.properties = cls.env["estate.property"].create(
