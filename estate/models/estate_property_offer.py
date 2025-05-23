@@ -69,28 +69,34 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, offers):
+        # Guard clause for empty input
+        if not offers:
+            return super().create(offers)
+
         # Extract property_id from the first offer
         property_id = offers[0].get("property_id")
         if not property_id:
             raise ValidationError("Property ID is required.")
+
         # Fetch the related property record
         estate = self.env["estate.property"].browse(property_id)
         if not estate.exists():
             raise ValidationError("The specified property does not exist.")
 
+        # Business rules
         if estate.state in ["sold", "canceled"]:
             raise UserError("Cannot create an offer on a sold or canceled property.")
         if estate.state == "offer_accepted":
-            raise UserError(
-                "Cannot create an offer on a property with an accepted offer."
-            )
+            raise UserError("Cannot create an offer on a property with an accepted offer.")
+
+        # Offer price validation
         curr_max_price = estate.best_price or 0.0
         for offer in offers:
             if curr_max_price >= offer["offer_price"]:
-                raise UserError(
-                    "The offer price must be higher than the current best price."
-                )
+                raise UserError("The offer price must be higher than the current best price.")
             curr_max_price = max(curr_max_price, offer["offer_price"])
 
+        # Update property state
         estate.state = "offer_received"
+
         return super().create(offers)

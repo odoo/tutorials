@@ -12,7 +12,7 @@ class MakeOfferWizard(models.TransientModel):
     )
     partner_id = fields.Many2one('res.partner', 'Buyer', required=True)
     property_ids = fields.Many2many(
-        'estate.property', 
+        'estate.property',
         string='Selected Properties',
     )
 

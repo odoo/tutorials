@@ -1,6 +1,7 @@
 from odoo import http
 from odoo.http import request
 
+
 class EstateWebsiteController(http.Controller):
 
     @http.route('/properties', type='http', auth='public', website=True)

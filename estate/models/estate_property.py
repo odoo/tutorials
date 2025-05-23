@@ -64,9 +64,9 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     total_area = fields.Float(string='Total Area (sqm)', compute='_compute_total_area', help='Sum of living area and garden area')
     company_id = fields.Many2one(
-        'res.company', 
-        string='Company', 
-        required=True, 
+        'res.company',
+        string='Company',
+        required=True,
         default=lambda self: self.env.company
     )
     # SQL Constraints
@@ -109,7 +109,7 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
-           
+
     # Add Action Logic of "Cancel" & "Sold"
     def action_set_sold(self):
         for record in self:
