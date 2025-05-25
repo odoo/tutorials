@@ -47,27 +47,29 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                    <group>
+                    <div name="main_fields">
                         <group>
-                            <field name="name"/>
-                            <field name="tag_ids" widget="form.many2many_tags" options="{'color_field': 'color'}"/>
+                            <group>
+                                <field name="name"/>
+                                <field name="tag_ids" widget="form.many2many_tags" options="{'color_field': 'color'}"/>
+                            </group>
+                            <group>
+                                <field name="best_price"/>
+                            </group>
                         </group>
                         <group>
-                            <field name="best_price"/>
+                            <group>
+                                <field name="property_type_id" options="{'no_create': true, 'no_open': true}"/>
+                                <field name="postcode"/>
+                                <field name="availability_date"/>
+                            </group>
+                            <group>
+                                <field name="address"/>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </group>
                         </group>
-                    </group>
-                    <group>
-                        <group>
-                            <field name="property_type_id" options="{'no_create': true, 'no_open': true}"/>
-                            <field name="postcode"/>
-                            <field name="availability_date"/>
-                        </group>
-                        <group>
-                            <field name="address"/>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
-                        </group>
-                    </group>
+                    </div>
                     <notebook>
                         <page string="Description">
                             <group>
@@ -86,7 +88,7 @@
                         <page string="Offers">
                             <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
                         </page>
-                        <page string="Other info">
+                        <page name="other_info" string="Other info">
                             <group>
                                 <field name="salesman_id"/>
                                 <field name="buyer_id"/>
