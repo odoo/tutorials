@@ -146,24 +146,23 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="property_type_id" disable_drag_drop="true">
-                <field name="state" />
+            <kanban default_group_by="property_type_id" class="o_kanban_example">
+                <field name="state"/>
                 <templates>
-                    <t t-name="kanban-box">
-                        <div class="oe_kanban_global_click">
-                            <h3>
-                                <field name="name" />
-                            </h3>
-                            <div> Expected Price: <field name="expected_price" />
+                    <t t-name="card">
+                        <div class="o_kanban_card">
+                            <div class="o_kanban_card_header">
+                                <strong><field name="name"/></strong>
                             </div>
-                            <div
-                                t-if="record.state.raw_value in ['offer_received', 'offer_accepted']">
-                                Best Offer: <field name="best_price" />
-                            </div>
-                            <div t-if="record.state.raw_value == 'sold'"> Sold Price: <field
-                                    name="selling_price" />
-                            </div>
-                            <div> Tags: <field name="tag_ids" widget="many2many_tags" />
+                            <div class="o_kanban_card_content">
+                                <div>Expected Price: <field name="expected_price"/></div>
+                                <div t-if="record.state.raw_value in ['offer_received', 'offer_accepted']">
+                                    Best Offer: <field name="best_price"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'sold'">
+                                    Sold Price: <field name="selling_price"/>
+                                </div>
+                                <div>Tags: <field name="tag_ids" widget="many2many_tags"/></div>
                             </div>
                         </div>
                     </t>
@@ -171,5 +170,6 @@
             </kanban>
         </field>
     </record>
+    
 
 </odoo>
