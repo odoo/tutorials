@@ -10,5 +10,6 @@
         'views/view_properties_type.xml',
         'views/view_properties_tag.xml',
         'views/estate_menus.xml',
+        'views/view_properties_user.xml',
     ],
 }

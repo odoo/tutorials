@@ -86,11 +86,6 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
             self.garden_area = 0
 
-    @api.onchange('estate_offer_ids')
-    def _onchange_received_offer(self):
-        if len(self.estate_offer_ids) == 1 and self.status == 'new':
-            self.status = 'offer received'
-
     def action_cancel(self):
         if self.status == 'sold':
             raise exceptions.UserError('A sold property cannot be cancelled')
@@ -102,3 +97,8 @@ class EstateProperty(models.Model):
             raise exceptions.UserError('A cancelled property cannot be sold')
 
         self.status = 'sold'
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_estate_is_not_new_nor_cancelled(self):
+        if any(estate.status!='new' and estate.status!='cancelled' for estate in self):
+            raise exceptions.UserError('Can only delete new and cancelled records!')

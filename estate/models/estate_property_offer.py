@@ -26,14 +26,44 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(comodel_name='estate.property.type', related='property_id.estate_type_id')
 
     _sql_constraints = [
-        ('check_stricly_positive_price', 'CHECK(price > 0)',
-         'The price of an estate property offer must be strictly positive.'),
+        (
+            'check_stricly_positive_price',
+            'CHECK(price > 0)',
+            'The price of an estate property offer must be strictly positive.',
+        ),
     ]
 
     @api.depends('create_date', 'validity')
     def _compute_deadline(self):
         for record in self:
             record.date_deadline = record.create_date + relativedelta(days=record.validity)
+
+    @api.model_create_multi
+    def create(self, val_list):
+        for val in val_list:
+            val_property_id = val.get('property_id')
+            val_curr_price = val.get('price')
+            property_id = self.env['estate.property'].browse(val_property_id)
+            if not property_id:
+                raise exceptions.ValidationError(
+                    f'Property with id {property_id} does not exist.Please contact the support'
+                )
+
+            if property_id.best_offer and property_id.best_offer > val_curr_price:
+                raise exceptions.UserError('The price of a new offer must be bigger than the best_price and'
+                    f' {property_id.best_offer} is bigger than {val_curr_price}')
+
+            if property_id.status == 'new':
+                property_id.status = 'offer received'
+
+        return super(EstatePropertyOffer, self).create(val_list)
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_and_reset_state_if_no_offer_left(self):
+        for offer in self:
+            property_id = offer.property_id
+            if len(property_id.estate_offer_ids) == 1 and property_id.status != 'cancelled':
+                property_id.status = 'new'   
 
     def _compute_inverse_deadline(self):
         for record in self:
