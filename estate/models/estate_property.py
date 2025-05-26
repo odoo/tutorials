@@ -47,7 +47,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
 
     # Computed Fields
-    total_area =fields.Integer('Property Total Area', compute='_calculate_total_area')
+    total_area = fields.Integer('Property Total Area', compute='_calculate_total_area')
     best_price = fields.Float('Property Best Offer', digits=(16, 2), readonly=True, copy=False, compute='_get_best_price')
 
     # Ordering
@@ -63,7 +63,7 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price_not_lower_90p_expected_price(self):
         for property in self:
-            if property.selling_price==0:
+            if property.selling_price == 0:
                 continue
             comparing_result = tools.float_compare(property.selling_price, 0.9 * property.expected_price, precision_digits=6)
             if comparing_result < 0:
@@ -71,11 +71,11 @@ class EstateProperty(models.Model):
 
     @api.depends('offer_ids')
     def _get_best_price(self):
-        _best_offer = 0
         for property in self:
+            best_offer = 0
             for offer in property.offer_ids:
-                _best_offer = max(_best_offer, offer.price)
-            property.best_price = _best_offer
+                best_offer = max(best_offer, offer.price)
+            property.best_price = best_offer
 
     @api.depends('living_area', 'garden_area')
     def _calculate_total_area(self):
@@ -112,7 +112,6 @@ class EstateProperty(models.Model):
             property.state = 'cancelled'
         return True
 
-    # Offers Interactions
     # Update Property Status based on offer creations/removals
     @api.onchange('offer_ids')
     def _update_property_state(self):
@@ -162,4 +161,3 @@ class EstateProperty(models.Model):
         for property in self:
             if property.state not in ('new', 'cancelled'):
                 raise ValidationError("You can't delete properties that are neither new nor cancelled.")
-

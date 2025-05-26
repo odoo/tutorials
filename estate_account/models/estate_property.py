@@ -22,11 +22,10 @@ class EstateAccountProperty(models.Model):
                             Command.create(dict(name="6% Down Payment", quantity=0.06, price_unit=offer.price)),
                             Command.create(dict(name="Administrative Fees", quantity=1, price_unit=100))
                         ],
-                        property_id = self.id,
+                        property_id=self.id,
                     )]
                 )
                 return
-
 
     def action_property_sold(self):
         for property in self:

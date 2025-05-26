@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime
+from datetime import timedelta
 from odoo import fields, models, api
 from odoo.exceptions import ValidationError
 
@@ -33,29 +33,29 @@ class EstatePropertyOffer(models.Model):
     def _compute_offer_deadline(self):
         for offer in self:
             if not offer.create_date:
-                _create_date = fields.Date.today()
+                create_date = fields.Date.today()
             else:
-                _create_date = offer.create_date
-            offer.deadline = _create_date + timedelta(days=offer.validity_days)
+                create_date = offer.create_date
+            offer.deadline = create_date + timedelta(days=offer.validity_days)
 
     def _inverse_offer_deadline(self):
         for offer in self:
             if not offer.create_date:
-                _create_date = fields.Date.today()
+                create_date = fields.Date.today()
             else:
-                _create_date = offer.create_date.date()
-            offer.validity_days = (offer.deadline - _create_date).days
+                create_date = offer.create_date.date()
+            offer.validity_days = (offer.deadline - create_date).days
 
     # Actions
     def action_offer_accept(self):
         for offer in self:
-            if not offer.status == 'accepted':
+            if offer.status != 'accepted':
                 offer.property_id._notify_offer_accepted(offer)
         return True
 
     def action_offer_refuse(self):
         for offer in self:
-            if not offer.status == 'refused':
+            if offer.status != 'refused':
                 offer.property_id._notify_offer_refused(offer)
         return True
 

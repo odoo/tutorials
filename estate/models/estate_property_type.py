@@ -10,7 +10,6 @@ class EstatePropertyType(models.Model):
     name = fields.Char('Property Type', required=True)
     _order = "sequence, name"
 
-    name = fields.Char('Property Type', required=True)
     description = fields.Char('Description', required=False)
     property_ids = fields.One2many('estate.property', 'property_type_id', string='Properties')
 
