@@ -11,7 +11,8 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Property">
+            <list string="Property" editable="top">
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
@@ -23,9 +24,25 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <sheet>
+                    <xpath expr=".">
+                        <button class="oe_stat_button" name="%(estate_property_offer_action)d" string="Offers" type="action"/>
+                    </xpath>
                     <group>
                         <field name="name"/>
                     </group>
+                    <notebook>
+                        <page string="Properties">
+                            <group>
+                                <field name="property_ids">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

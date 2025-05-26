@@ -6,12 +6,14 @@ from odoo.tools import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "ch3 exercise tutorial"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     # active = fields.Boolean(default=False)
     state = fields.Selection(
         string='Status',
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')]
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        default='new'
     )
     description = fields.Text()
     postcode = fields.Char()
@@ -51,6 +53,8 @@ class EstateProperty(models.Model):
         for record in self:
             prices = record.offer_ids.mapped('price')
             record.best_price = max(prices) if prices else 0
+            if prices and record.state in [None, 'new']:
+                record.state = 'offer_received'
 
     @api.onchange("garden")
     def _onchange_partner_id(self):
@@ -77,7 +81,7 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'cancelled'
         return True
-    
+
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
