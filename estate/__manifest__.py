@@ -1,7 +1,7 @@
 {
     'name': 'Real Estate',
     'version': '1.0',
-    'depends': ['base', 'mail', 'website'],
+    'depends': ['mail', 'website'],
     'author': 'Rajeev Aanjana',
     'category': 'Real Estate/Brokerage',
     'description': 'A module for managing real estate properties',

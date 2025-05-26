@@ -1,0 +1,29 @@
+// .o_dashboard_cards {
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 1rem;
+// }
+
+.dashboard-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h5 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      text-align: center;
+  }
+
+  p {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: green;
+  }
+}

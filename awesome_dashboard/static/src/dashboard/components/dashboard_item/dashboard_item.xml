@@ -1,0 +1,10 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+      <div class="card p-3 m-1 h-100 shadow-sm dashboard-card animate-hover">
+        <div class="card-body overflow-auto">
+          <t t-slot="default"/>
+        </div>
+      </div>
+    </t>
+  </templates>
+  
