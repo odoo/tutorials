@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -35,7 +36,10 @@ class EstatePropertyOffer(models.Model):
 
             if price and property_id:
                 property = self.env["estate.property"].browse(property_id)
-                if self._check_not_lowest_offer(price, property_id):
+
+                if float_compare(price, property.best_offer, 2) == -1:
+                    raise ValidationError("Can't create an offer lower than best offer")
+                else:
                     property.set_offer_received()
 
         return super().create(vals_list)
@@ -73,14 +77,9 @@ class EstatePropertyOffer(models.Model):
         })
 
     def action_refuse_offer(self):
-        """ Refuses an offer on a property setting the states of offer and parent property """
-
+        """ Refuses an offer on a property """
         self.write({
             "status": "refused",
-        })
-        self.property_id.write({
-            "selling_price": 0.0,
-            "partner_id": False,
         })
 
     # -----------  MODEL CONSTRAINTS  -------------- #
@@ -88,22 +87,3 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ('positive_offer_price', 'CHECK(price >= 0)', 'Offer price should be > 0'),
     ]
-
-    # -----------  HELPERS  -------------- #
-
-    def _check_not_lowest_offer(self, price, property_id):
-        """Raise if price is lower than any existing offer."""
-
-        Offer = self.env["estate.property.offer"]
-
-        # Get the lowest offer for that property
-        lowest_offer = Offer.search(
-            [("property_id", "=", property_id)],
-            order="price asc",
-            limit=1,
-        )
-
-        if lowest_offer and price < lowest_offer.price:
-            raise ValidationError("Can't create an offer lower than an existing offer ")
-
-        return True

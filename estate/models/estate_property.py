@@ -81,7 +81,7 @@ class EstateProperty(models.Model):
     @api.depends("property_offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max((offer.price for offer in record.property_offer_ids), default=0)
+            record.best_offer = max(record.property_offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -126,10 +126,10 @@ class EstateProperty(models.Model):
             raise UserError("Can't delete an active property listing!")
 
     # Constraining on state instead of selling price because selling price is not a writable field
-    @api.constrains("state", "expected_price")
+    @api.constrains("selling_price", "expected_price")
     def _onchange_price(self):
         if not float_is_zero(self.selling_price, 10) and self.selling_price < 0.9 * self.expected_price:
-            raise ValidationError("Selling price can't be lower then 0.9 * expected price")
+            raise ValidationError("Selling price can't be lower then 0.9 * expected price !")
 
     _sql_constraints = [
         ('unique_name', 'UNIQUE(name)', 'Property name should be unique'),

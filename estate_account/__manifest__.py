@@ -6,7 +6,6 @@
     "sequence": 15,
     "summary": "Manage your residential opps",
     "depends": [
-        "base_setup",
         "estate",
         "account",
     ],
