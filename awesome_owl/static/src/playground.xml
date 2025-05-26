@@ -4,7 +4,13 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <Counter onChange.bind="incrementSum"></Counter>
+            <br/>
+            <Counter onChange.bind="incrementSum"></Counter>
+        </div>
+        <span>Total counter sum: <t t-out="sum.value"></t></span>
+        <div>
+            <Card title="title" content="content"/>
         </div>
     </t>
-
 </templates>
