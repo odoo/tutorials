@@ -1,0 +1,33 @@
+<templates>
+    <t t-name="product_kanban_inherit.ShowImage"
+        t-inherit="web.ImageField"
+        t-inherit-mode="primary">
+        <xpath expr="//img[@loading='lazy']" position="attributes">
+            <attribute name="t-on-click.stop">openImageFullScreen</attribute>
+        </xpath>
+    </t>
+    <t t-name="product_kanban_inherit.PopUp">
+    <div class="modal d-flex justify-content-center align-items-center fixed-top w-100 h-100">
+        <div class="o-FileViewer d-flex flex-column align-items-center w-100 h-100" tabindex="0">
+            <div class="o-FileViewer-header position-absolute top-0 w-100 p-3 bg-dark text-end">
+                <i class="fa fa-times text-white h2" role="button"
+                    t-on-click="props.close" title="Close"
+                    aria-label="Close" style="cursor: pointer;"></i>
+            </div>
+            <div
+                class="o-FileViewer-main d-flex justify-content-center align-items-center
+                        position-absolute top-0 bottom-0 start-0 end-0"
+                t-on-click="props.close">
+                <div
+                    class="o-FileViewer-zoomer d-flex justify-content-center align-items-center
+                            position-absolute w-100 h-100">
+                    <img class="o-FileViewer-view transition-base rounded shadow"
+                        draggable="false" alt="Viewer"
+                        t-att-src="props.src" loading="lazy"
+                        style="width: 70vw; height: 70vh; object-fit: contain;" />
+                </div>
+            </div>
+        </div>
+    </div>
+</t>
+</templates>
