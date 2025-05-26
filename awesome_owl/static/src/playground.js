@@ -8,14 +8,14 @@ export class Playground extends Component {
     static template = "awesome_owl.playground";
     static components = { Counter, Card };
 
-    someHTML = markup("<div class='text-primary'>some content</div>")
-    someText = "<div class='text-primary'>some content</div>"
-
-    setup() {
-        this.state = useState({ value:0});
-    }
     
-    increment() {
-        this.state.value++;
+    setup() {
+        this.someHTML = markup("<div class='text-primary'>some content</div>");
+        this.someText = "<div class='text-primary'>some content</div>";
+        this.sum = useState({ value: 0 });
+    }
+
+    incrementSum() {
+        this.sum.value++;
     }
 }
