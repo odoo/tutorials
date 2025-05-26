@@ -50,6 +50,15 @@
         }
     }
     
+    /* Pie chart styling */
+    canvas {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 300px;
+        margin: 0 auto;
+        display: block;
+    }
+    
     /* Subtle background patterns for cards */
     .bg-primary-subtle, 
     .bg-success-subtle, 

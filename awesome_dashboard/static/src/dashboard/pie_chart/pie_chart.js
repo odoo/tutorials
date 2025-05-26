@@ -37,6 +37,16 @@ export class PieChart extends Component {
                     },
                 ],
             },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom',
+                    }
+                }
+            }
         });
     }
 }

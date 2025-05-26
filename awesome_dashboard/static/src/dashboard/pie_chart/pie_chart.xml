@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.PieChart">
         <div t-att-class="'h-100 ' + props.class" t-ref="root">
-            <div class="h-100 position-relative" t-ref="container">
+            <div class="h-100 position-relative" t-ref="container" style="max-height: 350px;">
                 <canvas t-ref="canvas" />
             </div>
         </div>
