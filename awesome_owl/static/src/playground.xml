@@ -13,9 +13,8 @@
             <Card title="'card 2'" content = "content2"/>
         </div>
 
-
         <TodoList/>
-        
+
     </t>
 
 </templates>
