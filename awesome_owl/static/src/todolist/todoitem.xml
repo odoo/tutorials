@@ -8,7 +8,9 @@
                 <t t-esc="props.todo.id"/>.
                 <t t-esc="props.todo.description"/>
             </label>
+            <span role="button" class="fa fa-remove p-2" t-on-click="onRemove"/>
         </div>
+        
     </t>
 
 </templates>
