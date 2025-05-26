@@ -185,25 +185,39 @@ class RealEstateProperty(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            # Extract the street from the vals to set it directly on the address partner to avoid
+            # infinite recursion due to the street field being a stored related field.
+            street = vals.pop('street', None)
             if not vals.get('address_id'):  # No address is provided at creation time.
                 # Create and assign a new one based on the property name.
-                address = self.env['res.partner'].create({
+                address_sudo = self.env['res.partner'].sudo().create({
                     'name': vals.get('name'),
-                })
-                vals['address_id'] = address.id
+                    'street': street,
+                })  # In sudo mode to allow real estate agents to create an address.
+                vals['address_id'] = address_sudo.id
+            elif street:  # Both a street and the address partner are specified.
+                address = self.env['res.partner'].browse(vals['address_id'])
+                address.sudo().street = street
         return super().create(vals_list)
 
     def write(self, vals):
+        # Extract the street from the vals to set it directly on the address partner in sudo mode to
+        # allow real estate agents to update the address, and to avoid infinite recursion due to the
+        # street field being a stored related field.
+        if street := vals.pop('street', None):
+            self.address_id.sudo().street = street
+
         res = super().write(vals)
-        if vals.get('street'):  # The street has been updated.
+
+        if street:  # The street has been updated.
             for property in self:
                 if not property.address_id:  # The property has no address record.
                     # Create and assign a new one based on the property name and the street.
-                    address = self.env['res.partner'].create({
+                    address_sudo = self.env['res.partner'].sudo().create({
                         'name': property.name,
-                        'street': vals['street'],
-                    })
-                    property.address_id = address.id
+                        'street': street,
+                    })  # In sudo mode to allow real estate agents to create an address.
+                    property.address_id = address_sudo.id
         return res
 
     def action_cancel_listing(self):

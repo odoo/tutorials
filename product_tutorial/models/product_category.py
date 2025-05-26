@@ -23,9 +23,10 @@ class ProductCategory(models.Model):
     active = fields.Boolean(default=True)
 
     def write(self, vals):
-        for category in self:
-            if category.active and vals.get('active') is False:  # The category is being archived.
-                category.product_ids.active = False  # Archive all products of the category.
+        # Commented out to avoid an infinite loop with product.write()
+        # for category in self:
+        #     if category.active and vals.get('active') is False:  # The category is being archived.
+        #         category.product_ids.active = False  # Archive all products of the category.
         return super().write(vals)
 
     def action_ensure_positive_margins(self):

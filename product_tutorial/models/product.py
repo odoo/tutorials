@@ -129,7 +129,16 @@ class Product(models.Model):
             new_category = self.env['product.category'].browse(new_category_id).exists()
             if new_category and not new_category.active:  # The category exists and is archived.
                 vals['active'] = False  # Archive the product.
-        return super().write(vals)
+
+        res = super().write(vals)
+
+        for product in self:
+            if not product.active and vals.get('active') is False:  # The product has been archived.
+                if not product.category_id.product_ids:  # All the category's products are archived.
+                    # Archive the category in sudo mode to allow writing on the category.
+                    product.category_id.sudo().active = False
+
+        return res
 
     @api.model
     def _reassign_inactive_products(self):

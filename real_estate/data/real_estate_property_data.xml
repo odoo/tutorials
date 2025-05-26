@@ -15,6 +15,8 @@
         <field name="garden_area">2100</field>
         <field name="address_id" ref="real_estate.country_house_address"/>
         <field name="seller_id" ref="real_estate.amyfromthevideos"/>
+        <!-- Clear to prevent the root user from being assigned. -->
+        <field name="salesperson_id" eval="None"/>
     </record>
 
     <record id="real_estate.loft" model="real.estate.property">
@@ -30,6 +32,8 @@
         <field name="has_garden">False</field>
         <field name="address_id" ref="real_estate.loft_address"/>
         <field name="seller_id" ref="real_estate.antony_petisuix"/>
+        <!-- Clear to prevent the root user from being assigned. -->
+        <field name="salesperson_id" eval="None"/>
     </record>
 
     <record id="real_estate.mixed_use_commercial" model="real.estate.property">
@@ -45,6 +49,8 @@
         <field name="has_garden">False</field>
         <field name="address_id" ref="real_estate.mixed_use_commercial_address"/>
         <field name="seller_id" ref="real_estate.bafien_carpink"/>
+        <!-- Clear to prevent the root user from being assigned. -->
+        <field name="salesperson_id" eval="None"/>
     </record>
 
 </odoo>
