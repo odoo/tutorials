@@ -10,7 +10,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list decoration-success="state in ('Offer Received', 'Offer Accepted')" decoration-bf="state == 'Offer Accepted'" decoration-muted="state == 'Sold'" >
+            <list decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'" >
                 <field name="name" string="Title" />
                 <field name="type_id" string="Property Type" />
                 <field name="postcode" />
@@ -31,9 +31,9 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="sold_property" type="object" string="SOLD" invisible="state in ('Sold', 'Cancelled')" />
-                    <button name="cancel_property" type="object" string="CANCEL" invisible="state in ('Sold', 'Cancelled')" />
-                    <field name="state" string="Status" widget="statusbar" statusbar_visible="New,Offer Received,Offer Accepted,Sold" options="{'clickable':'1'}" />
+                    <button name="sold_property" type="object" string="SOLD" invisible="state in ('sold', 'cancelled')" />
+                    <button name="cancel_property" type="object" string="CANCEL" invisible="state in ('sold', 'cancelled')" />
+                    <field name="state" string="Status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable':'1'}" />
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -69,7 +69,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ('Sold', 'Offer Accepted', 'Cancelled')" />
+                            <field name="offer_ids" readonly="state in ('sold', 'offer_accepted', 'cancelled')" />
                         </page>
                         <page string="Other Info">
                             <group col="2">
@@ -100,19 +100,12 @@
                 <field name="facades" />
 
                 <filter name="available_properties" string="Available"
-                    domain="['|',
-                        ('state', '=', 'New'),
-                        ('state', '=', 'Offer Received')
-                    ]" />
+                    domain="[('state', 'in', ['new', 'offer_received'])]" />
 
                 <filter name="inactive_properties" string="Inactive"
-                    domain="[
-                        ('active', '=', False)
-                    ]" />
+                    domain="[('active', '=', False)]" />
                 
                 <filter name="postcode_group" string="Postcode" context="{'group_by': 'postcode'}" />
-
-                <!-- Filter on availability date - <filter name="available" string="Available" domain="[('date_availability', '&lt;=', context_today())]" /> -->
             </search>
         </field>
     </record>
@@ -131,11 +124,11 @@
                                 Expected Price:
                                 <field name="expected_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'Offer Received'">
+                            <div t-if="record.state.raw_value == 'offer_received'">
                                 Best price:
                                 <field name="best_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'Offer Accepted'">
+                            <div t-if="record.state.raw_value == 'offer_accepted'">
                                 Selling Price:
                                 <field name="selling_price" />
                             </div>
