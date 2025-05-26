@@ -63,11 +63,21 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        newOffers = super().create(vals_list)
+        newOffers = super().create(vals_list).sorted('price')
+
+        if not newOffers:
+            return newOffers
+
+        offers = newOffers[0].property_id.offer_ids
+
+        old_offers = offers.filtered(lambda o: o not in newOffers)
+        offers_max_price = max(old_offers.mapped('price'))
+
         for newOffer in newOffers:
-            if newOffer.price < newOffer.property_id.best_price:
+            if newOffer.price < offers_max_price:
                 raise UserError(self.env._("The offer price cannot be lower than the highest existing"))
             else:
+                offers_max_price = newOffer.price
                 if newOffer.property_id.state == 'new':
                     newOffer.property_id.state = 'offer_received'
         return newOffers
