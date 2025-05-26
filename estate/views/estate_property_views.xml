@@ -1,5 +1,32 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" group_create="false" group_delete="false" quick_create="false" groups_draggable="false" records_draggable="false">
+                <templates>
+                    <t t-name="card">
+                        <h2>
+                            <field name="name"/>
+                        </h2>
+                        <field name="tag_ids" widget="form.many2many_tags" options="{'color_field': 'color'}"/>
+                        <t t-if="false">
+                            <field name="state"/>
+                        </t>
+                        Expected Price: <field name="expected_price"/><br/>
+                        <t t-if="record.best_price.raw_value > 0">
+                            Best Offer: <field name="best_price"/><br/>
+                        </t>
+                        <t t-if="record.selling_price.raw_value > 0">
+                            Selling Price: <field name="selling_price"/>
+                        </t>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -103,7 +130,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
         <field name="search_view_id" ref="estate.estate_property_search"/>
         <field name="context">{'search_default_availability_date': True}</field>
         <field name="help" type="html">
