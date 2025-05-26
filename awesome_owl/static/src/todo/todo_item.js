@@ -6,7 +6,6 @@ export class TodoItem extends Component {
             <input 
                 type="checkbox" 
                 t-att-checked="props.isCompleted"
-                t-on-input="() => this.props.toggleTodo(props.id)"
             />
             <t t-esc="props.id"/>. 
             <t t-esc="props.description"/>
