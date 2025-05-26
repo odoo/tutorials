@@ -15,8 +15,8 @@ export class Playground extends Component {
     title = "<div style='color:blue'> Title </div>"
     content = "<div style='color:blue'> content </div>"
     
-    safe_title = markup("<div style='color:blue'> Title </div>")
-    safe_content = markup("<div style='color:blue'> content </div>")
+    safeTitle = markup("<div style='color:blue'> Title </div>")
+    safeContent = markup("<div style='color:blue'> content </div>")
 
 
     setup() {
@@ -26,11 +26,11 @@ export class Playground extends Component {
         });
     }
 
-    get sum_counters() {
+    get sumCounters() {
         return this.state.counter1 + this.state.counter2
     }
 
-    increment_counters(counter_number) {
-        counter_number == 1 ? this.state.counter1++ : this.state.counter2++ 
+    increment_counters(counterNumber) {
+        counterNumber == 1 ? this.state.counter1++ : this.state.counter2++ 
     }
 }

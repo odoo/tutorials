@@ -4,11 +4,21 @@
 
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
-            <h5 class="card-title"> 
-                <t t-out="props.title"/>
-            </h5>
+            
+            <div id="card-header" class="d-flex">
+                <h5 class="card-title" style="margin-right: 6px"> 
+                    <t t-out="props.title"/>
+                </h5>
+            
+                <button t-on-click="_toggleOpen">
+                    toggle
+                </button>
+            </div>
+
             <p class="card-text">
-                <t t-out="props.content"/>
+                <t t-if="this.state.open === true">
+                    <t t-slot="content"/>
+                </t>
             </p>
         </div>
     </t>

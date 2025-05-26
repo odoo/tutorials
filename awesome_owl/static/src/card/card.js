@@ -1,16 +1,27 @@
 /** @odoo-module **/
 
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 
 export class Card extends Component {
     static template = "awesome_owl.card";
 
     static props = {
         title: { type: String},
-        content: { type: String, optional: true },
+        slots: {
+            type: Object,
+            optional: true
+        }
     };
 
-    setup() {
-        console.log("Props received:", this.props);
+
+    setup(){
+        this.state = useState({
+            open: true,
+        })
+    }
+
+    _toggleOpen() {
+        this.state.open = !this.state.open
     }
 }
+

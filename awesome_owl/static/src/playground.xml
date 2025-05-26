@@ -6,21 +6,19 @@
 
             <TodoList/>
 
+            <Card title="safeTitle">
+                <t t-set-slot="content"> 
+                    <Counter id="2" val="state.counter2" callback.bind="increment_counters"/>
+                </t>
+            </Card>
+
             <Counter id="1" val="state.counter1" callback.bind="increment_counters"/>
-            <Counter id="2" val="state.counter2" callback.bind="increment_counters"/>
-                
+        
             <div> 
-                sum = <t t-esc="sum_counters"/>
+                sum = <t t-esc="sumCounters"/>
             </div>
-
-            <Card title="'Hello'" content="'World'"/>
-            <Card title="'This is'" content="'a card'"/>
-
-            <Card title="title" content="content"/>
-            <Card title="safe_title" content="safe_content"/>
         </div>
     </t>
-
 </templates>
 
 
