@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="estate_property_offer_filter_action" model="ir.actions.act_window">
+    <record id="estate_property_offer_action_filter" model="ir.actions.act_window">
         <field name="name">Offer</field>
         <field name="res_model">estate.property.offer</field>
         <!-- <field name="domain">[('property_type_id', '=', active_id)]</field> -->

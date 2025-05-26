@@ -11,7 +11,7 @@ class PropertyOffer(models.Model):
     price = fields.Float("price")
     status = fields.Selection(copy=False, selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate_property", required=True)
+    property_id = fields.Many2one("estate.property", required=True)
     date_deadline = fields.Date(default=fields.Date.today() + relativedelta(days=7), compute="_compute_deadline", inverse="_update_validity")
     validity = fields.Integer(default=7)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
@@ -58,10 +58,10 @@ class PropertyOffer(models.Model):
         return True
 
     @api.model
-    def create(self, vals):
-        property_id = self.env["estate_property"].browse(vals["property_id"])
+    def create_multi(self, vals):
+        property_id = self.env["estate.property"].browse(vals["property_id"])
         if property_id.state == "new":
             property_id.state = "offer received"
         if property_id.best_price > vals["price"]:
             raise UserError("The price of a new offer can't be below the price of an already existing offer.")
-        return super().create(vals)
+        return super().create_multi(vals)

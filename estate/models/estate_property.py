@@ -6,7 +6,7 @@ from odoo.tools.float_utils import float_compare
 
 
 class Properties(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Properties of the estate model"
     _order = "id desc"
 
@@ -91,7 +91,7 @@ class Properties(models.Model):
     def _check_minimum_sell_price(self):
         for a_property in self:
             if float_compare(a_property.selling_price, a_property.expected_price * 0.9, 2) == -1:
-                raise ValidationError("The seling prce can not be lower than 90% of the expected price")
+                raise ValidationError("The selling price can not be lower than 90% of the expected price")
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
