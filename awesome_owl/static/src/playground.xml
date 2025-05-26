@@ -4,6 +4,9 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <Counter />
+            <Card title="'My Card'" content="'42 because why not'"/>
+            <Card title="'Card 2'" content="'content of card 2'"/>
         </div>
     </t>
 
