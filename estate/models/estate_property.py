@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.date_utils import relativedelta
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _order = 'id desc'
 
     name = fields.Char('Name', required=True)
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
@@ -22,9 +23,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean('Has Garage')
     garden = fields.Boolean('Has Garden')
     garden_area = fields.Integer('Garden Area (sqm)')
-    garden_orientation = fields.Selection(
-        string='Garden Orientation', selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
-    )
+    garden_orientation = fields.Selection(string='Garden Orientation', selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
     total_area = fields.Float('Total Area (sqm)', compute='_compute_total_area')
     salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -46,8 +45,10 @@ class EstateProperty(models.Model):
     active = fields.Boolean('Active', default=True)
 
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', _('The expected price must be strictly positive.')),
-        ('check_selling_price', 'CHECK(selling_price >= 0)', _('The selling price must be positive.')),
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price should be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'The selling price should be positive.'),
+        ('check_garden_area', 'CHECK(garden = false OR garden_area > 0)', 'The garden area should be strictly positive.'),
+        ('check_garden_orientation', "CHECK(garden = false OR garden_orientation IN ('north', 'south', 'east', 'west'))", 'You should choose a garden orientation.'),
     ]
 
     @api.constrains('selling_price')
@@ -56,7 +57,7 @@ class EstateProperty(models.Model):
             if not float_is_zero(record.selling_price, 2):
                 if record.expected_price:
                     if float_compare(record.selling_price, record.expected_price * 0.9, 2) < 0:
-                        raise ValidationError(_('The selling price must be at least 90% of the expected price.'))
+                        raise ValidationError(self.env._('The selling price must be at least 90% of the expected price.'))
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -89,32 +90,17 @@ class EstateProperty(models.Model):
             self.garden_area = None
             self.garden_orientation = None
 
-    @api.onchange('garden_area')
-    def _onchange_garden_area(self):
-        if self.garden_area:
-            if self.garden_area > 0:
-                self.garden = True
-            else:
-                self.garden_area = 0
-                self.garden = False
-        else:
-            self.garden = False
-
-    @api.onchange('garden_orientation')
-    def _onchange_garden_orientation(self):
-        if self.garden_orientation:
-            self.garden = True
-
     @api.onchange('offer_ids')
     def _onchange_offer_ids(self):
         if self.state == 'new':
-            self.state = 'offer_received'
+            if len(self.offer_ids):
+                self.state = 'offer_received'
 
     def action_set_sold(self):
         self.ensure_one()
 
         if self.state == 'cancelled':
-            raise UserError(_('Cancelled properties cannot be sold.'))
+            raise UserError(self.env._('Cancelled properties cannot be sold.'))
 
         self.state = 'sold'
 
@@ -122,6 +108,6 @@ class EstateProperty(models.Model):
         self.ensure_one()
 
         if self.state == 'sold':
-            raise UserError(_('Sold properties cannot be cancelled.'))
+            raise UserError(self.env._('Sold properties cannot be cancelled.'))
 
         self.state = 'cancelled'

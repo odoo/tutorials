@@ -1,4 +1,4 @@
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.date_utils import relativedelta
 
@@ -6,6 +6,7 @@ from odoo.tools.date_utils import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Real Estate Property Offer'
+    _order = 'price desc'
 
     price = fields.Float()
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
@@ -20,10 +21,11 @@ class EstatePropertyOffer(models.Model):
         ],
         copy=False,
     )
-    property_state = fields.Selection('Property State', related='property_id.state')
+    property_type_id = fields.Many2one(related='property_id.property_type_id')
+    property_state = fields.Selection(related='property_id.state')
     active = fields.Boolean('Active', default=True)
 
-    _sql_constraints = [('check_price', 'CHECK(price > 0)', _('The price must be strictly positive.'))]
+    _sql_constraints = [('check_price', 'CHECK(price > 0)', 'The price must be strictly positive.')]
 
     @api.depends('date_deadline')
     def _compute_validity(self):
@@ -38,7 +40,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         if self.property_id.state in ['offer_accepted', 'sold'] and self.status != 'accepted':
-            raise UserError(_('Another offer has already been accepted.'))
+            raise UserError(self.env._('Another offer has already been accepted.'))
         self.property_id.buyer_id = self.partner_id
         self.property_id.selling_price = self.price
         self.property_id.state = 'offer_accepted'
@@ -49,7 +51,7 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         if self.status == 'accepted':
             if self.property_id.state == 'sold':
-                raise UserError(_('The property has already been sold.'))
+                raise UserError(self.env._('The property has already been sold.'))
             self.property_id.buyer_id = None
             self.property_id.selling_price = None
             self.property_id.state = 'offer_received'
