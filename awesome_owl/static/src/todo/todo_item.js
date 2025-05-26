@@ -14,4 +14,8 @@ export class TodoItem extends Component {
             }
         }
     };
+
+    toggleState() {
+        this.props.todo.isCompleted = !this.props.todo.isCompleted;
+    }
 }
