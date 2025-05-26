@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id="estate_account_menu_root" name="Estate Account">
+        <menuitem id="estate_account_invoice_menu" name="Invoices">
+            <menuitem id="estate_account_menu_action" action="estate_account_action" name="Invoices"/>
+        </menuitem>
+    </menuitem>
+</odoo>
