@@ -6,9 +6,12 @@ export class Card extends Component {
             <h5 class="card-title"><t t-esc="state.title"/></h5>
             <p class="card-text"><t t-out="state.content"/></p>
         </div>`;
-
+    static props = {
+        title: { type: String },
+        content: { type: String }
+    }
     setup() {
-        this.state = useState({title:  this.props.title, content:this.props.content})
+        this.state = useState({ title: this.props.title, content:this.props.content })
     }
 
 }
