@@ -27,6 +27,16 @@ class EstatePropertyOffer(models.Model):
 
     _sql_constraints = [('check_price', 'CHECK(price > 0)', 'The price must be strictly positive.')]
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            p = self.env['estate.property'].browse(vals['property_id'])
+            if p.best_price > vals['price']:
+                raise UserError(self.env._('An offer with a higher price already exists.'))
+            if p.state == 'new':
+                p.state = 'offer_received'
+        return super().create(vals_list)
+
     @api.depends('date_deadline')
     def _compute_validity(self):
         for record in self:

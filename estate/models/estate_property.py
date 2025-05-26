@@ -51,6 +51,12 @@ class EstateProperty(models.Model):
         ('check_garden_orientation', "CHECK(garden = false OR garden_orientation IN ('north', 'south', 'east', 'west'))", 'You should choose a garden orientation.'),
     ]
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_with_check_state(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(self.env._("You cannot delete a property unless it is 'New' or 'Cancelled'."))
+
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
@@ -89,12 +95,6 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
-
-    @api.onchange('offer_ids')
-    def _onchange_offer_ids(self):
-        if self.state == 'new':
-            if len(self.offer_ids):
-                self.state = 'offer_received'
 
     def action_set_sold(self):
         self.ensure_one()
