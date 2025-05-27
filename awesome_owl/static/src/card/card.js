@@ -14,4 +14,15 @@ export class Card extends Component {
             }
         },
     };
+
+
+    setup() {
+        this.state = useState({
+            isOpen: false,
+        });
+    }
+
+    toggle() {
+        this.state.isOpen = !this.state.isOpen;
+    }
 }
