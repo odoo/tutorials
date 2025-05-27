@@ -24,3 +24,4 @@ class EstateProperty(models.Model):
                 }
             )
         return super().action_property_sold()
+        
