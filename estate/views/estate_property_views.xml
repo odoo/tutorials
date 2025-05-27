@@ -52,7 +52,7 @@
                                         <field name="selling_price"/>
                                     </td>
                                 </tr>
-                            </table><field name="expected_price"/>
+                            </table>
                         </div>
                     </t>
                 </templates>
@@ -83,8 +83,8 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_to_sell" string="Sold" type="object" class="oe_highlight" invisible="state in ['sold', 'cancelled']"/>
-                    <button name="action_to_cancel" string="Cancel" type="object" invisible="state in ['sold', 'cancelled']" />
+                    <button name="action_sell" string="Sold" type="object" class="oe_highlight" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_cancel" string="Cancel" type="object" invisible="state in ['sold', 'cancelled']" />
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>

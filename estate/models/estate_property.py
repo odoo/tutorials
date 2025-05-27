@@ -9,13 +9,13 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     name = fields.Char('Title', default="Unknown", required=True)
-    description = fields.Char('Descrption')
+    description = fields.Char('Description')
     postcode = fields.Char('Postcode', required=True, default='00000')
 
-    availability_date = fields.Date('Availability', copy=False, default=(fields.Date.today() + relativedelta(days=30)))
+    availability_date = fields.Date('Availability', copy=False, default=lambda: (fields.Date.today() + relativedelta(days=30)))
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2, required=True)
-    last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
+    last_seen = fields.Datetime("Last Seen", default= lambda: fields.Datetime.now)
     expected_price = fields.Float('Expected Price', required=True)
     living_area = fields.Float('Living Area (sqm)')
     facades = fields.Integer('Facades', required=True)
@@ -44,7 +44,7 @@ class EstateProperty(models.Model):
         default='new'
     )
 
-    Property_type_id = fields.Many2one('estate.property.type', 'Property Type')
+    property_type_id = fields.Many2one('estate.property.type', 'Property Type')
     partner_id = fields.Many2one('res.partner', 'Partner')
     seller_id = fields.Many2one('res.users', 'Salesperson', default=lambda self: self.env.user, copy=False)
     tag_ids = fields.Many2many('estate.property.tag', 'property_tag')
@@ -65,10 +65,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            if record.offer_ids:
-                record.best_offer = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_offer = 0
+            record.best_offer = max(record.offer_ids.mapped('price'))
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -84,19 +81,19 @@ class EstateProperty(models.Model):
             raise UserError(_('Only properties in "New" or "Cancelled" state can be deleted.'))
         return super().unlink()
 
-    def action_to_sell(self):
+    def action_sell(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError(_('This property is already taken.'))
             if record.state == 'cancelled':
                 raise UserError(_('Property is no longer listed'))
             if record.state != 'offer_accepted':
-                raise UserError(_('No offers to accept'))
+                raise UserError(_('No offer has been accepted for this property.'))
 
             record.state = 'sold'
         return True
 
-    def action_to_cancel(self):
+    def action_cancel(self):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(_('This Property is already cancelled.'))
