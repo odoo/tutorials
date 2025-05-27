@@ -17,7 +17,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(default=7, string="Validity")
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
-    create_date = fields.Date(default=fields.Date.today) 
+    create_date = fields.Date(default=fields.Date.today)
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _sql_constraints = [
@@ -51,7 +51,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("You cannot refuse an accepted offer.")
             record.status = 'refused'
         return True
-    
+
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -61,4 +61,3 @@ class EstatePropertyOffer(models.Model):
                 raise UserError(f"The selling must be higher than {estate_property.best_price:.2f}")
             estate_property.best_price = price
         return super().create(vals_list)
-

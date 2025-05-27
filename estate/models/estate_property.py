@@ -87,7 +87,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price is not None and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=9) == -1:
                 raise ValidationError("The selling price cannot be less than 90% of the expected price")
-            
+
     @api.ondelete(at_uninstall=False)
     def unlink_if_new_or_cancelled(self):
         for record in self:
