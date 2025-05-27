@@ -1,5 +1,4 @@
-from datetime import datetime, timedelta
-from typing import override
+from datetime import timedelta
 
 from odoo import api, fields, models, exceptions
 

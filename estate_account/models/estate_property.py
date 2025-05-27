@@ -1,6 +1,4 @@
 from odoo import models, Command
-from odoo.exceptions import AccessError, UserError
-from odoo.tools import float_is_zero
 
 
 class EstateProperty(models.Model):
