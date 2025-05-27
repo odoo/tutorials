@@ -10,7 +10,13 @@
         </div>
         <span>Total counter sum: <t t-out="sum.value"></t></span>
         <div>
-            <Card title="title" content="content"/>
+            <Card title="title">
+                <Counter/>
+            </Card>
+        </div>
+        <br/>
+        <div>
+            <TodoList/>
         </div>
     </t>
 </templates>
