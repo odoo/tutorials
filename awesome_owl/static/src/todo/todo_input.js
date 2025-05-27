@@ -10,7 +10,7 @@ export class TodoInput extends Component {
                 placeholder="Add a todo"
                 t-ref="todoInput"
                 t-model="state.inputValue"
-                t-on-keyup="ev => this.check(ev)"
+                t-on-keyup="ev => this._submitOnEnter(ev)"
             />
             <span t-esc="props.inputValue" />
         </div>
@@ -29,7 +29,7 @@ export class TodoInput extends Component {
         this.state.inputValue = event.target.value;
     }
 
-    check(ev) {
+    _submitOnEnter(ev) {
         if (ev.keyCode === 13 && this.state.inputValue != ""){ // 13 is the code for enter key in input 
             this.props.addTodoItem(this.state.inputValue)
             this.state.inputValue = ""

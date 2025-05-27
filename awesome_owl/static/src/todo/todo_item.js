@@ -7,10 +7,15 @@ export class TodoItem extends Component {
                 type="checkbox" 
                 t-att-checked="props.isCompleted"
             />
+
             <t t-esc="props.id"/>. 
             <t t-esc="props.description"/>
 
-            <span class="fa fa-remove" style="color: red; margin-left:4px" t-on-click="() => this.props.removeTodo(props.id)"/>
+            <span 
+                class="fa fa-remove" 
+                style="color: red; margin-left:4px" 
+                t-on-click="() => this.props.removeTodo(props.id)"
+            />
         </div>
     `
 

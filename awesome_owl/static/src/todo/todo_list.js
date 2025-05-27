@@ -9,7 +9,7 @@ export class TodoList extends Component {
 
             <div t-foreach="state.todos" t-as="todo" t-key="todo.id">
                 <TodoItem 
-                    id="todo.id" 
+                    id="todo.id"
                     description="todo.description"
                     isCompleted="todo.isCompleted"
                     toggleTodo.bind="toggleTodo"
@@ -30,7 +30,11 @@ export class TodoList extends Component {
     }   
 
     addTodoItem(newTodoDescription){
-        this.state.todos.push({id: this.state.id_counter, description: newTodoDescription, isCompleted:false})
+        this.state.todos.push({
+            id: this.state.id_counter,
+            description: newTodoDescription,
+            isCompleted:false
+        })
         this.state.id_counter++
     }
 
@@ -44,7 +48,5 @@ export class TodoList extends Component {
         if (index >= 0) {
             this.state.todos.splice(index, 1);
         }
-
-        console.log(this.state.todos)
     }
 }
