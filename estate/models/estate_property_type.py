@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
 
-class PropertyType(models.Model):
+class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "the type of an estate"
     _order = "sequence,name desc"
@@ -12,7 +12,7 @@ class PropertyType(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_type_id")
     offer_count = fields.Integer(compute="_count_offer")
 
-    _sql_constraints = [("unique_property_tag", "UNIQUE(name)", "Tag name must be unique !")]
+    _sql_constraints = [("unique_property_type", "UNIQUE(name)", "Type name must be unique !")]
 
     @api.depends("offer_ids")
     def _count_offer(self):

@@ -22,7 +22,7 @@
         <field name="name">estate.property.tag.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="bottom">
+            <list editable="bottom">
                 <field name="name"/>
             </list>
         </field>
@@ -33,7 +33,7 @@
         <field name="name">estate.property.tag.form</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <form string="Property">
+            <form string="Property Tag">
                 <sheet>
                     <h1><field name="name"/></h1>
                 </sheet>

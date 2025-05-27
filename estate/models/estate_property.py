@@ -5,7 +5,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 
-class Properties(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Properties of the estate model"
     _order = "id desc"
@@ -17,7 +17,7 @@ class Properties(models.Model):
     date_availability = fields.Date(
         "Date availability",
         copy=False,
-        default=fields.Date.today() + relativedelta(months=3))
+        default=lambda S: fields.Date.today() + relativedelta(months=3))
     expected_price = fields.Float("Expected price", required=True)
     selling_price = fields.Float("Selling price", readonly=True, copy=False)
     bedrooms = fields.Integer("# Bedrooms", default=2)
@@ -32,8 +32,8 @@ class Properties(models.Model):
     state = fields.Selection(
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled")],
         required=True,
@@ -60,7 +60,7 @@ class Properties(models.Model):
     @api.depends("offer_ids")
     def _find_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price") + [0])
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -76,7 +76,7 @@ class Properties(models.Model):
             if a_property.state not in ["cancelled"]:
                 a_property.state = "sold"
             else:
-                raise UserError("Property is already cancelled")
+                raise UserError(self.env._("Property is already cancelled"))
         return True
 
     def action_cancel(self):
@@ -84,7 +84,7 @@ class Properties(models.Model):
             if a_property.state not in ["sold"]:
                 a_property.state = "cancelled"
             else:
-                raise UserError("Property is already sold")
+                raise UserError(self.env._("Property is already sold"))
         return True
 
     @api.constrains("selling_price")
@@ -96,4 +96,4 @@ class Properties(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         if any(record.state not in ["new", "cancelled"] for record in self):
-            raise UserError("Property should be New or Cancelled in order to be deleted")
+            raise UserError(self.env._("Property should be New or Cancelled in order to be deleted"))

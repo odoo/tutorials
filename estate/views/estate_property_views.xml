@@ -12,7 +12,7 @@
                 <field string="Bedrooms" name="bedrooms"/>
                 <field string="Living Area (sqm)" name="living_area" filter_domain="[('living_area', '&gt;', self)]"/>
                 <field string="Facades" name="facades"/>
-                <filter string="Available" name="state_availability_filter" domain="['|',('state','=', 'new'), ('state','=','offer received')]"/>
+                <filter string="Available" name="state_availability_filter" domain="['|',('state','=', 'new'), ('state','=','offer_received')]"/>
                 <filter string="Postcode" name="groupby_postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
@@ -30,7 +30,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel" decoration-success="state in ['offer received','offer accepted']" decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
+            <list decoration-success="state in ['offer_received','offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -58,7 +58,7 @@
                 <header>
                     <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
                     <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer received, offer accepted,sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received, offer_accepted,sold"/>
                 </header>
                 <sheet>
                     <h1><field name="name"/></h1>
@@ -87,10 +87,11 @@
                                 <field name="garden_area" invisible="not garden"/>
                                 <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
+                                <field name="state"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ['offer accepted', 'sold', 'cancelled']">
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']">
                                 <list string="Offers" editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                                     <field name="price"/>
                                     <field name="partner_id"/>
@@ -127,13 +128,13 @@
                                 Expected Price :
                                 <field name="expected_price" string="Expected price"/>
                             </group>
-                            <div t-if="['offer received', 'offer accepted', 'sold'].includes(record.state.raw_value)">
+                            <div t-if="['offer_received', 'offer_accepted', 'sold'].includes(record.state.raw_value)">
                                 <group>
                                     Best Offer : <field name="best_price" string="Best Price"/>
                                 </group>
                             </div>
                             
-                            <div t-if="['offer accepted', 'sold', 'Sold'].includes(record.state.raw_value)">
+                            <div t-if="['offer_accepted', 'sold', 'Sold'].includes(record.state.raw_value)">
                                 Selling Price :
                                 <field name="selling_price"/>
                             </div>
