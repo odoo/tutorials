@@ -4,7 +4,7 @@
     <t t-name="awesome_owl.card">
         <div class="p-3 border">
             <h3><t t-out="props.title"/></h3>
-            <t t-out="props.text"/>
+            <t t-slot="default"/>
         </div>
     </t>
 

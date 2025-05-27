@@ -9,8 +9,12 @@
         </div>
         <div class="p-3">
             <Counter/>
-            <Card title="raw_card_title" text="raw_card_text"/>
-            <Card title="card_title" text="card_text"/>
+            <Card title="raw_card_title">
+                <Counter/>
+            </Card>
+            <Card title="card_title">
+                <p>Lorem ipsum</p>
+            </Card>
         </div>
         <div>
             <TodoList/>
