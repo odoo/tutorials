@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_appointment_filter" inherit_id="website_appointment.website_calendar_index_topbar">
+        <xpath expr="//h4" position="attributes">
+            <attribute name="class">h4 my-0 me-auto pe-sm-4</attribute>
+        </xpath>
+        <xpath expr="//div[@t-if='appointment_types']" position="attributes">
+            <attribute name="t-if"/>
+        </xpath>
+        <xpath expr="//h4" position="after">
+            <div class="d-flex w-100 w-lg-auto mb-2 mt-2">
+                <div class="dropdown me-2">
+                    <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                        Type
+                        <span t-if="request.params.get('type')" t-out="1" class="badge bg-primary ms-1"/>
+                    </a>
+                    <div class="dropdown-menu">
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', type=None)" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if request.params.get('type') == None else ''}">
+                            All
+                        </span>
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', type='online')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if request.params.get('type') == 'online' else ''}">
+                            Online
+                        </span>
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', type='offline')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if request.params.get('type') == 'offline' else ''}">
+                            Offline
+                        </span>
+                    </div>
+                </div>
+                <div class="dropdown me-2">
+                    <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                        Schedule
+                        <span t-if="request.params.get('schedule')" t-out="1" class="badge bg-primary ms-1"/>
+                    </a>
+                    <div class="dropdown-menu">
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', schedule=None)" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if request.params.get('schedule') == None else ''}">
+                            All
+                        </span>
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', schedule='user')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if request.params.get('schedule') == 'user' else ''}">
+                            By Users
+                        </span>
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', schedule='resource')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if request.params.get('schedule') == 'resource' else ''}">
+                            By Resources
+                        </span>
+                    </div>
+                </div>
+                <div class="dropdown me-2" t-if="has_payment_field">
+                    <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                        Payment
+                        <span t-if="request.params.get('payment')" t-out="1" class="badge bg-primary ms-1"/>
+                    </a>
+                    <div class="dropdown-menu">
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', payment=None)" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if request.params.get('payment') == None else ''}">
+                            All
+                        </span>
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', payment='yes')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if request.params.get('payment') == 'yes' else ''}">
+                            Requires Payment
+                        </span>
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', payment='no')" t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if request.params.get('payment') == 'no' else ''}">
+                            No Payment
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
