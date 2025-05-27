@@ -9,8 +9,12 @@
         </div>
 
         <div>
-            <Card title="'card 1'" content = "content"/>
-            <Card title="'card 2'" content = "content2"/>
+            <Card title="'card 1'">
+                Content of card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter/>  
+            </Card>
         </div>
 
         <TodoList/>
