@@ -51,3 +51,14 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("You cannot refuse an accepted offer.")
             record.status = 'refused'
         return True
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            price = vals.get('price')
+            estate_property = self.env['estate.property'].browse(vals.get('property_id'))
+            if estate_property.best_price and price <= estate_property.best_price:
+                raise UserError(f"The selling must be higher than {estate_property.best_price:.2f}")
+            estate_property.best_price = price
+        return super().create(vals_list)
+
