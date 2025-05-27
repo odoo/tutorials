@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 from odoo import fields, models
 
 
@@ -12,3 +9,11 @@ class ProductWarranty(models.Model):
     product_id = fields.Many2one("product.product", string="Product", required=True)
     percentage = fields.Float(string="Warranty Percentage", required=True)
     year = fields.Integer(string="Warranty Year", required=True)
+
+    _sql_constraints = [
+        (
+            "unique_name",
+            "UNIQUE(name)",
+            "Product Warranty name should be unique.",
+        )
+    ]
