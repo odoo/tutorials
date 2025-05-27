@@ -32,4 +32,11 @@ export class TodoList extends Component {
         this.todos.push(newTodo);
         event.target.value = '';
     }
+
+    removeFromList(todoId) {
+        let index = this.todos.findIndex(todo => todo.id === todoId);
+        if(index > -1) {
+            this.todos.splice(index, 1);
+        }
+    }
 }
