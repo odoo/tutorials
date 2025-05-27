@@ -43,7 +43,7 @@ class Estate(models.Model):
             ('cancelled', 'Cancelled'),
         ],
         readonly=True,
-        default='new'
+        default='new',
     )
 
     _sql_constraints = [
@@ -61,7 +61,7 @@ class Estate(models.Model):
         if self.state == 'new':
             if len(self.offer_ids):
                 self.state = 'offer received'
-                self._origin.state = 'offer received'  #error,  didn't found the source, fix, I'm a bugfixer
+                self._origin.state = 'offer received'  # error,  didn't found the source, fix, I'm a bugfixer
 
     @api.depends('offer_ids')
     def _compute_best_offer(self):
@@ -92,3 +92,8 @@ class Estate(models.Model):
             if record.state == 'sold':
                 raise UserError(self.env._('property already sold'))
             record.state = 'cancelled'
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_for_state(self):
+        if self.state not in ['new', 'cancelled']:
+            raise UserError('You cannot delete an property that as is not New or cancelled')
