@@ -4,7 +4,10 @@
     <t t-name="awesome_dashboard.AwesomeDashboard">
         hello dashboard
         <Layout display="display" className="'o_dashboard h-100'">
-            Some content here
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
         </Layout>
            
     </t>
