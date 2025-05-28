@@ -6,6 +6,7 @@
     "depends": ["sale", "product"],
     "data": [
         "security/ir.model.access.csv",
+        "data/product_warranty_data.xml",
         "views/product_template_views.xml",
         "views/product_warranty_views.xml",
         "wizard/product_warranty_wizard_views.xml",
