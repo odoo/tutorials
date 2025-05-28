@@ -60,12 +60,16 @@ class PropertyOffer(models.Model):
         return True
 
     @api.model_create_multi
-    def create(self, vals):
-        best_offer = self.env["estate.property"].browse(vals["property_id"]).best_price
-        if vals["price"] > best_offer:
-            self.env["estate.property"].browse(
-                vals["property_id"]
-            ).state = "offer_received"
-            return super().create(vals)
-        else:
-            raise UserError("The offer must be higher than {}".format(best_offer))
+    def create(self, vals_list):
+        for vals in vals_list:
+            best_offer = (
+                self.env["estate.property"].browse(vals["property_id"]).best_price
+            )
+            if vals["price"] > best_offer:
+                self.env["estate.property"].browse(
+                    vals["property_id"]
+                ).state = "offer_received"
+            else:
+                errMes = f"The offer must be higher than {best_offer}"
+                raise UserError(errMes)
+        return super().create(vals_list)

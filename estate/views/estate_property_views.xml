@@ -79,7 +79,8 @@
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
-                <field name="living_area" string="Living Area (sqm.)"  filter_domain="[('living_area', '&gt;=', self)]"/>
+                <field name="living_area" string="Living Area (sqm.)"
+                    filter_domain="[('living_area', '&gt;=', self)]" />
                 <field name="facades" />
                 <filter string="Available" name="available_properties"
                     domain="['|', ('state', '=', 'new'), ('state','=','offer_received')]" />
@@ -116,7 +117,8 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
-        <field name="context">{'search_default_available_properties': True, 'search_default_current': True}</field>
+        <field name="context">{'search_default_available_properties': True,
+            'search_default_current': True}</field>
     </record>
 
     <record id="estate_property_type_action" model="ir.actions.act_window">
