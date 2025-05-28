@@ -5,7 +5,6 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
-import { rpc } from "@web/core/network/rpc";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -17,9 +16,10 @@ class AwesomeDashboard extends Component {
         };
 
         this.action = useService("action");
+        this.statisticsService = useService("awesome_dashboard.statistics");
 
         onWillStart(async () => {
-            this.stats = await rpc("/awesome_dashboard/statistics")
+            this.stats = await this.statisticsService.loadStatistics();
         });
     }
 
