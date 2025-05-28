@@ -1,6 +1,7 @@
 
-import { Component, useState, xml } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { TodoItem } from "./todoitem";
+import { useAutofocus } from "./utils";
 
 export class TodoList extends Component {
     static template = "awesome_owl.todolist";
@@ -8,13 +9,12 @@ export class TodoList extends Component {
     
     setup() {
         this.todos = useState([]);
+        
+        useAutofocus("myInput");
     }
     
     addTodo(ev) {
         if (ev.keyCode === 13) {
-
-            console.debug(this.todos);
-            console.debug(this.todos.length);
             var todoId;
             if (this.todos.length == 0) {
                 todoId = 1;
