@@ -9,16 +9,38 @@
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
 
-            <div>
-                <DashboardItem>
-                    Card with no size
+            <div class="d-flex flex-wrap">
+                <DashboardItem class="dashboard-item">
+                    <div class="dashboard-item-content">
+                        <p>Number of new orders this month:</p>
+                        <div class="fs-1 fw-bold text-success text-center"><t t-esc="stats.nb_new_orders"/></div>
+                    </div>
                 </DashboardItem>
-                <DashboardItem size="2">
-                    Card with size 2
+                <DashboardItem class="dashboard-item">
+                    <div class="dashboard-item-content">
+                        <p>Total amount of new orders this month:</p>
+                        <div class="fs-1 fw-bold text-success text-center"><t t-esc="stats.total_amount"/></div>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2" class="dashboard-item">
+                    <div class="dashboard-item-content">
+                        <p>Average amount of t-shirts per order this month:</p>
+                        <div class="fs-1 fw-bold text-success text-center"><t t-esc="stats.average_quantity"/></div>
+                    </div>
+                </DashboardItem>
+                <DashboardItem class="dashboard-item">
+                    <div class="dashboard-item-content">
+                        <p>Number of cancelled orders this month:</p>
+                        <div class="fs-1 fw-bold text-success text-center"><t t-esc="stats.nb_cancelled_orders"/></div>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2" class="dashboard-item">
+                    <div class="dashboard-item-content">
+                        <p>Average time for an order to go from 'new' to 'sent' or 'cancelled':</p>
+                        <div class="fs-1 fw-bold text-success text-center"><t t-esc="stats.average_time"/></div>
+                    </div>
                 </DashboardItem>
             </div>
         </Layout>
-           
     </t>
-
 </templates>
