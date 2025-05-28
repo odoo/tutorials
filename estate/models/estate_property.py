@@ -85,12 +85,13 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = "north"
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -115,6 +116,10 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise UserError("This listing is already cancelled and can't be sold")
+
+            if not record.property_offer_ids:
+                raise UserError("Can't sell a property that does not have any offers on it")
+
             record.state = "sold"
         return True
 
@@ -125,11 +130,11 @@ class EstateProperty(models.Model):
         if any(property.state not in ["new", "cancelled"] for property in self):
             raise UserError("Can't delete an active property listing!")
 
-    # Constraining on state instead of selling price because selling price is not a writable field
     @api.constrains("selling_price", "expected_price")
     def _onchange_price(self):
-        if not float_is_zero(self.selling_price, 10) and self.selling_price < 0.9 * self.expected_price:
-            raise ValidationError("Selling price can't be lower then 0.9 * expected price !")
+        for record in self:
+            if not float_is_zero(record.selling_price, 10) and record.selling_price < 0.9 * record.expected_price:
+                raise ValidationError("Selling price cannot be lower than 90% of expected price.")
 
     _sql_constraints = [
         ('unique_name', 'UNIQUE(name)', 'Property name should be unique'),

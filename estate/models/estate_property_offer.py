@@ -39,6 +39,8 @@ class EstatePropertyOffer(models.Model):
 
                 if float_compare(price, property.best_offer, 2) == -1:
                     raise ValidationError("Can't create an offer lower than best offer")
+                elif property.state == "sold":
+                    raise ValidationError("Can't place an offer on a sold house")
                 else:
                     property.set_offer_received()
 
