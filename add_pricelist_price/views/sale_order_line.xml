@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Sales Order Line View -->
     <record id="view_order_form_inherit_book_price" model="ir.ui.view">
         <field name="name">sale.order.line.form.book.price</field>
         <field name="model">sale.order</field>

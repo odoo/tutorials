@@ -1,10 +1,8 @@
-/** @odoo-module **/
-
 import { registry } from "@web/core/registry";
 import { NumberCard } from "./components/number_card/number_card";
 import { PieChart } from "./components/pie_chart/pie_chart";
 import { _t } from "@web/core/l10n/translation";
-// List of items to register
+
 const dashboardItems = [
     {
         id: "nb_new_orders",
@@ -64,8 +62,6 @@ const dashboardItems = [
         props: (data) => ({ data: data.orders_by_size }),
     },
 ];
-
-// Register each item
 for (const item of dashboardItems) {
     registry.category("awesome_dashboard.items").add(item.id, item);
 }

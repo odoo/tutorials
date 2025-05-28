@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { Component, useRef, onWillStart, onMounted, onWillUpdateProps } from '@odoo/owl'
 import { loadJS } from "@web/core/assets";
 

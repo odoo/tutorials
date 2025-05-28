@@ -36,7 +36,7 @@ export class TodoList extends Component {
   removeTodoItem = (todoId) => {
     const index = this.todos.findIndex((t) => t.id === todoId);
     if (index >= 0) {
-      this.todos.splice(index, 1); // ✅ mutates the reactive state
+      this.todos.splice(index, 1)
     }
   };
 }

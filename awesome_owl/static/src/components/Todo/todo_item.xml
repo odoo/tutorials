@@ -5,7 +5,6 @@
       class="d-flex align-items-center justify-content-between border rounded px-3 py-2 mb-2 shadow-sm"
       t-att-class="props.todo.isCompleted ? 'bg-light text-muted text-decoration-line-through' : ''"
     >
-      <!-- Left section: Checkbox, ID, Description -->
       <div class="d-flex align-items-center flex-wrap gap-2">
         <input
           type="checkbox"
@@ -16,8 +15,6 @@
         <strong><t t-esc="props.todo.id"/>.</strong>
         <span class="ms-1"><t t-esc="props.todo.description" /></span>
       </div>
-
-      <!-- Right section: Delete icon -->
       <span
         class="fa fa-times text-danger fs-5"
         role="button"

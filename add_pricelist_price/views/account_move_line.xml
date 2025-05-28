@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Invoice Line View -->
     <record id="view_invoice_form_inherit_book_price" model="ir.ui.view">
         <field name="name">account.move.line.form.book.price</field>
         <field name="model">account.move</field>

@@ -17,7 +17,7 @@ class AwesomeDashboard extends Component {
         this.statisticsService = useService("awesome_dashboard.statistics");
         this.items = registry.category("awesome_dashboard.items").getAll();
         this.removedItemIds = useState(this.getRemovedItems());
-        this.stats = useState(this.statisticsService.statistics);  // ✅ reactive subscription
+        this.stats = useState(this.statisticsService.statistics); 
     }
     getRemovedItems() {
         return JSON.parse(localStorage.getItem("awesome_dashboard.removed_items") || "[]");

@@ -6,13 +6,12 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{"search_default_available": 1}</field>
-
     </record>
     <record id="action_open_properties_page" model="ir.actions.act_url">
         <field name="name">Property Listings (Website)</field>
         <field name="type">ir.actions.act_url</field>
         <field name="url">/properties</field>
-        <field name="target">new</field> <!-- new tab; use 'self' for same tab -->
+        <field name="target">new</field> 
     </record>
     <!-- List View -->
     <record id="estate_property_list" model="ir.ui.view">
@@ -67,8 +66,7 @@
                             <field name="date_availability" optional="show" />
                             <field name="property_type_id"
                                 options="{'no_create': True, 'no_open': True}" />
-                                <field name="tag_ids" string = "Tag" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                                
+                            <field name="tag_ids" string = "Tag" widget="many2many_tags" options="{'color_field': 'color'}"/> 
                         </group>
                         <group>
                             <field name="expected_price" />
