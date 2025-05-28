@@ -35,4 +35,13 @@ export class TodoList extends Component {
             todo.isCompleted = !todo.isCompleted; 
         }
     }
+
+    removeTodo(todoId) {
+        // find the index of the todo to delete
+        const indexTodo = this.todos.findIndex((elem) => elem.id === todoId);
+        if (indexTodo >= 0) {
+            // remove the todo at index from todos
+            this.todos.splice(indexTodo, 1);
+        }
+    }
 }
