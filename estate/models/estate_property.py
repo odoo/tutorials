@@ -12,10 +12,10 @@ class EstateProperty(models.Model):
     description = fields.Char('Description')
     postcode = fields.Char('Postcode', required=True, default='00000')
 
-    availability_date = fields.Date('Availability', copy=False, default=lambda: (fields.Date.today() + relativedelta(days=30)))
+    availability_date = fields.Date('Availability', copy=False, default=lambda self: (fields.Date.today() + relativedelta(days=30)))
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2, required=True)
-    last_seen = fields.Datetime("Last Seen", default= lambda: fields.Datetime.now)
+    last_seen = fields.Datetime("Last Seen", default=lambda self: fields.Datetime.now())
     expected_price = fields.Float('Expected Price', required=True)
     living_area = fields.Float('Living Area (sqm)')
     facades = fields.Integer('Facades', required=True)

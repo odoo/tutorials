@@ -24,14 +24,14 @@
         <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban string="Properties" default_group_by="Property_type_id" records_draggable="0">
+            <kanban string="Properties" default_group_by="property_type_id" records_draggable="0">
                 <templates>
                     <field name="state"/>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div class="o_kanban_details">
                             <strong><field name="name"/></strong>
                             <div t-if="record.state.raw_value == 'new'">
-                                <span class="badge badge-secondary">This is New!</span>
+                                <span>This is New!</span>
                             </div>
                             <table>
                                 <tr>
@@ -99,7 +99,7 @@
                         <group>
                             <field name="postcode"/>
                             <field name="availability_date"/>
-                            <field name='Property_type_id' options="{'no_create': True}"/>
+                            <field name='property_type_id' options="{'no_create': True}"/>
                             <field name="state"/>
                         </group>
                         <group>
