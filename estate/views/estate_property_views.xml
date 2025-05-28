@@ -62,7 +62,6 @@
                             </h1>
                             <field name="tag_ids" widget="many2many_tags"
                                 options="{'color_field': 'color'}" />
-                            <field name="active" invisible="1" />
                         </div>
                     </div>
                     <div class="row">
