@@ -8,8 +8,8 @@
             <Counter/>
         </div>
         <div class="p-3">
-            <Card title="'Card 1'" content="'This is the first card.'"></Card>
-            <Card title="'Card 2'" content="'This is the second card.'"></Card>
+            <Card title="'Card 1'" content="s1"></Card>
+            <Card title="'Card 2'" content="s2"></Card>
         </div>
     </t>
 </templates>
