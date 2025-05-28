@@ -8,6 +8,15 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+
+            <div>
+                <DashboardItem>
+                    Card with no size
+                </DashboardItem>
+                <DashboardItem size="2">
+                    Card with size 2
+                </DashboardItem>
+            </div>
         </Layout>
            
     </t>
