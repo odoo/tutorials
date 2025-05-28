@@ -64,4 +64,4 @@ class EstateOffer(models.Model):
         for vals in vals_list:
             if vals['price'] < self.env['estate.property'].browse(vals['property_id']).best_offer:
                 raise UserError('The price is lower than the best-offer')
-        return super(EstateOffer, self).create(vals_list)
+        return super().create(vals_list)
