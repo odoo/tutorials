@@ -119,7 +119,7 @@
             <kanban string="Properties" default_group_by="property_type_id" records_draggable="0">
                 <field name="state" />
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div class="oe_kanban_card">
                             <div class="fw-bold">
                                 <field name="name" />
