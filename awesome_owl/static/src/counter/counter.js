@@ -2,6 +2,9 @@ import { Component, useState } from "@odoo/owl";
 
 export class Counter extends Component {
     static template = "awesome_owl.Counter";
+    static props = {
+        initialValue: { type: Number, optional: true, default: 0, validate: (value) => value >= 0 },
+    };
 
     setup() {
         this.state = useState({ value: 0 });
