@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="res_config_settings_view_form_deposit_rental" model="ir.ui.view">
+        <field name="name">res.config.settings.deposit.rental</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale_renting.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='extra_product']" position="after">
+                <div class="row mt8">
+                    <label for="deposit_product" class="col-lg-3"/>
+                    <field name="deposit_product" class="o_field_widget col-lg-9"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
