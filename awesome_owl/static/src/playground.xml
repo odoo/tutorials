@@ -12,5 +12,8 @@
             <Card title="'Card 1'" content="s1"></Card>
             <Card title="'Card 2'" content="s2"></Card>
         </div>
+        <div class="d-inline-flex p-3 m-3 border">
+            <TodoList />
+        </div>
     </t>
 </templates>
