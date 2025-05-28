@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="res_users_view_form" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='account_security']" position="after">
+              <page name="properties" string="Estate Properties" invisible="not property_ids">
+                  <field name="property_ids"/>
+              </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="res_users_simplified_view_form" model="ir.ui.view">
+        <field name="name">res.users.form.simplified.inherit.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_simple_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='phone_numbers']" position="after">
+                <notebook>
+                    <page name="properties" string="Real Estate Properties" invisible="not property_ids">
+                        <field name="property_ids"/>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+</odoo>

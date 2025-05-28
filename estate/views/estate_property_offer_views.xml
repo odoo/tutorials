@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Channel" editable="bottom" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
+                <field name="partner_id" string="Partner" width='200'/>
+                <field name="price" string="Amount" width="200"/>
+                <field name="validity_days" string="Validity (days)" width="200"/>
+                <field name="deadline" string="Deadline" width="500"/>
+                <button name="action_offer_accept" invisible = "status in ('accepted', 'sold', 'cancelled')" type="object" string="" icon="fa-check" width="100"/>
+                <button name="action_offer_refuse" invisible = "status in ('refused', 'sold', 'cancelled')" type="object" string="" icon="fa-times" width="100"/>
+                <field name="status" string="Status" width='100' column_invisible="1" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property Offer Form">
+                <sheet>
+                    <group>
+                        <field name="partner_id"/>
+                        <field name="price"/>
+                        <field name="validity_days"/>
+                        <field name="deadline"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_action_statbutton" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+</odoo>
