@@ -7,7 +7,6 @@
     "category": "Sales",
     "depends": ["point_of_sale", "hr"],
     "data": [
-        "views/pos_order_views.xml",
         "views/pos_sales_agent_views.xml",
     ],
     "assets": {
@@ -16,6 +15,7 @@
             "pos/static/src/select_sales_agent_button/*.xml",
             "pos/static/src/models/*.js",
             "pos/static/src/control_button/*.js",
+            "pos/static/src/control_button/*.xml",
         ],
     },
     "license": "LGPL-3",

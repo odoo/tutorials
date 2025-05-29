@@ -28,8 +28,7 @@ class PosSession(models.Model):
 
             # Pre-sort employees by name for better UX
             lines["hr.employee"] = sorted(
-                lines.get("hr.employee", []),
-                key=lambda emp: emp.get("name", ""),
+                lines.get("hr.employee", []), key=lambda emp: emp.get("name", ""),
             )
 
             # Filter only needed fields

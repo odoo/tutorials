@@ -11,7 +11,6 @@ export class SelectSalesAgentButton extends Component {
     setup() {
         this.pos = usePos();
         this.dialog = useService("dialog");
-        this.orm = useService("orm");
         this.salesAgent = useState({ name: "Select Agent", id: null });
 
         onMounted(() => {

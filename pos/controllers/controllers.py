@@ -1,6 +1,4 @@
 # from odoo import http
-
-
 # class ../tutorials/pos(http.Controller):
 #     @http.route('/../tutorials/pos/../tutorials/pos', auth='public')
 #     def index(self, **kw):
@@ -18,4 +16,3 @@
 #         return http.request.render('../tutorials/pos.object', {
 #             'object': obj
 #         })
-
