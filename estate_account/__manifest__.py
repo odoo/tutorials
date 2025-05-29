@@ -9,6 +9,8 @@
     """,
     "application": True,
     "auto_install": True,
-    "data": [],
+    "data": [
+        "reports/estate_account_templates.xml",
+    ],
     "license": "LGPL-3",
 }

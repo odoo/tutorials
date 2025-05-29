@@ -20,6 +20,8 @@
         "views/estate_menus.xml",
         "views/res_users_views.xml",
         "data/estate_property_type_demo.xml",
+        "reports/estate_property_templates.xml",
+        "reports/estate_property_reports.xml",
     ],
     "demo": [
         "data/estate_property_demo.xml",
