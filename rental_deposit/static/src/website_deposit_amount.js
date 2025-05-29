@@ -8,7 +8,7 @@ publicWidget.registry.DepositRental = publicWidget.Widget.extend({
     start: function () {
         this._super.apply(this, arguments);
         if ($("#deposit_amount").length && $("#deposit_amount").data("base-amount") > 0) {
-            this._updateDepositAmount();
+            this._updateDepositAmount(); 
         } else {
             this.$el.off('change input[name="add_qty"]');
         }

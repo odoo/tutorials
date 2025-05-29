@@ -14,4 +14,5 @@
             'deposit_rental/static/src/website_deposit_amount.js',
         }
     },
+    'license':'LGPL-3',
 }
