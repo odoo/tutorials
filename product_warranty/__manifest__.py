@@ -3,7 +3,7 @@
     "version": "1.0",
     "description": "Product Warranty",
     "author": "Abhishek Khant (abhk)",
-    "depends": ["sale", "product"],
+    "depends": ["sale_management"],
     "data": [
         "security/ir.model.access.csv",
         "data/product_warranty_data.xml",
