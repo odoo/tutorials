@@ -1,10 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <p>◇─◇─ welcome to the Owl Playground! ─◇─◇</p>
+            <p>Here you can experiment with Owl components and see how they work.</p>
+            <p>Feel free to modify the code and see the changes in real-time.</p>
+            <p>Use the buttons below to interact with the components.</p>
+            <h2>Have fun!</h2>
+            <h4>love u 🫶🏻💓</h4>
         </div>
-    </t>
+        <div style="border: 1px solid #ccc; padding: 10px; margin: 10px; width: fit-content;">
+            <div style="display:inline">
+                <Counter callback.bind="incrementSum"/>
+                <Counter callback.bind="incrementSum"/>
+            </div>
+            <br />
+            <br />
+            <p style="padding: 0 10px"> The sum is <t t-esc="state.sum"/> </p>
+        </div>
 
+    </t>
+    
 </templates>
