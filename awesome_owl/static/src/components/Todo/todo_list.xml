@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-name="awesome_owl.todo_list" owl="1">
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">📝 Todo List</h5>
+        <span class="badge bg-light text-dark"><t t-esc="todos.length"/> items</span>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <input
+            type="text"
+            t-ref="inputRef"
+            class="form-control"
+            placeholder="Enter task title and press Enter"
+            t-on-keyup="addTodo"
+          />
+        </div>
+
+        <div>
+          <t t-if="todos.length > 0">
+            <t t-foreach="todos" t-as="todo" t-key="todo.id">
+              <TodoItem todo="todo" toggleState="toggleState" removeTodoItem="removeTodoItem" />
+            </t>
+          </t>
+          <t t-else="">
+            <div class="alert alert-secondary text-center">No tasks yet. Add one above!</div>
+          </t>
+        </div>
+      </div>
+    </div>
+  </t>
+</templates>
