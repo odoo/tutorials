@@ -1,5 +1,6 @@
-from odoo import _, api, fields, models
+from odoo import _, models
 from odoo.exceptions import UserError
+
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
@@ -14,7 +15,7 @@ class SaleOrder(models.Model):
             raise UserError(_("The configured deposit product does not exist."))
 
         existing_line = self.order_line.filtered(lambda l: l.linked_line_id.id == order_line.id)
-        amount = order_line.product_id.deposit_amount * order_line.product_uom_qty
+        # amount = order_line.product_id.deposit_amount * order_line.product_uom_qty
 
         if existing_line:
             existing_line.write({
