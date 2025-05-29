@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_list">
+        <div class="container">
+            <div class="col">
+                <input type="text" placeholder="Add a new todo..." t-on-keyup="addTodo"/>
+                <div class="card-body">
+                    <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                        <TodoItem todo="todo" />
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+    
+</templates>

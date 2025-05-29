@@ -20,6 +20,11 @@
             <p style="padding: 0 10px"> The sum is <t t-esc="state.sum"/> </p>
         </div>
 
+        <div style="border: 1px solid #ccc; padding: 10px; margin: 10px; width: fit-content;">
+            <h3>Todo List</h3>
+            <TodoList />
+        </div>
+
     </t>
     
 </templates>
