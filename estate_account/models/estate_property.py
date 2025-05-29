@@ -8,13 +8,15 @@ class InheritedProperty(models.Model):
         res = super().set_sold_state()
 
         for property in self:
+            property.check_access("write")
+
             if not property.buyer or not property.selling_price:
                 continue
 
             commission = property.selling_price * 0.06
             admin_fee = 100.0
 
-            self.env["account.move"].create(
+            self.env["account.move"].sudo().create(
                 {
                     "move_type": "out_invoice",
                     "partner_id": property.buyer.id,
