@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="odoo_self_order_details.ProductDetailScreen">
+        <div class="self_order_product_info_popup o_dialog" t-att-id="id">
+            <div role="dialog" class="modal d-block" tabindex="-1">
+                <div class="modal-dialog" role="document" t-on-click.stop="">
+                    <div class="modal-content rounded">
+                        <button type="button" class="btn-close position-absolute top-0 end-0 m-2" 
+                            t-on-click.stop="() => this.props.close()"></button>
+                        <div class="product-image-container text-center p-3">
+                            <img t-if="props.product.image_128"
+                                class="o_self_order_item_card_image img-fluid w-75 rounded"
+                                t-attf-src="/web/image/product.product/{{ props.product.id }}/image_512?unique={{props.product.write_date}}"
+                                alt="Product image"
+                                loading="lazy"
+                                onerror="this.remove()"/>
+                        </div>
+                        <div class="modal-header text-center">
+                            <h1 class="modal-title fw-bold fs-4 text-truncate" t-esc="props.product.name"/>
+                        </div>
+                        <div t-if="props.product.public_description" class="modal-body p-3 overflow-auto" style="max-height: 300px;">
+                            <p class="fs-5 text-wrap" t-out="props.product.public_description"/>
+                        </div>
+                        <div class="modal-footer d-flex flex-column flex-md-row justify-content-between align-items-center position-sticky bottom-0 bg-white p-3 shadow">
+                            <button type="button" class="btn btn-primary w-100 w-md-auto mb-2 mb-md-0" t-on-click.stop="() => this.addToCartAndClose()">Order</button>
+                            <button type="button" class="btn btn-danger w-100 w-md-auto" t-on-click.stop="() => this.props.close()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

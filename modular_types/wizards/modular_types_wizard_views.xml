@@ -1,0 +1,27 @@
+<odoo>
+    <record id="modular_types_wizard_form_view" model="ir.ui.view">
+        <field name="name">modular.types.wizard.form</field>
+        <field name="model">modular.types.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Set Modular Type Values">
+                <field name="modular_wizard_line_ids">
+                    <list editable="bottom">
+                        <field name="modular_type_id"/>
+                        <field name="current_value"/>
+                    </list>
+                </field>
+                <footer>
+                    <button string="Add" type="object" name="action_add_modular_values" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_modular_types_wizard" model="ir.actions.act_window">
+        <field name="name">Set Modular Types Values</field>
+        <field name="res_model">modular.types.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
