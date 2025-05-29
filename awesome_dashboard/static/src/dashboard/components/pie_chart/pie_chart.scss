@@ -1,0 +1,14 @@
+.o_pie_chart_container {
+    position: relative;
+    height: 300px;
+
+    &.large {
+        height: 400px;
+    }
+
+    .chart-container {
+        position: relative;
+        height: 100%;
+        width: 100%;
+    }
+}

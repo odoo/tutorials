@@ -1,8 +1,9 @@
 <odoo>
     <data>
-          <template id="awesome_owl.playground" name="Awesome T-Shirt thank you">
+        <template id="awesome_owl.playground" name="Awesome Owl Playground">
             <html>
                 <head>
+                    <title>Awesome Owl Playground</title>
                     <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
                     <t t-call-assets="awesome_owl.assets_playground"/>
                 </head>
@@ -10,6 +11,6 @@
                 <body>
                 </body>
             </html>
-          </template>
+        </template>
     </data>
 </odoo>
