@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
    <t t-name="awesome_owl.playground">
-      <div class="card" style="display: flex; gap: 20px; padding: 10px;">
+      <div class="card p-2 pe-3">
          <div>Hello world</div>
          <div><Counter validation_fct="incrSum"/></div>
          <div><Counter validation_fct="incrSum"/></div>
-         <Card title="'Card 1'" content="'content1'"/>
-         <Card title="'Card 2'" content="'content2'"/>
+         <Card title="'Card 1'"/>
+         <Card title="'Card 2'"/>
          <div>the sum is <t t-esc="state.sum"/></div>
          <div><TodoList/></div>
       </div>
