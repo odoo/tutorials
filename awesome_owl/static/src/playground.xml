@@ -2,8 +2,49 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="row border align-items-center">
+            <div class="col-2 p-3">
+                hello world
+            </div>
+            <div class="col-2">
+                <Counter onClick="incrementBind"/>
+            </div>
+            <div class="col-2">
+                <Counter onClick="incrementBind"/>
+            </div>
+        </div>
+        <div class="row border align-items-center">
+            <div class="col-2">
+                Global count: <t t-esc="state.globalCount"/>
+            </div>
+        </div>
+        <div class="row border align-items-center">
+            <div class="col-3">
+                <Card title="'Jojo'">
+                    Star Platinum
+                    <Counter onClick="incrementBind"/>
+                </Card>
+            </div>
+            <div class="col-3">
+                <Card title="'Kakyoin'">
+                    Hierophant green
+                    Global count: <t t-esc="state.globalCount"/>
+                </Card>
+            </div>
+            <div class="col-3">
+                <Card title="'Polnaref'">
+                    Silver Chariot
+                    <Card title="'Polnaref'">
+                        Silver Chariot again
+                        Global count: <t t-esc="state.globalCount"/>
+                    </Card>
+                </Card>
+            </div>
+        </div>
+        <div class="row border align-items-center">
+            <div class="col-3">
+                <TodoList/>
+            </div>
         </div>
     </t>
 
