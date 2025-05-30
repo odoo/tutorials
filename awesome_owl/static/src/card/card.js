@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 
 export class Card extends Component {
     static template = "awesome_owl.Card";
@@ -7,6 +7,16 @@ export class Card extends Component {
         slots: {
             type: Object,
             shape: { default:true },
+        },
+    }
+    
+    setup() {
+        this.state = useState({ isToggled: true });
+    }
+    toggle() {
+        this.state.isToggled = !this.state.isToggled;
+        if (this.props.onChange) {
+            this.props.onChange(this.state.isToggled);
         }
     }
 }
