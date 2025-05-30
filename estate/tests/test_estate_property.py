@@ -52,7 +52,7 @@ class EstateTestCase(TransactionCase):
         with self.assertRaises(UserError):
             self.properties.action_sell_listing()
 
-        self.offers = self.env["estate.property.offer"].create([
+        offers = self.env["estate.property.offer"].create([
             {
                 'price': 7,
                 'property_id': self.properties[0].id
@@ -62,6 +62,7 @@ class EstateTestCase(TransactionCase):
                 'property_id': self.properties[1].id
             }
         ])
+        self.assertEqual(len(offers), 2)  # To silence unused var error
 
         self.properties.action_sell_listing()
         self.assertRecordValues(self.properties, [
@@ -76,26 +77,26 @@ class EstateTestCase(TransactionCase):
     def test_action_offer(self):
         """Test that everything behaves like it should when placing an offer."""
 
-        self.offers = self.env["estate.property.offer"].create([{
+        offers = self.env["estate.property.offer"].create([{
             'price': 7,
             'property_id': self.properties[0].id
         }])
 
         # Acepting an offer with a price lower than 90% of expected price triggers an error
         with self.assertRaises(UserError):
-            self.offers.action_accept_offer()
+            offers.action_accept_offer()
 
         # Placing an offer on a sold property should raise user error
         with self.assertRaises(UserError):
             self.properties[1].state = "sold"
-            self.offers = self.env["estate.property.offer"].create([{
+            offers = self.env["estate.property.offer"].create([{
                 'price': 10,
                 'property_id': self.properties[1].id
             }])
 
         # Placing an offer lower than an existing offer triggers an error
         with self.assertRaises(UserError):
-            self.offers = self.env["estate.property.offer"].create([{
+            offers = self.env["estate.property.offer"].create([{
                 'price': 5,
                 'property_id': self.properties[0].id
             }])
