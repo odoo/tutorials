@@ -13,6 +13,7 @@ export class Card extends Component {
         content: {
             type: String,
             optional: true,
+            default: "",
         },
     };
 
@@ -20,6 +21,6 @@ export class Card extends Component {
         if (this.props.content) {
             return markup(this.props.content);
         }
-        return undefined;
+        return "";
     }
 }

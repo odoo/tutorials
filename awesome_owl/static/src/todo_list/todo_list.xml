@@ -4,14 +4,14 @@
     <t t-name="awesome_owl.todo_list">
         <div class="container">
             <div class="col">
-                <input type="text" placeholder="Add a new todo..." t-on-keyup="addTodo"/>
+                <input type="text" placeholder="Add a new todo..." t-on-keyup="addTodo" t-ref="input_ref"/>
                 <div class="card-body">
                     <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                        <TodoItem todo="todo" />
+                        <TodoItem todo="todo" removeCallback.bind="removeTodoFromList"/>
                     </t>
                 </div>
             </div>
         </div>
     </t>
-    
+
 </templates>

@@ -18,8 +18,6 @@ export class Counter extends Component {
 
     increment() {
         this.count.value += 1;
-        if (this.props.callback) {
-            this.props.callback();
-        }
+        this.props.callback?.();
     }
 }
