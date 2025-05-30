@@ -5,31 +5,31 @@ from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
+    _name = 'estate.property.offer'
     _description = "real esate properties offers"
-    _order = "price desc"
+    _order = 'price desc'
 
     price = fields.Float('Price')
     status = fields.Selection(
         string='Status',
         selection=[
-            ('accepted', 'Accepted'),
-            ('refused', 'Refused'),
-            ('pending', 'Pending')
+            ('accepted', "Accepted"),
+            ('refused', "Refused"),
+            ('pending', "Pending")
         ],
         copy=False,
         default='pending',
         required=True
     )
-    partner_id = fields.Many2one('res.partner', 'Partner', required=True)
-    property_id = fields.Many2one('estate.property', 'Property', required=True)
-    property_type_id = fields.Many2one('estate.property.type', 'Property Type')
+    partner_id = fields.Many2one('res.partner', "Partner", required=True)
+    property_id = fields.Many2one('estate.property', "Property", required=True)
+    property_type_id = fields.Many2one('estate.property.type', "Property Type")
 
-    validity = fields.Integer('Validity (Days)', default=7)
-    date_deadline = fields.Date('Deadline', compute="_compute_deadline", inverse="_inverse_deadline")
+    validity = fields.Integer("Validity (Days)", default=7)
+    date_deadline = fields.Date("Deadline", compute='_compute_deadline', inverse='_inverse_deadline')
 
     _sql_constraints = [
-        ('check_price', 'CHECK(price > 0)', 'An offer price must be strictly positive!'),
+        ('check_price', 'CHECK(price > 0)', "An offer price must be strictly positive!"),
     ]
 
     @api.depends('validity')
@@ -50,8 +50,8 @@ class EstatePropertyOffer(models.Model):
     def action_to_accept(self):
         for record in self:
             property_obj = record.property_id
-            if property_obj.state in ["sold", "offer_accepted"]:
-                raise UserError(_('Property already accepted an offer.'))
+            if property_obj.state in ['sold', 'offer_accepted']:
+                raise UserError(_("Property already accepted an offer."))
             record.status = 'accepted'
             property_obj.selling_price = record.price
             property_obj.partner_id = record.partner_id

@@ -11,8 +11,8 @@ class EstateProperty(models.Model):
                 'partner_id': self.partner_id.id,
                 'invoice_line_ids': [
                     Command.create({'name': self.name, 'quantity': 1, 'price_unit': self.best_offer}),
-                    Command.create({'name': 'Taxes', 'quantity': 1, 'price_unit': self.best_offer * 0.06}),
-                    Command.create({'name': 'Adminsitration Fees', 'quantity': 1, 'price_unit': 100}),
+                    Command.create({'name': "Taxes", 'quantity': 1, 'price_unit': self.best_offer * 0.06}),
+                    Command.create({'name': "Adminsitration Fees", 'quantity': 1, 'price_unit': 100}),
                 ],
             }
         )
