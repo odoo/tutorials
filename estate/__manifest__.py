@@ -17,6 +17,7 @@
     'demo': [
         'demo/estate.property.type.csv',
         'demo/estate.property.xml',
+        'demo/estate.property.offer.xml',
     ],
     'license': 'LGPL-3',
 }
