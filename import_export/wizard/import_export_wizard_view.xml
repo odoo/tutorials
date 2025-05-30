@@ -1,0 +1,86 @@
+<odoo>
+    <record id="action_import_export_wizard_view_form" model="ir.actions.act_window">
+        <field name="name">Import-Export Entry</field>
+        <field name="res_model">import.export.wizard</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record id="import_export_wizard_view_form" model="ir.ui.view">
+        <field name="name">import.export.wizard.view.form</field>
+        <field name="model">import.export.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header class="modal-header" invisible="not journal_entry_id">
+                    <button name="dummy_reverse" type="button" class="btn btn-secondary">Reverse Entry</button>
+                    <button name="dummy_reset" type="button" class="btn btn-secondary">Reset to Draft</button>
+                </header>
+
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="journal_entry_number" />
+                            <field name="journal_entry_date" />
+                            <field name="journal_id" />
+                            <field name="currency_rate"
+                                readonly='journal_entry_id' />
+                        </group>
+                        <group>
+                            <field name="invoice_id" readonly='1' />
+                            <field name="bill_number" />
+                            <field name="bill_date" />
+                            <field name="port_code_id" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="import_details" string="Import Details">
+                            <field name="line_ids" readonly='journal_entry_id'>
+                                <list editable="bottom" create='false'>
+                                    <field name="product_id" />
+                                    <field name="assessable_value" widget="monetary" />
+                                    <field name="customs_duty_amount" widget="monetary" />
+                                    <field name="taxable_amount" widget="monetary"/>
+                                    <field name="import_tax_ids" widget="many2many_tags" />
+                                    <field name="tax_amount" widget="monetary" />
+                                    <field name="price_unit" column_invisible="1"/>
+                                    <field name="quantity" column_invisible="1"/>
+                                    <field name="invoice_line_id" column_invisible="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
+                                </list>
+                            </field>
+                            <group>
+                                <group class="oe_subtotal_footer">
+                                    <field name="total_duty_amount"
+                                        widget="monetary" readonly="1" />
+                                    <field name="total_tax_amount" widget="monetary" readonly="1" />
+                                    <field name="total_amount_payable" widget="monetary"
+                                        readonly="1" class="oe_subtotal_footer_separator" />
+                                    <field name="currency_id" invisible="1" />
+                                </group>
+                            </group>
+                        </page>
+                        <page name="journal_items" string="Journal Items"
+                            invisible='not journal_entry_id'>
+                            <field name="journal_entry_lines">
+                                <list readonly='1' edit="False" editable="bottom">
+                                    <field name="account_id" />
+                                    <field name="name" />
+                                    <field name="debit" widget="monetary" sum="Total Debit" />
+                                    <field name="credit" widget="monetary" sum="Total Credit" />
+                                    <field name="company_currency_id" optional="hide" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button type="object" name="action_confirm_post_journal_entry"
+                        class="btn btn-primary o_form_button_save">Confirm 
+                    </button>
+                    <button type="button" class="btn btn-secondary o_form_button_cancel"
+                        special="cancel">Cancel
+                    </button>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo> 

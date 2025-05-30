@@ -1,0 +1,85 @@
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.import.export</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='india_localization']" position="inside">
+
+              <setting name="enable_import_export"
+                         string="Import-Export Settings"
+                         invisible="country_code != 'IN'"
+                         help="Enable this to feature to apply custom duty on import/export transactions, including Bill of Entry and Shipping Bills."
+                         company_dependent="1">
+                    <field name="is_import_export" class="oe_inline" widget="checkbox" string="Import-Export"/>
+                </setting>
+                
+                <setting string="Import" invisible="not is_import_export">
+                    <div class="content-group">
+                        <div class="row mt8">
+                            <label for="account_imp_journal_id" class="col-lg-5 o_light_label"
+                                string="Journal" />
+                            <field name="account_imp_journal_id"
+                                 domain="[('type', '=', 'general'), ('active', '=', True)]"
+                            />
+                        </div>
+                        <div class="row mt8">
+                            <label for="account_imp_duty_acct_id"
+                                class="col-lg-5 o_light_label"
+                                string="Custom Duty Account" />
+                            <field name="account_imp_duty_acct_id"
+                                domain="[('account_type', 'like', 'expense'), ('deprecated', '=', False)]"
+                            />
+                        </div>
+                        <div class="row mt8">
+                            <label for="account_imp_tax_acct_id"
+                                class="col-lg-5 o_light_label"
+                                string="Default Tax Account" />
+                            <field name="account_imp_tax_acct_id"
+                                domain="[
+                                    ('account_type', 'in', ['liability_current', 'asset_current']),
+                                    ('reconcile', '=', True), 
+                                    ('deprecated', '=', False)
+                                ]"
+                            />
+                        </div>
+                    </div>
+                </setting>
+                <setting string="Export" invisible="not is_import_export">
+                    <div class="content-group">
+                        <div class="row mt8">
+                            <label for="account_exp_journal_id" class="col-lg-5 o_light_label"
+                                string="Journal" />
+                            <field name="account_exp_journal_id"
+                                domain="[('type', '=', 'general'), ('active', '=', True)]"
+                            />
+                        </div>
+                        <div class="row mt8">
+                            <label for="account_exp_duty_acct_id"
+                                class="col-lg-5 o_light_label"
+                                string="Custom Duty Account" />
+                            <field name="account_exp_duty_acct_id"
+                                domain="[
+                                    ('account_type', 'in', ['income', 'expense']),
+                                    ('deprecated', '=', False)
+                                ]"
+                            />
+                        </div>
+                        <div class="row mt8">
+                            <label for="account_exp_tax_acct_id"
+                                class="col-lg-5 o_light_label"
+                                string="Default Tax Account" />
+                            <field name="account_exp_tax_acct_id"
+                                domain="[
+                                    [ 'account_type', 'in', [ 'liability_current', 'asset_current' ] ],
+                                    ('reconcile', '=', True), 
+                                    ('deprecated', '=', False)
+                                ]"
+                            />
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo> 
