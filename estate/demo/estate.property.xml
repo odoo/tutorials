@@ -28,8 +28,32 @@
       <field name="living_area">10</field>
       <field name="facades">4</field>
       <field name="garage">False</field>
-      <field name="garden">False</field>
       <field name="property_type_id" ref="estate.type_1"/>
     </record>
+
+    <record id="small_hut" model="estate.property">
+        <field name="name">Small Hut</field>
+        <field name="state">new</field>
+        <field name="description">Small hut with nothing in it</field>
+        <field name="postcode">5062</field>
+        <field name="date_availability">2024-01-01</field>
+        <field name="expected_price">99</field>
+        <field name="bedrooms">0</field>
+        <field name="living_area">10</field>
+        <field name="facades">2</field>
+        <field name="property_type_id" ref="estate.type_4"/>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'partner_id': ref('base.res_partner_12'),
+                'price': 89,
+                'validity': 14,
+            }),
+            Command.create({
+                'partner_id': ref('base.res_partner_2'),
+                'price': 100,
+                'validity': 14,
+            })
+        ]"/>
+      </record>
 </odoo>
   
