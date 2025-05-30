@@ -25,6 +25,17 @@
             <TodoList />
         </div>
 
+        <div>
+            <Card title="'card 1'">
+                <p>Here is a simple card component.</p>
+                <p>You can put any content inside it.</p>
+                <p>Try adding more components inside this card!</p>
+            </Card>
+            <Card>
+                <Counter />
+            </Card>
+        </div>
+
     </t>
 
 </templates>
