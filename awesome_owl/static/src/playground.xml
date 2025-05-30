@@ -9,8 +9,12 @@
             <div>The sum is: <t t-esc="sum.value"/></div>
         </div>
         <div class="p-3">
-            <Card title="'Card 1'" content="s1"></Card>
-            <Card title="'Card 2'" content="s2"></Card>
+            <Card title="'Card 1'"> 
+                <p>This is the content of Card 1.</p>
+            </Card>
+            <Card title="'Card 2'">
+                <Counter onChange.bind="incrementSum"/>
+            </Card>
         </div>
         <div class="d-inline-flex p-3 m-3 border">
             <TodoList />
