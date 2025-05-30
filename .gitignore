@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# perso
+.pre-commit-config.yaml
+ruff.toml
+.vscode/
+*.zip
