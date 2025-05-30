@@ -22,4 +22,17 @@ export class TodoList extends Component {
             ev.target.value = "";
         }
     }
+    toggleTodo(id) {
+        const todo = this.todos.find(todo => todo.id === id);
+        if (todo) {
+            todo.isCompleted = !todo.isCompleted;
+        }
+    }
+
+    removeTodo(id) {
+        const index = this.todos.findIndex(todo => todo.id === id);
+        if (index !== -1) {
+            this.todos.splice(index, 1);
+        }
+    }
 }
