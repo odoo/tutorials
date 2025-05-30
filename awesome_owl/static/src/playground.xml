@@ -8,11 +8,11 @@
 
             <Card title="safeTitle">
                 <t t-set-slot="content"> 
-                    <Counter id="2" val="state.counter2" callback.bind="increment_counters"/>
+                    <Counter id="2" val="state.counter2" callback.bind="incrementCounters"/>
                 </t>
             </Card>
 
-            <Counter id="1" val="state.counter1" callback.bind="increment_counters"/>
+            <Counter id="1" val="state.counter1" callback.bind="incrementCounters"/>
         
             <div> 
                 sum = <t t-esc="sumCounters"/>

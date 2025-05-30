@@ -30,7 +30,7 @@ export class Playground extends Component {
         return this.state.counter1 + this.state.counter2
     }
 
-    _incrementCounters(counterNumber) {
+    incrementCounters(counterNumber) {
         counterNumber == 1 ? this.state.counter1++ : this.state.counter2++ 
     }
 }

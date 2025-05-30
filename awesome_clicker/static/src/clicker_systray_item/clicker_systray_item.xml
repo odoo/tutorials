@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClickerSystray">
+        <div class="o_nav_entry">
+            Clicks: <t t-esc="state.counter"/>
+            <button id="clicker_systray_button" class="btn btn-secondary">
+                <i id="clicker_systray_button" class="fa fa-lg fa-plus"></i>
+            </button>
+
+            <button class="btn btn-secondary" t-on-click="openClickerGame">
+                Open
+            </button>
+        </div>
+    </t>
+</templates>
