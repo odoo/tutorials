@@ -1,0 +1,67 @@
+<odoo>
+    <template id="property_listing" name="Property Listing">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <!-- Search Form -->
+                <form method="get"  class="mb-4">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="text" name="name" class="form-control" 
+                                   t-att-value="search_name" placeholder="Search by name..."/>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" name="min_price" class="form-control"
+                                   t-att-value="min_price" placeholder="Min Price"/>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="number" name="max_price" class="form-control"
+                                   t-att-value="max_price" placeholder="Max Price"/>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </div>
+                </form>
+    
+                <!-- Property Cards -->
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title" t-esc="property.name"/>
+                                    <p class="card-text">
+                                        Price: <span t-esc="property.expected_price"/>
+                                        <br/>
+                                        Bedrooms: <span t-esc="property.bedrooms"/>
+                                    </p>
+                                    <a t-att-href="'/properties/%s' % property.id" 
+                                       class="btn btn-primary">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <template id="property_detail" name="Property Detail">
+        <t t-call="website.layout">
+          <div class="container mt-5">
+            <div class="card shadow p-4">
+              <h1 class="mb-3"><t t-esc="property.name"/></h1>
+              <p><strong>Price:</strong> <t t-esc="property.selling_price"/></p>
+              <p><strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/></p>
+              <p><strong>Living Area:</strong> <t t-esc="property.living_area"/> m²</p>
+              <p><strong>Garden:</strong> <t t-esc="property.garden and 'Yes' or 'No'"/></p>
+              <p><strong>Description:</strong> <t t-esc="property.description"/></p>
+              <a href="/properties" class="btn btn-outline-secondary mt-3">← Back to Listings</a>
+            </div>
+          </div>
+        </t>
+      </template>
+      
+  </odoo>
