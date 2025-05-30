@@ -3,6 +3,8 @@
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="display" className="'o_dashboard h-100'">
+            <button t-on-click="openCustomerView">Customers</button>
+            <button t-on-click="openLeadView">Leads</button>
         </Layout>
     </t>
 
