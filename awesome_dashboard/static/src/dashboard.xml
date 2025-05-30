@@ -5,6 +5,17 @@
         <Layout display="display" className="'o_dashboard h-100'">
             <button t-on-click="openCustomerView">Customers</button>
             <button t-on-click="openLeadView">Leads</button>
+            <div class="d-flex flex-warp">
+                <DashboardItem>
+                    Hello world
+                </DashboardItem>
+                <DashboardItem size="1.5">
+                    HELLO WORLD
+                </DashboardItem>
+                <DashboardItem>
+                    Test
+                </DashboardItem>
+            </div>
         </Layout>
     </t>
 
