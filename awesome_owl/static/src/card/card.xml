@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <label class="switch">
+            <input type="checkbox" t-on-click="toggleState"/>
+        </label>
+
+
+        <div t-if="state.value == true">
+            <span>Title: <t t-out="props.title"/></span>
+            <t t-slot="default"/>
+        </div>
+    </t>
+</templates>
