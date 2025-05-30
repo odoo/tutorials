@@ -145,3 +145,31 @@ class EstateProperty(models.Model):
                 raise UserError(
                     "You cannot delete a property that is not new or cancelled."
                 )
+
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        if self.offer_ids:
+            self.state = "offer_received"
+        if not self.offer_ids and self.state != "new":
+            self.state = "new"
+
+    @api.onchange("state")
+    def _onchange_state(self):
+        if self.state == "offer_received" and not self.offer_ids:
+            raise UserError("No offers available yet!.")
+        elif self.state == "offer_received" and self.offer_ids.filtered(
+            lambda o: o.status == "accepted"
+        ):
+            raise UserError(
+                "You cannot set the property as offer received when there is an accepted offer."
+            )
+        elif self.state == "offer_accepted" and not self.offer_ids:
+            raise UserError("You cannot accept an offer without any offers.")
+        elif self.state == "sold" and not self.offer_ids:
+            raise UserError("You cannot sell a property without any offers.")
+        elif self.state == "offer_accepted" and not self.offer_ids.filtered(
+            lambda o: o.status == "accepted"
+        ):
+            raise UserError(
+                "You cannot set the property as offer accepted without an accepted offer."
+            )
