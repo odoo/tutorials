@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -18,7 +19,12 @@ class EstateProperty(models.Model):
     post_code = fields.Char('Post Code')
     state = fields.Selection(
         string="State",
-        selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
+        selection=[
+            ('new', 'New'),
+            ('offer received', 'Offer Received'),
+            ('offer accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled')],
         help="Estate current state",
         required=True,
         default='new',

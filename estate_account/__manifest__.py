@@ -6,9 +6,7 @@
     'description': 'Generates invoices for sold properties when both Estate and Accounting apps are installed.',
     'author': 'Odoo',
     'depends': ['estate', 'account'],
-    'data': [
-        'security/ir.model.access.csv'
-    ],
+    'data': [],
     'application': False,
     'auto_install': True,
     'license': 'LGPL-3',
