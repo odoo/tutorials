@@ -7,13 +7,24 @@
             <button t-on-click="openLeadView">Leads</button>
             <div class="d-flex flex-warp">
                 <DashboardItem>
-                    Hello world
+                    <p>New orders this month</p>
+                    <t t-esc="statistics.nb_new_orders"/>
                 </DashboardItem>
                 <DashboardItem size="1.5">
-                    HELLO WORLD
+                    <p>Total new orders</p>
+                    <t t-esc="statistics.total_amount"/>
                 </DashboardItem>
                 <DashboardItem>
-                    Test
+                    <p>Average monthly orders</p>
+                    <t t-esc="statistics.average_quantity"/>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Orders cancelled this month</p>
+                    <t t-esc="statistics.nb_cancelled_orders"/>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Average order processing time</p>
+                    <t t-esc="statistics.average_time"/>
                 </DashboardItem>
             </div>
         </Layout>
