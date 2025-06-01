@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+    <t t-name="awesome_owl.Playground">
+        <h1>Hello World</h1>
+        <div class="d-flex justify-content-around">
+            <Counter onCounterIncrement.bind="onCounterIncrement"/>
+            <Counter onCounterIncrement.bind="onCounterIncrement"/>
+            <Card title="'5'" content="this.markupContent.cardContent"/>
+            <h2>
+                <t t-esc="this.state.counterSum"/>
+            </h2>
         </div>
+        <section class="d-flex justify-content-center mt-5">
+            <div class="border w-25 padding-20">
+                <TodoList/>
+            </div>
+        </section>
     </t>
-
 </templates>
