@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="layout_display" className="'o_dashboard h-100'">
+            <button class="btn btn-primary" t-on-click="goToCustomers">Customers</button>
+            <button class="btn btn-primary" t-on-click="goToLeads">Leads</button>
+            <button t-on-click="openConfiguration" class="btn">
+                <i class="fa fa-cog"></i>
+            </button>
+            <div>
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem t-if="isEnabled(item.id)" size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(data_proxy.data) : {'data': data_proxy.data}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you wish to see ?
+            <t t-foreach="props.items" t-as="item" t-key="item.id">
+                <CheckBox value="this.item_enabled_map[item.id]" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
