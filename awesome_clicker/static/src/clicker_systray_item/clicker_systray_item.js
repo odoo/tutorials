@@ -1,8 +1,8 @@
 import { registry } from "@web/core/registry";
 import { Component } from "@odoo/owl";
 import { useService } from "@web/core/utils/hooks";
-import { useClicker } from "../useClicker";
-import { ClickerValue } from "../clicker_value";
+import { ClickerValue } from "../clicker_value/clicker_value";
+import { useClicker } from "../clickerService";
 
 export class ClickerSystray extends Component {
     static template = "awesome_clicker.ClickerSystray";

@@ -1,6 +1,6 @@
 import { Component } from "@odoo/owl";
 import { humanNumber } from "@web/core/utils/numbers";
-import { useClicker } from "./useClicker";
+import { useClicker } from "../clickerService";
 
 export class ClickerValue extends Component {
     static template = "awesome_clicker.ClickerValue";
@@ -11,7 +11,7 @@ export class ClickerValue extends Component {
     }
 
     get humanizedClicks() {
-        return humanNumber(this.clicker.state.clicks, {
+        return humanNumber(this.clicker.clicks, {
             decimals: 1,
         });
     }

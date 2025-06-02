@@ -1,5 +1,0 @@
-<templates xml:space="preserve">
-    <t t-name="awesome_clicker.ClickerValue">
-        <t t-esc="humanizedClicks"/>
-    </t>
-</templates>

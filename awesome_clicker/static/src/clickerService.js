@@ -1,22 +1,29 @@
-import { reactive } from "@odoo/owl";
 import { registry } from "@web/core/registry";
+import { ClickerModel } from "./clickerModel";
+import { useState } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
 const clickerService = {
     start(env) {
-        const state = reactive({ clicks: 1234 });
+        const clickerModel = new ClickerModel({
+            clicks: 990,
+            level: 1,
+            clickBots: 0,
+        })
 
-        function increment(inc) {
-            state.clicks += inc;
-        }
+        document.addEventListener("click", () => clickerModel.increment(1), true);
 
-        document.addEventListener("click", () => increment(1), true);
+        setInterval(() => clickerModel.computeAutoClicks(), 10000);
 
         return {
-            state,
-            increment,
+            clickerModel
         };
     },
 };
 
 registry.category("services").add("clickerService", clickerService);
 
+export function useClicker() {
+    const service = useState(useService("clickerService"));
+    return service.clickerModel;
+}
