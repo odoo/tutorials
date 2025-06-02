@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_purchase_order_containerisation" model="ir.actions.act_window">
+        <field name="name">Containerisation</field>
+        <field name="res_model">stock.picking</field>
+        <field name="view_mode">list</field>
+        <field name="view_id" ref="view_picking_list_containerisation"/>
+        <field name="domain">[("picking_type_id.code", "=", "incoming"), ("state", "not in", ["done", "cancel"]), ("is_container_picking", "=", True)]</field>
+        <field name="context">{'create': False}</field>
+    </record>
+
+    <menuitem id="menu_purchase_order_containerisation" name="Containerisation" parent="purchase.menu_procurement_management" action="action_purchase_order_containerisation"/>
+    <menuitem id="menu_purchase_order_containerisation_supplier" name="New Containerisation" parent="purchase.menu_procurement_management" action="action_containerisation_supplier_wizard"/>
+</odoo>

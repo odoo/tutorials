@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_picking_containerisation" model="ir.actions.act_window">
+        <field name="name">Containerisation</field>
+        <field name="res_model">stock.picking</field>
+        <field name="path">containerisation</field>
+        <field name="view_mode">list,kanban,form,calendar,activity</field>
+        <field name="context">{'search_default_containerisation': True}</field>
+    </record>
+
+    <menuitem id="menu_stock_picking_containerisation" name="Containerisation" parent="stock.menu_stock_transfers" action="action_picking_containerisation" sequence="23"/>
+</odoo>
