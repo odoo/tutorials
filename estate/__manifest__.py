@@ -14,5 +14,10 @@
         'security/ir.model.access.csv',
 
     ],
+
+    'demo': [
+        'demo/x_estate.property.type.csv',
+        'demo/x_estate.property.xml',
+    ],
     'license': 'LGPL-3',
 }
