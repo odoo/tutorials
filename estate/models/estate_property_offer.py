@@ -68,10 +68,13 @@ class EstatePropertyOffer(models.Model):
         if not newOffers:
             return newOffers
 
+        if newOffers[0].property_id.state == 'sold':
+            raise UserError(self.env._("You can't create offer for a Sold property"))
+
         offers = newOffers[0].property_id.offer_ids
 
         old_offers = offers.filtered(lambda o: o not in newOffers)
-        offers_max_price = max(old_offers.mapped('price'))
+        offers_max_price = max(old_offers.mapped('price') or [0])
 
         for newOffer in newOffers:
             if newOffer.price < offers_max_price:

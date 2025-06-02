@@ -36,6 +36,8 @@ class EstateProperty(models.Model):
             invoices_to_create.append(invoice_data)
 
             if invoices_to_create:
-                self.env['account.move'].create(invoices_to_create)
+                estate_property.check_access('write')
+                print(" reached ".center(100, '='))
+                self.env['account.move'].sudo().create(invoices_to_create)
 
         return True

@@ -6,6 +6,33 @@
         <field name="context">{'search_default_available_properties': True}</field>
     </record>
 
+    <record id="estate_property_multi_company_rule" model="ir.rule">
+        <field name="name">Estate property limit to user's companies</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[
+            '|', ('company_id', '=', False),
+                ('company_id', 'in', company_ids)
+        ]</field>
+    </record>
+
+    <record id="estate_property_action_manager_rule" model="ir.rule">
+        <field name="name">Give access to Manager</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups" eval="[Command.link(ref('estate_group_manager'))]"/>
+    </record>
+
+    <record id="estate_property_action_user_rule" model="ir.rule">
+        <field name="name">Limit users to those properties</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]"/>
+        <field name="domain_force">
+            ['|',
+                ('salesperson_id', '=', user.id),
+                ('salesperson_id', '=', False)
+            ]
+        </field>
+    </record>
+
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
