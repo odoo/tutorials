@@ -130,5 +130,34 @@
         <field name="sequence">4</field>
     </record>
 
+    <!-- Relational Fields -->
+    <record id="field_real_estate_property_partner_id" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property" />
+        <field name="name">x_partner_id</field>
+        <field name="field_description">Buyer</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.partner</field>
+    </record>
+
+    <record id="field_real_estate_property_type_id" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property" />
+        <field name="name">x_property_type_id</field>
+        <field name="field_description">Type</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">x_estate.property.type</field>
+        <field name="required">True</field>
+        <field name="on_delete">cascade</field>
+    </record>
+
+    <record id="field_real_estate_property_user_id" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property" />
+        <field name="name">x_user_id</field> 
+        <field name="field_description">Salesperson</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.users</field>
+    </record>
+
+
+
 
 </odoo>

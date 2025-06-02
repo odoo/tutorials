@@ -34,6 +34,7 @@
                         <group> 
                             <field name="x_postcode"/>
                             <field name="x_date_availability"/>
+                            <field name="x_property_type_id" string="Property Type"/>
                         </group>
                         <group>
                             <field name="x_expected_price"/>
@@ -43,18 +44,25 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                        <group>
-                            <field name="x_description"/>
-                            <field name="x_bedrooms"/>
-                            <field name="x_living_area" string="Living Area (sqm)"/>
-                            <field name="x_facades"/>
-                            <field name="x_garage"/>
-                            <field name="x_garden"/>
-                            <field name="x_garden_area" string="Garden Area (sqm)"/>
-                            <field name="x_garden_orientation"/>
-                        </group>
+                            <group>
+                                <field name="x_description"/>
+                                <field name="x_bedrooms"/>
+                                <field name="x_living_area" string="Living Area (sqm)"/>
+                                <field name="x_facades"/>
+                                <field name="x_garage"/>
+                                <field name="x_garden"/>
+                                <field name="x_garden_area" string="Garden Area (sqm)"/>
+                                <field name="x_garden_orientation"/>
+                            </group>
                         </page>
-                    </notebook>
+
+                        <page string="Other Info">
+                            <group>
+                                <field name="x_user_id" string="Salesman"/>
+                                <field name="x_partner_id" string="Buyer"/>
+                            </group>
+                        </page>
+                    </notebook> 
 
 
                 </sheet>
