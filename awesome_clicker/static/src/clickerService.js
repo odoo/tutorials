@@ -15,6 +15,9 @@ const clickerService = {
 
         setInterval(() => clickerModel.computeAutoClicks(), 10000);
 
+        clickerModel.eventBus.addEventListener("clicker.level_2", () => console.log("something L2"));
+
+
         return {
             clickerModel
         };

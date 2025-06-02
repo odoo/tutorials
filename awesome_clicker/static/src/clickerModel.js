@@ -1,3 +1,4 @@
+import { EventBus, useEffect } from "@odoo/owl";
 import { Reactive } from "@web/core/utils/reactive";
 
 export class ClickerModel extends Reactive {
@@ -6,6 +7,19 @@ export class ClickerModel extends Reactive {
     this.clicks = initial.clicks || 0;
     this.level  = initial.level  || 0;
     this.clickBots = initial.clickBots || 0;
+    this.eventBus = new EventBus()
+
+    useEffect(() => {
+        console.log("ClickerModel: Reward Manager started");
+        if (this.clicks >= 1000) {
+            // Todo make it trigger only the first time
+            this.eventBus.trigger("clicker.level_2");
+        }
+    })
+  }
+
+  setup() {
+    
   }
 
   increment(amount) {
