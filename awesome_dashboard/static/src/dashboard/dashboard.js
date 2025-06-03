@@ -15,7 +15,13 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.dashboardData = useState(useService("load_statistics"));
+        this.items = registry.category("awesome_dashboard").getAll();;
+        if (this.items) {
+            // this.dashboardData = this.items; // TODO
+            this.dashboardData = useState(useService("load_statistics"));
+        } else {
+            this.dashboardData = useState(useService("load_statistics"));
+        }
     }
 
     openCustomers() {
