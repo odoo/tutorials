@@ -10,5 +10,6 @@
         <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root"/>
             
             <menuitem id="sett_menu_property_type" action="x_estate_property_type_action" parent="estate_menu_settings"/>
+            <menuitem id="sett_menu_property_tag" action="x_estate_property_tag_action" parent="estate_menu_settings"/>
 
 </odoo>

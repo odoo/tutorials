@@ -30,6 +30,7 @@
             <form string="Property">
                 <sheet>
                     <h1><field name="x_name"/></h1>
+                    <field name="x_property_tag_id" widget="many2many_tags"/>
                     <group>
                         <group> 
                             <field name="x_postcode"/>
