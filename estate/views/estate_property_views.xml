@@ -48,11 +48,12 @@
                             <group>
                                 <field name="x_description"/>
                                 <field name="x_bedrooms"/>
-                                <field name="x_living_area" string="Living Area (sqm)"/>
                                 <field name="x_facades"/>
                                 <field name="x_garage"/>
-                                <field name="x_garden"/>
+                                <field name="x_garden"/>                   
                                 <field name="x_garden_area" string="Garden Area (sqm)"/>
+                                <field name="x_living_area" string="Living Area (sqm)"/>
+                                <field name="x_total_area" string="Total Area (sqm)"/>
                                 <field name="x_garden_orientation"/>
                             </group>
                         </page>

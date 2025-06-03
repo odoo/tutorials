@@ -88,6 +88,19 @@
         <field name="ttype">integer</field>
     </record>
 
+    <record id="field_real_estate_property_total_area" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property" />
+        <field name="name">x_total_area</field>
+        <field name="field_description">Total Area</field>
+        <field name="ttype">integer</field>
+        <field name="depends">x_living_area,x_garden_area</field>
+        <field name="compute"><![CDATA[for property in self:
+            property['x_total_area'] = property.x_living_area + property.x_garden_area
+            ]]>
+        </field>
+        <field name="readonly" eval="True"/>
+    </record>
+
     <!-- Selection Field: Garden Orientation -->
     <record id="field_real_estate_garden_orientation" model="ir.model.fields">
         <field name="model_id" ref="estate.model_real_estate_property"/>
