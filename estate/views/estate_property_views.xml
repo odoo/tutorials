@@ -73,9 +73,9 @@
         <field name="arch" type="xml">
             <list string="Properties List" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-muted="state == 'sold'" decoration-bf="state == 'offer_accepted'">
                 <header>
-                <button name="%(estate.action_open_wizard)d" 
-                        string="Add Offer" 
-                        type="action" 
+                <button name="%(estate.action_open_wizard)d"
+                        string="Add Offer"
+                        type="action"
                         class="btn-primary"/>
                 </header>
                 <field name="name"/>

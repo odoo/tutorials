@@ -26,10 +26,10 @@ const statisticsService = {
         // Refresh interval: 10 minutes
         const REFRESH_INTERVAL = 10 * 60 * 1000;
         const intervalId = setInterval(fetchStatistics, REFRESH_INTERVAL);
-        
+
         // Load data immediately
         fetchStatistics();
-        
+
         // Return the reactive statistics object
         return statistics;
     },

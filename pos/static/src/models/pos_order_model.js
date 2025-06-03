@@ -9,7 +9,7 @@ patch(PosOrder.prototype, {
     set_sales_agent(sales_agent) {
         this.update({ sales_agent_id: sales_agent });
     },
-    
+
     /**
      * Get the current sales agent ID
      * @returns {Number|null} The sales agent ID or null if not set
@@ -17,7 +17,7 @@ patch(PosOrder.prototype, {
     get_sales_agent() {
         return this.sales_agent_id || null;
     },
-    
+
     /**
      * Export the order data including the sales agent
      * @override

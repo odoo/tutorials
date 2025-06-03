@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="row mb-4">
                 <div class="col-md-6 mb-3 mb-md-0">
                     <Card title="'Demo Card'">
@@ -32,7 +32,7 @@
                     </Card>
                 </div>
             </div>
-            
+
             <div class="row">
                 <div class="col-lg-8 mx-auto">
                     <TodoList />

@@ -3,25 +3,25 @@
     <t t-name="awesome_owl.TodoItem">
         <li class="list-group-item d-flex align-items-center border-0 ps-0 pe-2 py-2 border-bottom">
             <t t-set="todo" t-value="props.todo"/>
-            
+
             <!-- Task checkbox -->
-            <input 
-                class="form-check-input me-2" 
-                type="checkbox" 
-                t-att-id="todo.id" 
-                t-att-checked="todo.isCompleted" 
+            <input
+                class="form-check-input me-2"
+                type="checkbox"
+                t-att-id="todo.id"
+                t-att-checked="todo.isCompleted"
                 t-on-change="() => todo.toggle()"
             />
-            
+
             <!-- Task label -->
-            <label 
-                t-att-for="todo.id" 
-                class="flex-grow-1 mb-0" 
+            <label
+                t-att-for="todo.id"
+                class="flex-grow-1 mb-0"
                 t-att-class="todo.isCompleted ? 'text-decoration-line-through text-muted' : ''"
             >
                 <t t-esc="todo.description"/>
             </label>
-            
+
             <!-- Delete button -->
             <button class="btn btn-sm text-danger border-0 p-0" t-on-click="() => todo.remove()">
                 <i class="fa fa-times"></i>

@@ -29,7 +29,7 @@ export class TodoList extends Component {
         this.addNewTask(inputEl);
         inputEl.focus();
     }
-    
+
     // Helper to add a new task
     addNewTask(inputElement) {
         const taskText = inputElement.value.trim();

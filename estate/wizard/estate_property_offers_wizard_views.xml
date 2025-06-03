@@ -20,7 +20,7 @@
             </form>
         </field>
     </record>
-    
+
     <record id="action_open_wizard" model="ir.actions.act_window">
         <field name="name">Create Bulk Offers</field>
         <field name="res_model">estate.property.offer.wizard</field>

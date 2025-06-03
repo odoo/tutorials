@@ -3,22 +3,22 @@
     <t t-name="awesome_owl.TodoList">
         <div class="card p-4">
             <h4 class="accent-color mb-3">Task Manager</h4>
-            
+
             <!-- Task input form -->
             <div class="d-flex mb-4 gap-2">
-                <input 
+                <input
                     t-ref="input"
-                    class="form-control" 
-                    placeholder="Enter a task..." 
+                    class="form-control"
+                    placeholder="Enter a task..."
                     t-on-keyup="handleKeypress"
                 />
                 <button class="btn" t-on-click="createTask">Add</button>
             </div>
-            
+
             <!-- Task list -->
             <ul class="list-group">
                 <t t-foreach="todoModel.todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo.bind="todo"/>
+                    <TodoItem todo="todo"/>
                 </t>
             </ul>
         </div>

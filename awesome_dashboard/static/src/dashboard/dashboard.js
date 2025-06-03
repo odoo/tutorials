@@ -16,15 +16,15 @@ class AwesomeDashboard extends Component {
         this.actionService = useService("action");
         this.statisticsService = useState(useService("awesome_dashboard.statistics"));
         this.dialogService = useService("dialog");
-        
+
         // Control panel configuration
         this.displayOptions = {
             controlPanel: {},
         };
-        
+
         // Get all registered dashboard items
         this.dashboardItems = registry.category("awesome_dashboard").getAll();
-        
+
         // User preferences for dashboard configuration
         this.state = useState({
             disabledItems: this._loadDisabledItems(),
@@ -107,7 +107,7 @@ class DashboardConfigDialog extends Component {
      */
     onItemToggle(isChecked, toggledItem) {
         toggledItem.isEnabled = isChecked;
-        
+
         // Create array of disabled item IDs
         const newDisabledItemIds = Object.values(this.configItems)
             .filter(item => !item.isEnabled)

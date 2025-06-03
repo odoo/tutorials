@@ -12,7 +12,7 @@ export class Counter extends Component {
 
     incrementCounter() {
         this.counter.count += 1;
-        
+
         if (this.props.onChange) {
             this.props.onChange();
         }

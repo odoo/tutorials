@@ -19,7 +19,7 @@
                     <i class="fa fa-gear"></i>
                 </button>
             </t>
-            
+
             <div t-if="!statisticsService.isReady" class="d-flex align-items-center justify-content-center h-100">
                 <div class="text-center">
                     <div class="spinner-border text-primary mb-3" role="status">
@@ -28,7 +28,7 @@
                     <p class="text-muted">Loading dashboard data...</p>
                 </div>
             </div>
-            
+
             <div class="container-fluid p-3 p-md-4" t-if="statisticsService.isReady">
                 <div class="row mb-4">
                     <div class="col-12">
@@ -49,7 +49,7 @@
                     </t>
                 </div>
             </div>
-        </Layout>    
+        </Layout>
     </t>
 
     <t t-name="awesome_dashboard.ConfigurationDialog">

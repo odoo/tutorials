@@ -70,7 +70,7 @@
                 </sheet>
                 <footer>
                     <button type="object" name="action_confirm_post_journal_entry"
-                        class="btn btn-primary o_form_button_save">Confirm 
+                        class="btn btn-primary o_form_button_save">Confirm
                     </button>
                     <button type="button" class="btn btn-secondary o_form_button_cancel"
                         special="cancel">Cancel
@@ -79,4 +79,4 @@
             </form>
         </field>
     </record>
-</odoo> 
+</odoo>

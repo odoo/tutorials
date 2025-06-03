@@ -13,7 +13,7 @@
                          company_dependent="1">
                     <field name="is_import_export" class="oe_inline" widget="checkbox" string="Import-Export"/>
                 </setting>
-                
+
                 <setting string="Import" invisible="not is_import_export">
                     <div class="content-group">
                         <div class="row mt8">
@@ -38,7 +38,7 @@
                             <field name="account_imp_tax_acct_id"
                                 domain="[
                                     ('account_type', 'in', ['liability_current', 'asset_current']),
-                                    ('reconcile', '=', True), 
+                                    ('reconcile', '=', True),
                                     ('deprecated', '=', False)
                                 ]"
                             />
@@ -72,7 +72,7 @@
                             <field name="account_exp_tax_acct_id"
                                 domain="[
                                     [ 'account_type', 'in', [ 'liability_current', 'asset_current' ] ],
-                                    ('reconcile', '=', True), 
+                                    ('reconcile', '=', True),
                                     ('deprecated', '=', False)
                                 ]"
                             />
@@ -82,4 +82,4 @@
             </xpath>
         </field>
     </record>
-</odoo> 
+</odoo>

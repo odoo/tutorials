@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="pos.sales_agent.SelectSalesAgentButton">
-        <button class="set-sales-agent btn btn-lg lh-lg text-truncate w-auto d-flex align-items-center" 
+        <button class="set-sales-agent btn btn-lg lh-lg text-truncate w-auto d-flex align-items-center"
                 t-on-click="selectSalesAgent"
                 t-att-class="{'btn-success': this.salesAgent.id, 'btn-outline-secondary': !this.salesAgent.id, 'shadow-sm': this.salesAgent.id}">
             <i class="fa fa-user-circle me-2" aria-hidden="true"></i>

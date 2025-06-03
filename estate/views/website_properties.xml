@@ -18,7 +18,7 @@
                         <p class="lead text-muted">Browse our collection of available properties</p>
                     </div>
                 </div>
-                
+
                 <div class="row g-4">
                     <t t-foreach="properties" t-as="property">
                         <div class="col-md-4 mb-4">
@@ -32,13 +32,13 @@
                                         <t t-else="">
                                             <img src="/web/static/img/placeholder.png" class="card-img-top" alt="No Image" style="height: 220px; object-fit: cover;"/>
                                         </t>
-                                        
+
                                         <!-- Status Badge -->
                                         <div class="position-absolute top-0 start-0 m-3">
                                             <span t-if="property.state == 'new'" class="badge bg-success px-3 py-2 rounded-pill">New</span>
                                             <span t-if="property.state == 'offer_received'" class="badge bg-warning px-3 py-2 rounded-pill">Offer Received</span>
                                         </div>
-                                        
+
                                         <!-- Price Badge -->
                                         <div class="position-absolute bottom-0 end-0 m-3">
                                             <span class="badge bg-primary px-3 py-2 rounded-pill fs-6 fw-bold">
@@ -46,10 +46,10 @@
                                             </span>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="card-body p-4">
                                         <h5 class="card-title fw-bold mb-3" t-field="property.name"/>
-                                        
+
                                         <!-- Key Features with Icons -->
                                         <div class="d-flex text-muted mb-3 flex-wrap">
                                             <div class="me-4 mb-2">
@@ -73,14 +73,14 @@
                                                 </div>
                                             </t>
                                         </div>
-                                        
+
                                         <!-- Location -->
                                         <div class="text-muted">
                                             <i class="fa fa-map-marker me-2 text-secondary"></i>
                                             <span t-field="property.city"/>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- View Details Button -->
                                     <div class="card-footer bg-white border-0 pt-0 pb-3 px-4">
                                         <div class="d-grid">
@@ -92,7 +92,7 @@
                         </div>
                     </t>
                 </div>
-                
+
                 <!-- Pager -->
                 <div class="row justify-content-center mt-5">
                     <t t-call="website.pager"/>
@@ -121,14 +121,14 @@
                         <div class="card border-0 shadow overflow-hidden">
                             <div class="position-relative">
                                 <t t-if="property.image">
-                                    <img t-att-src="image_data_uri(property.image)" 
+                                    <img t-att-src="image_data_uri(property.image)"
                                          class="img-fluid rounded-0" alt="Property Image"/>
                                 </t>
                                 <t t-else="">
-                                    <img src="/web/static/img/placeholder.png" 
+                                    <img src="/web/static/img/placeholder.png"
                                          class="img-fluid rounded-0" alt="No Image"/>
                                 </t>
-                                
+
                                 <!-- Status Badge -->
                                 <div class="position-absolute top-0 start-0 m-4">
                                     <span t-if="property.state == 'new'" class="badge bg-success px-3 py-2 fs-6 rounded-pill">New Listing</span>
@@ -136,7 +136,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Property Description -->
                         <div class="card border-0 shadow mt-4 p-4">
                             <h5 class="text-primary mb-3">About This Property</h5>
@@ -148,11 +148,11 @@
                     <div class="col-lg-5">
                         <div class="card border-0 shadow p-4 mb-4">
                             <h1 t-field="property.name" class="fw-bold mb-3"/>
-                            
+
                             <!-- Price -->
                             <div class="d-flex align-items-center mb-4">
                                 <h2 class="text-primary fw-bold mb-0">
-                                    <span t-field="property.expected_price" 
+                                    <span t-field="property.expected_price"
                                           t-options='{"widget": "monetary", "display_currency": property.currency_id}'/>
                                 </h2>
                                 <div class="ms-auto">
@@ -160,7 +160,7 @@
                                     <span t-if="property.state == 'offer_received'" class="badge bg-warning px-3 py-2 rounded-pill">Offer Pending</span>
                                 </div>
                             </div>
-                            
+
                             <!-- Key features -->
                             <div class="row mb-4">
                                 <div class="col-6 mb-3">
@@ -232,7 +232,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Tags -->
                             <h6 class="text-uppercase text-muted mb-3">Features</h6>
                             <div class="mb-4">
@@ -241,11 +241,11 @@
                                 </t>
                             </div>
                         </div>
-                        
+
                         <!-- Location Info -->
                         <div class="card border-0 shadow p-4">
                             <h5 class="text-primary mb-3">Location &amp; Details</h5>
-                            
+
                             <div class="info-item mb-3">
                                 <div class="info-icon bg-light-blue">
                                     <i class="fa fa-map-marker text-primary"></i>
@@ -253,13 +253,13 @@
                                 <div class="info-text">
                                     <span class="fw-bold">Address</span>
                                     <div class="text-muted">
-                                        <span t-if="property.city" t-field="property.city"/> 
+                                        <span t-if="property.city" t-field="property.city"/>
                                         <span t-if="property.city and property.postcode">, </span>
                                         <span t-if="property.postcode" t-field="property.postcode"/>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-item mb-3">
                                 <div class="info-icon bg-light-green">
                                     <i class="fa fa-calendar text-success"></i>
@@ -271,7 +271,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="info-item">
                                 <div class="info-icon bg-light-purple">
                                     <i class="fa fa-tag text-danger"></i>
@@ -287,7 +287,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- CSS for the custom elements -->
             <style>
                 /* Hover effect for property cards */
@@ -295,11 +295,11 @@
                     transform: translateY(-5px);
                     box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
                 }
-                
+
                 .transition-300 {
                     transition: all 0.3s ease;
                 }
-                
+
                 /* Feature icons */
                 .feature-icon {
                     display: inline-flex;
@@ -310,7 +310,7 @@
                     border-radius: 50%;
                     margin-right: 8px;
                 }
-                
+
                 /* Feature cards */
                 .feature-card {
                     display: flex;
@@ -319,18 +319,18 @@
                     border-radius: 8px;
                     background-color: #f8f9fa;
                 }
-                
+
                 .feature-text {
                     flex: 1;
                 }
-                
+
                 /* Info items */
                 .info-item {
                     display: flex;
                     align-items: center;
                     margin-bottom: 15px;
                 }
-                
+
                 .info-icon {
                     display: flex;
                     align-items: center;
@@ -340,28 +340,28 @@
                     border-radius: 50%;
                     margin-right: 15px;
                 }
-                
+
                 .info-text {
                     flex: 1;
                 }
-                
+
                 /* Background colors */
                 .bg-light-blue {
                     background-color: rgba(13, 110, 253, 0.1);
                 }
-                
+
                 .bg-light-green {
                     background-color: rgba(25, 135, 84, 0.1);
                 }
-                
+
                 .bg-light-orange {
                     background-color: rgba(255, 193, 7, 0.1);
                 }
-                
+
                 .bg-light-purple {
                     background-color: rgba(220, 53, 69, 0.1);
                 }
             </style>
         </t>
     </template>
-</odoo> 
+</odoo>
