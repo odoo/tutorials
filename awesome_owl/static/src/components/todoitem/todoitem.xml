@@ -1,0 +1,25 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoitem">
+        <div t-att-class="props.todo.isCompleted ? 'text-muted text-decoration-line-through card mb-3 fs-4 cursor-pointer' : 'card mb-3 fs-4 cursor-pointer'">
+            <div class="card-body">
+                <h3 class="card-text d-flex gap-3 pb-3" t-on-click="() => props.doToggle(props.todo.id)">
+                    <strong>ID:</strong>
+                    <span class="fw-bold">
+                        <t t-out="props.todo.id" />
+                    </span>
+                </h3>
+                <p class="card-text d-flex gap-3">
+                    <span>Description:</span>
+                    <t t-out="props.todo.description" />
+                </p>
+                <p class="card-text d-flex gap-3">
+                    <span>Completed:</span>
+                    <span t-att-class="props.todo.isCompleted ? 'badge bg-success d-flex justify-content-center align-items-center' : 'badge bg-warning d-flex justify-content-center align-items-center'">
+                        <t t-esc="props.todo.isCompleted ? 'Yes' : 'No'" />
+                    </span>
+                    <span class="fa fa-remove text-danger" t-on-click="()=>props.deleteTodo(props.todo.id)"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>
