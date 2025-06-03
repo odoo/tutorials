@@ -14,6 +14,8 @@
         "data/estate_property_type_data.xml",
         "data/estate_property_data.xml",
         "data/estate_property_offer_data.xml",
+        "report/estate_property_offers_template.xml",
+        "report/estate_property_reports.xml",
     ],
     "category": "Real Estate/Brokerage",
     "application": True,

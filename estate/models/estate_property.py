@@ -97,7 +97,10 @@ class Property(models.Model):
 
     def set_sold_state(self):
         if self.state != "cancelled":
-            self.state = "sold"
+            if self.state == "offer_accepted":
+                self.state = "sold"
+            else:
+                raise UserError("Only Accepeted offers property can be sold")
         else:
             raise UserError("Cancelled property can not be sold.")
         return True

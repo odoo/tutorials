@@ -62,6 +62,9 @@ class PropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            state = self.env["estate.property"].browse(vals["property_id"]).state
+            if state == "sold":
+                raise UserError("Cannot create an offer for a sold property")
             best_offer = (
                 self.env["estate.property"].browse(vals["property_id"]).best_price
             )
