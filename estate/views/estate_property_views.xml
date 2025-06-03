@@ -30,7 +30,7 @@
             <form string="Property">
                 <sheet>
                     <h1><field name="x_name"/></h1>
-                    <field name="x_property_tag_id" widget="many2many_tags"/>
+                    <field name="x_property_tag_ids" widget="many2many_tags"/>
                     <group>
                         <group> 
                             <field name="x_postcode"/>
@@ -55,6 +55,10 @@
                                 <field name="x_garden_area" string="Garden Area (sqm)"/>
                                 <field name="x_garden_orientation"/>
                             </group>
+                        </page>
+
+                        <page string="Offers">
+                            <field name="x_offer_ids"/>
                         </page>
 
                         <page string="Other Info">

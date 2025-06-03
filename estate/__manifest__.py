@@ -4,13 +4,18 @@
         'base',
     ],
     'data': [
-        'models/estate_property_type.xml',
+        'models/estate_models.xml',
+
+        'models/fields/estate_property_type.xml',
         'views/estate_property_type_views.xml',
 
-        'models/estate_property_tag.xml',
+        'models/fields/estate_property_tag.xml',
         'views/estate_property_tag_views.xml',
 
-        'models/estate_property.xml',
+        'models/fields/estate_property_offer.xml',
+        'views/estate_property_offer_views.xml',
+
+        'models/fields/estate_property.xml',
         'views/estate_property_views.xml',
 
         'views/estate_menus.xml',
