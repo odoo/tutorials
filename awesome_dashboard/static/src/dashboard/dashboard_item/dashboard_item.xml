@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="card border rounded p-2" t-attf-style="width: {{18*props.size}}rem;">
+            <div class="card-body">
+                <div class="fs-3">
+                    <t t-slot="default"/>
+                </div>
+                <div t-if="props.stat" t-out="props.stat" class="rounded bg-success-subtle text-success text-center fs-1"/>
+            </div>
+        </div>
+    </t>
+</templates>

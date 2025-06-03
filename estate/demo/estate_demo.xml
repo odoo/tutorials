@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="partner_101" model="res.partner">
+        <field name="name">a</field>
+    </record>
+    <record id="partner_102" model="res.partner">
+        <field name="name">b</field>
+    </record>
+    <record id="partner_103" model="res.partner">
+        <field name="name">c</field>
+    </record>
+    <record id="partner_200" model="res.partner">
+        <field name="name">Company 200</field>
+        <field name="is_company">1</field>
+    </record>
+
+    <record id="company_200" model="res.company">
+        <field name="name">Company 200</field>
+        <field name="partner_id" ref="partner_200"/>
+        <field name="currency_id" ref="base.USD"/>
+    </record>
+
+    <record id="user_estate_agent_1" model="res.users">
+        <field name="login">a</field>
+        <field name="password">a</field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="company_ids" eval="[Command.link(ref('base.main_company'))]"/>
+        <field name="partner_id" ref="partner_101"/>
+        <field name="groups_id"
+            eval="[
+                Command.link(ref('base.group_user')),
+                Command.link(ref('estate_group_user')),
+            ]"/>
+    </record>
+    <record id="user_estate_agent_2" model="res.users">
+        <field name="login">b</field>
+        <field name="password">b</field>
+        <field name="company_id" ref="company_200"/>
+        <field name="company_ids" eval="[
+            Command.link(ref('company_200'))
+        ]"/>
+        <field name="partner_id" ref="partner_102"/>
+        <field name="groups_id"
+            eval="[
+                Command.link(ref('base.group_user')),
+                Command.link(ref('estate_group_user')),
+            ]"/>
+    </record>
+    <record id="user_estate_agent_3" model="res.users">
+        <field name="login">c</field>
+        <field name="password">c</field>
+        <field name="company_id" ref="company_200"/>
+        <field name="company_ids"
+            eval="[
+                Command.link(ref('base.main_company')),
+                Command.link(ref('company_200'))
+            ]"/>
+        <field name="partner_id" ref="partner_103"/>
+        <field name="groups_id"
+            eval="[
+                Command.link(ref('base.group_user')),
+                Command.link(ref('estate_group_user')),
+            ]"/>
+    </record>
+</odoo>
