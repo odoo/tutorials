@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="pos_self_order.ProductPage" t-inherit-mode="extension">
+        <xpath expr="//h1[@class='mb-0 text-nowrap']" position="replace">
+            <h1 class="mb-0 text-nowrap"><strong t-esc="product.name"/> <span t-if="product.isConfigurable()">options</span></h1>
+        </xpath>
+        <xpath expr="//button[@class='btn btn-secondary btn-lg px-3 text-nowrap']" position="replace">
+            <span t-if="product.isConfigurable()">
+                <button class="btn btn-secondary btn-lg px-3 text-nowrap" t-on-click="() => router.back()">
+                    <i class="oi oi-chevron-left" aria-hidden="true"/><span class="ms-2 d-none d-md-inline">Discard</span>
+                </button>
+            </span>
+        </xpath>
+        <xpath expr="//div[@class='alert alert-warning m-0']" position="after">
+            <span t-if="!product.isConfigurable()">
+                <div t-esc="product.self_order_description"/>
+                <button class="btn btn-secondary btn-lg px-3 text-nowrap" t-on-click="() => router.back()">
+                    <span class="ms-2 d-none d-md-inline">Cancel</span>
+                </button>
+            </span>
+        </xpath>
+        <xpath expr="//AttributeSelection" position="before">
+            <div t-esc="self_order_description"/>
+        </xpath>
+    </t>
+</templates>
