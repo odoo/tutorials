@@ -1,9 +1,6 @@
-import logging
 import random
 
 from odoo import http
-
-logger = logging.getLogger(__name__)
 
 
 class AwesomeDashboard(http.Controller):

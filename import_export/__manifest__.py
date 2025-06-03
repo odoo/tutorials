@@ -16,5 +16,6 @@
         "views/account_move_views.xml",
     ],
     "installable": True,
+    "auto_install": True,
     "license": "LGPL-3",
 }

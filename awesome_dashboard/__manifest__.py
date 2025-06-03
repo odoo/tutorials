@@ -12,6 +12,7 @@
     "version": "0.1",
     "application": True,
     "installable": True,
+    "auto_install": True,
     "depends": ["base", "web", "mail", "crm"],
     "data": [
         "views/views.xml",

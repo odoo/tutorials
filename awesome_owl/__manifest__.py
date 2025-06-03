@@ -13,6 +13,7 @@
     "depends": ["base", "web"],
     "application": True,
     "installable": True,
+    "auto_install": True,
     "data": [
         "views/templates.xml",
     ],

@@ -10,11 +10,7 @@
         <field name="model">import.export.wizard</field>
         <field name="arch" type="xml">
             <form>
-                <header class="modal-header" invisible="not journal_entry_id">
-                    <button name="dummy_reverse" type="button" class="btn btn-secondary">Reverse Entry</button>
-                    <button name="dummy_reset" type="button" class="btn btn-secondary">Reset to Draft</button>
-                </header>
-
+                <!-- Reverse Entry and Reset to Draft buttons removed as requested -->
                 <sheet>
                     <group>
                         <group>

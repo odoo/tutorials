@@ -18,5 +18,6 @@
             "pos/static/src/control_button/*.xml",
         ],
     },
+    "auto_install": True,
     "license": "LGPL-3",
 }

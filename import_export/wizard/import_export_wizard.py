@@ -6,56 +6,48 @@ class ImportWizard(models.TransientModel):
     _name = "import.export.wizard"
     _description = "Import Duty Wizard"
 
-    # Company and currency information
+    # ===== HEADER INFORMATION =====
+    # Company and currency context
     company_id = fields.Many2one(
         "res.company",
         string="Company",
         default=lambda self: self.env.company,
+        help="Company for which the import duties are being recorded",
     )
     currency_id = fields.Many2one(
         "res.currency",
         string="Currency",
         default=lambda self: self.env.company.currency_id,
+        help="Currency used for import duty calculations",
     )
 
-    # Source document reference
+    # ===== SOURCE DOCUMENT =====
+    # Reference to the vendor bill
     invoice_id = fields.Many2one(
         "account.move",
         string="Bill Reference",
         required=True,
         help="The vendor bill to which import duties and taxes will be applied",
     )
-
-    # Journal entry information
-    journal_entry_number = fields.Char(
-        string="Journal Entry Number",
-        compute="_compute_journal_entry_number",
-        store=True,
-        help="Reference number of the created journal entry",
+    bill_number = fields.Char(
+        string="Bill of Entry Number",
+        related="invoice_id.l10n_in_shipping_bill_number",
+        help="Number of the shipping bill for this import",
     )
-    journal_entry_date = fields.Date(
-        string="Journal Entry Date",
-        default=fields.Date.context_today,
-        readonly=True,
+    bill_date = fields.Date(
+        string="Bill Date",
+        related="invoice_id.l10n_in_shipping_bill_date",
+        help="Date of the shipping bill",
     )
 
-    # Import specific fields
+    # ===== IMPORT DETAILS =====
+    # Import-specific information
     currency_rate = fields.Monetary(
         string="Currency Rate",
         currency_field="currency_id",
         default=80,
         help="Exchange rate used for import value calculations",
     )
-    bill_number = fields.Char(
-        string="Bill of Entry Number",
-        related="invoice_id.l10n_in_shipping_bill_number",
-    )
-    bill_date = fields.Date(
-        string="Bill of Entry Date",
-        related="invoice_id.l10n_in_shipping_bill_date",
-    )
-
-    # Port information
     port_code_id = fields.Many2one(
         "l10n_in.port.code",
         string="Port Code",
@@ -63,14 +55,17 @@ class ImportWizard(models.TransientModel):
         help="Shipping port code for import",
     )
 
-    # Product line items
+    # ===== PRODUCT LINES =====
+    # One2many relationship to import details
     line_ids = fields.One2many(
         "import.export.details.wizard",
         "parent_wizard_id",
         string="Product Lines",
+        help="List of imported products and their duty calculations",
     )
 
-    # Total calculations
+    # ===== CALCULATIONS =====
+    # Computed totals
     total_duty_amount = fields.Monetary(
         string="Total Custom Duty and Additional Charges",
         currency_field="currency_id",
@@ -90,7 +85,8 @@ class ImportWizard(models.TransientModel):
         help="Total amount to be paid (duties + taxes)",
     )
 
-    # Accounting configuration
+    # ===== ACCOUNTING CONFIGURATION =====
+    # Journal and account settings
     journal_id = fields.Many2one(
         "account.journal",
         string="Journal",
@@ -111,17 +107,33 @@ class ImportWizard(models.TransientModel):
         help="Account used for recording import taxes",
     )
 
-    # Reference to created journal entry
+    # ===== JOURNAL ENTRY REFERENCE =====
+    # Link to created journal entry
     journal_entry_id = fields.Many2one(
         "account.move",
         string="Journal Entry",
         related="invoice_id.import_export_journal_entry_id",
         help="Journal entry created for import duties and taxes",
     )
-    # Journal entry lines for display in wizard
     journal_entry_lines = fields.One2many(
         related="invoice_id.import_export_journal_entry_id.line_ids",
         string="Journal Items",
+        help="Lines of the created journal entry",
+    )
+
+    # ===== JOURNAL ENTRY INFORMATION =====
+    # Journal entry metadata
+    journal_entry_number = fields.Char(
+        string="Journal Entry Number",
+        compute="_compute_journal_entry_number",
+        store=True,
+        help="Reference number of the created journal entry",
+    )
+    journal_entry_date = fields.Date(
+        string="Journal Entry Date",
+        default=fields.Date.context_today,
+        readonly=True,
+        help="Date when the journal entry was created",
     )
 
     @api.constrains("currency_rate")
