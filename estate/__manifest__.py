@@ -1,7 +1,6 @@
 {
     'name': 'estate',
     'depends': [
-        'base',
         'website',
     ],
     'data': [

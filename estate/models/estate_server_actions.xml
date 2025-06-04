@@ -7,8 +7,7 @@
         <field name="code"><![CDATA[
     for offer in records:
         offer.write({'x_status': 'accepted'})
-        offer.x_property_id.write({'x_selling_price': offer.x_price})
-        offer.x_property_id.write({'x_partner_id': offer.x_partner_id})
+        offer.x_property_id.write({'x_selling_price': offer.x_price, 'x_partner_id': offer.x_partner_id})
         for other_offer in offer.x_property_id.x_offer_ids:
             if other_offer != offer:
                 other_offer.write({'x_status': 'refused'})

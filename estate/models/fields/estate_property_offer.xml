@@ -48,4 +48,4 @@
         <field name="required">True</field>
         <field name="on_delete">cascade</field>
     </record>
-</odoo> 
+</odoo>
