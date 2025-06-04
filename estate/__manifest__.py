@@ -23,6 +23,8 @@
         'security/ir.model.access.csv',
         'security/estate.security.xml',
 
+        'data/estate_tour.xml',
+
     ],
 
     'demo': [
@@ -30,5 +32,11 @@
         'demo/x_estate.property.tag.csv',
         'demo/x_estate.property.xml',
     ],
+
+    "assets": {
+        "web.assets_backend": [
+            "estate/static/src/js/tour.js",
+        ],
+    },
     'license': 'LGPL-3',
 }
