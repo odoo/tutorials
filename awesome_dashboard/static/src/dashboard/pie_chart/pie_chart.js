@@ -2,6 +2,7 @@
 
 import { Component, onWillStart, useEffect, useRef } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
+import { _t } from "@web/core/l10n/translation";
 
 
 export class PieChart extends Component {
@@ -62,7 +63,7 @@ export class PieChart extends Component {
                     },
                     title: {
                         display: true,
-                        text: 'Shirt Order By Size'
+                        text: _t('Shirt Order By Size')
                     }
                 }
             },

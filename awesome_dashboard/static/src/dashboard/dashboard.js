@@ -2,13 +2,13 @@
 
 import { Component, useState } from "@odoo/owl";
 import { browser } from "@web/core/browser/browser";
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { ConfigurationDialog } from "./configuration_dialogue/configuration_dialogue";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { PieChart } from "./pie_chart/pie_chart";
-
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -32,7 +32,7 @@ class AwesomeDashboard extends Component {
     openLeads() {
         this.action.doAction({
             type: "ir.actions.act_window",
-            name: "All leads",
+            name: _t("All leads"),
             res_model: "crm.lead",
             views: [
                 [false, "list"],
