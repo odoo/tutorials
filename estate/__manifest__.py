@@ -16,7 +16,8 @@
     ],
     'demo': [
         'demo/estate.property.type.csv',
-        'demo/estate_property.xml'
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml'
     ],
     'installable': True,
     'application': True,
