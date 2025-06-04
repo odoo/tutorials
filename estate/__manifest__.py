@@ -15,7 +15,8 @@
         'views/res_users_views.xml',
     ],
     'demo': [
-        'demo/estate.property.type.csv'
+        'demo/estate.property.type.csv',
+        'demo/estate_property.xml'
     ],
     'installable': True,
     'application': True,
