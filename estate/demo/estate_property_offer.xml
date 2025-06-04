@@ -4,6 +4,7 @@
         <field name="property_id" ref="estate_property_1"/>
         <field name="price">10000</field>
         <field name="validity">14</field>
+        <field name="create_date" eval="datetime.now()"/>
     </record>
 
     <record id="estate_property_offer_2" model="estate.property.offer">
@@ -11,6 +12,7 @@
         <field name="property_id" ref="estate_property_1"/>
         <field name="price">1500000</field>
         <field name="validity">14</field>
+        <field name="create_date" eval="datetime.now()"/>
     </record>
 
     <record id="estate_property_offer_3" model="estate.property.offer">
@@ -18,5 +20,6 @@
         <field name="property_id" ref="estate_property_1"/>
         <field name="price">1500001</field>
         <field name="validity">14</field>
+        <field name="create_date" eval="datetime.now()"/>
     </record>
 </odoo>
