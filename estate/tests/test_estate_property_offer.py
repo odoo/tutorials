@@ -54,4 +54,3 @@ class EstateOfferTestCase(TransactionCase):
         """Test that selling a property without an accepted offer raises an error."""
         with self.assertRaises(UserError):
             self.properties[1].set_sold()
-

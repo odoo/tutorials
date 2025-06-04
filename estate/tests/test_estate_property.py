@@ -1,6 +1,7 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import tagged
+from odoo.tests import Form
 
 
 # The CI will run these tests after all the modules are installed,
@@ -37,3 +38,19 @@ class EstatePropertyTestCase(TransactionCase):
         self.assertEqual(self.properties[0].buyer_id, self.env.ref('base.res_partner_1'))
         self.assertEqual(self.properties[0].selling_price, 110000)
 
+    def test_check_uncheck_garden(self):
+        """Test that checking and unchecking the garden field on the view updates the garden area and orientation."""
+        with Form(self.env['estate.property']) as form:
+            form.name = 'Property with Garden'
+            form.expected_price = 150000
+            form.garden = True
+            self.assertEqual(form.garden_area, 10)
+            self.assertEqual(form.garden_orientation, 'north')
+
+            form.garden = False
+            self.assertEqual(form.garden_area, 0)
+            self.assertFalse(form.garden_orientation)
+
+            form.garden = True
+            self.assertEqual(form.garden_area, 10)
+            self.assertEqual(form.garden_orientation, 'north')
