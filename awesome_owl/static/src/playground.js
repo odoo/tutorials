@@ -14,9 +14,6 @@ export class Playground extends Component {
     }
 
     incrementSum() {
-        console.log("Incrementing sum function called!");
-        console.log("Current sum:", this.state.sum);
         this.state.sum += 1;
-        console.log("New sum:", this.state.sum);
     }
 }

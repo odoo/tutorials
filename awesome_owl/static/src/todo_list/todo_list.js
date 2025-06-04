@@ -5,10 +5,10 @@ import { useAutoFocus } from "../utils";
 export class TodoList extends Component {
     static template = "awesome_owl.todo_list";
     static components = { TodoItem };
-
     setup() {
         useAutoFocus("todoInput");
         this.todos = useState([]);
+        this.nextId = 1;
     }
 
     addTodo(event) {
@@ -16,7 +16,7 @@ export class TodoList extends Component {
             const description = event.target.value.trim();
             if (description) {
                 this.todos.push({
-                    id: this.todos.length + 1,
+                    id: this.nextId++,
                     description: description,
                     isCompleted: false,
                 });
