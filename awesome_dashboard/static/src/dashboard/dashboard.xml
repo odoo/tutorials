@@ -7,17 +7,19 @@
                 <button class="btn btn-primary my-3 mx-2" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary my-3" t-on-click="openLeads">Leads</button>
                 <label class="my-3 mx-2">Dashboard</label>
-                <button class="btn p-0 ms-1 border-0">
+                <button class="btn p-0 ms-1 border-0" t-on-click="openConfiguration">
                     <i class="fa fa-cog"></i>
                 </button>
             </div>
 
-            <t t-foreach="items" t-as="item" t-key="item.id">
-                <DashboardItem size="item.size || 1">
-                    <t t-set="itemProp" t-value="item.props ? item.props(dashboardData) : {'data': dashboardData}"/>
-                    <t t-component="item.Component" t-props="itemProp" />
-                </DashboardItem>
-            </t>
+            <div class="d-flex flex-wrap justify-content-center">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1" t-if="!state.disabledItems.includes(item.id)">
+                        <t t-set="itemProp" t-value="item.props ? item.props(dashboardData) : {'data': dashboardData}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>
         </Layout>
     </t>
 
