@@ -34,15 +34,28 @@
       <record id="estate_property_3" model="estate.property">
         <field name="name">Tutorial House</field>
         <field name="state">offer_received</field>
-        <field name="description">Home in a trailer park</field>
-        <field name="postcode">54321</field>
-        <field name="date_availability">1970-01-01</field>
-        <field name="expected_price">100000</field>
-        <field name="selling_price">120000</field>
-        <field name="bedrooms">1</field>
-        <field name="living_area">10</field>
+        <field name="description">X2many tutorial</field>
+        <field name="postcode">13579</field>
+        <field name="date_availability">2011-11-11</field>
+        <field name="expected_price">123456</field>
+        <field name="selling_price">135791</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">30</field>
         <field name="facades">4</field>
         <field name="garage">False</field>
         <field name="property_type_id" ref="data_property_type_residential"/>
+        <field name="offer_ids" eval="[
+            Command.clear(),
+            Command.create({
+                'partner_id': ref('base.res_partner_12'),
+                'price': 10000,
+                'validity': 14,
+            }),
+            Command.create({
+                'partner_id': ref('base.res_partner_2'),
+                'price': 10002,
+                'validity': 14,
+            }),
+        ]"/>
       </record>
   </odoo>
