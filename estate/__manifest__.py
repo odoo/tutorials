@@ -2,6 +2,7 @@
     'name': 'estate',
     'depends': [
         'base',
+        'website',
     ],
     'data': [
         'models/estate_models.xml',
@@ -20,6 +21,7 @@
 
         'views/estate_menus.xml',
         'security/ir.model.access.csv',
+        'security/estate.security.xml',
 
     ],
 

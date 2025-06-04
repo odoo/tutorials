@@ -183,5 +183,18 @@
         <field name="relation_field">x_property_id</field>
         <field name="on_delete">cascade</field>
     </record>
+
+
+    <!-- API Published Field -->
+    <record id="field_real_estate_property_api_published" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_real_estate_property" />
+        <field name="name">x_api_published</field>
+        <field name="field_description">API Published</field>
+        <field name="ttype">boolean</field>
+    </record>
+    <record id="default_real_estate_property_api_published" model="ir.default">
+        <field name="field_id" ref="estate.field_real_estate_property_api_published" />
+        <field name="json_value">false</field>
+    </record>
     
 </odoo>

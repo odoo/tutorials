@@ -14,6 +14,7 @@
       <field name="x_garden_area">100000</field>
       <field name="x_garden_orientation">south</field>
       <field name="x_property_type_id" ref="estate.type_1"/>
+      <field name="x_api_published">True</field>
       
     </record>
   
