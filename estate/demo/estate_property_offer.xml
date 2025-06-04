@@ -22,4 +22,8 @@
         <field name="validity">14</field>
         <field name="create_date" eval="datetime.now()"/>
     </record>
+
+    <function model="estate.property.offer" name="action_offer_refuse" eval="[ref('estate_property_offer_1')]"/>
+    <function model="estate.property.offer" name="action_offer_refuse" eval="[ref('estate_property_offer_2')]"/>
+    <function model="estate.property.offer" name="action_offer_accept" eval="[ref('estate_property_offer_3')]"/>
 </odoo>
