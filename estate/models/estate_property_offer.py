@@ -41,7 +41,12 @@ class PropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            if 'status' in vals:
+                raise exceptions.ValidationError("Status should not be set directly. Use action_accept or action_refuse methods instead.")
+
             prop = self.env['estate.property'].browse(vals['property_id'])
+            if prop.state == 'sold':
+                raise exceptions.UserError("Cannot create an offer for a sold property")
             if float_compare(vals['price'], prop.best_price, precision_digits=2) < 0:
                 raise exceptions.UserError("Cannot create an offer with a lower amount than an existing offer")
             prop.state = 'offer_received'

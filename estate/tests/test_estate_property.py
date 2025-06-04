@@ -1,13 +1,12 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
-from odoo.exceptions import ValidationError
 from odoo.tests import tagged
 
 
 # The CI will run these tests after all the modules are installed,
 # not right after installing the one defining it.
 @tagged('post_install', '-at_install')
-class EstateOfferTestCase(TransactionCase):
+class EstatePropertyTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
@@ -20,33 +19,21 @@ class EstateOfferTestCase(TransactionCase):
             {
                 'name': 'Property 1',
                 'expected_price': 100000,
-                'state': 'new',
-
-            },
-            {
-                'name': 'Property 2',
-                'expected_price': 150000,
+                'state': 'offer_accepted',
                 'offer_ids': [
                     (0, 0, {
                         'partner_id': cls.env.ref('base.res_partner_1').id,
-                        'price': 120000,
-                        'status': 'refused',
-                    }),
-                    (0, 0, {
-                        'partner_id': cls.env.ref('base.res_partner_2').id,
-                        'price': 130000,
+                        'price': 110000,
                     }),
                 ],
-
             },
         ])
+        cls.properties[0].offer_ids[0].action_accept()
 
-    def create_offer_after_sold_property(self):
-        """Test that creating an offer on a sold property raises an error."""
-        with self.assertRaises(ValidationError):
-            self.env['estate.property.offer'].create({
-                'property_id': self.properties[0].id,
-                'partner_id': self.env.ref('base.res_partner_1').id,
-                'price': 110000,
-            })
+    def test_sell_property(self):
+        """Test that selling a property that can be sold updates the right fields."""
+        self.properties[0].set_sold()
+        self.assertEqual(self.properties[0].state, 'sold')
+        self.assertEqual(self.properties[0].buyer_id, self.env.ref('base.res_partner_1'))
+        self.assertEqual(self.properties[0].selling_price, 110000)
 
