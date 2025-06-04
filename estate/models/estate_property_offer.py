@@ -51,6 +51,10 @@ class PropertyOffer(models.Model):
     # Action methods
     def action_accept(self):
         for record in self:
+            for offer in record.property_id.offer_ids:
+                if offer.status == 'accepted':
+                    raise exceptions.UserError("There is already an accepted offer for this property.")
+                offer.status = 'refused'
             record.status = 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price

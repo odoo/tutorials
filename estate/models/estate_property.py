@@ -104,5 +104,8 @@ class EstateProperty(models.Model):
             if record.state == 'canceled':
                 raise exceptions.UserError("Canceled properties cannot be sold")
 
+            if len(record.offer_ids.filtered(lambda o: o.status == 'accepted')) == 0:
+                raise exceptions.UserError("A property must have an accepted offer to be sold")
+
             record.state = 'sold'
         return True

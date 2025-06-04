@@ -1,4 +1,4 @@
-<odoo>  
+<odoo noupdate="1">  
     <record id="property_offer_1" model="estate.property.offer">
         <field name="partner_id" ref="base.res_partner_12"/>
         <field name="property_id" ref="estate.big_villa"/>
