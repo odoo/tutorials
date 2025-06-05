@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="estate_property_action" model="ir.actions.act_window">
+    <field name="name">Real Estate Buy</field>
+    <field name="res_model">estate.property</field>
+    <field name="view_mode">list,form</field>
+  </record>
+  <!-- List View -->
+
+  <!-- <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Channel" >
+                <field name="name"/>
+                <field name="description"/>
+            </list>
+        </field>
+    </record> -->
+
+  <!-- Form View -->
+
+  <!-- <record id="estate_property_properties_form_view" model="ir.ui.view">
+        <field name="name">estate.property.properties.form.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="postcode"/>
+                    <field name="date_availability"/>
+                    <field name="expected_price"/>
+                    <field name="selling_price"/>
+                    <field name="living_area"/>
+                    <field name="garden_area"/>
+                    <field name="garden"/>
+                    <field name="garden_orientation"/>
+                </group>
+            </form>
+        </field>
+    </record> -->
+</odoo>
+
