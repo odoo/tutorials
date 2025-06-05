@@ -50,6 +50,13 @@
         <field name="required">True</field>
     </record>
 
+    <record id="field_estate_property_bedrooms" model="ir.model.fields">
+        <field name="model_id" ref="model_estate_property" />
+        <field name="name">x_bedrooms</field>
+        <field name="field_description">Bedrooms</field>
+        <field name="ttype">integer</field>
+    </record>
+
     <record id="field_estate_property_living_area" model="ir.model.fields">
         <field name="model_id" ref="model_estate_property" />
         <field name="name">x_living_area</field>

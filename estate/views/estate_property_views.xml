@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Estate Property</field>
+        <field name="res_model">x_estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">x_estate.property.list</field>
+        <field name="model">x_estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Property">
+                <field name="x_name"/>
+                <field name="x_postcode"/>
+                <field name="x_bedrooms"/>
+                <field name="x_living_area"/>
+                <field name="x_expected_price"/>
+                <field name="x_selling_price"/>
+                <field name="x_date_availability" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">x_estate.property.form</field>
+        <field name="model">x_estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="x_name"/>
+                        </group>
+                        <group>
+                            <field name="x_postcode"/>
+                            <field name="x_expected_price"/>
+                            <field name="x_date_availability"/>
+                            <field name="x_selling_price"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="x_bedrooms"/>
+                                <field name="x_living_area"/>
+                                <field name="x_facades"/>
+                                <field name="x_garage"/>
+                                <field name="x_garden"/>
+                                <field name="x_garden_area" invisible="not x_garden"/>
+                                <field name="x_garden_orientation" invisible="not x_garden"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
