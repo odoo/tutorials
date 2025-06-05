@@ -7,7 +7,8 @@
         'base'
     ],
     'data': [
-        'data/estate_property.xml'
+        'data/estate_property.xml',
+        'security/ir.model.access.csv',
     ],
     'license': 'OEEL-1',
 }
