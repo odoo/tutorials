@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <menuitem id="test_menu_root" name="Estate">
-        <menuitem id="estate_property_management" name="Management">
-            <menuitem id="estate_property_model_menu_action" action="estate_property_action" />
-        </menuitem>
+    <menuitem id="test_menu_root" name="Estate" />
+    <menuitem id="estate_property_advertisement" name="Advertisement" parent="test_menu_root" />
+    <menuitem id="test_menu_properties_menu" name="Properties"
+        parent="estate_property_advertisement"
+        action="estate_property_action" />
+    <menuitem id="estate_property_settings" name="Settings" parent="test_menu_root" />
+    <menuitem id="test_menu_property_type" name="Property Type" parent="estate_property_settings"
+        action="estate_property_settings_action" />
 
-
-        <menuitem id="estate_property_purchase" name="Purchase">
-            <menuitem id="estate_property_model_purchse_action"
-                action="estate_property_purchase_action" />
-        </menuitem>
-
-
-    </menuitem>
+    <menuitem id="estate_property_tag" name="Property Tag" parent="estate_property_settings"
+        action="estate_property_tag_action" />
 </odoo>
