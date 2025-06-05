@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card mt-4">
+            <div class="card-header  d-flex justify-content-between align-items-center">
+                <h4 class="header-title mb-0">
+                    <t t-slot="card-title"/>
+                </h4>
+                <span class="fa  cursor-pointer" t-att-class="showCardContent.value ? 'fa-chevron-up': 'fa-chevron-down'" t-on-click="toggleCardContent"></span>
+            </div>
+          
+            <div class="card-body" t-att-class="showCardContent.value ? 'd-flex' : 'd-none'">
+                <t t-slot="card-content"/>
+            </div>
+          
+        </div>
+    </t>
+
+</templates>

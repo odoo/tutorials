@@ -1,9 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <h1>Sum is <t t-out="sum.value"/></h1>
+           
+           <Card>
+            <t t-set-slot="card-title">
+                Counters
+            </t>
+             <t t-set-slot="card-content">
+                <Counter btnIndex="1" onchange.bind="increment"/>
+                <Counter btnIndex="2" onchange.bind="increment"/>
+             </t>
+           </Card>
+           <Card>
+               <t t-set-slot="card-title">
+                   Todo list
+               </t>
+             <t t-set-slot="card-content">
+                <TodoList/>
+             </t>
+           </Card>
         </div>
     </t>
 
