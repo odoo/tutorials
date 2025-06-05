@@ -34,6 +34,7 @@
                             <field name="x_name"/>
                         </group>
                         <group>
+                            <field name="x_property_type_id" options="{'no_create': true}"/>
                             <field name="x_postcode"/>
                             <field name="x_expected_price"/>
                             <field name="x_date_availability"/>
@@ -51,6 +52,13 @@
                                 <field name="x_garden"/>
                                 <field name="x_garden_area" invisible="not x_garden"/>
                                 <field name="x_garden_orientation" invisible="not x_garden"/>
+                            </group>
+                        </page>
+
+                        <page string="Other Info">
+                            <group>
+                                <field name="x_partner_id"/>
+                                <field name="x_user_id"/>
                             </group>
                         </page>
                     </notebook>
