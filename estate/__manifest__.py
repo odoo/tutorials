@@ -7,6 +7,7 @@
         'base'
     ],
     'data': [
+        'data/estate_property.xml'
     ],
     'license': 'OEEL-1',
 }
