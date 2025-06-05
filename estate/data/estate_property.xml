@@ -148,4 +148,12 @@
         <field name="ttype">many2one</field>
         <field name="relation">res.partner</field>
     </record>
+
+    <record id="field_real_estate_property_tag_ids" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="name">x_property_tag_ids</field>
+        <field name="field_description">Tags</field>
+        <field name="ttype">many2many</field>
+        <field name="relation">x_estate.property.tag</field>
+    </record>
 </odoo>
