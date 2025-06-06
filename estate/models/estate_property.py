@@ -1,6 +1,9 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 from datetime import date
+from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools import float_compare
 
 
 class EstateProperty(models.Model):
@@ -27,7 +30,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'),
-         ('cancelled', 'Cancelled')], default='new')
+         ('cancelled', 'Cancelled')], default='new', string='Status')
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     user_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -40,6 +43,11 @@ class EstateProperty(models.Model):
         store=True,
         readonly=True
     )
+
+    _sql_constraints = [
+        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'Expected price must be positive!'),
+        ('check_selling_price_positive', 'CHECK(selling_price > 0)', 'Selling price must be positive!'),
+    ]
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -58,3 +66,21 @@ class EstateProperty(models.Model):
             if record.garden:
                 record.garden_area = 10
                 record.garden_orientation = 'north'
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Property is cancelled. No further actions can be taken on this property.")
+            record.state = 'sold'
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Property is already sold. No further actions can be taken on this property.")
+            record.state = 'cancelled'
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.expected_price * .90, record.selling_price, 2):
+                raise ValidationError("The selling price not be lowed than 90% of expected price")
