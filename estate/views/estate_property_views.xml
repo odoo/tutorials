@@ -53,6 +53,7 @@
                                 <field name="x_garden"/>
                                 <field name="x_garden_area" invisible="not x_garden"/>
                                 <field name="x_garden_orientation" invisible="not x_garden"/>
+                                <field name="x_total_area"/>
                             </group>
                         </page>
 

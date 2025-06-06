@@ -160,4 +160,16 @@
         <field name="relation">x_estate.property.offer</field>
         <field name="relation_field">x_property_id</field>
     </record>
+
+    <record id="field_real_estate_property_total_area" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="name">x_total_area</field>
+        <field name="field_description">Total Area</field>
+        <field name="ttype">float</field>
+        <field name="depends">x_living_area,x_garden_area</field>
+        <field name="compute"><![CDATA[
+for property in self:
+    property['x_total_area'] = property.x_living_area + property.x_garden_area
+        ]]></field>
+    </record>
 </odoo>
