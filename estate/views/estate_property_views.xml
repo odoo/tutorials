@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Properties"
+                decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-bf="state == 'offer_accepted'"
+                decoration-muted="state == 'sold'">
+                <header>
+                    <button name="%(action_estate_property_offer_wizard)d"
+                        type="action"
+                        string="Add Offer"
+                        class="btn-primary"
+                        icon="fa-plus" />
+                </header>
+                <field name="name" />
+                <field name="property_type_id" />
+                <field name="postcode" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name="bedrooms" />
+                <field name="living_area" width="100%" />
+                <field name="expected_price" width="100%" />
+                <field name="selling_price" />
+                <field name="date_availability" optional="hide" />
+                <field name="state" invisible="1" />
+            </list>
+        </field>
+    </record>
+    <!-- Kanban View -->
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="type">kanban</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" disable_column_reordering="true"
+                disable_drag_drop="true">
+                <field name="property_type_id" />
+                <field name="tag_ids" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card">
+                            <strong>
+                                <field name="name" />
+                            </strong>
+                            <div>Expected Price: <field name="expected_price" widget="monetary" /></div>
+                            <t t-if="record.best_offer.raw_value">
+                                <div>Best Offer: <field name="best_offer" widget="monetary" /></div>
+                            </t>
+                            <t t-if="record.selling_price.raw_value">
+                                <div>Selling Price: <field name="selling_price" widget="monetary" /></div>
+                            </t>
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags"
+                                    options="{'color_field': 'color'}" />
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <header>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"
+                        invisible="state == 'sold' or state == 'cancelled'" />
+                    <button name="action_sold" type="object" string="Sold" class="btn-primary"
+                        invisible="state == 'sold' or state == 'cancelled' or not has_accepted_offer" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold,cancelled" />
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
+                            <field name="property_type_id" />
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="best_offer" readonly="1" />
+                            <field name="selling_price" />
+                            <field name="state" />
+                        </group>
+                    </group>
+                    <group>
+                        <div style="position: absolute; top: 64px; right: 20px;">
+                            <field name="image" widget="image" class="oe_avatar"
+                                style="max-width: 150px; max-height: 150px; border: 1px solid #ccc; border-radius: 5px;" />
+                        </div>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <group>
+                                    <field name="description" widget="text" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" invisible="not garden" />
+                                    <field name="total_area" />
+                                    <field name="garden_orientation" invisible="not garden" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list editable="bottom" decoration-danger="status == 'refused'"
+                                    decoration-success="status == 'accepted'">
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="validity" width="100%" />
+                                    <field name="date_deadline" />
+                                    <button name="action_accepted" type="object" icon="fa-check"
+                                        string="Accept"
+                                        invisible="status in ['accepted', 'cancelled']" />
+                                    <button name="action_refused" type="object" icon="fa-times"
+                                        string="Refuse"
+                                        invisible="status in ['refused', 'cancelled']" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" />
+                                <field name="buyer_id" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter />
+            </form>
+        </field>
+    </record>
+    <record id="open_url_action" model="ir.actions.act_url">
+        <field name="name">Open External Website</field>
+        <field name="url">http://localhost:8069/properties</field>
+        <field name="target">new</field>
+    </record>
+</odoo>

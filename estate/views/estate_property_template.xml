@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_listing_template" name="Property Listings">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <h2 class="text-center text-primary fw-bold mb-4">Find Your Dream Property</h2>
+                <div class="card shadow-sm border-0 mb-4 p-3 rounded-3">
+                    <div
+                        class="d-flex flex-column flex-md-row justify-content-center align-items-center gap-3">
+                        <div class="input-group w-auto">
+                            <span class="input-group-text bg-light border-0">
+                                <i class="fa fa-calendar text-primary"></i>
+                            </span>
+                            <input type="date" id="filter-date"
+                                class="form-control border-0 shadow-none rounded"
+                                t-att-value="request.params.get('date', '')" />
+                        </div>
+                        <button class="btn btn-primary px-4 rounded-pill" id="filter-btn">
+                            <i class="fa fa-filter me-2"></i> Listed After </button>
+                        <a href="/properties" class="btn btn-outline-secondary rounded-pill"
+                            id="reset-btn">
+                            <i class="fa fa-refresh me-2"></i> Reset Filters </a>
+                    </div>
+                </div>
+                <div t-if="properties" class="row g-4" id="property-list">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-6 col-lg-4 property-item mb-4"
+                            t-att-data-date="property.create_date">
+                            <div class="card h-100 shadow-lg border-0 rounded-4 overflow-hidden">
+                                <div class="position-relative bg-light" style="height: 250px;">
+                                    <img t-if="property.image"
+                                        t-att-src="'/web/image/estate.property/%s/image' % property.id"
+                                        class="img-fluid w-100 h-100 object-fit-cover"
+                                        t-att-alt="property.name" />
+                                    <t t-else="">
+                                        <div
+                                            class="d-flex align-items-center justify-content-center h-100 bg-light">
+                                            <i class="fa fa-home text-secondary fa-3x"></i>
+                                        </div>
+                                    </t>
+                                    <t t-if="property.state">
+                                        <div class="position-absolute top-0 end-0 m-2">
+                                            <span
+                                                t-att-class="'badge bg-' + ('primary' if property.state == 'new' else 'warning text-dark' if property.state == 'offer_received' else 'success' if property.state == 'offer_accepted' else 'danger')">
+                                                <t t-esc="property.state.replace('_', ' ').title()" />
+                                            </span>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="card-body d-flex flex-column p-4">
+                                    <h5 class="fw-bold text-dark">
+                                        <a t-attf-href="/property/{{ property.id }}"
+                                            class="text-decoration-none stretched-link">
+                                            <t t-esc="property.name" />
+                                        </a>
+                                    </h5>
+                                    <p class="text-muted small mb-2">
+                                        <i class="fa fa-home me-1"></i>
+                                        <t t-esc="property.property_type_id.name" />
+                                    </p>
+                                    <div class="d-flex gap-3 mb-3 text-muted small">
+                                        <span t-if="property.bedrooms"><i class="fa fa-bed me-1"></i> <t
+                                                t-esc="property.bedrooms" /> bed</span>
+                                        <span t-if="property.living_area"><i
+                                                class="fa fa-arrows-alt me-1"></i> <t
+                                                t-esc="property.living_area" /> sq.ft.</span>
+                                    </div>
+                                    <div
+                                        class="mt-auto d-flex justify-content-between align-items-center">
+                                        <h4 class="text-primary fw-bold mb-0">₹ <t
+                                                t-esc="'{:,}'.format(int(property.expected_price))" /></h4>
+                                        <small class="text-muted" title="Listed on">
+                                            <i class="fa fa-calendar-o me-1"></i>
+                                            <t t-esc="property.create_date.strftime('%b %d, %Y')" />
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div t-else="" class="text-center py-5">
+                    <div class="mb-3">
+                        <i class="fa fa-home fa-3x text-muted"></i>
+                    </div>
+                    <h4 class="text-muted">No properties found</h4>
+                    <p>Try adjusting your filter or check back later for new listings.</p>
+                </div>
+                <div class="d-flex justify-content-center mt-4">
+                    <t t-call="website.pager">
+                        <t t-set="pager" t-value="pager" />
+                    </t>
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                let filterBtn = document.getElementById("filter-btn");
+                let filterDateInput = document.getElementById("filter-date");
+                let propertyItems = document.querySelectorAll(".property-item");
+                filterBtn.addEventListener("click", function() {
+                let selectedDate = filterDateInput.value;
+                if (!selectedDate) {
+                alert("Please select a date!");
+                return;
+                }
+                let selectedTimestamp = new Date(selectedDate).getTime();
+                propertyItems.forEach(function(item) {
+                let propertyDate = item.getAttribute("data-date");
+                let propertyTimestamp = new Date(propertyDate).getTime();
+                item.style.display = propertyTimestamp >= selectedTimestamp ? "block" : "none";
+                });
+                });
+                });
+            </script>
+        </t>
+    </template>
+</odoo>

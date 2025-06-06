@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_estate_property_form_inherit_auction" model="ir.ui.view">
+            <field name="name">estate.property.form.inherit.auction</field>
+            <field name="model">estate.property</field>
+            <field name="inherit_id" ref="estate.view_estate_property_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//header/button[@name='action_cancel']" position="before">
+                    <button name="action_start_auction" type="object" string="Start Auction"
+                        class="btn-primary" invisible="not is_auction" />
+                </xpath>
+                <xpath expr="//div[hasclass('oe_title')]" position="before">
+                    <div class="auction-stage-selector d-flex justify-content-end"
+                        invisible="not is_auction">
+                        <button name="open_auction_stage_modal" type="button"
+                            class="btn badge text-white"
+                            data-bs-toggle="modal" data-bs-target="#auctionStageModal"
+                            t-att-class="'btn-' + (auction_stage_selection and auction_stage_selection.color or 'secondary')">
+                            <i class="fa"
+                                t-att-class="'fa-' + (auction_stage == 'template' and 'file text-primary' or 
+                                    auction_stage == 'auction' and 'gavel text-warning' or 
+                                    auction_stage == 'sold' and 'check text-success')"></i>
+                            <span>
+                                <field name="auction_stage" />
+                            </span>
+                        </button>
+                    </div>
+                    <div class="modal fade" id="auctionStageModal" tabindex="-1"
+                        aria-labelledby="auctionStageModalLabel" aria-hidden="true" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <header class="modal-header">
+                                    <h5 class="modal-title" id="auctionStageModalLabel">Select
+                                        Auction Stage</h5>
+                                    <button type="button" name="close_modal" class="btn-close"
+                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                </header>
+                                <main class="modal-body">
+                                    <div class="list-group">
+                                        <button type="button" name="select_template"
+                                            class="list-group-item list-group-item-action d-flex align-items-center"
+                                            onclick="selectAuctionStage('template')">
+                                            <i class="fa fa-file text-primary me-2"></i> Template </button>
+                                        <button type="button" name="select_auction"
+                                            class="list-group-item list-group-item-action d-flex align-items-center"
+                                            onclick="selectAuctionStage('auction')">
+                                            <i class="fa fa-gavel text-warning me-2"></i> Auction </button>
+                                        <button type="button" name="select_sold"
+                                            class="list-group-item list-group-item-action d-flex align-items-center"
+                                            onclick="selectAuctionStage('sold')">
+                                            <i class="fa fa-check text-success me-2"></i> Sold </button>
+                                    </div>
+                                </main>
+                            </div>
+                        </div>
+                    </div>
+                </xpath>
+                <xpath expr="//div[@class='oe_title']" position="after">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <field name="sale_type" widget="radio" options="{'horizontal': true}" />
+                    </div>
+                </xpath>
+                <xpath expr="//page[.//field[@name='description']]/group" position="inside">
+                    <group invisible="not is_auction">
+                        <separator string="Auction Details" />
+                        <group>
+                            <field name="auction_end_time" />
+                            <field name="highest_offer" readonly="1" />
+                            <field name="highest_bidder" readonly="1" />
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate_auction_create_offer_template" inherit_id="estate.property_details_template">
+        <xpath expr="//div[@class='text-center mt-4']" position="before">
+            <t t-if="property.sale_type == 'auction'">
+                <div class="text-center mt-4">
+                    <button class="btn btn-success px-4" data-bs-toggle="modal" data-bs-target="#createOfferModal">
+                        <i class="fa fa-gavel me-2"></i> Create Offer
+                    </button>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//t[@t-call='website.layout']" position="inside">
+            <div class="modal fade" id="createOfferModal" tabindex="-1" aria-labelledby="createOfferModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createOfferModalLabel">
+                                Add Offer for <t t-esc="property.name" />
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="offer-form" method="post" t-attf-action="/submit-offer/{{ property.id }}">
+                                <div class="mb-3">
+                                    <label class="form-label">Your Name</label>
+                                    <input type="text" class="form-control" name="buyer_name"
+                                        t-att-value="request.env.user.name" readonly="readonly"/>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Offer Amount (₹)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">₹</span>
+                                        <input type="number" class="form-control" name="offer_price" required="required" min="1"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                    <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
