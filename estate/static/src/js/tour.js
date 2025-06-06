@@ -1,10 +1,10 @@
+import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 
 
 registry.category("web_tour.tours").add('estate_tour', {
-    url: "/web",
     steps: () => [{
     trigger: '.o_app[data-menu-xmlid="estate.menu_root"]',
-    content: 'Start selling your properties from this app!',
+    content: _t('Start selling your properties from this app!'),
     }],
 });

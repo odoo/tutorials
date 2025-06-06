@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="real_estate_property_public_public_write_record_rule" model="ir.rule">
-        <field name="name">Public users cant edit a Porperty</field>
+        <field name="name">Public users cant edit a Property</field>
         <field name="model_id" ref="estate.model_real_estate_property" />
         <field name="domain_force">[('id', '=', False)]</field>
         <field name="groups" eval="[(4, ref('base.group_public'))]"/>
@@ -10,11 +10,10 @@
     </record>
     
     <record id="real_estate_property_public_read_record_rule" model="ir.rule">
-        <field name="name">Public users can read ublished estate</field>
+        <field name="name">Public users can read published estate</field>
         <field name="model_id" ref="estate.model_real_estate_property" />
         <field name="domain_force">[('x_api_published', '=', True)]</field>
         <field name="groups" eval="[(4, ref('base.group_public'))]"/>
-        <field name="perm_read" eval="True"/>
         <field name="active" eval="True"/>
     </record>
 </odoo>

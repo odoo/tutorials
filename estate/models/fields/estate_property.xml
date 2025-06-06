@@ -13,7 +13,7 @@
         <field name="name">x_selling_price</field>
         <field name="field_description">Selling Price</field>
         <field name="ttype">float</field>
-        <field name="required">True</field>
+        <field name="readonly" eval="True"/>
     </record>
 
     <record id="field_real_estate_property_description" model="ir.model.fields">
@@ -86,6 +86,11 @@
         <field name="name">x_garden_area</field>
         <field name="field_description">Garden Area</field>
         <field name="ttype">integer</field>
+        <field name="depends">x_garden</field>
+        <field name="compute"><![CDATA[for property in self:
+            property['x_garden_area'] = 0 if not property.x_garden else 1000
+            ]]>
+        </field>
     </record>
 
     <record id="field_real_estate_property_total_area" model="ir.model.fields">
@@ -99,6 +104,7 @@
             ]]>
         </field>
         <field name="readonly" eval="True"/>
+        <field name="store">False</field>
     </record>
 
     <!-- Selection Field: Garden Orientation -->
@@ -154,7 +160,7 @@
         <field name="ttype">many2one</field>
         <field name="relation">x_estate.property.type</field>
         <field name="required">True</field>
-        <field name="on_delete">cascade</field>
+        <field name="on_delete">restrict</field>
     </record>
 
     <record id="field_real_estate_property_user_id" model="ir.model.fields">
@@ -168,10 +174,9 @@
     <record id="field_real_estate_property_tag_ids" model="ir.model.fields">
         <field name="model_id" ref="estate.model_real_estate_property" />
         <field name="name">x_property_tag_ids</field>
-        <field name="field_description">Tag</field>
+        <field name="field_description">Tags</field>
         <field name="ttype">many2many</field>
         <field name="relation">x_estate.property.tag</field>
-        <field name="on_delete">cascade</field>
     </record>
 
     <record id="field_real_estate_property_offer_ids" model="ir.model.fields">
@@ -181,7 +186,6 @@
         <field name="ttype">one2many</field>
         <field name="relation">x_estate.property.offer</field>
         <field name="relation_field">x_property_id</field>
-        <field name="on_delete">cascade</field>
     </record>
 
 
