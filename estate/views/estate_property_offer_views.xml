@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="x_estate_property_offer_list_view" model="ir.ui.view">
+        <field name="name">x_estate.property.offer.list</field>
+        <field name="model">x_estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offer">
+                <field name="x_property_id" string="Property"/>
+                <field name="x_price"/>
+                <field name="x_status"/>
+                <field name="x_partner_id" string="Buyer"/>
+                <button name="estate.action_x_estate_property_offer_accept" string="Accept" type="action" icon="fa-check"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="x_estate_property_offer_form_view" model="ir.ui.view">
+        <field name="name">x_estate.property.offer.form</field>
+        <field name="model">x_estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Property Offer">
+                <sheet>
+                    <group>
+                        <field name="x_property_id" string="Property"/>
+                        <field name="x_price"/>
+                        <field name="x_status"/>
+                        <field name="x_partner_id" string="Buyer"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
