@@ -67,6 +67,7 @@
                             <group>
                                 <field name="x_partner_id"/>
                                 <field name="x_user_id"/>
+                                <field name="x_country_id"/>
                             </group>
                         </page>
                     </notebook>

@@ -118,7 +118,7 @@
         <field name="value">west</field>
     </record>
 
-    <record id="field_real_estate_property_proprty_type_id" model="ir.model.fields">
+    <record id="field_estate_property_proprty_type_id" model="ir.model.fields">
         <field name="model_id" ref="estate.model_estate_property" />
         <field name="name">x_property_type_id</field>
         <field name="field_description">Type</field>
@@ -128,7 +128,7 @@
         <field name="on_delete">restrict</field>
     </record>
 
-    <record id="field_real_estate_property_partner_id" model="ir.model.fields">
+    <record id="field_estate_property_partner_id" model="ir.model.fields">
         <field name="model_id" ref="estate.model_estate_property" />
         <field name="name">x_partner_id</field>
         <field name="field_description">Buyer</field>
@@ -136,7 +136,7 @@
         <field name="relation">res.partner</field>
     </record>
 
-    <record id="field_real_estate_property_user_id" model="ir.model.fields">
+    <record id="field_estate_property_user_id" model="ir.model.fields">
         <field name="model_id" ref="estate.model_estate_property" />
         <field name="name">x_user_id</field>
         <field name="field_description">Salesperson</field>
@@ -144,7 +144,7 @@
         <field name="relation">res.partner</field>
     </record>
 
-    <record id="field_real_estate_property_tag_ids" model="ir.model.fields">
+    <record id="field_estate_property_tag_ids" model="ir.model.fields">
         <field name="model_id" ref="estate.model_estate_property" />
         <field name="name">x_property_tag_ids</field>
         <field name="field_description">Tags</field>
@@ -152,7 +152,7 @@
         <field name="relation">x_estate.property.tag</field>
     </record>
 
-    <record id="field_real_estate_property_offer_ids" model="ir.model.fields">
+    <record id="field_estate_property_offer_ids" model="ir.model.fields">
         <field name="model_id" ref="estate.model_estate_property" />
         <field name="name">x_property_offer_ids</field>
         <field name="field_description">Offers</field>
@@ -161,7 +161,7 @@
         <field name="relation_field">x_property_id</field>
     </record>
 
-    <record id="field_real_estate_property_total_area" model="ir.model.fields">
+    <record id="field_estate_property_total_area" model="ir.model.fields">
         <field name="model_id" ref="estate.model_estate_property" />
         <field name="name">x_total_area</field>
         <field name="field_description">Total Area</field>
@@ -171,5 +171,14 @@
 for property in self:
     property['x_total_area'] = property.x_living_area + property.x_garden_area
         ]]></field>
+    </record>
+
+    <record id="field_estate_property_country_id" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="name">x_country_id</field>
+        <field name="field_description">Buyer's Country</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.country</field>
+        <field name="related">x_partner_id.country_id</field>
     </record>
 </odoo>

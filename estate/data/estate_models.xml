@@ -15,7 +15,6 @@
         <field name="model">x_estate.property.tag</field>
     </record>
 
-
     <record id="model_estate_property_offer" model="ir.model">
         <field name="name">Property Offer</field>
         <field name="model">x_estate.property.offer</field>
