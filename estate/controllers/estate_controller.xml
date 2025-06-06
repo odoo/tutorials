@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<odoo>
+    <record id="server_action_estate_list" model="ir.actions.server">
+        <field name="name">Estate List Controller</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="website_published">True</field>
+        <field name="website_path">estate</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+html = '<html><body><h1>Properties</h1><ul>'
+for property in request.env['x_estate.property'].search([]):
+    html += f'<li>{property.x_name}</li>'
+html += '</ul></body></html>'
+response = request.make_response(html)
+        ]]></field>
+    </record>
+</odoo>
