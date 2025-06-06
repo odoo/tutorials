@@ -1,4 +1,7 @@
-from odoo import fields, models
+from odoo import fields, models, api
+from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -10,12 +13,83 @@ class EstatePropertyOffer(models.Model):
         selection=[
             ("accepted", "Accepted"),
             ("refused", "Refused"),
+            ("cancelled", "Cancelled"),
         ],
         string="Status",
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-    deadline = fields.Date(string="Deadline", required=True)
+    deadline = fields.Date(
+        string="Deadline",
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+        required=True,
+    )
     validity = fields.Integer(
         string="Validity (days)",
+        default=7,
     )
+
+    sql_constraints = [
+        ("check_offer_price", "CHECK(price>=0)", "The offer price must be positive.")
+    ]
+
+    @api.depends("validity")
+    def _compute_date_deadline(self):
+        for date in self:
+            create_date = date.create_date or fields.Datetime.now()
+            date.deadline = (
+                fields.Datetime.from_string(create_date)
+                + relativedelta(days=date.validity)
+            ).date()
+
+    def _inverse_date_deadline(self):
+        for date in self:
+            create_date = date.create_date or fields.Datetime.now()
+            if date.deadline:
+                delta = (
+                    fields.Date.from_string(date.deadline)
+                    - fields.Datetime.from_string(create_date).date()
+                )
+                date.validity = delta.days
+
+    def action_accept(self):
+        for record in self:
+            other_accepted_offer = record.property_id.offer_ids.filtered(
+                lambda o: o.status == "accepted"
+            )
+
+        if other_accepted_offer:
+            raise UserError(
+                "Another offer has already been accepted for this property."
+            )
+
+        record.status = "accepted"
+        record.property_id.state = "offer accepted"
+        record.property_id.buyer_id = record.partner_id
+        record.property_id.selling_price = record.price
+        return True
+
+    def action_refused(self):
+        for record in self:
+            record.status = "refused"
+            record.property_id.state = "offer received"
+            record.property_id.buyer_id = False
+            record.property_id.selling_price = 0.0
+        return True
+
+    @api.constrains("price")
+    def _check_selling_price(self):
+        for record in self:
+            if (
+                float_compare(
+                    record.price,
+                    0.9 * record.property_id.expected_price,
+                    precision_digits=2,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price."
+                )
+        return True

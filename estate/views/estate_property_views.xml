@@ -13,13 +13,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="CustomView">
-                <field name="name" width="100px" />
-                <field name="postcode" width="100px" />
-                <field name="bedrooms" width="100px" />
-                <field name="living_area" width="100px" />
-                <field name="expected_price" width="100px" />
-                <field name="selling_price" width="100px" />
-                <field name="date_availability" width="100px" />
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
             </list>
         </field>
     </record>
@@ -30,11 +30,15 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" />
+                    <button name="action_cancel" type="object" string="Cancel" />
+                </header>
+
                 <sheet>
                     <h1>
                         <field name="name" />
                     </h1>
-
 
                     <field name="tag_ids" widget="many2many_tags" />
 
@@ -44,14 +48,12 @@
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
-
                         <group>
 
                             <field name="expected_price" />
                             <field name="best_offer" />
                             <field name="selling_price" />
                         </group>
-
                     </group>
                     <notebook>
                         <page string="Description">
@@ -70,21 +72,24 @@
                             </group>
                         </page>
 
-                        <page name="offers" string="Offers">
+                        <page string="Offers">
                             <field name="offer_ids">
                                 <list editable="bottom">
                                     <field name="price" />
                                     <field name="partner_id" />
-                                    <field name="status" />
-                                    <field name="deadline" />
                                     <field name="validity" />
+                                    <field name="deadline" />
+                                    <button name="action_accept" type="object" title="Accept"
+                                        icon="fa-check" />
+                                    <button name="action_refused" type="object" title="Refused"
+                                        icon="fa-times" />
+                                    <field name="status" />
                                 </list>
                             </field>
                         </page>
 
                         <page string="Other Information">
                             <group>
-
                                 <field name="salesperson_id" />
                                 <field name="buyer_id" />
                             </group>
@@ -117,6 +122,4 @@
             </search>
         </field>
     </record>
-
-
 </odoo>

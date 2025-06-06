@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -14,7 +15,7 @@ class EstateProperty(models.Model):
         default=lambda self: (fields.Date.today() + relativedelta(months=3)),
     )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
+    selling_price = fields.Float(readonly=True)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -24,12 +25,12 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
-            ("North", "north"),
-            ("South", "south"),
-            ("East", "east"),
-            ("West", "west"),
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
         ],
-        help="Type is used For garden_orientation",
+        default="north",
     )
     active = fields.Boolean()
     state = fields.Selection(
@@ -59,10 +60,23 @@ class EstateProperty(models.Model):
     total_area = fields.Float(string="Total Area", compute="_compute_total_area")
 
     best_offer = fields.Float(
-        string="Best Area",
+        string="Best Offer",
         compute="_compute_best_offer",
         store=True,
     )
+
+    _sql_constraints = [
+        (
+            "check_expected_price_field",
+            "CHECK(expected_price > 0)",
+            "Expected price must be positive!",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "Selling price must be positive!",
+        ),
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -74,3 +88,26 @@ class EstateProperty(models.Model):
         for property in self:
             best_offer = max(property.offer_ids.mapped("price"), default=0)
             property.best_offer = best_offer
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if not self.garden:
+            self.garden_area = 0
+            self.garden_orientation = False
+        else:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("A cancelled property cannot be set as sold")
+            record.state = "sold"
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("A a sold property cannot be cancelled.")
+            record.state = "cancelled"
+        return True
