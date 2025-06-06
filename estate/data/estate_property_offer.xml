@@ -47,4 +47,18 @@
         <field name="required">True</field>
         <field name="on_delete">cascade</field>
     </record>
+
+    <record id="action_estate_property_offer_accept" model="ir.actions.server">
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="name">x_action_accept_offer</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+for offer in records:
+    offer.write({'x_status': 'accepted'})
+    offer.x_property_id.write({'x_selling_price': offer.x_price, 'x_partner_id': offer.x_partner_id})
+    for rejected_offer in offer.x_property_id.x_property_offer_ids:
+        if rejected_offer != offer:
+            rejected_offer.write({'x_status': 'refused'})
+        ]]></field>
+    </record>
 </odoo>

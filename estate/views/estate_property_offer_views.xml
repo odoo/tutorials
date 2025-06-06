@@ -18,6 +18,7 @@
                   editable="top">
                 <field name="x_price"/>
                 <field name="x_partner_id"/>
+                <button name="estate.action_estate_property_offer_accept" type="action" icon="fa-check" string="Accept" invisible="x_status"/>
             </list>
         </field>
     </record>
