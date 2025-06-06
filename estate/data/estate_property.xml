@@ -181,4 +181,11 @@ for property in self:
         <field name="relation">res.country</field>
         <field name="related">x_partner_id.country_id</field>
     </record>
+
+    <record id="field_estate_property_api_published" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="name">x_api_published</field>
+        <field name="field_description">Api Published</field>
+        <field name="ttype">boolean</field>
+    </record>
 </odoo>
