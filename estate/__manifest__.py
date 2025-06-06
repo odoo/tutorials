@@ -20,6 +20,12 @@
         'controllers/estate_controller.xml',
         'security/ir.model.access.csv',
         'security/estate_security.xml',
+        'data/estate_tour.xml',
     ],
+    "assets": {
+        "web.assets_backend": [
+            "estate/static/src/js/tour.js",
+        ],
+    },
     'license': 'OEEL-1',
 }
