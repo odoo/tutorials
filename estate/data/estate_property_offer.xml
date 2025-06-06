@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <record id="field_estate_property_offer_price" model="ir.model.fields">
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="name">x_price</field>
+        <field name="field_description">Price</field>
+        <field name="ttype">float</field>
+        <field name="required">True</field>
+    </record>
+
+    <record id="field_estate_property_offer_status" model="ir.model.fields">
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="name">x_status</field>
+        <field name="field_description">Status</field>
+        <field name="ttype">selection</field>
+    </record>
+
+    <record id="field_estate_property_status_accepted" model="ir.model.fields.selection">
+        <field name="field_id" ref="field_estate_property_offer_status" />
+        <field name="name">Accepted</field>
+        <field name="value">accepted</field>
+    </record>
+
+    <record id="field_estate_property_status_refused" model="ir.model.fields.selection">
+        <field name="field_id" ref="field_estate_property_offer_status" />
+        <field name="name">Refused</field>
+        <field name="value">refused</field>
+    </record>
+
+    <record id="field_estate_property_offer_partner_id" model="ir.model.fields">
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="name">x_partner_id</field>
+        <field name="field_description">Buyer</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.partner</field>
+        <field name="required">True</field>
+        <field name="on_delete">cascade</field>
+    </record>
+
+    <record id="field_estate_property_offer_property_id" model="ir.model.fields">
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="name">x_property_id</field>
+        <field name="field_description">Property</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">x_estate.property</field>
+        <field name="required">True</field>
+        <field name="on_delete">cascade</field>
+    </record>
+</odoo>

@@ -56,6 +56,12 @@
                             </group>
                         </page>
 
+                        <page string="Offers">
+                            <group>
+                                <field name="x_property_offer_ids"/>
+                            </group>
+                        </page>
+
                         <page string="Other Info">
                             <group>
                                 <field name="x_partner_id"/>

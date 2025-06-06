@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="model_estate_property" model="ir.model">
-        <field name="name">Estate Property</field>
-        <field name="model">x_estate.property</field>
-    </record>
-
     <record id="field_estate_property_name" model="ir.model.fields">
         <field name="model_id" ref="model_estate_property" />
         <field name="name">x_name</field>
@@ -155,5 +150,14 @@
         <field name="field_description">Tags</field>
         <field name="ttype">many2many</field>
         <field name="relation">x_estate.property.tag</field>
+    </record>
+
+    <record id="field_real_estate_property_offer_ids" model="ir.model.fields">
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="name">x_property_offer_ids</field>
+        <field name="field_description">Offers</field>
+        <field name="ttype">one2many</field>
+        <field name="relation">x_estate.property.offer</field>
+        <field name="relation_field">x_property_id</field>
     </record>
 </odoo>
