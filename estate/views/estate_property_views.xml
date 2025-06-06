@@ -19,15 +19,13 @@
                 <field name="living_area" string="Living Area (sqm)" />
                 <field name="facades" />
                 <filter name="state" string="Available"
-                    domain="['|',('state','=','new'),('state','=','offer_received')]"></filter>
+                    domain="['|',('state','=','new'),('state','=','offer_received')]" />
                 <group>
-                    <filter string="PostCode" name="postcode"
-                        context="{'group_by':'postcode' }"></filter>
+                    <filter string="PostCode" name="postcode" context="{'group_by':'postcode' }" />
                 </group>
             </search>
         </field>
     </record>
-
 
     <!-- List View -->
 
@@ -43,9 +41,7 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" string="Available From" />
-
                 <field name="property_type_id" string="Property Type" />
-
             </list>
         </field>
     </record>
@@ -57,25 +53,31 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property Form">
+                <header>
+                    <button class="oe_highlight" name="action_sold" type="object" string="Sold" />
+                    <button name="action_cancelled" type="object" string="Cancel" />
+                </header>
                 <group>
-                    <h1>best_offer <field name="name" />
+                    <h1>
+                        <field name="name" />
                     </h1>
-                    <field name="tags" widget="many2many_tags" />
+                    <field name="tags_ids" widget="many2many_tags" />
                 </group>
                 <group>
                     <group>
-
                         <field name="property_type_id" string="Property Type" />
                         <field name="postcode" />
                         <field name="date_availability" />
                     </group>
                     <group>
+                        <field name="state" />
                         <field name="best_offer" />
                         <field name="expected_price" />
                         <field name="selling_price" />
                     </group>
                 </group>
-                <notebook>best_offer <page string="Description">
+                <notebook>
+                    <page string="Description">
                         <group>
                             <field name="description" />
                             <field name="bedrooms" />
@@ -88,24 +90,25 @@
                             <field name="total_area" />
                         </group>
                     </page>
-                    <page
-                        string="Offers">
-
+                    <page string="Offers">
                         <field name="offer_ids">
                             <list editable="bottom">
                                 <field name="price" />
-                                <field name="status" />
                                 <field name="partner_id" />
                                 <field name="validity" />
                                 <field name="date_deadline" />
+                                <button name="action_offer_tick" type="object" icon="fa-check"
+                                    title="Accept Offer" />
+                                <button name="action_offer_cross" type="object" icon="fa-times"
+                                    title="Refuse Offer" />
+                                <field name="status" />
                             </list>
                         </field>
                     </page>
-                    <page
-                        string="Other Information">
+                    <page string="Other Information">
                         <group>
-                            <field name="buyer" />
-                            <field name="salesperson" />
+                            <field name="buyer_id" />
+                            <field name="salesperson_id" />
                         </group>
                     </page>
                 </notebook>

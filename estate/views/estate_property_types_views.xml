@@ -12,7 +12,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="House">
-                <field name="name"></field>
+                <field name="name" />
             </list>
         </field>
     </record>
@@ -31,5 +31,4 @@
             </form>
         </field>
     </record>
-
 </odoo>

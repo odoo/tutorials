@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateUser(models.Model):
@@ -30,7 +31,7 @@ class EstateUser(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        string="State",
+        string="Status",
         selection=[
             ("new", "New"),
             ("offer_received", "Offer Received"),
@@ -45,13 +46,13 @@ class EstateUser(models.Model):
     property_type_id = fields.Many2one(
         comodel_name="estate.property.type", string="Property Type"
     )
-    buyer = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
-    salesperson = fields.Many2one(
+    buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
+    salesperson_id = fields.Many2one(
         comodel_name="res.users",
         string="Salesperson",
         default=lambda self: self.env.user,
     )
-    tags = fields.Many2many(
+    tags_ids = fields.Many2many(
         comodel_name="estate.property.tag",
         string="Tags",
     )
@@ -67,6 +68,19 @@ class EstateUser(models.Model):
         compute="_compute_best_offer",
         store=True,
     )
+
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "Expected price must be greater than 0.",
+        ),
+        (
+            "check_selling_price",
+            "CHECK(selling_price >= 0)",
+            "Selling price must be greater than or equal to 0.",
+        ),
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -84,3 +98,26 @@ class EstateUser(models.Model):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
+
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        if self.offer_ids and not self.selling_price:
+            self.state = "offer_received"
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cannot sell a cancelled property.")
+            else:
+                record.state = "sold"
+                return True
+        return False
+
+    def action_cancelled(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Cannot cancel a sold property.")
+            else:
+                record.state = "cancelled"
+                return True
+        return False
