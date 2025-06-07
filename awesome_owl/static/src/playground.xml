@@ -2,8 +2,22 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
+        <div class="p-3 border">
+            <h2>Sum: <t t-esc="state.counter_sum"/></h2>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+        </div>
         <div class="p-3">
-            hello world
+            <Counter/>
+            <Card title="raw_card_title">
+                <Counter/>
+            </Card>
+            <Card title="card_title">
+                <p>Lorem ipsum</p>
+            </Card>
+        </div>
+        <div>
+            <TodoList/>
         </div>
     </t>
 
