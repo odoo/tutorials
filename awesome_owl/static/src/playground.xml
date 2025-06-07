@@ -1,10 +1,23 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <div class="border p-3 rounded">
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+                <div>
+                    <strong>Sum: </strong>
+                    <t t-esc="state.sum"/>
+                </div>
+            </div>
+            <Card title="'Card 1'" toggle="true">
+                <Counter/>
+            </Card>
+            <Card title="'Card 2'"/>
+            <Card >
+                <p>this is card </p>
+            </Card>
+            <TodoList/>
         </div>
     </t>
-
 </templates>
