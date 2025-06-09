@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Propety"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -36,8 +37,8 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -110,4 +111,11 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise UserError("A a sold property cannot be cancelled.")
             record.state = "cancelled"
+        return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_check(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError("You can delete only a new or cancelled property.")
         return True

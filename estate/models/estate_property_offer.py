@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -30,6 +31,14 @@ class EstatePropertyOffer(models.Model):
         default=7,
     )
 
+    # Stat Button
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True,
+    )
+
+    # SQL Constraints
     sql_constraints = [
         ("check_offer_price", "CHECK(price>=0)", "The offer price must be positive.")
     ]
@@ -65,7 +74,7 @@ class EstatePropertyOffer(models.Model):
             )
 
         record.status = "accepted"
-        record.property_id.state = "offer accepted"
+        record.property_id.state = "offer_accepted"
         record.property_id.buyer_id = record.partner_id
         record.property_id.selling_price = record.price
         return True
@@ -73,7 +82,7 @@ class EstatePropertyOffer(models.Model):
     def action_refused(self):
         for record in self:
             record.status = "refused"
-            record.property_id.state = "offer received"
+            record.property_id.state = "offer_received"
             record.property_id.buyer_id = False
             record.property_id.selling_price = 0.0
         return True
@@ -93,3 +102,22 @@ class EstatePropertyOffer(models.Model):
                     "The selling price must be at least 90% of the expected price."
                 )
         return True
+
+    # CRUD Methods
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            price = vals.get("price", 0.0)
+            if property_id:
+                property_obj = self.env["estate.property"].browse(property_id)
+                best_price = property_obj.best_price or 0.0
+                if price < best_price:
+                    raise UserError(
+                        "Offer price must be greater than or equal to the best offer price."
+                    )
+        records = super().create(vals_list)
+        for record in records:
+            if record.partner_id:
+                record.property_id.state = "received"
+        return records

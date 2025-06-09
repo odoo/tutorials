@@ -5,4 +5,45 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <!-- List View -->
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View  -->
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <!-- Offer Button -->
+                    <button name="%(estate_property_offer_count_action)d" type="action"
+                        string="Offer" class="oe_stat_button" />
+                </header>
+                <h1>
+                    <field name="name" />
+                </h1>
+                <notebook>
+                    <page string="Properties">
+                        <field name="property_ids">
+                            <list>
+                                <field name="name" />
+                                <field name="expected_price" />
+                                <field name="state" />
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
 </odoo>
