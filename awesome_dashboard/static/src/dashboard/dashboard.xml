@@ -7,14 +7,20 @@
                 <button t-on-click="openCustomers" type="button" class="btn btn-primary me-2" title="Customers">Customers</button>
                 <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Leads">Leads</button>
             </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn btn-light" title="Dashboard Settings" t-on-click="openConfiguration">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
             <div class="p-3">
                 <div class="d-flex flex-wrap">
-                    <t t-foreach="items" t-as="item" t-key="item.id">
-                        <DashboardItem size="item.size || 1">
-                            <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
-                            <t t-component="item.Component" t-props="itemProp" />
+                    <t t-foreach="Object.values(items)" t-as="item" t-key="item.id">
+                        <DashboardItem t-if="!state.uncheckedItems.includes(item.id)" size="item.size || 1">
+                           <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                           <t t-component="item.Component" t-props="itemProp" />
                         </DashboardItem>
-                    </t>
+                     </t>
                 </div>
             </div>
         </Layout>

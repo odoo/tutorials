@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
+
     <t t-name="awesome_owl.playground">
         <div class="container py-4">
             <h1 class="mb-4 text-primary text-center">Owl Playground</h1>

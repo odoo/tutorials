@@ -74,21 +74,19 @@ class EstateProperty(models.Model):
         compute="_compute_total_area",
         store=True,
     )
-
     company_id = fields.Many2one(
         "res.company", required=True, default=lambda self: self.env.company
+    )
+    best_price = fields.Float(
+        string="Best Price",
+        compute="_compute_best_price",
+        store=True,
     )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-
-    best_price = fields.Float(
-        string="Best Price",
-        compute="_compute_best_price",
-        store=True,
-    )
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -127,8 +125,6 @@ class EstateProperty(models.Model):
                     "Only refused offers can set the property as cancelled."
                 )
 
-        # we will not accept the offer if the price is less than 10% of the selling price
-
     @api.constrains("selling_price", "expected_price")
     def _check_price(self):
         for record in self:
@@ -148,8 +144,6 @@ class EstateProperty(models.Model):
 
     @api.onchange("offer_ids")
     def _onchange_offer_ids(self):
-        if self.offer_ids:
-            self.state = "offer_received"
         if not self.offer_ids and self.state != "new":
             self.state = "new"
 

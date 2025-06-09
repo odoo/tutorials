@@ -27,7 +27,6 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
         string="Deadline",
@@ -37,6 +36,12 @@ class EstatePropertyOffer(models.Model):
     )
     create_date = fields.Datetime(
         string="Creation Date", readonly=True, default=fields.Datetime.now
+    )
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+        related="property_id.property_type_id",
+        store=True,
     )
 
     @api.depends("create_date", "validity")
@@ -56,8 +61,7 @@ class EstatePropertyOffer(models.Model):
                 offer.create_date.date() if offer.create_date else fields.Date.today()
             )
             if offer.date_deadline:
-                delta = offer.date_deadline - creation_date
-                offer.validity = delta.days
+                offer.validity = (offer.date_deadline - creation_date).days
             else:
                 offer.validity = 0
 
@@ -104,13 +108,6 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
         return True
 
-    property_type_id = fields.Many2one(
-        "estate.property.type",
-        string="Property Type",
-        related="property_id.property_type_id",
-        store=True,
-    )
-
     @api.model_create_multi
     def create(self, vals_list):
         estate_property_model_instance = self.env["estate.property"]
@@ -131,7 +128,6 @@ class EstatePropertyOffer(models.Model):
                     "The offer price must be strictly higher than the previous offers."
                 )
             best_price = max(best_price, vals.get("price", 0.0))
-
-            estate_property_model_instance.state = "offer_received"
+            estate_property.state = "offer_received"
 
         return super().create(vals_list)
