@@ -3,12 +3,12 @@ from dateutil.relativedelta import relativedelta
 from datetime import date
 from odoo.exceptions import UserError
 from odoo.exceptions import ValidationError
-from odoo.tools import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Model"
+    _order = 'id desc'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -82,5 +82,11 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if float_compare(record.expected_price * .90, record.selling_price, 2):
-                raise ValidationError("The selling price not be lowed than 90% of expected price")
+            if record.selling_price and record.selling_price < record.expected_price * 0.9:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You cannot delete a property that is not in 'New' or 'Cancelled' state.")

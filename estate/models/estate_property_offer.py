@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property offer Model"
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(
@@ -16,6 +17,8 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', string='Property', required=True)
     validity = fields.Integer(string='Validity(days)', default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_deadline', string='Deadline')
+    property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id',
+                                       string='Property Type', store=True)
 
     _sql_constraints = [
         ('check_offer_price_positive', 'CHECK(price > 0)', 'Offer price must be positive!'),
@@ -41,6 +44,7 @@ class EstatePropertyOffer(models.Model):
             if record.status == 'accepted':
                 raise UserError("This offer has already been accepted.")
             check_other_accepted = self.search([
+                ('property_id', '=', record.property_id.id),
                 ('status', '=', 'accepted')
             ])
             if check_other_accepted:
@@ -67,3 +71,19 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             if offer.status == 'accepted':
                 offer.property_id.selling_price = 0.0
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            price = vals.get('price', 0.0)
+            if property_id:
+                property_obj = self.env['estate.property'].browse(property_id)
+                best_price = property_obj.best_price or 0.0
+                if price < best_price:
+                    raise UserError("Offer price must be greater than or equal to the best offer price.")
+        records = super().create(vals_list)
+        for record in records:
+            if record.partner_id:
+                record.property_id.state = 'received'
+        return records
