@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare
 class EstatePropertyOffers(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -20,7 +21,9 @@ class EstatePropertyOffers(models.Model):
         comodel_name="res.partner", string="Partner", required=True
     )
     property_id = fields.Many2one(
-        comodel_name="estate.property", string="Property", required=True,
+        comodel_name="estate.property",
+        string="Property",
+        required=True,
     )
     validity = fields.Integer(
         string="Validity (days)",
@@ -30,6 +33,11 @@ class EstatePropertyOffers(models.Model):
         string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
+        store=True,
+    )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        string="Property Type",
         store=True,
     )
 
@@ -56,7 +64,14 @@ class EstatePropertyOffers(models.Model):
 
     def action_offer_tick(self):
         for record in self:
-            if float_compare(record.property_id.expected_price * 0.9, record.price, precision_digits=2) > 0:
+            if (
+                float_compare(
+                    record.property_id.expected_price * 0.9,
+                    record.price,
+                    precision_digits=2,
+                )
+                > 0
+            ):
                 raise ValidationError(
                     "The offer price must be at least 90% of the expected price."
                 )
@@ -77,7 +92,27 @@ class EstatePropertyOffers(models.Model):
                 record.property_id.state = "offer_received"
                 record.property_id.buyer_id = False
                 record.property_id.selling_price = 0.0
+            else:
+                record.status = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            price = vals.get("price", 0.0)
+            if property_id:
+                property_obj = self.env["estate.property"].browse(property_id)
+                best_price = property_obj.best_price or 0.0
+                if price < best_price:
+                    raise UserError(
+                        "Offer price must be greater than or equal to the best offer price."
+                    )
+        records = super().create(vals_list)
+        for record in records:
+            if record.partner_id:
+                record.property_id.state = "received"
+        return records
 
     @api.ondelete(at_uninstall=False)
     def _ondelete(self):

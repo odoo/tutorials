@@ -5,6 +5,7 @@ from odoo.exceptions import UserError
 class EstateUser(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -44,7 +45,8 @@ class EstateUser(models.Model):
         default="new",
     )
     property_type_id = fields.Many2one(
-        comodel_name="estate.property.type", string="Property Type"
+        comodel_name="estate.property.type",
+        string="Property Type",
     )
     buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(
@@ -99,10 +101,14 @@ class EstateUser(models.Model):
             self.garden_area = 10
             self.garden_orientation = "north"
 
-    @api.onchange("offer_ids")
-    def _onchange_offer_ids(self):
-        if self.offer_ids and not self.selling_price:
-            self.state = "offer_received"
+    @api.ondelete(at_uninstall=False)
+    def _check_state(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "You cannot delete a property that is not in 'New' or 'Cancelled' state."
+                )
+            return True
 
     def action_sold(self):
         for record in self:
