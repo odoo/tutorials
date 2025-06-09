@@ -69,13 +69,12 @@ class Property(models.Model):
         help="This is Garden orientation described in directions",
     )
     total_area = fields.Integer(compute="_compute_total_area")
+    best_price = fields.Float(string="Best offer", compute="_compute_best_price")
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for prp in self:
             prp.total_area = prp.garden_area + prp.living_area
-
-    best_price = fields.Float(string="Best offer", compute="_compute_best_price")
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -112,7 +111,7 @@ class Property(models.Model):
             raise UserError("Sold property can not be cancelled.")
         return True
 
-    @api.constrains("selling_price, expected_price")
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
             if (

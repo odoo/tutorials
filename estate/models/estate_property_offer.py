@@ -24,11 +24,11 @@ class PropertyOffer(models.Model):
     property_type_id = fields.Many2one(related="property_id.property_type_id")
     validity = fields.Integer(default=7, help="Validity in days")
     date_deadline = fields.Date(
-        compute="_compute_deadline", inverse="_inverse_deadline", readonly=False
+        compute="_compute_offer_deadline", inverse="_inverse_deadline", readonly=False
     )
 
     @api.depends("validity")
-    def _compute_deadline(self):
+    def _compute_offer_deadline(self):
         for ofr in self:
             if isinstance(ofr.create_date, bool):
                 ofr.date_deadline = fields.Date.today() + relativedelta(

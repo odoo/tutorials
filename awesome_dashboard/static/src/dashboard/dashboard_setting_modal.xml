@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+  <t t-name="awesome_dashboard.db_modal">
+    <Dialog title="'Dashboard items configuration'">
+       <h4>Which cards do you wish to see ?</h4>
+       <t t-foreach="this.items" t-as="item" t-key="item.title">
+         <div class="d-flex align-items-center mb-1">
+           <input type="checkbox" t-on-change="(e)=>handleItemToggle(e,item.id)" t-att-checked="item.isVisible"/>
+           <p class="mb-0 ms-2" t-out="item.title"/>
+         </div>
+       </t>
+        <div class="d-flex align-items-center mb-1">
+           <input type="checkbox" t-on-change="(e)=>handleItemToggle(e,'chart')" t-att-checked="this.chart.isVisible"/>
+           <p class="mb-0 ms-2">T-shirts Sales by size</p>
+         </div>
+       <t t-set-slot="footer">
+          <button class="btn btn-primary" t-on-click="handleApplySetting">Apply</button>
+       </t>
+    </Dialog>
+  </t>
+</templates>
