@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_import_export_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.account.custom.duty</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <setting id="post_bank_transactions_and_payments_setting" position="after">
+                <!-- Import Duty Section -->
+                <setting string="Import Duty Settings:" company_dependent="1">
+                    <div class="content-group">
+                        <div class="row mt8">
+                            <label for="l10n_in_import_journal_id" class="col-lg-5 o_light_label" string="Journal"/>
+                            <field name="l10n_in_import_journal_id" domain="[('type', '=', 'general'), ('active', '=', True)]"/>
+                        </div>
+                        <div class="row mt8">
+                            <label for="l10n_in_import_custom_duty_account_id" class="col-lg-5 o_light_label" string="Custom Duty Account"/>
+                            <field name="l10n_in_import_custom_duty_account_id" domain="[('account_type', '=', 'expense'), ('deprecated', '=', False)]"/>
+                        </div>
+                        <div class="row mt8">
+                            <label for="l10n_in_import_default_tax_account_id" class="col-lg-5 o_light_label" string="IGST on Import Account"/>
+                            <field name="l10n_in_import_default_tax_account_id" domain="[('account_type', 'in', ['asset_current', 'liability_current']), ('reconcile', '=', True)]"/>
+                        </div>
+                        <div class="row mt8">
+                            <label for="l10n_in_import_custom_duty_tax_payable_account_id" class="col-lg-5 o_light_label" string="Custom Duty Tax Payable Account"/>
+                            <field name="l10n_in_import_custom_duty_tax_payable_account_id" domain="[('account_type', '=', 'liability_current')]"/>
+                        </div>
+                    </div>
+                </setting>
+
+                <!-- Export Duty Section -->
+                <setting string="Export Duty Settings:" company_dependent="1">
+                    <div class="content-group">
+                        <div class="row mt8">
+                            <label for="l10n_in_export_journal_id" class="col-lg-5 o_light_label" string="Journal"/>
+                            <field name="l10n_in_export_journal_id" domain="[('type', '=', 'general'), ('active', '=', True)]"/>
+                        </div>
+                        <div class="row mt8">
+                            <label for="l10n_in_export_custom_duty_account_id" class="col-lg-5 o_light_label" string="Custom Duty Account"/>
+                            <field name="l10n_in_export_custom_duty_account_id" domain="[('account_type', 'in', ['expense', 'income']), ('deprecated', '=', False)]"/>
+                        </div>
+                        <div class="row mt8">
+                            <label for="l10n_in_export_default_tax_account_id" class="col-lg-5 o_light_label" string="IGST on Export Account"/>
+                            <field name="l10n_in_export_default_tax_account_id" domain="[('account_type', 'in', ['asset_current', 'liability_current']), ('reconcile', '=', True)]"/>
+                        </div>
+                        <div class="row mt8">
+                            <label for="l10n_in_export_custom_duty_tax_payable_account_id" class="col-lg-5 o_light_label" string="Custom Duty Tax Payable Account"/>
+                            <field name="l10n_in_export_custom_duty_tax_payable_account_id" domain="[('account_type', '=', 'liability_current')]"/>
+                        </div>
+                    </div>
+                </setting>
+            </setting>
+        </field>
+    </record>
+</odoo>

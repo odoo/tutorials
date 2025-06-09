@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_vendor_bill_form_inherit" model="ir.ui.view">
+        <field name="name">account.move.form.bill.of.entry</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Normal Button -->
+            <xpath expr="//button[@name='button_draft']" position="after">
+                <button name="action_open_bill_of_entry_wizard" type="object" class="btn btn-primary" string="Bill of Entry" invisible="journal_move_id or not show_bill_of_entry or move_type != 'in_invoice'"/>
+            </xpath>
+            <!-- Stat Button -->
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button type="object" class="oe_stat_button" name="action_open_journal_entry" icon="fa-file-text" invisible="not journal_move_id or not show_bill_of_entry">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Bill of Entry</span>
+                    </div>
+                </button>
+            </xpath>
+            <!-- Bill of Entry wizard view -->
+            <xpath expr="//notebook" position="before">
+                <group invisible="not custom_currency_rate or (move_type in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund', 'in_receipt'))">
+                    <group>
+                        <field name="name" string="Journal Entry No" readonly="1"/>
+                        <field name="custom_currency_rate" widget="monetary"/>
+                        <field name="company_currency_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="bill_of_entry_no"/>
+                        <field name="bill_of_entry_date"/>
+                        <field name="port_code"/>
+                    </group>
+                </group>
+            </xpath>
+            <!-- Bill of Entry Details Page -->
+            <xpath expr="//page[@name='aml_tab']" position="before">
+                <page string="Bill of Entry Details" invisible="not custom_currency_rate or (move_type in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund', 'in_receipt'))">
+                    <field name="bill_of_entry_line_ids">
+                        <list editable="bottom" create="0">
+                            <field name="product_id" readonly="1"/>
+                            <field name="assessable_value" readonly="1"/>
+                            <field name="custom_duty" readonly="1"/>
+                            <field name="currency_id" column_invisible="1" readonly="1"/>
+                            <field name="taxable_amount" readonly="1"/>
+                            <field name="tax_id" readonly="1"/>
+                            <field name="tax_amount" readonly="1"/>
+                        </list>
+                    </field>
+                    <div class="d-flex flex-column align-items-end">
+                        <div class="d-flex gap-2">
+                            <strong>Total Custom Duty + Additional Charges</strong>
+                            <field name="total_cd_all" readonly="1" force_save="1" class="text-end"/>
+                        </div>
+                        <div class="d-flex gap-2 ">
+                            <strong class="text-start">Total Tax Amount</strong>
+                            <field name="total_tax_all" readonly="1" force_save="1" class="text-end"/>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <strong>Total Amount Payable</strong>
+                            <field name="total_amount_all" readonly="1" force_save="1" class="text-end"/>
+                        </div>
+                    </div>
+                </page>
+            </xpath>
+            <!-- Journal Entry Other info Page -->
+            <xpath expr="//page[@id='other_tab_entry']" position="attributes">
+                <attribute name="invisible">custom_currency_rate or move_type in ('out_invoice', 'out_refund', 'out_receipt', 'in_invoice', 'in_refund', 'in_receipt') </attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

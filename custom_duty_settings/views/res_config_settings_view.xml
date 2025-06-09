@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_import_export_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.account.import.export.settings</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='india_localization']" position="inside">
+                <setting name="custom_duty" string="Import-Export Settings" invisible="country_code != 'IN'" company_dependent="1" help="Enable this feature to apply custom duty on import/export transactions, including Bill of Entry adn Shipping Bills">
+                    <field name="module_custom_duty_management" class="upgrade_boolean"/>
+                </setting>
+            </xpath>
+        </field>
+        </record>
+
+</odoo>
