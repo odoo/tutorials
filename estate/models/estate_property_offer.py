@@ -55,6 +55,9 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
+            property = self.env['estate.property'].browse(vals.get('property_id'))
+            if property.state in ('sold', 'cancelled'):
+                raise UserError(f"Cannot create an offer in a {property.state} property.")
             price = vals.get('price')
             estate_property = self.env['estate.property'].browse(vals.get('property_id'))
             if estate_property.best_price and price <= estate_property.best_price:
