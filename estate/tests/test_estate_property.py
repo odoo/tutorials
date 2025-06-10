@@ -1,7 +1,7 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
-from odoo.tests import tagged
-from odoo import Command
+from odoo.tests import Form, tagged
+
 
 @tagged('post_install', '-at_install')
 class EstateTestCase(TransactionCase):
@@ -82,3 +82,24 @@ class EstateTestCase(TransactionCase):
                 'price': 130,
                 'validity': 14,
             })
+
+    def test_enable_garden(self):
+        """Test that default values are assigned to garden area and orientation when garden is enabled"""
+
+        form = Form(self.env['estate.property'])
+        form.garden = True
+
+        self.assertEqual(form.garden_area, 10)
+        self.assertEqual(form.garden_orientation, 'north')
+
+    def test_disable_garden(self):
+        """Test that values are removed from garden area and orientation when garden is disabled"""
+
+        form = Form(self.env['estate.property'])
+        form.garden = True
+        form.garden_area = 15
+        form.garden_orientation = 'south'
+        form.garden = False
+
+        self.assertEqual(form.garden_area, 0)
+        self.assertEqual(form.garden_orientation, False)

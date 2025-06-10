@@ -57,14 +57,14 @@ class EstateProperty(models.Model):
                 record.state = 'offer_received'
 
     @api.onchange("garden")
-    def _onchange_partner_id(self):
+    def _onchange_garden(self):
         for record in self:
             if record.garden:
                 record.garden_area = 10
                 record.garden_orientation = 'north'
             else:
-                record.garden_area = None
-                record.garden_orientation = None
+                record.garden_area = 0
+                record.garden_orientation = False
 
     def action_property_sold(self):
         for record in self:
