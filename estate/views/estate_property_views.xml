@@ -10,10 +10,10 @@
         <field name="name">estate.property.properties.list.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list   editable="bottom"
-                    decoration-success="state in ('accepted','received')"
-                    decoration-bf="state == 'received'"
-                    decoration-muted="state == 'sold'">
+            <list editable="bottom"
+                  decoration-success="state in ('accepted','received')"
+                  decoration-bf="state == 'received'"
+                  decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="property_type_id" options="{'no_create': True}"/>
                 <field name="postcode"/>
