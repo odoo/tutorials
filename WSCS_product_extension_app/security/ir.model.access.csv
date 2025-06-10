@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+WSCS_product_extension_app.access_product_status,access_product_status,WSCS_product_extension_app.model_product_status,base.group_user,1,1,1,1
+WSCS_product_extension_app.access_product_palletspec,access_product_palletspec,WSCS_product_extension_app.model_product_palletspec,base.group_user,1,1,1,1

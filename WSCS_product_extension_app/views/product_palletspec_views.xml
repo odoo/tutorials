@@ -1,0 +1,33 @@
+<odoo>
+    <record id="view_product_palletspec_list" model="ir.ui.view">
+        <field name="name">product.palletspec.list</field>
+        <field name="model">product.palletspec</field>
+        <field name="arch" type="xml">
+            <list editable="bottom">
+                <field name="name"/>
+                <field name="product_tmpl_id"/>
+                <field name="product_uom_id"/>
+                <field name="cases_per_layer"/>
+                <field name="layers_per_pallet"/>
+                <field name="qty" readonly="1"/>
+                <field name="width"/>
+                <field name="length"/>
+                <field name="height"/>
+                <field name="weight"/>
+                <field name="pallet_volume" readonly="1"/>
+                <field name="packaging_id"/>
+                <field name="units" readonly="1"/>
+            </list>
+        </field>
+    </record>
+    <record id="action_product_palletspec" model="ir.actions.act_window">
+            <field name="name">Pallet Specs</field>
+            <field name="res_model">product.palletspec</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Define pallet specifications for your products.
+                </p>
+            </field>
+    </record>
+</odoo>

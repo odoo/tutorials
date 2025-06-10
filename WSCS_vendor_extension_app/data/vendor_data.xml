@@ -1,0 +1,61 @@
+<odoo>
+    <record id="cert_iso_9001" model="gfsi.certificate">
+        <field name="name">ISO 9001:2015</field>
+    </record>
+    <record id="cert_iso_14001" model="gfsi.certificate">
+        <field name="name">ISO 14001:2015</field>
+    </record>
+    <record id="cert_iso_22000" model="gfsi.certificate">
+        <field name="name">ISO 22000:2018</field>
+    </record>
+    <record id="cert_fssc_24000" model="gfsi.certificate">
+        <field name="name">FSSC 24000</field>
+    </record>
+    <record id="cert_other" model="gfsi.certificate">
+        <field name="name">Other</field>
+    </record>
+    <record id="cert_unverified" model="gfsi.certificate">
+        <field name="name">Unverified</field>
+    </record>
+
+    <record id="grade_aa+" model="gfsi.grade">
+        <field name="name">AA+</field>
+    </record>
+    <record id="grade_aa" model="gfsi.grade">
+        <field name="name">AA</field>
+    </record>
+    <record id="grade_a+" model="gfsi.grade">
+        <field name="name">A+</field>
+    </record>
+    <record id="grade_b+" model="gfsi.grade">
+        <field name="name">B+</field>
+    </record>
+    <record id="grade_b" model="gfsi.grade">
+        <field name="name">B</field>
+    </record>
+    <record id="grade_c+" model="gfsi.grade">
+        <field name="name">C+</field>
+    </record>
+    <record id="grade_c" model="gfsi.grade">
+        <field name="name">C</field>
+    </record>
+    <record id="grade_other" model="gfsi.grade">
+        <field name="name">Other</field>
+    </record>
+    <record id="grade_unknown" model="gfsi.grade">
+        <field name="name">Unknown</field>
+    </record>
+
+    <record id="scheme_brcgs" model="gfsi.scheme">
+        <field name="name">BRCGS</field>
+    </record>
+    <record id="scheme_sqf" model="gfsi.scheme">
+        <field name="name">SQF</field>
+    </record>
+    <record id="scheme_ifs" model="gfsi.scheme">
+        <field name="name">IFS</field>
+    </record>
+    <record id="scheme_fssc_22000" model="gfsi.scheme">
+        <field name="name">FSSC 22000</field>
+    </record>
+</odoo>
