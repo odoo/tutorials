@@ -111,7 +111,7 @@ class EstatePropertyOffer(models.Model):
             price = vals.get("price", 0.0)
             if property_id:
                 property_obj = self.env["estate.property"].browse(property_id)
-                best_price = property_obj.best_price or 0.0
+                best_price = property_obj.best_offer or 0.0
                 if price < best_price:
                     raise UserError(
                         "Offer price must be greater than or equal to the best offer price."
@@ -119,5 +119,5 @@ class EstatePropertyOffer(models.Model):
         records = super().create(vals_list)
         for record in records:
             if record.partner_id:
-                record.property_id.state = "received"
+                record.property_id.state = "offer_received"
         return records
