@@ -43,6 +43,7 @@ class EstateProperty(models.Model):
         store=True,
         readonly=True
     )
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
 
     _sql_constraints = [
         ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'Expected price must be positive!'),
