@@ -66,6 +66,12 @@ class EstateProperty(models.Model):
         store=True,
     )
 
+    company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Company",
+        default=lambda self: self.env.company,
+    )
+
     _sql_constraints = [
         (
             "check_expected_price_field",
