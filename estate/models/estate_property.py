@@ -70,6 +70,9 @@ class EstateUser(models.Model):
         compute="_compute_best_offer",
         store=True,
     )
+    company_id = fields.Many2one(
+        required=True, comodel_name="res.company", default=lambda self: self.env.company
+    )
 
     _sql_constraints = [
         (
