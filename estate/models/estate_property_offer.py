@@ -81,10 +81,13 @@ class EstatePropertyOffer(models.Model):
 
     def action_refused(self):
         for record in self:
-            record.status = "refused"
-            record.property_id.state = "offer_received"
-            record.property_id.buyer_id = False
-            record.property_id.selling_price = 0.0
+            if record.status == "accepted":
+                record.status = "refused"
+                record.property_id.state = "offer_received"
+                record.property_id.buyer_id = False
+                record.property_id.selling_price = 0.0
+            else:
+                record.status = "refused"
         return True
 
     @api.constrains("price")

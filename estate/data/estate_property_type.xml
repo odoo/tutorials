@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="estate_property_big_villa" model="estate.property">
+        <field name="property_type_id" ref="estate.estate_property_type_residential" />
+    </record>
+
+    <record id="estate_property_trailer_home" model="estate.property">
+        <field name="property_type_id" ref="estate.estate_property_type_residential" />
+    </record>
+
+
+</odoo>
