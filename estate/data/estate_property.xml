@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="id1" model="estate.property">
+    <record id="estate_property_data_1" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
@@ -14,9 +14,10 @@
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
+        <field name="salesperson_id" ref="base.user_admin" />
     </record>
 
-    <record id="id2" model="estate.property">
+    <record id="estate_property_data_2" model="estate.property">
         <field name="name">Trailer home</field>
         <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
@@ -28,5 +29,33 @@
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="garage">False</field>
+        <field name="salesperson_id" ref="base.user_admin" />
+    </record>
+    <record id="estate_property_demo_with_offers" model="estate.property">
+        <field name="name">Property with Inline Offers</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big 123</field>
+        <field name="postcode">12323345</field>
+        <field name="expected_price">1</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">10</field>
+        <field name="facades">3</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">1000</field>
+        <field name="garden_orientation">south</field>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'partner_id': ref('base.res_partner_2'),
+                'price': 250000,
+                'validity': 10,
+            }),
+            Command.create({
+                'partner_id': ref('base.res_partner_3'),
+                'price': 260000,
+                'validity': 12,
+            }),
+        ]" />
     </record>
 </odoo>

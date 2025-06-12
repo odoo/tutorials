@@ -62,40 +62,6 @@ class EstatePropertyOffers(models.Model):
             else:
                 offer.validity = 0
 
-    def action_offer_tick(self):
-        for record in self:
-            if (
-                float_compare(
-                    record.property_id.expected_price * 0.9,
-                    record.price,
-                    precision_digits=2,
-                )
-                > 0
-            ):
-                raise ValidationError(
-                    "The offer price must be at least 90% of the expected price."
-                )
-            elif not record.property_id.selling_price:
-                record.status = "accepted"
-                record.property_id.selling_price = record.price
-                record.property_id.buyer_id = record.partner_id
-                record.property_id.state = "offer_accepted"
-                return True
-            else:
-                raise UserError("The offer for this property is already accepted.")
-        return False
-
-    def action_offer_cross(self):
-        for record in self:
-            if record.status == "accepted":
-                record.status = "refused"
-                record.property_id.state = "offer_received"
-                record.property_id.buyer_id = False
-                record.property_id.selling_price = 0.0
-            else:
-                record.status = "refused"
-        return True
-
     @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
@@ -118,3 +84,42 @@ class EstatePropertyOffers(models.Model):
     def _ondelete(self):
         for record in self:
             record.property_id.selling_price = 0.0
+
+    def action_offer_tick(self):
+        for record in self:
+            if (
+                float_compare(
+                    record.property_id.expected_price * 0.9,
+                    record.price,
+                    precision_digits=2,
+                )
+                > 0
+            ):
+                raise ValidationError(
+                    "The offer price must be at least 90% of the expected price."
+                )
+            accepted_offer = self.search(
+                [
+                    ("property_id", "=", record.property_id.id),
+                    ("status", "=", "accepted"),
+                ],
+                limit=1,
+            )
+            if accepted_offer:
+                raise UserError("The offer for this property is already accepted.")
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.state = "offer_accepted"
+        return True
+
+    def action_offer_cross(self):
+        for record in self:
+            if record.status == "accepted":
+                record.status = "refused"
+                record.property_id.state = "offer_received"
+                record.property_id.buyer_id = False
+                record.property_id.selling_price = 0.0
+            else:
+                record.status = "refused"
+        return True
