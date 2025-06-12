@@ -10,9 +10,9 @@
         <field name="name">estate.property.properties.list.view</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list   decoration-success="state in ('accepted','received')"
-                    decoration-bf="state == 'received'"
-                    decoration-muted="state == 'sold'">
+            <list decoration-success="state in ('accepted','received')"
+                  decoration-bf="state == 'received'"
+                  decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="property_type_id" options="{'no_create': True}"/>
                 <field name="postcode"/>
@@ -70,7 +70,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_id" readonly="state in ('accepted','sold','cancelled')">
+                            <field name="offer_ids" readonly="state in ('accepted','sold','cancelled')">
                                 <list editable="bottom"
                                       decoration-success="status =='accepted'"
                                       decoration-danger="status =='refused'">
