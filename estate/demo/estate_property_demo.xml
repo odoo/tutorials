@@ -28,16 +28,16 @@
         <field name="garden_area">1000</field>
         <field name="garden_orientation">south</field>
         <field name="offer_ids" eval="[
-                    Command.create({
-                        'partner_id': ref('base.res_partner_2'),
-                        'price': 250000,
-                        'validity': 10,
-                    }),
-                    Command.create({
-                        'partner_id': ref('base.res_partner_3'),
-                        'price': 260000,
-                        'validity': 12,
-                    }),
-                ]"/>
+                        Command.create({
+                            'partner_id': ref('base.res_partner_2'),
+                            'price': 250000,
+                            'validity': 10,
+                        }),
+                        Command.create({
+                            'partner_id': ref('base.res_partner_3'),
+                            'price': 260000,
+                            'validity': 12,
+                        }),
+                    ]"/>
     </record>
 </odoo>

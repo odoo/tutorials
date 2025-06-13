@@ -53,6 +53,12 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.partner_id = record.partner_id
             record.property_id.state = 'accepted'
+            other_offers = self.search([
+                ('property_id', '=', record.property_id.id),
+                ('id', '!=', record.id),
+                ('status', '!=', 'refused')
+            ])
+            other_offers.write({'status': 'refused'})
         return True
 
     def action_refuse_offer(self):

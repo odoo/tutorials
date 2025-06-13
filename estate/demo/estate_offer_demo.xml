@@ -12,4 +12,7 @@
         <field name="price">1300000000</field>
         <field name="validity">14</field>
     </record>
+    <function model="estate.property.offer" name="action_accept_offer">
+        <value eval="[ref('estate_property_offer_demo_2')]"/>
+    </function>
 </odoo>
