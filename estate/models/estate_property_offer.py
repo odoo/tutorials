@@ -64,6 +64,40 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
+            if (
+                float_compare(
+                    record.property_id.expected_price * 0.9,
+                    record.price,
+                    precision_digits=2,
+                )
+                > 0
+            ):
+                raise ValidationError(
+                    "The offer price must be at least 90% of the expected price."
+                )
+            accepted_offer = self.search(
+                [
+                    ("property_id", "=", record.property_id.id),
+                    ("status", "=", "accepted"),
+                ],
+                limit=1,
+            )
+            if accepted_offer:
+                raise UserError("The offer for this property is already accepted.")
+            other_offers = self.search(
+                [
+                    ("property_id", "=", record.property_id.id),
+                    ("id", "!=", record.id),
+                    ("status", "!=", "refused"),
+                ]
+            )
+            other_offers.write({"status": "refused"})
+            record.status = "accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.state = "offer_accepted"
+        return True
+        for record in self:
             other_accepted_offer = record.property_id.offer_ids.filtered(
                 lambda o: o.status == "accepted"
             )
