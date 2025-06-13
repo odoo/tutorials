@@ -14,7 +14,6 @@
         <field name="garden">True</field>
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
-        <field name="salesperson_id" ref="base.user_admin" />
     </record>
 
     <record id="estate_property_data_2" model="estate.property">
@@ -24,12 +23,11 @@
         <field name="postcode">54321</field>
         <field name="date_availability">1970-01-01</field>
         <field name="expected_price">100000</field>
-        <field name="selling_price">120000</field>
+        <field name="selling_price">120000  </field>
         <field name="bedrooms">1</field>
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="garage">False</field>
-        <field name="salesperson_id" ref="base.user_admin" />
     </record>
     <record id="estate_property_demo_with_offers" model="estate.property">
         <field name="name">Property with Inline Offers</field>
@@ -53,7 +51,7 @@
             }),
             Command.create({
                 'partner_id': ref('base.res_partner_3'),
-                'price': 260000,
+                'price': 250000,
                 'validity': 12,
             }),
         ]" />

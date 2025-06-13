@@ -85,7 +85,7 @@ class EstatePropertyOffers(models.Model):
         for record in self:
             record.property_id.selling_price = 0.0
 
-    def action_offer_tick(self):
+    def action_accept_offer(self):
         for record in self:
             if (
                 float_compare(
@@ -107,13 +107,21 @@ class EstatePropertyOffers(models.Model):
             )
             if accepted_offer:
                 raise UserError("The offer for this property is already accepted.")
+            other_offers = self.search(
+                [
+                    ("property_id", "=", record.property_id.id),
+                    ("id", "!=", record.id),
+                    ("status", "!=", "refused"),
+                ]
+            )
+            other_offers.write({"status": "refused"})
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = "offer_accepted"
         return True
 
-    def action_offer_cross(self):
+    def action_reject_offer(self):
         for record in self:
             if record.status == "accepted":
                 record.status = "refused"
