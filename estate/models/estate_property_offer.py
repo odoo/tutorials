@@ -97,22 +97,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = "offer_accepted"
         return True
-        for record in self:
-            other_accepted_offer = record.property_id.offer_ids.filtered(
-                lambda o: o.status == "accepted"
-            )
-
-        if other_accepted_offer:
-            raise UserError(
-                "Another offer has already been accepted for this property."
-            )
-
-        record.status = "accepted"
-        record.property_id.state = "offer_accepted"
-        record.property_id.buyer_id = record.partner_id
-        record.property_id.selling_price = record.price
-        return True
-
+    
     def action_refused(self):
         for record in self:
             if record.status == "accepted":
