@@ -38,6 +38,14 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,received,accepted,sold"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action"
+                                name="%(estate.report_estate_property_badge)d"
+                                string="Print"
+                                class="oe_stat_button"
+                                icon="fa-print">
+                        </button>
+                    </div>
                     <h1>
                         <field name="name"/>
                     </h1>

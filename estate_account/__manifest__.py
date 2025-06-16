@@ -5,6 +5,7 @@
     'depends': ['estate', 'account'],
     'data': [
         "security/ir.model.access.csv",
+        "report/estate_property_inherit_template.xml",
     ],
     'application': True,
     'license': 'OEEL-1',

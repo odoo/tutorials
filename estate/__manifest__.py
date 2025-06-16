@@ -13,6 +13,8 @@
         "views/estate_property_type_views.xml",
         "views/estate_property_views.xml",
         "views/estate_menus.xml",
+        "report/estate_property_templates.xml",
+        "report/estate_property_reports.xml",
     ],
     'demo': [
         "demo/mail_message_subtype_data.xml",
