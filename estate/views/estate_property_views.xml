@@ -66,7 +66,13 @@
                     <field name="state" widget="statusbar" />
                 </header>
                 <sheet>
-
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate.estate_property_offer_reports)d"
+                            class="oe_stat_button"
+                            type="action"
+                            icon="fa-print"
+                            string="Print" />
+                    </div>
                     <group>
                         <h1>
                             <field name="name" />

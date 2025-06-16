@@ -7,7 +7,6 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for property in self:
-            property = self.property_id
 
             property.check_access_rights("write")
             property.check_access_rule("write")
