@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Removing two buttons from header and one stat button from module stock for product.template -->
+    <record id="inherit_product_template_form_view_update_quantity_button" model="ir.ui.view">
+        <field name="name">product.template.form.update.quantity.button</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_form_view_procurement_button" />
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_update_quantity_on_hand']"
+                position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='%(stock.action_product_replenish)d']"
+                position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//button[@name='action_update_quantity_on_hand'][@class='oe_stat_button']"
+                position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[span/field[@name='virtual_available']]" position="replace">
+                <div class="o_field_widget o_stat_info">
+                    <span class="o_stat_value d-flex flex-column align-items-start">
+                        <span class="d-flex gap-1">
+                            <field name="qty_available" class="oe_inline" readonly="true" />
+                            <field name="uom_name" class="oe_inline" />
+                        </span>
+                        <span class="d-flex gap-1">
+                            <field name="virtual_available" nolabel="1"
+                                decoration-info="virtual_available &gt; 0"
+                                decoration-danger="virtual_available &lt; 0" />
+                            <span class="text-secondary">Forecasted</span>
+                        </span>
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Removing two buttons from header and one stat button from module stock for product.product -->
+    <record id="inherit_product_product_form_view_update_quantity_button" model="ir.ui.view">
+        <field name="name">product.product.form.update.quantity.button</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_form_view_procurement_button" />
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_update_quantity_on_hand']"
+                position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='%(stock.action_product_replenish)d']"
+                position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath
+                expr="//button[@name='action_update_quantity_on_hand'][@class='oe_stat_button']"
+                position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <xpath expr="//div[span/field[@name='virtual_available']]" position="replace">
+                <div class="o_field_widget o_stat_info">
+                    <span class="o_stat_value d-flex flex-column align-items-start">
+                        <span class="d-flex gap-1">
+                            <field name="qty_available" class="oe_inline" readonly="true" />
+                            <field name="uom_name" class="oe_inline" />
+                        </span>
+                        <span class="d-flex gap-1">
+                            <field name="virtual_available" nolabel="1"
+                                decoration-info="virtual_available &gt; 0"
+                                decoration-danger="virtual_available &lt; 0" />
+                            <span class="text-secondary">Forecasted</span>
+                        </span>
+                    </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- removed print_labels button form both product.template and product.product -->
+    <record id="product_form_view_inherit_print_label_button" model="ir.ui.view">
+        <field name="name">product.form.view.print.label.button</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='action_open_label_layout']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!-- removed Print Labels button form product.template -->
+    <record id="action_product_template_print_labels" model="ir.actions.server">
+        <field name="name">Print Labels</field>
+        <field name="binding_model_id" ref="product.model_product_template" />
+        <field name="model_id" ref="product.model_product_template" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.action_open_label_layout()
+        </field>
+    </record>
+    <!-- removed Print Labels button form product.product -->
+    <record id="action_product_product_print_labels" model="ir.actions.server">
+        <field name="name">Print Labels</field>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="model_id" ref="product.model_product_product" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.action_open_label_layout()
+        </field>
+    </record>
+    <!-- removed Replenish button form product.template -->
+    <record id="action_product_template_replenish" model="ir.actions.server">
+        <field name="name">Replenish</field>
+        <field name="binding_model_id" ref="product.model_product_template" />
+        <field name="model_id" ref="product.model_product_template" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.action_product_replenish()
+        </field>
+    </record>
+    <!-- removed Replenish button form product.product -->
+    <record id="action_product_product_replenish" model="ir.actions.server">
+        <field name="name">Replenish</field>
+        <field name="binding_model_id" ref="product.model_product_product" />
+        <field name="model_id" ref="product.model_product_product" />
+        <field name="state">code</field>
+        <field name="code">
+            if records:
+            action = records.action_product_replenish()
+        </field>
+    </record>
+    <!-- Added Update quantity on hand field in form view for both product.template and product.product -->
+    <record id="product_template_form_view_quantity_on_hand" model="ir.ui.view">
+        <field name="name">product.template.form.quantity.on.hand</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <group name="group_general" position="inside">
+                <label for="qty_available" class="o_form_label" invisible="not is_storable" />
+                <span class="d-flex gap-1" invisible="not is_storable">
+                    <field name="qty_available"
+                        readonly="is_multi_location or tracking in ('lot', 'serial') or product_variant_count > 1"
+                        class="oe_inline" />
+                    <field name="uom_name" class="oe_inline" />
+                    <a type="action"
+                        name="%(stock.action_product_stock_view)d"
+                        class="oe_inline opacity-0 opacity-100-hover"
+                        invisible="not (is_multi_location or tracking in ('lot', 'serial') or product_variant_count > 1)">
+                        Update
+                    </a>
+                </span>
+            </group>
+        </field>
+    </record>
+</odoo>
