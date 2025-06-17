@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template inherit_id="estate.report_estate_property_offers">
+    <template id="estate_account_template" inherit_id="estate.report_estate_property_offers">
         <xpath expr="//span[@t-field='property.state']" position="after">
-            <t t-if="property.invoice_ids">
-                    !!!Invoice has already been created!!!
+            <t t-if="property.state == 'sold'">
+                <div>!!!Invoice has already been created!!!</div>
             </t>
         </xpath>
     </template>
