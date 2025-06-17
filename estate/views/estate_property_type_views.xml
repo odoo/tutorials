@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<odoo>
+	<record id="estate_property_type_action" model="ir.actions.act_window">
+		<field name="name">Type Action</field>
+		<field name="res_model">estate.property.type</field>
+		<field name="view_mode">list,form</field>
+	</record>
+
+	<record id="estate_property_type_view_form" model="ir.ui.view">
+		<field name="name">estate.property.type.view.form</field>
+		<field name="model">estate.property.type</field>
+		<field name="arch" type="xml">
+			<form string="Type Form">
+				<sheet>
+					<header>
+						<button type="action"
+							name="%(estate_property_offer_action)d"
+							class="oe_stat_button"
+							icon="fa-money">
+							<div>
+								<field name="offer_count" /> Offers </div>
+						</button>
+					</header>
+					<group>
+						<field name="name" />
+						<field name="sequence" />
+					</group>
+					<notebook>
+						<page string="Properties">
+							<field name="property_ids">
+								<list>
+									<field name="name" />
+									<field name="expected_price" />
+									<field name="state" />
+								</list>
+							</field>
+						</page>
+					</notebook>
+				</sheet>
+			</form>
+		</field>
+	</record>
+
+	<record id="estate_property_type_view_list" model="ir.ui.view">
+		<field name="name">estate.property.type.view.list</field>
+		<field name="model">estate.property.type</field>
+		<field name="arch" type="xml">
+			<list string="Type List">
+				<field name="sequence" widget="handle" />
+				<field name="name" />
+				<field name="offer_count" />
+				<field name="offer_ids" />
+			</list>
+		</field>
+	</record>
+</odoo>
