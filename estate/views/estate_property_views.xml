@@ -26,6 +26,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="set_to_cancel" type="object" string="Cancel"/>
+                    <button name="set_to_sold" type="object" string="Sold"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -66,6 +70,8 @@
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="status"/>
+                                    <button name="accept_offer" title="Accept" type="object" icon="fa-check"/>
+                                    <button name="refuse_offer" title="Refuse" type="object" icon="fa-times-circle"/>
                                 </list>
                             </field>
                         </page>
