@@ -5,6 +5,14 @@
         <div class="p-3">
             hello world
         </div>
+        <Counter onChange.bind="sumofCounter"/>
+        <Counter onChange.bind="sumofCounter"/>
+        <Card title="'Card 1'" content="this.value1"/>
+        <Card title="'Card 2'" content="this.value2"/>
+        <Card title="'Card 3'" content="'This is the first card.'"/>
+        <div>
+            The sum of two counter : <t t-esc="sum.value"></t>
+        </div> 
     </t>
-
+    
 </templates>
