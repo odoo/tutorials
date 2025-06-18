@@ -53,6 +53,12 @@ class EstateProperty(models.Model):
          "The property's selling price must be positive."),
     ]
 
+    @api.ondelete(at_uninstall=False)
+    def _prevent_active_properties_deletion(self):
+        for record in self:
+            if record.state not in ('draft', 'cancel'):
+                raise UserError(f"Property {record.name} can't be deleted because it is not new or cancelled")
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:

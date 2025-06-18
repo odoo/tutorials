@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -22,6 +22,15 @@ class EstatePropertyOffer(models.Model):
         ('check_positive_offer_price', 'CHECK(price > 0)',
          "The property's offer price must be positive."),
     ]
+
+    def create(self, values):
+        offer = super().create(values)
+        if offer.property_id:
+            max_offer_price = max(offer.property_id.offer_ids.mapped('price'), default=0.0)
+            if max_offer_price > offer.price:
+                raise ValidationError("There is a better price for this property already!")
+            offer.property_id.state = 'received'
+        return offer
 
     def _compute_validity_from_deadline(self):
         for record in self:
