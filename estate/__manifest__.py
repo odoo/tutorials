@@ -8,7 +8,10 @@
     'data': [
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
-        'security/ir.model.access.csv'
+        'views/estate_list_view.xml',
+        'views/estate_form_view.xml',
+        'views/estate_search.xml',
+        'security/ir.model.access.csv',
     ],
     'assets': {
     },
