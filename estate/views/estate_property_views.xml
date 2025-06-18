@@ -1,8 +1,106 @@
 <?xml version='1.0' encoding='utf-8'?>
 <odoo>
     <record id="estate_action" model="ir.actions.act_window">
-        <field name="name">Estate Property Ishhh</field>
+        <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <record id="estate_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" />
+                <field name="tag_ids" />
+                <field name="offer_ids" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property">
+                <sheet>
+                    <field name="name" />
+                    <group>
+                        <group>
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                                <field name="state" />
+                                <field name="property_type_id" />
+                            </group>
+                        </page>
+
+                        <page string="Sales Info">
+                            <group>
+                                <field name="salesperson_id" />
+                                <field name="buyer_id" />
+                            </group>
+                        </page>
+                        <page string="offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Tags">
+                            <group>
+                                <field name="tag_ids" />
+                            </group>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Estate Properties">
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+                <field name="state" />
+
+                <filter name="available_properties" string="Available Properties"
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]" />
+
+                <filter name="group_postcode" string="Group by Postcode"
+                    context="{'group_by': 'postcode'}" />
+                <filter name="group_salesperson_id" string="Group by Sales Person"
+                    context="{'group_by': 'salesperson_id'}" />
+            </search>
+        </field>
+    </record>
+
 </odoo>

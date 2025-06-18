@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem id="estate_menu_root" name="Estate">
-        <menuitem id="estate_first_level_menu" name="Manage">
+        <menuitem id="estate_first_level_menu" name="Property">
             <menuitem id="estate_menu_action" action="estate_action" />
+        </menuitem>
+
+        <menuitem id="estate_config_first_level_menu" name="Configuration">
+            <menuitem id="estate_type_menu_action" action="estate_type_action" />
+            <menuitem id="estate_tag_menu_action" action="estate_tag_action" />
         </menuitem>
     </menuitem>
 </odoo>

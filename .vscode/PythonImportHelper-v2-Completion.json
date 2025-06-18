@@ -82,6 +82,54 @@
         "documentation": {}
     },
     {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "models",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
         "label": "request",
         "importPath": "odoo.http",
         "description": "odoo.http",
@@ -171,8 +219,35 @@
         "kind": 6,
         "importPath": "estate.models.estate_property",
         "description": "estate.models.estate_property",
-        "peekOfCode": "class EstateProperty(models.Model):\n    _name = \"estate.property\"\n    _description = \"Store Real Estate Properties\"\n    name = fields.Char(\"Estate Name\", required=True, translate=True)\n    description = fields.Text(\"Description\", help=\"Enter the real estate item description\")\n    postcode = fields.Char(\"Postcode\")\n    date_availability = fields.Date(\"Available From\", copy=False, default=lambda self: date.today() + timedelta(days=90)\n)\n    expected_price = fields.Float(\"Expected Price\", digits=(16, 1))\n    selling_price = fields.Float(\"Selling Price\", digits=(16, 1), copy=False, readonly=True)",
+        "peekOfCode": "class EstateProperty(models.Model):\n    _name = \"estate.property\"\n    _description = \"Store Real Estate Properties\"\n    name = fields.Char(\"Estate Name\", required=True, translate=True)\n    description = fields.Text(\"Description\", help=\"Enter the real estate item description\")\n    postcode = fields.Char(\"Postcode\")\n    date_availability = fields.Date(\"Available From\", copy=False, default=lambda self: date.today() + timedelta(days=90))\n    expected_price = fields.Float(\"Expected Price\", digits=(16, 1))\n    selling_price = fields.Float(\"Selling Price\", digits=(16, 1), copy=False, readonly=True)\n    bedrooms = fields.Integer(\"Bedrooms\", default=2, help=\"Number of bedrooms in the property\")",
         "detail": "estate.models.estate_property",
+        "documentation": {}
+    },
+    {
+        "label": "EstatePropertyOffer",
+        "kind": 6,
+        "importPath": "estate.models.estate_property_offer",
+        "description": "estate.models.estate_property_offer",
+        "peekOfCode": "class EstatePropertyOffer(models.Model):\n    _name = \"estate.property.offer\"\n    _description = \"Property Offer\"\n    price = fields.Float(string=\"Offer Price\")\n    status = fields.Selection(\n        [\n            ('accepted', 'Accepted'), \n            ('refused', 'Refused')\n        ],\n        string=\"Status\",",
+        "detail": "estate.models.estate_property_offer",
+        "documentation": {}
+    },
+    {
+        "label": "EstatePropertyTag",
+        "kind": 6,
+        "importPath": "estate.models.estate_property_tag",
+        "description": "estate.models.estate_property_tag",
+        "peekOfCode": "class EstatePropertyTag(models.Model):\n    _name = \"estate.property.tag\"\n    _description = \"Store Real Estate Properties Tags\"\n    name = fields.Char(\"Estate Type Tag\", required=True, translate=True)",
+        "detail": "estate.models.estate_property_tag",
+        "documentation": {}
+    },
+    {
+        "label": "EstatePropertyType",
+        "kind": 6,
+        "importPath": "estate.models.estate_property_type",
+        "description": "estate.models.estate_property_type",
+        "peekOfCode": "class EstatePropertyType(models.Model):\n    _name = \"estate.property.type\"\n    _description = \"Store Real Estate Properties Types\"\n    name = fields.Char(\"Estate Type Name\", required=True, translate=True)",
+        "detail": "estate.models.estate_property_type",
         "documentation": {}
     }
 ]
