@@ -8,3 +8,4 @@ class EstatePropertyTag(models.Model):
     _order = "id"
 
     name = fields.Char("Name", required=True)
+    

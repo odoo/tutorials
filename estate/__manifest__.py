@@ -16,4 +16,5 @@
     An app to manage a Real Estate Agency
     """,
     'application': True,
+    'license': 'LGPL-3',
 }

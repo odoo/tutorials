@@ -22,7 +22,6 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer("Validity (days)")
     deadline = fields.Date("Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
 
-
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
