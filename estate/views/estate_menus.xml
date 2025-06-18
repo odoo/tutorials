@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+  <!-- Root Menus -->
   <menuitem id="estate_menu_root" name="Estate"/>
   <menuitem id="estate_menu_properties_root" name="Properties" parent="estate_menu_root"/>
   <menuitem id="estate_menu_properties" name="My Properties" parent="estate_menu_properties_root" action="action_estate_property"/>
+
+  <!-- Settings Menu (New) -->
+  <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" sequence="30"/>
+
 </odoo>
+
+
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <menuitem id="estate_menu_root" name="Estate"/>
+  <menuitem id="estate_menu_properties_root" name="Properties" parent="estate_menu_root"/>
+  <menuitem id="estate_menu_properties" name="My Properties" parent="estate_menu_properties_root" action="action_estate_property"/>
+</odoo> -->

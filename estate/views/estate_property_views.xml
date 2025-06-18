@@ -1,51 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-  <!-- Tree View: list of properties -->
-  <!-- <record id="view_estate_property_tree" model="ir.ui.view">
+  <!-- List View: List of estate properties -->
+  <record id="view_estate_property_tree" model="ir.ui.view">
     <field name="name">estate.property.tree</field>
     <field name="model">estate.property</field>
+    <field name="type">list</field>
     <field name="arch" type="xml">
-      <tree>
+      <list>
         <field name="name"/>
-        <field name="expected_price"/>
-        <field name="selling_price"/>
+        <field name="postcode"/>
         <field name="bedrooms"/>
         <field name="living_area"/>
-        <field name="garden"/>
-      </tree>
+        <field name="expected_price"/>
+        <field name="selling_price"/>
+        <field name="property_type_id"/>
+        <field name="date_availability"/>
+      </list>
     </field>
-  </record> -->
+  </record>
 
-  <!-- Form View -->
+  <!-- =========================== -->
+  <!-- Form View for Properties   -->
+  <!-- =========================== -->
   <record id="view_estate_property_form" model="ir.ui.view">
     <field name="name">estate.property.form</field>
     <field name="model">estate.property</field>
     <field name="arch" type="xml">
       <form>
         <sheet>
-          <group>
+
+          <!-- Title Header -->
+          <h1>
             <field name="name"/>
-            <field name="description"/>
+          </h1>
+          
+
+          <!-- Two-column main property info -->
+          <group col="2">
+            <field name="tag_ids" widget="many2many_tags"/>
+            <field name="postcode"/>
+            <field name="property_type_id"/>            
             <field name="expected_price"/>
-            <field name="selling_price"/>
-            <field name="bedrooms"/>
-            <field name="living_area"/>
-            <field name="facades"/>
-            <field name="garage"/>
-            <field name="garden"/>
-            <field name="garden_area"/>
-            <field name="garden_orientation"/>
+            <field name="date_availability"/>
+            <field name="selling_price" readonly="1"/>
           </group>
+
+          <!-- Tabs Section -->
+          <notebook>
+
+            <!-- ============ -->
+            <!-- Description Tab -->
+            <!-- ============ -->
+            <page string="Description">
+              <group>
+
+                <!-- Field Layout (Stacked Vertically) -->
+                <field name="description"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <field name="garage"/>
+                <field name="garden"/>
+                <field name="garden_area"/>
+                <field name="garden_orientation"/>
+
+              </group>
+            </page>
+
+
+            <!-- ============ -->
+            <!-- Sales Tab-->
+             <!-- ============ -->
+            <page string="Sales">
+                <group>
+                    <field name="salesperson_id"/>
+                    <field name="buyer_id"/>
+                </group>  
+            </page>    
+
+          </notebook>
+
         </sheet>
       </form>
     </field>
   </record>
 
-  <!-- Action -->
+  <!-- Action to open estate properties -->
   <record id="action_estate_property" model="ir.actions.act_window">
     <field name="name">Properties</field>
     <field name="res_model">estate.property</field>
-    <field name="view_mode">form</field>
+    <field name="view_mode">list,form</field>
   </record>
 
 </odoo>
