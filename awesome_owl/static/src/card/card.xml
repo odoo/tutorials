@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+
+        <div class="card d-inline-block m-2">
+            <div class="card-body">
+                <div class="row d-inline">
+                    <h5 class="card-title d-inline"><t t-out="props.title"/></h5>
+                    <label class="d-inline" t-on-click="toggleDisplay"> show/unshow </label>
+                </div>
+                <div t-attf-style="display: {{ state.show ? 'block' : 'none' }};">
+                    <t t-slot="default"/>
+                </div>
+            </div>
+        </div>
+
+    </t>
+
+</templates>
