@@ -106,6 +106,22 @@
         "documentation": {}
     },
     {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "date",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "AwesomeDashboard",
         "kind": 6,
         "importPath": "awesome_dashboard.controllers.controllers",
@@ -155,7 +171,7 @@
         "kind": 6,
         "importPath": "estate.models.estate_property",
         "description": "estate.models.estate_property",
-        "peekOfCode": "class EstateProperty(models.Model):\n    _name = \"estate.property\"\n    _description = \"Store Real Estate Properties\"\n    name = fields.Char(\"Estate Name\", required=True, translate=True)\n    description = fields.Text(\"Description\", help=\"Enter the real estate item description\")\n    postcode = fields.Char(\"Postcode\")\n    date_availability = fields.Datetime(\"Available From\")\n    expected_price = fields.Float(\"Expected Price\", digits=(16, 1))\n    selling_price = fields.Float(\"Selling Price\", digits=(16, 1))\n    bedrooms = fields.Integer(\"Bedrooms\", default=1, help=\"Number of bedrooms in the property\")",
+        "peekOfCode": "class EstateProperty(models.Model):\n    _name = \"estate.property\"\n    _description = \"Store Real Estate Properties\"\n    name = fields.Char(\"Estate Name\", required=True, translate=True)\n    description = fields.Text(\"Description\", help=\"Enter the real estate item description\")\n    postcode = fields.Char(\"Postcode\")\n    date_availability = fields.Date(\"Available From\", copy=False, default=lambda self: date.today() + timedelta(days=90)\n)\n    expected_price = fields.Float(\"Expected Price\", digits=(16, 1))\n    selling_price = fields.Float(\"Selling Price\", digits=(16, 1), copy=False, readonly=True)",
         "detail": "estate.models.estate_property",
         "documentation": {}
     }
