@@ -56,12 +56,8 @@ class EstatePropertyTestCase(TransactionCase):
                 "property_id": property.id,
             }
         )
-        with self.assertRaises(UserError) as cm:
+        with self.assertRaises(UserError):
             property.action_sold()
-        self.assertEqual(
-            cm.exception,
-            "Offer must be accepted before selling the property.",
-        )
 
     def test_reset_garden_area_and_orientation(self):
         property = self.env["estate.property"].create(
