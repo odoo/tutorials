@@ -7,11 +7,13 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Real estate property offer"
+    _order = 'price DESC'
 
     property_id = fields.Many2one(comodel_name="estate.property", required=True)
     price = fields.Float()
     status = fields.Selection(selection=[('accepted', "Accepted"), ('refused', "Refused")], copy=False)
     partner_id = fields.Many2one(comodel_name="res.partner", required=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer()
     date_deadline = fields.Date(compute='_compute_date_deadline_from_validity',
                                 inverse='_compute_validity_from_deadline')
