@@ -16,6 +16,11 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(compute='_compute_date_deadline_from_validity',
                                 inverse='_compute_validity_from_deadline')
 
+    _sql_constraints = [
+        ('check_positive_offer_price', 'CHECK(price > 0)',
+         "The property's offer price must be positive."),
+    ]
+
     def _compute_validity_from_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - fields.Date.today()).days if record.date_deadline else 0.0
