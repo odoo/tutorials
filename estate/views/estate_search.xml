@@ -6,6 +6,8 @@
         <field name="arch" type="xml">
             <search string="Search filters">
                 <field name="name"/>
+                <field name="tag_ids"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>

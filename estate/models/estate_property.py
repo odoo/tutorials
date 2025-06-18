@@ -21,7 +21,7 @@ class EstateProperty(models.Model):
         string='Garden orientation',
         selection=[('north', "North"), ('south', "South"), ('east', "East"), ('west', "West")],
         help="This Type is used to tell the garden orientation for a property"
-        )
+    )
     active = fields.Boolean("Active",default=True)
     state = fields.Selection(
         string='State',
@@ -30,5 +30,9 @@ class EstateProperty(models.Model):
         default="new",
         required=True,
         copy=False
-        )
-    
+    )
+    property_type_id = fields.Many2one("estate.property.type")
+    salesperson_id = fields.Many2one("res.users")
+    buyer_id = fields.Many2one("res.partner")
+    tag_ids = fields.Many2many("estate.property.tag")
+    offers_ids = fields.One2many("estate.property.offer","property_id",string="Offers")
