@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id='catalog_view_list' model='ir.ui.view'>
+        <field name='name'>catalog.list</field>
+        <field name='model'>catalog</field>
+        <field name='arch' type='xml'>
+            <list string='Channel'>
+                <field name='name' string="Name"/>
+                <field name="date" string='Date'/>
+            </list>
+        </field>
+    </record>
+    <record id='catalog_view_form' model='ir.ui.view'>
+        <field name='name'>catalog.form</field>
+        <field name='model'>catalog</field>
+        <field name='arch' type='xml'>
+            <form string='Catalog'>
+            <sheet>
+                <group>
+                    <button name="open_catalog_kanban_view"
+                        type='object'
+                        string="Catalog View"
+                        class="btn-primary"
+                        context="{'default_catalog_id': id}"/>
+                    <field name="name"/>
+                </group>
+                <notebook>
+                    <page string="Lines">
+                        <field name="line_ids">
+                            <list create='false'>
+                                <field name="category_name"/>
+                                <field name="color_1" widget="color"/>
+                                <field name="color_2" widget="color"/>
+                                <field name="removed_products"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Fields">
+                        <field name="field_ids">
+                            <list editable='bottom'>
+                                <field name="sequence" widget="handle"/>
+                                <field name="field_name"/>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="catalog_action" model="ir.actions.act_window">
+        <field name="name">Catalog</field>
+        <field name="res_model">catalog</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
