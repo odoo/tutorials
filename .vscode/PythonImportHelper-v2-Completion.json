@@ -202,6 +202,38 @@
         "documentation": {}
     },
     {
+        "label": "UserError",
+        "importPath": "odoo.exceptions",
+        "description": "odoo.exceptions",
+        "isExtraImport": true,
+        "detail": "odoo.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "ValidationError",
+        "importPath": "odoo.exceptions",
+        "description": "odoo.exceptions",
+        "isExtraImport": true,
+        "detail": "odoo.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "UserError",
+        "importPath": "odoo.exceptions",
+        "description": "odoo.exceptions",
+        "isExtraImport": true,
+        "detail": "odoo.exceptions",
+        "documentation": {}
+    },
+    {
+        "label": "float_compare",
+        "importPath": "odoo.tools.float_utils",
+        "description": "odoo.tools.float_utils",
+        "isExtraImport": true,
+        "detail": "odoo.tools.float_utils",
+        "documentation": {}
+    },
+    {
         "label": "AwesomeDashboard",
         "kind": 6,
         "importPath": "awesome_dashboard.controllers.controllers",
@@ -269,7 +301,7 @@
         "kind": 6,
         "importPath": "estate.models.estate_property_tag",
         "description": "estate.models.estate_property_tag",
-        "peekOfCode": "class EstatePropertyTag(models.Model):\n    _name = \"estate.property.tag\"\n    _description = \"Store Real Estate Properties Tags\"\n    name = fields.Char(\"Estate Type Tag\", required=True, translate=True)",
+        "peekOfCode": "class EstatePropertyTag(models.Model):\n    _name = \"estate.property.tag\"\n    _description = \"Store Real Estate Properties Tags\"\n    name = fields.Char(\"Estate Type Tag\", required=True, translate=True)\n    # SQL Constraints\n    _sql_constraints = [\n        ('unique_name', 'UNIQUE(name)', 'The tag must be unique.')\n    ]",
         "detail": "estate.models.estate_property_tag",
         "documentation": {}
     },
@@ -278,7 +310,7 @@
         "kind": 6,
         "importPath": "estate.models.estate_property_type",
         "description": "estate.models.estate_property_type",
-        "peekOfCode": "class EstatePropertyType(models.Model):\n    _name = \"estate.property.type\"\n    _description = \"Store Real Estate Properties Types\"\n    name = fields.Char(\"Estate Type Name\", required=True, translate=True)",
+        "peekOfCode": "class EstatePropertyType(models.Model):\n    _name = \"estate.property.type\"\n    _description = \"Store Real Estate Properties Types\"\n    name = fields.Char(\"Estate Type Name\", required=True, translate=True)\n    _sql_constraints = [\n        ('unique_type_name', 'UNIQUE(name)', 'The property type name must be unique.')\n    ]",
         "detail": "estate.models.estate_property_type",
         "documentation": {}
     }

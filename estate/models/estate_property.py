@@ -1,5 +1,7 @@
 from odoo import fields, models, api
 from datetime import timedelta, date
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -70,3 +72,35 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    # Actions
+    def action_set_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled properties cannot be sold.")
+            record.state = "sold"
+        return True
+
+    def action_set_cancelled(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold properties cannot be cancelled.")
+            record.state = "cancelled"
+        return True
+    
+
+    # SQL Constraints
+    _sql_constraints = [
+        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+        ('unique_name', 'UNIQUE(name)', 'The name must be unique.')
+    ]
+    
+    # Python Constraints
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price, 0.0, precision_digits=2) > 0:
+                min_acceptable = record.expected_price * 0.9
+                if float_compare(record.selling_price, min_acceptable, precision_digits=2) < 0:
+                    raise ValidationError("Selling price cannot be lower than 90% of the expected price.")

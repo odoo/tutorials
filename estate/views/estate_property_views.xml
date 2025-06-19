@@ -29,6 +29,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="action_set_sold" type="object" string="Sold" class="btn-primary"
+                        modifiers="{'invisible': [('state', '=', 'cancelled')]}" />
+                    <button name="action_set_cancelled" type="object" string="Cancelled"
+                        class="btn-danger" modifiers="{'invisible': [('state', '=', 'sold')]}" />
+                </header>
                 <sheet>
                     <field name="name" />
                     <group>

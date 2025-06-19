@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="estate_offers_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.offer</field>
+        <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Channel">
                 <field name="price" />
                 <field name="partner_id" />
                 <field name="status" />
+                <button name="action_accept_offer" string="Confirm"  type="object" icon="fa-check"/>
+                <button name="action_refuse_offer" string="Cancel" type="object" icon="fa-times"/>
             </list>
         </field>
     </record>
