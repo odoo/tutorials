@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, models, fields
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -9,12 +9,18 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real estate property"
     _order = 'id DESC'
+    _sql_constraints = [
+        ('check_positive_expected_price', 'CHECK(expected_price > 0)',
+         "The property's expected price must be positive."),
+        ('check_positive_selling_price', 'CHECK(selling_price >= 0)',
+         "The property's selling price must be positive."),
+    ]
 
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=lambda x: fields.Datetime.today() + relativedelta(months=+3))
+    date_availability = fields.Date(copy=False, default=lambda x: fields.Datetime.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -39,35 +45,22 @@ class EstateProperty(models.Model):
         ('cancel', "Cancelled"),
     ], string="Status", copy=False, default='draft', required=True)
 
-    property_type_id = fields.Many2one(comodel_name="estate.property.type")
-    buyer_id = fields.Many2one(comodel_name="res.partner", copy=False)
-    salesperson_id = fields.Many2one(comodel_name="res.users", default=lambda self: self.env.user)
-    tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many(comodel_name="estate.property.offer", inverse_name="property_id")
+    property_type_id = fields.Many2one(comodel_name='estate.property.type')
+    buyer_id = fields.Many2one(comodel_name='res.partner', copy=False)
+    salesperson_id = fields.Many2one(comodel_name='res.users', default=lambda self: self.env.user)
+    tag_ids = fields.Many2many('estate.property.tag')
+    offer_ids = fields.One2many(comodel_name='estate.property.offer', inverse_name='property_id')
     best_price = fields.Float(compute='_compute_best_price')
-
-    _sql_constraints = [
-        ('check_positive_expected_price', 'CHECK(expected_price > 0)',
-         "The property's expected price must be positive."),
-        ('check_positive_selling_price', 'CHECK(selling_price >= 0)',
-         "The property's selling price must be positive."),
-    ]
-
-    @api.ondelete(at_uninstall=False)
-    def _prevent_active_properties_deletion(self):
-        for record in self:
-            if record.state not in ('draft', 'cancel'):
-                raise UserError(f"Property {record.name} can't be deleted because it is not new or cancelled")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.garden_area + record.living_area
+        for property in self:
+            property.total_area = property.garden_area + property.living_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+        for property in self:
+            property.best_price = max(property.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
     def _onchange_has_garden(self):
@@ -78,24 +71,30 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
             self.garden_area = 0.0
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_sufficient_selling_price(self):
+        for property in self:
+            if float_is_zero(property.selling_price, 2):
+                continue
+            if float_compare(property.selling_price * 100, property.expected_price * 90, 2) == -1:
+                raise ValidationError(_("The property's selling price must be greater than 90% of the expected price"))
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_active_properties_deletion(self):
+        for property in self:
+            if property.state not in ('draft', 'cancel'):
+                raise UserError(_("Property %s can't be deleted because it is not new or cancelled"), property.name)
+
     def set_to_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError("You can't cancel sold properties")
-            record.state = 'cancel'
+        for property in self:
+            if property.state == 'sold':
+                raise UserError(_("You can't cancel sold properties"))
+            property.state = 'cancel'
         return True
 
     def set_to_sold(self):
-        for record in self:
-            if record.state == 'cancel':
-                raise UserError("You can't sell cancelled properties")
-            record.state = 'sold'
+        for property in self:
+            if property.state == 'cancel':
+                raise UserError(_("You can't sell cancelled properties"))
+            property.state = 'sold'
         return True
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_sufficient_selling_price(self):
-        for record in self:
-            if float_is_zero(record.selling_price, 2):
-                continue
-            if float_compare(record.selling_price * 100, record.expected_price * 90, 2) == -1:
-                raise ValidationError("The property's selling price must be greater than 90% of the expected price")

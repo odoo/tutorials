@@ -1,26 +1,27 @@
-from odoo import models, Command
+from odoo import Command, _, models
 
 
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def set_to_sold(self):
-        for record in self:
+        result = super().set_to_sold()
+        for property in self:
             invoice_data = {
-                'partner_id': record.buyer_id.id,
+                'partner_id': property.buyer_id.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
                     Command.create({
-                        'name': f"Down Payment For {record.name}",
+                        'name': _("Down Payment For %s", property.name),
                         'quantity': 1,
-                        'price_unit': record.selling_price * 0.06
+                        'price_unit': property.selling_price * 0.06
                     }),
                     Command.create({
-                        'name': "Administration Fees",
+                        'name': _("Administration Fees"),
                         'quantity': 1,
                         'price_unit': 100.00
                     })
                 ]
             }
             self.env['account.move'].create(invoice_data)
-        return super().set_to_sold()
+        return result
