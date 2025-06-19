@@ -8,7 +8,7 @@ class EstateProperty(models.Model):
 
     _name = "estate.property"
     _description = "estate properties"
-    _order = "id"
+    _order = "id desc"
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0 )', 'expected price must be strictly positive'),
         ('check_selling_price', 'CHECK(selling_price >= 0 )', 'selling price must be positive'),
