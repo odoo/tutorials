@@ -28,6 +28,19 @@
     <field name="model">estate.property</field>
     <field name="arch" type="xml">
       <form>
+        <header>
+          <button name="action_mark_sold"
+            type="object"
+            string="Mark as Sold"
+            class="btn-primary"
+            invisible="state == 'sold'"/>
+            <button name="action_cancel_property"
+            type="object"
+            string="Cancel"
+            class="btn-secondary"
+            invisible="state == 'cancelled'"/>
+            <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+        </header>
         <sheet>
 
           <!-- Title Header -->
@@ -37,14 +50,25 @@
           
 
           <!-- Two-column main property info -->
+        <group>
+          <field name="tag_ids" widget="many2many_tags"/>
+        </group>
+
+        <!-- Side-by-side layout using nested groups -->
+        <group>
           <group col="2">
-            <field name="tag_ids" widget="many2many_tags"/>
+            <field name="property_type_id"/>
             <field name="postcode"/>
-            <field name="property_type_id"/>            
+          </group>
+          <group col="2">
             <field name="expected_price"/>
+            <field name="best_price" readonly="1"/>
+          </group>
+          <group col="2">
             <field name="date_availability"/>
             <field name="selling_price" readonly="1"/>
           </group>
+        </group>
 
           <!-- Tabs Section -->
           <notebook>
@@ -63,10 +87,24 @@
                 <field name="garage"/>
                 <field name="garden"/>
                 <field name="garden_area"/>
+                <field name="total_area" readonly="1"/>
                 <field name="garden_orientation"/>
 
               </group>
             </page>
+
+            <page string="Offers">
+              <field name="offer_ids">
+                 <list>
+                  <field name="price"/>
+                  <field name="partner_id"/>
+                   <button name="action_accept_offer" type="object" icon="fa-check" string="Accept"/>
+                   <button name="action_refuse_offer" type="object" icon="fa-times" string="Refuse"/>
+                  <field name="status"/>
+                 </list>
+              </field>
+            </page>
+
 
 
             <!-- ============ -->
