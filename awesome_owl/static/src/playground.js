@@ -1,19 +1,17 @@
 /** @odoo-module **/
 
-import { markup,Component,useState} from "@odoo/owl";
+import { Component,useState} from "@odoo/owl";
 import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
+import { TodoList } from "./todolist/todolist";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
-    static components = { Counter,Card };
+    static components = { Counter,Card,TodoList };
     setup() {
         this.state = useState({ sum: 2 });
     }
-
     incrementSum(value) {
         this.state.sum += value;
     }
-    val1 = "<div class='text-primary'>some text 1</div>";
-    content = markup("<div class='text-primary'>some text 2</div>");
 }

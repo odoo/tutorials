@@ -11,7 +11,14 @@
             <p>The Sum is: <t t-esc="state.sum"/></p>
         </div>
         <br/>
-        <Card title="'Card 1'" content="this.val1"/>
-        <Card title="'Card 2'" content="this.content"/>
+        <div class="p-3">
+            <Card title="'Card 1'">
+                <p>This is the content of Card 1.</p>
+            </Card>
+            <Card title="'Card 2'">
+                <Counter onChange.bind="incrementSum"/>
+            </Card>
+        </div>
+        <TodoList/>
     </t>
 </templates>
