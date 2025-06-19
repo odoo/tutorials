@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
@@ -40,6 +41,10 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute='_compute_total')
     best_price = fields.Float(compute='_compute_best_price')
 
+    cancelled = fields.Boolean(default=False)
+    sold = fields.Boolean(default=False)
+
+
     @api.depends('living_area','garden_area')
     def _compute_total(self):
         self.total_area = self.garden_area + self.living_area
@@ -60,3 +65,18 @@ class EstateProperty(models.Model):
             self.garden_area = None
             self.garden_orientation = None
 
+    def action_sold(self):
+        for record in self:
+            if not record.state == "cancelled":
+                record.state = "sold"
+            else:
+                raise UserError("You can't sold an house that has been cancelled")
+        return True
+    
+    def action_cancel(self):
+        for record in self:
+            if not record.state == "sold":
+                record.state = "cancelled"
+            else:
+                raise UserError("You can't cancel an house that has already been sold")
+        return True
