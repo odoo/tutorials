@@ -5,10 +5,10 @@ class Property(models.Model):
     _description = "Estate Property"
     
     # misc
-    name = fields.Char('Property Name', required=True)
+    name = fields.Char(string='Title', required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(default=fields.Date.add(fields.Date.today(), months=3), copy=False)
+    date_availability = fields.Date(string='Available From', default=fields.Date.add(fields.Date.today(), months=3), copy=False)
     
     # price
     expected_price = fields.Float(required=True)
@@ -16,11 +16,11 @@ class Property(models.Model):
     
     # rooms
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer(string='Living Area (sqm)')
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer(string='Garden Area (sqm)')
     garden_orientation = fields.Selection([
         ('north', 'North'), 
         ('south', 'South'), 
