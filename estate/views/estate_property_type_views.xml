@@ -15,6 +15,14 @@
                             <field name="name"/>
                         </h1>
                     </div>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_offers"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-tags">
+                                <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
