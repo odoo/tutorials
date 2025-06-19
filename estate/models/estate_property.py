@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round
 from dateutil.relativedelta import relativedelta
 
 class EstateProperty(models.Model):
@@ -44,6 +45,13 @@ class EstateProperty(models.Model):
     cancelled = fields.Boolean(default=False)
     sold = fields.Boolean(default=False)
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price has to be > 0'),
+
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price has to be >= 0')
+    ]
 
     @api.depends('living_area','garden_area')
     def _compute_total(self):
@@ -80,3 +88,10 @@ class EstateProperty(models.Model):
             else:
                 raise UserError("You can't cancel an house that has already been sold")
         return True
+    
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price != 0 and float_compare(record.selling_price,record.expected_price*0.9,precision_rounding=2) < 0:
+                raise ValidationError("The selling price must be equal or higher than 90% of the selling price.")
+                
