@@ -1,6 +1,7 @@
 from odoo import fields, models, api
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -8,6 +9,10 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate properties"
     _order = "id"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0 )', 'expected price must be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0 )', 'selling price must be positive'),
+    ]
 
     name = fields.Char("Title", required=True)
     description = fields.Text("Description")
@@ -84,3 +89,9 @@ class EstateProperty(models.Model):
                 raise UserError("Sold properties cannot be canceled.")
             else:
                 record.state = 'canceled'
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_rounding=0.01) and float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) < 0:
+                raise ValidationError("the selling price cannot be lower than 90% of the expected price")
