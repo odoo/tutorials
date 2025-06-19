@@ -10,9 +10,16 @@
         <div>
             <p>The Sum is: <t t-esc="state.sum" /></p>
         </div>
-        <div>
-            <Card title="'card 1'" content="this.content1" />
-            <Card title="'card 2'" content="this.content2" />
+        <div class="p-5">
+            <Card title="'card 1'">
+                <p>This is the content of Card 1.</p>
+            </Card>
+            <Card title="'Card 2'">
+                <Counter onChange.bind="incrementSum" />
+            </Card>
+        </div>
+        <div class="d-inline-flex border m-5 p-5">
+            <TodoList />
         </div>
     </t>
 
