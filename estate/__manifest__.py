@@ -13,6 +13,9 @@
         'views/estate_search.xml',
         'views/estate_offer_list_view.xml',
         'views/estate_offer_form_view.xml',
+        'views/estate_type_form_view.xml',
+        'views/estate_type_list_view.xml',
+        'views/estate_tag_list_view.xml',
         'security/ir.model.access.csv',
     ],
     'assets': {

@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real estate properties offers"
+    _order = "price desc"
 
     price = fields.Float("Price",required=True)
     status = fields.Selection(
@@ -20,6 +21,8 @@ class EstatePropertyOffer(models.Model):
     create_date = fields.Date(default=fields.Date.today())
     date_deadline = fields.Date(compute='_compute_deadline',inverse='_inverse_validity')
 
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
+
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)',
          'The offer price has to be > 0'),
@@ -32,6 +35,7 @@ class EstatePropertyOffer(models.Model):
                 record.date_deadline = record.create_date + relativedelta(days=record.validity)
             else:
                 record.date_deadline = fields.Date.today()+ relativedelta(days=record.validity)
+            
             
     def _inverse_validity(self):
         for record in self:
@@ -46,6 +50,7 @@ class EstatePropertyOffer(models.Model):
                 record.status = 'accepted'              
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
+            record.property_id.state = 'sold'
 
         return True
     
