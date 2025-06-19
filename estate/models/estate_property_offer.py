@@ -25,11 +25,10 @@ class EstatePropertyOffer(models.Model):
 
     def create(self, values):
         offer = super().create(values)
-        if offer.property_id:
-            max_offer_price = max(offer.property_id.offer_ids.mapped('price'), default=0.0)
-            if max_offer_price > offer.price:
-                raise ValidationError("There is a better price for this property already!")
-            offer.property_id.state = 'received'
+        max_offer_price = max(offer.property_id.offer_ids.mapped('price'), default=0.0)
+        if max_offer_price > offer.price:
+            raise ValidationError("There is a better price for this property already!")
+        offer.property_id.state = 'received'
         return offer
 
     def _compute_validity_from_deadline(self):
