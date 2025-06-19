@@ -12,7 +12,6 @@
         <field name="arch" type="xml">
             <list string="Channel">
                 <field name="name" />
-
             </list>
         </field>
     </record>
@@ -24,8 +23,6 @@
             <form string="Estate Property Type">
                 <sheet>
                     <field name="name" />
-
-
                 </sheet>
             </form>
         </field>

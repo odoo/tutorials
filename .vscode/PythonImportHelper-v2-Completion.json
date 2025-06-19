@@ -82,6 +82,14 @@
         "documentation": {}
     },
     {
+        "label": "api",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
         "label": "models",
         "importPath": "odoo",
         "description": "odoo",
@@ -91,6 +99,14 @@
     },
     {
         "label": "fields",
+        "importPath": "odoo",
+        "description": "odoo",
+        "isExtraImport": true,
+        "detail": "odoo",
+        "documentation": {}
+    },
+    {
+        "label": "api",
         "importPath": "odoo",
         "description": "odoo",
         "isExtraImport": true,
@@ -170,6 +186,22 @@
         "documentation": {}
     },
     {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "date",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
         "label": "AwesomeDashboard",
         "kind": 6,
         "importPath": "awesome_dashboard.controllers.controllers",
@@ -228,7 +260,7 @@
         "kind": 6,
         "importPath": "estate.models.estate_property_offer",
         "description": "estate.models.estate_property_offer",
-        "peekOfCode": "class EstatePropertyOffer(models.Model):\n    _name = \"estate.property.offer\"\n    _description = \"Property Offer\"\n    price = fields.Float(string=\"Offer Price\")\n    status = fields.Selection(\n        [\n            ('accepted', 'Accepted'), \n            ('refused', 'Refused')\n        ],\n        string=\"Status\",",
+        "peekOfCode": "class EstatePropertyOffer(models.Model):\n    _name = \"estate.property.offer\"\n    _description = \"Property Offer\"\n    validity = fields.Integer(\"Valid For\", default=7, help=\"Number of days until this offer expires\")\n    price = fields.Float(string=\"Offer Price\")\n    status = fields.Selection(\n        [\n            ('accepted', 'Accepted'), \n            ('refused', 'Refused')\n        ],",
         "detail": "estate.models.estate_property_offer",
         "documentation": {}
     },
