@@ -38,6 +38,8 @@ class EstateProperty(models.Model):
         ('cancelled', 'Cancelled'),
     ], copy=False, default="new")
     
+    note = fields.Text("Special mentions about the house")
+    
     # Computed fields
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
@@ -72,6 +74,8 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+
 
     # Actions
     def action_set_sold(self):
