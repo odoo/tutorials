@@ -63,6 +63,7 @@
                             <group>
                                 <field name="salesperson_id" />
                                 <field name="buyer_id" />
+                                <field name="note" />
                             </group>
                         </page>
                         <page string="offers">
