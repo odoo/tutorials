@@ -3,8 +3,22 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+
+            <TodoList/>
+
+            <Card title="safeTitle">
+                <t t-set-slot="content"> 
+                    <Counter id="2" val="state.counter2" callback.bind="incrementCounters"/>
+                </t>
+            </Card>
+
+            <Counter id="1" val="state.counter1" callback.bind="incrementCounters"/>
+        
+            <div> 
+                sum = <t t-esc="sumCounters"/>
+            </div>
         </div>
     </t>
-
 </templates>
+
+
