@@ -1,8 +1,65 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{controlPanel: {}}" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="openCustomers" type="button" class="btn btn-primary" title="Customers">Customers</button>
+                <button t-on-click="openLeads" type="button" class="btn btn-primary" title="Customers">Leads</button>
+            </t>
+            <div class="d-flex">
+                <DashboardItem>
+                    <div class="o_dashboard_stat_block">
+                        <span class="o_dashboard_stat_label">
+                            <strong>New Orders This Month:</strong>
+                        </span>
+                        <span class="o_dashboard_stat_value">
+                            <t t-esc="state.statistic?.nb_new_orders" />
+                        </span>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <div class="o_dashboard_stat_block">
+                        <span class="o_dashboard_stat_label">
+                            <strong>Total Amount This Month:</strong>
+                        </span>
+                        <span class="o_dashboard_stat_value">
+                            <t t-esc="state.statistic?.total_amount" />
+                        </span>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="o_dashboard_stat_block">
+                        <span class="o_dashboard_stat_label">
+                            <strong>Avg. T-Shirts per Order:</strong>
+                        </span>
+                        <span class="o_dashboard_stat_value">
+                            <t t-esc="state.statistic?.average_quantity" />
+                        </span>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="o_dashboard_stat_block">
+                        <span class="o_dashboard_stat_label">
+                            <strong>Cancelled Orders:</strong>
+                        </span>
+                        <span class="o_dashboard_stat_value">
+                            <t t-esc="state.statistic?.nb_cancelled_orders" />
+                        </span>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="o_dashboard_stat_block">
+                        <span class="o_dashboard_stat_label">
+                            <strong>Avg. Time New → Sent/Cancelled:</strong>
+                        </span>
+                        <span class="o_dashboard_stat_value">
+                            <t t-esc="state.statistic?.average_time" />
+                        </span>
+                    </div>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
-
+    
 </templates>
