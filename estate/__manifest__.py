@@ -21,5 +21,6 @@
     ],
     'assets': {
     },
+    'license': 'LGPL-3',
 }
 
