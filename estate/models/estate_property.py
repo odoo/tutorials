@@ -8,6 +8,12 @@ class EstateProperty(models.Model):
     _description = "Real estate properties"
     _order = "id desc"
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        for property in self:
+            if property.state == 'new' or property.state == 'cancelled':
+                raise UserError("Can't delete a property that is new or cancelled!")
+
     name = fields.Char("Estate name",required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")

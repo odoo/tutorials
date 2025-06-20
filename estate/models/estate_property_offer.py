@@ -8,6 +8,12 @@ class EstatePropertyOffer(models.Model):
     _description = "Real estate properties offers"
     _order = "price desc"
 
+    @api.model
+    def create(self, vals):
+        if self.env['estate.property'].browse(vals['property_id']).state == 'new':
+            self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+        return super(EstatePropertyOffer,self).create(vals)
+
     price = fields.Float("Price",required=True)
     status = fields.Selection(
         string='Status',
