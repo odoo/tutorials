@@ -16,6 +16,7 @@
         'views/estate_type_form_view.xml',
         'views/estate_type_list_view.xml',
         'views/estate_tag_list_view.xml',
+        'views/estate_kanban_view.xml',
         'views/res_users_view.xml',
         'security/ir.model.access.csv',
     ],
