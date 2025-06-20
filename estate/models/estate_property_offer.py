@@ -1,16 +1,17 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
+    """Model representing an offer for a real estate property."""
 
     _name = "estate.property.offer"
-    _description = "estate property offer"
+    _description = "Real Estate Property Offers"
     _order = "price desc"
     _sql_constraints = [
-        ('check_offer_price', 'CHECK(price > 0)', 'An offer price must be strictly positive')
+        ('check_offer_price', 'CHECK(price > 0)', 'An offer price must be strictly positive.'),
     ]
 
     price = fields.Float(string="Price")
@@ -24,7 +25,7 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-    validity = fields.Integer("Validity (days)")
+    validity = fields.Integer("Validity (days)", default=7)
     deadline = fields.Date("Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
     property_type_id = fields.Many2one(
         "estate.property.type", related="property_id.property_type_id", string="Property Type")
@@ -40,13 +41,12 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         if 'accepted' in self.mapped("property_id.offer_ids.status"):
-            raise UserError("An offer is already accepted")
-        else:
-            for record in self:
-                record.status = 'accepted'
-                record.property_id.state = 'offer_accepted'
-                record.property_id.buyer_id = record.partner_id
-                record.property_id.selling_price = record.price
+            raise UserError(_("An offer is already accepted."))
+        for record in self:
+            record.status = 'accepted'
+            record.property_id.state = 'offer_accepted'
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
 
     def action_refuse(self):
         for record in self:
@@ -60,6 +60,6 @@ class EstatePropertyOffer(models.Model):
                 if prop.offer_ids:
                     max_offer = max(prop.mapped("offer_ids.price"))
                     if float_compare(vals["price"], max_offer, precision_rounding=0.01) <= 0:
-                        raise UserError(f"The offer must be higher than {max_offer}")
+                        raise UserError(_("The offer must be higher than %.2f."), max_offer)
                 prop.state = "offer_received"
         return super().create(values)

@@ -1,23 +1,27 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
+    """Model representing a real estate property."""
 
     _name = "estate.property"
-    _description = "estate properties"
+    _description = "Real Estate Properties"
     _order = "id desc"
     _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0 )', 'expected price must be strictly positive'),
-        ('check_selling_price', 'CHECK(selling_price >= 0 )', 'selling price must be positive'),
+        ('check_expected_price', 'CHECK(expected_price > 0 )', 'Expected price must be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price >= 0 )', 'Selling price must be positive.'),
     ]
+
+    def _default_date_availability(self):
+        return fields.Date.today() + relativedelta(months=3)
 
     name = fields.Char("Title", required=True)
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Available From", default=(fields.Date.today() + relativedelta(months=3)))
+    date_availability = fields.Date("Available From", default=_default_date_availability)
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Bedrooms", default=2)
@@ -32,7 +36,7 @@ class EstateProperty(models.Model):
             ('north', "North"),
             ('south', "South"),
             ('east', "East"),
-            ('west', "West")
+            ('west', "West"),
         ],
     )
     active = fields.Boolean("Active", default=True)
@@ -79,24 +83,22 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == 'canceled':
-                raise UserError("Canceled properties cannot be sold.")
-            else:
-                record.state = 'sold'
+                raise UserError(_("Canceled properties cannot be sold."))
+            record.state = 'sold'
 
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold properties cannot be canceled.")
-            else:
-                record.state = 'canceled'
+                raise UserError(_("Sold properties cannot be canceled."))
+            record.state = 'canceled'
 
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_rounding=0.01) and float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=0.01) < 0:
-                raise ValidationError("the selling price cannot be lower than 90% of the expected price")
+                raise ValidationError(_("The selling price cannot be lower than 90% of the expected price."))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_is_new_or_cancelled(self):
         if any(record.state not in ('new', 'canceled') for record in self):
-            raise UserError("Only new and canceled properties can be deleted.")
+            raise UserError(_("Only new and canceled properties can be deleted."))

@@ -2,12 +2,13 @@ from odoo import fields, models, api
 
 
 class EstatePropertyType(models.Model):
+    """Model representing a property type."""
 
     _name = "estate.property.type"
-    _description = "estate property type"
+    _description = "Real Estate Property Type"
     _order = "name"
     _sql_constraints = [
-        ('unique_name', 'UNIQUE(name)', 'the type name must be unique')
+        ('unique_name', 'UNIQUE(name)', 'The type name must be unique.'),
     ]
 
     name = fields.Char("Name", required=True)

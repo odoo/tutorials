@@ -2,6 +2,7 @@ from odoo import models
 
 
 class EstateProperty(models.Model):
+    """Extend estate property to create an invoice on sold."""
 
     _inherit = "estate.property"
 
