@@ -33,6 +33,6 @@
   <menuitem
     id="menu_estate_property_tag"
     name="Property Tags"
-    parent="estate.estate_menu_settings"
+    parent="estate_menu_settings"
     action="action_estate_property_tag"/>
 </odoo>
