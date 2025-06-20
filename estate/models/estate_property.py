@@ -8,7 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-
+    _order = "id desc"
     active = fields.Boolean(default=True)
 
     name = fields.Char(string="Title", required=True)
@@ -128,4 +128,12 @@ class EstateProperty(models.Model):
             ):
                 raise ValidationError(
                     "Selling price must be at least 90% of the expected price."
+                )
+
+    @api.ondelete(at_uninstall=False)
+    def _check_can_be_deleted(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "Only properties in 'New' or 'Cancelled' state can be deleted."
                 )

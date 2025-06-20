@@ -8,7 +8,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer"
-
+    _order = "price desc"
     price = fields.Float(string="Offer Price")
 
     status = fields.Selection(
@@ -26,6 +26,13 @@ class EstatePropertyOffer(models.Model):
             "The offer price must be strictly positive.",
         ),
     ]
+
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        store=True,
+        readonly=False,
+    )
 
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
@@ -67,3 +74,44 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.status = "refused"
         return True
+
+    # @api.model
+    # def create(self, vals):
+    #     property_id = vals.get("property_id")
+    #     amount = vals.get("price")
+
+    #     if property_id and amount:
+    #             property = self.env["estate.property"].browse(property_id)
+
+    #     # Check for highest existing offer
+    #     existing_offer = self.search([
+    #         ('property_id', '=', property_id)
+    #     ], order='price DESC', limit=1)
+
+    #     if existing_offer and amount < existing_offer.price:
+    #         raise UserError("You cannot offer less than an existing offer.")
+
+    #     # Change property state to 'offer_received'
+    #     property.write({"state": "offer_received"})
+
+    #     return super().create(vals)
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            amount = vals.get("price")
+
+            if not (property_id and amount):
+                continue
+
+            property = self.env["estate.property"].browse(property_id)
+
+            existing_offer = self.search(
+                [("property_id", "=", property_id)], order="price DESC", limit=1
+            )
+            if existing_offer and amount < existing_offer.price:
+                raise UserError("You cannot offer less than an existing offer.")
+            property.state = "offer_received"
+
+        return super().create(vals_list)
