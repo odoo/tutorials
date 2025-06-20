@@ -2,11 +2,12 @@
 <odoo>
     <!-- Search -->
     <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+        <field name="name">Property Search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="Estate Property">
+            <search string="Property">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
@@ -20,21 +21,22 @@
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
             </search>
         </field>
-
     </record>
 
     <!-- Form -->
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+        <field name="name">Property Form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Estate Property">
+            <form string="Property">
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
+                    <field name="tag_ids" widget="many2many_tags"/>
                     <group col="2">
                         <group colspan="1">
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -58,6 +60,15 @@
                                 <field name="state"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>                        
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman"/>
+                                <field name="buyer"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -66,17 +77,19 @@
 
     <!-- List View -->
     <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+        <field name="name">Property List</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Property">
-                <field name="name" width="120px"/>
-                <field name="postcode" width="100px"/>
-                <field name="bedrooms" width="100px"/>
-                <field name="living_area" width="100px"/>
-                <field name="expected_price" width="140px"/>
-                <field name="selling_price" width="140px"/>
-                <field name="date_availability" width="140px"/>
+            <list string="Property">
+                <field name="name" width="130px"/>
+                <field name="property_type_id" width="130px"/>
+                <field name="tag_ids" widget="many2many_tags" width="130px"/>
+                <field name="postcode" width="130px"/>
+                <field name="bedrooms" width="130px"/>
+                <field name="living_area" width="130px"/>
+                <field name="expected_price" width="130px"/>
+                <field name="selling_price" width="130px"/>
+                <field name="date_availability" width="130px"/>
 
                 <field name="garage" optional="hide"/>
                 <field name="garden" optional="hide"/>
@@ -86,7 +99,7 @@
 
     <!-- Action -->
     <record id="estate_property_action" model="ir.actions.act_window">
-        <field name="name">Estate Property Action</field>
+        <field name="name">Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
