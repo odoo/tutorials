@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="model_estate_property_action_cancel" model="ir.actions.server">
+            <field name="name">Mass cancel</field>
+            <field name="model_id" ref="estate.model_estate_property"/>
+            <field name="binding_model_id" ref="estate.model_estate_property"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">action = records.action_cancel()</field>
+        </record>
+    </data>
+</odoo>
