@@ -7,8 +7,12 @@
             <Counter onChange.bind="sum"/>
         </div>
         <div>
-            <Card title="'Titre 1'" content="str1"/>
-            <Card title="'Titre 2'" content="str2"/>
+            <Card title="'Titre 1'">
+                  some content
+            </Card>
+            <Card title="'Titre 2'">
+                <Counter onChange.bind="sum"/>
+            </Card>
         </div>
         <div>The sum is: <t t-esc="sumresult.value"/></div>
         <TodoList />
