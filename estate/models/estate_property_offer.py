@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
 
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -30,6 +31,23 @@ class PropertyOffer(models.Model):
             safe_create_date = record.create_date or fields.Date.today()
             delta = record.date_deadline - fields.Date.to_date(safe_create_date)
             record.validity = delta.days
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+        new_price = vals.get('price', 0.0)
+
+        if property_id:
+            property = self.env['estate.property'].browse(property_id)
+
+            max_offer = max(property.offer_ids.mapped('price'), default=0.0)
+            if new_price < max_offer:
+                raise ValidationError('The offer cannot be lower than %.2f.' % max_offer)
+            
+            if property.state == 'new':
+                property.state = 'offer_received'
+
+        return super().create(vals)
 
     def action_accept_offer(self):
         for record in self:

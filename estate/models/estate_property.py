@@ -74,6 +74,12 @@ class Property(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_only_for_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError('Only new and cancelled properties can be deleted.')
+
     def action_sell_property(self):
         for record in self:
             if record.state == 'cancelled':
