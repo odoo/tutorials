@@ -14,7 +14,7 @@ class PropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
 
     # computed
-    validity = fields.Integer(default=7, string='Validity (days)')
+    validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline', string='Deadline')
 
     @api.depends('validity')
@@ -28,3 +28,24 @@ class PropertyOffer(models.Model):
             safe_create_date = record.create_date or fields.Date.today()
             delta = record.date_deadline - fields.Date.to_date(safe_create_date)
             record.validity = delta.days
+
+    def action_accept_offer(self):
+        for record in self:
+            # refuse other offers
+            other_offers = self.search([
+                ('property_id', '=', record.property_id.id),
+                ('id', '!=', record.id)
+            ])
+            other_offers.write({'status': 'refused'})            
+            
+            record.property_id.selling_price = record.price
+            record.property_id.buyer = record.partner_id
+            record.property_id.state = 'offer_accepted'
+
+            record.status = 'accepted'
+        return True
+    
+    def action_refuse_offer(self):
+        for record in self:
+            record.status = 'refused'
+        return True
