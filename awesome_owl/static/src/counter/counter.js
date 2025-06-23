@@ -1,4 +1,4 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, onWillDestroy } from "@odoo/owl";
 
 export class Counter extends Component {
     static template = "awesome_owl.Counter";
@@ -7,7 +7,11 @@ export class Counter extends Component {
     };
 
     setup(){
+        console.log("Counter created");
         this.state = useState({ value: 0 });
+        onWillDestroy(() => {
+            console.log("Counter will be destroyed");
+        });
     }
 
     increment(){
@@ -15,5 +19,7 @@ export class Counter extends Component {
         if(this.props.onChange){
             this.props.onChange();
         }
+        
     }
 }
+

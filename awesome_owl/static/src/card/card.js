@@ -1,4 +1,4 @@
-import { Component } from "@odoo/owl";
+import { Component, useState, onWillDestroy } from "@odoo/owl";
 
 export class Card extends Component {
     static template = "awesome_owl.Card";
@@ -11,4 +11,15 @@ export class Card extends Component {
             },
         }
     };
+
+    setup() {
+        this.state = useState({ isOpen: true });
+        onWillDestroy(() => {
+            console.log("Card will be destroyed");
+        });
+    }
+
+    toggleCard() {
+        this.state.isOpen = !this.state.isOpen;
+    }
 }
