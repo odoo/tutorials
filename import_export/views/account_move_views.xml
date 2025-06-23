@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="import_export_view_move_form" model="ir.ui.view">
+        <field name="name">import.export.view.move.form</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form//button[@name='button_draft']" position="after">
+                <button name="action_open_import_export_wizard"
+                    type="object"
+                    class="oe_highlight"
+                    string="Bills of Entry"
+                    invisible="not is_bill_of_entry_eligible"
+                    icon="fa-file-text"
+                />
+            </xpath>
+            <!-- Button to open journal entries list removed as requested -->
+        </field>
+    </record>
+</odoo>

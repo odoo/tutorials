@@ -10,7 +10,7 @@
                 </ol>
                 <!-- Slide 01 -->
                 <div class="carousel-inner">
-                    <div class="carousel-item o_colored_level pt24 pb64 active" data-name="Slide">  
+                    <div class="carousel-item o_colored_level pt24 pb64 active" data-name="Slide">
                         <div class="oe_unremovable container">
                             <div class="row content">
                                 <div class="carousel-content col-lg-6 pt88 position-relative">
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <!-- Slide 02 -->
-                    <div class="carousel-item o_colored_level pt24 pb64" data-name="Slide">  
+                    <div class="carousel-item o_colored_level pt24 pb64" data-name="Slide">
                         <div class="oe_unremovable container">
                             <div class="row content">
                                 <div class="carousel-content col-lg-6 pt88 position-relative">
@@ -91,7 +91,7 @@
             </div>
         </section>
     </template>
-    
+
     <!-- Add options to snippets -->
     <template id="snippet_options" inherit_id="website.snippet_options" name="Airproof - Snippets Options">
         <xpath expr="." position="inside">

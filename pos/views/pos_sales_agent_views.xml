@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_pos_form_inherit_sales_agent" model="ir.ui.view">
+        <field name="name">pos.order.form.inherit.sales.agent</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+        <field name="arch" type="xml">
+            <!-- Targeting: community/addons/point_of_sale/views/pos_order_view.xml (view_pos_pos_form) -->
+            <xpath expr="//group[@name='order_fields']/field[@name='fiscal_position_id']" position="after">
+                <field name="sales_agent_id"
+                       string="Sales Agent"
+                       options="{'no_create': True}"
+                       readonly="state != 'draft'"
+                       widget="many2one_avatar"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_order_tree_inherit_sales_agent" model="ir.ui.view">
+        <field name="name">pos.order.list.inherit.sales.agent</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+        <field name="arch" type="xml">
+            <!-- Targeting: community/addons/point_of_sale/views/pos_order_view.xml (view_pos_order_tree) -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="sales_agent_id"
+                       string="Sales Agent"
+                       options="{'no_create': True}"
+                       widget="many2one_avatar"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add Search View for better filtering -->
+    <record id="view_pos_order_search_inherit_sales_agent" model="ir.ui.view">
+        <field name="name">pos.order.search.inherit.sales.agent</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_search"/>
+        <field name="arch" type="xml">
+            <!-- Targeting: community/addons/point_of_sale/views/pos_order_view.xml (view_pos_order_search) -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="sales_agent_id" string="Sales Agent" filter_domain="[('sales_agent_id', 'ilike', self)]"/>
+            </xpath>
+            <xpath expr="//search" position="inside">
+                <filter string="Sales Agent" name="sales_agent_groupby" context="{'group_by': 'sales_agent_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

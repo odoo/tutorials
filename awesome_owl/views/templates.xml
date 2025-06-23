@@ -5,6 +5,39 @@
                 <head>
                     <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
                     <t t-call-assets="awesome_owl.assets_playground"/>
+                    <style>
+                        body {
+                            background-color: #f8f9fa;
+                            color: #333;
+                            line-height: 1.5;
+                        }
+                        .card {
+                            border-radius: 6px;
+                            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+                            border: none;
+                        }
+                        .accent-color {
+                            color: #4361ee;
+                        }
+                        button {
+                            background-color: #4361ee;
+                            color: white;
+                            border: none;
+                            padding: 6px 12px;
+                            border-radius: 4px;
+                        }
+                        button:hover {
+                            background-color: #3a56d4;
+                        }
+                        .form-control:focus {
+                            border-color: #4361ee;
+                            box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.15);
+                        }
+                        .form-check-input:checked {
+                            background-color: #4361ee;
+                            border-color: #4361ee;
+                        }
+                    </style>
                 </head>
 
                 <body>

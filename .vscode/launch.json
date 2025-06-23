@@ -1,0 +1,93 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Odoo: Launch Community Server",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/community/odoo-bin",
+            "args": [
+                "-c",
+                "${workspaceFolder}/odoo.conf",
+                "-d",
+                "button_master",
+                "--dev",
+                "all",
+                "--stop-after-init"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/community",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/community"
+            }
+        },
+        {
+            "name": "Odoo: Launch Enterprise Server",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/community/odoo-bin",
+            "args": [
+                "-c",
+                "${workspaceFolder}/odoo.conf",
+                "-d",
+                "button_master",
+                "--dev",
+                "all",
+                "--stop-after-init",
+                "--enterprise"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/community",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/community"
+            }
+        },
+        {
+            "name": "Odoo: Debug Current Module",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/community/odoo-bin",
+            "args": [
+                "-c",
+                "${workspaceFolder}/odoo.conf",
+                "-d",
+                "button_master",
+                "--dev",
+                "all",
+                "--stop-after-init",
+                "-u",
+                "${relativeFileDirname}"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/community",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/community"
+            }
+        },
+        {
+            "name": "Odoo: Debug Test",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/community/odoo-bin",
+            "args": [
+                "-c",
+                "${workspaceFolder}/odoo.conf",
+                "-d",
+                "button_master",
+                "--test-enable",
+                "--stop-after-init",
+                "-u",
+                "${relativeFileDirname}"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}/community",
+            "justMyCode": false,
+            "env": {
+                "PYTHONPATH": "${workspaceFolder}/community"
+            }
+        }
+    ]
+}
