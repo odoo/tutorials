@@ -3,6 +3,7 @@ from odoo import api, fields, models
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     # misc
     price = fields.Float()
@@ -16,6 +17,7 @@ class PropertyOffer(models.Model):
     # computed
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline', string='Deadline')
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     @api.depends('validity')
     def _compute_date_deadline(self):
