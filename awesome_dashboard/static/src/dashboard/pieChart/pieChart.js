@@ -3,10 +3,10 @@ import {
   onWillStart,
   useRef,
   onMounted,
-  onWillUnmount,
   useEffect,
 } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
+import { useService } from "@web/core/utils/hooks";
 
 export class Piechart extends Component {
   static template = "awesome_dashboard.Piechart";
@@ -16,12 +16,13 @@ export class Piechart extends Component {
   setup() {
     this.chart = null;
     this.canvasRef = useRef("canvas");
+    this.action = useService("action");
 
     onWillStart(async () => {
       await loadJS("/web/static/lib/Chart/Chart.js");
     });
 
-    this.chartData = {
+    const chartData = {
       labels: Object.keys(this.props.data),
       datasets: [
         {
@@ -33,7 +34,16 @@ export class Piechart extends Component {
     onMounted(() => {
       this.chart = new Chart(this.canvasRef.el, {
         type: "pie",
-        data: this.chartData,
+        data: chartData,
+        options: {
+          onClick: (event, elements) => {
+            if (elements.length > 0) {
+              const idx = elements[0].index;
+              const size = chartData.labels[idx];
+              this.getOrdersBySize(size);
+            }
+          },
+        },
       });
     });
     useEffect(
@@ -46,5 +56,20 @@ export class Piechart extends Component {
       },
       () => [this.props.data]
     );
+  }
+  getOrdersBySize(size) {
+    this.action.doAction({
+      type: "ir.actions.act_window",
+      name: `Orders with Size ${size.toUpperCase()}`,
+      res_model: "sale.order",
+      views: [[false, "list"]],
+      domain: [
+        [
+          "order_line.product_template_attribute_value_ids.display_name",
+          "ilike",
+          size,
+        ],
+      ],
+    });
   }
 }

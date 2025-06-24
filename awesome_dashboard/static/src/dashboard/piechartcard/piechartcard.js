@@ -6,6 +6,6 @@ export class Piechartcard extends Component {
   static components = { Piechart };
   static props = {
     title: { type: String },
-    data: { type: Object },
+    value: { type: Object },
   };
 }

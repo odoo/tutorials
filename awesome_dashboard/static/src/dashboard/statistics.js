@@ -1,17 +1,9 @@
 import { registry } from "@web/core/registry";
 import { reactive } from "@odoo/owl";
-
+import { rpc } from "@web/core/network/rpc"
 const statisticsService = {
   dependencies: [],
   start() {
-    // const loadStatistics = memoize(async () => {
-    //   try {
-    //     return await rpc("/awesome_dashboard/statistics");
-    //   } catch (error) {
-    //     console.error("Failed to load statistics:", error);
-    //     throw error;
-    //   }
-    // });
     const statistic = reactive({ data: null, loading: true, error: null });
 
     async function fetchData() {

@@ -92,19 +92,23 @@ class EstatePropertyOffer(models.Model):
                 ]
             )
             other_offers.write({"status": "refused"})
-            record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.state = "offer_accepted"
+            record.property_id.write(
+                {
+                    "selling_price": record.price,
+                    "buyer_id": record.partner_id,
+                    "state": "offer_accepted",
+                }
+            )
+            record.write({"status": "accepted"})
         return True
 
     def action_refused(self):
         for record in self:
             if record.status == "accepted":
-                record.status = "refused"
-                record.property_id.state = "offer_received"
-                record.property_id.buyer_id = False
-                record.property_id.selling_price = 0.0
+                record.property_id.write(
+                    {"state": "offer_received", "buyer_id": False, "selling_price": 0.0}
+                )
+                record.write({"status": "refused"})
             else:
                 record.status = "refused"
         return True
