@@ -2,7 +2,7 @@
 <odoo>
     <!-- Search -->
     <record id="estate_property_tag_view_search" model="ir.ui.view">
-        <field name="name">Property Tag Search</field>
+        <field name="name">estate.property.tag.view.search</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <search string="Property Tag">
@@ -13,7 +13,7 @@
 
     <!-- Form -->
     <record id="estate_property_tag_view_form" model="ir.ui.view">
-        <field name="name">Property Tag Form</field>
+        <field name="name">estate.property.tag.view.form</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <form string="Property Tag">
@@ -28,7 +28,7 @@
 
     <!-- List View -->
     <record id="estate_property_tag_view_list" model="ir.ui.view">
-        <field name="name">Property Tag List</field>
+        <field name="name">estate.property.tag.view.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <list string="Property Tag" editable="bottom">
