@@ -115,7 +115,7 @@
             <kanban default_group_by="property_type_id" records_draggable="False" groups_draggable="False">
                 <field name="state"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div class="oe_kanban_card">
                             <div class="oe_kanban_details">
                                 <div style="font-weight: bold;"><field name="name"/></div>

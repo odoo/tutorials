@@ -43,23 +43,26 @@ class PropertyOffer(models.Model):
                 record.date_deadline - fields.Date.to_date(safe_create_date))
             record.validity = delta.days
 
-    @api.model
-    def create(self, vals):
-        property_id = vals.get('property_id')
-        new_price = vals.get('price', 0.0)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            new_price = vals.get('price', 0.0)
 
-        if property_id:
-            property = self.env['estate.property'].browse(property_id)
+            if property_id:
+                property = self.env['estate.property'].browse(property_id)
 
-            max_offer = max(property.offer_ids.mapped('price'), default=0.0)
-            if new_price < max_offer:
-                raise ValidationError(
-                    ('The offer cannot be lower than %.2f.', max_offer))
+                max_offer = max(property.offer_ids.mapped('price'),
+                                default=0.0)
+                if new_price < max_offer:
+                    raise ValidationError(
+                        ('The offer cannot be lower than %.2f.') % max_offer
+                    )
 
-            if property.state == 'new':
-                property.state = 'offer_received'
+                if property.state == 'new':
+                    property.state = 'offer_received'
 
-        return super().create(vals)
+        return super().create(vals_list)
 
     def action_accept_offer(self):
         for record in self:
