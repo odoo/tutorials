@@ -23,6 +23,7 @@
     'depends': ['base', 'web'],
     'application': True,
     'installable': True,
+    'sequence': 1,
     'data': [
         'views/templates.xml',
     ],
