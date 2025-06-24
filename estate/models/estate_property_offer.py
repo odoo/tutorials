@@ -86,48 +86,60 @@ class EstatePropertyOffers(models.Model):
             record.property_id.selling_price = 0.0
 
     def action_accept_offer(self):
-        for record in self:
-            if (
-                float_compare(
-                    record.property_id.expected_price * 0.9,
-                    record.price,
-                    precision_digits=2,
-                )
-                > 0
-            ):
-                raise ValidationError(
-                    "The offer price must be at least 90% of the expected price."
-                )
-            accepted_offer = self.search(
-                [
-                    ("property_id", "=", record.property_id.id),
-                    ("status", "=", "accepted"),
-                ],
-                limit=1,
+        if (
+            float_compare(
+                self.property_id.expected_price * 0.9,
+                self.price,
+                precision_digits=2,
             )
-            if accepted_offer:
-                raise UserError("The offer for this property is already accepted.")
-            other_offers = self.search(
-                [
-                    ("property_id", "=", record.property_id.id),
-                    ("id", "!=", record.id),
-                    ("status", "!=", "refused"),
-                ]
+            > 0
+        ):
+            raise ValidationError(
+                "The offer price must be at least 90% of the expected price."
             )
-            other_offers.write({"status": "refused"})
-            record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.state = "offer_accepted"
+
+        accepted_offer = self.search(
+            [
+                ("property_id", "=", self.property_id.id),
+                ("status", "=", "accepted"),
+                ("id", "!=", self.id),
+            ],
+            limit=1,
+        )
+        if accepted_offer:
+            raise UserError("An offer for this property has already been accepted.")
+
+        other_offers = self.search(
+            [
+                ("property_id", "=", self.property_id.id),
+                ("id", "!=", self.id),
+                ("status", "!=", "refused"),
+            ]
+        )
+        other_offers.write({"status": "refused"})
+
+        self.write({"status": "accepted"})
+        self.property_id.write(
+            {
+                "selling_price": self.price,
+                "buyer_id": self.partner_id.id,
+                "state": "offer_accepted",
+            }
+        )
+
         return True
 
     def action_reject_offer(self):
         for record in self:
             if record.status == "accepted":
-                record.status = "refused"
-                record.property_id.state = "offer_received"
-                record.property_id.buyer_id = False
-                record.property_id.selling_price = 0.0
+                record.write({"status": "refused"})
+                record.property_id.write(
+                    {
+                        "state": "offer_received",
+                        "buyer_id": False,
+                        "selling_price": 0.0,
+                    }
+                )
             else:
-                record.status = "refused"
+                record.write({"status": "refused"})
         return True

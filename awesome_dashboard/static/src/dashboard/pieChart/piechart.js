@@ -4,7 +4,8 @@ import { loadJS } from "@web/core/assets"
 export class PieChart extends Component {
     static template = "awesome_dashboard.Piechart";
     static props = {
-        data: { type: Object }
+        data: { type: Object },
+        onSliceClick: { type: Function, optional: true },
     };
     setup() {
         this.chart = null;
@@ -47,6 +48,20 @@ export class PieChart extends Component {
         this.chart = new Chart(this.pieChartCanvasRef.el, {
             type: "pie",
             data: this.chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                onClick: (event, elements) => {
+                    if (elements.length > 0) {
+                        const clickedElementIndex = elements[0].index;
+                        const label = this.chartData.labels[clickedElementIndex];
+                        if (this.props.onSliceClick) {
+                            this.props.onSliceClick(label);
+                        }
+                    }
+                }
+
+            }
         })
     }
 }
