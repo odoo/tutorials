@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
         <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
             <t t-set-slot="control-panel-create-button">
                 <button type="button" class="btn btn-primary o-kanban-button-new" t-on-click="openCustomers">
@@ -10,16 +9,19 @@
                 <button type="button" class="btn btn-primary" t-on-click="openLeads">
                     Leads
                 </button>
+                <button type="button" class="btn btn-light" t-on-click="openConfiguration">
+                    <i class="fa fa-cog"></i>
+                </button>
             </t>
             <div class="dashboard-items">
                 <div class="d-flex flex-wrap">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
-                        <span class="o_dashboard_stat_label">
+                    <DashboardItem size="item.size || 1" t-if="!dialog_state.disabledItems.includes(item.id)">
+                        <span class="o_dashboard_title_block">
                             <t t-set="itemProp"
                                t-value="item.props ? item.props(this.statistics) : {'data': this.statistics}"/>
                         </span>
-                        <span class="o_dashboard_stat_value">
+                        <span class="o_dashboard_value_block">
                             <t t-component="item.Component" t-props="itemProp"/>
                         </span>
                     </DashboardItem>
@@ -27,5 +29,20 @@
             </div>
             </div>
         </Layout>
+    </t>
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you wish to see?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onDone">
+                    Done
+                </button>
+            </t>
+        </Dialog>
     </t>
 </templates>

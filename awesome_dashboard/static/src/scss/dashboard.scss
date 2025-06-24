@@ -6,14 +6,23 @@
     margin-bottom: 24px;
 }
 
-.o_dashboard_stat_label {
+.o_dashboard_title_block {
     font-weight: normal;
     margin-bottom: 10px;
+    color: #446ae7;
     display: block;
 }
 
-.o_dashboard_stat_value {
+.o_dashboard_value_block {
     font-size: 48px;
-    color: #228B22;
+    color: #c74747;
     font-weight: bold;
+}
+
+@media (max-width: 425px) {
+    .dashboard-items .d-flex > * {
+        flex: 0 0 100%;
+        max-width: 100%;
+        width: 100%;
+    }
 }

@@ -6,6 +6,6 @@ export class DashboardItem extends Component {
     static template = "awesome_dashboard.DashboardItem";
     static props = {
         size: { type: Number, optional: true, default: 1 },
-        slot: { type: Object, default: 1 },
+        slots: { type: Object, default: 1 },
     };
 }

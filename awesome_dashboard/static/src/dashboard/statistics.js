@@ -17,7 +17,7 @@ const statistics = {
             }
         };
         loadStatistics();
-        setInterval(loadStatistics, 10000);
+        setInterval(loadStatistics, 60000);
 
         return {
             stats,
