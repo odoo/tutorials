@@ -5,7 +5,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Form view">
-                <header>
+                <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button class="oe_stat_button" type="action" name="%(estate_property_offer)d" icon="fa-money">
                             <div class="o_stat_info">
@@ -14,8 +14,6 @@
                             </div>
                         </button>
                     </div>
-                </header>
-                <sheet>
                     <group>
                         <field name="name"/>
                     </group>

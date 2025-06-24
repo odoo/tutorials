@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+   <t t-name="my_module.TodoItem">
+      <li class="list-group-item" t-att-class="{'text-decoration-line-through': props.todo.isCompleted,'text-muted': props.todo.isCompleted}">  
+         <input type="checkbox" t-att-id="props.todo.id" t-att-checked="props.todo.isCompleted" t-on-change="onChange"/>      
+         <t t-esc="props.todo.id"/> -
+         <t t-esc="props.todo.description"/>
+         <span class="fa fa-remove" t-att-id="props.todo.id" t-on-click="onRemove"/>
+      </li>
+   </t>
+</templates>
