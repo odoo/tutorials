@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
             if not property.buyer_id:
                 continue
 
-            journal = self.env["account.journal"].search(
+            journal = self.env["account.journal"].sudo().search(
                 [("type", "=", "sale")], limit=1
             )
             if not journal:
@@ -41,6 +41,6 @@ class EstateProperty(models.Model):
                 ],
             }
 
-            self.env["account.move"].create(invoice_vals)
+            self.env["account.move"].sudo().create(invoice_vals)
 
         return res

@@ -34,5 +34,7 @@
     id="menu_estate_property_tag"
     name="Property Tags"
     parent="estate_menu_settings"
-    action="action_estate_property_tag"/>
+    action="action_estate_property_tag"
+    groups="estate.estate_group_manager"
+    />
 </odoo>

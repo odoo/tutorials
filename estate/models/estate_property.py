@@ -74,6 +74,14 @@ class EstateProperty(models.Model):
         ),
     ]
 
+    company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
+        index=True,
+    )
+
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
 
     @api.depends("living_area", "garden_area")

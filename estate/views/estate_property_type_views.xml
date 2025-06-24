@@ -74,6 +74,6 @@
 
   <!-- Menu -->
   <menuitem id="estate_menu_property_type" name="Property Types"
-            parent="estate_menu_properties_root"
-            action="action_estate_property_type"/>
+            parent="estate_menu_settings"
+            action="action_estate_property_type" groups="estate.estate_group_manager"/>
 </odoo>

@@ -6,6 +6,6 @@
   <menuitem id="estate_menu_properties" name="My Properties" parent="estate_menu_properties_root" action="action_estate_property"/>
 
   <!-- Settings Menu (New) -->
-  <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" sequence="30"/>
+  <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" sequence="30"  groups="estate.estate_group_manager"/>
 
 </odoo>
