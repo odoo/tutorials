@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+
+        <div class="card d-inline-block m-3" style="width: 18rem;">
+            <div class="card-header">
+                <span class="fa fa-window-minimize"
+                      aria-hidden="true"
+                      t-on-click="toggleMinimize"
+                />
+
+            </div>
+            <div class="card-body">
+                <t t-if="!state.is_minimized">
+                <h5 class="card-title"><t t-esc="props.title"/></h5>
+                    <p class="card-text">
+                    <t t-slot="default"/>
+                </p>
+                </t>
+                <t t-else="">
+                    <p>...</p>
+                </t>
+            </div>
+        </div>
+
+    </t>
+
+</templates>
