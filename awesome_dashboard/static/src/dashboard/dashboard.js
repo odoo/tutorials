@@ -5,7 +5,6 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
-import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -14,7 +13,7 @@ class AwesomeDashboard extends Component {
     setup(){
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
-        this.items = items;
+        this.items = registry.category("item").getAll();
         this.display = {
             controlPanel: {},
         };
