@@ -1,0 +1,35 @@
+{
+    'name': "Estate",
+    'version': '1.0',
+    'depends': ['base', 'mail', 'website'],
+    'author': "ppch",
+    'category': 'Real Estate/Brokerage',
+    'description': """
+    Estate Module
+    """,
+    'license': "LGPL-3",
+    'data': [
+        'security/estate_security.xml',
+        'security/estate_rules.xml',
+        'security/ir.model.access.csv',
+        'views/res_config_settings_views.xml',
+        'views/res_users_views.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_offer_views.xml',
+        'wizard/estate_property_offer_wizard_views.xml',
+        'views/estate_property_views.xml',
+        'views/estate_menu.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
+        'views/property_templates.xml',
+        'data/website_estate_menu.xml',
+    ],
+    'demo': [
+        'data/estate_property_tag_demo.xml',
+        'data/estate_property_type_demo.xml',
+        'demo/demo_data.xml',
+    ],
+    'installable': True,
+    'application': True,
+}
