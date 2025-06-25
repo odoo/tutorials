@@ -20,7 +20,9 @@ export class PieChart extends Component {
             this.renderChart(nextProps);
         })
         onWillUnmount(() => {
-            this.chart.destroy();
+            if (this.chart) {
+                this.chart.destroy();
+            }
         });
     };
 
