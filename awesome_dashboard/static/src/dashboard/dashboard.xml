@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap" t-if="statistic.isReady">
+                <AwesomeDashboardItem value="statistic.nb_new_orders">
+                    Number of new orders this month    
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem value="statistic.total_amount"> 
+                    Total amount of new orders this month  
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem value="statistic.average_quantity">
+                    Average amount of t-shirt by order this month    
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem value="statistic.nb_cancelled_orders">
+                    Number of cancelled orders this month  
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem value="statistic.average_time">
+                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’  
+                </AwesomeDashboardItem>
+                <AwesomeDashboardItem>
+                    Shirt orders by size
+                    <PieChart data="statistic['orders_by_size']" label="'Shirt orders by size'"/>
+                </AwesomeDashboardItem>
+            </div>
+        </Layout>   
+    </t>
+
+</templates>
