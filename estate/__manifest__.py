@@ -13,6 +13,12 @@
         'views/res_users_views.xml',
         'views/estate_menus.xml',
 
+        'report/estate_property_offer_templates.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
+        'report/res_users_templates.xml',
+        'report/res_users_reports.xml',
+
         'data/estate.property.type.csv',
     ],
     'demo': [
