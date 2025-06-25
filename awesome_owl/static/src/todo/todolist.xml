@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Todolist">
+
+        <input type="text" class="text-center form-control my-5" t-ref="inputRef" placeholder="Add Todo" t-on-keyup="addTodo"/>
+        <t t-foreach="todoItem" t-as="todo" t-key="todo.id">
+            <div class="d-flex justify-content-center gap-3">
+                <input type="checkbox" t-on-click="(ev) => this.toggleTodo(todo.id)"/>
+                <TodoItem todos="todo"/>
+                <span class="fa fa-remove" t-on-click="(ev) => this.removeTodo(todo.id)"/>
+            </div>
+        </t>
+
+    </t>
+</templates>
+    
