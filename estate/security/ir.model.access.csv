@@ -7,3 +7,4 @@ access_estate_property_tag_manager,estate.property.tag manager,model_estate_prop
 access_estate_property_tag_user,estate.property.tag user,model_estate_property_tag,estate.estate_group_user,1,0,0,0
 access_estate_property_offer_manager,estate.property.offer manager,model_estate_property_offer,estate.estate_group_manager,1,1,1,1
 access_estate_property_offer_user,estate.property.offer user,model_estate_property_offer,estate.estate_group_user,1,1,1,1
+access_estate_property_admin,estate.property admin,model_estate_property,base.group_system,1,1,1,1

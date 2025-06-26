@@ -8,18 +8,18 @@
     <field name="type">list</field>
     <field name="arch" type="xml">
       <list
-      decoration-success="state == 'offer_received'"
-      decoration-muted="state == 'sold'"
+        decoration-success="state == 'offer_received'"
+        decoration-muted="state == 'sold'"
       >
-        <field name="name"/>
-        <field name="postcode"/>
-        <field name="bedrooms"/>
-        <field name="living_area"/>
-        <field name="expected_price"/>
-        <field name="selling_price"/>
-        <field name="property_type_id"/>
-        <field name="date_availability" optional="show"/>
-        <field name="state"/> 
+        <field name="name" />
+        <field name="postcode" />
+        <field name="bedrooms" />
+        <field name="living_area" />
+        <field name="expected_price" />
+        <field name="selling_price" />
+        <field name="property_type_id" />
+        <field name="date_availability" optional="show" />
+        <field name="state" />
       </list>
     </field>
   </record>
@@ -37,42 +37,45 @@
             type="object"
             string="Mark as Sold"
             class="btn-primary"
-            invisible="state == 'sold'"/>
-            <button name="action_cancel_property"
+            invisible="state == 'sold'" />
+          <button name="action_cancel_property"
             type="object"
             string="Cancel"
             class="btn-secondary"
-            invisible="state == 'cancelled'"/>
-            <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+            invisible="state == 'cancelled'" />
+          <button name="%(action_report_estate_property_offer)d"
+            string="Print Offers Report"
+            type="action"
+            class="btn-primary"
+            icon="fa-print" />
+          <field name="state" widget="statusbar"
+            statusbar_visible="new,offer_received,offer_accepted,sold,cancelled" />
         </header>
         <sheet>
 
           <!-- Title Header -->
           <h1>
-            <field name="name"/>
+            <field name="name" />
           </h1>
-          
 
-          <!-- Two-column main property info -->
-        <group>
-          <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-        </group>
+          <group>
+            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+          </group>
 
-        <!-- Side-by-side layout using nested groups -->
-        <group>
-          <group col="2">
-            <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
-            <field name="postcode"/>
+          <group>
+            <group col="2">
+              <field name="property_type_id" options="{'no_create': True, 'no_open': True}" />
+              <field name="postcode" />
+            </group>
+            <group col="2">
+              <field name="expected_price" />
+              <field name="best_price" readonly="1" />
+            </group>
+            <group col="2">
+              <field name="date_availability" />
+              <field name="selling_price" readonly="1" />
+            </group>
           </group>
-          <group col="2">
-            <field name="expected_price"/>
-            <field name="best_price" readonly="1"/>
-          </group>
-          <group col="2">
-            <field name="date_availability" />
-            <field name="selling_price" readonly="1"/>
-          </group>
-        </group>
 
           <!-- Tabs Section -->
           <notebook>
@@ -83,44 +86,44 @@
             <page string="Description">
               <group>
 
-                <!-- Field Layout (Stacked Vertically) -->
-                <field name="description"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="facades"/>
-                <field name="garage"/>
-                <field name="garden"/>
-                <field name="garden_area" invisible="not garden"/>
-                <field name="total_area" readonly="1"/>
-                <field name="garden_orientation" invisible="not garden"/>
+                <field name="description" />
+                <field name="bedrooms" />
+                <field name="living_area" />
+                <field name="facades" />
+                <field name="garage" />
+                <field name="garden" />
+                <field name="garden_area" invisible="not garden" />
+                <field name="total_area" readonly="1" />
+                <field name="garden_orientation" invisible="not garden" />
 
               </group>
             </page>
 
             <page string="Offers">
               <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')">
-                 <list editable="bottom"> 
-                  <field name="price"/>
-                  <field name="partner_id"/>
-                   <button name="action_accept_offer" type="object" icon="fa-check" string="Accept" invisible="status == 'accepted'"/>
-                   <button name="action_refuse_offer" type="object" icon="fa-times" string="Refuse" invisible="status == 'accepted'"/>
-                  <field name="status"/>
-                 </list>
+                <list editable="bottom">
+                  <field name="price" />
+                  <field name="partner_id" />
+                  <button name="action_accept_offer" type="object" icon="fa-check" string="Accept"
+                    invisible="status == 'accepted'" />
+                  <button name="action_refuse_offer" type="object" icon="fa-times" string="Refuse"
+                    invisible="status == 'accepted'" />
+                  <field name="status" />
+                </list>
               </field>
             </page>
 
 
-
             <!-- ============ -->
             <!-- Sales Tab-->
-             <!-- ============ -->
+            <!-- ============ -->
             <page string="Sales">
-                <group>
-                    <field name="company_id" groups="base.group_multi_company"/>
-                    <field name="salesperson_id"/>
-                    <field name="buyer_id"/>
-                </group>  
-            </page>    
+              <group>
+                <field name="company_id" groups="base.group_multi_company" />
+                <field name="salesperson_id" />
+                <field name="buyer_id" />
+              </group>
+            </page>
 
           </notebook>
 
