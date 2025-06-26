@@ -3,6 +3,7 @@
     'version': '18.0.1.0.0',
     'depends': ['base'],
     'data': [
+        'data/master_data.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
@@ -11,6 +12,7 @@
         'views/res_users_views.xml',
         'views/estate_menus.xml',
         ],
+    'demo': ['demo/estate.property.csv'],
     'author': "baje",
     'category': 'Uncategorized',
     'description': """

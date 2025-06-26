@@ -1,0 +1,4 @@
+id,name,description,postcode,date_availability,expected_price,selling_price,bedrooms,living_area,facades,garage,garden,garden_area,garden_orientation,active,state
+100,Housing Number 100,"A house. Here's a random fraction: 0,815281954423783",165,2025-07-11,2660000,2660000,2,294,1,True,True,45,west,True,offer_received
+101,Housing Number 101,"A house. Here's a random fraction: 0,722300355198869",340,2025-06-06,2410000,2410000,2,472,1,True,True,70,south,True,canceled
+102,Housing Number 102,"A house. Here's a random fraction: 0,676182648737866",480,2025-11-09,730000,730000,1,143,0,True,True,80,east,True,canceled
