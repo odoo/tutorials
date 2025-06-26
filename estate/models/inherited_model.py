@@ -1,4 +1,5 @@
-from odoo import fields,models
+from odoo import fields, models
+
 
 class InheritedModel(models.Model):
     _inherit = "res.users"
@@ -6,4 +7,3 @@ class InheritedModel(models.Model):
     property_ids = fields.One2many(comodel_name='estate.property',
                                    inverse_name='salesperson_id',
                                    domain=[("state", "in", ['new', 'offer_received'])])
-    

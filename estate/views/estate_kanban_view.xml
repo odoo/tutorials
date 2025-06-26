@@ -7,7 +7,7 @@
             <kanban default_group_by='property_type_id'>
                 <field name="state"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
                             <div class="fw-bold fs-4"><field name="name"/></div>
                             <div>
