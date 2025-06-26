@@ -2,9 +2,25 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+        <Card>
+            <t t-set-slot="title">
+                Todo List
+            </t>
+            <t t-set-slot="content">
+                <TodoList/>
+            </t>
+        </Card>
+
+        <Card>
+            <t t-set-slot="title">
+                Counters
+            </t>
+            <t t-set-slot="content">
+                <Counter/>
+                <Counter/>
+            </t>
+        </Card>
     </t>
+
 
 </templates>
