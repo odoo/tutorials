@@ -7,28 +7,36 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
             <div class="d-flex flex-wrap" t-if="statistic.isReady">
-                <AwesomeDashboardItem value="statistic.nb_new_orders">
-                    Number of new orders this month    
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem value="statistic.total_amount"> 
-                    Total amount of new orders this month  
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem value="statistic.average_quantity">
-                    Average amount of t-shirt by order this month    
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem value="statistic.nb_cancelled_orders">
-                    Number of cancelled orders this month  
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem value="statistic.average_time">
-                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’  
-                </AwesomeDashboardItem>
-                <AwesomeDashboardItem>
-                    Shirt orders by size
-                    <PieChart data="statistic['orders_by_size']" label="'Shirt orders by size'"/>
-                </AwesomeDashboardItem>
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <AwesomeDashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistic) : {'data': statistic}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </AwesomeDashboardItem>
+                </t>
             </div>
         </Layout>   
+    </t>
+    
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard items configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
     </t>
 
 </templates>
