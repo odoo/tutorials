@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="website_menu_vendor_portal" model="website.menu">
+        <field name="name">Vendor Portal</field>
+        <field name="url">/vendor-portal</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+
+    <template id="vendor_portal_template" name="Vendor Portal">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div id="success-message" class="alert alert-success d-none" role="alert">
+                    Purchase Order Created Successfully! PO ID: <span id="po-id"></span>
+                </div>
+                <h2 class="text-center text-primary fw-bold mb-4">Vendor Portal</h2>
+                <form id="filterForm" method="GET" action="/vendor-portal" class="row g-3 mb-4 align-items-end">
+                    <div class="col-md-3">
+                        <label class="form-label">Vendor's Country</label>
+                        <select name="vendor_country" class="form-select">
+                            <option value="">Select Country</option>
+                            <t t-foreach="countries" t-as="country">
+                                <option t-att-value="country['id']"
+                                        t-att-selected="selected_country == country['id'] and 'selected' or None">
+                                    <t t-esc="country['name']"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Vendor</label>
+                        <select name="vendor_id" class="form-select">
+                            <option value="">Select Vendor</option>
+                            <t t-foreach="vendors" t-as="vendor">
+                                <option t-att-value="vendor['id']"
+                                        t-att-selected="selected_vendor == vendor['id'] and 'selected' or None">
+                                    <t t-esc="vendor['name']"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Product Category</label>
+                        <select name="category_id" class="form-select">
+                            <option value="">Select Category</option>
+                            <t t-foreach="categories" t-as="category">
+                                <option t-att-value="category['id']"
+                                        t-att-selected="selected_category == category['id'] and 'selected' or None">
+                                    <t t-esc="category['name']"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Product</label>
+                        <input type="text" id="productSearch" name="product_name" class="form-control" placeholder="Search Product"
+                            t-att-value="search_product" autocomplete="off"/>
+                        <datalist id="product_list">
+                            <t t-foreach="matching_products" t-as="product">
+                                <option t-att-value="product"/>
+                            </t>
+                        </datalist>
+                    </div>
+                    <div class="col-md-1 text-end">
+                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                    </div>
+                </form>
+                <div class="row g-4">
+                    <t t-foreach="products" t-as="product">
+                        <div class="col-md-12">
+                            <div class="card shadow-sm border-0 p-3">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3 text-center">
+                                        <img t-att-src="product['image_url']"
+                                             class="img-fluid rounded"
+                                             alt="Product Image"
+                                             style="max-width: 150px;"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h4 class="fw-semibold mb-2">
+                                            <t t-esc="product['name']"/>
+                                        </h4>
+                                        <p class="text-muted">Vendors:</p>
+                                        <ul class="list-group">
+                                            <t t-foreach="product['vendors']" t-as="vendor">
+                                                <li class="list-group-item d-flex justify-content-between">
+                                                    <span><t t-esc="vendor['name']"/></span>
+                                                    <span class="fw-bold text-success">💰 <t t-esc="vendor['price']"/> $</span>
+                                                </li>
+                                            </t>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-3 text-end">
+                                        <p class="mb-1 text-muted">Min Price: <b><t t-esc="product['min_price']"/></b> $</p>
+                                        <p class="mb-2 text-muted">Max Price: <b><t t-esc="product['max_price']"/></b> $</p>
+                                        <button class="btn btn-primary open-purchase-modal"
+                                                t-att-data-product-id="product['id']"
+                                                t-att-data-vendors="json.dumps(product['vendors'])"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#purchaseModal">
+                                            Create Purchase
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="my-4 d-flex justify-content-center">
+                    <t t-call="website.pager"/>
+                </div>
+                <div class="modal fade" id="purchaseModal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Create Purchase Order</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="/create-purchase-order" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="modal-body">
+                                    <label for="vendorSelect" class="form-label">Select Vendor</label>
+                                    <select id="vendorSelect" name="vendor_id" class="form-select" required='True'>
+                                        <option value="">Select Vendor</option>
+                                    </select>
+                                    <label for="quantityInput" class="form-label mt-2">Quantity</label>
+                                    <input type="number" id="quantityInput" name="quantity" class="form-control" value="1" min="1" required='True'/>
+                                    <input type="hidden" id="productInput" name="product_id"/>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Confirm</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const productSearch = document.getElementById("productSearch");
+                        productSearch.removeAttribute("list");
+                        productSearch.addEventListener("input", function () {
+                            if (this.value.length > 0) {
+                                this.setAttribute("list", "product_list");
+                            } else {
+                                this.removeAttribute("list");
+                            }
+                        });
+                        document.querySelectorAll(".open-purchase-modal").forEach(button => {
+                            button.addEventListener("click", function () {
+                                let productId = this.getAttribute("data-product-id");
+                                let vendors = JSON.parse(this.getAttribute("data-vendors"));
+
+                                document.getElementById("productInput").value = productId;
+                                let vendorSelect = document.getElementById("vendorSelect");
+                                vendorSelect.innerHTML = '<option value="">Select Vendor</option>';
+
+                                vendors.forEach(vendor => {
+                                    let option = document.createElement("option");
+                                    option.value = vendor.id;
+                                    option.textContent = vendor.name + " - $" + vendor.price;
+                                    vendorSelect.appendChild(option);
+                                });
+                            });
+                        });
+                        const urlParams = new URLSearchParams(window.location.search);
+                        if (urlParams.has('success') &amp;&amp; urlParams.get('success') === 'po_created') {
+                            const poId = urlParams.get('po_id');
+                            const successMessageDiv = document.getElementById('success-message');
+                            const poIdSpan = document.getElementById('po-id');
+                            poIdSpan.textContent = poId;
+                            successMessageDiv.classList.remove('d-none');
+
+                            urlParams.delete('success');
+                            urlParams.delete('po_id');
+                            const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+                            window.history.replaceState({}, document.title, newUrl);
+                            setTimeout(function() {
+                                successMessageDiv.classList.add('d-none');
+                            }, 3000);
+                        }
+                    });
+                </script>
+            </div>
+        </t>
+    </template>
+</odoo>
