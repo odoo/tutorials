@@ -12,7 +12,7 @@
         'views/res_users_views.xml',
         'views/estate_menus.xml',
         ],
-    'demo': ['demo/estate.property.csv'],
+    'demo': ['demo/estate.property.csv', 'demo/estate_offer_demo.xml'],
     'author': "baje",
     'category': 'Uncategorized',
     'description': """
