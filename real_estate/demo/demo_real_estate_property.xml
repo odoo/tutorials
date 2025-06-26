@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="real_estate_property_data1" model="real.estate.property">
+        <field name="name">New Residential</field>
+        <field name="image" type="base64" file="real_estate/static/src/images/1.jpg" />
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">85</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">10</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">new</field>
+        <field name="active">1</field>
+        <field name="property_type_id" ref="real_estate_type_data1" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data1')), (4, ref('real_estate_tag_data2'))]"/>
+    </record>
+
+    <record id="real_estate_property_data2" model="real.estate.property">
+        <field name="name">OR Residential New</field>
+        <field name="image" type="base64" file="real_estate/static/src/images/2.jpg" />
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">100</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">10</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">offer_received</field>
+        <field name="active">1</field>
+        <field name="property_type_id" ref="real_estate_type_data1" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data3')), (4, ref('real_estate_tag_data2')), (4, ref('real_estate_tag_data11'))]"/>
+    </record>
+
+    <record id="real_estate_property_data3" model="real.estate.property">
+        <field name="image" type="base64" file="real_estate/static/src/images/3.jpg" />
+        <field name="name">New Commercial</field>
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">85</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">0</field>
+        <field name="status">new</field>
+        <field name="active">1</field>
+        <field name="property_type_id" ref="real_estate_type_data2" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data7')), (4, ref('real_estate_tag_data5')), (4, ref('real_estate_tag_data9'))]"/>
+    </record>
+
+    <record id="real_estate_property_data4" model="real.estate.property">
+        <field name="name">OR Commercial</field>
+        <field name="image" type="base64" file="real_estate/static/src/images/4.jpg" />
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">90</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">10</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">offer_received</field>
+        <field name="active">1</field>
+        <field name="property_type_id" ref="real_estate_type_data2" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data6')), (4, ref('real_estate_tag_data8'))]"/>
+    </record>
+
+    <record id="real_estate_property_data5" model="real.estate.property">
+        <field name="name">OR Commercial 2</field>
+        <field name="image" type="base64" file="real_estate/static/src/images/5.jpg" />
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">85</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">10</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">offer_received</field>
+        <field name="active">1</field>
+        <field name="property_type_id" ref="real_estate_type_data2" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data1')), (4, ref('real_estate_tag_data5')), (4, ref('real_estate_tag_data8'))]"/>
+    </record>
+
+    <record id="real_estate_property_data6" model="real.estate.property">
+        <field name="name">New Industrial</field>
+        <field name="image" type="base64" file="real_estate/static/src/images/3.jpg" />
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">200</field>
+        <field name="facades">1</field>
+        <field name="garage">0</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">new</field>
+        <field name="active">1</field>
+        <field name="property_type_id" ref="real_estate_type_data3" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data5')), (4, ref('real_estate_tag_data7')), (4, ref('real_estate_tag_data8'))]"/>
+    </record>
+
+    <record id="real_estate_property_data7" model="real.estate.property">
+        <field name="name">OR Industrial</field>
+        <field name="image" type="base64" file="real_estate/static/src/images/2.jpg" />
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">85</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">0</field>
+        <field name="status">offer_received</field>
+        <field name="active">1</field>
+        <field name="property_type_id" ref="real_estate_type_data3" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data5')), (4, ref('real_estate_tag_data6')), (4, ref('real_estate_tag_data7'))]"/>
+    </record>
+
+    <record id="real_estate_property_data8" model="real.estate.property">
+        <field name="name">OR Residential 2</field>
+        <field name="image" type="base64" file="real_estate/static/src/images/1.jpg" />
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="selling_price">350000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">85</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">10</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">offer_received</field>
+        <field name="active">1</field>
+        <field name='partner_id' ref="res_partner_13" />
+        <field name="property_type_id" ref="real_estate_type_data1" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data2')), (4, ref('real_estate_tag_data3')), (4, ref('real_estate_tag_data5'))]"/>
+    </record>
+
+    <record id="real_estate_property_data9" model="real.estate.property">
+        <field name="name">OR Commercial 2</field>
+        <field name="image" type="base64" file="real_estate/static/src/images/5.jpg" />
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="selling_price">360000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">70</field>
+        <field name="facades">1</field>
+        <field name="garage">1</field>
+        <field name="garden">1</field>
+        <field name="garden_area">10</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">offer_received</field>
+        <field name="active">1</field>
+        <field name='partner_id' ref="res_partner_13" />
+        <field name="property_type_id" ref="real_estate_type_data2" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data4')), (4, ref('real_estate_tag_data7')), (4, ref('real_estate_tag_data1'))]"/>
+    </record>
+
+    <record id="real_estate_property_data10" model="real.estate.property">
+        <field name="name">OR Residential 2</field>
+        <field name="image" type="base64" file="real_estate/static/src/images/4.jpg" />
+        <field name="description">2-bedroom apartment with city views, close to public transport.</field>
+        <field name="postcode">10001</field>
+        <field name="date_availability" eval="(DateTime.now()).strftime('%Y-%m-%d')" />
+        <field name="expected_price">350000</field>
+        <field name="selling_price">345000</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">90</field>
+        <field name="facades">1</field>
+        <field name="garage">0</field>
+        <field name="garden_orientation">north</field>
+        <field name="status">offer_received</field>
+        <field name="active">1</field>
+        <field name='partner_id' ref="res_partner_12" />
+        <field name="property_type_id" ref="real_estate_type_data1" />
+        <field name="salesperson_id" ref="base.user_admin" />
+        <field name="tag_ids" eval="[(4, ref('real_estate_tag_data5')), (4, ref('real_estate_tag_data7')), (4, ref('real_estate_tag_data8')), (4, ref('real_estate_tag_data10'))]"/>
+    </record>
+</odoo>
