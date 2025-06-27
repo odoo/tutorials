@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_sub_product_wizard_line" model="ir.ui.view">
+        <field name="name">sub.product.wizard.line.list</field>
+        <field name="model">sale.sub.product.wizard.line</field>
+        <field name="arch" type="xml">
+            <list
+                string="Sub products Lines"
+                editable="bottom"
+                create="False"
+            >
+                <field name="product_id" readonly="1" required="1" />
+                <field name="quantity" />
+                <field name="price" />
+            </list>
+        </field>
+    </record>
+</odoo>
