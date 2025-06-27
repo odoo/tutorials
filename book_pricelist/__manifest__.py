@@ -6,6 +6,9 @@
     'sequence': 1,
     'application': True,
     'installable': True,
-    'data': [],
+    'data': [
+        'views/sale_order_views.xml',
+        'views/account_move_view.xml',
+    ],
     'license': 'AGPL-3'
 }
