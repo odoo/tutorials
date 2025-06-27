@@ -2,6 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.PieChartCard">
         <t t-esc="props.title"/>
+        <button class="btn btn-primary ms-1" t-on-click="saveChartData"> Save </button>
         <PieChart data="props.values" label="''"/>
     </t>
 </templates>
