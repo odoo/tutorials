@@ -41,7 +41,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">kanban,list,form</field>
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
@@ -89,7 +89,8 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ['offer_received','offer_accepted']"/>
+                            <field name="offer_ids" readonly="state in ['offer_received','offer_accepted']">
+                            </field>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -102,4 +103,29 @@
             </form>
         </field>
     </record>
+
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="0">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <t><field name="name"/></t><br/>
+                        <t>Expected price: <field name="expected_price"/></t><br/>
+                        <t><field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/></t><br/>
+                        <t t-if="record.state.raw_value == 'offer_received'">
+                            Best offer: <field name="best_offer"/><br/>
+                        </t>
+                        <t t-if="record.state.raw_value in ['offer_accepted', 'sold']">
+                            Selling price: <field name="selling_price"/><br/>
+                        </t>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
 </odoo>

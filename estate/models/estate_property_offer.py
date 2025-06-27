@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, exceptions
 from odoo.exceptions import UserError
 
 
@@ -43,3 +43,18 @@ class EstatePropertyOffer(models.Model):
     def offer_refuse(self):
         for record in self:
             record.status = 'refused'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            price = vals.get('price')
+
+            if property_id and price is not None:
+                property_rec = self.env['estate.property'].browse(property_id)
+                if property_rec.best_offer > price:
+                    raise exceptions.UserError("Cannot add offer for a lower amount than current offer")
+                else:
+                    property_rec.state = "offer_received"
+
+        return super().create(vals_list)
