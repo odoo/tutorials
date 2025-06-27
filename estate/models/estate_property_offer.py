@@ -1,4 +1,3 @@
-# estate/models/estate_property_offer.py
 from odoo import models, fields
 from odoo import api
 from datetime import timedelta
@@ -106,6 +105,9 @@ class EstatePropertyOffer(models.Model):
                 continue
 
             property = self.env["estate.property"].browse(property_id)
+
+            if property.state == "sold":
+                raise UserError("Cannot create an offer for a sold property.")
 
             existing_offer = self.search(
                 [("property_id", "=", property_id)], order="price DESC", limit=1

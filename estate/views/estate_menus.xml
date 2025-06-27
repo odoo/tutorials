@@ -2,7 +2,7 @@
 <odoo>
   <!-- Root Menus -->
   <menuitem id="estate_menu_root" name="Estate"/>
-  <menuitem id="estate_menu_properties_root" name="Properties" parent="estate_menu_root"/>
+  <menuitem id="estate_menu_properties_root" name="Advertisements" parent="estate_menu_root"/>
   <menuitem id="estate_menu_properties" name="My Properties" parent="estate_menu_properties_root" action="action_estate_property"/>
 
   <!-- Settings Menu (New) -->
