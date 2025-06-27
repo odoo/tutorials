@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClickerSystray">
+        <div class="o_nav_entry">
+            <div class="me-2">
+                Clicks: <ClickerValue />
+            </div>
+            <button class="btn btn-secondary me-2" t-on-click="() => this.counterService.increment(9)">
+                <i class="fa fa-lg fa-plus"></i>
+            </button>
+            <button class="btn btn-secondary" t-on-click="openClientAction">
+                Open
+            </button>
+        </div>
+    </t>
+</templates>
