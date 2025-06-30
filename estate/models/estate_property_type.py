@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 
+
 class estate_property_type(models.Model):
     _name = "estate.property.type"
     _description = "Property type models file"
