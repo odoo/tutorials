@@ -87,6 +87,8 @@ class EstateProperty(models.Model):
                 record.state = "sold"
             else:
                 raise UserError("You can't sold an house that has been cancelled")
+            if not record.offers_ids:
+                raise UserError("There are no offers on this property, thus it can't be sold")
         return True
 
     def action_cancel(self):

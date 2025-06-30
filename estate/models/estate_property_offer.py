@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 
@@ -14,6 +15,8 @@ class EstatePropertyOffer(models.Model):
             property = self.env['estate.property'].browse(val_property_id)
             if property.state == 'new':
                 property.state = 'offer_received'
+            elif property.state == 'sold':
+                raise UserError("Can't create an offer on a solded property")
         return super().create(vals)
 
     price = fields.Float("Price", required=True)
