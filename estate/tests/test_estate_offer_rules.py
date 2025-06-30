@@ -2,6 +2,7 @@ from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 
+
 @tagged("post_install", "-at_install")
 class TestEstateOfferRules(TransactionCase):
 

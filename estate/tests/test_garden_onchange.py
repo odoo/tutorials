@@ -1,5 +1,6 @@
 from odoo.tests.common import TransactionCase
 
+
 class TestGardenOnchange(TransactionCase):
 
     def test_garden_onchange_sets_defaults(self):

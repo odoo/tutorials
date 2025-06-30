@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <!-- Template definition for the Counter component -->
+  <t t-name="awesome_owl.counter">
+  
+    <!-- Main container for the counter UI -->
+    <div class="p-2 border m-2">
+    
+      <!-- Display the current counter value from component state -->
+      <p>Counter: <t t-esc="state.count"/></p>
+      
+      <!-- Button to trigger the 'increment' method defined in JS -->
+      <!-- 't-on-click' binds the click event to the increment function -->
+      <button t-on-click="increment" class="btn btn-sm btn-outline-primary">
+        Increment
+      </button>
+      
+    </div>
+  </t>
+
+</templates>
