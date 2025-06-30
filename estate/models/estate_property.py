@@ -1,4 +1,5 @@
-from datetime import date, timedelta
+from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
@@ -16,7 +17,7 @@ class EstateProperty(models.Model):
     name = fields.Char(string="Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date(copy=False, default=lambda self: date.today() + timedelta(days=90))
+    date_availability = fields.Date(copy=False, default=lambda self: datetime.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -65,10 +66,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_offer = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_offer = 0.0
+            record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -84,7 +82,7 @@ class EstateProperty(models.Model):
             if record.state != 'sold':
                 record.state = 'cancelled'
             else:
-                raise UserError("You cannot cancel a sold property.")
+                raise UserError(_("You cannot cancel a sold property."))
 
     def sold_property_button(self):
         for record in self:
@@ -108,6 +106,7 @@ class EstateProperty(models.Model):
             if float_compare(record.selling_price, min_acceptable_price, precision_digits=2) < 0:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
+    @api.ondelete(at_uninstall=False)
     def unlink(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:

@@ -30,9 +30,7 @@
                 <field name="living_area" filter_domain="['|', ('living_area','=',self),('living_area','>',self)]"/>
                 <field name="facades"/>
                 <filter string="available" name="available" domain="[('available', '=', False)]"/>
-                <group expand="1" string="Group By">
-                    <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>
-                </group>
+                <filter string="postcode" name="postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
     </record>

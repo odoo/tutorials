@@ -20,16 +20,21 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     deadline = fields.Date(string="Deadline", compute="_compute_deadline", inverse="_inverse_deadline")
+    creation_date = fields.Datetime("Creation Date", readonly=True)
 
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
-            record.deadline = date.today() + timedelta(days=record.validity)
+            if record.creation_date:
+                creation_date = fields.Datetime.from_string(record.creation_date)
+                record.deadline = creation_date.date() + timedelta(days=record.validity)
 
     def _inverse_deadline(self):
         for record in self:
             if record.deadline:
-                record.validity = (record.deadline - date.today()).days
+                if record.creation_date:
+                    creation_date = fields.Datetime.from_string(record.creation_date)
+                    record.validity = (record.deadline - creation_date.date()).days
 
     def offer_accept(self):
         if 'accepted' in self.mapped("property_id.offer_ids.status"):
@@ -48,7 +53,7 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property_id = vals.get('property_id')
-            price = vals.get('price')
+            price = vals.get('price', default=0.0)
 
             if property_id and price is not None:
                 property_rec = self.env['estate.property'].browse(property_id)

@@ -4,7 +4,8 @@ class estate_property(models.Model):
     _inherit = 'estate.property'
 
     def sold_property_button(self):
-        res = super().sold_property_button()
+
+        super().sold_property_button()
 
         for property in self:
             self.env['account.move'].create({
@@ -23,5 +24,3 @@ class estate_property(models.Model):
                     }),
                 ],
             })
-
-        return res
