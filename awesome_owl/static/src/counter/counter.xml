@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.counter">
+        <div 
+            class="p-3 d-flex align-items-center"
+            style="
+                border: 1.5px solid #bbb;
+                border-radius: 8px;
+                background: #f9f9f9;
+                gap: 1rem;
+                justify-content: center;
+                margin-bottom: 1rem;
+            "
+        >
+            <p class="mb-0">Counter: <t t-esc="state.value"/></p>
+            <button 
+                t-on-click="increment"
+                style="
+                    background-color: #800080; 
+                    color: #fff; 
+                    border: none; 
+                    border-radius: 6px; 
+                    padding: 0.375rem 0.75rem;
+                    cursor: pointer;
+                    transition: background-color 0.2s, box-shadow 0.2s;
+                "
+                onmouseover="this.style.backgroundColor='#6d006d'; this.style.boxShadow='0 2px 8px rgba(128,0,128,0.10)';"
+                onmouseout="this.style.backgroundColor='#800080'; this.style.boxShadow='none';"
+                onmousedown="this.style.backgroundColor='#4b004b';"
+                onmouseup="this.style.backgroundColor='#6d006d';"
+            >
+                Increment
+            </button>
+        </div>
+    </t>
+
+</templates>
