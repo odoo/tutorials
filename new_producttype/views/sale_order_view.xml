@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_order_form_inherit_sub_product" model="ir.ui.view">
+        <field name="name">view.order.form.inherit.sub.product</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list//field[@name='product_template_id']" position="after">
+                <button name="action_open_kit_wizard"
+                        type="object"
+                        string="Open Kit"
+                        invisible="not is_kit or state=='sale'"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>
