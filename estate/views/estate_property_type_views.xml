@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="estate_property_type_action" model="ir.actions.act_window">
+            <field name="name">Properties</field>
+            <field name="res_model">estate.property.type</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_available': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a property type
+                </p>
+                <p>
+                    Create real estate propertie types 
+                </p>
+            </field>
+        </record>
+        <record id="estate_property_type_tree" model="ir.ui.view">
+            <field name="name">properties type</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <button name="%(estate.estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-money"></button>
+                    <field name="name"/>   
+                    <field name="property_ids"/>  
+                    <field name="sequence" widget="handle" />  
+                    <field name="offer_ids" />
+                    <field name="offer_count" />
+                </tree>
+            </field>
+        </record>
+        </data>
+</odoo>

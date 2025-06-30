@@ -1,0 +1,3 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_ecommerce_product_user,access.ecommerce.product.user,model_ecommerce_product,base.group_user,1,1,1,1
+access_ecommerce_product_category_user,access.ecommerce.product.category.user,model_ecommerce_product_category,base.group_user,1,1,1,1
