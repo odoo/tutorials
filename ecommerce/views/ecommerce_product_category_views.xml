@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="ecommerce_product_category_action" model="ir.actions.act_window">
+            <field name="name">Products</field>
+            <field name="res_model">ecommerce.product.category</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_available': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a product
+                </p>
+                <p>
+                    Create products and manage their details.
+                </p>
+            </field>
+        </record>
+        <record id="ecommerce_product_tree" model="ir.ui.view">
+            <field name="name">Products</field>
+            <field name="model">ecommerce.product.category</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="name"/>
+                    <field name="description"/>                    
+                </tree>
+            </field>
+        </record>
+    </data>
+    </odoo>

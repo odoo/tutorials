@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        
+        <record id="ecommerce_product_action" model="ir.actions.act_window">
+            <field name="name">Products</field>
+            <field name="res_model">ecommerce.product</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_available': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a product
+                </p>
+                <p>
+                    Create products and manage their details.
+                </p>
+            </field>
+        </record>
+
+        
+        <record id="ecommerce_product_tree" model="ir.ui.view">
+            <field name="name">ecommerce.product.tree</field>
+            <field name="model">ecommerce.product</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="available" decoration-danger="not available" decoration-muted="quantity == 0">
+                    <field name="title"/>
+                    <field name="category_id"/>
+                    <field name="price"/>
+                    <field name="quantity"/>
+                    <field name="available" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="ecommerce_product_form" model="ir.ui.view">
+            <field name="name">ecommerce.product.form</field>
+            <field name="model">ecommerce.product</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="title"/>
+                                <field name="category_id"/>
+                                <field name="price"/>
+                                <field name="quantity"/>
+                                <field name="available" invisible="1"/>
+                            </group>
+                            <notebook>
+                                <page string="Description">
+                                    <field name="description" widget="text"/>
+                                </page>
+                            </notebook>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="ecommerce_product_kanban" model="ir.ui.view">
+            <field name="name">ecommerce.product.kanban</field>
+            <field name="model">ecommerce.product</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="category_id" records_draggable="0">
+                    <field name="available"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div>
+                                    <strong class="o_kanban_record_title">
+                                        <field name="title"/>
+                                    </strong>
+                                </div>
+                                <div>
+                                    Category: <field name="category_id"/>
+                                </div>
+                                <div>
+                                    Price: <field name="price"/>
+                                </div>
+                                <div>
+                                    Quantity: <field name="quantity"/>
+                                </div>
+                                <div t-if="record.available.raw_value">
+                                    <span class="badge badge-success">Available</span>
+                                </div>
+                                <div t-if="!record.available.raw_value">
+                                    <span class="badge badge-danger">Out of Stock</span>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        
+        <record id="ecommerce_product_search" model="ir.ui.view">
+            <field name="name">ecommerce.product.search</field>
+            <field name="model">ecommerce.product</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="title"/>
+                    <field name="category_id"/>
+                    <field name="price" filter_domain="[('price', '&lt;=', self)]"/>
+                    <field name="quantity" filter_domain="[('quantity', '&gt;=', self)]"/>
+                    <filter name="available" string="Available" domain="[('available', '=', True)]"/>
+                    <filter name="out_of_stock" string="Out of Stock" domain="[('available', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_category" string="Category" context="{'group_by': 'category_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

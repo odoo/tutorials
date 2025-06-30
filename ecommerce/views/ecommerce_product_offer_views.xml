@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="ecommerce_product_action" model="ir.actions.act_window">
+            <field name="name">Products</field>
+            <field name="res_model">ecommerce.product.offer</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="context">{'search_default_available': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a product offer
+                </p>
+                <p>
+                    Create product offers and manage their details.
+                </p>
+            </field>
+        </record>
+        <record>
+            <field name="name">ecommerce.product.offer.tree</field>
+            <field name="model">ecommerce.product.offer</field>
+            <field name="arch" type="xml">
+                <tree decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+                    <field name="product_id"/>
+                    <field name="partner_id"/>
+                    <field name="price"/>
+                    <field name="discount_percentage"/>
+                    <button name="action_accept" type="object" title="Accept" icon="fa-check"/>
+                    <button name="action_refuse" type="object" title="Refuse" icon="fa-times"/>
+                    <field name="status" invisible='1'/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>
