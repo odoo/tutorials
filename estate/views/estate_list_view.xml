@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_list_view" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Tests" decoration-muted="state=='sold'" decoration-success="state=='offer_received' or state=='offer_accepted'" decoration-bf="state=='offer_accepted'">
+                <field name="name"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" optional='true'/>
+            </list>
+        </field>
+    </record>
+</odoo>

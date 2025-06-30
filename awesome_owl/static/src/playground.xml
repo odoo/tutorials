@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
+        <Counter onChange.bind="incrementSum"/>
+        <Counter onChange.bind="incrementSum"/>
+        <Card title="'card 1'"><Counter onChange.bind="incrementSum"/></Card>
         <div class="p-3">
-            hello world
+            Counter sum : <t t-out="state.sum"/>
+        </div>
+
+        <div class="d-inline-flex p-3 m-3 border">
+            <TodoList/>
         </div>
     </t>
 
