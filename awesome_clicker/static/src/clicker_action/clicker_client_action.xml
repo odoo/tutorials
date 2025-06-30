@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClickerClientAction">
+        <span class="me-2">
+            Clicks: <ClickerValue />
+        </span>
+        <button class="btn btn-primary" t-on-click="() => clickerService.increment(500)">Increment</button>
+        <h3>Bots</h3>
+        <div class="d-flex flex-row">
+            <div class="card">
+                <div t-if="clickerService.bots.clickBot.purchased">
+                    <div class="card-header">
+                        <t t-esc="clickerService.bots.clickBot.purchased" />x ClickBots (10 clicks/10 seconds)
+                        <i class="fa fa-android"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary" t-on-click="() => clickerService.buyBot('clickBot')" t-att-disabled="clickerService.clicks lt 1000">Buy ClickBot (1000 clicks)</button>
+                </div>
+            </div>
+
+            <div class="card" t-if="clickerService.level gte 2">
+                <div t-if="clickerService.bots.bigBot.purchased">
+                    <div class="card-header">
+                        <t t-esc="clickerService.bots.bigBot.purchased" />x bigBots (100 clicks/10 seconds)
+                        <i class="fa fa-android"></i>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <button class="btn btn-primary" t-on-click="() => clickerService.buyBot('bigBot')" t-att-disabled="clickerService.clicks lt 5000">Buy BigBot (5000 clicks)</button>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
