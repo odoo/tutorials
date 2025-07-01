@@ -1,0 +1,18 @@
+.o_dashboard {
+    background-color: gray;
+    overflow-y: auto;
+}
+
+.pie-chart-container {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.pie-chart-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+}
