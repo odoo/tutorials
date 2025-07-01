@@ -7,7 +7,7 @@
     'application': True,
     'installable': True,
     'data': [
-        'security/ir.model.access.csv',
+        "security/ir.model.access.csv",
         "wizard/sub_product_kit_wizard_view.xml",
         "views/product_views.xml",
         "views/sale_order_view.xml",

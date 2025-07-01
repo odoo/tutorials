@@ -8,9 +8,27 @@
             <xpath expr="//list//field[@name='product_template_id']" position="after">
                 <button name="action_open_kit_wizard"
                         type="object"
-                        string="Open Kit"
-                        invisible="not is_kit or state=='sale'"
+                        string="Add Sub-Products"
+                        invisible="not is_kit or state=='sale' or main_product_line_id"
                 />
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="decoration-warning">main_product_line_id</attribute>
+            </xpath>
+            <xpath expr="//list//field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly">main_product_line_id</attribute>
+            </xpath>
+            <xpath expr="//list//field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">main_product_line_id</attribute>
+            </xpath>
+            <xpath expr="//list//field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">main_product_line_id</attribute>
+            </xpath>
+            <xpath expr="//list//field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">main_product_line_id</attribute>
+            </xpath>
+            <xpath expr="//group//field[@name='payment_term_id']" position="after">
+                <field name="print_report"/>
             </xpath>
         </field>
     </record>
