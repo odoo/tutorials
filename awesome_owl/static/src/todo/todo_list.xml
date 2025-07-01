@@ -10,7 +10,8 @@
       <!-- Input box to enter new todo -->
       <!-- 
         t-on-keyup="addTodo" → triggers addTodo() in JS on every key press 
-        t-ref="newTodoInput" → creates a reference (this.refs.newTodoInput) so we can read input value in JS
+        t-ref="newTodoInput" → creates a reference (this.refs.newTodoInput) so we can read input value in
+      JS
       -->
       <input 
         placeholder="Enter a new task" 
@@ -26,7 +27,7 @@
       -->
       <t t-foreach="todos" t-as="todo" t-key="todo.id">
         <!-- Pass the todo object as a prop to TodoItem component -->
-        <TodoItem todo="todo"/>
+        <TodoItem todo="todo" toggleState="toggleState" removeTodo="removeTodo"/>
       </t>
     </div>
 

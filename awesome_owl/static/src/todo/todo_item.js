@@ -8,6 +8,18 @@ export class TodoItem extends Component {
   // Link this component to its XML template
   static template = "awesome_owl.todo_item";
 
+  onToggle() {
+    // Call parent callback with this todo's id
+    this.props.toggleState(this.props.todo.id);
+  }
+
+  // Trigger parent remove callback
+  onRemove() {
+    if (this.props.removeTodo) {
+      this.props.removeTodo(this.props.todo.id);
+    }
+  }
+
   // Declare expected props and validate their structure
   static props = {
     todo: {
@@ -19,5 +31,7 @@ export class TodoItem extends Component {
       },
       optional: false,              // This prop is required; component won't work without it
     },
+    toggleState: { type: Function, optional: false },
+    removeTodo: { type: Function, optional: false },
   };
 }

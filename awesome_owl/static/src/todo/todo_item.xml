@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-  
+
   <!-- Define the TodoItem component template -->
   <t t-name="awesome_owl.todo_item">
-    
+
     <!--
       Outer div for each todo item.
       Bootstrap classes:
@@ -18,12 +18,22 @@
       class="border p-2 my-1"
       t-att-class="{ 'text-muted text-decoration-line-through': props.todo.isCompleted }">
 
-      <!-- Render todo ID in bold -->
-      <strong>#<t t-esc="props.todo.id"/></strong>: 
+      <!-- Checkbox that reflects and toggles completion status -->
+      <div> <input type="checkbox"
+             t-att-checked="props.todo.isCompleted"
+             t-on-change="onToggle"/>
+        <!-- Render todo ID in bold -->
+      <strong>#<t t-esc="props.todo.id"/></strong>:
 
-      <!-- Render the todo description -->
+        <!-- Render the todo description -->
       <span><t t-esc="props.todo.description"/></span>
 
+      <span class="fa fa-remove text-danger cursor-pointer" t-on-click="onRemove" title="Delete todo"/>
+
+      </div>
+
+
+      
     </div>
 
   </t>
