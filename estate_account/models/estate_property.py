@@ -8,7 +8,8 @@ class Property(models.Model):
         res = super().action_sell_property()
 
         for record in self:
-            self.env['account.move'].create({
+            record.check_access("write")
+            self.sudo().env['account.move'].create({
                 'partner_id': record.buyer.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
