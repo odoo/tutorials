@@ -2,17 +2,40 @@
 <templates xml:space="preserve">
     <t t-name="clicker_systray_item.ClickerSystrayItem">
         <div class="o_menu_systray d-flex align-items-center justify-content-between gap-2">
-            <span data-tooltip="this.clicker.clicks">
-                <span class="ml-2">
-                    Clicks: <ClickerValue/>
-                </span>
-            </span>
-            <button t-on-click="" class="btn btn-primary" title="Increment Clicker Count" aria-label="Increment Clicker Count">
-                <i class="fa fa-plus"></i>
-            </button>
-            <button t-on-click="()=> this.clicker.openClickerClientAction()" class="btn btn-primary">
-                Open
-            </button>
+            <div class="d-flex align-items-center gap-2">
+                <Dropdown>
+                    <button class="d-flex gap-2">
+                        <span class="d-flex align-items-center gap-1">
+                            <ClickerValue/>
+                            <i class="fa fa-mouse-pointer" aria-hidden="true"></i>
+                        </span>
+                        <span class="d-flex align-items-center gap-1">
+                            <t t-out="clicker.totalTrees()" />
+                            <i class="fa fa-tree" aria-hidden="true"></i>
+                        </span>
+                        <span class="d-flex align-items-center gap-1">
+                            <t t-out="clicker.totalFruits()" />
+                            <i class="fa fa-apple" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <t t-set-slot="content">
+                        <DropdownItem>
+                            <button class="btn btn-secondary" t-on-click="this.openClickerClientAction"> Open the clicker game </button>
+                        </DropdownItem>
+                        <DropdownItem>
+                            <button class="btn btn-secondary" t-on-click="() => this.clicker.buyBot('click')"> Buy a ClickBot </button>
+                        </DropdownItem>
+                        <DropdownItem t-foreach="this.clicker.trees" t-as="tree" t-key="tree">
+                            <t t-out="tree_value.count"/> x
+                            <t t-out="tree"/> Tree
+                        </DropdownItem>
+                        <DropdownItem t-foreach="this.clicker.trees" t-as="tree" t-key="tree">
+                            <t t-out="tree_value.fruits"/> x
+                            <t t-out="tree"/>
+                        </DropdownItem>
+                    </t>
+                </Dropdown>
+            </div>
         </div>
     </t>
 </templates>
