@@ -8,9 +8,11 @@
     'installable': True,
     'data': [
         "security/ir.model.access.csv",
+        "report/sub_product_report.xml",
         "wizard/sub_product_kit_wizard_view.xml",
         "views/product_views.xml",
         "views/sale_order_view.xml",
+        "views/sub_product_customer_preview.xml",
     ],
     'license': 'AGPL-3'
 }
