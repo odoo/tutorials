@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="case_javascript.OrderReceipt" t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
+        <xpath expr="//div[p[text()='Powered by Odoo']]" position="before">
+            <div class="pos-receipt-order-data">
+                <p><t t-out="props.data.headerData.congratulatory_text"/></p>
+            </div>
+        </xpath>
+    </t>
+
+</templates>
