@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="odoo_self_order_details.ProductPopDetails">
+        <div class="modal d-block">
+            <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <img t-if="props.product.id"
+                                 t-attf-src="/web/image/product.product/{{props.product.id}}/image_1024?unique={{props.product.write_date}}"
+                                 alt="Product Image"
+                                 class="img-fluid rounded w-75 mb-3"
+                                 onerror="this.style.display='none'"/>
+                            <h5 class="modal-title fw-bold" t-esc="props.product.display_name"/>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-between">
+                            <button class="btn btn-success flex-fill me-2" t-on-click="addToCartAndClose">Order</button>
+                            <button class="btn btn-danger flex-fill ms-2" t-on-click="props.close">Cancel</button>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </t>
+</templates>
