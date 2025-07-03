@@ -1,0 +1,22 @@
+{
+    "name": "Real Estate",
+    "depends": ["base"],
+    "license": "LGPL-3",
+    "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "security/estate_property_rules.xml",
+        "views/estate_property_views.xml",
+        "views/estate_menus_views.xml",
+        "views/estate_offers_views.xml",
+        "views/estate_property_type_views.xml",
+        "views/res_users_views.xml",
+        "data/estate_property_type_data.xml",
+        "data/estate_property_data.xml",
+        "data/estate_property_offer_data.xml",
+        "report/estate_property_offers_template.xml",
+        "report/estate_property_reports.xml",
+    ],
+    "category": "Real Estate/Brokerage",
+    "application": True,
+}
