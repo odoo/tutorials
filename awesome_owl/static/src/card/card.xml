@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body" style="background: #f9f9f9;">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title"><t t-out="props.title"/></h5>
+                    <button
+                        t-if="!state.isOpen"
+                        t-on-click="toggle"
+                        style="
+                            background: none;
+                            border: none;
+                            color: #555;
+                            font-size: 1.4rem;
+                            padding: 0.2rem 0.6rem;
+                            border-radius: 50%;
+                            transition: background 0.15s, color 0.15s;
+                            cursor: pointer;
+                        "
+                        onmouseover="this.style.background='#ececec'; this.style.color='#222';"
+                        onmouseout="this.style.background='none'; this.style.color='#555';"
+                        aria-label="Expand"
+                    >&#x25BC;</button>
+                    <button
+                        t-if="state.isOpen"
+                        t-on-click="toggle"
+                        style="
+                            background: none;
+                            border: none;
+                            color: #555;
+                            font-size: 1.4rem;
+                            padding: 0.2rem 0.6rem;
+                            border-radius: 50%;
+                            transition: background 0.15s, color 0.15s;
+                            cursor: pointer;
+                        "
+                        onmouseover="this.style.background='#ececec'; this.style.color='#222';"
+                        onmouseout="this.style.background='none'; this.style.color='#555';"
+                        aria-label="Collapse"
+                    >&#x2212;</button>
+                </div>
+
+                <p class="card-text" t-if="state.isOpen">
+                    <t t-slot="default"/>
+                </p>
+            </div>
+        </div>
+    </t>
+
+</templates>
