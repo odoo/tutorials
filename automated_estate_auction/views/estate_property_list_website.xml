@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_properties_listing_template_addon"
+        name="Estate Properties Listing Template Addon"
+        inherit_id="estate.estate_properties_listing_template">
+        <xpath expr="//form/div/div[3]" position="after">
+            <div class="col-md-2">
+                <label for="auctionState" class="form-label fw-bold">Auction</label>
+                <select id="auctionState" name="property_sell_type" class="form-select">
+                    <option value="all" t-att-selected="property_sell_type == 'all'">All</option>
+                    <option value="auction" t-att-selected="property_sell_type == 'auction'">Auction</option>
+                    <option value="regular" t-att-selected="property_sell_type == 'regular'">Regular</option>
+                </select>
+            </div>
+        </xpath>
+    </template>
+</odoo>

@@ -1,12 +1,16 @@
 {
     "name": "Real_Estate_Module",
     "version": "1.0",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "website"],
     "category": "Real Estate/Brokerage",
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",
+        "data/estate_website_menu.xml",
         "views/res_users_views.xml",
+        "views/res_config_settings_views.xml",
+        "views/estate_property_detail_website.xml",
+        "views/estate_property_list_website.xml",
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
