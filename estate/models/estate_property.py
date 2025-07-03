@@ -121,6 +121,10 @@ class Property(models.Model):
             if record.state == 'cancelled':
                 raise UserError('Cancelled property cannot be sold.')
 
+            if not any(
+                    offer.status == 'accepted' for offer in record.offer_ids):
+                raise UserError('There is no accepted offer.')
+
             record.state = 'sold'
         return True
 

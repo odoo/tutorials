@@ -1,5 +1,5 @@
 from odoo import api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 
 class PropertyOffer(models.Model):
@@ -51,6 +51,11 @@ class PropertyOffer(models.Model):
 
             if property_id:
                 property = self.env['estate.property'].browse(property_id)
+
+                if property.state == 'sold':
+                    raise UserError(
+                        'The property %s is already sold.' % property.name
+                    )
 
                 max_offer = max(property.offer_ids.mapped('price'),
                                 default=0.0)
