@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_offer_placed_view" name="Thank you page">
+        <t t-call="website.layout">
+            <span
+                style="display: block; text-align: center; padding: 50px 20px; font-family: Arial, sans-serif; font-size: 1.2em; color: #333; background-color: #f9f9f9; border-radius: 8px; max-width: 600px; margin: 50px auto; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                Congratulations! your order has been placed successfully. We will notify you of the
+                results as soon as auction concludes
+            </span>
+        </t>
+    </template>
+</odoo>

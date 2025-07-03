@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate_property_detail_template" name="Estate Property Detail">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure">
+                <div class="container py-5">
+                    <t t-if="property">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <div class="card shadow-lg rounded-4 overflow-hidden border-0">
+                                    <img
+                                        t-attf-src="/web/image/estate.property/{{property.id}}/image_720"
+                                        alt="Property Image" class="img-fluid rounded-start-4" />
+                                </div>
+                            </div>
+
+                            <div class="col-lg-5">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h1 class="display-5 fw-bold mb-0">
+                                        <span t-field="property.name" />
+                                    </h1>
+                                </div>
+                                <p class="lead text-muted fst-italic mb-4">
+                                    <t t-if="property.description and property.description.strip()">
+                                        <br />
+                                        <span t-field="property.description" />
+                                    </t>
+                                    <t t-else="">
+                                        <br />A nice and big property. </t>
+                                </p>
+
+                                <ul class="list-unstyled detail-list fs-5">
+                                    <li class="mb-2">
+                                        <strong class="text-secondary">Expected Price:</strong>
+                                        <span class="ms-2 text-success fw-bold" name="expected_price_field">
+                                            <span t-field="property.expected_price" />
+                                        </span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong class="text-secondary">Bedrooms:</strong>
+                                        <span class="ms-2">
+                                            <span t-field="property.bedrooms" />
+                                        </span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong class="text-secondary">Living Area:</strong>
+                                        <span class="ms-2"><span t-field="property.living_area" />
+                                            m²</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong class="text-secondary">State:</strong>
+                                        <span class="ms-2 badge bg-info text-dark p-2 rounded-pill">
+                                            <span t-field="property.state" />
+                                        </span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong class="text-secondary">Salesperson:</strong>
+                                        <span class="ms-2">
+                                            <span t-field="property.salesperson_id.name" />
+                                        </span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <strong class="text-secondary">Available from:</strong>
+                                        <span class="ms-2">
+                                            <span t-field="property.date_availability"
+                                                t-options='{"widget": "date"}' />
+                                        </span>
+                                    </li>
+                                </ul>
+
+                                <div class="mt-5 d-flex gap-3" name="navigation_buttons">
+                                    <a href="/estate-properties"
+                                        class="btn btn-lg btn-outline-secondary rounded-pill">
+                                        Back to Properties
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <t t-if="property.offer_ids">
+                            <hr class="my-5" />
+                            <h3 class="mb-4 text-secondary">Offers Received</h3>
+                            <div class="table-responsive">
+                                <table
+                                    class="table table-striped table-hover rounded-3 overflow-hidden shadow-sm">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Partner</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                            <th>Validity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="property.offer_ids" t-as="offer">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="offer.partner_id.name" />
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.price" />
+                                                </td>
+                                                <td>
+                                                    <span t-if="offer.status == 'accepted'"
+                                                        class="badge bg-success">Accepted</span>
+                                                    <span t-if="offer.status == 'refused'"
+                                                        class="badge bg-danger">Refused</span>
+                                                    <span t-if="not offer.status"
+                                                        class="badge bg-secondary">Pending</span>
+                                                </td>
+                                                <td><span t-field="offer.validity" /> days</td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <div class="alert alert-danger text-center mt-5" role="alert">
+                            Property not found or not available.
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="/estate-properties"
+                                class="btn btn-outline-secondary btn-lg rounded-pill"><i
+                                    class="fa fa-arrow-left me-2"></i> Back to Properties List</a>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

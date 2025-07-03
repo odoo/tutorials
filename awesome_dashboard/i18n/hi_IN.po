@@ -1,0 +1,141 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* awesome_dashboard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-06-24 11:57+0000\n"
+"PO-Revision-Date: 2025-06-24 11:57+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Avg. T-Shirts per Order:"
+msgstr "प्रति ऑर्डर औसत टी-शर्ट:"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Avg. Time New → Sent/Cancelled:"
+msgstr "औसत समय नया → भेजा/रद्द:"
+
+#. module: awesome_dashboard
+#: model:ir.ui.menu,name:awesome_dashboard.menu_root
+msgid "Awesome Dashboard"
+msgstr "शानदार डैशबोर्ड"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboardSetting/dashboard_setting.xml:0
+msgid "Cancel"
+msgstr "रद्द करें"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Cancelled Orders:"
+msgstr "रद्द किए गए ऑर्डर:"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "Customer"
+msgstr "ग्राहक"
+
+#. module: awesome_dashboard
+#: model:ir.actions.client,name:awesome_dashboard.dashboard
+#: model:ir.ui.menu,name:awesome_dashboard.dashboard_menu
+msgid "Dashboard"
+msgstr "डैशबोर्ड"
+
+#. module: awesome_dashboard
+#: model:ir.model.fields,field_description:awesome_dashboard.field_res_users__dashboard_disabled_items
+msgid "Dashboard Disabled Items"
+msgstr "डैशबोर्ड में अक्षम आइटम"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboardSetting/dashboard_setting.xml:0
+msgid "Done"
+msgstr "हो गया"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "Leads"
+msgstr "लीड"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "New Orders This Month:"
+msgstr "इस महीने नए ऑर्डर:"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Total Amount This Month:"
+msgstr "इस महीने की कुल राशि:"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Number of shirts ordered based on size"
+msgstr "आकार के आधार पर ऑर्डर की गई शर्ट की संख्या"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboardSetting/dashboard_setting.xml:0
+msgid "Select items to display on your dashboard:"
+msgstr "अपने डैशबोर्ड पर प्रदर्शित करने के लिए आइटम चुनें:"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Shirt orders by size:"
+msgstr "आकार के अनुसार शर्ट के ऑर्डर:"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "The average number of t-shirts by order"
+msgstr "प्रति ऑर्डर टी-शर्ट की औसत संख्या"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid ""
+"The average time (in hours) elapsed between the moment an order is created, "
+"and the moment is it sent"
+msgstr "ऑर्डर बनने और भेजे जाने के बीच का औसत समय (घंटों में)"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "The number of cancelled orders, this month"
+msgstr "इस महीने रद्द किए गए ऑर्डर की संख्या"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "The number of new orders, this month"
+msgstr "इस महीने नए ऑर्डर की संख्या"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "The total amount of orders, this month"
+msgstr "इस महीने ऑर्डर की कुल राशि"
+
+#. module: awesome_dashboard
+#: model:ir.model,name:awesome_dashboard.model_res_users
+msgid "User"
+msgstr "उपयोगकर्ता"
