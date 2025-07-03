@@ -1,0 +1,13 @@
+.o_product_image {
+    max-width: 100px;
+    height: auto;
+}
+@media (max-width: 768px) {
+    .o_product_image img {
+        max-width: 100px !important;
+        max-height: auto;
+        width: 150px !important;
+        height: auto;
+        object-fit: cover;
+    }
+}
