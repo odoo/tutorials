@@ -5,7 +5,6 @@ import { ProductPopDetails } from '../product_pop_details/product_pop_details';
 patch(ProductCard.prototype,{
     async selectProduct(qty = 1) {
         const product = this.props.product;
-
         if (!product.self_order_available || !this.isAvailable) {
             return;
         }

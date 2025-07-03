@@ -4,6 +4,9 @@
         <div class="modal d-block">
             <div class="modal-dialog">
                     <div class="modal-content">
+                         <div class="modal-header">
+                            <button class="btn-close" t-on-click="props.close"/>
+                        </div>
                         <div class="modal-body text-center">
                             <img t-if="props.product.id"
                                  t-attf-src="/web/image/product.product/{{props.product.id}}/image_1024?unique={{props.product.write_date}}"
@@ -11,6 +14,7 @@
                                  class="img-fluid rounded w-75 mb-3"
                                  onerror="this.style.display='none'"/>
                             <h5 class="modal-title fw-bold" t-esc="props.product.display_name"/>
+                            <h5 t-out="self_order_description"/>
                         </div>
                         <div class="modal-footer d-flex justify-content-between">
                             <button class="btn btn-success flex-fill me-2" t-on-click="addToCartAndClose">Order</button>
