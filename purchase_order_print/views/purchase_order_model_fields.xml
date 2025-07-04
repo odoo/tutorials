@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="field_purchase_order_employee_id" model="ir.model.fields">
+            <field name="name">x_employee_id</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="ttype">many2one</field>
+            <field name="relation">hr.employee</field>
+            <field name="field_description">Authorized By</field>
+            <field name="state">manual</field>
+        </record>
+        <record id="field_purchase_order_annexure_terms" model="ir.model.fields">
+            <field name="name">x_annexure_terms</field>
+            <field name="model_id" ref="purchase.model_purchase_order"/>
+            <field name="ttype">html</field>
+            <field name="field_description">Annexure terms</field>
+            <field name="state">manual</field>
+        </record>
+  </data>
+</odoo>

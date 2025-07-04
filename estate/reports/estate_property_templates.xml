@@ -1,0 +1,89 @@
+<odoo>
+    <!--Template for listing offers for a property-->
+    <!--When calling templates keep in mind about 1-M, M-1 definations keep field vairable constants-->
+    <template id="property_offers_table_template">
+        <table t-if="property.mapped('offer_ids')" class="table">
+            <thead>
+                <tr>
+                    <th>Offer price</th>
+                    <th>Partner</th>
+                    <th>Validity (days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="property.mapped('offer_ids')" t-as="offer">
+                    <td><span t-field="offer.price"/></td>
+                    <td><span t-field="offer.partner_id.name"/></td>
+                    <td><span t-field="offer.validity"/></td>
+                    <td><span t-field="offer.date_deadline"/></td>
+                    <td>
+                        <span t-if="offer.status" t-field="offer.status"/>
+                        <span t-else="">Pending</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <p t-else="">
+            <strong>No offers available for this property.</strong>
+        </p>
+    </template>
+
+    <!--Main Template for viewing property wise offers-->
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2 t-field="property.name"/>
+                        <div id="property_details"> 
+                            <strong>Salesperson:</strong>
+                            <span t-field="property.salesperson_id.name"/>
+                            <br/>
+                            <strong>Expected Price:</strong>
+                            <span t-field="property.expected_price"/>
+                            <br/>
+                            <strong>Status:</strong>
+                            <span t-field="property.state"/>
+                        </div>
+                        <br/>
+                        <!-- Calling template for listing offers of a property-->
+                        <t t-call="estate.property_offers_table_template"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!--Main Template for viewing all properties of a salesperson-->
+    <template id="report_salesperson_property">
+        <t t-foreach="docs" t-as="salesperson">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <strong>Salesperson: </strong>
+                            <span t-field="salesperson.name"/>
+                        </h2>
+                        <br/>
+                        <div t-foreach="salesperson.property_ids" t-as="property">
+                            <h3 t-field="property.name"/>
+                            <div>
+                                <strong>Expected Price:</strong>
+                                <span t-field="property.expected_price"/>
+                                <br/>
+                                <strong>Status:</strong>
+                                <span t-field="property.state"/>
+                            </div>
+                            <br/>
+                            <!-- Calling template for listing offers of a property-->
+                            <t t-call="estate.property_offers_table_template"/>
+                            <br/><br/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

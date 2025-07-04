@@ -1,0 +1,13 @@
+<!--Odoo fetches the primary template estate.report_property_offers.
+It then looks for any "extension" views that inherit from it. It finds your report_property_offers_inherit_account.
+It applies the <xpath> from report_property_offers_inherit_account to the arch of estate.report_property_offers.
+The resulting, modified arch is then rendered.-->
+<odoo>
+    <template id="report_property_offers_inherit_account" inherit_id="estate.report_property_offers">
+        <xpath expr="//div[@id='property_details']" position="inside">
+            <t t-if="property.state == 'sold'">
+                <p><strong>Invoice has already been created!!!</strong></p>
+            </t>
+        </xpath>
+    </template>
+</odoo>

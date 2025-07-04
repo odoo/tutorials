@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <!--Inheriting ProductPage and defining our changes-->
+    <t t-inherit="pos_self_order.ProductPage" t-inherit-mode="extension">
+        <!--'options' string after product name only when Product is Configurable -->
+        <xpath expr="//h1[@class='mb-0 text-nowrap']" position="replace">
+            <h1 class="mb-0 text-nowrap"><strong t-out="product.name"/> <span t-if="product.isConfigurable()">options</span></h1>
+        </xpath>
+        <!-- changes in product details section to have a new layout with a large image and description -->
+        <xpath expr="//div[hasclass('o-so-product-details')]" position="replace">
+            <div class="o-so-product-details d-flex flex-column align-items-center p-3 gap-3">
+                <!-- Large Product Image -->
+                <div class="o-so-product-details-image text-center mb-3" style="max-width: 300px;">
+                    <img
+                        class="img-fluid rounded shadow-sm"
+                        t-attf-src="/web/image/product.product/{{ product.id }}/image_512"
+                        alt="Product image"
+                        loading="lazy"/>
+                </div>
+                
+                <!-- Product related Information -->
+                <div class="o-so-product-details-description text-center w-100">
+                    <h2 t-out="product.name"/>
+                    <span class="fs-3 d-block my-3" t-out="selfOrder.formatMonetary(selfOrder.getProductDisplayPrice(product))"/>
+                </div>
+
+                <!-- Product Description -->
+                <div class="o-so-product-details-description text-center w-100">
+                    <t t-if="product.self_order_description">
+                        <div t-out="product.self_order_description"/>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+
+        <!--Cancel button next to the Add to cart button -->
+        <xpath expr="//div[hasclass('page-buttons')]/button[hasclass('btn-primary')]" position="before">
+            <button class="btn btn-secondary btn-lg" t-on-click="() => router.back()">
+                Cancel
+            </button>
+        </xpath>
+    </t>
+</templates>

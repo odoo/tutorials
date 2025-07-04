@@ -1,0 +1,1 @@
+# Odoo module marker

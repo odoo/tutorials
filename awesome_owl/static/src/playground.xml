@@ -2,9 +2,36 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="container py-4">
+            <h1 class="mb-4 text-primary text-center">Owl Playground</h1>
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="bg-light rounded shadow-sm p-3">
+                        <h5 class="mb-3">Counters</h5>
+                        <p class="mb-2">Sum: <span class="fw-bold" t-out="state.sum"/></p>
+                        <div class="d-flex gap-2">
+                            <Counter onChange.bind="incrementSum"/>
+                            <Counter onChange.bind="incrementSum"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <Card title="'First Card'">
+                        <Counter/>
+                    </Card>
+                    <Card title="'Second Card'">
+                        <p class="mb-0">This is another card. Add your content here!</p>
+                    </Card>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="bg-white rounded shadow-sm p-3">
+                        <h5 class="mb-3">Todo List</h5>
+                        <TodoList/>
+                    </div>
+                </div>
+            </div>
         </div>
     </t>
-
 </templates>
