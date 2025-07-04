@@ -19,7 +19,20 @@
     ],
     "assets": {
         "web.assets_backend": [
-            "awesome_dashboard/static/src/**/*",
+            "awesome_dashboard/static/src/dashboard/dashboard_action.js",
+            "awesome_dashboard/static/src/dashboard/dashboard_action.xml",
+            "awesome_dashboard/static/src/dashboard/services/statistics.js",
+        ],
+        "awesome_dashboard.dashboard": [
+            "awesome_dashboard/static/src/dashboard/services/statistics.js",
+            "awesome_dashboard/static/src/dashboard/components/dashboard_settings_dialog.js",
+            "awesome_dashboard/static/src/dashboard/components/dashboard_settings_dialog.xml",
+            "awesome_dashboard/static/src/dashboard/dashboard.js",
+            "awesome_dashboard/static/src/dashboard/dashboard_items.js",
+            "awesome_dashboard/static/src/dashboard/components/*.js",
+            "awesome_dashboard/static/src/dashboard/components/*.xml",
+            "awesome_dashboard/static/src/dashboard/*.xml",
+            "awesome_dashboard/static/src/dashboard/*.scss",
         ],
     },
     "license": "AGPL-3",
