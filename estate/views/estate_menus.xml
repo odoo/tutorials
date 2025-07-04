@@ -1,0 +1,10 @@
+<odoo>
+    <!-- Root level (on App screen) -->
+    <menuitem id="menu_estate_root" name="Real Estate" /> 
+    
+    <!-- First level (On navigation bar) -->
+    <menuitem id="menu_estate_properties" name="Advertisements" parent="menu_estate_root"/>
+
+    <!-- Second level (Inside navigation item list)-->
+    <menuitem id="estate_property_menu_action" name="Properties" parent="menu_estate_properties"  action="estate_property_action" />
+</odoo>
