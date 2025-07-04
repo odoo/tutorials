@@ -1,29 +1,55 @@
 from odoo import fields, models
-
+from datetime import date, timedelta
 
 class Estate(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
 
-    nname = fields.Char(string="Title", required=True, default="New Property")
+    name = fields.Char(required=True,default="Unknown")
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
-    date_availability = fields.Date(string="Available From", default=fields.Date.today)
-    expected_price = fields.Float(string="Expected Price", required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True)
-    bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area (sqm)")
-    facades = fields.Integer(string="Facades")
-    garage = fields.Boolean(string="Has Garage")
-    garden = fields.Boolean(string="Has Garden")
-    garden_area = fields.Integer(string="Garden Area (sqm)")
-    garden_orientation = fields.Selection(
+    expected_price = fields.Float()
+    selling_price = fields.Float(copy=False,readonly=True)
+    bedrooms = fields.Integer(default=2)
+    last_seen = fields.Datetime("Last Seen", default=fields.Date.today)
+    date_availability = fields.Date(
+        default=lambda self: date.today() + timedelta(days=90),
+        copy=False
+    )
+    active = fields.Boolean(default=True)
+    state = fields.Selection(
         selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],default='new'
+    )   
+    living_area = fields.Integer(string="Living Area")
+    facades = fields.Integer(string="Facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden Area")
+    garden_orientation = fields.Selection(
+        [
             ('north', 'North'),
             ('south', 'South'),
             ('east', 'East'),
-            ('west', 'West'),
+            ('west', 'West')
         ],
-        string="Garden Orientation",
-        help="Direction the garden faces"
+        string="Garden Orientation"
     )
+    active = fields.Boolean(default=False)
+    state = fields.Selection(
+    selection=[
+        ('new', 'New'),
+        ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('cancelled', 'Cancelled')
+    ],
+    default='new',
+    required=True,
+    copy=False
+)
