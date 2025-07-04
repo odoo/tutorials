@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class RecurringPlan(models.Model):
@@ -42,3 +42,39 @@ class RecurringPlan(models.Model):
         copy=False
 
     )
+
+    total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
+    best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    user_id = fields.Many2one("res.users", string="Salesman", copy=False, default=lambda self: self.env.user)
+
+    tag_id = fields.Many2many("estate.property.tag", string="Tags",copy=False)
+
+    offer_id = fields.One2many("estate.property.offer","property_id", string="Offer")
+
+
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for area in self:
+            area.total_area = area.living_area + area.garden_area
+
+    
+    @api.depends('offer_id.price')
+    def _compute_best_price(self):
+        for record in self:
+            # Get all prices from offer_ids
+            offer_prices = record.offer_id.mapped('price')
+            record.best_price = max(offer_prices) if offer_prices else 0.0
+
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if(self.garden):
+            self.garden_orientation = 'north'
+            self.garden_area = 10
+        else:
+            self.garden_orientation = False
+            self.garden_area = 0
