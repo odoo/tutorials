@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="menu_estate_root" name="Real Estate"/>
+        <menuitem id="menu_estate_root" name="Real Estate"/>
 
-    <menuitem id="menu_estate_advertisements"
-            name="Advertisements"
-            parent="menu_estate_root"/>
-            
-    <menuitem id="menu_estate_property"
-            name="Properties"
-            parent="menu_estate_advertisements"
-            action="action_estate_property"/>
+        <!-- Advertisement MENU -->
+        <menuitem id="menu_estate_advertisements"
+                name="Advertisements"
+                parent="menu_estate_root"/>
+                
+        <menuitem id="menu_estate_property"
+                name="Properties"
+                parent="menu_estate_advertisements"
+                action="action_estate_property"/>
+
+        <!-- Settings MENU -->
+        <menuitem id="menu_estate_settings"
+                name="Settings"
+                parent="menu_estate_root"/>
+                
+        <menuitem id="menu_estate_property_type"
+                name="Properties Type"
+                parent="menu_estate_settings"
+                action="action_estate_property_type"/> 
+
+        <menuitem id="menu_estate_property_tag"
+                name="Properties Tags"
+                parent="menu_estate_settings"
+                action="action_estate_property_tag"/> 
 </odoo>

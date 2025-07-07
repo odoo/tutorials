@@ -12,12 +12,14 @@
         <field name="arch" type="xml">
             <list string="Estate Property List">
                 <field name="name" string="Title" />
+                <field name="property_type_id" string="Property Type" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" string="Living Area (sqm)" />
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" string="Available From" optional="hide" />
+                <field name="tags_ids" string="Tags" widget="many2many_tags"/>
             </list>
         </field>
     </record>
@@ -28,6 +30,7 @@
         <field name="arch" type="xml">
             <search>
                 <field name="name" string="Title" />
+                <field name="property_type_id" string="Property Type" />
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
@@ -48,29 +51,51 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property Form">
+                 <header>
+                    <button name="action_sold" string="SOLD" type="object" invisible="state in ('sold', 'canceled')"/>
+                    <button name="action_cancel" string="CANCEL" type="object" invisible="state in ('sold', 'canceled')"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
-                            <field name="state" />
-                            <field name="expected_price" />
-                            <field name="selling_price" />
+                            <field name="name" placeholder="e.g. Cozy House" string="Title"/>
+                            <field name="state"/>
+                            <field name="property_type_id"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="best_price"/>
+                            <field name="tags_ids" widget="many2many_tags"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
                                 <group>
-                                    <field name="description" />
-                                    <field name="bedrooms" />
-                                    <field name="living_area" />
-                                    <field name="facades" />
-                                    <field name="garage" />
-                                    <field name="garden" />
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                     <field name="active"/>
-                                    <field name="state"/>
                                 </group>
+                            </group>
+                        </page>
+
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids"/>
+                            </group>
+                        </page>
+
+                        <page string="Other Info">
+                            <group name="name" string="string">
+                                <field name="buyer_id" string="Buyer"/>
+                                <field name="salesperson_id" string="Salesman"/>
                             </group>
                         </page>
                     </notebook>

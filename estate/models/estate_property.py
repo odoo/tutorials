@@ -1,4 +1,5 @@
-from odoo import fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
 
 
@@ -31,3 +32,47 @@ class EstateProperty(models.Model):
          ('sold', 'Sold'), ('canceled', 'Canceled')],
         string='Status', default='new', required=True, copy=False
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", required=True)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    tags_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    total_area = fields.Float(compute="_compute_total_area", string="Total Area", readonly=True)
+    best_price = fields.Float(compute="_compute_best_price", string="Best Price", readonly=True)
+
+    @api.depends("garden_area", "living_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            prices = record.offer_ids.mapped("price")
+            record.best_price = max(prices, default=0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        for record in self:
+            if self.garden:
+                record.garden_area = 10
+                record.garden_orientation = "north"
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
+
+    def action_sold(self):
+        for record in self:
+            if record.state != "canceled":
+                record.state = "sold"
+            else:
+                raise UserError("Canceled properties can't be sold")
+            return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state != "sold":
+                record.state = "canceled"
+            else:
+                raise UserError("Sold properties can't be sold")
+        return True
