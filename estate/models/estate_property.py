@@ -88,9 +88,9 @@ class EstateProperty(models.Model):
             record.state = 'sold'
 
    
-    @api.constrains('selling_price')
-    def _check_price(self):
-        for record in self:
-            if record.selling_price >= record.expected_price *0.9:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+    # @api.constrains('selling_price')
+    # def _check_price(self):
+    #     for record in self:
+    #         if record.selling_price >= record.expected_price *0.9:
+    #             raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
             

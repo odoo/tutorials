@@ -1,6 +1,7 @@
 from datetime import timedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -42,18 +43,28 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline.day - create_date.day)
                 
     def action_confirm(self):
-        for offer in self:
-            # Check if already accepted offer exists for the property
-            existing_offer = offer.property_id.offer_ids.filtered(lambda o: o.status == 'accepted' and o.id != offer.id)
-            if existing_offer:
+        for record in self:
+            # Ensure only one accepted offer per property
+            if any(
+                offer.status == 'accepted'
+                for offer in record.property_id.offer_ids
+            ):
                 raise UserError("Only one offer can be accepted per property.")
 
-            # Set accepted
-            offer.status = 'accepted'
-            # Set buyer and selling price on the property
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.selling_price = offer.price
-            offer.property_id.state = 'offer accepted'
+            
+            min_price = record.property_id.expected_price * 0.9
+            if float_compare(record.price, min_price, precision_digits=2) < 0:
+                raise ValidationError("Offer must be at least 90% of the expected price to be accepted.")
+        
+            record.status = 'accepted'
+
+            # Refuse all other offers
+            other_offers = record.property_id.offer_ids - record
+            other_offers.write({'status': 'refused'})
+
+            # Set buyer and selling price on property
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
             
 
 
