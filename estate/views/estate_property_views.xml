@@ -27,6 +27,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
+                <header>
+                    <button name="action_on_sold" type="object" string="Set as Sold" />
+                    <button name="action_on_cancelled" type="object" string="Cancel" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" />
@@ -35,10 +41,13 @@
                         <group>
                             <field name="postcode" />
                             <field name="date_availability" />
+                            <field name="property_type_id" />
+                            <field name="tag_ids" widget="many2many_tags" />
                         </group>
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" readonly="1" />
+                            <field name="best_offer" />
                         </group>
                     </group>
                     <notebook>
@@ -53,6 +62,7 @@
                                     <field name="garden" />
                                     <field name="garden_area" />
                                     <field name="garden_orientation" />
+                                    <field name="total_area" />
                                 </group>
                                 <group>
                                     <field name="active" />
@@ -60,9 +70,19 @@
                                 </group>
                             </group>
                         </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="seller_id" />
+                                <field name="buyer_id" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" />
+                        </page>
                     </notebook>
                 </sheet>
             </form>
+
         </field>
     </record>
 
@@ -76,11 +96,9 @@
                 <field name="expected_price" />
                 <field name="bedrooms" />
                 <field name="living_area" />
-
                 <separator />
                 <filter name="available" string="Available Properties" domain="['|', ('state', '=', 'new'),('state', '=', 'offer_received')]" />
                 <separator />
-
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
             </search>
 
