@@ -1,5 +1,6 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -37,3 +38,25 @@ class EstatePropertyOffer(models.Model):
                 offer.validity = delta
             else:
                 offer.validity = 0
+
+    def action_accept(self):
+        for offer in self:
+            # Allow only if property has no accepted offer
+            if offer.property_id.buyer_id:
+                raise UserError(_("An offer has already been accepted for this property."))
+            # Set buyer and selling price
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            offer.status = 'accepted'
+            # Setting remaining Offer as refused
+            other_offers = offer.property_id.offer_id - offer
+            # for other in other_offers:                  # -----> Normal for loop logic
+            #     other.status = 'refused'
+            other_offers.write({'status': 'refused'})     # -----> Odoo ORM Method
+
+        return True
+
+    def action_refused(self):
+        for offer in self:
+            offer.status = 'refused'
+        return True

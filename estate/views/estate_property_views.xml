@@ -27,6 +27,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Name">
+                <header>
+                    <button name="action_property_sold" type="object" string="Mark as Sold" class="oe_highlight"/>
+                    <button name="action_property_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                         <div class="oe_title">
                             <h1>
@@ -34,7 +38,12 @@
                             </h1>
                         </div>
                     <group>
-               
+                        <group>
+                            <field name="state"/>
+                        </group>
+                        <group>
+                            <field name="property_type_id"/>
+                        </group>
                         <group>
                             <field name="postcode"/>
                         </group>
@@ -73,11 +82,13 @@
                         </page>
                          <page string="Offers">
                             <field name="offer_id">
-                             <list > <!-- editable="bottom"-->
-                                <field name = "partner_id"/>
-                                <field name = "status"/>
-                                <field name = "price"/>
-                                <field name="validity"/>
+                             <list > <!-- editable="bottom" for edit without opening form-->
+                                 <field name = "partner_id"/>
+                                 <field name = "status"/>
+                                 <field name = "price"/>
+                                 <field name="validity"/>
+                                 <button name="action_accept" states="draft" type="object" icon="fa-check" title="Accept" />
+                                 <button name="action_refused" states="draft" type="object" icon="fa-times" title="Refused"/>
                                 <field name="date_deadline"/>
                              </list>
                             </field>

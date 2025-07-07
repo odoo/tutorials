@@ -1,5 +1,7 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models, api
+from odoo import fields, models, api, _
+from odoo.exceptions import UserError
+
 
 
 class RecurringPlan(models.Model):
@@ -37,6 +39,7 @@ class RecurringPlan(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
+        string="Status",
         required=True, 
         default='new',
         copy=False
@@ -78,3 +81,17 @@ class RecurringPlan(models.Model):
         else:
             self.garden_orientation = False
             self.garden_area = 0
+    
+    def action_property_sold(self): 
+        for prop in self: 
+            if prop.state == 'cancelled':
+                raise UserError(_("Cancelled properties cannot be sold."))
+            prop.state = 'sold'
+        return True 
+
+    def action_property_cancel(self):
+        for prop in self:
+            if prop.state == 'sold':
+                raise UserError(_("Sold properties cannot be cancelled."))
+            prop.state = 'cancelled'
+        return True
