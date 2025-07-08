@@ -1,11 +1,13 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
 from dateutil.relativedelta import relativedelta
-
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_utils, _
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
+
 
     name = fields.Char('Name', required=True, default='Unknown Property')
     description = fields.Text('Description')
@@ -39,6 +41,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area", string="Total Area", readonly=True)
     best_price = fields.Float(compute="_compute_best_price", string="Best Price", readonly=True)
+
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -76,3 +79,12 @@ class EstateProperty(models.Model):
             else:
                 raise UserError("Sold properties can't be sold")
         return True
+
+    @api.constrains('selling_price')
+    def _check_price(self):
+        for record in self:
+            if not record.selling_price:
+                continue
+
+            if float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=3) == -1:
+                raise ValidationError(_('The selling cannot be lower than 90% of the expected price.'))
