@@ -1,11 +1,13 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is a real estate module"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -20,8 +22,8 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     active = fields.Boolean(default=True)
     buyer_id = fields.Many2one(comodel_name="res.partner", string="Buyer", copy=False)
-    total_area  = fields.Float(compute='_compute_total_area', string="Total Area" )
-    best_offer = fields.Float(compute='_compute_best_price',string="Best Offer")
+    total_area = fields.Float(compute="_compute_total_area", string="Total Area")
+    best_offer = fields.Float(compute="_compute_best_price", string="Best Offer")
     date_availability = fields.Date(
         string="Availability From",
         default=lambda self: fields.Date.today() + relativedelta(months=3),
@@ -41,8 +43,7 @@ class EstateProperty(models.Model):
         comodel_name="estate.property.types", string="Property Type"
     )
     estate_property_tag_ids = fields.Many2many(
-        comodel_name="estate.property.tags",
-        string="Tags"
+        comodel_name="estate.property.tags", string="Tags"
     )
     garden_orientation = fields.Selection(
         selection=[
@@ -65,13 +66,12 @@ class EstateProperty(models.Model):
         default="new",
     )
 
-    @api.depends('living_area','garden_area')
+    @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-
-    @api.depends('estate_property_offer_ids')
+    @api.depends("estate_property_offer_ids")
     def _compute_best_price(self):
         for record in self:
             prices = record.estate_property_offer_ids.mapped("price")
@@ -86,15 +86,34 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-
     def action_sold(self):
         for record in self:
-            if record.state == 'cancelled':
+            if record.state == "cancelled":
                 raise UserError("You cannot mark a cancelled property as sold.")
-            record.state = 'sold'
+            record.state = "sold"
 
     def action_cancel(self):
         for record in self:
-            if record.state == 'sold':
+            if record.state == "sold":
                 raise UserError("You cannot mark a sold property as cancelled.")
-            record.state = 'cancelled'
+            record.state = "cancelled"
+
+    _sql_constraints = [
+        (
+            "check_expected_price_positive",
+            "CHECK(expected_price > 0)",
+            "Expected price must be strictly positive.",
+        ),
+    ]
+
+    @api.constrains("expected_price", "selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+
+            min_price = record.expected_price * 0.9
+            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    "Selling price must be at least 90% of the expected price."
+                )
