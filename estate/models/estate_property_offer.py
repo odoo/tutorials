@@ -57,6 +57,7 @@ class EstatePropertyOffer(models.Model):
                 raise ValidationError("Offer must be at least 90% of the expected price to be accepted.")
         
             record.status = 'accepted'
+            record.property_id.state = 'offer accepted'
 
             # Refuse all other offers
             other_offers = record.property_id.offer_ids - record
@@ -67,11 +68,20 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             
 
-
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
+            
 
+    @api.model
+    def create(self, vals):
+        offer = super().create(vals)
+        if offer.property_id.state == 'new':
+            offer.property_id.state = 'offer received'
+        return offer
 
+    _order = "price"
+
+    property_type_id = fields.Many2one('estate.property.type',index = True)
     
  

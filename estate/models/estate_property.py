@@ -44,7 +44,7 @@ class EstateProperty(models.Model):
         ('check_expectep_price', 'CHECK(expected_price > 0 AND selling_price > 0)',
          'The Price must be positve.')
     ]
-
+    
     property_tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
@@ -87,10 +87,6 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled properties cannot be marked as sold.")
             record.state = 'sold'
 
-   
-    # @api.constrains('selling_price')
-    # def _check_price(self):
-    #     for record in self:
-    #         if record.selling_price >= record.expected_price *0.9:
-    #             raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
-            
+    _order = "id desc"
+
+    

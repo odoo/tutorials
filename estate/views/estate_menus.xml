@@ -9,6 +9,6 @@
     <menuitem id="estate_first_level_menu_2" name="Settings" parent="estate_menus_root"/>
     <menuitem id="estate_model_menu_type_action" name="Property Types" parent="estate_first_level_menu_2" action="estate_property_type_action"/>
     <menuitem id="estate_model_menu_tag_action" name="Property Tags" parent="estate_first_level_menu_2" action="estate_property_tag_action"/>
-
+    
 
 </odoo>
