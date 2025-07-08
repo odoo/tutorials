@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record model="sign.item.type" id="stamp_item_type">
+        <field name="name">Stamp</field>
+        <field name="item_type">stamp</field>
+        <field name="tip">stamp</field>
+        <field name="placeholder">Stamp It</field>
+        <field name="default_width" type="float">0.200</field>
+        <field name="default_height" type="float">0.050</field>
+        <field name="icon">fa-certificate</field>
+    </record>
+</odoo>
