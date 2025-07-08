@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offers of Estate property "
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -20,6 +21,10 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner", string="Partner",copy=False,required=True)
     property_id = fields.Many2one("estate.property",copy=False,required=True)
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id",store=True,readonly=False)
+    _sql_constraints =[
+        ('check_offer_price', 'CHECK(price > 0)', 'The Offer price must be strictly positive')
+    ]
 
 
 
@@ -48,6 +53,7 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
             offer.status = 'accepted'
+            offer.property_id.state = 'offer_accepted'
             # Setting remaining Offer as refused
             other_offers = offer.property_id.offer_id - offer
             # for other in other_offers:                  # -----> Normal for loop logic

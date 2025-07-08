@@ -1,12 +1,15 @@
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero, float_round
+
 
 
 
 class RecurringPlan(models.Model):
     _name = "estate.property"
     _description = "estate property revenue plans"
+    _order = "id desc"   # For ordering in ascending opr descending order   one more way to do so is from view like: <list default_order="date desc">
 
     name = fields.Char(required=True)
     description = fields.Text(string="Description")
@@ -42,7 +45,8 @@ class RecurringPlan(models.Model):
         string="Status",
         required=True, 
         default='new',
-        copy=False
+        copy=False,
+        # readonly=True
 
     )
 
@@ -57,6 +61,11 @@ class RecurringPlan(models.Model):
 
     offer_id = fields.One2many("estate.property.offer","property_id", string="Offer")
 
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)','The Expected price of a property should be strictly positive.'),
+        ('check_selling_price', 'CHECK(selling_price IS NULL OR selling_price >= 0)', 'Selling price must be positive when set.')
+    ]
 
 
     @api.depends('living_area', 'garden_area')
@@ -95,3 +104,16 @@ class RecurringPlan(models.Model):
                 raise UserError(_("Sold properties cannot be cancelled."))
             prop.state = 'cancelled'
         return True
+
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_allowed_price = record.expected_price * 0.9
+
+            if float_compare(record.selling_price, min_allowed_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    "Selling price cannot be lower than 90% of the expected price. "
+                    f"(Minimum allowed: {min_allowed_price:.2f})"
+                )
