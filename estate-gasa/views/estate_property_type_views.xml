@@ -1,4 +1,52 @@
 <odoo>
+    <record id="view_estate_property_type_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property Type">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="sequence" />
+                    </group>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_estate_property_offer)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-list">
+                            <div>
+                                <field name="offer_count" widget="statinfo" string="Offers" />
+                            </div>
+                        </button>
+                    </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list string="Properties" editable="bottom">
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_estate_property_offer)d"
+                            type="action"
+                            icon="fa-list"
+                            string="Offers"
+                            context="{}"
+                            domain="[('property_type_id', '=', active_id)]"
+                            modifiers="{'invisible': [('offer_count', '=', 0)]}" />
+                        <field name="offer_count" widget="statinfo"
+                            string="Number of Offers"
+                            invisible="1" />
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
     <record id="action_estate_property_type" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
