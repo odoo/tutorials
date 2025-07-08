@@ -86,6 +86,17 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         offer = super().create(vals)
-        if offer.property_id.state == 'new':
-            offer.property_id.state = 'Offer Received'
+        # Get the property object using the ID in vals
+        property_id = vals.get('property_id')
+        new_price = vals.get('price', 0)
+        property_rec = self.env['estate.property'].browse(property_id)
+
+        # Check if the offer is lower than any existing offers
+        existing_prices = property_rec.offer_ids.mapped('price')
+        if existing_prices and new_price < max(existing_prices):
+            raise ValidationError("Offer price must be higher than existing offers.")
+
+        # Set state to 'offer received' if it’s currently 'new'
+        if property_rec.state == 'new':
+            property_rec.state = 'Offer Received'
         return offer

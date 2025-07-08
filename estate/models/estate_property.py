@@ -1,5 +1,5 @@
 from odoo import  api,fields,models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -102,3 +102,4 @@ class EstateProperty(models.Model):
                 raise UserError("Sold property cannot be cancelled.")
             record.status = 'cancelled'
             record.state = 'cancelled'
+           
