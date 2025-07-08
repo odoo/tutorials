@@ -1,12 +1,15 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
-    description = fields.Text(string="Title")
+    description = fields.Text(string="Description")
     postcode = fields.Char(string="PostCode")
     date_availability = fields.Date(
         string="Available From",
@@ -49,6 +52,14 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
 
+    _sql_constraints = [
+        (
+            "expected_price",
+            "CHECK(expected_price >= 0)",
+            "The expected price must be strictly positive.",
+        )
+    ]
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -84,3 +95,25 @@ class EstateProperty(models.Model):
                 raise UserError("A sold property cannot be cancelled.")
             record.state = "cancelled"
         return True
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+
+            min_acceptable = record.expected_price * 0.9
+
+            if (
+                float_compare(record.selling_price, min_acceptable, precision_digits=2)
+                < 0
+            ):
+                raise ValidationError(
+                    "Selling price must be at least 90% of the expected price."
+                )
+
+    @api.ondelete(at_uninstall=False)
+    def _check_before_delete(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("You can only delete properties that are 'New' or 'Cancelled'.")
