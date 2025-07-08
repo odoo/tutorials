@@ -1,10 +1,16 @@
 from dateutil.relativedelta import relativedelta
 from odoo import models,fields,api,_
-from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare,float_is_zero
+from odoo.exceptions import UserError,ValidationError
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _order = 'id desc'
+
+
+    _check_expected_price = models.Constraint('CHECK(expected_price > 0)','The expected price must be positive.')
+    _check_selling_price = models.Constraint('CHECK(selling_price >= 0)','The selling price must be positive.')
 
     name = fields.Char(required=True,string="Title")
     description = fields.Text()
@@ -54,8 +60,6 @@ class EstateProperty(models.Model):
 
     best_price = fields.Float(compute='_get_best_offer_price',store=True)
 
-
-
     @api.depends("living_area","garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -81,7 +85,6 @@ class EstateProperty(models.Model):
         for record in self:
             if(record.state == 'cancelled'):
                 raise UserError(_("Cancelled property cannot be sold."))
-                print("Cancelled can't be sold")
             else:
                 record.state = 'sold'
         return True
@@ -90,7 +93,18 @@ class EstateProperty(models.Model):
         for record in self:
             if(record.state == 'sold'):
                 raise UserError(_("Sold property cannot be cancelled."))
-                print("Sold can't be cancelled")
             else:
                 record.state = 'cancelled'
         return True
+        
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price,precision_digits=2):
+                if float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9, 
+                    precision_digits=2) < 0 :
+                    raise ValidationError(_("The selling price cannot be lower than 90% of the expected price")) 
+
+    

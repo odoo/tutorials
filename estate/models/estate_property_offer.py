@@ -5,10 +5,20 @@ from datetime import timedelta,datetime
 class EstatePropertyOffer(models.Model):
     _name="estate.property.offer"
     _description="Offers of Estate Property"
+    _order = 'price desc'
+
+    _check_offer_price = models.Constraint('CHECK(price > 0)','The Offer price must be positive.')
+
     price = fields.Float()
     status = fields.Selection([('accepted','Accepted'),('refused','Refused')],copy=False)
     partner_id = fields.Many2one('res.partner',string="Partner",required=True)
     property_id = fields.Many2one('estate.property',string="Property",required=True)
+    property_type_id = fields.Many2one(
+    'estate.property.types',
+    related="property_id.property_type_id",
+    string="Property Type",
+    required=True)
+
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline",inverse="_inverse_deadline",store=True)
     @api.depends('validity')
@@ -32,6 +42,7 @@ class EstatePropertyOffer(models.Model):
             if existing:
                 raise UserError(_("Another offer has been already accepted."))
             record.status = "accepted"
+            record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id.id
     def action_refuse_offer(self):

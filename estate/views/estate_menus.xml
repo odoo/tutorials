@@ -8,6 +8,6 @@
         <menuitem id="menu_estate_properties_settings" name="Settings">
             <menuitem id="estate_property_types" name="Property Types"  action="estate_property_type_action"/>
             <menuitem id="estate_property_tags" name="Property Tags"  action="estate_property_tags_action"/>
-        </menuitem>
+        </menuitem> 
     </menuitem>
 </odoo>
