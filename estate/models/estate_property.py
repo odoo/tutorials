@@ -8,6 +8,8 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property is defined"
 
+    _order = "id desc"
+
     name= fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -27,7 +29,7 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        selection=[('new','new'), ('Offer Received','Offer Received'), ('Offer Accepted','Offer Accepted'), ('sold','sold'),('Cancelled','Cancelled')],
+        selection=[('new','new'), ('Offer Received','Offer Received'), ('Offer Accepted','Offer Accepted'), ('sold','sold'),('cancelled','Cancelled')],
         required=True,
         default='new',
         copy=False,
@@ -92,9 +94,11 @@ class EstateProperty(models.Model):
             if record.status == 'cancelled':
                 raise UserError("Cancelled property cannot be marked as sold.")
             record.status = 'sold'
+            record.state='sold'
 
     def cancel_button_action(self):
         for record in self:
             if record.status == 'sold':
                 raise UserError("Sold property cannot be cancelled.")
             record.status = 'cancelled'
+            record.state = 'cancelled'

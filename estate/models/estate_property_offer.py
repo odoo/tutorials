@@ -8,6 +8,8 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "estate property OFFER created"
 
+    _order = "price desc"
+
     price=fields.Float()
     status = fields.Selection(
         selection=[('accepted','Accepted'), ('refused','Refused')],
@@ -16,6 +18,8 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one("res.partner",string="Partner",index=True,required=True,default=lambda self:self.env.user.partner_id.id)
     property_id = fields.Many2one("estate.property",index=True,required=True)
+
+    property_type_id= fields.Many2one('estate.property.type',string="property type",related="property_id.property_type_id",store=True)
 
     validity = fields.Integer(default = 7)
     date_deadline = fields.Date(
@@ -65,6 +69,7 @@ class EstatePropertyOffer(models.Model):
                 raise ValidationError("Offer must be at least 90% of the expected price to be accepted.")
         
             record.status = 'accepted'
+            record.property_id.state='Offer Accepted'
 
             # Refuse all other offers
             other_offers = record.property_id.offer_ids - record
@@ -77,3 +82,10 @@ class EstatePropertyOffer(models.Model):
     def refuse_icon_action(self):
         for record in self:
             record.status = 'refused'
+
+    @api.model
+    def create(self, vals):
+        offer = super().create(vals)
+        if offer.property_id.state == 'new':
+            offer.property_id.state = 'Offer Received'
+        return offer
