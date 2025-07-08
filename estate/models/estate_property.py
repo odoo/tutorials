@@ -1,5 +1,7 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError,ValidationError
+from odoo.tools.float_utils import float_compare
+
 
 
 class EstateProperty(models.Model):
@@ -42,7 +44,7 @@ class EstateProperty(models.Model):
         copy=False,
     )
 
-    # property will have Many to one relation with property since many properties can belong to one property
+    # property will have Many to one relation with property since many properties can belong to one property type
 
     property_type_id = fields.Many2one("estate.property.type", "Property Type")
 
@@ -69,7 +71,17 @@ class EstateProperty(models.Model):
 
     best_price = fields.Integer(compute="_compute_best_price", string="Best Price")
 
+
     status = fields.Char(default="new", string="Status")
+
+    _order = "id desc"
+
+
+    _sql_constraints = [('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)', 'Selling price should be positive')
+    ]
+   
+
 
     @api.depends("garden_area", "living_area")
     def _compute_total_property_area(self):
@@ -103,7 +115,6 @@ class EstateProperty(models.Model):
         property_sell_status_dict = {"new": True, "sold": True, "cancelled": False}
 
         for record in self:
-            print("the object on sell action", record.read())
             if property_sell_status_dict[record.status]:
                 record.status = "sold"
             else:
@@ -123,3 +134,23 @@ class EstateProperty(models.Model):
                 record.status = "cancelled"
             else:
                 raise UserError("Sold  property cannot be cancelled.")
+
+    # constrains for the selling price 
+
+    @api.constrains('selling_price', 'expected_price')
+
+    def _check_selling_price(self):
+        
+        for data in self:
+            # if call will come after selling price change than it will allow updated price to work
+            if data.selling_price <= 0 :
+                return
+
+            price_float_ratio = (data.selling_price/self.expected_price)
+            ratio_diffrence = float_compare(price_float_ratio,0.9, precision_digits=2)
+            if ratio_diffrence == -1 :
+                data.selling_price = 0
+                raise  ValidationError('The selling price cannot be lower than 90% of the expected price')
+                
+            
+
