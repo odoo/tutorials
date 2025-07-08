@@ -1,18 +1,25 @@
 from datetime import date, timedelta
-from odoo import fields, models
-from odoo.exceptions import UserError
+from odoo import api, fields, models
+from odoo.exceptions import UserError,ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(default="Unknown", required=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     availability_date = fields.Date(default=lambda self: date.today() + timedelta(days=90), copy=False)
-    expected_price = fields.Float(string="Expected Price",required=True)
+    expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(readonly=True, copy=False)
+    _sql_constraints = [
+    ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+    ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
+]
+
     bedrooms = fields.Integer(default=2)
     living_area = fields.Float(string="Living Area")
     facades = fields.Integer(string="Facades")
@@ -49,6 +56,15 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_acceptable_price = 0.9 * record.expected_price
+            if float_compare(record.selling_price, min_acceptable_price, precision_digits=2) < 0:
+                raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -68,7 +84,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-    
+
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
