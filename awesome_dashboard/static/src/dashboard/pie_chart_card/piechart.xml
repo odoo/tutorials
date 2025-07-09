@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <!-- Template for the PieChart component -->
+    <t t-name="awesome_dashboard.PieChart">
+        <!-- Canvas element where the pie chart will be rendered -->
+        <canvas t-ref="canvas" />
+    </t>
+</templates>

@@ -1,0 +1,21 @@
+<odoo>
+    <record id="inquiry_email_template" model="mail.template">
+        <field name="name">Property Inquiry Notification</field>
+        <field name="model_id" ref="model_estate_inquiry"/>
+        <field name="email_from">${object.email}</field>
+        <field name="email_to">${object.property_id.user_id.email}</field>
+        <field name="subject">New Inquiry for ${object.property_id.name}</field>
+        <field name="body_html">
+            <![CDATA[
+            <p>Hello,</p>
+            <p>You have a new inquiry for <strong>${object.property_id.name}</strong>.</p>
+            <p><strong>Name:</strong> ${object.name}</p>
+            <p><strong>Email:</strong> ${object.email}</p>
+            <p><strong>Phone:</strong> ${object.phone}</p>
+            <p><strong>Message:</strong> ${object.message}</p>
+            <p>Regards,</p>
+            <p>Odoo Real Estate</p>
+            ]]>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,146 @@
+<odoo>
+    <template id="property_listing" name="Property Listing">
+        <t t-call="website.layout">
+            <t t-if="message">
+                <div class="alert alert-success alert-dismissable fade show" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="position: absolute; top: 5px; right: 10px;"></button>
+                    Your inquiry has been submitted
+                </div>
+            </t>
+            <div class="container">
+                <h1 class="mt-4">Available Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4"
+                            t-if="property.state">
+                            <div class="card mb-4">
+                                <img
+                                    t-if="property.image_1920" 
+                                    t-attf-src="data:image/png;base64,{{property.image_1920}}"
+                                    class="card-img-top img-fluid"
+                                    alt="Property image"/>
+                                <img t-if="not property.image_1920"
+                                    src="/real_estate/static/img/placeholder.png"
+                                    class="card-img-top"/>
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-esc="property.name"/></h5>
+                                    <p class="card-text">Price: <t t-esc="property.selling_price"/> USD</p>
+                                    <a t-att-href="'/properties/%s' % property.id" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="property_detail" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <div class="row">
+                    <!-- Property Image -->
+                    <div class="col-md-6">
+                        <img t-if="property.image_1920" 
+                            t-attf-src="data:image/png;base64,{{property.image_1920}}"
+                            class="card-img-top img-fluid"
+                            alt="Property image"/>
+                        <img t-if="not property.image_1920" 
+                            src="/real_estate/static/img/placeholder.png"
+                            class="img-fluid rounded"/>
+                    </div>
+
+                    <!-- Property Details -->
+                    <div class="col-md-6">
+                        <h1><t t-esc="property.name"/></h1>
+                        <p><strong>Price:</strong> <t t-esc="property.selling_price"/> USD</p>
+                        <p><strong>Best Offer Price:</strong> <t t-esc="property.best_price"/> USD</p>
+                        <p><strong>Type:</strong> <t t-esc="property.property_type_id.name"/></p>
+                        <p><strong>Bedrooms:</strong> <t t-esc="property.bedrooms"/></p>
+                        <p><strong>Living Area:</strong> <t t-esc="property.living_area"/> m²</p>
+                        <p><strong>Facades:</strong> <t t-esc="property.facades"/></p>
+                        <p><strong>Garage:</strong> <t t-esc="'Yes' if property.garage else 'No'"/></p>
+                        <p><strong>Garden:</strong> <t t-esc="'Yes' if property.garden else 'No'"/></p>
+                        <t t-if="property.garden">
+                            <p><strong>Garden Area:</strong> <t t-esc="property.garden_area"/> m²</p>
+                            <p><strong>Garden Orientation:</strong> <t t-esc="property.garden_orientation"/></p>
+                        </t>
+                        <p><strong>Total Area:</strong> <t t-esc="property.total_area"/> m²</p>
+                        <p><strong>Description:</strong></p>
+                        <p><t t-esc="property.description"/></p>
+                        
+                        <a href="/properties" class="btn btn-secondary">Back to Listings</a>
+                    </div>
+
+                    <!-- Contact Inquiry Form -->
+                    <div class="container mt-5">
+                        <h3>Inquire About This Property</h3>
+                        <form action="/properties/inquire" method="post">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <input type="hidden" name="property_id" t-att-value="property.id"/>
+                            <div class="mb-3">
+                                <label class="form-label">Your Name</label>
+                                <input type="text"
+                                    name="name"
+                                    class="form-control"
+                                    value="Kunj"
+                                    required="true"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email"
+                                    name="email"
+                                    class="form-control"
+                                    value="kunj@odoo.com"
+                                    required="true"
+                                    pattern="[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+"/>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Phone</label>
+                                <input type="tel"
+                                    name="phone"
+                                    class="form-control"
+                                    value="9364359525"
+                                    require="true"
+                                    pattern="[0-9]{10,15}"
+                                    />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Message</label>
+                                <textarea type="text"
+                                    name="message"
+                                    class="form-control"
+                                    required="true">I want to inquire about this property</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success" >Send Inquiry</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    document.getElementById("propertyInquiryForm").addEventListener("submit", function (event) {
+                        let form = event.target;
+                        let email = form.querySelector('input[name="email"]');
+                        let phone = form.querySelector('input[name="phone"]');
+
+                        // Email validation
+                        let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailPattern.test(email.value)) {
+                            alert("Please enter a valid email address.");
+                            event.preventDefault();
+                            return;
+                        }
+
+                        // Phone validation
+                        let phonePattern = /^[0-9]{10,15}$/;
+                        if (!phonePattern.test(phone.value)) {
+                            alert("Please enter a valid phone number (10-15 digits).");
+                            event.preventDefault();
+                            return;
+                        }
+                    });
+                });
+            </script>
+        </t>
+    </template>
+</odoo>

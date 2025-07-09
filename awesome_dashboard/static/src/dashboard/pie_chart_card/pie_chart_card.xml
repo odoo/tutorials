@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <!-- Template for the PieChartCard component -->
+    <t t-name="awesome_dashboard.PieChartCard" owl="1">
+        <!-- Display the title of the chart -->
+        <t t-esc="props.title"/>
+        <!-- Include the PieChart component and pass data and label properties -->
+        <PieChart data="props.values" label="''"/>
+    </t>
+</templates>
