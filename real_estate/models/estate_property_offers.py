@@ -67,3 +67,18 @@ class EstatePropertyOffers(models.Model):
             "Offer price must be strictly positive.",
         )
     ]
+
+    @api.model_create_multi
+    def create(self, vals):
+        for val in vals:
+            property_id = self.env["estate.property"].browse(val["property_id"])
+
+            if property_id.state == "new":
+                property_id.state = "offer_received"
+
+            if val["price"] <= property_id.best_offer:
+                raise UserError(
+                    f"The offer must be higher than {property_id.best_offer}"
+                )
+
+        return super().create(vals)

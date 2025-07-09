@@ -88,6 +88,9 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            if not record.state == "offer_accepted":
+                raise UserError("Accept an offer first")
+
             if record.state == "cancelled":
                 raise UserError("You cannot mark a cancelled property as sold.")
             record.state = "sold"
@@ -116,4 +119,12 @@ class EstateProperty(models.Model):
             if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
                 raise ValidationError(
                     "Selling price must be at least 90% of the expected price."
+                )
+
+    @api.ondelete(at_uninstall=False)
+    def _check_deletion_state(self):
+        for rec in self:
+            if rec.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "Only properties in 'New' or 'Cancelled' state can be deleted."
                 )
