@@ -96,8 +96,8 @@
                                               decoration-success="status == 'accepted'">
                                             <field name="price"/>
                                             <field name="partner_id"/>
-                                            <button name="accept_icon_action" states="draft" type="object" icon="fa-check" invisible="status=='refused' or status=='accepted'"/>
-                                            <button name="refuse_icon_action" states="draft" type="object" icon="fa-close" invisible="status=='refused' or status=='accepted'"/>
+                                            <button name="accept_icon_action" states="draft" type="object" icon="fa-check" string=' ' invisible="status=='refused' or status=='accepted'"/>
+                                            <button name="refuse_icon_action" states="draft" type="object" icon="fa-close" string=' ' invisible="status=='refused' or status=='accepted'"/>
                                             <!-- <field name="status"/> -->
                                             <field name="validity"/>
                                             <field name="date_deadline"/>

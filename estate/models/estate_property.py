@@ -29,7 +29,7 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        selection=[('new', 'new'), ('Offer Received', 'Offer Received'), ('Offer Accepted', 'Offer Accepted'), ('sold', 'sold'),('cancelled', 'Cancelled')],
+        selection=[('new', 'new'), ('Offer Received', 'Offer Received'), ('Offer Accepted', 'Offer Accepted'), ('sold', 'sold'), ('cancelled', 'Cancelled')],
         required=True,
         default='new',
         copy=False,
@@ -61,7 +61,7 @@ class EstateProperty(models.Model):
     def _find_best(self):
         for record in self:
             if record.offer_ids:
-                    record.best_offer = max(record.offer_ids.mapped('price'))
+                record.best_offer = max(record.offer_ids.mapped('price'))
             else:
                 record.best_offer = 0.0
 
@@ -90,11 +90,10 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled property cannot be marked as sold.")
             record.status = 'sold'
             record.state = 'sold'
-           
+
     def cancel_button_action(self):
         for record in self:
             if record.status == 'sold':
                 raise UserError("Sold property cannot be cancelled.")
             record.status = 'cancelled'
             record.state = 'cancelled'
-            

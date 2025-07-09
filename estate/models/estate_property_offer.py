@@ -64,7 +64,7 @@ class EstatePropertyOffer(models.Model):
             min_price = record.property_id.expected_price * 0.9
             if float_compare(record.price, min_price, precision_digits=2) < 0:
                 raise ValidationError("Offer must be at least 90% of the expected price to be accepted.")
-        
+
             record.status = 'accepted'
             record.property_id.state = 'Offer Accepted'
 
@@ -80,20 +80,20 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
 
-    @api.model
-    def create(self, vals):
-        offer = super().create(vals)
-        # Get the property object using the ID in vals
-        property_id = vals.get('property_id')
-        new_price = vals.get('price', 0)
-        property_rec = self.env['estate.property'].browse(property_id)
-
-        # Check if the offer is lower than any existing offers
-        existing_prices = property_rec.offer_ids.mapped('price')
-        if existing_prices and new_price < max(existing_prices):
-            raise ValidationError("Offer price must be higher than existing offers.")
-
-        # Set state to offer received if its currently new
-        if property_rec.state == 'new':
-            property_rec.state = 'Offer Received'
-        return offer
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            price = vals.get("price", 0.0)
+            if property_id:
+                property_obj = self.env["estate.property"].browse(property_id)
+                best_price = property_obj.best_offer or 0.0
+                if price < best_price:
+                    raise UserError(
+                        "Offer price must be greater than or equal to the best offer price."
+                    )
+        records = super().create(vals_list)
+        for record in records:
+            if record.partner_id:
+                record.property_id.state = "offer_received"
+        return records
