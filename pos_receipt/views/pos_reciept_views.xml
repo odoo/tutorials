@@ -8,7 +8,7 @@
             <xpath expr="//block[@id='pos_bills_and_receipts_section']/setting"
                 position="replace">
                 <setting id="layout_settings" string="Receipt Layout"
-                    help="Choose the layout of your receipt" company_dependent="1">
+                    help="Choose the layout of your receipt">
                     <button name="open_pos_receipt_config_wizard"
                         string="Configure Receipt Layout"
                         type="object"
@@ -17,6 +17,5 @@
                 </setting>
             </xpath>
         </field>
-
     </record>
 </odoo>

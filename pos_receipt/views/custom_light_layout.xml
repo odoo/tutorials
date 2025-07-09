@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="custom_receipt_static_light" t-name="custom_receipt_static">
+        <div
+            style="font-family: Arial, sans-serif; width: 350px; margin: auto; text-align: center; border: 1px solid #ddd; padding: 10px;">
+            <img t-if="logo" t-att-src="image_data_uri(logo)" alt="Logo" style="height: 70px; " />
+            <p style="margin: 5px 0; font-size: 12px;"> Tel: +1 555-555-5556<br />
+                info@yourcompany.com<br /> http://www.example.com </p>
+            <t t-esc="header" />
+            <h1 style="margin: 10px 0;">301</h1>
+            <t t-if="is_restaurant"> Served by MOG <br /> Table 5 Guest 3 </t>
+            <table style="width: 100%; text-align: left; font-size: 14px;">
+                <tr>
+                    <td>
+                        <b>Margarita Pizza</b>
+                    </td>
+                    <td style="text-align: right;">$ 140.00</td>
+                </tr>
+                <tr>
+                    <td><span style="border: 1px solid #000; padding: 2px 5px;">1.00</span> x
+                        $140.00 / Units</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <b>Bacon Burger</b>
+                    </td>
+                    <td style="text-align: right;">$ 33.00</td>
+                </tr>
+                <tr>
+                    <td><span style="border: 1px solid #000; padding: 2px 5px;">1.00</span> x $33.00
+                        / Units</td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <b>Apple Pie</b>
+                    </td>
+                    <td style="text-align: right;">$ 85.00</td>
+                </tr>
+                <tr>
+                    <td><span style="border: 1px solid #000; padding: 2px 5px;">1.00</span> x $85.00
+                        / Units</td>
+                </tr>
+            </table>
+            <hr />
+            <table style="width: 100%; text-align: left; font-size: 14px;">
+                <tr>
+                    <td>TOTAL</td>
+                    <td style="text-align: right;">$ 258.00</td>
+                </tr>
+                <tr>
+                    <td>Cash</td>
+                    <td style="text-align: right;">$ 258.00</td>
+                </tr>
+            </table>
+            <t t-esc="footer" />
+            <p style="margin-top: 10px; font-size: 12px;">Powered by Odoo</p>
+            <p style="font-size: 12px;">Order 00003-001-0001<br />03/19/2025 17:55:58</p>
+        </div>
+    </template>
+</odoo>
