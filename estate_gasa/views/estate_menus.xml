@@ -4,13 +4,13 @@
 
     <!-- Submenu: Advertisements-->
     <menuitem id="estate_menu_properties" name="Application" parent="estate_menu_root" />
-    <menuitem id="estate_menu_property_action" name="Properties" action="action_estate_property"
+    <menuitem id="estate_menu_property_action" name="Properties" action="estate_property_action"
         parent="estate_menu_properties" />
 
     <!-- Submenu: Settings -->
     <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" />
     <menuitem id="estate_menu_property_type" name="Property Types"
-        action="action_estate_property_type" parent="estate_menu_settings" />
+        action="estate_property_type_action" parent="estate_menu_settings" />
     <menuitem id="estate_menu_property_tag" name="Property Tags"
-        parent="estate_menu_settings" action="action_estate_property_tag" />
+        parent="estate_menu_settings" action="estate_property_tag_action" />
 </odoo>

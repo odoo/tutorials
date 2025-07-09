@@ -16,10 +16,7 @@ class Estate(models.Model):
     expected_price = fields.Float()
     bedrooms = fields.Integer(default=2)
     last_seen = fields.Datetime("Last Seen", default=fields.Date.today)
-    date_availability = fields.Date(
-        default=lambda self: date.today() + timedelta(days=90),
-        copy=False
-    )
+    date_availability = fields.Date(default=lambda self: date.today() + timedelta(days=90), copy=False)
     active = fields.Boolean(default=True)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
@@ -106,10 +103,8 @@ class Estate(models.Model):
             record.state = 'cancelled'
 
     _sql_constraints = [
-        ('check_expected_price_positive', 'CHECK(expected_price > 0)',
-         'The expected price must be strictly positive.'),
-        ('check_selling_price_positive', 'CHECK(selling_price >= 0)',
-         'The selling price must be positive.'),
+        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
     ]
 
     @api.constrains('selling_price', 'expected_price')
@@ -117,9 +112,9 @@ class Estate(models.Model):
         for record in self:
             if float_is_zero(record.selling_price, precision_digits=2):
                 continue
-            
+
             minimum_allowed = record.expected_price * 0.9
-            
+
             if float_compare(record.selling_price, minimum_allowed, precision_digits=2) < 0:
                 raise ValidationError(
                     ("The selling price cannot be lower than 90%% of the expected price.\n"

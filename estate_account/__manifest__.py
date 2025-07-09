@@ -1,7 +1,7 @@
 {
     'name': "Account",
     'version': '1.0',
-    'depends': ['base','estate-gasa', 'account'],
+    'depends': ['base', 'estate_gasa', 'account'],
     'author': "Author Name",
     'category': 'Category',
     "license": "LGPL-3",
