@@ -3,12 +3,11 @@ from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_utils, _
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
-
-
     name = fields.Char('Name', required=True, default='Unknown Property')
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
@@ -42,6 +41,10 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area", string="Total Area", readonly=True)
     best_price = fields.Float(compute="_compute_best_price", string="Best Price", readonly=True)
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price must strictly be Positive.'),
+        ('check_selling_price', 'CHECK(selling_price > 0)', 'The selling price must strictly be positive.'),
+    ]
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -88,3 +91,8 @@ class EstateProperty(models.Model):
 
             if float_utils.float_compare(record.selling_price, record.expected_price * 0.9, precision_rounding=3) == -1:
                 raise ValidationError(_('The selling cannot be lower than 90% of the expected price.'))
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_check(self):
+        if any(record.state not in ('new', 'canceled') for record in self):
+            raise UserError(_("You cannot delete a property that is not in the 'New' or 'Canceled' state."))

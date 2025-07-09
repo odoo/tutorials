@@ -16,7 +16,6 @@ class EstatePropertyType(models.Model):
         ('check_property_type_name', 'UNIQUE(name)', 'A Type must be unique.'),
     ]
 
-
     @api.depends('offer_ids')
     def compute_offer_count(self):
         for record in self:

@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="action_estate_property" model="ir.actions.act_window">
-        <field name="name">Properties</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-        <field name="domain">[('active', '=', True)]</field>
-        <field name="context">{'search_default_state': True}</field>
-    </record>
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list.view</field>
         <field name="model">estate.property</field>
@@ -107,5 +100,46 @@
                 </sheet>
             </form>
         </field>
+    </record>
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile" default_group_by="property_type_id" records_draggable="False">
+                <templates>
+                    <t t-name="card">
+                        <div class="row mb4">
+                            <field class="fw-bolder" name="name"/>
+                            <div>
+                                Expected Price: 
+                                <field name="expected_price"/>
+                            </div>
+                            <div t-if = "state == 'offer_received'">
+                                Best Price: 
+                                <field name="best_price"/>
+                            </div>
+                            <div t-if = "state == 'offer_accepted'">
+                                Selling Price: 
+                                <field name="selling_price"/>
+                            </div>
+                            <field name="tags_ids"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_estate_property" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('active', '=', True)]</field>
+        <field name="context">{'search_default_state': True}</field>
+        <field name="views" eval="[
+            (ref('estate_property_view_list'), 'list'),
+            (ref('estate_property_properties_form_view'), 'form'),
+            (ref('estate_property_kanban'), 'kanban')
+        ]"/>
     </record>
 </odoo>

@@ -24,13 +24,13 @@ class EstatePropertyOffer(models.Model):
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "The price must be strictly positive.")
     ]
-    
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
             if not record.create_date:
                 today = fields.Datetime.today()
-                record.date_deadline = base_date + timedelta(days=record.validity)
+                record.date_deadline = today + timedelta(days=record.validity)
             else:
                 record.date_deadline = record.create_date + timedelta(days=record.validity)
 
@@ -39,21 +39,11 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - record.create_date.date()).days
 
     def action_accept_offer(self):
-        for record in self:
-            record.status = "accepted"
-            if record.property_id:
-                record.property_id.selling_price = record.price
-                record.property_id.buyer_id = record.partner_id
-                record.property_id.state = "offer_accepted"
-        return True
-
-    def action_accept_offer(self):
         for offer in self:
             if offer.property_id.state in {'accepted', 'sold'}:
-                raise UserError(_('An offer has already been accepted for this property.'))
+                raise UserError('An offer has already been accepted for this property.')
 
             offer.write({'status': 'accepted'})
-
             offer.property_id.write({
                 'selling_price': offer.price,
                 'buyer_id': offer.partner_id.id,
@@ -66,3 +56,12 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_id"])
+            property.state = "offer_received"
+            if property.best_price > vals["price"]:
+                raise UserError("The offer must be higher than the existing offer")
+        return super().create(vals_list)
