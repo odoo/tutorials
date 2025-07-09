@@ -1,9 +1,12 @@
 {
     'name': 'Estate',
-    'installable': True,
+    "version": "1.0",
     'application': True,
+    'installable': True,
     'auto_install': False,
+    "category": "Real Estate/Brokerage",
     'data': [
+        'security/security.xml',
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_property_type_views.xml',

@@ -11,7 +11,7 @@
 
     <!-- Tree View -->
     <record id="estate_property_tree" model="ir.ui.view">
-        <field name="name">estate.property</field>
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties" decoration-success="state=='offer received' or state == 'offer accepted'" decoration-bf = "state =='offer accepted'"  decoration-muted = "state == 'sold'">

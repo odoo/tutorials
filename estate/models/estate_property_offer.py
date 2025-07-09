@@ -6,34 +6,29 @@ from odoo.tools import float_compare
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-
     _description = "Offers related to property are made"
+    _order = "price desc"
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', 'The offer price must be greater than 0')
+    ]
 
     price = fields.Float()
-
     status = fields.Selection(
         selection=[('accepted', 'Accepted'), ('refused', 'Refuse')],
         copy=False,
     )
-
     partner_id = fields.Many2one(
         "res.partner", string='Partner', index=True, default=lambda self: self.env.user.partner_id.id
     )
-
     property_id = fields.Many2one("estate.property", index=True, required=True)
-
     validity = fields.Integer(default=7)
-
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
         store=True
     )
-
-    _sql_constraints = [
-        ('check_price', 'CHECK(price > 0)', 'The offer price must be greater than 0')
-    ]
+    property_type_id = fields.Many2one('estate.property.type', index=True)
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -98,7 +93,3 @@ class EstatePropertyOffer(models.Model):
             if record.partner_id:
                 record.property_id.state = "offer_received"
         return records
-
-    _order = "price desc"
-
-    property_type_id = fields.Many2one('estate.property.type', index=True)

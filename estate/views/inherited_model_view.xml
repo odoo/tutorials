@@ -10,7 +10,6 @@
                     <field name="property_ids">
                         <list>
                             <field name="name"/>
-                            
                             <field name = "property_type_id" />
                             <field name="postcode" />
                             <field name = "property_tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'editable' : 'true' }" />
