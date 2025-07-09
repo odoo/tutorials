@@ -25,14 +25,13 @@ patch(ProductCatalogKanbanController.prototype, {
             return;
         }
 
-        let productQuantity;
-        if (this.resModel == "sale.order") {
-            productQuantity = "product_uom_qty";
-        } else if (this.resModel == "purchase.order") {
-            productQuantity = "product_qty";
-        } else {
-            console.error("Model not found");
-            return;
+        const quantityFieldMap = {
+            "sale.order": "product_uom_qty",
+            "purchase.order": "product_qty",
+        };
+        const productQuantity = quantityFieldMap[this.resModel];
+        if (!productQuantity) {
+            this.notification.add("Unsupported model: " + this.resModel, { type: "danger" });
         }
 
         const orderLines = await this.orm.searchRead(
