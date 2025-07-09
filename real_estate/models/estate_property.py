@@ -19,7 +19,6 @@ class EstateProperty(models.Model):
     ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
     ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'The selling price must be positive.')
 ]
-
     bedrooms = fields.Integer(default=2)
     living_area = fields.Float(string="Living Area")
     facades = fields.Integer(string="Facades")
@@ -59,7 +58,8 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2):
+            if (float_is_zero(record.selling_price, precision_digits=2)
+            or record.state not in ['offer_accepted', 'sold']):
                 continue
             min_acceptable_price = 0.9 * record.expected_price
             if float_compare(record.selling_price, min_acceptable_price, precision_digits=2) < 0:
@@ -98,3 +98,9 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled properties cannot be sold.")
             record.state = 'sold'
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _check_deletion(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You can only delete a property if its state is 'New' or 'Cancelled'.")

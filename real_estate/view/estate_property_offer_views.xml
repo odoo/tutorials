@@ -14,11 +14,9 @@
             <form string="Property Offer">
            <header>
     <button name="action_accept" string="Accept" type="object"
-            class="btn-primary"
             invisible="state != 'accepted'"/>
 
     <button name="action_refuse" string="Refuse" type="object"
-            class="btn-secondary"
             invisible="state == 'accepted'"/>
             </header>
 
@@ -33,7 +31,6 @@
         </field>
     </record>
 
-
     <record id="view_estate_property_offer_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
@@ -43,9 +40,8 @@
               decoration-success="state == 'accepted'">
                 <field name="price"/>
                 <field name="partner_id"/>
-                <field name="state" invisible="1"/>
                  <button name="action_accept" type="object" string="✓" icon="fa-check"/>
-            <button name="action_refuse" type="object" string="✗" icon="fa-times"/>
+                <button name="action_refuse" type="object" string="✗" icon="fa-times"/>
             </list>
         </field>
     </record>
