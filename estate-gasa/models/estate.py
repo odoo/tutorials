@@ -20,11 +20,10 @@ class Estate(models.Model):
         default=lambda self: date.today() + timedelta(days=90),
         copy=False
     )
-    active = fields.Boolean(default=True)   
+    active = fields.Boolean(default=True)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
     garden = fields.Boolean(string="Garage")
-    garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
     garden_orientation = fields.Selection(
         [
@@ -46,9 +45,8 @@ class Estate(models.Model):
         default='new',
         required=True,
         copy=False
-    ) 
+    )
     property_type = fields.Many2one("estate.property.type", string="Property Type")
-
     buyer = fields.Many2one(
         "res.partner",
         string="Buyer",
@@ -116,15 +114,21 @@ class Estate(models.Model):
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price_threshold(self):
-     for record in self:
-        if float_is_zero(record.selling_price, precision_digits=2):
-            continue
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            
+            minimum_allowed = record.expected_price * 0.9
+            
+            if float_compare(record.selling_price, minimum_allowed, precision_digits=2) < 0:
+                raise ValidationError(
+                    ("The selling price cannot be lower than 90%% of the expected price.\n"
+                    "Expected Price: %.2f, Selling Price: %.2f (Minimum allowed: %.2f)") %
+                    (record.expected_price, record.selling_price, minimum_allowed)
+                )
 
-        minimum_allowed = record.expected_price * 0.9
-
-        if float_compare(record.selling_price, minimum_allowed, precision_digits=2) < 0:
-            raise ValidationError(
-                ("The selling price cannot be lower than 90%% of the expected price.\n"
-                  "Expected Price: %.2f, Selling Price: %.2f (Minimum allowed: %.2f)") %
-                (record.expected_price, record.selling_price, minimum_allowed)
-            )
+    @api.ondelete(at_uninstall=False)
+    def _check_property_state_before_delete(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("You can only delete properties that are in 'New' or 'Cancelled' state.")

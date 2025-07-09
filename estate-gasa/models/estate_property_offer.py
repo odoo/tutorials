@@ -1,6 +1,6 @@
 from odoo import api, models, fields
+from odoo.exceptions import UserError,ValidationError
 from datetime import date, timedelta
-from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -12,7 +12,7 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection([
         ('accepted', 'Accepted'),
         ('refused', 'Refused')
-        ], 
+        ],
         copy=False
     )
 
@@ -63,3 +63,22 @@ class EstatePropertyOffer(models.Model):
         ('check_offer_price_positive', 'CHECK(price > 0)',
          'The offer price must be strictly positive.'),
     ]
+
+    @api.model
+    def create(self, vals):
+        property_id = vals.get('property_id')
+        amount = vals.get('price')
+
+        if property_id and amount:
+            existing_offers = self.search([
+                ('property_id', '=', property_id),
+                ('price', '>=', amount)
+            ])
+            if existing_offers:
+                raise ValidationError("An offer with a higher or equal price already exists.")
+
+            property = self.env['estate.property'].browse(property_id)
+            if property.state == 'new':
+                property.state = 'offer_received'
+
+        return super().create(vals)
