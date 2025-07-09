@@ -4,4 +4,5 @@
     "application": True,
     "installable": True,
     "depends": ["base", "account", "estate"],
+    "data": [],
 }
