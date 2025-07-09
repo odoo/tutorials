@@ -1,5 +1,5 @@
 {
-    'name':'Estate Account',
+    'name': 'Estate Account',
     'installable': True,
     'application': True,
     'auto_install': False,

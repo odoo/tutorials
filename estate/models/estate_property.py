@@ -1,61 +1,81 @@
-from odoo import  fields,models, api
+from odoo import fields, models, api
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
+
     _description = "Estate Property is defined"
 
     name = fields.Char(required=True)
+
     description = fields.Text()
+
     postcode = fields.Char()
-    date_avaiblity = fields.Date(copy = False, default = date.today()+ relativedelta(months=3))
+
+    date_avaiblity = fields.Date(copy=False, default=date.today() + relativedelta(months=3))
+
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly = True, copy = False)
-    bedrooms = fields.Integer(default = 2)
+
+    selling_price = fields.Float(readonly=True, copy=False)
+
+    bedrooms = fields.Integer(default=2)
+
     living_area = fields.Integer()
+
     facades = fields.Integer()
+
     garage = fields.Boolean()
+
     garden = fields.Boolean()
+
     garden_area = fields.Integer()
+
     garden_orientation = fields.Selection(
-        string = 'Direction',
-        selection=[('north','North'), ('south','South'), ('east','East'), ('west','West')],
-        help = "This is used to locate garden's direction"
+        string='Direction',
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
+        help="This is used to locate garden's direction"
     )
-    active = fields.Boolean(default = True)
+
+    active = fields.Boolean(default=True)
+
     state = fields.Selection(
-        selection=[('new','New'), ('offer received','Offer Received'), ('offer accepted','Offer Accepted'), ('sold','Sold'), ('cancelled', 'Cancelled')],
-        default = 'new',
-        required = True,
-        copy = False,
+        selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')]
+        default='new',
+        required=True,
+        copy=False,
     )
+
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+
     salesman_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
+
     buyer_id = fields.Many2one(
-    'res.partner', 
-    string='Buyer', 
-    index=True, 
-    tracking=True,  
+    'res.partner',
+    string='Buyer',
+    index=True,
     default=lambda self: self.env.user.partner_id.id
-)
+    )
+
     _sql_constraints = [
         ('check_expectep_price', 'CHECK(expected_price > 0 AND selling_price > 0)',
          'The Price must be positve.')
     ]
-    
+
     property_tag_ids = fields.Many2many("estate.property.tag")
+
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Float(compute="_compute_total")
 
-    @api.depends("garden_area","living_area")
+    @api.depends("garden_area", "living_area")
     def _compute_total(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    best_price = fields.Float(compute="_compute_best_price", string="Best Offer Price" ,readonly = True)
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer Price", readonly=True)
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -94,4 +114,3 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError("Only properties in 'New' or 'Cancelled' state can be deleted.")
- 
