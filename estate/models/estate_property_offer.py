@@ -1,6 +1,6 @@
-from odoo import  api,fields,models
+from odoo import api, fields, models
 from datetime import timedelta
-from odoo.exceptions import UserError,ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
 
@@ -10,18 +10,18 @@ class EstatePropertyOffer(models.Model):
 
     _order = "price desc"
 
-    price=fields.Float()
+    price = fields.Float()
     status = fields.Selection(
-        selection=[('accepted','Accepted'), ('refused','Refused')],
+        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         copy=False,
     )
 
-    partner_id = fields.Many2one("res.partner",string="Partner",index=True,required=True,default=lambda self:self.env.user.partner_id.id)
-    property_id = fields.Many2one("estate.property",index=True,required=True)
+    partner_id = fields.Many2one("res.partner", string="Partner", index=True, required=True, default=lambda self: self.env.user.partner_id.id)
+    property_id = fields.Many2one("estate.property", index=True, required=True)
 
-    property_type_id= fields.Many2one('estate.property.type',string="property type",related="property_id.property_type_id",store=True)
+    property_type_id = fields.Many2one('estate.property.type', string="property type", related="property_id.property_type_id", store=True)
 
-    validity = fields.Integer(default = 7)
+    validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
@@ -30,7 +30,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     _sql_constraints = [
-        ('offer_price_positive','CHECK(price>=0)','The offer price should be positive.')
+        ('offer_price_positive', 'CHECK(price>=0)', 'The offer price should be positive.')
     ]
 
     @api.depends('create_date', 'validity')
@@ -42,7 +42,6 @@ class EstatePropertyOffer(models.Model):
                 create_date = fields.Date.today()
             record.date_deadline = create_date + timedelta(days=record.validity)
 
-
     def _inverse_date_deadline(self):
         for record in self:
             if record.create_date:
@@ -52,8 +51,6 @@ class EstatePropertyOffer(models.Model):
             if record.date_deadline:
                 record.validity = (record.date_deadline - create_date).days
 
-
-    
     def accept_icon_action(self):
         for record in self:
             # Ensure only one accepted offer per property
@@ -69,7 +66,7 @@ class EstatePropertyOffer(models.Model):
                 raise ValidationError("Offer must be at least 90% of the expected price to be accepted.")
         
             record.status = 'accepted'
-            record.property_id.state='Offer Accepted'
+            record.property_id.state = 'Offer Accepted'
 
             # Refuse all other offers
             other_offers = record.property_id.offer_ids - record
@@ -96,7 +93,7 @@ class EstatePropertyOffer(models.Model):
         if existing_prices and new_price < max(existing_prices):
             raise ValidationError("Offer price must be higher than existing offers.")
 
-        # Set state to 'offer received' if it’s currently 'new'
+        # Set state to offer received if its currently new
         if property_rec.state == 'new':
             property_rec.state = 'Offer Received'
         return offer
