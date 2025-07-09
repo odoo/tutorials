@@ -10,6 +10,8 @@ from odoo import fields, models, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
+
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -85,3 +87,22 @@ class EstatePropertyOffer(models.Model):
 
 
     
+    # now in case of offer creation CRUD
+    # self will be a proxy object , 
+    # property_id feilds is available in vals 
+    @api.model_create_multi
+    def create(self, vals):
+
+        # will check the offer value and does property has other offers which are max thw\an this one
+        for value in vals: 
+            property_details = self.env['estate.property'].browse(value.get('property_id'))
+            for property_data in property_details:
+                offers_list = property_data.mapped("offer_ids.price")
+                max_offer = max(offers_list, default=0)
+                comparison_result = float_compare(value.get('price'),max_offer, precision_digits=2)
+                
+                if comparison_result == -1 :
+                    raise UserError('Offer with a lower amount than an existing offer')
+
+        return super().create(vals)
+       
