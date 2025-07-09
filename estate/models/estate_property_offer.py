@@ -1,4 +1,4 @@
-from odoo import fields, models, api, _
+from odoo import fields, models, api, exceptions, _
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 
@@ -66,3 +66,28 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.status = 'refused'
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        new_records = []
+        print(f"vals_list---------> {vals_list}")
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+
+            property_rec = self.env['estate.property'].browse(property_id)
+            # Business logic: set property state
+            if property_rec.state == 'new':
+                property_rec.state = 'offer_received'
+                print("DEBUG: Property state set to 'offer_received'")
+
+            # Business logic: validate price
+            if 'price' in vals and vals['price'] < property_rec.best_price:
+                raise exceptions.ValidationError("Offer price must be higher than existing offers.")
+
+            new_records.append(vals)
+
+        return super().create(new_records)
+
+
+
+        # vals_list---------> [{'partner_id': 23, 'price': 100, 'validity': 7, 'date_deadline': '2025-07-16', 'property_id': 19}]

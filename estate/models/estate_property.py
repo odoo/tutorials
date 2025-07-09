@@ -117,3 +117,9 @@ class RecurringPlan(models.Model):
                     "Selling price cannot be lower than 90% of the expected price. "
                     f"(Minimum allowed: {min_allowed_price:.2f})"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_state_not_new(self):
+        for rec in self:
+            if rec.state not in ['new', 'cancelled']:
+                raise UserError(_("You cannot delete a property unless its state is 'New' or 'Cancelled'."))

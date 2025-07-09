@@ -1,2 +1,5 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_estate_model,estate.property,model_estate_property,,1,1,1,0
+access_estate_model,estate.property,model_estate_property,,1,1,1,1
+access_estate_model_property,estate.property.type,model_estate_property_type,,1,1,1,1
+access_estate_model_tag,estate.property.tag,model_estate_property_tag,,1,1,1,1
+access_estate_model_offer,estate.property.offer,model_estate_property_offer,,1,1,1,1
