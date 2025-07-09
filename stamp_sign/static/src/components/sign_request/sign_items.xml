@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="sign.stampItem" t-extend="sign.signItem">
-        <t t-jquery="t[t-if='readonly']" t-append="true">
-            <t t-if="type == 'stamp'" t-call="sign.stampSignItem"/>
-        </t>
+    <t t-name="stamp_sign.signItem" t-inherit="sign.signItem" t-inherit-mode="extension">
+        <xpath expr="//t[@t-if='readonly']" position="inside">
+            <t t-if="type == 'stamp'" t-call="stamp_sign.stampSignItem"/>
+        </xpath>
 
-        <t t-jquery="t[t-if='!readonly']" t-append="true">
-            <button t-if="type == 'stamp'" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item text-center" style="color:#757575;" t-att-style="style" t-att-data-stamp="value">
+        <xpath expr="//t[@t-if='!readonly']" position="inside">
+            <button t-if="type == 'stamp'" t-att-title="role"
+                t-attf-class="{{classes}} o_sign_sign_item text-center" style="color:red;"
+                t-att-style="style" t-att-data-signature="value">
                 <span class="o_sign_helper"/>
+                <img t-if="frame_value" t-att-src="frame_value" alt="Frame" />
                 <img t-if="value" t-att-src="value" alt="Stamp"/>
                 <t t-if="!value">
-                    <span class="o_placeholder ps-0">
+                    <span class="o_placeholder ps-0 fs-6">
                         <t t-esc="placeholder"/>
                     </span>
                 </t>
             </button>
-        </t>
+        </xpath>
     </t>
 
-    <div t-name="sign.stampSignItem" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item" t-att-data-id="id" t-att-style="style" t-att-data-stamp="value">
+    <div t-name="stamp_sign.stampSignItem" t-att-title="role" t-attf-class="{{classes}} o_sign_sign_item check-this" t-att-data-id="id" t-att-style="style" >
         <div class="sign_item_body">
             <span t-if="value" class="o_sign_helper"/>
+            <img t-if="frame_value" t-att-src="frame_value" alt="Frame" class="o_sign_frame" />
             <img t-if="value" t-att-src="value" alt="Stamp"/>
             <t t-if="!value">
-                <span class="o_placeholder ps-0">
+                <span class="o_placeholder ps-0 d-flex justify-content-center align-items-center"
+                    style="font-size:20px">
                     <t t-esc="placeholder"/>
                 </span>
             </t>

@@ -4,12 +4,17 @@
     "depends": ["sign"],
     "category": "Sign",
     "data": [
-        "views/sign_template_views.xml",
         "data/sign_data.xml",
+        "views/sign_template_views.xml",
     ],
     "assets": {
-        "sign.assets_pdf_iframe": [
-            "stamp_sign/static/src/components/**/*",
+        "web.assets_backend": [
+            "stamp_sign/static/src/components/sign_request/*",
+            "stamp_sign/static/src/dialogs/*",
+        ],
+        "sign.assets_public_sign": [
+            "stamp_sign/static/src/components/sign_request/*",
+            "stamp_sign/static/src/dialogs/*",
         ],
     },
     "installable": True,

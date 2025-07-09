@@ -1,0 +1,68 @@
+<t t-name="stamp_sign.Stamp" t-inherit="sign.NameAndSignature" t-inherit-mode="primary">
+    <xpath expr="//div[@t-if='!props.noInputName']" position="replace">
+        <div t-if="!props.noInputName" class="stamp_form_container">
+            <div>
+                <label class="form-label" for="name_input">Name</label>
+                <input type="text" name="signer" id="name_input"
+                    class="form-control mb-2" t-on-input="onInputSignName"
+                    t-att-value="props.signature.name" t-ref="signNameInput"
+                    placeholder="name"
+                />
+            </div>
+            <div>
+                <label class="form-label" for="company_input">
+                    Company</label>
+                <input type="text" name="company"
+                    id="company_input"
+                    class="form-control mb-2" t-on-input="onInputData"
+                    t-att-value="props.signature.company" t-ref="companyInput"
+                    placeholder="company name" required="required" />
+            </div>
+            <div>
+                <label class="form-label" for="address_input">
+                    Address</label>
+                <input type="textarea" name="address"
+                    id="address_input"
+                    class="form-control mb-2" t-on-input="onInputData"
+                    t-att-value="props.signature.address" t-ref="addressInput"
+                    placeholder="Address" required="required" />
+            </div>
+            <div>
+                <label class="form-label" for="city_input">City</label>
+                <input type="text" name="city" id="city_input"
+                    class="form-control mb-2" t-on-input="onInputData"
+                    t-att-value="props.signature.city"
+                    t-ref="cityInput" placeholder="city name" required="required" />
+            </div>
+            <div>
+                <label class="form-label" for="country_input">
+                    Country</label>
+                <input type="text" name="country"
+                    id="country_input"
+                    class="form-control mb-2" t-on-input="onInputData"
+                    t-att-value="props.signature.country" t-ref="countryInput"
+                    placeholder="country name" required="required" />
+            </div>
+            <div>
+                <label class="form-label" for="vat_input">VAT
+                    Number</label>
+                <input type="text" name="vat" id="vat_input"
+                    class="form-control mb-2" t-on-input="onInputData"
+                    t-att-value="props.signature.vat"
+                    t-ref="vatInput" placeholder="VAT number" required="required" />
+            </div>
+            <div class="d-flex">
+                <label class="form-label me-3 mb-0"
+                    for="logo_input">Logo</label>
+                <div class="upload-button">
+                    <input type="file" name="logo" id="logo_input"
+                        class="d-none" t-on-input="onInputData" t-ref="logoInput"
+                        accept="image/*" required="required" />
+                    <button type="button" class="btn btn-primary"
+                        t-on-click="triggerFileUpload">
+                        Upload</button>
+                </div>
+            </div>
+        </div>
+    </xpath>
+</t>
