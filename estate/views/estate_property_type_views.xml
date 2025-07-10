@@ -4,7 +4,6 @@
             <field name="name">Property Types</field>
             <field name="res_model">estate.property.type</field>
             <field name="view_mode">list,form</field>
-
     </record>
 
     <record id="action_property_offers" model="ir.actions.act_window">
@@ -43,18 +42,15 @@
                  <h1 class="mb32">
                         <field name="name" class="mb16"/>
                 </h1>
-                
                 <notebook>
                     <page string="Properties">
-                       
                         <field name ="property_ids">
                             <list>
                                 <field name ="name"/>
                                 <field name = "expected_price" />
                                 <field  name ="state" />
                             </list>
-                        </field>
-                        
+                        </field> 
                     </page> 
                 </notebook>
             </sheet>
@@ -72,8 +68,6 @@
         </field>
     </record>
 
-
-
     <!-- Tree view for estate.property.offer -->
     <record id="estate_property_offer_tree" model="ir.ui.view">
         <field name="name">estate.property.offer.tree</field>
@@ -88,5 +82,4 @@
             </list>
         </field>
     </record>
-    
 </odoo>

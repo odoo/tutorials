@@ -5,11 +5,9 @@
                 <menuitem id="estate_first_level_menu1_menu1" action="estate_property_action"/>
             </menuitem>
 
-            <menuitem id="estate_first_level_menu2" name="Settings">
+            <menuitem id="estate_first_level_menu2" name="Settings" groups="estate_group_manager">
                 <menuitem id="estate_first_level_menu2_menu1" action="estate_property_type_action"/>
                 <menuitem id="estate_first_level_menu2_menu2" action="estate_property_tag_action"/>
             </menuitem>
-
         </menuitem>
-
     </odoo>

@@ -7,9 +7,8 @@
             <field name="context">{'search_default_state': 1}</field>
     </record>
 
-
     <record id="estate_property_tree" model="ir.ui.view">
-        <field name="name">estate.property</field>
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Properties"
@@ -28,8 +27,6 @@
             </list>
         </field>
     </record>
-
-
 
     <record id="estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
@@ -88,29 +85,26 @@
                                 </group>
                             </page>
 
-                            <page string="Offers">          
-                                <!-- <group> -->
-                                    <field name="offer_ids" readonly="state=='sold' or state=='cancelled' or state=='Offer Accepted'">
-                                        <list editable="bottom" string="offers" 
-                                              decoration-danger="status == 'refused'"
-                                              decoration-success="status == 'accepted'">
-                                            <field name="price"/>
-                                            <field name="partner_id"/>
-                                            <button name="accept_icon_action" states="draft" type="object" icon="fa-check" string=' ' invisible="status=='refused' or status=='accepted'"/>
-                                            <button name="refuse_icon_action" states="draft" type="object" icon="fa-close" string=' ' invisible="status=='refused' or status=='accepted'"/>
-                                            <!-- <field name="status"/> -->
-                                            <field name="validity"/>
-                                            <field name="date_deadline"/>
-                                            <!-- <field name="property_type_id"/> -->
-                                        </list>
-                                    </field>
-                                <!-- </group> -->
+                            <page string="Offers">
+                                <field name="offer_ids" readonly="state=='sold' or state=='cancelled' or state=='Offer Accepted'">
+                                    <list editable="bottom" string="offers" 
+                                        decoration-danger="status == 'refused'"
+                                        decoration-success="status == 'accepted'">
+                                        <field name="price"/>
+                                        <field name="partner_id"/>
+                                        <button name="accept_icon_action" states="draft" type="object" icon="fa-check" string=' ' invisible="status=='refused' or status=='accepted'"/>
+                                        <button name="refuse_icon_action" states="draft" type="object" icon="fa-close" string=' ' invisible="status=='refused' or status=='accepted'"/>
+                                        <field name="validity"/>
+                                        <field name="date_deadline"/>
+                                    </list>
+                                </field>
                             </page>
 
                             <page string="Other info">
                                 <group>
                                     <field name="salesman_id"/>
                                     <field name="buyer_id"/>
+                                    <field name="company_id"/>
                                 </group>
                             </page>
                     </notebook>
@@ -118,7 +112,6 @@
             </form>
         </field>
     </record>
-
 
     <record id = "estate_property_search" model = "ir.ui.view">
         <field name="name">estate.property.search</field>
@@ -134,7 +127,6 @@
                 <separator/>
                 <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
                 <filter string = "Available" name = "state" domain="['|' , ('state', '=', 'new') ,('state', '=', 'offer received')]"/>
-                <!-- <filter string ="Available" name="avaiblity" domain="['|',]"/> -->
                 <group expand="1" string="Group By">
                         <filter string="Bedrooms" name="bedrooms" context="{'group_by':'bedrooms', 'residual_visible':True}"/>
                         <filter string="Postcode" name="postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
@@ -142,5 +134,4 @@
             </search>
         </field>
     </record>
-
 </odoo>
