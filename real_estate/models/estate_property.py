@@ -1,6 +1,6 @@
 from datetime import date, timedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError,ValidationError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 

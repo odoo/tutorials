@@ -7,7 +7,7 @@
     <field name="domain">[('property_type_id', '=', active_id)]</field>
    </record>
 
-    <record id="view_estate_property_offer_form" model="ir.ui.view">
+    <record id="estate_property_offer_form" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
@@ -31,7 +31,7 @@
         </field>
     </record>
 
-    <record id="view_estate_property_offer_list" model="ir.ui.view">
+    <record id="estate_property_offer_list" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">

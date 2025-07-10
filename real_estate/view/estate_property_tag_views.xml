@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <odoo>
-   <record id="view_estate_property_tag_list" model="ir.ui.view">
+   <record id="estate_property_tag_list" model="ir.ui.view">
     <field name="name">estate.property.tag.list</field>
     <field name="model">estate.property.tag</field>
     <field name="arch" type="xml">
