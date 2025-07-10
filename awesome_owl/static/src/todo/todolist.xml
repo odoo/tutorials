@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo.list">
+        <div class="border p-2">
+            <input class="border" name="todo" type="text" placeholder="Add a Todo" t-on-keyup="addTodo" t-ref="todoInput"/>
+            <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+                <div t-att-class="{'text-muted text-decoration-line-through': todo.isCompleted}">
+                    <TodoItem todo="todo" removeTodo.bind="removeTodo"/>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>
