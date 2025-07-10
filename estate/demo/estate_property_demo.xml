@@ -31,21 +31,18 @@
             eval="[
             Command.create({
                 'partner_id': ref('base.res_partner_2'),
-                'price': 15000025,
+                'price': 15900028999,
                 'validity': 14,
-                'date_deadline': (DateContext().today() + relativedelta(days=14)).isoformat()
             }),
             Command.create({
                 'partner_id': ref('base.res_partner_2'),
-                'price': 15000036,
+                'price': 15900039999,
                 'validity': 14,
-                'date_deadline': (DateContext().today() + relativedelta(days=14)).isoformat()
             }),
             Command.create({
                 'partner_id': ref('base.res_partner_3'),
-                'price': 15000047,
+                'price': 150009009999,
                 'validity': 11,
-                'date_deadline': (DateContext().today() + relativedelta(days=11)).isoformat()
             }),
         ]" />
     </record> 
