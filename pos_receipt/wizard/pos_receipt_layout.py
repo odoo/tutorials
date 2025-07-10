@@ -25,9 +25,35 @@ class PosReceiptLayout(models.TransientModel):
 
     @api.depends("receipt_layout", "receipt_header", "receipt_footer", "receipt_logo")
     def _receipt_preview(self):
-        for record in self:
-            record.receipt_preview = record.env["ir.ui.view"]._render_template(
-                "pos_receipt.custom_receipt_static_light",
+        if self.receipt_layout == "light":
+            self.receipt_preview = self.env["ir.ui.view"]._render_template(
+                "pos_receipt.custom_receipt_light",
+                {
+                    "header": self.receipt_header,
+                    "footer": self.receipt_footer,
+                    "logo": self.receipt_logo,
+                    "is_restaurant": self.is_restaurant,
+                },
+            )
+        elif self.receipt_layout == "boxes":
+            self.receipt_preview = self.env["ir.ui.view"]._render_template(
+                "pos_receipt.custom_pos_receipt_boxed",
+                {
+                    "header": self.receipt_header,
+                    "footer": self.receipt_footer,
+                    "logo": self.receipt_logo,
+                    "is_restaurant": self.is_restaurant,
+                },
+            )
+        elif self.receipt_layout == "lined":
+            self.receipt_preview = self.env["ir.ui.view"]._render_template(
+                "pos_receipt.custom_receipt_lined",
+                {
+                    "header": self.receipt_header,
+                    "footer": self.receipt_footer,
+                    "logo": self.receipt_logo,
+                    "is_restaurant": self.is_restaurant,
+                },
             )
 
     def document_layout_save(self):

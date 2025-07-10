@@ -6,11 +6,11 @@ class PosConfig(models.Model):
 
     receipt_layout = fields.Selection(
         [("light", "Light"), ("boxes", "Boxes"), ("lined", "Lined")],
-        string="Receipt Layout",
+        string="Select Layout",
         default="light",
     )
     receipt_logo = fields.Binary(
-        string="Receipt Logo",
+        string="Company Logo",
         related="company_id.logo",
         readonly=False,
         help="A logo that will be printed in the receipt.",

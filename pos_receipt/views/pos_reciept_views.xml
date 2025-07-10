@@ -9,9 +9,13 @@
                 position="replace">
                 <setting id="layout_settings" string="Receipt Layout"
                     help="Choose the layout of your receipt">
+                    <field name="receipt_layout" />
+                    <br />
                     <button name="open_pos_receipt_config_wizard"
                         string="Configure Receipt Layout"
                         type="object"
+                        icon="oi-arrow-right"
+                        class="btn-link"
                     >
                     </button>
                 </setting>

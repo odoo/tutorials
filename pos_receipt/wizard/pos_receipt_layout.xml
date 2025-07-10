@@ -8,22 +8,23 @@
                 <group>
                     <group>
                         <field name="pos_config_id" />
-                        <field name="receipt_layout" />
-                        <field name="receipt_logo" />
-                        <field name="receipt_header" />
-                        <field name="receipt_footer" />
+                        <field name="receipt_layout" widget="selection_badge" />
+                        <field name="receipt_logo" widget="image" />
+                        <field name="receipt_header" string="Header"
+                            placeholder="MOG Cafe &#10;Infocity Ghandhinagar" />
+                        <field name="receipt_footer" string="Footer"
+                            placeholder="Thank &#10;Visit Again!" />
                     </group>
                     <div class="o_preview">
                         <field name="receipt_preview" />
                     </div>
                 </group>
                 <footer>
-                    <button string="save" type="onject" name="document_layout_save"
+                    <button string="save" type="object" name="document_layout_save"
                         class="btn-primary" />
                     <button special="cancel" string="Discard" />
                 </footer>
             </form>
         </field>
-
     </record>
 </odoo>

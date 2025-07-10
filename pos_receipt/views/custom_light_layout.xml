@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template id="custom_receipt_static_light" t-name="custom_receipt_static">
+    <template id="custom_receipt_light" t-name="custom_receipt_static">
         <div
             style="font-family: Arial, sans-serif; width: 350px; margin: auto; text-align: center; border: 1px solid #ddd; padding: 10px;">
             <img t-if="logo" t-att-src="image_data_uri(logo)" alt="Logo" style="height: 70px; " />
             <p style="margin: 5px 0; font-size: 12px;"> Tel: +1 555-555-5556<br />
                 info@yourcompany.com<br /> http://www.example.com </p>
             <t t-esc="header" />
-            <h1 style="margin: 10px 0;">301</h1>
+            <h1 style="margin: 10px 0;">701</h1>
             <t t-if="is_restaurant"> Served by MOG <br /> Table 5 Guest 3 </t>
             <table style="width: 100%; text-align: left; font-size: 14px;">
                 <tr>
