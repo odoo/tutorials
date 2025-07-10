@@ -1,9 +1,10 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 {
     "name": "Dream Homes",
     "version": "1.0",
     "depends": ["base"],
-    "author": "Megha Tulsyani",
-    "category": "Ecommerce For Properties",
+    "category": "Real Estate/Brokerage",
     "data": [
         "security/ir.model.access.csv",
         "views/estate_property_views.xml",
