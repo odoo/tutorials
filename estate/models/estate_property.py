@@ -38,6 +38,7 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer Price", readonly=True)
     active = fields.Boolean(default=True)
+    company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company)
 
     @api.depends("garden_area", "living_area")
     def _compute_total(self):
@@ -80,7 +81,6 @@ class EstateProperty(models.Model):
                 raise UserError("Sold properties cannot be cancelled.")
             record.state = 'cancelled'
 
-    # SOLD button logic
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':

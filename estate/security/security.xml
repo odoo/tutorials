@@ -13,20 +13,14 @@
         <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
     </record>
 
-    <record id="rule_id" model="ir.rule">
-        <field name="name">Agents: see or modify properties with no salesman or themselves as
-            salesman</field>
+    <record id="company_rule_id" model="ir.rule">
+        <field name="name">company: see or modify properties of my company only</field>
         <field name="model_id" ref="model_estate_property" />
         <field name="perm_read" eval="True" />
         <field name="perm_write" eval="True" />
         <field name="perm_create" eval="True" />
         <field name="perm_unlink" eval="False" />
         <field name="groups" eval="[Command.link(ref('estate_group_user'))]" />
-        <field name="domain_force">[
-            '|',
-            '|', ('salesman_id', '=', user.id),
-            ('salesman_id', '=', False),
-            ('write_uid', '=', user.id)
-            ]</field>
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
     </record>
 </odoo>

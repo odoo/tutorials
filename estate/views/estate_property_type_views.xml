@@ -42,7 +42,6 @@
                  <h1 class="mb32">
                         <field name="name" class="mb16"/>
                 </h1>
-                
                 <notebook>
                     <page string="Properties">
                        
@@ -71,9 +70,6 @@
         </field>
     </record>
 
-     
-
-    <!-- Tree view for estate.property.offer -->
     <record id="estate_property_offer_tree" model="ir.ui.view">
         <field name="name">estate.property.offer.tree</field>
         <field name="model">estate.property.offer</field>
@@ -87,5 +83,4 @@
             </list>
         </field>
     </record>
-    
 </odoo>

@@ -6,10 +6,8 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for property in self:
-
             property.check_access_rights("write")
             property.check_access_rule("write")
-
             self.env["account.move"].sudo().create(
                 {
                     "partner_id": self.buyer_id.id,
