@@ -5,4 +5,5 @@
     "installable": True,
     "depends": ["base", "account", "estate"],
     "data": [],
+    "license": "AGPL-3",
 }

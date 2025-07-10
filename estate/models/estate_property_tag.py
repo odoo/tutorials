@@ -1,6 +1,3 @@
-# the tag model will be here
-
-
 from odoo import fields, models
 
 

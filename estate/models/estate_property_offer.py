@@ -53,11 +53,10 @@ class EstatePropertyOffer(models.Model):
                 offer.date_deadline = datetime.now() + relativedelta(
                     days=(offer.validity or 0)
                 )
-                return
-
-        offer.date_deadline = offer.create_date + relativedelta(
-            days=(offer.validity or 0)
-        )
+            else:
+                offer.date_deadline = offer.create_date + relativedelta(
+                    days=(offer.validity or 0)
+                )
 
     # deadline date can also be changed and once this is saved validity will be updated
     def _deadline_update(self):
@@ -85,7 +84,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.status == "accepted":
                 record.property_id.selling_price = 0
-                record.property_id.partner_id = ""
+                record.property_id.partner_id = False
             record.status = "refused"
 
     # now in case of offer creation CRUD

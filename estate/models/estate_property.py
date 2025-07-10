@@ -46,7 +46,7 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        string="Status",
+        string="State",
         default="new",
         copy=False,
     )
@@ -98,7 +98,7 @@ class EstateProperty(models.Model):
     @api.depends("garden_area", "living_area")
     def _compute_total_property_area(self):
         for area in self:
-            self.total_area = self.garden_area + self.living_area
+            area.total_area = area.garden_area + area.living_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -156,7 +156,7 @@ class EstateProperty(models.Model):
             if data.selling_price <= 0:
                 return
 
-            price_float_ratio = data.selling_price / self.expected_price
+            price_float_ratio = data.selling_price / data.expected_price
             ratio_diffrence = float_compare(price_float_ratio, 0.9, precision_digits=2)
             if ratio_diffrence == -1:
                 data.selling_price = 0
@@ -169,7 +169,7 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_if_state_new_or_cancelled(self):
         for data in self:
-            if not bool(self.state == "new" or self.state == "cancelled"):
+            if not bool(data.state == "new" or data.state == "cancelled"):
                 raise UserError(
                     "Can't delete property which is not in new or cancelled state!"
                 )

@@ -111,7 +111,6 @@
                                     >
                                         <field name="price"/>
                                         <field name="partner_id"/>
-                                        <!-- <field name="status" invisible="True"/> -->
                                         <button name="action_offer_confirm" string="Accept" states="draft" type="object" icon="fa-check" 
                                            invisible="status in ('accepted','refused')"
                                         />
