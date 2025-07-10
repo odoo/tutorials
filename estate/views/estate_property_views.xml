@@ -49,9 +49,6 @@
                             </group>
                         </div>
                     <group>
-                        <!-- <group>
-                            <field name="state"/>
-                        </group> -->
                         <group>
                             <field name="property_type_id" options="{'no_create':True,'no_edit':True}"/>
                         </group>
@@ -97,7 +94,6 @@
                                 decoration-danger="status == 'refused'"
                                 decoration-success="status == 'accepted'"> <!-- editable="bottom" for edit without opening form-->
                                     <field name = "partner_id"/>
-                                    <!-- <field name = "status" invisible="1"/> -->
                                     <field name = "price"/>
                                     <field name="validity"/>
                                     <button name="action_accept" states="draft" type="object" icon="fa-check" title="Accept" invisible="status in ('accepted','refused')"/>

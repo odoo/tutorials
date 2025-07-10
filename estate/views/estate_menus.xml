@@ -9,6 +9,21 @@
             action="estate_property_action"/> <!-- The action menus = Drop Down in topo bar -->
         
         </menuitem>
+
+        <menuitem id="Settings_menu" 
+            name="Settings"> <!-- First Level = Top Bar-->
+
+            <menuitem id="estate_property_menu_action_settings" 
+                action="estate_property_action_settings"/>
+            
+            <menuitem id="estate_property_menu_action_settings_tag" 
+                action="estate_property_action_tag"/>
+        
+        </menuitem>
+
+        
+
+
     </menuitem>
 
 </odoo>
