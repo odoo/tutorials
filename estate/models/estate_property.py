@@ -53,14 +53,14 @@ class EstateProperty(models.Model):
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
         help="Orientation is used to locate garden's direction"
     )
-    
+
     state = fields.Selection(
         selection=[('new', 'new'), ('Offer Received', 'Offer Received'), ('Offer Accepted', 'Offer Accepted'), ('sold', 'sold'), ('cancelled', 'Cancelled')],
         required=True,
         default='new',
         copy=False,
     )
-    
+
     status = fields.Selection(
         selection=[
             ('new', 'New'),

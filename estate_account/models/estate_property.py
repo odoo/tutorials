@@ -15,14 +15,14 @@ class EstateProperty(models.Model):
                     "partner_id": self.buyer_id.id,
                     "move_type": "out_invoice",
                     "invoice_line_ids": [
-                        (0,0,
+                        (0, 0,
                             {
                                 "name": "6% Commission",
                                 "quantity": 1,
                                 "price_unit": property.selling_price * 0.06,
                             },
                         ),
-                        (0,0,
+                        (0, 0,
                             {
                                 "name": "Administrative Fees",
                                 "quantity": 1,

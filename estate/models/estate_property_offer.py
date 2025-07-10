@@ -62,7 +62,7 @@ class EstatePropertyOffer(models.Model):
             if record.partner_id:
                 record.property_id.state = "Offer Received"
         return records
-    
+
     def refuse_icon_action(self):
         for record in self:
             record.status = 'refused'
