@@ -5,7 +5,7 @@
     "category": "Sign",
     "data": [
         "data/sign_data.xml",
-        "views/sign_template_views.xml",
+        "views/sign_request_templates.xml",
     ],
     "assets": {
         "web.assets_backend": [
@@ -18,7 +18,6 @@
         ],
     },
     "installable": True,
-    "sequence": 1,
     "application": True,
     "license": "OEEL-1",
 }
