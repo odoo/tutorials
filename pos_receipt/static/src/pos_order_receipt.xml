@@ -124,6 +124,212 @@
                         <div id="order-date" t-esc="props.data.date" />
                     </div>
             </t>
+
+            <t t-if="order.config_id.receipt_layout=='boxes'">
+                    <ReceiptHeader data="props.data.headerData"/>
+                    <div class="receipt-preview-dark-receipt">
+                        <table class="table table-bordered border-dark table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="text-start small">No</th>
+                                    <th class="text-start small">Item</th>
+                                    <th class="text-end small">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="props.data.orderlines" t-as="line" t-key="line_index">
+                                    <tr>
+                                        <td class="small">
+                                            <t t-esc="line_index+1"/>
+                                        </td>
+                                        <td class="small">
+                                            <strong>
+                                                <t t-esc="line.productName"/>
+                                            </strong>
+                                            <br/>
+                                            <span>
+                                                <t t-esc="line.qty"/> X
+                                                <t t-esc="line.unitPrice"/>
+                                            </span>
+                                            <br/>
+                                        </td>
+                                        <td class="text-end small">
+                                            <t t-esc="line.price"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div class="border-bottom border-dark py-1 mb-2">
+                            <div class="d-flex justify-content-between small">
+                                <span>Total Qty
+                                    <t t-esc="orderQuantity"/>
+                                </span>
+                                <span>Sub Total $
+                                    <t t-esc="(props.data.amount_total).toFixed(2)"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-end mb-2 fw-bold small border-bottom border-dark" t-foreach="props.data.paymentlines" t-as="line" t-key="line_index">
+                            <t t-esc="line.name" />
+                            <span t-esc="props.formatCurrency(line.amount)"/>
+                        </div>
+                        <t t-if="props.data.tax_details.length > 0">
+                            <table class="table table-borderless table-sm mb-2">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start small">Tax</th>
+                                        <th class="text-start small">Amount</th>
+                                        <th class="text-start small">Base</th>
+                                        <th class="text-end small">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="props.data.tax_details" t-as="tax" t-key="tax.id">
+                                        <td class="small m-0 p-0" t-esc="tax.name"/>
+                                        <td class="small m-0 p-0" t-esc="props.formatCurrency(tax.amount)"/>
+                                        <td class="small m-0 p-0" t-esc="props.formatCurrency(tax.base)"/>
+                                        <td class="text-end small m-0 p-0" t-esc="props.formatCurrency(tax.base + tax.amount)"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        <div t-if="props.data.footer" class="pos-receipt-center-align small">
+                            <br/>
+                            <t t-esc="props.data.footer"/>
+                            <br/>
+                            <br/>
+                        </div>
+                        <div class="after-footer">
+                            <t t-foreach="props.data.paymentlines" t-as="line" t-key="line_index">
+                                <t t-if="line.ticket">
+                                    <br/>
+                                    <div class="pos-payment-terminal-receipt">
+                                        <pre t-esc="line.ticket"/>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                        <br/>
+                        <t t-if="props.data.shippingDate">
+                            <div class="pos-receipt-order-data small">
+                                Expected delivery:
+                                <div>
+                                    <t t-esc="props.data.shippingDate"/>
+                                </div>
+                            </div>
+                        </t>
+                        <br/>
+                        <div class="pos-receipt-order-data small">
+                            <p>Odoo Point of Sale</p>
+                            <div t-esc="props.data.name"/>
+                            <div id="order-date" t-esc="props.data.date"/>
+                        </div>
+                    </div>
+            </t>
+
+            <t t-if="order.config_id.receipt_layout=='lined'">
+                    <ReceiptHeader data="props.data.headerData"/>
+                    <div class="receipt-preview-dark-receipt">
+                        <table class="table table-borderless table-sm mb-2">
+                            <thead class="border-top border-bottom border-dark">
+                                <tr>
+                                    <th class="text-start small">No</th>
+                                    <th class="text-start small">Item</th>
+                                    <th class="text-start small">Qty</th>
+                                    <th class="text-start small">Price</th>
+                                    <th class="text-end small">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="props.data.orderlines" t-as="line" t-key="line_index">
+                                    <tr>
+                                        <td class="small">
+                                            <t t-esc="line_index+1"/>
+                                        </td>
+                                        <td class="small">
+                                            <t t-esc="line.productName"/>
+                                        </td>
+                                        <td class="small">
+                                            <t t-esc="line.qty"/>
+                                        </td>
+                                        <td class="small">
+                                            <t t-esc="line.unitPrice"/>
+                                        </td>
+                                        <td class="text-end small">
+                                            <t t-esc="line.price"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <div class="border-top border-dark py-1 mb-2">
+                            <div class="d-flex justify-content-between small">
+                                <span>Total Qty
+                                    <t t-esc="orderQuantity"/>
+                                </span>
+                                <span class="bg-dark text-white">Sub Total $
+                                    <t t-esc="(props.data.amount_total).toFixed(2)"/>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="text-end mb-2 fw-bold small">
+                            Bank
+                            <t t-esc="(props.data.amount_total).toFixed(2)"/>
+                        </div>
+                        <t t-if="props.data.tax_details.length > 0">
+                            <table class="table table-borderless table-sm mb-2">
+                                <thead>
+                                    <tr>
+                                        <th class="text-start small">Tax</th>
+                                        <th class="text-start small">Amount</th>
+                                        <th class="text-start small">Base</th>
+                                        <th class="text-end small">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="props.data.tax_details" t-as="tax" t-key="tax.id">
+                                        <td class="small m-0 p-0" t-esc="tax.name"/>
+                                        <td class="small m-0 p-0" t-esc="props.formatCurrency(tax.amount)"/>
+                                        <td class="small m-0 p-0" t-esc="props.formatCurrency(tax.base)"/>
+                                        <td class="text-end small m-0 p-0" t-esc="props.formatCurrency(tax.base + tax.amount)"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        <div t-if="props.data.footer" class="pos-receipt-center-align small">
+                            <br/>
+                            <t t-esc="props.data.footer"/>
+                            <br/>
+                            <br/>
+                        </div>
+                        <div class="after-footer">
+                            <t t-foreach="props.data.paymentlines" t-as="line" t-key="line_index">
+                                <t t-if="line.ticket">
+                                    <br/>
+                                    <div class="pos-payment-terminal-receipt">
+                                        <pre t-esc="line.ticket"/>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                        <br/>
+                        <t t-if="props.data.shippingDate">
+                            <div class="pos-receipt-order-data small">
+                                Expected delivery:
+                                <div>
+                                    <t t-esc="props.data.shippingDate"/>
+                                </div>
+                            </div>
+                        </t>
+                        <br/>
+                        <div class="pos-receipt-order-data small">
+                            <p>Odoo Point of Sale</p>
+                            <div t-esc="props.data.name"/>
+                            <div id="order-date" t-esc="props.data.date"/>
+                        </div>
+                    </div>
+            </t>
         </div>
     </t>
 </templates>
