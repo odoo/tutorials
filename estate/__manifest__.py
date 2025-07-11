@@ -1,0 +1,33 @@
+{
+    'name': 'Real Estate',
+    'icon': '/estate/static/src/img/estate.png',
+    'category': 'Real Estate/Brokerage',
+    'version': '1.0',
+    'application': True,
+    'installable': True,
+    'license': 'LGPL-3',
+    'summary': 'Help users with Real estate.',
+    'depends': ['base', 'website'],
+    'demo': [
+        'demo/estate_property_tag.xml',
+        'demo/estate_property_type.xml',
+        'demo/estate_partners.xml',
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml'
+    ],
+    'data': [
+        'wizards/estate_add_offer_wizard_views.xml',
+        'views/estate_property_views.xml',
+        'views/estate_property_offer_views.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_settings_views.xml',
+        'views/estate_menus.xml',
+        'views/res_user.xml',
+        'report/estate_website.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
+        'security/security.xml',
+        'security/ir.model.access.csv',
+    ],
+}
