@@ -1,0 +1,97 @@
+<odoo>
+    <template id="property_offers_table">
+        <t t-if="property.offer_ids">
+            <div class="table-responsive mt-3">
+                <table class="table table-striped table-hover table-bordered table-sm">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Price ($)</th>
+                            <th>Partner</th>
+                            <th>Validity (days)</th>
+                            <th>Deadline</th>
+                            <th>State</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="property.offer_ids" t-as="offer">
+                            <tr>
+                                <td><span t-esc="'%.2f' % offer.price"/></td>
+                                <td t-esc="offer.buyer_id.name or 'Anonymous'"/>
+                                <td t-esc="offer.validity or 'N/A'"/>
+                                <td>
+                                    <t t-if="offer.date_deadline">
+                                        <span t-esc="offer.date_deadline.strftime('%m/%d/%Y')"/>
+                                    </t>
+                                    <t t-else="">N/A</t>
+                                </td>
+                                <td><span class="text-uppercase text-muted" t-esc="offer.status"/></td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </t>
+        <t t-else="">
+            <p class="text-danger fw-bold">No offers have been made yet.</p>
+        </t>
+    </template>
+
+    <template id="report_property_offers">
+        <t t-call="web.external_layout">
+            <main class="oe_structure container">
+                <t t-set="doc" t-value="doc_ids and env['estate.property'].browse(doc_ids) or env['estate.property']"/>
+                
+                <div class="page">
+                    <t t-foreach="doc" t-as="property">
+                        <div class="card mb-4 shadow-sm">
+                            <div class="card-header bg-primary text-white fw-bold">
+                                <h2 class="mb-0" t-esc="property.name"/>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Salesman:</strong> <span t-esc="property.salesperson_id.name or 'N/A'"/></p>
+                                <p><strong>Expected Price:</strong> <span t-esc="'%.2f' % property.expected_price"/> $</p>
+                                <p><strong>State:</strong> <span class="text-uppercase text-muted" t-esc="property.state or 'N/A'"/></p>
+
+                                <t t-call="estate.property_offers_table">
+                                    <t t-set="property" t-value="property"/>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </main>
+        </t>
+    </template>
+
+    <template id="report_salesperson_properties">
+        <t t-call="web.external_layout">
+            <main class="oe_structure container">
+                <t t-set="doc" t-value="doc_ids and env['res.users'].browse(doc_ids) or env['res.users']"/>
+                
+                <div class="page">
+                    <t t-foreach="doc" t-as="salesperson">
+                        <div class="mb-4">
+                            <h2 class="fw-bold">Salesman: <span t-esc="salesperson.name"/></h2>
+                        </div>
+                        
+                        <t t-foreach="salesperson.property_ids" t-as="property">
+                            <div class="card mb-3 shadow-sm">
+                                <div class="card-header bg-secondary text-white fw-bold">
+                                    <h3 class="mb-0" t-esc="property.name"/>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Expected Price:</strong> <span t-esc="'%.2f' % property.expected_price"/> $</p>
+                                    <p><strong>State:</strong> <span class="text-uppercase text-muted" t-esc="property.state or 'N/A'"/></p>
+
+                                    <t t-call="estate.property_offers_table">
+                                        <t t-set="property" t-value="property"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+            </main>
+        </t>
+    </template>
+</odoo>

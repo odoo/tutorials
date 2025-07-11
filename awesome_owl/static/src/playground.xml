@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="border border-primary p-3 rounded">
+            <div class="d-flex gap-3">
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+            </div>
+            <p class="mt-3 fw-bold">The sum is: <t t-esc="sum.value"/></p>
+        </div>
+
+        <div class="border border-primary p-3 rounded mt-3">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <Card title="'Card 1'" />
+                </div>
+                <div class="col-md-6">
+                    <Card title="'Card 2'">
+                        <t t-slot="default">
+                            <Counter />
+                        </t>
+                    </Card>
+                </div>
+            </div>
+        </div>
+        <div class="border border-primary p-3 rounded mt-3">
+            <div class="row g-3">
+                <TodoList />
+            </div>
         </div>
     </t>
-
 </templates>
