@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <!-- Define the template for TodoList component -->
+  <t t-name="awesome_owl.todo_list">
+
+    <div class="p-3">
+      <h4 class="mb-2">My Todos</h4>
+
+      <!-- Input box to enter new todo -->
+      <!-- 
+        t-on-keyup="addTodo" → triggers addTodo() in JS on every key press 
+        t-ref="newTodoInput" → creates a reference (this.refs.newTodoInput) so we can read input value in
+      JS
+      -->
+      <input 
+        placeholder="Enter a new task" 
+        t-on-keyup="addTodo" 
+        t-ref="newTodoInput"
+      />
+
+      <!-- Loop through each todo and render the TodoItem component -->
+      <!-- 
+        t-foreach="todos" → loops over the reactive todos list from JS 
+        t-as="todo" → alias for each item in the loop 
+        t-key="todo.id" → unique key for diffing/efficient re-rendering 
+      -->
+      <t t-foreach="todos" t-as="todo" t-key="todo.id">
+        <!-- Pass the todo object as a prop to TodoItem component -->
+        <TodoItem todo="todo" toggleState="toggleState" removeTodo="removeTodo"/>
+      </t>
+    </div>
+
+  </t>
+</templates>
