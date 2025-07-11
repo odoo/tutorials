@@ -6,17 +6,19 @@ class Estate(models.Model):
     _inherit = 'estate.property'
 
     def action_mark_sold(self):
+        self.check_access_rights('write')
+        self.check_access_rule('write')
         res = super().action_mark_sold()
+
+        journal = self.env['account.journal'].sudo().search([('type', '=', 'sale')], limit=1)
+        if not journal:
+            raise UserError("No sale journal found. Please configure at least one sale journal.")
 
         for record in self:
             if not record.buyer:
                 raise UserError("Please set a Buyer before generating an invoice.")
             if not record.selling_price:
                 raise UserError("Please set a Selling Price before generating an invoice.")
-
-            journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
-            if not journal:
-                raise UserError("No sale journal found. Please configure at least one sale journal.")
 
             invoice_vals = {
                 "partner_id": record.buyer.id,
@@ -36,6 +38,6 @@ class Estate(models.Model):
                 ]
             }
 
-            self.env["account.move"].create(invoice_vals)
+            self.env["account.move"].sudo().create(invoice_vals)
 
         return res

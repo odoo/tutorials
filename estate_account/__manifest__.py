@@ -2,12 +2,9 @@
     'name': "Account",
     'version': '1.0',
     'depends': ['base', 'estate_gasa', 'account'],
-    'author': "Author Name",
+    'author': "gasa",
     'category': 'Category',
     "license": "LGPL-3",
     "application": True,
-    "sequence": 1,
-    # 'data': [
-    #  'views/estate_property_views.xml',
-    # ],
+    "sequence": 1
 }

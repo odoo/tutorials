@@ -9,11 +9,6 @@ class EstatePropertyType(models.Model):
     name = fields.Char(required=True)
     sequence = fields.Integer(string="Sequence", default=10)
     property_ids = fields.One2many("estate.property", "property_type", string="Properties")
-
-    _sql_constraints = [
-    ('unique_property_type_name', 'UNIQUE(name)',
-     'Property type name must be unique.'),
-    ]
     offer_ids = fields.One2many('estate.property.offer', 'property_type_id', string="Offers")
     offer_count = fields.Integer(compute='_compute_offer_count')
 
@@ -21,3 +16,8 @@ class EstatePropertyType(models.Model):
     def _compute_offer_count(self):
         for rec in self:
             rec.offer_count = len(rec.offer_ids)
+
+    _sql_constraints = [
+    ('unique_property_type_name', 'UNIQUE(name)',
+     'Property type name must be unique.'),
+    ]

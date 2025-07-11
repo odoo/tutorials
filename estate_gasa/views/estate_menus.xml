@@ -8,7 +8,8 @@
         parent="estate_menu_properties" />
 
     <!-- Submenu: Settings -->
-    <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" />
+    <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" sequence="100"
+        groups="estate_group_manager" />
     <menuitem id="estate_menu_property_type" name="Property Types"
         action="estate_property_type_action" parent="estate_menu_settings" />
     <menuitem id="estate_menu_property_tag" name="Property Tags"

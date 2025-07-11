@@ -20,7 +20,8 @@ class Estate(models.Model):
     active = fields.Boolean(default=True)
     living_area = fields.Integer(string="Living Area")
     facades = fields.Integer(string="Facades")
-    garden = fields.Boolean(string="Garage")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
     garden_orientation = fields.Selection(
         [
@@ -64,16 +65,23 @@ class Estate(models.Model):
         store=True
     )
 
-    @api.depends('living_area', 'garden_area')
-    def _compute_total_area(self):
-        for record in self:
-            record.total_area = record.living_area + record.garden_area
-
     best_price = fields.Float(
         string="Best Offer",
         compute="_compute_best_price"
     )
+
     selling_price = fields.Float(copy=False)
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        required=True,
+        default=lambda self: self.env.company
+    )
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
@@ -102,11 +110,6 @@ class Estate(models.Model):
                 raise UserError("Sold properties cannot be canceled.")
             record.state = 'cancelled'
 
-    _sql_constraints = [
-        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
-    ]
-
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price_threshold(self):
         for record in self:
@@ -127,3 +130,8 @@ class Estate(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError("You can only delete properties that are in 'New' or 'Cancelled' state.")
+
+    _sql_constraints = [
+        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+    ]
