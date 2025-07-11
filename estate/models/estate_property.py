@@ -1,6 +1,6 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -9,30 +9,25 @@ class EstateProperty(models.Model):
     _description = "Estate Property is defined"
     _order = "id desc"
     _sql_constraints = [
-        ('check_expectep_price', 'CHECK(expected_price > 0 AND selling_price > 0)',
+        ('check_expected_price', 'CHECK(expected_price > 0 AND selling_price > 0)',
          'The Price must be positve.')
     ]
 
     name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Char()
+    description = fields.Text(string='Description')
+    postcode = fields.Char(string='Postcode')
     date_avaiblity = fields.Date(copy=False, default=date.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+    living_area = fields.Integer(string='Living Area')
+    facades = fields.Integer(string='Facades')
+    garage = fields.Boolean(string='Garage')
+    garden = fields.Boolean(string='Garden')
+    garden_area = fields.Integer(string='Garden Area')
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesman_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
-    buyer_id = fields.Many2one(
-    'res.partner',
-    string='Buyer',
-    index=True,
-    default=lambda self: self.env.user.partner_id.id
-    )
+    buyer_id = fields.Many2one('res.partner', string='Buyer', index=True, default=lambda self: self.env.user.partner_id.id)
     property_tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total")
