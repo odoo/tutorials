@@ -1,6 +1,5 @@
 {
     'name': "New Product Type",
-    'category': '',
     'version': '0.1',
     'depends': ['sale'],
     'sequence': 1,

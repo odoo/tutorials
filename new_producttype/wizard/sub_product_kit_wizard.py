@@ -13,49 +13,58 @@ class SubProductKitWizard(models.TransientModel):
         sale_order_line_id = self._context.get("active_id")
         if sale_order_line_id:
             sale_order_line = self.env["sale.order.line"].browse(sale_order_line_id)
-            existing_lines = self.env["sale.order.line"].search(
-                [("main_product_line_id", "=", sale_order_line_id)]
-            )
+            existing_lines = self.env["sale.order.line"].search([
+                ("main_product_line_id", "=", sale_order_line_id)
+            ])
+            sub_product_line_wizard = self.env["sub.product.line.kit.wizard"]
             line_values = []
             if existing_lines:
-                for sub_product in existing_lines:
-                    curr_product = self.env["sub.product.line.kit.wizard"].create(
-                        {
-                            "product_id": sub_product.product_id.id,
-                            "price": sub_product.price_unit,
-                            "quantity": sub_product.product_uom_qty,
-                        }
-                    )
-                    line_values.append(Command.link(curr_product.id))
+                vals_list = [
+                    {
+                        "product_id": line.product_id.id,
+                        "price": line.price_unit,
+                        "quantity": line.product_uom_qty,
+                    }
+                    for line in existing_lines
+                ]
             else:
-                for sub_product in sale_order_line.product_id.sub_products_ids:
-                    curr_product = self.env["sub.product.line.kit.wizard"].create(
-                        {
-                            "product_id": sub_product.id,
-                            "price": sub_product.list_price,
-                            "quantity": 1,
-                        }
-                    )
-                    line_values.append(Command.link(curr_product.id))
-            res["sub_products_ids"] = line_values
-            res["sale_order_line_id"] = sale_order_line_id
+                vals_list = [
+                    {
+                        "product_id": sub_product.id,
+                        "price": sub_product.list_price,
+                        "quantity": 1,
+                    }
+                    for sub_product in sale_order_line.product_id.sub_products_ids
+                ]
+            if vals_list:
+                curr_products = sub_product_line_wizard.create(vals_list)
+                line_values = [Command.link(product.id) for product in curr_products]
+            res.update({
+                "sub_products_ids": line_values,
+                "sale_order_line_id": sale_order_line_id,
+            })
         return res
 
     def action_confirm(self):
-        total_of_sub_product_price = 0
-        for rec in self.sub_products_ids:
-            existing_lines = self.env["sale.order.line"].search(
+        existing_sub_product_lines_map = {
+            line.product_id.id: line
+            for line in self.env["sale.order.line"].search(
                 [
                     ("main_product_line_id", "=", self.sale_order_line_id.id),
-                    ("product_id", "=", rec.product_id.id),
                     ("order_id", "=", self.sale_order_line_id.order_id.id)
-                ],
-                limit=1,
+                ]
             )
-            if existing_lines:
-                existing_lines.product_uom_qty = rec.quantity
-                existing_lines.last_price = rec.price
-                existing_lines.price_unit = 0
+        }
+        total_of_sub_product_price = 0
+        for rec in self.sub_products_ids:
+            product_id = rec.product_id.id
+            existing_line = existing_sub_product_lines_map.get(product_id)
+            if existing_line:
+                existing_line.write({
+                    "product_uom_qty": rec.quantity,
+                    "last_price": rec.price,
+                    "price_unit": 0,
+                })
             else:
                 self.env["sale.order.line"].create(
                     {
