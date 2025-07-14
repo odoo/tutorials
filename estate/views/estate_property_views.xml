@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
-            <field name="view_mode">list,form</field>
+            <field name="view_mode">list,form,kanban</field>
             <field name="context">{'search_default_state': 1}</field>
     </record>
 
@@ -28,6 +28,39 @@
         </field>
     </record>
 
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" default_group_by="property_type_id" records_draggable="0">
+                <field name="state" />
+                <field name="property_type_id" />
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <div style="font-weight: bold; font-size: 1.1em;">
+                                <field name="name" />
+                            </div>
+                            <div>
+                                <field name="property_tag_ids" widget="many2many_tags"
+                                    options="{'color_field': 'color'}" />
+                            </div>
+                            <div>
+                                <span>Expected Price: <field name="expected_price" /></span>
+                            </div>
+                            <div t-if="record.state.raw_value == 'Offer Received'">
+                                <span>Best Price: <field name="best_offer" /></span>
+                            </div>
+                            <div t-if="record.state.raw_value == 'Offer Accepted'">
+                                <span>Selling Price: <field name="selling_price" /></span>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="estate_property_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -39,6 +72,13 @@
                     <field name='state' widget="statusbar" statusbar_visible="new,Offer Received,Offer Accepted,sold"/>
                 </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate.estate_property_offer_reports)d"
+                            class="oe_stat_button"
+                            type="action"
+                            icon="fa-print"
+                            string="Print" />
+                    </div> 
                     <h1 class="mb32">
                             <field name="name" class="mb16"/>
                     </h1>
