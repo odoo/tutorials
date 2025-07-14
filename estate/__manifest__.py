@@ -1,14 +1,14 @@
 {
     "name": "Real Estate",
-    "category": "All",
-    "summary": "Demo app for estate",
-    "description": "This is the demo app ",
+    "category": "Real Estate/Brokerage",
+    "summary": "Manage real estate properties, offers, and sales with ease",
+    "description": "A demo application for managing real estate listings, tracking offers, and streamlining property sales workflows. Designed to showcase essential features for real estate and brokerage operations within Odoo",
     "installable": True,
     "depends": ["base"],
     "application": True,
-    "auto_install": False,
     "license": "AGPL-3",
     "data": [
+        "security/estate_security.xml",
         "security/ir.model.access.csv",
         "views/estate_property_offer_views.xml",
         "views/estate_property_views.xml",
@@ -16,5 +16,10 @@
         "views/estate_property_tags_views.xml",
         "views/res_users_views.xml",
         "views/estate_menus.xml",
+        "data/estate.property.type.csv",
+    ],
+    "demo": [
+        "demo/estate_property_demo.xml",
+        "demo/estate_offer_demo.xml",
     ],
 }

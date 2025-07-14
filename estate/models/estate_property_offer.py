@@ -23,7 +23,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     partner_id = fields.Many2one(
-        "res.partner", string="Partner", copy=False, required=True
+        "res.partner", string="Partner", copy=False, required=True, store=True
     )
     property_id = fields.Many2one("estate.property", copy=False, required=True)
     property_type_id = fields.Many2one(
@@ -69,9 +69,7 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.state = "offer_accepted"
             # Setting remaining Offer as refused
             other_offers = offer.property_id.offer_id - offer
-            # for other in other_offers:                  # -----> Normal for loop logic
-            #     other.status = 'refused'
-            other_offers.write({"status": "refused"})  # -----> Odoo ORM Method
+            other_offers.write({"status": "refused"})
 
         return True
 
@@ -87,11 +85,9 @@ class EstatePropertyOffer(models.Model):
             property_id = vals.get("property_id")
 
             property_rec = self.env["estate.property"].browse(property_id)
-            # Business logic: set property state
             if property_rec.state == "new":
                 property_rec.state = "offer_received"
 
-            # Business logic: validate price
             if "price" in vals and vals["price"] < property_rec.best_price:
                 raise exceptions.ValidationError(
                     "Offer price must be higher than existing offers."
@@ -100,5 +96,3 @@ class EstatePropertyOffer(models.Model):
             new_records.append(vals)
 
         return super().create(new_records)
-
-        # vals_list---------> [{'partner_id': 23, 'price': 100, 'validity': 7, 'date_deadline': '2025-07-16', 'property_id': 19}]

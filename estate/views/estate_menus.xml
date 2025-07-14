@@ -1,29 +1,25 @@
 <odoo>
-    <menuitem id="test_menu_root" 
-    name="Real Estate"> <!-- Root Level = which is displayed in the App switcher -->
+    <menuitem id="estate_menu_root" 
+    name="Real Estate"> 
 
         <menuitem id="Advertisement_menu" 
-        name="Advertisement"> <!-- First Level = Top Bar-->
-
+        name="Advertisement"> 
             <menuitem id="estate_property_menu_action" 
-            action="estate_property_action"/> <!-- The action menus = Drop Down in topo bar -->
-        
+            action="estate_property_action"/> 
         </menuitem>
 
         <menuitem id="Settings_menu" 
-            name="Settings"> <!-- First Level = Top Bar-->
+            name="Settings"
+            groups="estate.estate_group_manager"> 
 
             <menuitem id="estate_property_menu_action_settings" 
-                action="estate_property_action_settings"/>
+                action="estate_property_action_settings"
+                groups="estate.estate_group_manager"/>
             
             <menuitem id="estate_property_menu_action_settings_tag" 
-                action="estate_property_action_tag"/>
-        
+                action="estate_property_action_tag"
+                groups="estate.estate_group_manager"/>
+
         </menuitem>
-
-        
-
-
     </menuitem>
-
 </odoo>

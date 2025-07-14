@@ -4,10 +4,10 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
-class RecurringPlan(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "estate property revenue plans"
-    _order = "id desc"  # For ordering in ascending opr descending order   one more way to do so is from view like: <list default_order="date desc">
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text(string="Description")
@@ -48,21 +48,18 @@ class RecurringPlan(models.Model):
         required=True,
         default="new",
         copy=False,
-        # readonly=True
     )
 
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
-
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     user_id = fields.Many2one(
         "res.users", string="Salesman", copy=False, default=lambda self: self.env.user
     )
-
     tag_id = fields.Many2many("estate.property.tag", string="Tags", copy=False)
-
     offer_id = fields.One2many("estate.property.offer", "property_id", string="Offer")
+    company_id = fields.Many2one("res.company", string="Company", required=True, default=lambda self: self.env.company)
 
     _sql_constraints = [
         (
@@ -119,12 +116,7 @@ class RecurringPlan(models.Model):
                 continue
             min_allowed_price = record.expected_price * 0.9
 
-            if (
-                float_compare(
-                    record.selling_price, min_allowed_price, precision_digits=2
-                )
-                < 0
-            ):
+            if (float_compare(record.selling_price, min_allowed_price, precision_digits=2) < 0):
                 raise ValidationError(
                     "Selling price cannot be lower than 90% of the expected price. "
                     f"(Minimum allowed: {min_allowed_price:.2f})"
@@ -134,8 +126,4 @@ class RecurringPlan(models.Model):
     def _unlink_except_state_not_new(self):
         for rec in self:
             if rec.state not in ["new", "cancelled"]:
-                raise UserError(
-                    _(
-                        "You cannot delete a property unless its state is 'New' or 'Cancelled'."
-                    )
-                )
+                raise UserError(_("You cannot delete a property unless its state is 'New' or 'Cancelled'."))
