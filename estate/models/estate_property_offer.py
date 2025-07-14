@@ -11,9 +11,9 @@ class EstatePropertyOffer(models.Model):
         ("_check_offer_price", "CHECK(price > 0)", "The Offer price must be positive.")
     ]
 
-    price = fields.Float()
+    price = fields.Float(string="Price")
     status = fields.Selection(
-        [("accepted", "Accepted"), ("refused", "Refused")], copy=False
+        [("accepted", "Accepted"), ("refused", "Refused")], copy=False, string="Status"
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
@@ -23,10 +23,8 @@ class EstatePropertyOffer(models.Model):
         string="Property Type",
         required=True,
     )
-    validity = fields.Integer(default=7)
-    date_deadline = fields.Date(
-        compute="_compute_deadline", inverse="_inverse_deadline", store=True
-    )
+    validity = fields.Integer(default=7, string="Validity")
+    date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline", store=True, string="Deadline Date")
 
     @api.model_create_multi
     def create(self, vals):
@@ -46,11 +44,7 @@ class EstatePropertyOffer(models.Model):
             max_price = result[0]["price"] if result else 0
 
             if max_price >= offer_price:
-                raise UserError(
-                    _(
-                        "You cannot create an offer with a lower or equal amount than an existing offer for this property."
-                    )
-                )
+                raise UserError(_("You cannot create an offer with a lower or equal amount than an existing offer for this property."))
 
             if is_state_new:
                 self.env["estate.property"].browse(property_id).state = "offer_received"

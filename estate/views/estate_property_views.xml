@@ -5,7 +5,6 @@
         <field name="view_mode">list,form</field>
         <field name="context">{'search_default_available':1}</field>
     </record>
-
     <record id="estate_property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -28,8 +27,7 @@
             </list>
         </field>
     </record>
-
-     <record id="estate_property_form_view" model="ir.ui.view">
+    <record id="estate_property_form_view" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="type">form</field>
@@ -38,18 +36,16 @@
                 <header>
                     <button name="action_set_state_sold" type="object" string="Sold" invisible="state in ('sold','cancelled')"/>
                     <button name="action_set_state_cancel" type="object" string="Cancel" invisible="state in ('sold','cancelled')"/>
-
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
-
                 </header>
                 <sheet>
-                     <div class="oe_title">
+                    <div class="oe_title">
                         <h1>
                             <field name="name"/>
                         </h1>
                     </div>
-                     <div class='mb-3'> 
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    <div class='mb-3'> 
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
                     </div>
                     <group>
                         <group>
@@ -66,15 +62,15 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                            <field name="description"/>
-                             <field name="bedrooms"/>
-                              <field name="living_area"/>
-                              <field name="facades"/>
-                              <field name="garage"/>
-                              <field name="garden"/>
-                              <field name="garden_area" invisible="not garden"/>
-                              <field name="garden_orientation" invisible="not garden"/>
-                              <field name="total_area" string="Total Area (sqm)"/>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area" string="Total Area (sqm)"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -91,7 +87,6 @@
                                     'accepted','refused')"/>
                                     <button name="action_refuse_offer" type="object" title="Refuse" icon="fa-times" invisible="status in (
                                     'accepted','refused')"/>
-                                     
                                 </list>
                             </field>
                         </page>
@@ -106,8 +101,6 @@
             </form>
         </field>
     </record>
-
-
     <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -120,18 +113,10 @@
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area','>=', self)]"/>
                 <field name="facades"/>
-                
-
                 <filter name="available" string="Available" domain="[('state','in',['new','offer_received'])]"/>
-                
-
                 <filter name="postcode" context="{'group_by': 'postcode'}"/>
                 <filter  name="name" context="{'group_by': 'name'}"/>
             </search>
         </field>
     </record>
-
-
-    
-
 </odoo>

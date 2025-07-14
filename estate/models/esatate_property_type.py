@@ -10,11 +10,11 @@ class EstatePropertyTyeps(models.Model):
         ("_unique_type_name", "UNIQUE(name)", "Property type name must be unique.")
     ]
 
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, string="Title")
     property_ids = fields.One2many(
         "estate.property", "property_type_id", string="Properties"
     )
-    sequence = fields.Integer(default=1)
+    sequence = fields.Integer(default=1, string="sequence")
 
     offer_ids = fields.One2many(
         "estate.property.offer", "property_type_id", string="Offers"
