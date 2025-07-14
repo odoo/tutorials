@@ -16,13 +16,20 @@ class EstatePropertyOffers(models.Model):
     property_type_id = fields.Many2one(
         related="property_id.estate_property_type_id", store=True
     )
-
     offer_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
     status = fields.Selection(
         selection=[("accepted", "Accepted"), ("refused", "Refused")]
     )
+
+    _sql_constraints = [
+        (
+            "check_offer_price_positive",
+            "CHECK(price > 0)",
+            "Offer price must be strictly positive.",
+        )
+    ]
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -62,14 +69,6 @@ class EstatePropertyOffers(models.Model):
         for offer in self:
             offer.status = "refused"
 
-    _sql_constraints = [
-        (
-            "check_offer_price_positive",
-            "CHECK(price > 0)",
-            "Offer price must be strictly positive.",
-        )
-    ]
-
     @api.model_create_multi
     def create(self, vals):
         for val in vals:
@@ -82,5 +81,4 @@ class EstatePropertyOffers(models.Model):
                 raise UserError(
                     f"The offer must be higher than {property_id.best_offer}"
                 )
-
         return super().create(vals)

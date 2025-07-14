@@ -9,7 +9,7 @@
         action="estate_property_main_view_action" />
 
     <menuitem id="estate_property_type_menu_action" parent="estate_menu_settings"
-        action="estate_property_type_view_action" />
+        action="estate_property_type_view_action" groups="real_estate.estate_group_manager" />
     <menuitem id="estate_property_tag_menu_action" parent="estate_menu_settings"
-        action="estate_property_tag_view_action" />
+        action="estate_property_tag_view_action" groups="real_estate.estate_group_manager" />
 </odoo>

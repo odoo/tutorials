@@ -8,10 +8,7 @@ class Property(models.Model):
 
     def action_sold(self):
         for property in self:
-            journal = self.env["account.journal"].search(
-                [("type", "=", "sale")], limit=1
-            )
-
+            property.check_access("write")
             commission = property.selling_price * 0.06
             discount = property.selling_price * 0.05
             invoice_lines = [
@@ -37,14 +34,10 @@ class Property(models.Model):
                     }
                 ),
             ]
-
             invoice_vals = {
                 "partner_id": property.buyer_id.id,
                 "move_type": "out_invoice",
-                "journal_id": journal.id,
                 "invoice_line_ids": invoice_lines,
             }
-
-            self.env["account.move"].create(invoice_vals)
-
+            self.env["account.move"].sudo().create(invoice_vals)
         return super().action_sold()

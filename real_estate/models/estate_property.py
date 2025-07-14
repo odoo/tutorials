@@ -9,9 +9,10 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is a real estate module"
+    _inherit = "mail.thread"
     _order = "id desc"
 
-    name = fields.Char(string="Property Name", required=True)
+    name = fields.Char(string="Property Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     expected_price = fields.Float(string="Expected Price", required=True)
@@ -35,6 +36,7 @@ class EstateProperty(models.Model):
         comodel_name="estate.property.offers",
         inverse_name="property_id",
         string="Offers",
+        tracking=True,
     )
     seller_id = fields.Many2one(
         comodel_name="res.users",
@@ -42,10 +44,14 @@ class EstateProperty(models.Model):
         default=lambda self: self.env.user,
     )
     estate_property_type_id = fields.Many2one(
-        comodel_name="estate.property.types", string="Property Type"
+        comodel_name="estate.property.types",
+        string="Property Type",
+        tracking=True,
     )
     estate_property_tag_ids = fields.Many2many(
-        comodel_name="estate.property.tags", string="Tags"
+        comodel_name="estate.property.tags",
+        string="Tags",
+        tracking=True,
     )
     garden_orientation = fields.Selection(
         selection=[
@@ -68,6 +74,12 @@ class EstateProperty(models.Model):
         required=True,
         default="new",
         string="State",
+    )
+    company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Company",
+        required=True,
+        default=lambda self: self.env.company,
     )
     _sql_constraints = [
         (

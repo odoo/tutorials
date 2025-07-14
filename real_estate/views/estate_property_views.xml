@@ -35,6 +35,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <chatter open_attachments="True"/>
                 <header>
                     <button name="action_sold"
                         type="object"
