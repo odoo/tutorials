@@ -48,7 +48,6 @@ class EstatePropertyOffer(models.Model):
             })
             (record.property_id.offer_ids - record).write({'status': 'refused'})
 
-
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
