@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Property Types -->
+    <record id="property_type_apartment" model="estate.property.type">
+        <field name="name">Apartment</field>
+    </record>
+
+    <record id="property_type_villa" model="estate.property.type">
+        <field name="name">Villa</field>
+    </record>
+
+    <record id="property_type_penthouse" model="estate.property.type">
+        <field name="name">Penthouse</field>
+    </record>
+
+    <record id="property_type_bungalow" model="estate.property.type">
+        <field name="name">Bungalow</field>
+    </record>
+
+    <record id="property_type_duplex" model="estate.property.type">
+        <field name="name">Duplex</field>
+    </record>
+
+    <record id="property_type_studio" model="estate.property.type">
+        <field name="name">Studio</field>
+    </record>
+
+    <record id="property_type_loft" model="estate.property.type">
+        <field name="name">Loft</field>
+    </record>
+
+    <record id="property_type_townhouse" model="estate.property.type">
+        <field name="name">Townhouse</field>
+    </record>
+
+    <record id="property_type_mansion" model="estate.property.type">
+        <field name="name">Mansion</field>
+    </record>
+
+    <record id="property_type_cottage" model="estate.property.type">
+        <field name="name">Cottage</field>
+    </record>
+
+    <record id="property_type_farmhouse" model="estate.property.type">
+        <field name="name">Farmhouse</field>
+    </record>
+
+    <record id="property_type_condo" model="estate.property.type">
+        <field name="name">Condo</field>
+    </record>
+
+    <record id="property_type_rowhouse" model="estate.property.type">
+        <field name="name">Rowhouse</field>
+    </record>
+
+    <record id="property_type_ranch" model="estate.property.type">
+        <field name="name">Ranch</field>
+    </record>
+</odoo>
