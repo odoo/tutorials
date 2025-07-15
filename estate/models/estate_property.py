@@ -59,7 +59,6 @@ class EstateProperty(models.Model):
         "res.users",
         string="Salesperson",
         copy=False,
-        default=lambda self: self.env.user,
     )
 
     partner_id = fields.Many2one(
@@ -79,6 +78,13 @@ class EstateProperty(models.Model):
     best_price = fields.Integer(compute="_compute_best_price", string="Best Price")
 
     status = fields.Char(default="new", string="Status")
+
+    company_id = fields.Many2one(
+        "res.company",
+        string="Company",
+        default=lambda self: self.env.company,
+        required=True,
+    )
 
     _order = "id desc"
 

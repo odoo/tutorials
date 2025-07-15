@@ -1,6 +1,3 @@
-# offers model that will offer us the offers
-
-
 from odoo import fields, models, api
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -29,10 +26,12 @@ class EstatePropertyOffer(models.Model):
         readonly=False,
     )
 
-    validity = fields.Integer(default=7)
+    validity = fields.Integer(default=7, string="Validity")
 
     date_deadline = fields.Date(
-        compute="_compute_offer_deadline", inverse="_deadline_update"
+        compute="_compute_offer_deadline",
+        inverse="_deadline_update",
+        string="Date deadline",
     )
 
     # constrains of sql

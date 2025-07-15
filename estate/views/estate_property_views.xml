@@ -84,6 +84,10 @@
                             <group>
                                 <field name="selling_price"/>
                             </group>
+                            <group>
+                                <field name="company_id"/>
+                            </group>
+                            
                         </group>
                         <notebook>
                             <page string="Description">
@@ -106,17 +110,19 @@
 
                             <page string="Offer">
                                 <field name="offer_ids"  readonly="state in ('offer_accepted', 'sold', 'cancelled')" >
-                                    <list editable="bottom" decoration-red="status in ('refused')" 
+                                    <list editable="bottom" decoration-danger="status in ('refused')" 
                                         decoration-success="status in ('accepted')"
                                     >
                                         <field name="price"/>
                                         <field name="partner_id"/>
-                                        <button name="action_offer_confirm" string="Accept" states="draft" type="object" icon="fa-check" 
+                                        <field name="validity"/>
+                                        <button name="action_offer_confirm" title="Accept" states="draft" type="object" icon="fa-check" 
                                            invisible="status in ('accepted','refused')"
                                         />
-                                        <button name="action_offer_refuse" string="Refuse" states="draft" type="object" icon="fa-times"
+                                        <button name="action_offer_refuse" title="Refuse" states="draft" type="object" icon="fa-times"
                                              invisible="status in ('accepted','refused')"
                                         />
+                                        <field name="date_deadline"/>
                                     </list>
                                 </field>
                             </page>
@@ -125,7 +131,6 @@
                                 <group>
                                     <field name="user_id"/>
                                     <field name="partner_id"/>
-                                    
                                 </group>
                             </page>
                         </notebook>
