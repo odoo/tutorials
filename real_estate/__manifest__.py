@@ -15,6 +15,8 @@
         "views/estate_property_menus.xml",
         "views/res_users_views.xml",
         "data/estate.property.types.csv",
+        "report/estate_property_reports.xml",
+        "report/estate_property_templates.xml",
     ],
     "demo": [
         "demo/estate_property_demo.xml",
