@@ -6,8 +6,7 @@ class Estate(models.Model):
     _inherit = 'estate.property'
 
     def action_mark_sold(self):
-        self.check_access_rights('write')
-        self.check_access_rule('write')
+        self.check_access('write')
         res = super().action_mark_sold()
 
         journal = self.env['account.journal'].sudo().search([('type', '=', 'sale')], limit=1)

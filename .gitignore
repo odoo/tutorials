@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # Ignore VS Code settings
-.vscode/
+.vscode
