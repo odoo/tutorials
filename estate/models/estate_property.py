@@ -80,6 +80,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be marked as sold.")
+            elif record.state != 'offer accepted':
+                raise UserError("Atleast one offer should be accepted.")
             record.state = 'sold'
 
     @api.ondelete(at_uninstall=False)

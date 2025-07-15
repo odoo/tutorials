@@ -87,7 +87,6 @@
                     <h1 class="mb32">
                         <field name="name" class="mb16"/>
                     </h1>
-
                     <group>
                         <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </group>
