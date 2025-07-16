@@ -23,5 +23,5 @@
     ],
     "demo": [
         'demo/estate_property_demo_data.xml',
-    ],
+    ]
 }
