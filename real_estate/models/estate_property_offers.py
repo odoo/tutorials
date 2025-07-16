@@ -37,27 +37,25 @@ class EstatePropertyOffers(models.Model):
             if record.create_date and record.validity:
                 record.offer_deadline = fields.Date.add(
                     record.create_date, days=record.validity
-                )
+                    )
             else:
                 record.offer_deadline = fields.Date.add(
                     fields.Date.today(), days=record.validity
-                )
+                    )
 
     def _inverse_date_deadline(self):
         for record in self:
             if record.create_date and record.offer_deadline:
                 record.validity = (
                     record.offer_deadline - fields.Date.to_date(record.create_date)
-                ).days
+                    ).days
 
     def action_accept_offer(self):
         for offer in self:
-            accepted_offer = self.env["estate.property.offers"].search(
-                [
+            accepted_offer = self.env["estate.property.offers"].search([
                     ("property_id", "=", offer.property_id.id),
                     ("status", "=", "accepted"),
-                ]
-            )
+                ])
             if accepted_offer:
                 raise UserError("Only one offer can be accepted per property.")
             offer.status = "accepted"
@@ -73,6 +71,9 @@ class EstatePropertyOffers(models.Model):
     def create(self, vals):
         for val in vals:
             property_id = self.env["estate.property"].browse(val["property_id"])
+
+            if property_id.state == "sold":
+                raise UserError("Cannot create an offer on a sold property.")
 
             if property_id.state == "new":
                 property_id.state = "offer_received"
