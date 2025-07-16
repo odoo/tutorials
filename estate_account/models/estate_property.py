@@ -1,4 +1,4 @@
-from odoo import models, Command
+from odoo import Command, models
 from odoo.exceptions import UserError
 
 
@@ -18,6 +18,11 @@ class EstateProperty(models.Model):
             if not record.selling_price:
                 raise UserError("Please set a Selling Price before generating an invoice.")
 
+            journal = self.env['account.journal'].sudo().search([('type', '=', 'sale')], limit=1)
+            if not journal:
+                raise UserError("No sale journal found. Please configure at least one sale journal.")
+            record.check_access_rights('write')
+            record.check_access_rule('write')
             invoice_vals = {
                 "partner_id": record.buyer_id.id,
                 "move_type": "out_invoice",
@@ -36,5 +41,5 @@ class EstateProperty(models.Model):
                 ]
             }
 
-            self.env["account.move"].create(invoice_vals)
+            self.env["account.move"].sudo().create(invoice_vals)
         return res
