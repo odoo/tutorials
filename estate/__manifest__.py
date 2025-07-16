@@ -4,5 +4,8 @@
     'author': "Eadi",
     'depends': ['base'],
     'description': "",
+    'data': [
+        'security/ir.model.access.csv'
+    ],
     'application': True
 }
