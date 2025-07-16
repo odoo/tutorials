@@ -19,10 +19,13 @@
         'views/estate_property_tag_views.xml',
         'views/estate_res_user_views.xml',
         'views/estate_menus.xml',
+        'report/estate_reports.xml',
+        'report/estate_report_views.xml',
     ],
     'demo': [
-        'demo/estate.property.type.csv',
-        'demo/estate.property.xml',
+        'data/estate_demo.xml',
+        # 'demo/estate.property.type.csv',
+        # 'demo/estate.property.xml',
     ],
 
 }
