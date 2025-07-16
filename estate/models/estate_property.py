@@ -82,8 +82,10 @@ class EstateProperty(models.Model):
 
     def sold_button_action(self):
         for record in self:
-            if record.status == 'cancelled':
+            if record.state == 'cancelled':
                 raise UserError("Cancelled property cannot be marked as sold.")
+            elif record.state != 'Offer Accepted':
+                raise UserError("At least one offer need to be accepted.")
             record.status = 'sold'
             record.state = 'sold'
 
