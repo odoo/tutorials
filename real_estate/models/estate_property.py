@@ -99,6 +99,8 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
+            if not any(offer.state == 'accepted' for offer in record.offer_ids):
+                raise UserError("You cannot sell a property without an accepted offer.")
             if record.state == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold.")
             record.state = 'sold'

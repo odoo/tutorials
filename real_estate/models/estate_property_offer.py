@@ -62,7 +62,9 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             price = vals.get('price')
             property_obj = self.env['estate.property'].browse(vals.get('property_id'))
-            existing_offers = property_obj.offer_ids.filtered(lambda o: o.price >= price)
+            existing_offers = property_obj.offer_ids.filtered(lambda o: o.price is not None and price is not None and o.price >= price)
+            if property_obj.state == 'sold':
+                raise UserError("Cannot create offer for a sold property.")
             if existing_offers:
                 raise ValidationError("You cannot create an offer with a lower or equal price than existing offers.")
             property_obj.state = 'offer_received'

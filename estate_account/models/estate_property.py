@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         res = super().action_sold()
+        self.check_access('write')
 
         journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
         if not journal:
@@ -21,8 +22,6 @@ class EstateProperty(models.Model):
             journal = self.env['account.journal'].sudo().search([('type', '=', 'sale')], limit=1)
             if not journal:
                 raise UserError("No sale journal found. Please configure at least one sale journal.")
-            record.check_access_rights('write')
-            record.check_access_rule('write')
             invoice_vals = {
                 "partner_id": record.buyer_id.id,
                 "move_type": "out_invoice",
@@ -40,6 +39,5 @@ class EstateProperty(models.Model):
                     }),
                 ]
             }
-
             self.env["account.move"].sudo().create(invoice_vals)
         return res
