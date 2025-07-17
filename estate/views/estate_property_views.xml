@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">Properties</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Description">
+                <header>
+                    <button name="action_sold" type="object" string="SOLD" invisible="status in ('sold','cancelled')"/>
+                    <button name="action_cancel" type="object" string="CANCEL" invisible="status in ('sold','cancelled'),offer_ids.state=='accepted'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" statusbar_invisible="cancelled"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                            <field name="property_image" string="Property Image" widget="image" class="oe_avatar" options="{'size': [250,250]}" nolabel="1"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color','no_create':True}"/>
+                            <group>
+                                <field name="property_type_id" string="Property Type" options="{'no_create': True}"/>
+                                <field name="best_offer" string="Best Offer"/>
+                            </group>
+
+                            <newline/>
+
+                            <group>
+                                <field name="expected_price" string="Expected Price"/>
+                                <field name="postcode" string="Postcode"/>
+                            </group>
+
+                            <group>
+                                <field name="selling_price" string="Selling Price"/>
+                                <field name="date_availability" string="Available From"/>
+                            </group>
+                            
+                        </group>
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <field name="description" string="Description"/>
+                                    <field name="bedrooms" string="Bedrooms"/>
+                                    <field name="living_area" string="Living Area(sqm)"/>
+                                    <field name="facades" string="Facades"/>
+                                    <field name="is_garage" string="Garage"/>
+                                    <field name="is_garden" string="Garden"/>
+                                    <field name="garden_area" string="Garden Area(sqm)" invisible="not is_garden"/>
+                                    <field name="garden_orientation" string="Garden Orientation" invisible="not is_garden"/>
+                                    <field name="total_area" string="Total Area(sqm)" />
+                                </group>
+                            </page>
+
+                            <page string="Offers">
+                                <group>
+                                    <field name="offer_ids" nolabel="1" readonly="status in ['sold','cancelled']">
+                                        <list editable="top" open_form_view="True" decoration-danger="state=='refused'" decoration-success="state=='accepted'">
+                                            <field name="price" string="Price"/>
+                                            <field name="partner_id" string="Partner"/>
+                                            <field name="validity" string="Validity(days)"/>
+                                            <button name="action_offer_accept" type="object" icon="fa-check" invisible="state in ('accepted','refused')"/>
+                                            <button name="action_offer_reject" type="object" icon="fa-times" invisible="state in ('refused','accepted')"/>
+                                            <field name="deadline" string="Deadline"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </page>
+
+                            <page string="Other Info">
+                                <group>
+                                    <field name="seller_id" string="Salesman"/>
+                                    <field name="buyer_id" string="Buyer"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </group>
+                </sheet>
+                <chatter/>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">Properties</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list decoration-success="status in ('offer_received', 'offer_accepted')" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'" editable="bottom" open_form_view="1">
+                <field name="name" string="Title" />
+                <field name="property_type_id" string="Property Type"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area(sqm)"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="date_availability" string="Available From" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">Properties</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" groups_draggable="false" records_draggable="false">
+                <field name="status" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div>
+                                <b>Name: <field name="name" string="Title"/>
+                                </b>
+                            </div>
+                            <div>Postcode: <field name="postcode"/>
+                            </div>
+                            <div>Expected Price: <field name="expected_price"/>
+                            </div>
+                            <div t-if="record.status.raw_value == 'offer_received'">Best Price: <field name="best_offer"/>
+                            </div>
+                            <div t-if="record.status.raw_value == 'offer_accepted'">Selling Price: <field name="selling_price"/>
+                            </div>
+                            <div>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_account_report_search" model="ir.ui.view">
+        <field name="name">estate search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <filter string="Available" name="available" domain="([ ('status', 'in', ('new','offer_received'))])"/>
+                <filter string="Availablity by Date" name="date_availability" domain="[('date_availability','&gt;',datetime.datetime.now())]"/>
+                <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
+                <field name="name" string="Title" />
+                <field name="property_type_id" string="Property Type"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area', '&gt;', self)]"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_properties_view" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">{'search_default_available':True}</field>
+    </record>
+</odoo>
