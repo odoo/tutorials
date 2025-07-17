@@ -97,6 +97,10 @@ class EstateProperty(models.Model):
 
     def action_property_sold(self):
         for prop in self:
+            accepted_offer = prop.offer_id.filtered(lambda i: i.status == "accepted")
+            if not accepted_offer:
+                raise ValidationError(_("Cannot mark as sold. No accepted offer found for this property."))
+
             if prop.state == "cancelled":
                 raise UserError(_("Cancelled properties cannot be sold."))
             prop.state = "sold"

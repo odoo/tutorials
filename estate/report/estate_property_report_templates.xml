@@ -19,6 +19,7 @@
                             <strong>Status: </strong>
                             <span t-field="property.state"/>
                         </div>
+                        <div class="invoice_info"/>
                         <t t-set="object" t-value="property"/>
                         <t t-call="estate.report_property_offers_table"/>
                     </div>
@@ -104,18 +105,12 @@
     </template>
 
     <template id="report_property_offers_inherit_invoice" inherit_id="estate.report_property_offers" priority="20">
-        <xpath expr="//div[hasclass('page')]" position="inside">
+        <xpath expr="//div[hasclass('invoice_info')]" position="inside">
             <t t-if="property.state == 'sold'">
                 <div class="mt-4">
-                    <h4>Invoice Information</h4>
-                    <p>The invoice has already been creted!!!</p>
+                    <p><strong>The invoice has already been creted!!!</strong></p>
                 </div>
             </t>
         </xpath>
     </template>
-
-
-
-    
-
 </odoo>

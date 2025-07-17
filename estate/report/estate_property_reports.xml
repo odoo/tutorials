@@ -20,5 +20,4 @@
         <field name="binding_type">report</field>
         <field name="print_report_name">'User Properties - %s' % (object.name)</field>
     </record>
-
 </odoo>

@@ -1,5 +1,4 @@
 <odoo>
-
     <record id="estate_property_big_villa" model="estate.property">
         <field name="name">Big Villa</field>
         <field name="state">new</field>
@@ -51,7 +50,6 @@
         <field name="garden_area">50</field>
         <field name="garden_orientation">east</field>
         <field name="property_type_id" ref="estate.property_type_residential"/>
-
         <field name="offer_id">
             <record model="estate.property.offer">
                 <field name="partner_id" ref="base.res_partner_10"/>
@@ -68,7 +66,7 @@
         </field>
     </record>
 
- <record id="estate_property_very_samll_house" model="estate.property">
+    <record id="estate_property_very_samll_house" model="estate.property">
         <field name="name">Very Small House</field>
         <field name="state">new</field>
         <field name="description">A nice and small villa</field>
@@ -84,7 +82,6 @@
         <field name="garden_area">100000</field>
         <field name="garden_orientation">south</field>
         <field name="property_type_id" ref="estate.property_type_residential"/>
-
         <field name="offer_id" eval="[
             Command.create({
                 'partner_id': ref('base.res_partner_12'),
@@ -106,9 +103,4 @@
             })
         ]"/>
     </record>
-
-   
-
-
-
 </odoo>

@@ -83,8 +83,10 @@ class EstatePropertyOffer(models.Model):
         new_records = []
         for vals in vals_list:
             property_id = vals.get("property_id")
-
             property_rec = self.env["estate.property"].browse(property_id)
+            if property_rec.state == "sold":
+                raise exceptions.ValidationError(_("You cannot create an offer for a property that is already sold."))
+
             if property_rec.state == "new":
                 property_rec.state = "offer_received"
 
