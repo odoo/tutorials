@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_offer_report_inherit" inherit_id="estate.estate_property_offer_report">
+        <xpath expr="//div[@class='page']" position="inside">
+            <t t-if="property.state == 'sold'">
+                <div>
+                    <strong>Invoice Status:</strong> 
+                    <span>Invoice has been generated for this property.</span>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
