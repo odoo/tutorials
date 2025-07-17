@@ -1,5 +1,5 @@
 from odoo import fields, models, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta, datetime
 
 
@@ -31,10 +31,8 @@ class EstatePropertyOffer(models.Model):
         for val in vals:
             property_id = val["property_id"]
             offer_price = val["price"]
-            is_state_new = (
-                self.env["estate.property"].browse(property_id).state == "new"
-            )
-
+            property = self.env["estate.property"].browse(property_id)
+            is_state_new = (property.state == "new")
             result = self.read_group(
                 domain=[("property_id", "=", property_id)],
                 fields=["price:max"],
@@ -43,11 +41,14 @@ class EstatePropertyOffer(models.Model):
 
             max_price = result[0]["price"] if result else 0
 
+            if property.state == 'sold':
+                raise ValidationError(_("Cannot create an offer on a sold property."))
+
             if max_price >= offer_price:
                 raise UserError(_("You cannot create an offer with a lower or equal amount than an existing offer for this property."))
 
             if is_state_new:
-                self.env["estate.property"].browse(property_id).state = "offer_received"
+                property.state = "offer_received"
 
         return super().create(vals)
 
