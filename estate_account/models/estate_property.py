@@ -26,6 +26,7 @@ class EstateProperty(models.Model):
                         "partner_id": partner_id.id,
                         "move_type": "out_invoice",
                         "journal_id": journal.id,
+                        "company_id": record.company_id.id,
                         "line_ids": [
                             Command.create(
                                 {
@@ -51,5 +52,4 @@ class EstateProperty(models.Model):
                         ],
                     }
                 )
-
         return super().action_sell_property()

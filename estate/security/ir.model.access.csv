@@ -15,5 +15,3 @@ estate.access_estate_property_tag_to_agent,Estate Agent,model_estate_property_ta
 estate.access_estate_property_to_agent,Estate Agent,model_estate_property,estate.estate_group_user,1,1,1,0
 
 access_estate_model_offer,estate.property.offer,model_estate_property_offer,base.group_user,1,1,1,1
-
-

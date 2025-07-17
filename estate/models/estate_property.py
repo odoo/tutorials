@@ -135,6 +135,7 @@ class EstateProperty(models.Model):
         for record in self:
             if property_sell_status_dict[record.status]:
                 record.status = "sold"
+                record.state = "sold"
             else:
                 raise UserError("Cancelled property cannot be sold.")
 
