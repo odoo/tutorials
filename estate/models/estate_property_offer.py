@@ -97,6 +97,8 @@ class EstatePropertyOffer(models.Model):
                 value.get("property_id")
             )
             for property_data in property_details:
+                if property_data.state == "sold":
+                    raise UserError("Cannot create offer for sold property!!!")
                 offers_list = property_data.mapped("offer_ids.price")
                 max_offer = max(offers_list, default=0)
                 comparison_result = float_compare(

@@ -131,8 +131,9 @@ class EstateProperty(models.Model):
     def action_sell_property(self):
         # dictionary for the property status
         property_sell_status_dict = {"new": True, "sold": True, "cancelled": False}
-
         for record in self:
+            if self.state != "offer_accepted":
+                raise UserError("Property has no offer yet!!!")
             if property_sell_status_dict[record.status]:
                 record.status = "sold"
                 record.state = "sold"
