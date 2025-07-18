@@ -1,6 +1,5 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
-from odoo.tests import Form
 
 
 class EstatePropertyTestCase(TransactionCase):
@@ -58,28 +57,3 @@ class EstatePropertyTestCase(TransactionCase):
         )
         with self.assertRaises(UserError):
             property.sold_button_action()
-
-    # def test_reset_garden_area_and_orientation(self):
-    #     property = self.env["estate.property"].create(
-    #         {
-    #             "name": "Garden Test Property",
-    #             "expected_price": "789",
-    #             "garden": True,
-    #             "garden_area": 50,
-    #             "garden_orientation": "north",
-    #         }
-    #     )
-
-    #     with Form(property) as form:
-    #         form.garden = False
-    #         form.save()
-
-    #     self.assertFalse(property.garden, "Garden checkbox should be unchecked.")
-    #     self.assertFalse(
-    #         property.garden_area,
-    #         "Garden area should be reset when the garden checkbox is unchecked.",
-    #     )
-    #     self.assertFalse(
-    #         property.garden_orientation,
-    #         "Orientation should be reset when the garden checkbox is unchecked.",
-    #     )
