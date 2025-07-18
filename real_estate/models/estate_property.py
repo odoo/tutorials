@@ -5,12 +5,17 @@ from odoo.exceptions import ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
-class Estate(models.Model):
+class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
     _order = "id desc"
 
-    name = fields.Char(required=True, default="Unknown")
+    _sql_constraints = [
+        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
+        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
+    ]
+
+    name = fields.Char(required=True, string="Property name")
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
     expected_price = fields.Float()
@@ -89,15 +94,6 @@ class Estate(models.Model):
             prices = record.offer_ids.mapped("price")
             record.best_price = max(prices) if prices else 0.0
 
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
-
     def action_mark_sold(self):
         for record in self:
             if not any(offer.status == 'accepted' for offer in record.offer_ids):
@@ -111,6 +107,15 @@ class Estate(models.Model):
             if record.state == 'sold':
                 raise UserError("Sold properties cannot be canceled.")
             record.state = 'cancelled'
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price_threshold(self):
@@ -132,8 +137,3 @@ class Estate(models.Model):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError("You can only delete properties that are in 'New' or 'Cancelled' state.")
-
-    _sql_constraints = [
-        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'),
-        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'The selling price must be positive.'),
-    ]

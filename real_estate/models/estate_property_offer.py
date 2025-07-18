@@ -8,6 +8,11 @@ class EstatePropertyOffer(models.Model):
     _description = "Property Offer"
     _order = "price desc"
 
+    _sql_constraints = [
+        ('check_offer_price_positive', 'CHECK(price > 0)',
+         'The offer price must be strictly positive.'),
+    ]
+
     price = fields.Float()
     status = fields.Selection([
         ('accepted', 'Accepted'),
@@ -58,11 +63,6 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for offer in self:
             offer.status = 'refused'
-
-    _sql_constraints = [
-        ('check_offer_price_positive', 'CHECK(price > 0)',
-         'The offer price must be strictly positive.'),
-    ]
 
     @api.model_create_multi
     def create(self, vals_list):
