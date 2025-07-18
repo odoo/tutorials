@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_property_offers_document">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <t t-call="web.external_layout">
+                        <t t-set="current_company" t-value="env.company"/>
+
+                        <div class="header">
+                            <div class="row">
+                                <div class="col-6">
+                                    <img t-if="current_company.logo" t-att-src="image_data_uri(current_company.logo)" style="max-height: 80px; max-width: 150px;" alt="Company Logo"/>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <h3 class="mt-0" t-field="current_company.name"/>
+                                    <div t-field="current_company.partner_id" t-options='{"widget": "contact", "fields": ["address", "phone", "website"], "no_marker": true}'/>
+                                    <div t-if="current_company.vat">GSTIN: <span t-field="current_company.vat"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr style="border-top: 1px solid #ccc; margin-top: 15px; margin-bottom: 25px;"/>
+                        </div>
+                        <div class="page">
+                            <h2 class="text-center mb-4">Property Offers Report: <span t-field="doc.name"/>
+                            </h2>
+
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>Property Type:</strong>
+                                    <span t-field="doc.property_type_id.name"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Postcode:</strong>
+                                    <span t-field="doc.postcode"/>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-6">
+                                    <strong>Bedrooms:</strong>
+                                    <span t-field="doc.bedrooms"/>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Living Area:</strong>
+                                    <span t-field="doc.living_area"/>
+ sq.m
+                                </div>
+                            </div>
+
+                            <div class="row align-items-center mb-3">
+                                <div class="col-6">
+                                    <strong>Garden:</strong>
+                                    <t t-if="doc.garden">Yes</t>
+                                    <t t-else="">No</t>
+                                </div>
+                                <t t-if="doc.garden">
+                                    <div class="col-6">
+                                        <strong>Garden Area:</strong>
+                                        <span t-field="doc.garden_area"/>
+ sq.m
+                                    </div>
+                                    <div class="col-6 offset-6">
+                                        <strong>Garden Orientation:</strong>
+                                        <span t-field="doc.garden_orientation"/>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-4">
+                                    <strong>Expected Price:</strong>
+                                    <span t-field="doc.expected_price" widget="monetary"/>
+                                </div>
+                                <div class="col-4">
+                                    <strong>Selling Price:</strong>
+                                    <t t-if="doc.state == 'sold'">
+                                        <span t-field="doc.selling_price" widget="monetary"/>
+                                    </t>
+                                    <t t-else="">Not Sold Yet</t>
+                                </div>
+                                <div class="col-4">
+                                    <strong>Status:</strong>
+                                    <span t-field="doc.state"/>
+                                </div>
+                            </div>
+
+                            <p class="mb-4">
+                                <strong>Description:</strong>
+                                <span t-field="doc.description"/>
+                            </p>
+
+                            <h3 class="mb-3">Offers:</h3>
+                            <t t-if="doc.offer_ids">
+                                <table class="table table-sm table-bordered" style="width:100%;">
+                                    <thead>
+                                        <tr style="background-color: #f0f0f0;">
+                                            <th style="padding: 8px; text-align: left; border: 1px solid #dee2e6;">Partner Name</th>
+                                            <th style="padding: 8px; text-align: left; border: 1px solid #dee2e6;">Price</th>
+                                            <th style="padding: 8px; text-align: left; border: 1px solid #dee2e6;">Status</th>
+                                            <th style="padding: 8px; text-align: left; border: 1px solid #dee2e6;">Validity</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="doc.offer_ids" t-as="offer">
+                                            <tr>
+                                                <td style="padding: 8px; border: 1px solid #dee2e6;">
+                                                    <span t-field="offer.partner_id.name"/>
+                                                </td>
+                                                <td style="padding: 8px; border: 1px solid #dee2e6;">
+                                                    <span t-field="offer.price" widget="monetary"/>
+                                                </td>
+                                                <td style="padding: 8px; border: 1px solid #dee2e6;">
+                                                    <span t-field="offer.status"/>
+                                                </td>
+                                                <td style="padding: 8px; border: 1px solid #dee2e6;">
+                                                    <span t-field="offer.validity"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </t>
+                            <t t-else="">
+                                <p class="text-muted">
+                                    <strong>No offers received for this property yet.</strong>
+                                </p>
+                            </t>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <template id="report_salesman_properties">
+            <t t-foreach="docs" t-as="salesman">
+                <t t-call="web.html_container">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2>
+                                <strong>Salesman: </strong>
+                                <span t-field="salesman.name"/>
+                            </h2>
+                            <t t-if="salesman.property_ids">
+                                <t t-set="properties" t-value="salesman.property_ids" />
+                                <t t-foreach="properties" t-as="property">
+                                    <h3>
+                                        <span t-field="property.name"/>
+                                    </h3>
+                                    <!-- <t t-call="estate.property_offer_table_sub">
+                                        <t t-set="property" t-value="property"/>
+                                    </t> -->
+                                </t>
+                            </t>
+                            <strong t-else="">No properties found :</strong>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
