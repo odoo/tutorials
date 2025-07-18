@@ -12,9 +12,5 @@ class EstatePropertyTags(models.Model):
     color = fields.Integer()
 
     _sql_constraints = [
-        (
-            "unique_tag_name",
-            "UNIQUE(name)",
-            "This property tag already exits, create a unique one.",
-        )
-    ]
+        ("unique_tag_name","UNIQUE(name)","This property tag already exits, create a unique one.")
+        ]

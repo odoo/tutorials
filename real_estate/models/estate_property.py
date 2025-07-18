@@ -9,8 +9,8 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is a real estate module"
-    _inherit = "mail.thread"
     _order = "id desc"
+    _inherit = "mail.thread"
 
     name = fields.Char(string="Property Name", required=True, tracking=True)
     description = fields.Text(string="Description")
