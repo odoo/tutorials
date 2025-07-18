@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
-
+    
+    <!-- Estate property form -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
@@ -14,36 +15,69 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="description" />
-                        <field name="active" />
-                        <field name="state" />
+                        <group>
+                            <field name="tag_ids" widget="many2many_tags" />
+                            <field name="property_type_id"></field>
+                            <field name="postcode" />
+                            <field name="date_availability" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </group>
                     </group>
-                    <group>
-                        <field name="postcode" />
-                        <field name="date_availability" />
-                        <field name="expected_price" />
-                        <field name="selling_price" />
-                        <field name="bedrooms" />
-                        <field name="living_area" />
-                    </group>
-                    <group>
-                        <field name="facades" />
-                        <field name="garage" />
-                        <field name="garden" />
-                        <field name="garden_area" />
-                        <field name="garden_orientation" />
-                    </group>
+                    <notebook>
+
+                        <!-- Description section -->
+                        <page string="Description">
+                            <group>
+                                <field name="description" />
+                                <field name="active" />
+                                <field name="state" />
+                                <field name="bedrooms" />
+                                <field name="living_area" />
+                                <field name="facades" />
+                                <field name="garage" />
+                                <field name="garden" />
+                                <field name="garden_area" />
+                                <field name="garden_orientation" />
+                            </group>
+                        </page>
+
+                        <!-- Other info section -->
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" />
+                                <field name="buyer_id" />
+                            </group>
+                        </page>
+
+                        <!-- Offers section -->
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-
+    
+    <!-- Estate property list -->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" />
                 <field name="state" />
                 <field name="expected_price" />
                 <field name="selling_price" />
@@ -51,6 +85,39 @@
         </field>
     </record>
 
+    <!-- Estate property search-->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="living_area" />
+                <field name="bedrooms" />
+
+
+                <filter string="Available" name="filter_available"
+                    domain="[('state', '!=', 'sold')]" />
+                <filter string="New" name="filter_new" domain="[('state', '=', 'new')]" />
+                <filter string="Sold" name="filter_sold" domain="[('state', '=', 'sold')]" />
+                <separator />
+
+                <filter string="With Garden" name="filter_garden" domain="[('garden', '=', True)]" />
+                <filter string="With Garage" name="filter_garage" domain="[('garage', '=', True)]" />
+
+                <filter string="Archived" name="filter_inactive" domain="[('active', '=', False)]" />
+
+                <group expand="1" string="Group By">
+                    <filter string="Postcode" name="groupby_postcode"
+                        context="{'group_by':'postcode'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Estate property action -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Property</field>
         <field name="res_model">estate.property</field>
@@ -58,6 +125,30 @@
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new property
+            </p>
+        </field>
+    </record>
+    
+    <!-- Estate property type action -->
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new property type
+            </p>
+        </field>
+    </record>
+    
+    <!-- Estate property tag action -->
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tag</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new property tag
             </p>
         </field>
     </record>

@@ -1,22 +1,35 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <!-- Level 1 Root Men -->
-    <menuitem id="estate_property_menu_root" name="Real Estate"/>
-    
-    <!-- Level 2 Section Menu -->
-    <menuitem id="estate_property_menu_properties" 
-              name="Properties" 
-              parent="estate_property_menu_root"/>
-    
-    <menuitem id="estate_property_menu_settings" 
-              name="Settings" 
-              parent="estate_property_menu_root"/>
-    
-    <!-- Level 3 Action Menu -->
-    <menuitem id="estate_property_menu_properties_all" 
-              name="All Properties" 
-              parent="estate_property_menu_properties"
-              action="estate_property_action"/>
-       
+    <menuitem id="estate_property_menu_root" name="Estate" sequence="25" />
+
+    <menuitem id="estate_property_menu_properties"
+        name="Properties"
+        parent="estate_property_menu_root"
+        sequence="1" />
+
+    <menuitem id="estate_property_menu_properties_all"
+        name="All Properties"
+        parent="estate_property_menu_properties"
+        action="estate_property_action"
+        sequence="1" />
+
+    <menuitem id="estate_property_menu_settings"
+        name="Settings"
+        parent="estate_property_menu_root"
+        sequence="20" />
+
+    <menuitem id="estate_property_type_menu"
+        name="Property Types"
+        parent="estate_property_menu_settings"
+        sequence="1" 
+        action="estate_property_type_action"/>
+        
+    <menuitem id="estate_property_tag_menu"
+        name="Property Tags"
+        parent="estate_property_menu_settings"
+        sequence="1" 
+        action="estate_property_tag_action"/>    
+
+
 </odoo>
