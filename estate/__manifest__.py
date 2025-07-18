@@ -6,7 +6,7 @@
     "installable": True,
     "depends": ["base"],
     "application": True,
-    "license": "AGPL-3",
+    "license": "LGPL-3",
     "data": [
         "security/estate_security.xml",
         "security/ir.model.access.csv",

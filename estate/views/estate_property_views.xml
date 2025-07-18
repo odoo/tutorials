@@ -27,7 +27,7 @@
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="Name">
+            <form string="Property">
                 <header>
                     <button name="action_property_sold" type="object" string="Mark as Sold" class="oe_highlight" invisible="state in ('sold','cancelled')"/>
                     <button name="action_property_cancel" type="object" string="Cancel" invisible="state in ('sold','cancelled')"/>
@@ -85,7 +85,7 @@
                         </page>
                         <page string="Offers">
                             <field name="offer_id" readonly="state in ('offer_accepted', 'sold', 'cancelled')">
-                                <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">                                    <!-- editable="bottom" for edit without opening form-->
+                                <list editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
                                     <field name = "partner_id"/>
                                     <field name = "price"/>
                                     <field name="validity"/>

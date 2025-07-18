@@ -1,0 +1,15 @@
+<t t-name="awesome_owl.todo_item" t-bind="props">
+    <p class="card-text d-flex justify-content-between align-items-center" 
+       t-att-class="props.todo.isCompleted ? 'text-decoration-line-through text-muted' : ''">
+        <span>
+            <input type="checkbox" 
+                   t-att-checked="props.todo.isCompleted" 
+                   t-on-change="() => props.toggleState(props.todo.id)"/>
+            <strong class="ms-2"><t t-esc="props.todo.id"/></strong>: 
+            <t t-esc="props.todo.description"/>
+        </span>
+        <span class="fa fa-remove text-danger ms-3" 
+              role="button" 
+              t-on-click="() => props.removeTodo(props.todo.id)"></span>
+    </p>
+</t>

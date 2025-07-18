@@ -57,17 +57,15 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for offer in self:
-            # Allow only if property has no accepted offer
             if offer.property_id.buyer_id:
                 raise UserError(
                     _("An offer has already been accepted for this property.")
                 )
-            # Set buyer and selling price
+
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
             offer.status = "accepted"
             offer.property_id.state = "offer_accepted"
-            # Setting remaining Offer as refused
             other_offers = offer.property_id.offer_id - offer
             other_offers.write({"status": "refused"})
 
