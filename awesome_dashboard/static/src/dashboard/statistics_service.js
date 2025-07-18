@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { memoize } from "@web/core/utils/functions";
 import { rpc } from "@web/core/network/rpc";
 import { reactive } from "@odoo/owl";
 
