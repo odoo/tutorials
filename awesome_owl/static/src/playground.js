@@ -12,9 +12,7 @@ export class Playground extends Component {
         this.state = useState({ sum: 2 });
     }
 
-    incrementSum(value) {
+    incrementSum() {
         this.state.sum += 1;
     }
-    content1 = "<div class='text-primary'>some content</div>"
-    content2 = markup("<div class='text-primary'>some content</div>")
 }
