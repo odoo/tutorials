@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    
+
     <!-- Estate property form -->
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
@@ -24,6 +24,7 @@
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
+                            <field name="best_price" readonly="True" />
                         </group>
                     </group>
                     <notebook>
@@ -41,6 +42,7 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
+                                <field name="total_area" />
                             </group>
                         </page>
 
@@ -59,6 +61,8 @@
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="status" />
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
                                 </list>
                             </field>
                         </page>
@@ -67,7 +71,7 @@
             </form>
         </field>
     </record>
-    
+
     <!-- Estate property list -->
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
@@ -128,7 +132,7 @@
             </p>
         </field>
     </record>
-    
+
     <!-- Estate property type action -->
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Type</field>
@@ -140,7 +144,7 @@
             </p>
         </field>
     </record>
-    
+
     <!-- Estate property tag action -->
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Property Tag</field>
