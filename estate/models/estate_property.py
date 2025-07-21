@@ -1,12 +1,18 @@
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError 
+from odoo.exceptions import UserError, ValidationError 
 from datetime import timedelta
+from odoo.tools import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property Model"
-
+    _sql_constraints = [
+        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive"),
+        ("check_selling_price", "CHECK(selling_price >= 0)", "The selling price must be positive")
+    ]
+    
+    
     name = fields.Char(required=True)
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", string="Buyer")
@@ -17,7 +23,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(string="Available From", copy=False , default= lambda self: fields.Date.today() + timedelta(90))
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(string="Selling Price", readonly=True) 
+    selling_price = fields.Float(string="Selling Price", readonly=True, copy=False) 
     bedrooms = fields.Integer(string="Bedrooms", default=2)
     living_area = fields.Integer(string="Living Area(sqm)")
     facades = fields.Integer()
@@ -29,6 +35,7 @@ class EstateProperty(models.Model):
     state = fields.Selection(selection=[("new", "New"), ("offer received", "Offer Received"), ("offer accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], required=True, default="new", copy=False, string="Status" )
     total_area = fields.Integer(string="Total Area(sqm)", compute="_compute_total")
     best_price = fields.Float(string="Best Price", compute="_compute_best_price")
+         
     
     @api.depends("living_area", "garden_area")
     def _compute_total(self):
@@ -52,6 +59,18 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+            
+    @api.constrains("expected_price", "selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            # skipping all the records with selling price = 0, check only when an offer is accepted, so when selling price is updated
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            
+            min_selling_price = record.expected_price * 0.9
+            # float compare returns -1 if float 1 is less than float 2
+            if float_compare(record.selling_price, min_selling_price, precision_digits=2) == -1:
+                raise ValidationError("Selling price cannot be lower than 90% of the expected price")     
             
     def action_sold(self):
         if "canceled" in self.mapped("state"):
