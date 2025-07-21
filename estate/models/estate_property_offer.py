@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 class EstatePropertyOffer(models.Model): 
     _name = "estate.property.offer"
     _description = "Offer for a property"
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "The expected price must be strictly positive")
+    ]
     
     price = fields.Float(string="Price", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True, help="The property this offer is for")
