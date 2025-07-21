@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_move_form_inherit_book_price" model="ir.ui.view">
+        <field name="name">account.move.form.inherite.book.price</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook//page//field[@name='invoice_line_ids']//list//field[@name='quantity']" position="before">
+                <field name="book_price" readonly="True" column_invisible="context.get('default_move_type') != 'out_invoice'"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
