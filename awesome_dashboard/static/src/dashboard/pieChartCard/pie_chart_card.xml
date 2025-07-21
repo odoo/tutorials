@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChartCard">
+        <div class="card m-2 border-0 shadow-sm rounded">
+            <span class="mb-0 fw-bold text-primary">
+                <strong>
+                    <t t-esc="translatedTitle" />
+                </strong>
+            </span>
+            <span class="align-items-center">
+                <t t-if="this.props.value">
+                    <PieChart data="translatedValue" />
+                </t>
+                <t t-else="">
+                    <div>
+                        <t t-out="_t('Loading Chart...')" />
+                    </div>
+                </t>
+            </span>
+        </div>
+    </t>
+</templates>
