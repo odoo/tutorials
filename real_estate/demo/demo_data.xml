@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="property_demo_big_villa" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">a</field>
+        <field name="availability_date">2020-02-02</field>
+        <field name="expected_price">16000.0</field>
+        <field name="selling_price">15900.0</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100.0</field>
+        <field name="facades">4</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">100000.0</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="real_estate.estate_property_type_residential"/>
+    </record>
+    <record id="property_demo_trailer_home" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">new</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">a</field>
+        <field name="availability_date">1970-01-01</field>
+        <field name="expected_price">10000.0</field>
+        <field name="selling_price">15000.0</field>
+        <field name="bedrooms">2</field>
+        <field name="living_area">10.0</field>
+        <field name="facades">4</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
+        <field name="property_type_id" ref="real_estate.estate_property_type_residential"/>
+    </record>
+    <record id="offer_demo_1" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="price">15800.00</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="property_demo_big_villa"/>
+        <field name="date_deadline" eval="(datetime.today() + timedelta(days=14)).strftime('%Y-%m-%d')"/>
+    </record>
+    <record id="offer_demo_2" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="price">16800.00</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="property_demo_big_villa"/>
+        <field name="date_deadline" eval="(datetime.today() + timedelta(days=14)).strftime('%Y-%m-%d')"/>
+    </record>
+    <record id="offer_demo_3" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_3"/>
+        <field name="price">17800.00</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="property_demo_big_villa"/>
+        <field name="date_deadline" eval="(datetime.today() + timedelta(days=14)).strftime('%Y-%m-%d')"/>
+    </record>
+    <function model="estate.property.offer" name="action_accept">
+        <value eval="[ref('offer_demo_2')]"/>
+    </function>
+    <function model="estate.property.offer" name="action_refuse">
+        <value eval="[ref('offer_demo_1'), ref('offer_demo_3')]"/>
+    </function>
+    <record id="property_demo_modern_apartment" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="postcode">a</field>
+        <field name="state">new</field>
+        <field name="expected_price">900000.0</field>
+        <field name="selling_price">920000.0</field>
+        <field name="living_area">85.0</field>
+        <field name="bedrooms">3</field>
+        <field name="offer_ids" eval="[
+        Command.create({
+            'price': 1000000.0,
+            'validity': 14,
+            'partner_id': ref('base.res_partner_12'),
+            'date_deadline': (datetime.today() + timedelta(days=14)).strftime('%Y-%m-%d')
+        }),
+        Command.create({
+            'price': 1000000.0,
+            'validity': 14,
+            'partner_id': ref('base.res_partner_3'),
+            'date_deadline': (datetime.today() + timedelta(days=14)).strftime('%Y-%m-%d')
+        })
+    ]"/>
+    </record>
+</odoo>
