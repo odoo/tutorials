@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<templates xml:space="preserve">
-    <t t-name="awesome_dashboard.DashboardItem">
-        <t t-set="itemSize" t-value="props.size or 1"/>
-        <div t-attf-class="o_dashboard_item"
-            t-attf-style="width: #{18 * itemSize}rem;">
+<t t-name="awesome_dashboard.DashboardItem">
+    <t t-set="itemSize" t-value="props.size or 1"/>
+    <div class="card shadow-sm rounded border-secondary m-2"
+        t-attf-style="width: #{18 * itemSize}rem;">
+        <div class="card-body">
             <t t-slot="default"/>
         </div>
-    </t>
-</templates>
+    </div>
+</t>

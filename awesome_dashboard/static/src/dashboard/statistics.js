@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { rpc } from "@web/core/network/rpc";
 import { registry } from "@web/core/registry";
 import { reactive } from "@odoo/owl";
@@ -21,13 +19,16 @@ const statisticsService = {
             }
         }
 
-        fetchStatistics();
+        async function fetchStatisticsRecursively() {
+            await fetchStatistics();
+            setTimeout(fetchStatisticsRecursively, 600000);
+        }
 
-        setInterval(fetchStatistics, 600000);
+        fetchStatisticsRecursively();
 
         return {
             statistics,
-            reload: fetchStatistics,
+            reload: fetchStatistics
         };
     },
 };

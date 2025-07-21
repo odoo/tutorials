@@ -5,7 +5,6 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-out="props.title" />
-                    <!-- <t t-out="props.content" /> -->
                     <button class="btn" t-on-click="toggle">Toggle Button</button>
                 </h5>
                 <p class="card-text" t-if="state.isToggled">

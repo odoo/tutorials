@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
-import { NumberCard } from "./numbercard/numbercard";
-import { PieChartCard } from "./pieChartCard/pie_chart_card";
+import { NumberCard } from "@awesome_dashboard/dashboard/numbercard/numbercard";
+import { PieChartCard } from "@awesome_dashboard/dashboard/pieChartCard/pie_chart_card";
 import { registry } from "@web/core/registry";
 import { _t } from "@web/core/l10n/translation";
 

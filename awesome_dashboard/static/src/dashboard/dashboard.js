@@ -1,16 +1,14 @@
-/** @odoo-module **/
-
 import { Component, onWillStart, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
-import { DashboardItem } from "./dashboardItem/dashboarditem";
+import { DashboardItem } from "@awesome_dashboard/dashboard/dashboardItem/dashboarditem";
 import { rpc } from "@web/core/network/rpc";
-import { PieChart } from "./pieChart/piechart";
+import { PieChart } from "@awesome_dashboard/dashboard/pieChart/piechart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart};
+    static components = { Layout, DashboardItem, PieChart };
 
     setup(){
         const dashboardItemsRegistry = registry.category("awesome_dashboard");
@@ -49,7 +47,7 @@ class AwesomeDashboard extends Component {
             type: 'ir.actions.act_window',
             target: 'current',
             res_model: 'crm.lead',
-            views: [[false, 'list'], [false, 'form']],
+            views: [[false, 'list'], [false, 'form']]
         })
     }
 }

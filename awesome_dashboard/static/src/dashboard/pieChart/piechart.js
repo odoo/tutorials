@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { Component, onWillStart, useRef, onMounted, useEffect, onWillUnmount } from "@odoo/owl";
 import { loadJS } from "@web/core/assets"
 
@@ -54,10 +52,8 @@ export class PieChart extends Component {
                 maintainAspectRatio: false,
                 onClick: (event, elements) => {
                     if (elements.length > 0) {
-                        const clickedElementIndex = elements[0].index;
-                        const label = this.chartData.labels[clickedElementIndex];
                         if (this.props.onSliceClick) {
-                            this.props.onSliceClick(label);
+                            this.props.onSliceClick(this.chartData.labels[elements[0].index]);
                         }
                     }
                 }

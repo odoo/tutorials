@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { Component, xml } from "@odoo/owl"
 import { LazyComponent } from "@web/core/assets";
 import { registry } from "@web/core/registry";

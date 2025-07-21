@@ -1,5 +1,3 @@
-/** @odoo-module **/
-
 import { Component } from "@odoo/owl";
 import { _t } from "@web/core/l10n/translation";
 
@@ -11,7 +9,7 @@ export class NumberCard extends Component {
         value: { type: [String, Number] }
     }
 
-    _t(...args) {
-        return _t(...args);
+    get translatedTitle() {
+        return _t(this.props.title);
     }
 }

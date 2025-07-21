@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.PieChartCard">
-        <div class="o_dashboard_stat_block">
-            <span class="o_dashboard_stat_label">
+        <div class="card m-2 border-0 shadow-sm rounded">
+            <span class="mb-0 fw-bold text-primary">
                 <strong>
-                    <t t-esc="_t(this.props.title)" />
+                    <t t-esc="translatedTitle" />
                 </strong>
             </span>
-            <span class="o_dashboard_stat_value">
+            <span class="align-items-center">
                 <t t-if="this.props.value">
-                    <PieChart data="_t(this.props.value)" onSliceClick.bind="onPieSliceClick" />
+                    <PieChart data="translatedValue" />
                 </t>
                 <t t-else="">
                     <div>

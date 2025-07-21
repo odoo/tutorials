@@ -1,7 +1,5 @@
-/** @odoo-module **/
-
 import { Component } from "@odoo/owl";
-import { PieChart } from "../pieChart/piechart";
+import { PieChart } from "@awesome_dashboard/dashboard/pieChart/piechart";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 
@@ -18,19 +16,11 @@ export class PieChartCard extends Component {
         this.action = useService("action");
     }
 
-    _t(...args) {
-        return _t(...args);
+    get translatedTitle() {
+        return _t(this.props.title);
     }
 
-    onPieSliceClick(size) {
-        console.log("Clicked on slice for size:", size);
-        this.action.doAction({
-            type: 'ir.actions.act_window',
-            name: `Orders (Size: ${size.toUpperCase()})`,
-            res_model: 'sale.order',
-            views: [[false, 'list'], [false, 'form']],
-            domain: [["order_line.product_template_attribute_value_ids.display_name", "ilike", size]],
-            target: 'current',
-        });
+    get translatedValue() {
+        return _t(this.props.value);
     }
 }

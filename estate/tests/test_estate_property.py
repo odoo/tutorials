@@ -28,7 +28,7 @@ class EstatePropertyTestCase(TransactionCase):
         property.sold_button_action()
 
         with self.assertRaises(
-            UserError, msg="Cannot create an offer for a sold property"
+            UserError
         ):
             self.env["estate.property.offer"].create(
                 {
