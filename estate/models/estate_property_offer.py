@@ -45,9 +45,9 @@ class EstatePropertyOffer(models.Model):
         self.write(({"status":"accepted"}))
         return self.mapped("property_id").write(
             {
-                "state": "offer_accepted",
-                "selling_price": self.price,
-                "buyer_id": self.partner_id
+                "state":"offer accepted",
+                "selling_price":self.price,
+                "buyer_id":self.partner_id
             }
         )
         
