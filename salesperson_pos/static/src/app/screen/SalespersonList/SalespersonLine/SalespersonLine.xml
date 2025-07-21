@@ -1,0 +1,63 @@
+<templates id="template" xml:space="preserve">
+
+    <t t-name="salesperson_pos.SalespersonLine">
+        <t t-if="ui.isSmall">
+            <div class="salesperson-info d-flex flex-column p-1 border-bottom"
+                 t-att-class="{'bg-primary-subtle': props.isSelected}"
+                 t-att-data-id="props.salesperson.id"
+                 t-on-click="() => this.props.onClickSalesperson(props.salesperson)">
+                <div class="d-flex justify-content-between align-items-center p-1">
+                    <div>
+                        <b t-esc="props.salesperson.name or ''" />
+                        <div class="job-title text-muted" t-esc="props.salesperson._role or '-'" />
+                    </div>
+                    <Dropdown>
+                        <button class="btn btn-light fa fa-bars" />
+                        <t t-set-slot="content">
+                            <DropdownItem onSelected="() => props.onClickEdit(props.salesperson)">
+                                Edit Details
+                            </DropdownItem>
+                        </t>
+                    </Dropdown>
+                </div>
+                <div class="salesperson-contact p-1">
+                    <div t-if="props.salesperson.work_contact_id.email">
+                        <i class="fa fa-fw fa-envelope me-2" />
+                        <t t-esc="props.salesperson.work_contact_id.email" />
+                    </div>
+                </div>
+            </div>
+        </t>
+        <t t-else="">
+            <tr class="salesperson-line salesperson-info"
+                t-att-class="{'selected': props.isSelected}"
+                t-att-data-id="props.salesperson.id"
+                t-on-click="() => props.onClickSalesperson(props.salesperson)">
+                <td>
+                    <b t-esc="props.salesperson.name or ''" />
+                </td>
+                <td>
+                    <div class="job-title text-muted" t-esc="props.salesperson._role or '-'" />
+                </td>
+                <td class="salesperson-email">
+                    <div t-if="props.salesperson.work_contact_id.email">
+                        <i class="fa fa-fw fa-envelope me-2" />
+                        <t t-esc="props.salesperson.work_contact_id.email" />
+                    </div>
+                </td>
+                <td class="edit-salesperson-button-cell align-middle">
+                    <Dropdown>
+                        <button class="btn btn-light btn-lg lh-lg border float-end">
+                            <i class="fa fa-fw fa-bars"/>
+                        </button>
+                        <t t-set-slot="content">
+                            <DropdownItem onSelected="() => props.onClickEdit(props.salesperson)">
+                                Edit Details
+                            </DropdownItem>
+                        </t>
+                    </Dropdown>
+                </td>
+            </tr>
+        </t>
+    </t>
+</templates>

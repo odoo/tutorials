@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_employee_form_simplified" model="ir.ui.view">
+        <field name="name">hr.employee.simplified.form</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <form string="Employee Details">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Employee's Name" required="True"/>
+                        </h1>
+                        <h2 class="text-muted">
+                            <field name="job_title" placeholder="Job Title"/>
+                        </h2>
+                    </div>
+
+                    <group>
+                        <group string="Work Information">
+                            <field name="department_id"/>
+                            <field name="work_email" placeholder="Work Email"/>
+                        </group>
+                        <group string="Contact Details">
+                            <field name="work_phone" placeholder="Work Phone"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_simplified_employee_form" model="ir.actions.act_window">
+        <field name="name">Edit Employee</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_employee_form_simplified"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

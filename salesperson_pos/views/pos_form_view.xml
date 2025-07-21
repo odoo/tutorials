@@ -1,0 +1,23 @@
+<odoo>
+  <record id="view_pos_pos_form_inherit" model="ir.ui.view">
+    <field name="name">pos.order.form.inherit</field>
+    <field name="model">pos.order</field>
+    <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+    <field name="arch" type="xml">
+      <xpath expr="//group[@name='order_fields']/field[@name='fiscal_position_id']" position="after">
+        <field name="salesperson_id" string="Salesperson"/>
+      </xpath>
+    </field>
+  </record>
+
+  <record id="view_pos_order_tree_inherit" model="ir.ui.view">
+    <field name="name">pos.order.tree.inherit</field>
+    <field name="model">pos.order</field>
+    <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+    <field name="arch" type="xml">
+      <field name="partner_id" position="after">
+        <field name="salesperson_id"/>
+      </field>
+    </field>
+  </record>
+</odoo>
