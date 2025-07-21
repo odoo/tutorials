@@ -1,4 +1,5 @@
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 from datetime import datetime, timedelta
 
 class EstatePropertyOffer(models.Model): 
@@ -33,5 +34,25 @@ class EstatePropertyOffer(models.Model):
                     #  using today's date again
                     difference = record.date_deadline - fields.Date.today()
                     record.validity = difference.days
+    
+    def action_accept(self):
+        # check if record with status accepted already exists
+        # if it exists raise error saying an offer was already accepted
+        # self.write status accepted
+        # self.write property with status, selling price and buyer id
+        if "accepted" in self.mapped("property_id.offer_ids.status"):
+            raise UserError("An offer was already accepted")
+        self.write(({"status":"accepted"}))
+        return self.mapped("property_id").write(
+            {
+                "state": "offer_accepted",
+                "selling_price": self.price,
+                "buyer_id": self.partner_id
+            }
+        )
+        
+    def action_refuse(self):
+        return self.write({"status":"refused"})    
+                        
                        
     
