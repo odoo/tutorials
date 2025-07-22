@@ -8,8 +8,12 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_sold" type="object" string="Sold" />
-                    <button name="action_cancel" type="object" string="Cancel" />
+                    <button name="action_sold" type="object" string="Sold"
+                        invisible="state == 'sold'" />
+                    <button name="action_cancel" type="object" string="Cancel"
+                        invisible="state == 'sold'" />
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer received,offer accepted,sold" />
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -20,8 +24,9 @@
                     </div>
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" />
-                            <field name="property_type_id"></field>
+                            <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
+                            <field name="property_type_id" options="{'no_create': true}"></field>
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -38,14 +43,13 @@
                             <group>
                                 <field name="description" />
                                 <field name="active" />
-                                <field name="state" />
                                 <field name="bedrooms" />
                                 <field name="living_area" />
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" invisible="garden == False" />
+                                <field name="garden_orientation" invisible="garden == False" />
                                 <field name="total_area" />
                             </group>
                         </page>
@@ -60,18 +64,8 @@
 
                         <!-- Offers section -->
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list>
-                                    <field name="price" />
-                                    <field name="partner_id" />
-                                    <field name="status" />
-                                    <field name="validity" />
-                                    <field name="date_deadline" />
-                                    <button name="action_accept" type="object" title="Accept"
-                                        icon="fa-check"/>
-                                    <button name="action_refuse" type="object" title="Refuse"
-                                        icon="fa-times" />
-                                </list>
+                            <field name="offer_ids"
+                                readonly="state in ['offer accepted','sold','cancelled']">
                             </field>
                         </page>
                     </notebook>
@@ -85,12 +79,14 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-success="state in ['offer received', 'offer accepted']"
+                decoration-muted="state == 'sold'" decoration-bf="state == 'offer accepted'">
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="state" />
+                <field name="date_availability" optional="hide" />
                 <field name="expected_price" />
                 <field name="selling_price" />
             </list>
@@ -106,21 +102,16 @@
                 <field name="name" />
                 <field name="postcode" />
                 <field name="expected_price" />
-                <field name="living_area" />
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]" />
                 <field name="bedrooms" />
-
-
                 <filter string="Available" name="filter_available"
                     domain="[('state', '!=', 'sold')]" />
                 <filter string="New" name="filter_new" domain="[('state', '=', 'new')]" />
                 <filter string="Sold" name="filter_sold" domain="[('state', '=', 'sold')]" />
                 <separator />
-
                 <filter string="With Garden" name="filter_garden" domain="[('garden', '=', True)]" />
                 <filter string="With Garage" name="filter_garage" domain="[('garage', '=', True)]" />
-
                 <filter string="Archived" name="filter_inactive" domain="[('active', '=', False)]" />
-
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="groupby_postcode"
                         context="{'group_by':'postcode'}" />
@@ -134,21 +125,10 @@
         <field name="name">Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_filter_available': True}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new property
-            </p>
-        </field>
-    </record>
-
-    <!-- Estate property type action -->
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Property Type</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create a new property type
             </p>
         </field>
     </record>
