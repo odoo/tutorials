@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="supplier_portal_login" name="Supplier Portal Login" inherit_id="portal.portal_my_home" customize_show="True">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_vendor_category_enable" t-value="True"/>   
+        </xpath>
+        <div id="portal_vendor_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'supplier_portal/static/src/img/bag.svg'"/>
+                <t t-set="title">Supplier Portal</t>
+                <t t-set="url" t-value="'/my/supplier_portal'"/>
+                <t t-set="text">Create new vendor invoice</t>
+                <t t-set="placeholder_count" t-value="'invoice_count'"/>
+            </t>
+        </div>
+    </template>
+
+    <template id="supplier_portal_login_success">
+        <t t-call="web.login_layout">
+            <div class="oe_login_form">
+                <p>Welcome, Supplier! Please upload your documents.</p>
+
+                <form action="/my/supplier_portal/upload_invoice" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <label for="organisation">Select Organisation</label>
+                        <select name="organisation_id" class="form-control" required="1">
+                            <t t-foreach="request.env.user.company_ids" t-as="company">
+                                <option t-att-value="company.id">
+                                    <t t-esc="company.name" />
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pdf_file">Upload PDF</label>
+                        <input type="file" name="pdf_file" accept="application/pdf" required="1" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="xml_file">Upload XML</label>
+                        <input type="file" name="xml_file" accept="text/xml,application/xml" required="1" class="form-control" />
+                    </div>
+
+                    <button type="submit" class="btn btn-success mt-3">Submit</button>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="supplier_portal_upload_success">
+        <t t-call="web.login_layout">
+            <div class="oe_login_form">
+                <p>Invoice uploaded successfully!</p>
+                <a href="/my">Go back to the portal</a>
+            </div>
+        </t>
+    </template>
+
+</odoo>

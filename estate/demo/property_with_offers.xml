@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="property_3" model="estate.property">
+        <field name="name">Luxury Apartment</field>
+        <field name="description">A high-end apartment in the city center</field>
+        <field name="postcode">98765</field>
+        <field name="date_availability">2025-06-01</field>
+        <field name="expected_price">500000</field>
+        <field name="selling_price">0.1</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">120</field>
+        <field name="facades">2</field>
+        <field name="garage">1</field>
+        <field name="garden">0</field>
+        <field name="state">new</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="salesperson_id" ref="base.user_admin"/>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="offer_ids" eval="[
+            Command.create({'partner_id': ref('base.res_partner_3'), 'price': 450000, 'validity': 14, 'date_deadline': (datetime.today() + timedelta(days=14)).strftime('%Y-%m-%d')}),
+            Command.create({'partner_id': ref('base.res_partner_2'), 'price': 480000, 'validity': 10, 'date_deadline': (datetime.today() + timedelta(days=10)).strftime('%Y-%m-%d')})
+        ]"/>
+    </record>
+</odoo>
