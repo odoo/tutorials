@@ -1,6 +1,7 @@
 from odoo import fields, models, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from datetime import datetime, timedelta
+from odoo.tools import float_compare
 
 class EstatePropertyOffer(models.Model): 
     _name = "estate.property.offer"
@@ -58,6 +59,44 @@ class EstatePropertyOffer(models.Model):
         
     def action_refuse(self):
         return self.write({"status":"refused"})    
+    
+    @api.model
+    def create(self, vals): 
+        property_id = vals.get("property_id")
+        if not property_id:
+            raise ValidationError("Property is required for offer creation")
+        
+        # Browsing in order to get the property record
+        property_record = self.env['estate.property'].browse(property_id)
+        
+        # checking if there are any existing offer for the record 
+        existing_offers = self.search([("property_id", "=", property_id)])
+        
+        # getting max offer and comparing with the current price 
+        if existing_offers: 
+            max_existing_offer = max(existing_offers.mapped("price"))
+            new_price = vals.get("price", 0)
+            
+            if float_compare(new_price, max_existing_offer, precision_digits=2) <= 0:
+                raise UserError(
+                    f"Offer amount ({new_price:,.2f}) must be higher than "
+                    f"existing offers (highest: {max_existing_offer:,.2f})"
+                )
+        
+        # creating the offer 
+        offer = super().create(vals)
+        
+        # updating the state when an offer is added 
+        
+        if property_record.state == "new":
+            property_record.write({"state": "offer received"})
+        
+        return offer    
+                
+            
+        
+        
+        
                         
                        
     

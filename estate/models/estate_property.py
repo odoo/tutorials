@@ -80,7 +80,16 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         if "sold" in self.mapped("state"):
             raise UserError("Sold properties can't be canceled")
-        return self.write({"state": "canceled"})      
+        return self.write({"state": "canceled"})  
+    
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion_if_not_new_or_cancelled(self):
+        # take all the records with state different than new or cancelled
+        # raise user error if these records are present
+        invalid_records = self.filtered(lambda r: r.state not in ["new", "cancelled"]) 
+        
+        if invalid_records:
+            raise UserError("Cannot delete properties that are not ''new' or 'cancelled'")  
             
                             
                 
