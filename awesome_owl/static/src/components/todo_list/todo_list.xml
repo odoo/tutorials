@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates>
     <t t-name="awsome_owl.todo_list">
         <div class="card border m-2 p-2 d-inline-block">
@@ -6,9 +6,9 @@
                 <input t-on-keyup="addTodo" placeholder="Add a todo" t-ref="add-input" />
             </div>
             <div>
-                <t t-if="todos.length > 0">
-                    <t t-foreach="todos" t-key="todo.id" t-as="todo">
-                        <TodoItem todo="todo" deleteTodo.bind="deleteTodo"  toggleState.bind="toggleTodoState"/>
+                <t t-if="state.todos.length > 0">
+                    <t t-foreach="state.todos" t-key="todo.id" t-as="todo">
+                        <TodoItem todo="todo" deleteTodo.bind="deleteTodo" toggleState.bind="toggleTodoState"/>
                     </t>
                 </t>
                 <t t-else="">

@@ -1,3 +1,5 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
 from datetime import timedelta, datetime
@@ -7,22 +9,14 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offers of Estate Property"
     _order = "price desc"
-    _sql_constraints = [
-        ("_check_offer_price", "CHECK(price > 0)", "The Offer price must be positive.")
-    ]
+    _sql_constraints = [("_check_offer_price", "CHECK(price > 0)", "The Offer price must be positive.")]
 
     price = fields.Float(string="Price")
-    status = fields.Selection(
-        [("accepted", "Accepted"), ("refused", "Refused")], copy=False, string="Status"
-    )
+    status = fields.Selection([("accepted", "Accepted"), ("refused", "Refused")], copy=False, string="Status")
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
-    property_type_id = fields.Many2one(
-        "estate.property.types",
-        related="property_id.property_type_id",
-        string="Property Type",
-        required=True,
-    )
+    property_type_id = fields.Many2one("estate.property.types", related="property_id.property_type_id",
+        string="Property Type", required=True)
     validity = fields.Integer(default=7, string="Validity")
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline", store=True, string="Deadline Date")
 
@@ -38,18 +32,13 @@ class EstatePropertyOffer(models.Model):
                 fields=["price:max"],
                 groupby=[],
             )
-
             max_price = result[0]["price"] if result else 0
-
             if property.state == 'sold':
                 raise ValidationError(_("Cannot create an offer on a sold property."))
-
             if max_price >= offer_price:
                 raise UserError(_("You cannot create an offer with a lower or equal amount than an existing offer for this property."))
-
             if is_state_new:
                 property.state = "offer_received"
-
         return super().create(vals)
 
     @api.depends("validity")
@@ -67,12 +56,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
-            existing = self.search(
-                [
-                    ("property_id", "=", record.property_id.id),
-                    ("status", "=", "accepted"),
-                ]
-            )
+            existing = self.search([("property_id", "=", record.property_id.id), ("status", "=", "accepted")])
             if existing:
                 raise UserError(_("Another offer has been already accepted."))
             record.status = "accepted"

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
@@ -10,11 +11,7 @@
         <field name="model">estate.property</field>
         <field name="type">list</field>
         <field name="arch" type="xml">
-            <list string="Property" 
-            decoration-success="state in ('offer_received','offer_accepted')"
-            decoration-bf="state == 'offer_accepted'"
-            decoration-muted="state == 'sold'"
-            >
+            <list string="Property" decoration-success="state in ('offer_received','offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="property_type_id"/>
                 <field name="postcode" />
@@ -44,7 +41,7 @@
                             <field name="name"/>
                         </h1>
                     </div>
-                    <div class='mb-3'> 
+                    <div class='mb-3'>
                         <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
                     </div>
                     <group>
@@ -74,11 +71,8 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')" >
-                                <list editable="bottom"
-                                decoration-success="status == 'accepted'"
-                                decoration-danger="status == 'refused'"
-                                >
+                            <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')">
+                                <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
@@ -92,8 +86,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                 <field name="buyer_id"/>
-                                 <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -115,7 +109,7 @@
                 <field name="facades"/>
                 <filter name="available" string="Available" domain="[('state','in',['new','offer_received'])]"/>
                 <filter name="postcode" context="{'group_by': 'postcode'}"/>
-                <filter  name="name" context="{'group_by': 'name'}"/>
+                <filter name="name" context="{'group_by': 'name'}"/>
             </search>
         </field>
     </record>

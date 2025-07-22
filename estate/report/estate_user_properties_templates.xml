@@ -1,35 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-<template id="report_user_properties">
-  <t t-foreach="docs" t-as="user">
-    <t t-call="web.html_container">
-      <t t-call="web.external_layout">
-        <div class="page">
-          <h2>Salesperson: <span t-field="user.name"/></h2>
-          <t t-set="properties" t-value="user.property_ids"/>
-          <t t-if="properties">
-            <t t-foreach="properties" t-as="property">
-              <h4>
-                <span t-field="property.name"/> (<span t-field="property.state"/>)
-              </h4>
-              <div>
-                <strong>Type: </strong>
-                <span t-field="property.property_type_id.name"/>
-                <br/>
-                <strong>Expected Price: </strong>
-                <span t-field="property.expected_price"/>
-              </div>
-              <t t-set="offers" t-value="property.mapped('offer_ids')"/>
-              <t t-call="estate.offers_table">
-                <t t-set="offers" t-value="offers"/>
+  <template id="report_user_properties">
+    <t t-foreach="docs" t-as="user">
+      <t t-call="web.html_container">
+        <t t-call="web.external_layout">
+          <div class="page">
+            <h2>Salesperson: <span t-field="user.name"/></h2>
+            <t t-set="properties" t-value="user.property_ids"/>
+            <t t-if="properties">
+              <t t-foreach="properties" t-as="property">
+                <h4>
+                  <span t-field="property.name"/> (<span t-field="property.state"/>)
+                </h4>
+                <div>
+                  <strong>Type: </strong>
+                  <span t-field="property.property_type_id.name"/>
+                  <br/>
+                  <strong>Expected Price: </strong>
+                  <span t-field="property.expected_price"/>
+                </div>
+                <t t-set="offers" t-value="property.mapped('offer_ids')"/>
+                <t t-call="estate.offers_table">
+                  <t t-set="offers" t-value="offers"/>
+                </t>
               </t>
             </t>
-          </t>
-          <t t-else="">
-            <p><em>This salesperson has no assigned properties.</em></p>
-          </t>
-        </div>
+            <t t-else="">
+              <p><em>This salesperson has no assigned properties.</em></p>
+            </t>
+          </div>
+        </t>
       </t>
     </t>
-  </t>
-</template>
+  </template>
 </odoo>

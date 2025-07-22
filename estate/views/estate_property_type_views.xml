@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
@@ -22,12 +23,7 @@
             <form string="Property Types">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="%(estate_property_offer_action)d"
-                                type="action"
-                                string="Offers"
-                                icon="fa-envelope"
-                                context="{'default_property_type_id': id}"
-                                class="oe_stat_button">
+                        <button name="%(estate_property_offer_action)d" type="action" string="Offers" icon="fa-envelope" context="{'default_property_type_id': id}" class="oe_stat_button">
                             <field name="offer_count" widget="statinfo" string="Offers"/>
                         </button>
                     </div>

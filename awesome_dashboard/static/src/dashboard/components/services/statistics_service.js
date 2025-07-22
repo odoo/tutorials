@@ -3,7 +3,7 @@ import { rpc } from "@web/core/network/rpc";
 import { reactive } from "@odoo/owl";
 
 const statisticsService = {
-    start(){
+    start() {
         const stats = reactive({
             nb_new_orders: 0,
             total_amount: 0,
@@ -14,7 +14,6 @@ const statisticsService = {
         });
         const loadStatistics = async () => {
             const result = await rpc("/awesome_dashboard/statistics");
-
             if (result) {
                 Object.assign(stats, result);
             }
@@ -22,9 +21,9 @@ const statisticsService = {
         loadStatistics();
         setInterval(() => {
             loadStatistics();
-        }, 10*60*1000);
+        }, 10 * 60 * 1000);
 
-        return {data : stats};
+        return { data: stats };
     }
 }
 

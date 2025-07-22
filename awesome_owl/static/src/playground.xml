@@ -1,19 +1,14 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            <Counter onChange.bind="incrementSum" />
-            <Counter onChange.bind="incrementSum" />
-            <div>The sum is: <t t-esc="state.sum"/></div>
+            <Counter id="'counter1'" onChange.bind="incrementSum" />
+            <Counter id="'counter2'" onChange.bind="incrementSum" />
+            <div>The sum is: <t t-out="state.sum"/></div>
         </div>
         <div>
-            <Card title="'Title1'">
-                <Counter/> 
-            </Card>
-            <Card title="'Title2'"> 
-                <Counter/> 
-            </Card>
+            <Card title="'Title1'"><Counter id="'cardCounter1'"/></Card>
+            <Card title="'Title2'"><Counter id="'cardCounter2'"/></Card>
         </div>
         <div>
             <TodoList/>
