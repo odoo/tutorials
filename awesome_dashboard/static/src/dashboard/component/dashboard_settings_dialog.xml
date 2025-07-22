@@ -1,0 +1,21 @@
+<t t-name="awesome_dashboard.DashboardSettingsDialog" owl="1">
+    <Dialog title="'Customize Dashboard'" t-on-close="props.close">
+        <div class="p-3">
+            <t t-foreach="props.items" t-as="item" t-key="item.id">
+                <div class="form-check mb-2">
+                    <input type="checkbox"
+                           class="form-check-input"
+                           t-att-id="item.id"
+                           t-att-checked="state.selected.has(item.id) ? true : undefined"
+                           t-on-change="() => toggleItem(item.id)" />
+                    <label class="form-check-label" t-att-for="item.id">
+                        <t t-esc="item.description"/>
+                    </label>
+                </div>
+            </t>
+        </div>
+        <t t-set-slot="footer">
+            <button type="button" class="btn btn-primary" t-on-click="save">Apply</button>
+        </t>
+    </Dialog>
+</t>

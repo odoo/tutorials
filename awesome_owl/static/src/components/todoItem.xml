@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+   <t t-name="awesome_owl.todoItem">
+       <p class="card-text" t-att-class="{'text-decoration-line-through text-muted' : props.todo.isCompleted}"> 
+            <span>
+                <input class="form-check-input" type="checkbox" t-att-id="props.todo.id" t-att-checked="props.todo.isCompleted" 
+                t-on-click="onClickCheckbox"/>
+                <strong class="ms-2 me-2"><t t-esc="props.todo.id"/>:</strong>   
+                <t t-esc="props.todo.description"/>
+            </span>
+            <span class="fa fa-remove text-danger ms-3"
+                t-on-click = "() => props.deleteTodo(props.todo.id)"
+            />
+       </p>
+   </t>
+</templates>
