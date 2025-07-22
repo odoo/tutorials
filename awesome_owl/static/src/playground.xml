@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div style="display: flex; align-items: center; gap: 10px; border: 1px solid #ccc; padding: 10px; border-radius: 8px;">
             <Counter onChange="adjustSum"/>
@@ -11,7 +10,6 @@
             <Card title="'My First Card'">
                 <p>This is some <strong>dynamic content</strong> inside the card.</p>
             </Card>
-
             <Card title="'Counter Card'">
                 <Counter/>
             </Card>
@@ -20,5 +18,4 @@
             <TodoList/>
         </div>
     </t>
-
 </templates>

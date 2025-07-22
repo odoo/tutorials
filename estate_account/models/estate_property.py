@@ -1,3 +1,5 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import models, Command
 from odoo.exceptions import UserError, AccessError
 
@@ -7,19 +9,12 @@ class EstateProperty(models.Model):
 
     def action_property_sold(self):
         res = super().action_property_sold()
-        journal = self.env["account.journal"].sudo().search(
-            [("type", "=", "sale")], limit=1
-        )
-
+        journal = self.env["account.journal"].sudo().search([("type", "=", "sale")], limit=1)
         if not journal:
             raise UserError("No sales journal found!")
-
         for property in self:
             if not property.buyer_id:
                 continue
-
-            commission = property.selling_price * 0.06
-            admin_fee = 100.00
             try:
                 property.check_access('write')
             except AccessError as e:
@@ -35,17 +30,16 @@ class EstateProperty(models.Model):
                         {
                             "name": "Commission (6%)",
                             "quantity": 1,
-                            "price_unit": commission,
+                            "price_unit": property.selling_price * 0.06,
                         }
                     ),
                     Command.create(
                         {
                             "name": "Administrative fees",
                             "quantity": 1,
-                            "price_unit": admin_fee,
+                            "price_unit": 100.00,
                         }
                     ),
                 ],
             })
-
         return res

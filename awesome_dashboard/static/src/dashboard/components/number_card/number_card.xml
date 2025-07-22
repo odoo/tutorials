@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t t-name="awesome_dashboard.NumberCard" owl="1">
+    <h5 class="mb-1 text-muted"><t t-esc="props.title" /></h5>
+    <h2 class="fw-bold"><t t-esc="props.value" /></h2>
+</t>

@@ -4,7 +4,6 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
         <field name="context">{'search_default_filter_available': 1}</field>
-
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
@@ -31,12 +30,12 @@
                 <header>
                     <button name="action_property_sold" type="object" string="Mark as Sold" class="oe_highlight" invisible="state in ('sold','cancelled')"/>
                     <button name="action_property_cancel" type="object" string="Cancel" invisible="state in ('sold','cancelled')"/>
-                    <field name="state" widget="statusbar" />
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" />
+                            <field name="name"/>
                         </h1>
                         <group>
                             <field name = "tag_id" widget="many2many_tags" options="{'color_field': 'color'}" string="Tags"/>
@@ -50,7 +49,7 @@
                             <field name="postcode"/>
                         </group>
                         <group>
-                            <field name="date_availability" />
+                            <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>

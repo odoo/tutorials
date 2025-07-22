@@ -9,7 +9,7 @@
         <field name="binding_model_id" ref="estate.model_estate_property"/>
         <field name="binding_type">report</field>
     </record>
-    
+
     <record id="action_report_user_properties" model="ir.actions.report">
         <field name="name">User Properties</field>
         <field name="model">res.users</field>

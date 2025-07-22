@@ -2,7 +2,8 @@
     "name": "Real Estate",
     "category": "Real Estate/Brokerage",
     "summary": "Manage real estate properties, offers, and sales with ease",
-    "description": "A demo application for managing real estate listings, tracking offers, and streamlining property sales workflows. Designed to showcase essential features for real estate and brokerage operations within Odoo",
+    "description": """A demo application for managing real estate listings,tracking offers, and streamlining
+        property workflows. Designed to showcase essential features for real estate and brokerage operations within Odoo""",
     "installable": True,
     "depends": ["base"],
     "application": True,

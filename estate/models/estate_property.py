@@ -1,3 +1,5 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from dateutil.relativedelta import relativedelta
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError, ValidationError
@@ -49,14 +51,11 @@ class EstateProperty(models.Model):
         default="new",
         copy=False,
     )
-
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    user_id = fields.Many2one(
-        "res.users", string="Salesman", copy=False, default=lambda self: self.env.user
-    )
+    user_id = fields.Many2one("res.users", string="Salesman", copy=False, default=lambda self: self.env.user)
     tag_id = fields.Many2many("estate.property.tag", string="Tags", copy=False)
     offer_id = fields.One2many("estate.property.offer", "property_id", string="Offer")
     company_id = fields.Many2one("res.company", string="Company", required=True, default=lambda self: self.env.company)
@@ -99,7 +98,6 @@ class EstateProperty(models.Model):
             accepted_offer = prop.offer_id.filtered(lambda i: i.status == "accepted")
             if not accepted_offer:
                 raise ValidationError(_("Cannot mark as sold. No accepted offer found for this property."))
-
             if prop.state == "cancelled":
                 raise UserError(_("Cancelled properties cannot be sold."))
             prop.state = "sold"
@@ -118,7 +116,6 @@ class EstateProperty(models.Model):
             if float_is_zero(record.selling_price, precision_digits=2):
                 continue
             min_allowed_price = record.expected_price * 0.9
-
             if (float_compare(record.selling_price, min_allowed_price, precision_digits=2) < 0):
                 raise ValidationError(
                     "Selling price cannot be lower than 90% of the expected price. "

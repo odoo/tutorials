@@ -1,23 +1,18 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from odoo import fields, models, api
 
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Types of Estate property "
-    _order = "sequence, name asc" 
+    _order = "sequence, name asc"
 
     name = fields.Char(required=True)
-    sequence = fields.Integer(
-        "Sequence", default=10, help="Used to order property types."
-    )
-
+    sequence = fields.Integer("Sequence", default=10, help="Used to order property types.")
     property_ids = fields.One2many("estate.property", "property_type_id")
-    offer_ids = fields.One2many(
-        "estate.property.offer", "property_type_id", string="Offers"
-    )
-    offer_count = fields.Integer(
-        string="Offer Count", compute="_compute_offer_count", store=True
-    )
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id", string="Offers")
+    offer_count = fields.Integer(string="Offer Count", compute="_compute_offer_count", store=True)
 
     _sql_constraints = [
         (

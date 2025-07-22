@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <t t-name="awesome_owl.todo_list" t-bind="this">
     <div class="card m-3 shadow-sm" style="width: 24rem;">
         <div class="card-body">
