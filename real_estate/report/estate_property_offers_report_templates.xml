@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_estate_property_offers">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <t t-foreach="docs" t-as="doc">
+                        <h2>
+                            <strong>Salesman:</strong>
+                            <t t-esc="doc.seller.name" />
+                        </h2>
+                        <h3>
+                            <t t-esc="doc.name" />
+                        </h3>
+                        <t t-if="doc.offer_ids">
+                            <t t-set="doc" t-value="doc" />
+                            <t t-call="real_estate.estate_property_offers_table" />
+                        </t>
+                        <t t-else="">
+                            <p>
+                                <strong>No offers have been made yet </strong>
+                            </p>
+                        </t>
+
+                        <br />
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate_property_offers_table">
+        <t t-set="offers" t-value="doc.offer_ids" />
+        <p>
+            <strong>Expected Price:</strong>
+            <t t-esc="doc.expected_price" />
+        </p>
+        <p>
+            <strong>Status:</strong>
+            <t t-esc="doc.state" />
+        </p>
+        <table class="table table-sm mt16">
+            <thead>
+                <tr>
+                    <th>Price</th>
+                    <th>Partner</th>
+                    <th>Validity (days)</th>
+                    <th>Deadline</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="offers" t-as="offer">
+                    <tr>
+                        <td>
+                            <t t-esc="offer.price" />
+                        </td>
+                        <td>
+                            <t t-esc="offer.partner_id.display_name" />
+                        </td>
+                        <td>
+                            <t t-esc="offer.validity" />
+                        </td>
+                        <td>
+                            <t t-esc="offer.date_deadline.strftime('%d/%m/%Y')" />
+                        </td>
+                        <td>
+                            <t t-esc="offer.status" />
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+    </template>
+
+    <!-- rest user  -->
+    <template id="report_salesman_properties">
+        <t t-foreach="docs" t-as="salesman">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <strong>Salesman: </strong>
+                            <span t-field="salesman.name" />
+                        </h2>
+                        <t t-if="salesman.property_ids">
+                            <t t-foreach="salesman.property_ids" t-as="property">
+                                <h3>
+                                    <span t-field="property.name" />
+                                </h3>
+
+                                <t t-if="property.offer_ids">
+                                    <t t-call="real_estate.estate_property_offers_table">
+                                        <t t-set="doc" t-value="property" />
+                                    </t>
+                                </t>
+                                <t t-else="">
+                                    <p>
+                                        <strong>No offers have been made yet</strong>
+                                    </p>
+                                </t>
+                            </t>
+                        </t>
+                        <strong t-else="">No properties found</strong>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_estate_property_invoice_info"
+        inherit_id="real_estate.report_estate_property_offers">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-if="doc.state == 'sold'">
+                <div class="mt-3">
+                    <p>
+                        <strong>Invoice Information:</strong><br /> This property has been sold. <br />An
+                        invoice has been generated for the customer. </p>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
