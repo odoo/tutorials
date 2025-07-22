@@ -15,7 +15,7 @@
                 decoration-success="status == 'accepted'">
                 <field name="price" />
                 <field name="partner_id" />
-                <field name="status" />
+                <field name="status" readonly="1" />
                 <field name="validity" string="Validity(Days)" />
                 <field name="offer_deadline" />
                 <button name="action_accept_offer" string="Accept" type="object" icon="fa-check"

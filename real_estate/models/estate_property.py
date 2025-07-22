@@ -12,6 +12,11 @@ class EstateProperty(models.Model):
     _order = "id desc"
     _inherit = "mail.thread"
 
+    _sql_constraints = [(
+            "check_expected_price_positive",
+            "CHECK(expected_price > 0)",
+            "Expected price must be strictly positive.",
+        )]
     name = fields.Char(string="Property Name", required=True, tracking=True)
     description = fields.Text(string="Description")
     postcode = fields.Char(string="Postcode")
@@ -28,15 +33,13 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area", string="Total Area")
     best_offer = fields.Float(compute="_compute_best_price", string="Best Offer")
     date_availability = fields.Date(
-        string="Availability From",
-        default=lambda self: fields.Date.today() + relativedelta(months=3),
-        copy=False,
+        string="Availability From", copy=False,
+        default=lambda self: fields.Date.today() + relativedelta(months=3)
     )
     estate_property_offer_ids = fields.One2many(
         comodel_name="estate.property.offers",
         inverse_name="property_id",
-        string="Offers",
-        tracking=True,
+        string="Offers", tracking=True,
     )
     seller_id = fields.Many2one(
         comodel_name="res.users",
@@ -45,13 +48,11 @@ class EstateProperty(models.Model):
     )
     estate_property_type_id = fields.Many2one(
         comodel_name="estate.property.types",
-        string="Property Type",
-        tracking=True,
+        string="Property Type", tracking=True,
     )
     estate_property_tag_ids = fields.Many2many(
         comodel_name="estate.property.tags",
-        string="Tags",
-        tracking=True,
+        string="Tags", tracking=True,
     )
     garden_orientation = fields.Selection(
         selection=[
@@ -69,25 +70,14 @@ class EstateProperty(models.Model):
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
-        ],
-        copy=False,
-        required=True,
-        default="new",
-        string="State",
+        ], copy=False, required=True,
+        default="new", string="State",
     )
     company_id = fields.Many2one(
         comodel_name="res.company",
-        string="Company",
-        required=True,
+        string="Company", required=True,
         default=lambda self: self.env.company,
     )
-    _sql_constraints = [
-        (
-            "check_expected_price_positive",
-            "CHECK(expected_price > 0)",
-            "Expected price must be strictly positive.",
-        ),
-    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -138,6 +128,4 @@ class EstateProperty(models.Model):
     def _check_deletion_state(self):
         for rec in self:
             if rec.state not in ["new", "cancelled"]:
-                raise UserError(
-                    "Only properties in 'New' or 'Cancelled' state can be deleted."
-                )
+                raise UserError("Only properties in 'New' or 'Cancelled' state can be deleted.")
