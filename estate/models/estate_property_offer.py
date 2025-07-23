@@ -40,26 +40,7 @@ class EstatePropertyOffer(models.Model):
                     #  using today's date again
                     difference = record.date_deadline - fields.Date.today()
                     record.validity = difference.days
-    
-    def action_accept(self):
-        # check if record with status accepted already exists
-        # if it exists raise error saying an offer was already accepted
-        # self.write status accepted
-        # self.write property with status, selling price and buyer id
-        if "accepted" in self.mapped("property_id.offer_ids.status"):
-            raise UserError("An offer was already accepted")
-        self.write(({"status":"accepted"}))
-        return self.mapped("property_id").write(
-            {
-                "state":"offer accepted",
-                "selling_price":self.price,
-                "buyer_id":self.partner_id
-            }
-        )
-        
-    def action_refuse(self):
-        return self.write({"status":"refused"})    
-    
+                    
     @api.model
     def create(self, vals): 
         property_id = vals.get("property_id")
@@ -92,6 +73,26 @@ class EstatePropertyOffer(models.Model):
             property_record.write({"state": "offer received"})
         
         return offer    
+    
+    def action_accept(self):
+        # check if record with status accepted already exists
+        # if it exists raise error saying an offer was already accepted
+        # self.write status accepted
+        # self.write property with status, selling price and buyer id
+        if "accepted" in self.mapped("property_id.offer_ids.status"):
+            raise UserError("An offer was already accepted")
+        self.write(({"status":"accepted"}))
+        return self.mapped("property_id").write(
+            {
+                "state":"offer accepted",
+                "selling_price":self.price,
+                "buyer_id":self.partner_id
+            }
+        )
+        
+    def action_refuse(self):
+        return self.write({"status":"refused"})    
+    
                 
             
         

@@ -70,8 +70,17 @@ class EstateProperty(models.Model):
             min_selling_price = record.expected_price * 0.9
             # float compare returns -1 if float 1 is less than float 2
             if float_compare(record.selling_price, min_selling_price, precision_digits=2) == -1:
-                raise ValidationError("Selling price cannot be lower than 90% of the expected price")     
+                raise ValidationError("Selling price cannot be lower than 90% of the expected price")  
             
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion_if_not_new_or_cancelled(self):
+        # take all the records with state different than new or cancelled
+        # raise user error if these records are present
+        invalid_records = self.filtered(lambda r: r.state not in ["new", "cancelled"]) 
+        
+        if invalid_records:
+            raise UserError("Cannot delete properties that are not ''new' or 'cancelled'")  
+               
     def action_sold(self):
         if "canceled" in self.mapped("state"):
             raise UserError("Canceled properties can't be sold")   
@@ -82,14 +91,6 @@ class EstateProperty(models.Model):
             raise UserError("Sold properties can't be canceled")
         return self.write({"state": "canceled"})  
     
-    @api.ondelete(at_uninstall=False)
-    def _prevent_deletion_if_not_new_or_cancelled(self):
-        # take all the records with state different than new or cancelled
-        # raise user error if these records are present
-        invalid_records = self.filtered(lambda r: r.state not in ["new", "cancelled"]) 
-        
-        if invalid_records:
-            raise UserError("Cannot delete properties that are not ''new' or 'cancelled'")  
             
                             
                 
