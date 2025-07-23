@@ -1,0 +1,16 @@
+<odoo>
+    <menuitem id="estate_menu_root" name="Estate">
+        <menuitem id="estate_menu_properties" name="Properties">
+            <menuitem id="estate_menu_property_list" name="Property List">
+                <menuitem id="estate_menu_property_form" name="Property Form">
+                    <menuitem id="estate_menu_property_testing_action" name="Testing action" action="estate_property_action"/>
+                </menuitem>
+                <menuitem id="estate_menu_property_map" name="Property Map" action="estate_property_action"/>
+            </menuitem>
+            <menuitem id="estate_menu_property_list2" name="Another Property List">
+                <menuitem id="estate_menu_property_form2" name="Another Property Form" action="estate_property_action"/>
+                <menuitem id="estate_menu_property_map2" name="Another Property Map" action="estate_property_action"/>
+            </menuitem>
+        </menuitem>
+    </menuitem>
+</odoo>
