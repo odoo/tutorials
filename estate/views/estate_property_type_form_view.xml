@@ -1,0 +1,60 @@
+<odoo>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">property.type.form.view</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Create Property Type">
+                <header>
+                    <!-- duplicate button + needs centering -->
+                    <div name="button_box">
+                        <button
+                            type="action"
+                            name="%(estate.estate_property_action_offer)d"
+                            class="oe_stat_button"
+                            string="Offers"
+                            icon="fa-envelope"
+                        >
+                            <field
+                                name="offer_count"
+                                widget="statinfo"
+                                string="Offers"
+                            />
+                        </button>
+                    </div>
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Properties">
+                            <group>
+                                <field
+                                    name="property_ids"
+                                    context="{'default_property_type_id': id}"
+                                    mode="list, form"
+                                    views="[(list: 'estate_property_list_view'), (form, 'estate_property_form_view')]"
+                                    nolabel="1"
+                                />
+                            </group>
+                        </page>
+                        <!-- only for testing -->
+                        <page string="Related offers">
+                            <group>
+                                <field
+                                    name="offer_ids"
+                                    context="{'default_property_type_id': id}"
+                                    mode="list, form"
+                                    views="[(list: 'offer_list_view'), (form, 'offer_form_view')]"
+                                    nolabel="1"
+                                />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

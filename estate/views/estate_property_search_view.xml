@@ -1,0 +1,27 @@
+<odoo>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search.view</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <!-- only to test filter_domain, search result 'Apt 3' among 'Apt 1', 'Apt 2' and 'Apt 3' when searching Title for 'Apt' -->
+                <field name="name" string="Title" filter_domain="[('name', 'ilike', self + ' 3')]"/>
+                <field name="postcode" string="Postcode"/>
+                <field name="expected_price" string="Expected price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                
+                <!-- doesn't work on integer field -->
+                <field name="living_area" string="Living Area" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="facades" string="Facades"/>
+                
+                <filter name="inactive" domain="[('state', '=', 'sold'), ('bedrooms', '=', 0)]" string="Sold studios"/>
+                <filter name="available" domain="['|',('state', '=', 'new'), ('state', '=', 'offer_received')]" string="Available"/>
+
+                <group expand="1" string="Group By">
+                    <filter name="group_by_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                </group>
+
+            </search>
+        </field>
+    </record>
+</odoo>

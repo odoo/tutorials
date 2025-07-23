@@ -1,3 +1,15 @@
+# code dump
+estate/views/dump.xml
+
+# ruff config for python files
+pyproject.toml
+
+# related to prettier config for xml
+node_modules/
+.prettierrc
+package-lock.json
+package.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

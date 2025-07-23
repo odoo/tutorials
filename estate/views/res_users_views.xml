@@ -1,0 +1,20 @@
+<odoo>
+    <record id="res_users_view_form" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.props</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Properties">
+                    <field name="property_ids" context="{'default_user_id': id}">
+                        <list editable="bottom">
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="state" widget="statusbar" statusbar_visible="draft,sold,available,refused"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
