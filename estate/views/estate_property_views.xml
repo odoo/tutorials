@@ -14,10 +14,12 @@
             <list string="Properties">
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="living_area"/>
                 <field name="bedrooms"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
+                <field name="best_price" string="Best Offer"/>
                 <field name="date_availability"/>
             </list>
         </field>
@@ -37,17 +39,21 @@
                         <h1 class="mb32">
                             <field name="name" class="mb16"/>
                         </h1>
-                        <field name="active" invisible="1"/>
                     </div>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_price" string="Best Offer"/>
                         </group>
+                    </group>
+                    <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </group>
                     <group>
                         <notebook>
@@ -61,8 +67,18 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                     <field name="active"/>
                                 </group>
+                            </page>
+                            <page string="Other Information">
+                                <group>
+                                    <field name="salesperson_id"/>
+                                    <field name="buyer_id"/>
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                <field name="offer_ids"/>
                             </page>
                         </notebook>
                     </group>
