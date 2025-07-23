@@ -81,6 +81,5 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_and_expected_prices(self):
         for record in self:
-            print(f"{record.selling_price}, {0.9*record.expected_price}")
-            if float_compare(record.selling_price, 0.9*record.expected_price, precision_digits=5) < 1 and record.state == 'offer accepted':
+            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=5) < 1 and record.state == 'offer accepted':
                 raise ValidationError("The price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")

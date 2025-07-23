@@ -28,7 +28,7 @@ class EstatePropertyOffer(models.Model):
                 record.date_deadline = record.create_date + relativedelta(days=record.validity)
             else:
                 record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
-    
+
     @api.depends('create_date', 'date_deadline')
     def _inverse_date_deadline(self):
         for record in self:
@@ -37,13 +37,13 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             if record.property_id.state in ['new', 'offer received']:
-                    record.property_id.state = 'offer accepted'      
-                    record.property_id.buyer_id = record.partner_id
-                    record.property_id.selling_price = record.price
-                    record.status = 'accepted'              
+                record.property_id.state = 'offer accepted'
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.selling_price = record.price
+                record.status = 'accepted'
             else:
                 raise UserError("An offer has already been accepted")
 
     def action_refuse(self):
         for record in self:
-            status = 'refused'
+            record.status = 'refused'
