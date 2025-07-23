@@ -7,7 +7,6 @@ class EstateProperty(models.Model):
     _description = "Estate Module"
 
     name = fields.Char(required=True)
-    selling_price = fields.Float()
     create_uid = fields.Integer()
     create_date = fields.Date()
     write_uid = fields.Integer()
@@ -46,3 +45,8 @@ class EstateProperty(models.Model):
         default="new",
     )
     active = fields.Boolean(default=True)
+    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    user_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    type_id = fields.Many2one("estate.property.type", string="Type")
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="test_model_action" model="ir.actions.act_window">
+    <record id="property_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
@@ -10,7 +10,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Testtsts">
+            <list string="Properties">
                 <field name="name" />
                 <field name="postcode" />
                 <field name="bedrooms" />
@@ -33,6 +33,8 @@
                     </h1>
                     <group>
                         <group>
+                            <field name="tag_ids" widget="many2many_tags" />
+                            <field name="type_id" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -53,6 +55,17 @@
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
                                 <field name="state" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" />
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="user_id" />
+                                <field name="partner_id" />
                             </group>
                         </page>
                     </notebook>
@@ -78,10 +91,4 @@
             </search>
         </field>
     </record>
-
-    <menuitem id="test_menu_root" name="Real Estate">
-        <menuitem id="test_first_level_menu" name="Properties">
-            <menuitem id="test_model_menu_action" action="test_model_action" />
-        </menuitem>
-    </menuitem>
 </odoo>
