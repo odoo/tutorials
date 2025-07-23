@@ -1,0 +1,48 @@
+from odoo import fields, models
+from dateutil.relativedelta import relativedelta
+
+
+class EstateProperty(models.Model):
+    _name = "estate.property"
+    _description = "Estate Module"
+
+    name = fields.Char(required=True)
+    selling_price = fields.Float()
+    create_uid = fields.Integer()
+    create_date = fields.Date()
+    write_uid = fields.Integer()
+    write_date = fields.Date()
+    description = fields.Text()
+    postcode = fields.Char()
+    date_availability = fields.Date(copy=False, default=fields.Date.today() + relativedelta(months=3))
+    expected_price = fields.Float()
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
+    garden_orientation = fields.Selection(
+        selection=[
+            ("north", "North"),
+            ("northeast", "North-East"),
+            ("east", "East"),
+            ("southeast", "South-East"),
+            ("west", "West"),
+            ("southwest", "South-West"),
+            ("south", "South"),
+            ("northwest", "North-West"),
+        ],
+    )
+    state = fields.Selection(
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Off Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        default="new",
+    )
+    active = fields.Boolean(default=True)
