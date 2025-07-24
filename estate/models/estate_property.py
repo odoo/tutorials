@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -62,6 +62,29 @@ class EstateProperty(models.Model):
         compute="_compute_best_price",
         string="Best Offer",
     )
+
+    _sql_constraints = [
+        (
+            "check_expected_price_positive",
+            "CHECK(expected_price >= 0)",
+            "The expected price must be positive!",
+        ),
+        (
+            "check_selling_price_positive",
+            "CHECK(selling_price >= 0)",
+            "The selling price must be positive!",
+        ),
+    ]
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price > 0 and record.selling_price < (
+                record.expected_price * 0.9
+            ):
+                raise ValidationError(
+                    f"The selling price ({record.selling_price:,.2f}) cannot be lower than 90% of the expected price ({record.expected_price * 0.9:,.2f})."
+                )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

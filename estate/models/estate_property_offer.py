@@ -18,6 +18,15 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
 
+    _sql_constraints = [
+        ("check_price_positive", "CHECK(price >= 0)", "The price must be positive!"),
+        (
+            "check_validity_positive",
+            "CHECK(validity > 0)",
+            "The validity must be positive!",
+        ),
+    ]
+
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -73,9 +82,21 @@ class EstatePropertyOffer(models.Model):
 
         return True
 
-    def action_reject(self):
+    def action_refuse(self):  # Changed from action_reject
         for offer in self:
             offer.status = "refused"
-            offer.property_id.state = "offer_received"
-            offer.property_id.buyer_id = False
-            offer.property_id.selling_price = 0.0
+
+            # Only reset property state if no accepted offers remain
+            remaining_accepted = self.search(
+                [
+                    ("property_id", "=", offer.property_id.id),
+                    ("status", "=", "accepted"),
+                ]
+            )
+
+            if not remaining_accepted:
+                offer.property_id.state = "offer_received"
+                offer.property_id.buyer_id = False
+                offer.property_id.selling_price = 0.0
+
+        return True
