@@ -3,4 +3,7 @@
     <menuitem id="estate_menu_root" name="Real Estate"/>
     <menuitem id="estate_menu_advertisements" name="Advertisements" parent="estate_menu_root"/>
     <menuitem id="menu_estate_properties" name="Properties" parent="estate_menu_advertisements" action="estate_property"/>
+    <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root"/>
+    <menuitem id="menu_property_type" name="Property Types" parent="estate_menu_settings" action="estate_property_type"/>
+    <menuitem id="menu_property_tag" name="Property Tags" parent="estate_menu_settings" action="estate_property_tag"/>
 </odoo>
