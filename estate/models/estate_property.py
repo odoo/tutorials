@@ -9,6 +9,7 @@ from dateutil.relativedelta import relativedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate information"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -83,3 +84,9 @@ class EstateProperty(models.Model):
         for record in self:
             if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=5) < 1 and record.state == 'offer accepted':
                 raise ValidationError("The price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['cancelled', 'new']:
+                raise UserError("Can't delete property that is not new or cancelled.")

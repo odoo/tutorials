@@ -8,13 +8,15 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate offers"
+    _order = "price desc"
 
-    price = fields.Float()
+    price = fields.Float(required=True)
     status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_dealine', inverse='_inverse_date_deadline')
+    property_type_id = fields.Many2one(related='property_id.property_type_id')
 
     _sql_constraints = [
         ('check_offer_price', 'CHECK(price > 0)',
@@ -47,3 +49,14 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            max_existing_offer = property_id.best_price
+            if vals['price'] < max_existing_offer:
+                raise UserError(f"An offer price {vals['price']} should not be less than an existing offer {max_existing_offer}.")
+            else:
+                property_id.state = 'offer received'
+        return super().create(vals_list)
