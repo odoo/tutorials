@@ -77,6 +77,14 @@ class EstateProperty(models.Model):
         ),
     ]
 
+    @api.ondelete(at_uninstall=True)
+    def _check_property_state(self):
+        for record in self:
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "You cannot delete a property that is not new or cancelled."
+                )
+
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:

@@ -31,6 +31,29 @@ class EstatePropertyOffer(models.Model):
         ),
     ]
 
+    @api.model
+    def create(self, vals):
+        property_obj = self.env["estate.property"].browse(vals["property_id"])
+
+        existing_offers = self.search(
+            [
+                ("property_id", "=", vals["property_id"]),
+                ("price", ">", vals.get("price", 0)),
+            ]
+        )
+
+        if existing_offers:
+            highest_price = max(existing_offers.mapped("price"))
+            raise UserError(
+                f"Cannot create an offer with price {vals.get('price', 0):,.2f}. "
+                f"An offer with a higher price ({highest_price:,.2f}) already exists."
+            )
+
+        if property_obj.state == "new":
+            property_obj.state = "offer_received"
+
+        return super().create(vals)
+
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for record in self:
