@@ -10,6 +10,6 @@
         'views/ninja_turtles_estate_property_type_views.xml',
         'views/ninja_turtles_estate_property_tag_views.xml',
     ],
-
+    'license': 'LGPL-3',
     'application': True
 }
