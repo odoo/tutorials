@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="group_property_manager" model="res.groups">
+            <field name="name">Property Manager</field>
+            <field name="category_id" ref="base.module_category_user_type"/>
+        </record>
+
+        <record id="group_estate_agent" model="res.groups">
+            <field name="name">Estate Agent</field>
+            <field name="category_id" ref="base.module_category_sales"/>
+        </record>
+    </data>
+</odoo>

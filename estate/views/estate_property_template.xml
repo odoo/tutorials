@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Add Custom Menu Items to website-->
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/estate_property/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">10</field>
+    </record>
+    <template id="property_list">
+        <t t-call="website.layout">
+            <section class="mt-5 mb-5">
+                <div class="container">
+                    <div class="row">
+                        <h3 class="text-center mb-4">Estate Properties</h3>
+                        <div class="col-12">
+                            <div class="row">
+                                <t t-foreach="properties" t-as="property">
+                                    <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                                        <div class="card h-100">
+                                            <t t-if="property.image_1920">
+                                                <img t-att-src="'data:image/png;base64,' + property.image_1920.decode('utf-8')" class="card-img-top" alt="Property Image" style="width: 100%; height: 200px;"/>
+                                            </t>
+                                            <t t-else="">
+                                                <img src="/estate/static/src/img/placeholder_image.png" class="card-img-top" alt="No Image Available" style="width: 100%; height: 200px;"/>
+                                            </t>
+                                            <div class="card-body">
+                                                <h4 class="card-title">
+                                                    <t t-esc="property.name"/>
+                                                </h4>
+                                                <p>
+                                                    <t t-esc="property.description"/>
+                                                </p>
+                                                <p>Price: <span t-esc="property.expected_price"/>
+                                                </p>
+                                            </div>
+                                            <div class="card-footer">
+                                                <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary">View Details</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item" t-att-class="'disabled' if current_page == 1 else ''">
+                            <a class="page-link" t-att-href="'/estate_property/properties?page=' + str(current_page - 1)">Previous</a>
+                        </li>
+                        <t t-foreach="range(1, total_pages + 1)" t-as="page">
+                            <li class="page-item" t-att-class="'active' if page == current_page else ''">
+                                <a class="page-link" t-att-href="'/estate_property/properties?page=' + str(page)">
+                                    <t t-esc="page"/>
+                                </a>
+                            </li>
+                        </t>
+                        <li class="page-item" t-att-class="'disabled' if current_page == total_pages else ''">
+                            <a class="page-link" t-att-href="'/estate_property/properties?page=' + str(current_page + 1)">Next</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </t>
+    </template>
+    <template id="property_detail">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1>
+                    <t t-esc="property.name"/>
+                </h1>
+                <div class="card-image">
+                    <img t-if="property.image_1920" t-att-src="'data:image/png;base64,' + property.image_1920.decode('utf-8')" alt="Property Image"/>
+                </div>
+                <p>
+                    <t t-esc="property.description"/>
+                </p>
+                <p>
+                    <strong>Price:</strong>
+                    <t t-esc="property.expected_price"/>
+                </p>
+                <p>
+                    <strong>Bedrooms:</strong>
+                    <t t-esc="property.bedrooms"/>
+                </p>
+                <p>
+                    <strong>Living Area:</strong>
+                    <t t-esc="property.living_area"/>
+                </p>
+            </div>
+        </t>
+    </template>
+    <template id="filter_properties">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="col-12 mb-4">
+                    <form action="/property/search" method="get">
+                        <div class="input-group">
+                            <select name="property_type" class="form-control">
+                                <option value="">Select Property Type</option>
+                                <t t-foreach="property_types" t-as="property_type">
+                                    <option t-att-value="property_type.id">
+                                        <t t-esc="property_type.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12">
+                    <div class="row">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+                                <div class="card h-100">
+                                    <t t-if="property.image_1920">
+                                        <img t-att-src="'data:image/png;base64,' + property.image_1920.decode('utf-8')" class="card-img-top" alt="Property Image" style="width: 100%; height: 200px;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/estate/static/src/img/placeholder_image.png" class="card-img-top" alt="No Image Available" style="width: 100%; height: 200px;"/>
+                                    </t>
+                                    <div class="card-body">
+                                        <h4 class="card-title">
+                                            <t t-esc="property.name"/>
+                                        </h4>
+                                        <p>
+                                            <t t-esc="property.description"/>
+                                        </p>
+                                        <p>Price: <span t-esc="property.expected_price"/>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary">View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+                <t t-if="total_pages > 1">
+                    <ul class="pagination justify-content-center">
+                        <!-- Previous page link -->
+                        <t t-if="current_page > 1">
+                            <li class="page-item">
+                                <a t-att-href="'/property/search?page=' + str(current_page - 1)" class="page-link">Previous</a>
+                            </li>
+                        </t>
+                        <!-- Page numbers -->
+                        <t t-foreach="range(1, total_pages + 1)" t-as="page">
+                            <li class="page-item" t-att-class="'active' if page == current_page else ''">
+                                <a class="page-link" t-att-href="'/property/search?page=' + str(page)">
+                                    <t t-esc="page"/>
+                                </a>
+                            </li>
+                        </t>
+                        <!-- Next page link -->
+                        <t t-if="total_pages > current_page">
+                            <li class="page-item">
+                                <a t-att-href="'/property/search?page=' + str(current_page + 1)" class="page-link">Next</a>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
