@@ -21,6 +21,7 @@
                 <field name="selling_price"/>
                 <field name="best_price" string="Best Offer"/>
                 <field name="date_availability"/>
+                <field name="state" widget="badge" decoration-success="state == 'sold'" decoration-info="state == 'new'" decoration-warning="state in ['offer_received', 'offer_accepted']" decoration-danger="state == 'cancelled'"/>
             </list>
         </field>
     </record>
@@ -31,6 +32,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+                    <button name="action_sold" type="object" string="Mark as Sold" invisible="state not in ['new', 'offer_received']"/>
+                    <button name="action_cancel" type="object" string="Cancel Sale" invisible="state not in ['new', 'offer_received', 'sold']"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <div class="oe_edit_only">
