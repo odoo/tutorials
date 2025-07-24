@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <menuitem id="test_menu_root" name="Real Estate">
+    <menuitem id="test_first_level_menu" name="Advertisements">
+      <menuitem id="test_model_menu_action" action="test_model_action" name="Properties"/>
+    </menuitem>
+
+    <menuitem id="first_level_menu_type" name="Settings">
+      <menuitem id="model_menu_action_type" action="model_action_type" name="Property Types"/>
+      <menuitem id="model_menu_action_tag" action="model_action_tag" name="Property Tags"/>
+    </menuitem>
+  </menuitem>
+
+</odoo>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+  <record id="model_action_type" model="ir.actions.act_window">
+    <field name="name">Property Types</field>
+    <field name="res_model">estate.property.type</field>
+  </record>
+  <record id="model_type_list" model="ir.ui.view">
+    <field name="name">estate.property.type.view.list</field>
+    <field name="model">estate.property.type</field>
+    <field name="arch" type="xml">
+      <list string="Channel">
+        <field name="name"/>
+      </list>
+    </field>
+  </record>
+</odoo>
