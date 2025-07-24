@@ -1,10 +1,11 @@
 from odoo import models, fields
 from datetime import date, timedelta
 
+
 class NinjaTurtlesEstateModel(models.Model):
     _name = "ninja.turtles.estate"
     _description = "For the fastest progress ever!"
-    
+
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
 
@@ -12,7 +13,7 @@ class NinjaTurtlesEstateModel(models.Model):
     date_availability = fields.Date(
         string="Available From",
         copy=False,
-        default = lambda self: date.today() + timedelta(days=90),
+        default=lambda self: date.today() + timedelta(days=90),
     )
 
     expected_price = fields.Float(string="Expected Price", required=True)
@@ -24,7 +25,7 @@ class NinjaTurtlesEstateModel(models.Model):
 
     bedrooms = fields.Integer(
         string="Bedrooms",
-        default = 2,
+        default=2,
     )
     living_area = fields.Integer(string="Living Area (sqm)")
 
@@ -35,7 +36,7 @@ class NinjaTurtlesEstateModel(models.Model):
     garden_area = fields.Integer(string="Garden Area (sqm)")
 
     garden_orientation = fields.Selection(
-        string="Garden Orientation",		
+        string="Garden Orientation",
         selection=[
             ('north', 'North'),
             ('south', 'South'),
@@ -59,7 +60,7 @@ class NinjaTurtlesEstateModel(models.Model):
     )
     active = fields.Boolean(
         string="Active",
-        default = True,
+        default=True,
     )
 
     property_type_id = fields.Many2one(
@@ -84,5 +85,9 @@ class NinjaTurtlesEstateModel(models.Model):
         string="Tags"
     )
 
-
-
+    offer_ids = fields.One2many(
+        "ninja.turtles.estate.property.offer",
+        "property_id",
+        string="Offers"
+    )
+    
