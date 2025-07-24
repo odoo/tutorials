@@ -1,0 +1,105 @@
+<odoo>
+    <data>
+        <!-- List Section: Opens when the app is loaded -->
+        <record id="view_estate_property_list" model="ir.ui.view">
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="postcode"/>
+                    <field name="date_availability"/>
+                    <field name="expected_price"/>
+                    <field name="selling_price"/>
+                    <field name="bedrooms"/>
+                    <field name="living_area"/>
+                    <field name="facades"/>
+                    <field name="garage"/>
+                    <field name="garden"/>
+                    <field name="garden_area"/>
+                    <field name="garden_orientation"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form Section: Opens when any record is clicked -->
+        <record id="view_estate_property_form" model="ir.ui.view">
+            <field name="name">estate.property.form</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <!-- Title -->
+                        <h1>
+                            <field name="name" placeholder="e.g. Swagat Afford U101"/>
+                        </h1>
+
+                        <!-- Top Section -->
+                        <group>
+                            <group>
+                                <field name="postcode"/>
+                                <field name="date_availability"/>
+                            </group>
+                            <group>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </group>
+                        </group>
+
+                        <!-- Tabbed Section -->
+                        <notebook>
+                            <page string="Description">
+                                <group>
+                                    <field name="description"/>
+                                    <field name="bedrooms"/>
+                                    <field name="living_area"/>
+                                    <field name="facades"/>
+                                    <field name="garage"/>
+                                    <field name="garden"/>
+                                    <field name="garden_area"/>
+                                    <field name="garden_orientation"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search Section -->
+        <record id="view_estate_property_search" model="ir.ui.view">
+            <field name="name">estate.property.search</field>
+            <field name="model">estate.property</field>
+            <field name="arch" type="xml">
+                <search string="Search Properties">
+
+                    <!-- Basic Searchable Fields -->
+                    <field name="name" string="Title" />
+                    <field name="postcode"/>
+                    <field name="expected_price" />
+                    <field name="selling_price" />
+                    <field name="bedrooms" />
+                    <field name="garden" />
+
+                    <!-- Filter by -->
+                    <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                    <filter name="has_garden" string="Has Garden" domain="[('garden', '=', True)]"/>
+                    <filter name="has_two_bedrooms" string="Has 2 Bedrooms" domain="[('bedrooms', '=', 2)]"/>
+
+                    <!-- Group by -->
+                    <group expand="1" string="Group By">
+                        <filter name="group_by_postcode" string="Post Code" context="{'group_by': 'postcode'}" />
+                        <filter name="group_by_garden" string="Garden" context="{'group_by': 'garden'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="estate_property" model="ir.actions.act_window">
+            <field name="name">Estate Entry</field>
+            <field name="res_model">estate.property</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>
