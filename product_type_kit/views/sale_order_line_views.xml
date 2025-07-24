@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_line_readonly_kit" model="ir.ui.view">
+        <field name="name">sale.order.line.tree.readonly.kit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="attrs">{'readonly': [('is_subproduct', '=', True)]}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="attrs">{'readonly': [('is_subproduct', '=', True)]}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
