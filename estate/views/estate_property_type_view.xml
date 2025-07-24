@@ -1,0 +1,74 @@
+<odoo>
+    <data>
+        <!-- Property Type List View -->
+        <record id="estate_property_type_view_list" model="ir.ui.view">
+            <field name="name">estate.property.type.view.list</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="sequence" widget="handle" />
+                    <field name="name" />
+                </list>
+            </field>
+        </record>
+
+        <!-- Property Type Form View -->
+        <record id="estate_property_type_view_form" model="ir.ui.view">
+            <field name="name">estate.property.type.view.form</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <form string="Property Type">
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                        </group>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button"
+                                name="estate.estate_property_offer_action"
+                                type="action" icon="fa-bars">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="offer_count" />
+                                    </span>
+                                    <span class="o_stat_text">
+                                        Offers
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+                        <notebook>
+                            <page string="Properties">
+                                <field name="property_ids">
+                                    <list editable="bottom">
+                                        <field name="name" />
+                                        <field name="expected_price" />
+                                        <field name="selling_price" />
+                                        <field name="state" />
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Property Type Search View -->
+        <record id="estate_property_type_view_search" model="ir.ui.view">
+            <field name="name">estate.property.type.view.search</field>
+            <field name="model">estate.property.type</field>
+            <field name="arch" type="xml">
+                <search string="Search Properties">
+                    <field name="name" />
+                </search>
+            </field>
+        </record>
+
+        <!-- Property Type Actions -->
+        <record id="estate_property_type_action" model="ir.actions.act_window">
+            <field name="name">Properties Types</field>
+            <field name="res_model">estate.property.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>
