@@ -1,0 +1,7 @@
+<odoo>
+    <data>
+        <menuitem id="test_menu_root" name="Real Estate" web_icon="estate,static/description/city.png"/>
+        <menuitem id="test_first_level_menu" name="Advertisements" parent="test_menu_root"/>
+        <menuitem id="test_model_menu_action" name="Estate Property" parent="test_first_level_menu" action="estate_property"/>
+    </data>
+</odoo>
