@@ -11,7 +11,7 @@
         <field name="name">estate.property.tag.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Property Tags">
+            <list string="Property Tags" editable="top">
                 <field name="name"/>
             </list>
         </field>
@@ -24,17 +24,11 @@
         <field name="arch" type="xml">
             <form string="Property Tag">
                 <sheet>
-                    <div class="oe_title">
-                        <div class="oe_edit_only">
-                            <label for="name"/>
-                        </div>
-                        <h1>
-                            <field name="name" placeholder="Tag Name..."/>
-                        </h1>
-                    </div>
+                    <group>
+                        <field name="name"/>
+                    </group>
                 </sheet>
             </form>
         </field>
     </record>
-
 </odoo>
