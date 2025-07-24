@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- ROOT menu (App switcher icon) -->
+    <menuitem id="menu_ninja_turtles_estate_root"
+              name="Ninja Turtle Estate"
+              web_icon="estate,static/description/icon.png"/>
+
+    <!-- FIRST LEVEL menu -->
+    <menuitem id="menu_ninja_estate_ads" name="Advertisements" parent="menu_ninja_turtles_estate_root"/>
+    <menuitem id="menu_ninja_estate_set" name="Settings" parent="menu_ninja_turtles_estate_root"/>
+
+    <!-- FINAL menu linked to the action -->
+    <menuitem id="menu_ninja_estate_properties" name="Properties"
+              parent="menu_ninja_estate_ads"
+              action="action_ninja_turtles_estate"/>
+    <menuitem id="menu_ninja_estate_property_types" name="Property Types"
+              parent="menu_ninja_estate_set"
+              action="action_ninja_turtles_estate"/>        <!-- this is the same as above -->
+
+</odoo>
+
