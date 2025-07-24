@@ -1,0 +1,15 @@
+{
+    'name': 'Real Estate',
+    'description': 'Real Estate Adverstisement',
+    'summary': 'Real Estate Adverstisement',
+    'category': 'Tutorials/Real-Estate',
+    'author': 'Piyush Soni (piso)',
+    'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+        'views/estate_menu_views.xml'
+    ],
+    'application': True,
+    'installable': True,
+}
