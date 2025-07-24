@@ -4,7 +4,11 @@ from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate_property_offer"
-    name = fields.Char(required = True)
+    _order = "price desc"
+
+
+
+    name = fields.Char(required = True, default = "Offer")
     price = fields.Float()
     state = fields.Selection(
         string='State',
@@ -14,6 +18,19 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate_property',required = True)
     date_deadline = fields.Date(compute = '_compute_deadline', inverse = '_compute_validity')
     validity = fields.Integer(default = 7)
+  
+    property_state = fields.Selection(
+        related='property_id.state',
+        readonly=True,
+    )
+
+    property_type_id = fields.Many2one(
+        related='property_id.property_type_id',
+        stored = True
+    )
+
+    
+    
     @api.depends('validity')
     def _compute_deadline(self):
         for property in self:

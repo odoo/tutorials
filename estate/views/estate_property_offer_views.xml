@@ -1,20 +1,36 @@
 <?xml version="1.0"?>
 <odoo>
+
+     <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate_property_offer</field>
+        <field name="view_mode">list,form</field>
+         <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
+
+
+
+
+
+
+
+
    <record id="estate_property_offer_list_view" model="ir.ui.view">
    
         <field name="name">List View</field>
         <field name="model">estate_property_offer</field> 
         <field name="arch" type="xml">
-            <list string="Offer List">
+            <list string="Offer List" editable="bottom" decoration-success = "state == 'Accepted'" decoration-danger = "(state == 'Refused') or (state != 'Accepted' and property_state in ('Offer Accepted', 'Cancelled', 'Sold'))">
+          
              <field name="price" string  = "Price"/>
              <field name="partner_id" string  = "Partner"/>
              <field name="validity" string  = "Validity (days)"/>
               <field name="date_deadline" string  = "Deadline"/>
               
-               <button name="action_confirm" string="Accept"  type="object" icon="fa-check"/>
-               <button name="action_reject" string="Reject"  type="object" icon="fa-times"/>
-               <field name="state" string  = "State"/>
-                
+               <button name="action_confirm" string="Accept"  type="object" icon="fa-check" invisible="(state in ('Accepted','Refused')) or property_state in ('Cancelled', 'Offer Accepted', 'Sold')"/>
+               <button name="action_reject" string="Reject"  type="object" icon="fa-times" invisible="(state in ('Accepted','Refused')) or property_state in ('Cancelled', 'Offer Accepted', 'Sold')"/>
+            
                 
             </list>
         </field>

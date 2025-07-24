@@ -5,6 +5,10 @@ from odoo.tools import float_compare, float_is_zero
 class TestModel(models.Model):
     _name = "estate_property"
     _description = "Basic fields in estate property"
+    _order = "id desc"
+
+
+    
     name = fields.Char(required = True)
     description = fields.Text()
     postcode = fields.Char()
