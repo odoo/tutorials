@@ -1,0 +1,15 @@
+<odoo>
+    <!-- Root menu for the Real Estate module -->
+    <menuitem id="real_estate_menu_root" name="Real Estate"
+        web_icon="estate,static/description/building_icon.png">
+
+        <!-- First level submenu under Real Estate for Advertisements -->
+        <menuitem id="real_estate_first_level_menu" name="Advertisements">
+
+            <!-- Menu item to open the Properties action under Advertisements -->
+            <menuitem id="real_estate_model_menu_action" name="Properties"
+                action="estate_property_action" />
+        </menuitem>
+    </menuitem>
+    
+</odoo>
