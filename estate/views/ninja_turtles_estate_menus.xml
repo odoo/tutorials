@@ -15,7 +15,11 @@
               action="action_ninja_turtles_estate"/>
     <menuitem id="menu_ninja_estate_property_types" name="Property Types"
               parent="menu_ninja_estate_set"
-              action="action_ninja_turtles_estate"/>        <!-- this is the same as above -->
-
+              action="action_ninja_turtles_estate_property_type"/>
+    <menuitem id="menu_ninja_estate_property_tag" name="Property Tags"
+              parent="menu_ninja_estate_set"
+              action="action_ninja_turtles_estate_property_tag"/>
+    <menuitem id="menu_ninja_estate_property_offer" name="Property Offers"
+              parent="menu_ninja_estate_set"
+              action="action_ninja_turtles_estate_property_offer"/>
 </odoo>
-

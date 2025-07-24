@@ -24,6 +24,13 @@
                     <field name="partner_id"/>
                     <field name="status"/>
                 </group>
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="status"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>

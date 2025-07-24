@@ -6,3 +6,6 @@ class NinjaTurtlesEstatePropertyTag(models.Model):
     _description = "Ninja Turtle Estate for faster Property Tag"
 
     name = fields.Char(required=True)
+    _sql_constraints = [
+        ('unique_tag_name', 'UNIQUE(name)', 'Tag name must be unique.')
+    ]

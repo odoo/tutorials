@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- List view -->
+    <!-- List view for property type -->
     <record id="ninja_turtles_estate_property_type_view_tree" model="ir.ui.view">
         <field name="name">ninja.turtles.estate.property.type.list</field>
         <field name="model">ninja.turtles.estate.property.type</field>
@@ -11,7 +11,7 @@
         </field>
     </record>
 
-    <!-- Form view -->
+    <!-- Form view for property type -->
     <record id="ninja_turtles_estate_property_type_view_form" model="ir.ui.view">
         <field name="name">ninja.turtles.estate.property.type.form</field>
         <field name="model">ninja.turtles.estate.property.type</field>
@@ -26,7 +26,7 @@
         </field>
     </record>
 
-    <!-- Action -->
+    <!-- Action for property type -->
     <record id="action_ninja_turtles_estate_property_type" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">ninja.turtles.estate.property.type</field>
