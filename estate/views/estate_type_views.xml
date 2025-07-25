@@ -29,7 +29,6 @@
                     </h1>
                     <button name="%(estate.offer_model_action)d" type="action"
                         string="Offers" icon="fa-money" class="oe_stat_button" />
-                    <!-- TODO put offer_count in button -->
                 </header>
                 <notebook>
                     <page string="Properties">
