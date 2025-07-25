@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from datetime import datetime
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 class EstatePropertyOffer(models.Model):
     _name = "estate_property_offer"
@@ -15,7 +16,7 @@ class EstatePropertyOffer(models.Model):
         selection=[('Accepted', 'Accepted'),('Refused','Refused')],
         copy = False)
     partner_id = fields.Many2one('res.partner', string='Partner',required = True)
-    property_id = fields.Many2one('estate_property',required = True)
+    property_id = fields.Many2one('estate_property',required = True, ondelete='cascade')
     date_deadline = fields.Date(compute = '_compute_deadline', inverse = '_compute_validity')
     validity = fields.Integer(default = 7)
   
@@ -78,7 +79,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.property_id.state not in ["Cancelled", "Sold"]:
                 if record.state == 'Accepted':
-                    record.property_id.state = "New"
+                    record.property_id.state = "Offer Received"
                     record.property_id.buyer = ''
                     record.property_id.selling_price = 0.0
                 record.state = 'Refused'
@@ -97,3 +98,15 @@ class EstatePropertyOffer(models.Model):
          'The offer price should be strictly positive')
 
     ]
+
+
+    @api.model
+    def create(self, vals):
+       
+        property_object = self.env["estate_property"].browse(vals['property_id'])
+        if float_compare(property_object.best_price, vals['price'], precision_digits=6) > 0:
+            raise UserError(f"Offer must be higher than {property_object.best_price}!")
+        
+        offer = super().create(vals)
+        offer.property_id.state = 'Offer Received'
+        return offer

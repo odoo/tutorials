@@ -104,9 +104,14 @@ class TestModel(models.Model):
         for property in self:
             if not float_is_zero(property.selling_price, precision_digits = 6) and float_compare(property.selling_price, 0.9*property.expected_price, precision_digits=6) < 0:
                 raise ValidationError('The selling price is below the 90% threshold of the expected price')
+        return True
 
 
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_offer_not_new_not_cancelled(self):
+        if any(property.state not in ["New", "Cancelled"] for property in self):
+            raise UserError("Can't delete an offer which is not cancelled or new!")
            
 
 
