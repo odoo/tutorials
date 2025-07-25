@@ -1,19 +1,13 @@
 <?xml version="1.0"?>
 <odoo>
 
+
      <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Offers</field>
         <field name="res_model">estate_property_offer</field>
         <field name="view_mode">list,form</field>
          <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
-
-
-
-
-
-
-
 
 
    <record id="estate_property_offer_list_view" model="ir.ui.view">
@@ -35,10 +29,6 @@
             </list>
         </field>
     </record>
-
-
-
-
 
 
     <record id="estate_property_offer_form_view" model="ir.ui.view">
@@ -68,5 +58,4 @@
 
     
 </odoo>
-
    

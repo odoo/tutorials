@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <odoo>
+
+
     <record id="test_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate_property</field>
         <field name="view_mode">list,form,kanban</field>
-        <field name="context">
-        {'search_default_Available': True}
-    </field>
+        <field name="context">{'search_default_Available': True}</field>
     </record>
 
 
@@ -22,18 +22,13 @@
                 <field name="expected_price" string  = "Expected Price"/>
                 <field name="selling_price" string = "Selling Price"/>
                 <field name="date_availability" string = "Available From" optional="hide"/>
-               
-                 <field name="property_type_id"/>
-                 <field name="tag_ids" widget = "many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="property_type_id"/>
+                <field name="tag_ids" widget = "many2many_tags" options="{'color_field': 'color'}"/>
                 
                 
             </list>
         </field>
     </record>
-
-
-
-
 
 
     <record id="estate.form_view" model="ir.ui.view">
@@ -110,8 +105,6 @@
         </field>
     </record>
 
-    
-
 
     <record id="estate.search_view" model="ir.ui.view">
         <field name="name">Search View</field>
@@ -132,9 +125,6 @@
     </record>
     
 
-
-
-
     <record id="estate.kanban_view" model="ir.ui.view">
         <field name="name">Kanban View</field>
         <field name="model">estate_property</field> 
@@ -144,7 +134,6 @@
                 <templates>
                     <t t-name="card">
 
-                       <!-- <div class="oe_kanban_card"> -->
                         <div>
                             <strong>
                                 <field name="name"/>
@@ -170,11 +159,12 @@
                         <div> 
                             <field name="tag_ids" widget = "many2many_tags" options="{'color_field': 'color'}"/>
                         </div>
-                        <!-- </div> -->
+                    
                     </t>
                 </templates>
             </kanban>
         </field>
     </record>
     
+
 </odoo>

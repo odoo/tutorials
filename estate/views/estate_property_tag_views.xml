@@ -1,5 +1,7 @@
 <?xml version="1.0"?>
 <odoo>
+
+
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
         <field name="res_model">estate_property_tag</field>
@@ -7,9 +9,8 @@
     </record>
 
 
-
      <record id="estate_property_tag_list_view" model="ir.ui.view">
-        <field name="name">List View</field>
+        <field name="name">Property Tags List View</field>
         <field name="model">estate_property_tag</field> 
         <field name="arch" type="xml">
             <list string="Tag List" editable = "bottom">
@@ -19,7 +20,4 @@
     </record>
 
 
-    
 </odoo>
-
-   
