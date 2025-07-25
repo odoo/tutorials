@@ -1,9 +1,12 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperties(models.Model):
     _name = "estate.property"
     _description = " Estate Properties"
+    _order = "id desc"
 
     name = fields.Char('Title', required=True)
     description = fields.Text('Description')
@@ -20,16 +23,24 @@ class EstateProperties(models.Model):
     garden_area = fields.Integer('Garden Area (sqm)')
     garden_orientation = fields.Selection(
         string='Orientation',
-        selection=[('north', 'North'), ('south', 'South'),
-                   ('east', 'East'), ('west', 'West')]
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ]
     )
     active = fields.Boolean('Active', default=True)
     state = fields.Selection(
         string='State',
         default='new',
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'),
-                   ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'),
-                   ('cancelled', 'Cancelled')]
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ]
     )
     property_type_id = fields.Many2one(
         'estate.property.types', string="Property Type")
@@ -39,9 +50,33 @@ class EstateProperties(models.Model):
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many(
         'estate.property.offer', 'property_id', string="Offers")
-    total_area = fields.Integer(compute="_compute_total_area")
+    total_area = fields.Integer(compute="_compute_total_area", store=True)
     best_price = fields.Float(
         compute="_compute_best_price", string="Best Offer")
+
+    # -------------------------------------------------------------------------
+    # SQL Constraints
+    # -------------------------------------------------------------------------
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price must be positive'),
+    ]
+
+    # -------------------------------------------------------------------------
+    # Python Constraints
+    # -------------------------------------------------------------------------
+
+    @api.constrains('selling_price', 'expected_price')
+    def check_selling_price(self):
+        for property in self:
+            if float_is_zero(property.selling_price, precision_digits=2):
+                continue
+
+            valid_selling_price = property.expected_price * 0.9
+            if float_compare(property.selling_price, valid_selling_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    "Selling price should not be less than 90% of the expected price!")
 
     # -------------------------------------------------------------------------
     # COMPUTE METHODS
@@ -55,4 +90,34 @@ class EstateProperties(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for property in self:
-            property.best_price = max(property.mapped('offer_ids.price'))
+            property.best_price = max(property.mapped('offer_ids.price')) if property.offer_ids else 0
+
+    # -------------------------------------------------------------------------
+    # OnChange METHODS
+    # -------------------------------------------------------------------------
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
+
+    # ------------------------------------------------------------
+    # ACTIONS
+    # ------------------------------------------------------------
+
+    def action_set_sold_property(self):
+        if self.state != 'cancelled':
+            self.state = 'sold'
+            return True
+        else:
+            raise UserError("Cancelled property can't be sold!!")
+
+    def action_set_cancelled_property(self):
+        if self.state != 'sold':
+            self.state = 'cancelled'
+        else:
+            raise UserError("Sold property can't be cancelled")

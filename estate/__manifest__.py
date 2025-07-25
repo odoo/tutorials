@@ -23,6 +23,7 @@
 
     'category': 'Tutorials/RealEstate',
     'version': '1.0',
+    'license': 'LGPL-3',
 
     'application': True,
     'installable': True,
