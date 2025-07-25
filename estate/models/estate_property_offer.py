@@ -35,18 +35,10 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         property_obj = self.env["estate.property"].browse(vals["property_id"])
 
-        existing_offers = self.search(
-            [
-                ("property_id", "=", vals["property_id"]),
-                ("price", ">", vals.get("price", 0)),
-            ]
-        )
-
-        if existing_offers:
-            highest_price = max(existing_offers.mapped("price"))
+        if vals.get("price", 0) < property_obj.best_price:
             raise UserError(
                 f"Cannot create an offer with price {vals.get('price', 0):,.2f}. "
-                f"An offer with a higher price ({highest_price:,.2f}) already exists."
+                f"An offer with a higher price ({property_obj.best_price:,.2f}) already exists."
             )
 
         if property_obj.state == "new":
