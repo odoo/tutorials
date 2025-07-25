@@ -27,7 +27,6 @@ class EstatePropertyOffer(models.Model):
 
     property_type_id = fields.Many2one(
         related='property_id.property_type_id',
-        stored = True
     )
 
     
@@ -100,13 +99,25 @@ class EstatePropertyOffer(models.Model):
     ]
 
 
-    @api.model
-    def create(self, vals):
-       
-        property_object = self.env["estate_property"].browse(vals['property_id'])
-        if float_compare(property_object.best_price, vals['price'], precision_digits=6) > 0:
-            raise UserError(f"Offer must be higher than {property_object.best_price}!")
-        
-        offer = super().create(vals)
-        offer.property_id.state = 'Offer Received'
-        return offer
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        property_ids = set()
+        for val in vals_list:
+            property_ids.add(val['property_id'])
+
+        property_objects = self.env["estate_property"].browse(list(property_ids))
+
+        property_best_price = {prop.id: prop.best_price for prop in property_objects}
+
+        for val in vals_list:
+            if float_compare(property_best_price[val['property_id']], val['price'], precision_digits=6) > 0:
+                raise UserError(f"Offer must be higher than {property_best_price[val['property_id']]}!")
+
+        offers = super().create(vals_list)
+
+        for offer in offers:
+            offer.property_id.state = 'Offer Received'
+
+        return offers
+

@@ -27,7 +27,7 @@ class TestModel(models.Model):
     active = fields.Boolean('Active', default = True)
     # New, Offer Received, Offer Accepted, Sold and Cancelled
     state = fields.Selection(
-        string='State',
+        string='Property Status',
         selection=[('New', 'New'),('Offer Received', 'Offer Received'), ('Offer Accepted', 'Offer Accepted'), ('Sold', 'Sold'),('Cancelled', 'Cancelled')],
         required = True,
         default = "New")
@@ -69,8 +69,8 @@ class TestModel(models.Model):
 
     def sell(self):
         for record in self:
-            if record.state == 'Cancelled':
-                raise UserError("Cancelled properties cannot be sold!")
+            if not record.state == 'Offer Accepted':
+                raise UserError("You cannot sell a property for which there is no accepted offer!")
 
             else:
                 record.state = "Sold"
