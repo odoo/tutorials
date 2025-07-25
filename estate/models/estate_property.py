@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Module"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     create_uid = fields.Integer()
@@ -39,7 +40,7 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         selection=[
             ("new", "New"),
-            ("offer_received", "Off Received"),
+            ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),

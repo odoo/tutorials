@@ -5,4 +5,44 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
+
+
+    <record id="type_list_view" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Types">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <record id="type_form_view" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Create Type">
+                <header>
+                    <h1 class="mb32">
+                        <field name="name">Types</field>
+                    </h1>
+                    <button name="%(estate.offer_model_action)d" type="action"
+                        string="Offers" icon="fa-money" class="oe_stat_button" />
+                    <!-- TODO put offer_count in button -->
+                </header>
+                <notebook>
+                    <page string="Properties">
+                        <field name="property_ids">
+                            <list>
+                                <field name="name" string="Title" />
+                                <field name="expected_price" />
+                                <field name="state" />
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </form>
+        </field>
+    </record>
 </odoo>

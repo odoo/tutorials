@@ -4,20 +4,25 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_state': True}</field>
     </record>
 
     <record id="property_list_view" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties"
+                decoration-bf="state == 'offer_accepted'"
+                decoration-success="state in ('offer_received', 'offer_accepted')"
+                decoration-muted="state == 'sold'">
                 <field name="name" />
                 <field name="postcode" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" string="Available From" />
+                <field name="date_availability" string="Available From" optional="true" />
             </list>
         </field>
     </record>
@@ -28,6 +33,8 @@
         <field name="arch" type="xml">
             <form string="Create Property">
                 <header>
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="new,offer_received,offer_accepted,sold" />
                     <button name="sell_property" type="object" string="Sold" />
                     <button name="cancel_property" type="object" string="Cancel" />
                 </header>
@@ -37,8 +44,9 @@
                     </h1>
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" />
-                            <field name="type_id" />
+                            <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
+                            <field name="type_id" options="{'no_create': true}" />
                             <field name="postcode" />
                             <field name="date_availability" />
                         </group>
@@ -57,15 +65,16 @@
                                 <field name="facades" />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
                                 <field name="state" />
                                 <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" />
+                                <field name="offer_ids"
+                                    readonly="state in ('offer_accepted','sold','cancelled')" />
                             </group>
                         </page>
                         <page string="Other Info">
@@ -87,6 +96,8 @@
             <search string="Search Properties">
                 <field name="name" />
                 <field name="postcode" />
+                <field name="living_area" string=">Area"
+                    filter_domain="[('living_area', '>=', self)]" />
                 <filter name="state" string="Available"
                     domain="[ '|', ('state','=','new'), ('state','=','offer_received')]"
                     help="Show only available properties" />
