@@ -1,9 +1,12 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 
 class Property(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _order = 'id desc'
 
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
@@ -38,6 +41,23 @@ class Property(models.Model):
     total_area = fields.Float('Total Area', compute='_compute_total_area')
     best_offer = fields.Float('Best Offer', compute='_compute_best_offer')
 
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)',
+         'The expected price must be strictly positive'),
+        ('check_selling_price', 'CHECK(selling_price >= 0)',
+         'The selling price must be positive'),
+    ]
+
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.buyer is not None and not float_is_zero(record.expected_price, precision_digits=2):
+                percent = (record.selling_price * 100) / \
+                    (record.expected_price)
+                if float_compare(percent, 90.0, precision_digits=2) == -1:
+                    raise ValidationError(
+                        "The selling must be 90% of the expected price. You must update your offer price.")
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -50,10 +70,27 @@ class Property(models.Model):
                 record, 'offer_ids') and len(record.offer_ids) > 0 else 0
 
     @api.onchange('garden')
-    def _onchange_partner_id(self):
+    def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_property_sold_cancelled(self):
+        for record in self:
+            if record.state != 'new' and record.state != 'cancelled':
+                raise UserError(
+                    'Only new and cancelled property can be deleted')
+
+    def action_set_property_sold(self):
+        if self.state == 'cancelled':
+            raise UserError("Cancelled properties cannot be sold")
+        self.state = 'sold'
+
+    def action_set_property_cancelled(self):
+        if self.state == 'sold':
+            raise UserError("Sold properties cannot be cancelled")
+        self.state = 'cancelled'

@@ -12,6 +12,7 @@
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_menu_views.xml',
+        'views/res_users_views.xml',
     ],
     'application': True,
     'installable': True,
