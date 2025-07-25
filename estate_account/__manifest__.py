@@ -4,4 +4,5 @@
     "depends": ["estate", "account"],
     "application": False,
     "data": [],
+    "license": "LGPL-3",
 }

@@ -13,4 +13,5 @@
         "views/estate_property_type_menus.xml",
         "views/res_users_views.xml",
     ],
+    license: "LGPL-3",
 }
