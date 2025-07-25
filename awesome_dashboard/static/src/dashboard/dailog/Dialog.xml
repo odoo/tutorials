@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<t t-name="awesome_dashboard.DashboardConfigDialog">
+    <Dialog title="'Dashboard Configuration'">
+        <div class="p-3">
+            <t t-foreach="props.items" t-as="item" t-key="item.id">
+                <div class="form-check">
+                    <input type="checkbox" id="item-{{ item.id }}" class="form-check-input" t-att-checked="!state.disabledItems.has(item.id)" t-on-change="() => toggleItem(item.id)"/>
+                    <label class="form-check-label" t-att-for="'item-' + item.id">
+                        <t t-esc="item.description or 'Unnamed Item'"/>
+                    </label>
+                </div>
+            </t>
+        </div>
+        <footer class="d-flex justify-content-end p-3">
+            <button class="btn btn-primary" t-on-click="saveConfig">Apply</button>
+        </footer>
+    </Dialog>
+</t>
