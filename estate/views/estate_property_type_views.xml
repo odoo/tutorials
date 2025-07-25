@@ -8,10 +8,19 @@
             <form string="Property type">
                 <sheet>
                     <group>
-                    <h1>
-                         Property Type
-                    </h1>
-                       <field name="name" string="Name"/>
+                        <field name="name" string="Name"/>
+                        <notebook>
+                            <page string="Properties">
+                                <field name="property_ids" nolabel="1">
+                                    <list>
+                                        <field name="name" string="Title"/>
+                                        <field name="expected_price" string="Expected Price"/>
+                                        <field name="status" string="Status"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                      
                     </group>
                     </sheet>
             </form>

@@ -8,9 +8,6 @@
             <form string="Property tag">
                 <sheet>
                     <group>
-                    <h1>
-                         Property Tag
-                    </h1>
                        <field name="name" string="Name"/>
                     </group>
                     </sheet>
