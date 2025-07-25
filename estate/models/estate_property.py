@@ -4,7 +4,7 @@ from odoo.tools import float_compare, float_is_zero
 
 class TestModel(models.Model):
     _name = "estate_property"
-    _description = "Basic fields in estate property"
+    _description = "Estate Property model"
     _order = "id desc"
 
 
@@ -25,7 +25,7 @@ class TestModel(models.Model):
         string='Garden Orientation',
         selection=[('North', 'North'),('South', 'South'), ('East', 'East'), ('West', 'West')])
     active = fields.Boolean('Active', default = True)
-    # New, Offer Received, Offer Accepted, Sold and Cancelled
+  
     state = fields.Selection(
         string='Property Status',
         selection=[('New', 'New'),('Offer Received', 'Offer Received'), ('Offer Accepted', 'Offer Accepted'), ('Sold', 'Sold'),('Cancelled', 'Cancelled')],
@@ -107,13 +107,13 @@ class TestModel(models.Model):
         return True
 
 
-
+    
     @api.ondelete(at_uninstall=False)
     def _unlink_if_offer_not_new_not_cancelled(self):
         if any(property.state not in ["New", "Cancelled"] for property in self):
             raise UserError("Can't delete an offer which is not cancelled or new!")
            
-
+    
 
 
 

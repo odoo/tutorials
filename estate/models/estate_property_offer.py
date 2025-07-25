@@ -5,6 +5,7 @@ from odoo.tools import float_compare
 
 class EstatePropertyOffer(models.Model):
     _name = "estate_property_offer"
+    _description = "Estate Property Offer model"
     _order = "price desc"
 
 

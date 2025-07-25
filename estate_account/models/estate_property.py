@@ -3,7 +3,7 @@ from odoo import Command
 
 class InheritedModel(models.Model):
     _inherit = "estate_property"
-
+    _description = "Estate_Account module"
 
 
     def sell(self):
