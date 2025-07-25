@@ -5,9 +5,9 @@
         <field name="name">estate.property.type.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Channel">     
-                <field name="sequence" widget="handle"/>           
-                <field name="name"/>
+            <list string="Channel">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
             </list>
         </field>
     </record>
@@ -19,10 +19,14 @@
             <form string="Properties">
                 <sheet>
                     <group col="4">
-                        <group><field name="name"/></group>
+                        <group>
+                            <field name="name" />
+                        </group>
                         <group colspan="2">
-                            <button type="action" class="oe_stat_button" name="%(estate.estate_offer_action)d" icon="fa-money" string="Offers">
-                                <field name="offer_count" string="Offers"/>
+                            <button type="action" class="oe_stat_button"
+                                name="%(estate.estate_offer_action)d" icon="fa-money"
+                                string="Offers">
+                                <field name="offer_count" string="Offers" />
                             </button>
                         </group>
                     </group>
@@ -31,9 +35,9 @@
                             <page string="Properties">
                                 <field name="property_ids">
                                     <list>
-                                        <field name="name" string="Title"/>
-                                        <field name="expected_price"/>
-                                        <field name="state" string="Status"/>
+                                        <field name="name" string="Title" />
+                                        <field name="expected_price" />
+                                        <field name="state" string="Status" />
                                     </list>
                                 </field>
                             </page>
@@ -50,7 +54,6 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
-
 
 
 </odoo>
