@@ -1,1 +1,1 @@
-from . import estate_property, estate_property_type, estate_property_tag, estate_property_offer, inherited_model
+from . import estate_property as estate_property, estate_property_type as estate_property_type, estate_property_tag as estate_property_tag, estate_property_offer as estate_property_offer, inherited_model as inherited_model
