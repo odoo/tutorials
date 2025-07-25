@@ -5,9 +5,10 @@
         <field name="name">ninja.turtles.estate.property.type.list</field>
         <field name="model">ninja.turtles.estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offers">
+            <list string="Offers" editable="bottom">
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="property_type_id"/>
                 <field name="status"/>
             </list>
         </field>
@@ -24,6 +25,7 @@
                     <field name="partner_id"/>
                     <field name="status"/>
                 </group>
+                <!-- TODO: why I'm I adding this? should it be removed?-->
                 <sheet>
                     <group>
                         <field name="price"/>

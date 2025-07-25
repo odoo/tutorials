@@ -8,6 +8,7 @@ from odoo.tools import float_is_zero, float_compare
 class NinjaTurtlesEstateModel(models.Model):
     _name = "ninja.turtles.estate"
     _description = "For the fastest progress ever!"
+    _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
@@ -132,7 +133,12 @@ class NinjaTurtlesEstateModel(models.Model):
         for record in self:
             if record.status == 'cancelled':
                 raise UserError("Cancelled properties cannot be sold.")
-            record.status = 'sold'
+            elif record.status == 'new':
+                raise UserError("You cannot sell a new property.")
+            elif record.status == 'offer received':
+                raise UserError("You cannot sell a property with a none-accepted offer.")
+            else:
+                record.status = 'sold'
         return True
 
     def action_cancel(self):

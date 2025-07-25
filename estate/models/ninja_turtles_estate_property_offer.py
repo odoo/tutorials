@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class NinjaTurtlesEstatePropertyOffer(models.Model):
     _name = "ninja.turtles.estate.property.offer"
     _description = "Ninja Turtles Estate for faster Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     _sql_constraints = [
@@ -33,6 +34,11 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
         required=True
     )
 
+    property_type_id = fields.Many2one(
+        related='property_id.property_type_id',
+        store=True
+    )
+
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
@@ -50,12 +56,24 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
             else:
                 record.validity = 0
 
+    @api.model_create_multi
+    def create(self, vals):
+        offer = super().create(vals)
+        if offer.property_id.status == 'new':
+            offer.property_id.status = 'offer received'
+
+        # TODO: when you add an offer that is accepted already,
+        #       you must check for validity first and then refuse the rest of the offers.
+
+        return offer
+
     def action_accept(self):
         for offer in self:
             if offer.property_id.status in ['sold', 'cancelled']:
                 raise UserError("You cannot accept an offer for a sold or cancelled property.")
-            if offer.offer_status == 'accepted':
-                continue
+            # TODO:
+            # if offer.offer_status == 'accepted':
+            #     continue
 
             # Refuse other offers
             other_offers = offer.property_id.offer_ids - offer
