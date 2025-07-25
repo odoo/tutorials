@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_pos_pos_form_inherit" model="ir.ui.view">
+        <field name="name">pos.order.form.inherit</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='fiscal_position_id']" position="after">
+                <field name="salesperson_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_list_inherit" model="ir.ui.view">
+        <field name="name">pos.order.list.inherit</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="salesperson_id" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_form_hr_employee_custom" model="ir.ui.view">
+        <field name="name">hr.employee.form.custom</field>
+        <field name="model">hr.employee</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet> 
+                <group>
+                    <field name="name"/>
+                    <field name="work_location_name" readonly="False"/>
+                    <field name="work_email"/>
+                    <field name="work_phone" widget="phone"/>
+                </group>
+            </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="open_view_employee" model="ir.actions.act_window">
+        <field name="name">Employees</field>
+        <field name="res_model">hr.employee</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="pos_salesman_info.view_form_hr_employee_custom" />
+    </record>
+</odoo>
