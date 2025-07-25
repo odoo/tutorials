@@ -125,7 +125,7 @@
                 <field name="state"/>
                 <field name="tag_ids"/>
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div >
                             <div class="o_kanban_record_top mb16 d-flex justify-content-between align-items-center">
                                 <div class="o_kanban_record_headings">

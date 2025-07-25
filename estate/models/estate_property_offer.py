@@ -31,20 +31,21 @@ class EstatePropertyOffer(models.Model):
         ),
     ]
 
-    @api.model
-    def create(self, vals):
-        property_obj = self.env["estate.property"].browse(vals["property_id"])
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_obj = self.env["estate.property"].browse(vals["property_id"])
 
-        if vals.get("price", 0) < property_obj.best_price:
-            raise UserError(
-                f"Cannot create an offer with price {vals.get('price', 0):,.2f}. "
-                f"An offer with a higher price ({property_obj.best_price:,.2f}) already exists."
-            )
+            if vals.get("price", 0) < property_obj.best_price:
+                raise UserError(
+                    f"Cannot create an offer with price {vals.get('price', 0):,.2f}. "
+                    f"An offer with a higher price ({property_obj.best_price:,.2f}) already exists."
+                )
 
-        if property_obj.state == "new":
-            property_obj.state = "offer_received"
+            if property_obj.state == "new":
+                property_obj.state = "offer_received"
 
-        return super().create(vals)
+        return super().create(vals_list)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
