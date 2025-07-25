@@ -53,6 +53,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Another offer was already accepted")
             record.status = "accepted"
             record.property_id.selling_price = record.price
+            record.property_id.partner_id = record.partner_id
 
     def action_refuse(self):
         for record in self:
