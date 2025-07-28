@@ -1,8 +1,7 @@
-from odoo import api, fields, models
-
-from odoo.exceptions import UserError
-
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -10,12 +9,12 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate offers"
     _order = "price desc"
 
-    price = fields.Float(required=True)
-    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
-    partner_id = fields.Many2one('res.partner', required=True)
+    price = fields.Float(required=True, string='Price')
+    status = fields.Selection([('accepted', 'Accepted'), ('refused', 'Refused')], copy=False, string='Status')
+    partner_id = fields.Many2one('res.partner', required=True, string='Partner')
     property_id = fields.Many2one('estate.property', required=True)
-    validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute='_compute_date_dealine', inverse='_inverse_date_deadline')
+    validity = fields.Integer(default=7, string='Validity')
+    date_deadline = fields.Date(compute='_compute_date_dealine', inverse='_inverse_date_deadline', string='Deadline')
     property_type_id = fields.Many2one(related='property_id.property_type_id')
 
     _sql_constraints = [
@@ -26,10 +25,8 @@ class EstatePropertyOffer(models.Model):
     @api.depends('create_date', 'validity')
     def _compute_date_dealine(self):
         for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date + relativedelta(days=record.validity)
-            else:
-                record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
+            create_date = record.create_date and record.create_date or fields.Date.today()
+            record.date_deadline = create_date + relativedelta(days=record.validity)
 
     @api.depends('create_date', 'date_deadline')
     def _inverse_date_deadline(self):
@@ -52,8 +49,9 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        property_ids = self.env['estate.property'].browse([vals['property_id'] for vals in vals_list])
         for vals in vals_list:
-            property_id = self.env['estate.property'].browse(vals['property_id'])
+            property_id = property_ids.filtered(lambda p: p.id == vals['property_id'])
             max_existing_offer = property_id.best_price
             if vals['price'] < max_existing_offer:
                 raise UserError(f"An offer price {vals['price']} should not be less than an existing offer {max_existing_offer}.")
