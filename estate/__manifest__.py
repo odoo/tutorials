@@ -13,4 +13,5 @@
         'views/estate_menus.xml',
         'views/inherited_model_views.xml',
     ],
+    'license': 'AGPL-3'
 }
