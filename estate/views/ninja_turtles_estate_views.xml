@@ -13,16 +13,14 @@
                   decoration-danger="status == 'cancelled'"
                   decoration-muted="status == 'sold'">
                 <field name="name"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
+                <field name="date_availability" optional="show"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" optional="show"/>
-                <field name="status"/>
-                <field name="property_type_id"/>
-                <field name="salesperson_id"/>
-                <field name="buyer_id"/>
             </list>
         </field>
     </record>
@@ -37,8 +35,12 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_mark_sold" string="Sold" type="object" class="btn btn-primary"
-                            invisible="status == 'sold' or status == 'canceled'"/>
+<!--                    <button name="action_mark_sold" string="Sold" type="object" class="offer_status == 'accepted'?'btn btn-primary':'btn btn-secondary'"-->
+<!--                            invisible="status == 'sold' or status == 'canceled'"/>-->
+                    <button name="action_mark_sold" string="Sold" type="object" class='btn btn-secondary'
+                            invisible="status not in ('new', 'offer received')"/>
+                    <button name="action_mark_sold" string="Sold" type="object" class='btn btn-primary'
+                            invisible="status != 'offer accepted'"/>
                     <button name="action_cancel" string="Cancel" type="object" class="btn btn-secondary"
                             invisible="status == 'sold' or status == 'canceled'"/>
                     <field name="status" widget="statusbar" readonly="1"
@@ -82,7 +84,8 @@
                             <field name="offer_ids"
                                    readonly = "status == 'offer accepted' or status == 'sold' or status == 'cancelled'">
                                 <list decoration-success="offer_status == 'accepted'"
-                                      decoration-danger="offer_status == 'refused'">
+                                      decoration-danger="offer_status == 'refused'"
+                                      editable="bottom">
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
@@ -128,7 +131,7 @@
 
                 <separator/>
 
-                <filter name="filter_available" string="Available"
+                <filter name="date_availability" string="Available"
                         domain="['|', ('status', '=', 'new'), ('status', '=', 'offer received')]"/>
                 <filter name="filter_active" string="Active" domain="[('active', '=', True)]"/>
                 <group expand="1" string="Group By">
@@ -145,6 +148,6 @@
         <field name="name">Ninja Turtles Estate</field>
         <field name="res_model">ninja.turtles.estate</field>
         <field name="view_mode">list,form</field>
-        <field name="context">{'search_default_available': 1}</field>
+        <field name="context">{'search_default_date_availability': True}</field>
     </record>
 </odoo>

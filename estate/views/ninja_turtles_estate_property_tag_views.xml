@@ -5,7 +5,7 @@
         <field name="name">ninja.turtles.estate.property.tag.tag</field>
         <field name="model">ninja.turtles.estate.property.tag</field>
         <field name="arch" type="xml">
-            <list editable="bottom">
+            <list string="Tags" editable="bottom">
                 <field name="name"/>
             </list>
         </field>

@@ -35,6 +35,7 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
     )
 
     property_type_id = fields.Many2one(
+    "ninja.turtles.estate.property.type",
         related='property_id.property_type_id',
         store=True
     )

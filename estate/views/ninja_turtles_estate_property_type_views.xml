@@ -19,10 +19,21 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <div class = "oe_title">
-                        <h1>
-                            <field name="name"/>
-                        </h1>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_ninja_turtles_estate_property_offer)d"
+                                string="Number of Offers"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-envelope">
+                            <field name="offer_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center" style="width: 100%;">
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name"/>
+                            </h1>
+                        </div>
                     </div>
                     <notebook>
                         <page string="Properties">
