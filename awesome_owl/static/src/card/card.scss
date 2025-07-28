@@ -1,0 +1,27 @@
+.card-content-transition {
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.card-content-open {
+    max-height: 500px;
+    opacity: 1;
+    padding-top: 0;
+}
+
+.card-content-closed {
+    max-height: 0;
+    opacity: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.card-icon-transition {
+    transition: transform 0.2s ease-in-out;
+}
+
+.card-icon-transition:hover {
+    transform: scale(1.1);
+}
