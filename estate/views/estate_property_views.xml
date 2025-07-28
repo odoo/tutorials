@@ -26,13 +26,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Property" decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
-                <field name="name" string="Title" width="180" />
-                <field name="property_type_id" width="180" />
-                <field name="postcode" width="180" />
-                <field name="bedrooms" width="180" />
-                <field name="living_area" string="Living Area (sqm)" width="180" />
-                <field name="expected_price" width="180" />
-                <field name="selling_price" width="180" />
+                <field name="name" string="Title"  />
+                <field name="property_type_id"  />
+                <field name="postcode"  />
+                <field name="bedrooms"  />
+                <field name="living_area" string="Living Area (sqm)"  />
+                <field name="expected_price"  />
+                <field name="selling_price"  />
                 <field name="date_availability" string="Available From" optional="hide" />
             </list>
         </field>
@@ -45,11 +45,10 @@
             <kanban default_group_by="property_type_id" groups_draggable="0" records_draggable="0">
                 <field name="state" />
                 <templates>
-                    <t t-name="kanban-box">
+                    <t t-name="card">
                         <div>
                             <h4>
                                 <field name="name"/>
-                                <!-- <field name="tags" /> -->
                             </h4>
                             <div>
                                 <span>Expected Price: </span>

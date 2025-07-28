@@ -27,8 +27,17 @@ class Property(models.Model):
         selection=[('north', 'North'), ('south', 'South'),
                    ('east', 'East'), ('west', 'West')],
     )
-    state = fields.Selection(string='State', selection=[('new', 'New'), ('offer_received', 'Offer Received'), (
-        'offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], default='new')
+    state = fields.Selection(
+        string='State',
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+        default='new'
+    )
     property_type_id = fields.Many2one(
         'estate.property.type', string='Property Type')
     buyer = fields.Many2one('res.partner', string='Buyer')
@@ -72,11 +81,15 @@ class Property(models.Model):
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
+            self.write({
+                'garden_area': 10,
+                'garden_orientation': 'north'
+            })
         else:
-            self.garden_area = 0
-            self.garden_orientation = None
+            self.write({
+                'garden_area': 0,
+                'garden_orientation': None
+            })
 
     @api.ondelete(at_uninstall=False)
     def _unlink_except_property_sold_cancelled(self):

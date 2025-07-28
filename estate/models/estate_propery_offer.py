@@ -31,14 +31,15 @@ class PropertyOffer(models.Model):
             record.date_deadline = (record.create_date if hasattr(
                 record, 'create_date') and record.create_date else datetime.now()) + timedelta(days=record.validity)
 
-    @api.model
-    def create(self, vals):
-        property = self.env['estate.property'].browse(vals['property_id'])
-        property.state = 'offer_received'
-        if vals['price'] < property.best_offer:
-            raise UserError(
-                f"The price must be higher than {property.best_offer}")
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            property.state = 'offer_received'
+            if vals['price'] < property.best_offer:
+                raise UserError(
+                    f"The price must be higher than {property.best_offer}")
+        return super().create(vals_list)
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -46,9 +47,12 @@ class PropertyOffer(models.Model):
             record.validity = 0 if deadline < 0 else deadline
 
     def action_accept(self):
-        self.property_id.buyer = self.partner_id
-        self.property_id.selling_price = self.price
-        self.property_id.state = 'offer_accepted'
+        property = self.property_id
+        property.write({
+            'buyer': self.partner_id,
+            'selling_price': self.price,
+            'state': 'offer_accepted',
+        })
         self.status = 'accepted'
 
     def action_reject(self):
