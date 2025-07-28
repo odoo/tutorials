@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            hello world!
         </div>
+        <Counter/>
+        <Card title="'My Card Title'" content="'This is some card content'"/>
+        <Card title="'Regular String (Escaped)'" content="'&lt;div class=&quot;text-danger&quot;&gt;This will be escaped&lt;/div&gt;'"/>
+        <Card title="'Markup String (HTML)'" content="markup('&lt;div class=&quot;text-primary&quot;&gt;This will render as HTML&lt;/div&gt;')"/>
+        <Card title="'Regular String (Escaped)'" content="regularHtml"/>
+        <Card content="safeHtml"/>
     </t>
-
 </templates>
