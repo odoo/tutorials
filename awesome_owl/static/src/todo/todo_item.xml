@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.TodoItem">
+        <div 
+            class="todo-item border rounded p-3 mb-2" 
+            t-att-class="props.todo.isCompleted ? 'bg-light text-muted' : 'bg-white'"
+        >
+            <div class="d-flex align-items-center">
+                <span class="badge bg-secondary me-2"><t t-esc="props.todo.id"/></span>
+                <span 
+                    t-att-class="props.todo.isCompleted ? 'text-decoration-line-through' : ''"
+                    style="flex-grow: 1; cursor: pointer;"
+                    t-on-click="toggleTodo"
+                >
+                    <t t-esc="props.todo.description"/>
+                </span>
+                <div class="ms-auto d-flex align-items-center">
+                    <t t-if="props.todo.isCompleted">
+                        <span class="text-success fs-5 me-2">✓</span>
+                    </t>
+                    <t t-else="">
+                        <span class="text-muted fs-6 me-2">○</span>
+                    </t>
+                    <button class="btn btn-sm btn-danger" t-on-click="removeTodo">🗑️</button>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

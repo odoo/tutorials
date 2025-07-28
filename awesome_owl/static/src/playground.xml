@@ -1,9 +1,55 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="container-fluid p-4">
+            <h1 class="mb-4">Hello World</h1>
+            
+            <div class="mb-4">
+                <h2>Counter Sum Demo</h2>
+                <div class="alert alert-primary mb-3">
+                    <strong>Sum: <t t-esc="sum"/></strong>
+                </div>
+                <Counter onIncrement="(value) => this.updateCounter('counter1', value)"/>
+                <Counter onIncrement="(value) => this.updateCounter('counter2', value)"/>
+            </div>
+            
+            <div class="mb-4">
+                <h2>Todo List Demo</h2>
+                <TodoList/>
+            </div>
+
+            <div class="mb-4">
+                <h2>Cards - Demonstrating t-set-slot</h2>
+
+                <Card title="'Ciao!'">
+                    <t t-set-slot="body">
+                        <p>This is the body content for the first card.</p>
+                    </t>
+                </Card>
+
+                <Card title="'Ciao!'">
+                    <t t-set-slot="body">
+                        <Counter onIncrement="(value) => this.updateCounter('counter3', value)"/>
+                    </t>
+                </Card>
+            </div>
+
+            
+            <div class="mb-4">
+                <h2>Template - Demonstrating t-esc vs t-out</h2>
+                <div class="alert alert-info">
+                    <h5>Using t-esc (always escaped):</h5>
+                    <p><t t-esc="normalString"/></p>
+                    <p><t t-esc="markupString"/></p>
+                </div>
+                
+                <div class="alert alert-warning">
+                    <h5>Using t-out (respects markup):</h5>
+                    <p><t t-out="normalString"/></p>
+                    <p><t t-out="markupString"/></p>
+                </div>
+            </div>
         </div>
     </t>
 

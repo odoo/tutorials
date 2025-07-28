@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.TodoList">
+        <div class="todo-list p-4">
+            <h3>Todo List</h3>
+            
+            <!-- Add Todo Form -->
+            <div class="add-todo-form mb-4">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        placeholder="Add a new todo..."
+                        t-model="newTodoText.value"
+                        t-on-keypress="onKeyPress"
+                    />
+                    <button 
+                        class="btn btn-primary" 
+                        type="button"
+                        t-on-click="addTodo"
+                    >
+                        Add Todo
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Todo List -->
+            <div class="todos">
+                <t t-if="todos.length === 0">
+                    <div class="alert alert-info">
+                        No todos yet! Add one above.
+                    </div>
+                </t>
+                <t t-else="">
+                    <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                        <TodoItem 
+                            todo="todo" 
+                            onToggle.bind="toggleTodo" 
+                            onRemove.bind="removeTodo"
+                        />
+                    </t>
+                </t>
+            </div>
+            
+            <!-- Stats -->
+            <div class="todo-stats mt-3">
+                <small class="text-muted">
+                    Total: <t t-esc="todos.length"/> | 
+                    Completed: <t t-esc="todos.filter(t => t.isCompleted).length"/> | 
+                    Remaining: <t t-esc="todos.filter(t => !t.isCompleted).length"/>
+                </small>
+            </div>
+        </div>
+    </t>
+
+</templates>
