@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"mrp_modular_type.access_modular_type","access_modular_type","mrp_modular_type.model_modular_type","base.group_user",1,1,1,1
+"rp_modular_type.access_sale_order_modular_type_wizard","access_sale_order_modular_type_wizard","mrp_modular_type.model_sale_order_modular_type_wizard","base.group_user",1,1,1,1
+"mrp_modular_type.access_sale_order_modular_type_wizard_line","access_sale_order_modular_type_wizard_line","mrp_modular_type.model_sale_order_modular_type_wizard_line","base.group_user",1,1,1,1
