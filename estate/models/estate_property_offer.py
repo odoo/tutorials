@@ -50,7 +50,7 @@ class EstatePropertyOffer(models.Model):
             self.status = 'refused'
 
     def create(self, vals):
-        current_property = self.env['estate.property'].browse(vals['property_id'])
+        current_property = self.env['estate.property'].browse(vals.get('property_id'))
         if current_property.status == 'new':
             current_property.status = 'offer_received'
         if (vals['price'] < current_property.best_price):
