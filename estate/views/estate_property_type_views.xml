@@ -1,0 +1,66 @@
+<odoo>
+    <!-- Define a List View for Estate Properties -->
+    <record id="view_estate_property_type_tree" model="ir.ui.view">
+        <field name="name">estate.property.types.tree</field>
+        <field name="model">estate.property.types</field>
+        <field name="arch" type="xml">
+            <list default_order="sequence,name">
+                <field name="sequence" widget="handle" />
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Define a Form View for Estate Properties -->
+    <record id="view_estate_property_type_form" model="ir.ui.view">
+        <field name="name">estate.property.types.tree</field>
+        <field name="model">estate.property.types</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(open_related_offers)d"
+                            type="action" icon="fa-bars" string="offers"
+                            invisible="offer_counts == 0"
+                        >
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_counts" />
+                                </span>
+                                <span class="o_stat_text">
+                                    Offers
+                                </span>
+                            </div>
+                        </button>
+                    </div>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <notebook>
+                        <page name="Properties">
+                            <field name="property_ids" readonly="1">
+                                <list>
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Define a Search, GroupBy, and Filter View for Estate Properties -->
+    <record id="view_estate_property_type_search" model="ir.ui.view">
+        <field name="name">estate.property.types.search</field>
+        <field name="model">estate.property.types</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name" />
+            </search>
+        </field>
+    </record>
+</odoo>

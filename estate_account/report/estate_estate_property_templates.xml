@@ -1,0 +1,12 @@
+<odoo>
+    <template id="report_estate_property_invoice" inherit_id="estate.report_estate_property">
+        <xpath expr="//div[@id='status']" position="after">
+            <t t-if="property.invoice_count==0">
+                <strong>!!! No invoice has been created !!!</strong>
+            </t>
+            <t t-else="">
+                <strong>!!! Invoice has already been created !!!</strong>
+            </t>
+        </xpath>
+    </template>
+</odoo>
