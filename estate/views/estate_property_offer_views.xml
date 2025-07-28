@@ -19,7 +19,6 @@
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <field name="property_type_id"/>
-                <field name="status" column_invisible="True"/>
                 <button name="action_accept" type="object" icon="fa-check" invisible="status != False" title="Accept Offer"/>
                 <button name="action_refuse" type="object" icon="fa-times" invisible="status != False" title="Refuse Offer"/>
             </list>
