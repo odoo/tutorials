@@ -12,7 +12,7 @@
             <field name="arch" type="xml">
                 <form>
                     <header>
-                        <button type="action" name="estate.estate_property_offer_action" string="Offers"/>
+                        <button name="estate.estate_property_offer_action" type="action" string="Offers"/>
                     </header>
                     <sheet>       
                         <h1><field name="name"/></h1>
