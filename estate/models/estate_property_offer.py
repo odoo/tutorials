@@ -49,10 +49,12 @@ class EstatePropertyOffer(models.Model):
         if not self.status:
             self.status = 'refused'
 
-    def create(self, vals):
-        current_property = self.env['estate.property'].browse(vals.get('property_id'))
-        if current_property.status == 'new':
-            current_property.status = 'offer_received'
-        if (vals['price'] < current_property.best_price):
-            raise UserError("This property already has better offers")
-        return super().create(vals)
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            current_property = self.env['estate.property'].browse(vals['property_id'])
+            if current_property.status == 'new':
+                current_property.status = 'offer_received'
+            if (vals['price'] < current_property.best_price):
+                raise UserError("This property already has better offers")
+        return super().create(vals_list)
