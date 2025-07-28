@@ -1,5 +1,5 @@
 {
-    "name": "Estate_account",
+    "name": "Estate Account",
     "depends": [
         "estate",
         "account",

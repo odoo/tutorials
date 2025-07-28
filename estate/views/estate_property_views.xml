@@ -6,19 +6,19 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Property">
-                <field name="name" />
-                <field name="postcode" />
-                <field name="expected_price" />
-                <field name="bedrooms" />
-                <field name="living_area" filter_domain="[('living_area', '>=',self)]" />
-                <field name="facades" />
-                <separator />
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="facades"/>
+                <separator/>
 
                 <filter string="Available" name="state"
-                    domain="['|', ('state','=','new'),('state','=','offer_received')]" />
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <group expand="1" string="Group By">
                     <filter string="Postcode" name="postcode"
-                        context="{'group_by':'postcode','residual_visible':True}" />
+                        context="{'group_by':'postcode','residual_visible':True}"/>
                 </group>
 
             </search>
@@ -35,57 +35,57 @@
                     <group>
                         <header>
                             <button name="sell_property" type="object" string="Sold"
-                                invisible="state =='sold' or state=='cancelled'" />
+                                invisible="state =='sold' or state=='cancelled'"/>
                             <button name="cancel_property" type="object" string="Cancel"
-                                invisible="state =='sold' or state=='cancelled'" />
+                                invisible="state =='sold' or state=='cancelled'"/>
                         </header>
                     </group>
                     <group>
                         <field name="state" widget="statusbar"
-                            statusbar_visible="new,offer_received,offer_accepted,sold" />
+                            statusbar_visible="new, offer_received, offer_accepted,sold"/>
                     </group>
                 </group>
                 <sheet>
                     <h1>
-                        <field name="name" />
+                        <field name="name"/>
                     </h1>
                     <field name="tags_ids" widget="many2many_tags"
-                        options="{'color_field': 'color'}" />
+                        options="{'color_field': 'color'}"/>
                     <group col="2">
                         <group>
                             <field name="property_type_id" string="Property type"
-                                options="{'no_create': true}" />
-                            <field name="postcode" />
-                            <field name="date_availibility" />
+                                options="{'no_create': true}"/>
+                            <field name="postcode"/>
+                            <field name="date_availibility"/>
                         </group>
                         <group>
-                            <field name="expected_price" />
-                            <field name="best_price" string="Best offer" />
-                            <field name="selling_price" />
+                            <field name="expected_price"/>
+                            <field name="best_price" string="Best offer"/>
+                            <field name="selling_price"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" />
-                                <field name="bedrooms" />
-                                <field name="living_area" />
-                                <field name="facades" />
-                                <field name="garage" />
-                                <field name="garden" />
-                                <field name="garden_area" invisible="not garden" />
-                                <field name="garden_orientation" invisible="not garden" />
-                                <field name="total_area" />
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids"
-                                readonly="state =='offer_accepted' or state=='sold' or state=='cancelled'" />
+                                readonly="state == 'offer_accepted' or state == 'sold' or state == 'cancelled'"/>
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="buyer_id" />
-                                <field name="salesperson_id" />
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
                             </group>
                         </page>
                     </notebook>
@@ -102,15 +102,15 @@
             <list string="Properties"
                 decoration-success="state =='offer_received' or state=='offer_accepted'"
                 decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
-                <field name="name" />
-                <field name="property_type_id" />
-                <field name="postcode" />
-                <field name="tags_ids" widget="many2many_tags" />
-                <field name="bedrooms" />
-                <field name="living_area" />
-                <field name="expected_price" />
-                <field name="selling_price" />
-                <field name="date_availibility" optional="True" />
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="tags_ids" widget="many2many_tags"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availibility" optional="True"/>
             </list>
         </field>
 
@@ -127,19 +127,19 @@
                         <t t-name="kanban-box">
                             <div>
                                 <div>
-                                    <field name="name" />
+                                    <field name="name"/>
                                 </div>
-                                <div>Expected Price:<field name="expected_price" />
+                                <div>Expected Price:<field name="expected_price"/>
                                 </div>
                                 <div t-if="record.state.raw_value =='offer_received'">Best offer:<field
-                                        name="best_price" />
+                                        name="best_price"/>
                                 </div>
                                 <div t-if="record.state.raw_value =='offer_accepted'">Selling price:<field
-                                        name="selling_price" />
+                                        name="selling_price"/>
                                 </div>
                                 <div>
                                     <field name="tags_ids" widget="many2many_tags"
-                                        options="{'color_field':'color'}" />
+                                        options="{'color_field':'color'}"/>
                                 </div>
                             </div>
                         </t>

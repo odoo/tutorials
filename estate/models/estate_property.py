@@ -1,4 +1,5 @@
-from odoo import models, fields, api, exceptions
+from odoo import api, fields, models
+from odoo.exceptions import AccessError, UserError, ValidationError
 from odoo.tools import float_utils
 
 
@@ -89,18 +90,8 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for record in self:
-            if (
-                len(record.offer_ids) != 0
-                and float_utils.float_compare(
-                    record.selling_price,
-                    0.9 * record.expected_price,
-                    precision_digits=5,
-                )
-                == -1
-            ):
-                raise exceptions.ValidationError(
-                    r"The selling price cannot be lower than 90% of the expected price"
-                )
+            if (record.state =="offer_accepted" and float_utils.float_compare(record.selling_price,0.9 * record.expected_price,precision_digits=5)== -1):
+                raise ValidationError(r"The selling price cannot be lower than 90% of the expected price")
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -108,31 +99,25 @@ class EstateProperty(models.Model):
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
-            self.garden_area = ""
-            self.garden_orientation = ""
+            self.garden_area = False
+            self.garden_orientation = False
 
     @api.ondelete(at_uninstall=False)
     def prevent_delete(self):
         for record in self:
-            if (
-                record.state == "offer_received"
-                or record.state == "offer_accepted"
-                or record.state == "sold"
-            ):
-                raise exceptions.AccessError(
-                    "You can't delete a property if it's not New or Cancelled"
-                )
+            if (record.state == "offer_received" or record.state == "offer_accepted" or record.state == "sold"):
+                raise AccessError("You can't delete a property if it's not New or Cancelled")
 
     def sell_property(self):
         for record in self:
             if record.state != "cancelled":
                 record.state = "sold"
             else:
-                raise exceptions.UserError("A cancelled property can not be sold")
+                raise UserError("A cancelled property can not be sold")
 
     def cancel_property(self):
         for record in self:
             if record.state != "sold":
                 record.state = "cancelled"
             else:
-                raise exceptions.UserError("A sold property can not be cancelled")
+                raise UserError("A sold property can not be cancelled")
