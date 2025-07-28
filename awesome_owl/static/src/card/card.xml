@@ -1,8 +1,16 @@
 <t t-name="awesome_owl.card">
     <div class="card d-inline-block m-2" style="width: 18rem;">
         <div class="card-body">
-            <h5 class="card-title" t-out="props.title"/>
-            <p class="card-text" t-out="props.content"/>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="card-title mb-0" t-out="props.title"/>
+                <button class="btn btn-sm btn-outline-secondary" t-on-click="toggleContent">
+                    <i t-if="state.isOpen" class="fa fa-chevron-up card-icon-transition"></i>
+                    <i t-else="" class="fa fa-chevron-down card-icon-transition"></i>
+                </button>
+            </div>
+            <div t-attf-class="card-text card-content-transition #{state.isOpen ? 'card-content-open' : 'card-content-closed'}">
+                <t t-slot="default"/>
+            </div>
         </div>
     </div>
 </t>

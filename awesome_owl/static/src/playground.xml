@@ -18,10 +18,48 @@
             </h4>
         </div>
 
-        <Card title="'My Card Title'" content="'This is some card content'"/>
-        <Card title="'Regular String (Escaped)'" content="'&lt;div class=&quot;text-danger&quot;&gt;This will be escaped&lt;/div&gt;'"/>
-        <Card title="'Markup String (HTML)'" content="markup('&lt;div class=&quot;text-primary&quot;&gt;This will render as HTML&lt;/div&gt;')"/>
-        <Card title="'Regular String (Escaped)'" content="regularHtml"/>
-        <Card content="safeHtml"/>
+        <div class="p-3">
+            <h4>Cards with Slots:</h4>
+
+            <Card title="'Simple Text'">
+                <p>This is simple text content in a slot!</p>
+            </Card>
+
+            <Card title="'HTML Content'">
+                <div class="text-primary">
+                    <strong>Bold text</strong> with <em>emphasis</em>
+                </div>
+                <ul>
+                    <li>Item 1</li>
+                    <li>Item 2</li>
+                </ul>
+            </Card>
+
+            <Card title="'Counter Component'">
+                <p class="mb-3">This card contains a Counter component:</p>
+                <Counter/>
+            </Card>
+
+            <Card title="'Multiple Components'">
+                <p>Multiple counters in one card:</p>
+                <Counter/>
+                <Counter/>
+                <div class="mt-2">
+                    <small class="text-muted">Both counters affect the sum above</small>
+                </div>
+            </Card>
+
+            <Card title="'Mixed Content'">
+                <div class="alert alert-info">
+                    <strong>Info:</strong> This card shows mixed content
+                </div>
+                <Counter/>
+                <div class="mt-2">
+                    <button class="btn btn-secondary btn-sm">A Button</button>
+                </div>
+            </Card>
+        </div>
+
+        <TodoList />
     </t>
 </templates>
