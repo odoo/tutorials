@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
@@ -11,7 +11,8 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=fields.Date.add(fields.Date.today(), months=3)
+        copy=False,
+        default=fields.Date.add(fields.Date.today(), months=3),
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(
@@ -50,12 +51,13 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        "res.users",
+        string="Salesperson",
+        default=lambda self: self.env.user,
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-
     total_area = fields.Float(
         compute="_compute_total_area",
     )
@@ -127,15 +129,6 @@ class EstateProperty(models.Model):
             )
             record.buyer_id = record.buyer_id or self.env.user.partner_id
 
-        # Force form reload
-        return {
-            "type": "ir.actions.act_window",
-            "res_model": "estate.property",
-            "res_id": self.id,
-            "view_mode": "form",
-            "target": "current",
-        }
-
     def action_cancel(self):
         for record in self:
             if record.state == "sold":
@@ -143,12 +136,3 @@ class EstateProperty(models.Model):
             record.state = "cancelled"
             record.selling_price = 0.0
             record.buyer_id = False
-
-        # Force form reload
-        return {
-            "type": "ir.actions.act_window",
-            "res_model": "estate.property",
-            "res_id": self.id,
-            "view_mode": "form",
-            "target": "current",
-        }
