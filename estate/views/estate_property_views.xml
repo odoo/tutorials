@@ -99,7 +99,7 @@
                 <field name="living_area" string=">Area"
                     filter_domain="[('living_area', '>=', self)]" />
                 <filter name="state" string="Available"
-                    domain="[ '|', ('state','=','new'), ('state','=','offer_received')]"
+                    domain="[('state','in',['new','offer_received'])]"
                     help="Show only available properties" />
                 <group string="Group By">
                     <filter string="Postcode" name="postcode" domain="[]"

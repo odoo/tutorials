@@ -1,60 +1,57 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
-    _name = "estate.property.offer"
+    _name = 'estate.property.offer'
     _description = "Estate Property Offers"
-    _order = "price desc"
+    _order = 'price desc'
+
+    _sql_constraints = [
+        ('check_price', 'CHECK(price > 0)', "Offer Price should be bigger than 0"),
+    ]
 
     price = fields.Float()
     status = fields.Selection(
         selection=[
-            ("accepted", "Accepted"),
-            ("refused", "Refused"),
+            ('accepted', "Accepted"),
+            ('refused', "Refused"),
         ]
     )
-    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-    property_id = fields.Many2one("estate.property", string="Property", required=True)
-    type_id = fields.Many2one(related="property_id.type_id")
+    partner_id = fields.Many2one('res.partner', string="Partner", required=True)
+    property_id = fields.Many2one('estate.property', string="Property", required=True)
+    type_id = fields.Many2one(related='property_id.type_id')
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline')
 
-    _sql_constraints = [
-        ("check_price", "CHECK(price > 0)", "Offer Price should be bigger than 0"),
-    ]
-
-    @api.depends("validity", "create_date")
+    @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date + relativedelta(days=record.validity)
-            else:
-                record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
+        for offer in self:
+            offer.date_deadline = (offer.create_date or fields.Date.today()) + relativedelta(days=offer.validity)
 
-    @api.model_create_multi  # TODO try with single value
+    def _inverse_date_deadline(self):
+        for offer in self:
+            offer.validity = (offer.date_deadline - offer.create_date.date()).days
+
+    @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            property_id = self.env["estate.property"].browse(vals["property_id"])
-            if vals["price"] < property_id.best_offer:
-                raise UserError("Cannot input price lower than current best offer")
-            property_id.state = "offer_received"
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            if vals['price'] < property_id.best_offer:
+                raise UserError(_("Cannot input price lower than current best offer"))
+            property_id.state = 'offer_received'
 
         return super().create(vals_list)
 
-    def _inverse_date_deadline(self):
-        for record in self:
-            record.validity = (record.date_deadline - record.create_date.date()).days
-
     def action_accept(self):
-        for record in self:
-            if any(r == "accepted" for r in record.property_id.offer_ids.mapped("status")):
-                raise UserError("Another offer was already accepted")
-            record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.partner_id = record.partner_id
+        for offer in self:
+            if any(r == 'accepted' for r in offer.property_id.offer_ids.mapped('status')):
+                raise UserError(_("Another offer was already accepted"))
+            offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.partner_id = offer.partner_id
 
     def action_refuse(self):
-        for record in self:
-            record.status = "refused"
+        for offer in self:
+            offer.status = 'refused'
