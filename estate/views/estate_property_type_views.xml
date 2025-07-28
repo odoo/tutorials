@@ -7,6 +7,15 @@
         <field name="arch" type="xml">
             <form string="Property type">
                 <sheet>
+                    <!-- Stat button -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate.estate_property_offer)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-bars">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
                     <group>
                         <field name="name" string="Name"/>
                         <notebook>
@@ -20,10 +29,20 @@
                                 </field>
                             </page>
                         </notebook>
-                      
                     </group>
-                    </sheet>
+                </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property type">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+            </list>
         </field>
     </record>
 

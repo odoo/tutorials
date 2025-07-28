@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
+    _order = 'id desc'
 
     name = fields.Char('Property Name', required=True)
     description = fields.Text('Description')
@@ -40,7 +41,7 @@ class EstateProperty(models.Model):
             ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('cancelled', "Cancelled")
+            ('cancelled', 'Cancelled')
         ],
         default='new'
     )
@@ -112,3 +113,10 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("A sold property cannot be cancelled.")
             record.status = 'cancelled'
         return True
+
+    # Method to check delete if status is not 'New' or 'Cancelled'
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for record in self:
+            if record.status not in ['new', 'cancelled']:
+                raise exceptions.UserError("You can only delete properties that are New or Cancelled.")

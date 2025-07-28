@@ -10,8 +10,18 @@
                     <group>
                        <field name="name" string="Name"/>
                     </group>
-                    </sheet>
+                </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_tag_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list string="Offers" editable="bottom">
+                <field name="name"/>
+            </list>
         </field>
     </record>
 
