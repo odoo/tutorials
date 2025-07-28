@@ -4,12 +4,15 @@
     <t t-name="awesome_owl.Card">
         <div class="card d-inline-block m-2">
             <div class="card-body">
-                <h5 class="card-title">
-                    <t t-esc="props.title" />
-                </h5>
-                <p class="card-text">
-                    <t t-out="props.content" />
-                </p>
+                <div class="d-flex align-items-center justify-content-between gap-2">
+                    <h5 class="card-title mb-0">
+                        <t t-esc="props.title" />
+                    </h5>
+                    <button class="btn bg-secondary text-white" t-on-click="toggleMinimizeContent">Toggle</button>
+                </div>
+                <t t-if="!state.minimizeContent">
+                        <t t-slot="default" />
+                </t>    
             </div>
         </div>
     </t>
