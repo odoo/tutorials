@@ -38,6 +38,10 @@
                         <t t-esc="this.result.total_amount" />
                     </t>
                 </DashboardItem>
+                <DashboardItem size="3">
+                    <p>Shirts order by size</p>
+                    <PieChart graphData="this.result.orders_by_size" />
+                </DashboardItem>
             </div>
         </Layout>
     </t>
