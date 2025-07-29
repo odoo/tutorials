@@ -2,7 +2,44 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{controlPanel: {}}" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="d-flex gap-3 flex-wrap">
+                <DashboardItem>
+                    <p>Average amount of t-shirt by order this month</p>
+                    <t t-set-slot="value">
+                        <t t-esc="this.result.average_quantity" />
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <p>Average time for an order to go from 'new' to 'sent' or 'cancelled'</p>
+                    <t t-set-slot="value">
+                        <t t-esc="this.result.average_time" />
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Number of new orders this month</p>
+                    <t t-set-slot="value">
+                        <t t-esc="this.result.nb_new_orders" />
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Number of cancelled orders this month</p>
+                    <t t-set-slot="value">
+                        <t t-esc="this.result.nb_cancelled_orders" />
+                    </t>
+                </DashboardItem>
+                <DashboardItem>
+                    <p>Total amount of new orders this month</p>
+                    <t t-set-slot="value">
+                        <t t-esc="this.result.total_amount" />
+                    </t>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
