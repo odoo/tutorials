@@ -12,10 +12,9 @@ export class DashboardItem extends Component {
         },
         slots: {
             type: Object,
-            shape: {
-                default: Object
-            },
-        },
+            optional: true,
+        }
+        
     };
     static defaultProps = {size: 1};
 }
