@@ -9,7 +9,7 @@
     <field name="name">estate.property.tag.view.list</field>
     <field name="model">estate.property.tag</field>
     <field name="arch" type="xml">
-      <list string="Channel">
+      <list string="Channel" editable="top">
         <field name="name"/>
       </list>
     </field>

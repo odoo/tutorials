@@ -3,19 +3,48 @@
   <record id="test_model_action" model="ir.actions.act_window">
     <field name="name">Properties</field>
     <field name="res_model">estate.property</field>
+    <field name="context">{'search_default_available': 1}</field>
+    <field name="view_mode">kanban,form</field>
+  </record>
+  <record id="estate_property_view_kanban" model="ir.ui.view">
+    <field name="name">estate.property.view.kanban</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+      <kanban
+          default_group_by="property_type_id"
+          groups_draggable="false" record_draggable="false"
+              >
+          <field type="col" name="state" />
+        <templates>
+          <t t-name="card">
+            <div class="d-flex flex-column">
+              <b>
+                <field name="name"/>
+              </b>
+              <field name="expected_price"/>
+              <field t-if="record.state.raw_value == 'received'" name="best_price"/>
+              <field t-if="record.state.raw_value == 'offer_accepted'" name="selling_price"/>
+              <field name="tag_ids"/>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
   </record>
   <record id="test_model_list" model="ir.ui.view">
     <field name="name">estate.property.view.list</field>
     <field name="model">estate.property</field>
     <field name="arch" type="xml">
-      <list string="Channel">
+      <list string="Channel" decoration-muted="state == 'sold'" decoration-success="state in ['received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'">
         <field name="name"/>
+        <field name="state"/>
         <field name="postcode"/>
         <field name="bedrooms"/>
-        <field name="living_area" string="Living Area (sqm)"/>
+        <field name="living_area"/>
         <field name="expected_price"/>
         <field name="selling_price"/>
-        <field name="date_availability" string="Availble From"/>
+        <field name="date_availability" optional="hide"/>
+        <field name="tag_ids"/>
       </list>
     </field>
   </record>
@@ -24,6 +53,11 @@
     <field name="model">estate.property</field>
     <field name="arch" type="xml">
       <form string="Testttt">
+        <header>
+          <button invisible="state in ['sold', 'cancelled']" name="action_cancel_property" type="object" string="Cancel"/>
+          <button invisible="state in ['sold', 'cancelled']" name="action_sell_property" type="object" string="Sell"/>
+          <field widget="statusbar" statusbar_visible="new,received,offer_accepted,sold" name="state"/>
+        </header>
         <sheet>
           <group>
             <h1 class="oe_title">
@@ -31,14 +65,18 @@
             </h1>
           </group>
           <group>
+            <field nolabel="1" name="tag_ids" widget="many2many_tags"/>
+          </group>
+          <group>
             <group>
-              <field name="property_type_id"/>
+              <field name="property_type_id" options="{'no_create': 'true'}"/>
               <field name="postcode"/>
               <field name="date_availability"/>
             </group>
             <group>
               <field name="expected_price"/>
               <field name="selling_price"/>
+              <field name="best_price"/>
             </group>
           </group>
           <notebook>
@@ -50,9 +88,14 @@
                 <field name="facades"/>
                 <field name="garage"/>
                 <field name="garden"/>
-                <field name="garden_area"/>
-                <field name="garden_orientation"/>
-                <field name="state"/>
+                <field invisible="not garden" name="garden_area"/>
+                <field invisible="not garden" name="garden_orientation"/>
+                <field name="total_area"/>
+              </group>
+            </page>
+            <page string="Offers">
+              <group>
+                <field name="estate_property_offer_ids"/>
               </group>
             </page>
             <page string="Other Info">
@@ -75,8 +118,9 @@
         <field name="postcode"/>
         <field name="expected_price"/>
         <field name="bedrooms"/>
-        <field name="living_area"/>
+        <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
         <field name="facades"/>
+        <filter name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'received')]"/>
         <filter name="New" domain="[('state', '=', 'new')]"/>
         <filter name="Offer received" domain="[('state', '=', 'received')]"/>
         <filter string="Post Code" name="postcode" context="{'group_by': 'postcode'}"/>
