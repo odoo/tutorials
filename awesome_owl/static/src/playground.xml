@@ -2,9 +2,18 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+        <!-- Card Component -->
+        <t t-foreach="state.cards" t-as="card" t-key="card.title">
+            <Card t-props="{ title: card.title, content: card.content }"/>
+        </t> 
+
+        <!-- Child Component  -->
+        <div class="d-flex flex-column w-25 mx-2 card border border-3">
+            <Counter onchange.bind="incrementSum"/>
+            <Counter onchange.bind="incrementSum"/>
+            <h2 class="px-3">Sum: <t t-esc="state.sum"/></h2>
+        </div> 
+              
     </t>
 
 </templates>
