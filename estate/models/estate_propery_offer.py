@@ -55,5 +55,11 @@ class PropertyOffer(models.Model):
         })
         self.status = 'accepted'
 
+        # Refusing other offers so only one can be accepted.
+        other_offers = property.offer_ids - self
+        other_offers.write({
+            'status': 'refused',
+        })
+
     def action_reject(self):
         self.status = 'refused'

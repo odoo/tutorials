@@ -27,9 +27,9 @@
         <field name="arch" type="xml">
             <list string="Property" decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name" string="Title"  />
-                <field name="property_type_id"  />
-                <field name="postcode"  />
-                <field name="bedrooms"  />
+                <field name="property_type_id" optional="hide"  />
+                <field name="postcode" optional="hide"  />
+                <field name="bedrooms" optional="hide"  />
                 <field name="living_area" string="Living Area (sqm)"  />
                 <field name="expected_price"  />
                 <field name="selling_price"  />
