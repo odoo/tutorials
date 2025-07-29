@@ -8,10 +8,9 @@
             <form string="Property type">
                 <sheet>
                     <!-- Stat button -->
-                    <div class="oe_button_box" name="button_box">
+                    <div name="button_box">
                         <button name="%(estate.estate_property_offer)d"
                             type="action"
-                            class="oe_stat_button"
                             icon="fa-bars">
                             <field name="offer_count" widget="statinfo" string="Offers"/>
                         </button>

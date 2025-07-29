@@ -1,5 +1,4 @@
 from odoo import exceptions, api, fields, models
-from odoo.exceptions import ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -47,12 +46,13 @@ class EstatePropertyOffer(models.Model):
             if property_rec.status in ('sold', 'cancelled'):
                 raise exceptions.UserError("You cannot accept an offer on a sold or cancelled property.")
 
-            # prevent more than one accepted offer
-            already_accepted = property_rec.offer_ids.filtered(lambda ele: ele.status == 'accepted')
-            if already_accepted and record not in already_accepted:
-                raise exceptions.UserError("Only one offer can be accepted for a property.")
-
             record.status = 'accepted'
+
+            # Reject the other offers
+            other_offers = property_rec.offer_ids - record
+            other_offers.write({
+                'status': 'refused'
+            })
 
             # set buyer & selling price on the property
             property_rec.write({
@@ -78,7 +78,7 @@ class EstatePropertyOffer(models.Model):
 
             # Check for higher existing offers
             if property_rec.offer_ids and any(offer.price > new_price for offer in property_rec.offer_ids):
-                raise ValidationError("Cannot create offer. A higher offer already exists.")
+                raise exceptions.ValidationError("Cannot create offer. A higher offer already exists.")
 
             # Change property state
             property_rec.write({'status': 'offer_received'})
