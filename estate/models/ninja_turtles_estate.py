@@ -1,57 +1,48 @@
-from odoo import models, fields, api
 from datetime import date, timedelta
 
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_is_zero, float_compare
+from odoo.tools import float_compare, float_is_zero
 
 
-class NinjaTurtlesEstateModel(models.Model):
+class NinjaTurtlesEstate(models.Model):
     _name = "ninja.turtles.estate"
     _description = "For the fastest progress ever!"
     _order = "id desc"
+    _inherit = ['mail.thread']
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
-
     postcode = fields.Char(string="Postcode")
     date_availability = fields.Date(
         string="Available From",
         copy=False,
         default=lambda self: date.today() + timedelta(days=90),
     )
-
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(
         string="Selling Price",
         readonly=True,
         copy=False,
     )
-    _sql_constraints = [
-        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive.'),
-        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'Selling price must be positive.'),
-    ]
-
     bedrooms = fields.Integer(
         string="Bedrooms",
         default=2,
     )
     living_area = fields.Integer(string="Living Area (sqm)")
-
     facades = fields.Integer(string="Facades")
     garage = fields.Boolean(string="Garage")
-
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)")
-
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
             ('north', 'North'),
             ('south', 'South'),
             ('east', 'East'),
-            ('west', 'West')
+            ('west', 'West'),
         ],
-        help="Garden Orientation is for choosing your specified area for your garden."
+        help="Garden Orientation is for choosing your specified area for your garden.",
     )
     status = fields.Selection(
         string="Status",
@@ -60,54 +51,53 @@ class NinjaTurtlesEstateModel(models.Model):
             ('offer received', 'Offer Received'),
             ('offer accepted', 'Offer Accepted'),
             ('sold', "Sold"),
-            ('cancelled', "Cancelled")
+            ('cancelled', "Cancelled"),
         ],
         required=True,
         default="new",
-        copy=False
+        copy=False,
+        tracking=True,
     )
     active = fields.Boolean(
         string="Active",
         default=True,
     )
-
     total_area = fields.Integer(
         string="Total Area",
         compute="_compute_total_area",
     )
-
     best_price = fields.Float(
         string="Best Offer",
         compute="_compute_best_price",
     )
-
     property_type_id = fields.Many2one(
         "ninja.turtles.estate.property.type",
-        string="Property Type"
+        string="Property Type",
     )
-
     buyer_id = fields.Many2one(
         "res.partner",
         string="Buyer",
-        copy=False
+        copy=False,
     )
-
     salesperson_id = fields.Many2one(
         "res.users",
         string="Salesperson",
-        default=lambda self: self.env.user
+        default=lambda self: self.env.user,
     )
-
     tag_ids = fields.Many2many(
         "ninja.turtles.estate.property.tag",
-        string="Tags"
+        string="Tags",
     )
-
     offer_ids = fields.One2many(
         "ninja.turtles.estate.property.offer",
         "property_id",
-        string="Offers"
+        string="Offers",
     )
+
+    _sql_constraints = [
+        ('check_expected_price_positive', 'CHECK(expected_price > 0)', 'Expected price must be strictly positive.'),
+        ('check_selling_price_positive', 'CHECK(selling_price >= 0)', 'Selling price must be positive.'),
+    ]
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -131,12 +121,10 @@ class NinjaTurtlesEstateModel(models.Model):
 
     def action_mark_sold(self):
         for record in self:
-            if record.status == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
-            elif record.status == 'new':
-                raise UserError("You cannot sell a new property.")
+            if record.status in ('cancelled', 'new'):
+                raise UserError("Cancelled or new properties cannot be sold.")
             elif record.status == 'offer received':
-                raise UserError("You cannot sell a property with a none-accepted offer.")
+                raise UserError("You cannot sell a property with a non-accepted offer.")
             else:
                 record.status = 'sold'
         return True
@@ -159,3 +147,9 @@ class NinjaTurtlesEstateModel(models.Model):
                     "Selling price cannot be lower than 90% of the expected price.\n"
                     f"Expected: {record.expected_price}, Minimum Allowed: {min_price}, Given: {record.selling_price}"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _check_property_deletion(self):
+        for record in self:
+            if record.status not in ['new', 'cancelled']:
+                raise UserError("You can only delete properties in 'New' or 'Cancelled' status.")

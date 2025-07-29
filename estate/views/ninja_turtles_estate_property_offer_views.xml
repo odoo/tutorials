@@ -23,12 +23,6 @@
         <field name="model">ninja.turtles.estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Offer">
-                <group>
-                    <field name="price"/>
-                    <field name="partner_id"/>
-                    <field name="offer_status"/>
-                </group>
-                <!-- TODO: why I'm I adding this? should it be removed?-->
                 <sheet>
                     <group>
                         <field name="price"/>

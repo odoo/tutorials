@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class NinjaTurtlesEstatePropertyTag(models.Model):
@@ -7,8 +7,8 @@ class NinjaTurtlesEstatePropertyTag(models.Model):
     _order = "name"
 
     name = fields.Char(required=True)
+    color = fields.Integer()
+
     _sql_constraints = [
         ('unique_tag_name', 'UNIQUE(name)', 'Tag name must be unique.')
     ]
-
-    color = fields.Integer()

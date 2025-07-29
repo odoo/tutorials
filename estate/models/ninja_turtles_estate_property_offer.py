@@ -1,7 +1,8 @@
-from odoo import models, fields, api
 from datetime import timedelta
 
-from odoo.exceptions import UserError
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare
 
 
 class NinjaTurtlesEstatePropertyOffer(models.Model):
@@ -10,35 +11,33 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Float(string="Price")
-    _sql_constraints = [
-        ('check_offer_price_positive', 'CHECK(price > 0)', 'Offer price must be strictly positive.')
-    ]
-
     offer_status = fields.Selection(
         [('accepted', 'Accepted'), ('refused', 'Refused')],
         string="Status",
         copy=False,
     )
-
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
-
     partner_id = fields.Many2one(
         "res.partner",
         string="Partner",
-        required=True
+        required=True,
     )
     property_id = fields.Many2one(
         "ninja.turtles.estate",
         string="Property",
-        required=True
+        required=True,
+        ondelete="cascade",                 # its kinda weird cuz it should only be on the property model
     )
-
     property_type_id = fields.Many2one(
     "ninja.turtles.estate.property.type",
         related='property_id.property_type_id',
-        store=True
+        store=True,
     )
+
+    _sql_constraints = [
+        ('check_offer_price_positive', 'CHECK(price > 0)', 'Offer price must be strictly positive.'),
+    ]
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
@@ -58,29 +57,55 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
                 record.validity = 0
 
     @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get('property_id')
+            if property_id:
+                property = self.env['ninja.turtles.estate'].browse(property_id)
+
+                max_offer = max(property.offer_ids.mapped('price'), default=0)
+                if vals['price'] < max_offer:
+                    raise UserError("You cannot create an offer lower than an existing offer.")
+
+                property.status = 'offer received'
+        return super().create(vals_list)
+
+    '''
+    @api.model_create_multi
     def create(self, vals):
         offer = super().create(vals)
+        # TODO: here you're accepting to take many records and its fine, but you have to do more logic
+        #       like for example to get the maximum/best offer out of these records,
+        #       what i'm thinking about right now is to check for accepted offers first, then do the usual code down there
+        #       for that specific accepted offer
+        if offer.offer_status == 'accepted':
+            min_price = 0.9 * offer.property_id.expected_price
+            if float_compare(offer.price, min_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    "Selling price cannot be lower than 90% of the expected price.\n"
+                    f"Expected: {offer.property_id.expected_price}, Minimum Allowed: {min_price}, Given: {offer.price}"
+                )
+            other_offers = offer.property_id.offer_ids - offer
+            other_offers.write({'offer_status': 'refused'})
+
+            offer.offer_status = 'accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.status = 'offer accepted'
+
         if offer.property_id.status == 'new':
             offer.property_id.status = 'offer received'
-
-        # TODO: when you add an offer that is accepted already,
-        #       you must check for validity first and then refuse the rest of the offers.
-
         return offer
+    '''
 
     def action_accept(self):
         for offer in self:
             if offer.property_id.status in ['sold', 'cancelled']:
                 raise UserError("You cannot accept an offer for a sold or cancelled property.")
-            # TODO:
-            # if offer.offer_status == 'accepted':
-            #     continue
 
-            # Refuse other offers
             other_offers = offer.property_id.offer_ids - offer
             other_offers.write({'offer_status': 'refused'})
 
-            # Accept current offer
             offer.offer_status = 'accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id

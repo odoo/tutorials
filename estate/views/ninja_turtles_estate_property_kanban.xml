@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="ninja_turtles_estate_property_kanban" model="ir.ui.view">
+        <field name="name">ninja.turtles.estate.property.kanban</field>
+        <field name="model">ninja.turtles.estate</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" groups_draggable="False" records_draggable="False">
+                <field name="status"/>
+                <field name="property_type_id"/>
+                <field name="offer_ids"/>
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <strong><field name="name"/></strong>
+                            <div>Expected Price: <field name="expected_price"/></div>
+                            <div t-if="record.offer_ids.raw_value.length &gt; 0">
+                                Best Offer: <field name="best_price"/>
+                            </div>
+                            <div t-if="record.status.raw_value == 'offer accepted'">
+                                Selling Price: <field name="selling_price"/>
+                            </div>
+                            <div t-if="record.tag_ids.raw_value.length &gt; 0">
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="action_ninja_turtles_estate" model="ir.actions.act_window">
+        <field name="name">Ninja Turtles Estate Properties</field>
+        <field name="res_model">ninja.turtles.estate</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="help" type="html">
+            <p>Manage your properties.</p>
+        </field>
+    </record>
+</odoo>
