@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="property_detail_page_inherit_auction" inherit_id="estate.property_detail" name="Estate Property Description - Auction Button">
+        <xpath expr="//div[1]/div[2]" position="inside">
+            <t t-if="property.sell_type == 'auction' and property.auction_stage in ['auction', 'offer_accepted']">
+                <div class="alert alert-info col-md-10">
+                    <strong>Auction Ends In:</strong>
+                    <span t-att-data-auction_end_time="property.auction_end_time"></span>
+                </div>
+            </t>
+            <t t-if="property.sell_type == 'auction' and property.auction_stage == 'auction'">
+                <div class="col-md-6">
+                    <a t-att-href="'/property/auction/%d' % property.id" class="btn btn-warning">
+                        <i class="fa fa-gavel"></i> Participate in Auction
+                    </a>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
