@@ -1,0 +1,14 @@
+.hover-container .hover-button {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: absolute;
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.hover-container:hover .hover-button {
+    opacity: 1;
+}
+.quantity_on_hand_group .o_stat_info {
+    min-width: 150px;
+}
