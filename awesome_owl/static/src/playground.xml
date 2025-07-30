@@ -3,9 +3,16 @@
 
     <t t-name="awesome_owl.playground">
         <!-- Card Component -->
-        <t t-foreach="state.cards" t-as="card" t-key="card.title">
-            <Card t-props="{ title: card.title, content: card.content }"/>
-        </t> 
+        <div class="d-flex gap-2">
+            <Card title="'Counter Card'">
+                <Counter />
+            </Card>
+            <Card title="'Card 2'">
+                <div>
+                    <p>Content for card 2</p>
+                </div>
+            </Card>
+        </div>
 
         <!-- Child Component  -->
         <div class="d-flex flex-column w-25 mx-2 card border border-3">
@@ -13,7 +20,11 @@
             <Counter onchange.bind="incrementSum"/>
             <h2 class="px-3">Sum: <t t-esc="state.sum"/></h2>
         </div> 
-              
+
+        <!-- TodoList -->
+        <div>
+            <TodoList/>
+        </div>    
     </t>
 
 </templates>

@@ -1,25 +1,22 @@
 /** @odoo-module **/
 
+import { markup, Component, useState} from "@odoo/owl";
 import { Counter } from './counter/counter';
 import { Card } from './card/card';
-import { markup, Component, useState} from "@odoo/owl";
+import { TodoList } from './todolist/todolist';
 
 export class Playground extends Component {
 
     static template = "awesome_owl.playground";
-    static components = { Counter, Card }
+    static components = { Counter, Card, TodoList }
 
-    state = useState({
-        cards: [
-            { title: "Card 1", content: markup("<p>Dhananjay Brahmane</p>") },
-            { title: "Card 2", content: "Content of card 2" }
-        ],
-        sum: 0
-    });
+    setup(){
+        this.state = useState({ sum: 0 });
+    }
 
     incrementSum()
     {
        this.state.sum++
     }
-    
+
 }

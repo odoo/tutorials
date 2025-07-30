@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todolist">
+        <div class="w-50 m-2 card border border-3">
+            <div class="d-flex flex-row">
+                <h2 class="p-2">Todo List:- </h2>
+                <input 
+                class="form-control w-50 m-2" 
+                placeholder="Enter new task"
+                t-ref="input"
+                t-on-keyup="addTodo"/>
+            </div>
+            <ul class="border w-50 mx-2" t-foreach="state.todo" t-as="i" t-key="i.id">
+                <TodoItem 
+                t-props="{ 
+                id: i.id, 
+                description: i.description, 
+                isCompleted: i.isCompleted,
+                toggleState: toggleState,
+                removeTodo: removeTodo
+                }"
+                />
+            </ul>
+        </div>
+    </t>
+
+</templates>
