@@ -1,0 +1,16 @@
+.section-container {
+    display: inline-flex;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    gap: 16px;
+    align-items: center;
+    margin-left: 40px;
+}
+.style-btn {
+    background-color: #83185f;
+    color: rgb(255, 254, 255);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+}

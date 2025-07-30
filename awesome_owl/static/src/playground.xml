@@ -1,10 +1,35 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
+   <t t-name="awesome_owl.playground">
+    <h2 class="text-center mb-2 mt-4">Counters</h2>
+    <div class="section-container">
+        <span style="font-size: 18px;">hello world</span>
+        <Counter />
+        <Counter />
+   </div>
+    <h2 class="text-center mb-2 mt-4">Cards</h2>
+    <div class="section-container">
+        <Card title="'card 1'" content="'content of card 1'"/>
+        <Card title="'card 2'" content="'content of card 2'"/>
+    </div>
+    <h2 class="text-center mb-2 mt-4">Cards with Markup</h2>
+    <div class="section-container">
+        <Card heading="'card 1'" describtion="str1"/>
+        <Card heading="'card 2'" describtion="str2"/>
+    </div>
+    <h2 class="text-center mb-2 mt-4">Sum of counters</h2>
+    <div class="section-container">
+        <div>The sum is: <t t-esc="sum.value"/></div>
+        <Counter onChange.bind="incrementSum" />
+        <Counter onChange.bind="incrementSum" />
+   </div>
+    <h2 class="text-center mb-2 mt-4">Todo List</h2>
+    <div class="section-container">
+        <TodoList />
+   </div>
+    <h2 class="text-center mb-2 mt-4">Generic card with slots and toggle</h2>
+    <div class="section-container">
+        <Card title="'card 2'"><Counter /></Card>
+   </div>
     </t>
-
 </templates>
