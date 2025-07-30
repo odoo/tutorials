@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todoitem">
+        <div class="card d-inline-block m-2" style="width: 18rem;" t-att-class="{'text-muted': !state.todo.isCompleted, 'text-decoration-line-through': !state.todo.isCompleted, 'bg-body-tertiary': !state.todo.isCompleted, 'text-body-tertiary': !state.todo.isCompleted}">
+            <div class="card-body">
+                <h3 class="card-title">
+                    <t t-esc="state.todo.id"/>
+                </h3>
+                <p class="card-text">
+                    <t t-esc="state.todo.description"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>
