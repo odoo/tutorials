@@ -2,9 +2,51 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        
+        <div class="card d-inline-block m-2" style="width: 70rem;">
+            <div class="card-body">
+                <h5 class="card-title">Hello World!</h5>
+                <div class="card d-inline-block m-2" style="width: 12rem;">
+                    <div class="card-body">
+                        <Card title="'card 1'" id="1" onChange.bind="toggle" active="state.card1Active">
+                            Some content here
+                        </Card>
+                    </div>
+                </div>
+
+                <div class="card d-inline-block m-2" style="width: 12rem;">
+                    <div class ="card-body">
+                        <Card title="'Counter'" id="2" onChange.bind="toggle" active="state.card2Active">
+                            <Counter/>
+                        </Card>
+                    </div>
+                </div>
+
+                <div class="card d-inline-block m-2" style="width: 25rem;">
+                    <div class ="card-body">
+                        <Card title="'Todo'" id="3" onChange.bind="toggle" active="state.card3Active">
+                            <TodoList/>
+                        </Card>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card d-inline-block m-2" style="width: 50rem;">
+            <div class="card-body">
+                <h5 class="card-title">Counters</h5>
+                <div class="card d-inline-block m-2" style="width: 12rem;">
+                    <div class="card-body">
+                        <Counter onChange.bind="incrementSum"/>
+                    </div>
+                </div>
+                <div class="card d-inline-block m-2" style="width: 12rem;">
+                    <div class="card-body">
+                        <Counter onChange.bind="incrementSum"/>
+                    </div>
+                </div>
+                The sum is:<t t-out="state.value"/>
+            </div>
         </div>
     </t>
-
 </templates>

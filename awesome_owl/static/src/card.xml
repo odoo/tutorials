@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card-body">
+            <h5 class="card-title">
+                <t t-out="props.title"/>
+                <button t-on-click="minimize" class="ms-2">
+                    Toggle 
+                </button>
+            </h5>
+            <t t-if="props.active">
+                <t t-slot="default"/>
+            </t>
+        </div>
+    </t>
+</templates>
