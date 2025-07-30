@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_property_offers_inherit" inherit_id="estate.report_property_offers">
+        <xpath expr="//div[hasclass('page')]" position="inside">
+            <t t-if="docs.state == 'sold'">
+                <div class="page">
+                    <h2>Invoice Information</h2>
+                    <p>Invoice for this property has been created.</p>
+                    <p>
+                        <strong>Invoice Details:</strong>
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Buyer:</strong>
+                            <span t-esc="docs.buyer_id.name"/>
+                        </li>
+                        <li>
+                            <strong>Selling Price:</strong>
+                            <span t-esc="docs.selling_price"/>
+                        </li>
+                        <li>
+                            <strong>Administrative Fees:</strong> 100</li>
+                        <li>
+                            <strong>Total:</strong>
+                            <span t-esc="docs.selling_price * 0.06 + 100"/>
+                        </li>
+                    </ul>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
