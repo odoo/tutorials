@@ -1,0 +1,29 @@
+<odoo>
+    <record id="view_product_add_warranty_wizard" model="ir.ui.view">
+        <field name="name">product.add.warranty.form</field>
+        <field name="model">product.add.warranty</field>
+        <field name="arch" type="xml">
+            <form string="Add Warranty to Product">
+                <group>
+                    <field name="order_line_id"/>
+                    <field name="product_id"/>
+                    <field name="warranty_id"/>
+                    <field name="enddate"/>
+                </group>
+                <footer>
+                    <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="product_warranty_action_wizard" model="ir.actions.act_window">
+        <field name="name">Add Warranty</field>
+        <field name="res_model">product.add.warranty</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_product_add_warranty_wizard"/>
+        <field name="context">{'active_id': active_id}</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
