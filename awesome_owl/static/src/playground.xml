@@ -2,8 +2,28 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="d-flex justify-content-center">
+            <div class="border m-5">
+                <div class="d-flex gap-4 p-3" style="max-width: fit-content;">
+                    <Counter title="'Counter 1'" onChange.bind="incrementSum"/>
+                    <Counter title="'Counter 2'" onChange.bind="incrementSum"/>
+                </div>
+                <p class="ms-3">Sum is: <t t-esc="state.sum"></t></p>
+            </div>
+
+            <!-- Card Component -->
+            <div class="p-3 border m-5" style="max-width: fit-content;">
+                <h1>Cards</h1>
+                <div class="d-flex gap-3">
+                    <Card title="'Gandhinagar'" content="html"/>
+                    <Card title="'Ahmedabad'" content="markup_html"/>
+                </div>
+            </div>
+        </div>
+
+        <!-- Todo List Component -->
+        <div class="mt-5">
+            <TodoList/>
         </div>
     </t>
 
