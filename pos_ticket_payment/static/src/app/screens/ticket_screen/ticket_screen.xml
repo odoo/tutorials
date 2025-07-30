@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_ticket_payment.PaymentButton" t-inherit="point_of_sale.TicketScreen" t-inherit-mode="extension">
+        <xpath expr="//div[@t-if='ui.isSmall']//button[hasclass('load-order-button')]" position="after">
+            <button class="button btn-primary pay-order-button btn btn-lg w-50" t-on-click="onPayClick">Payment</button>
+        </xpath>
+        <xpath expr="//div[@t-else='']//button[hasclass('load-order-button')]" position="after">
+            <button class="button btn-primary pay-order-button btn btn-lg w-100" t-on-click="onPayClick">Payment</button>
+        </xpath>
+    </t>
+</templates>
