@@ -85,8 +85,7 @@
                         class="oe_highlight"
                         invisible="state == 'sold' or state == 'cancelled'"
                     />
-                    <button
-                        name="action_set_cancelled_property"
+                    <button name="action_cancel_property_conditional"
                         string="Cancel"
                         type="object"
                         class="oe_highlight"
@@ -200,7 +199,7 @@
         <field name="name">Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
-        <field name="view_mode">kanban,list,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="context">{'search_default_state': 1}</field>
     </record>
 

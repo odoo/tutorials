@@ -3,3 +3,4 @@ estate.access_estate_property,access_estate_property,estate.model_estate_propert
 estate.access_estate_property_types,access_estate_property_types,estate.model_estate_property_types,base.group_user,1,1,1,1
 estate.access_estate_property_tag,access_estate_property_tag,estate.model_estate_property_tag,base.group_user,1,1,1,1
 estate.access_estate_property_offer,access_estate_property_offer,estate.model_estate_property_offer,base.group_user,1,1,1,1
+estate.access_estate_property_cancel_wizard,access_estate_property_cancel_wizard,estate.model_estate_property_cancel_wizard,base.group_user,1,1,1,1

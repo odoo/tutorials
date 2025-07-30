@@ -116,9 +116,27 @@ class EstateProperties(models.Model):
         else:
             raise UserError("Cancelled property can't be sold!!")
 
-    def action_set_cancelled_property(self):
+    def action_cancel_property_conditional(self):
+        if self.state == 'offer_accepted':
+            # Show confirmation wizard
+            return {
+                'type': 'ir.actions.act_window',
+                'name': 'Confirm Cancellation',
+                'res_model': 'estate.property.cancel.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {
+                    'default_property_id': self.id,
+                    'default_property_name': self.name,
+                },
+            }
+        else:
+            return self.action_cancel_property()
+
+    def action_cancel_property(self):
         if self.state != 'sold':
             self.state = 'cancelled'
+            return True
         else:
             raise UserError("Sold property can't be cancelled")
 
