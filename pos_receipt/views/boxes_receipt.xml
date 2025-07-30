@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_pos_receipt_boxes">
+        <div style="text-align: center; width: 300px; margin: auto; border: 1px solid black; padding: 10px;">
+            <img t-if="logo" t-att-src="image_data_uri(logo)" alt="Logo" style="height: 70px; " />
+            <p style="margin: 5px 0;">Odoo India Pvt Ltd<br />Infocity Gandhinagar<br />Tax Id:
+            233300990223</p>
+            <t t-esc="header" />
+            <h2 style="margin: 5px 0;">701</h2>
+            <t t-if="is_restaurant"> Served by MOG <br /> Table 5 Guest 3 </t>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <tr>
+                    <th style="border: 1px solid black;">No</th>
+                    <th style="border: 1px solid black;">Item</th>
+                    <th style="border: 1px solid black;">Amount</th>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black;">1</td>
+                    <td style="border: 1px solid black;">Margarita Pizza<br />3 X 200<br />HSN:
+                        2300976</td>
+                    <td style="border: 1px solid black;">$600</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black;">2</td>
+                    <td style="border: 1px solid black;">Bacon Burger<br />5 X 150</td>
+                    <td style="border: 1px solid black;">$750</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black;">3</td>
+                    <td style="border: 1px solid black;">Apple Pie<br />3 X 80<br />HSN: 2300976</td>
+                    <td style="border: 1px solid black;">$240</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid black;">4</td>
+                    <td style="border: 1px solid black;">Cheese Burger<br />5 X 150<br />HSN:
+                        2300976</td>
+                    <td style="border: 1px solid black;">$750</td>
+                </tr>
+            </table>
+            <div class="border-bottom border-dark py-1 mb-2" style="font-size: 12px;">
+                <div class="d-flex justify-content-between small">
+                    <span>Total Qty 12</span>
+                    <span>Sub Total $1625</span>
+                </div>
+            </div>
+            <div class="text-end mb-2 fw-bold small border-bottom border-dark"
+                style="font-size: 12px;">
+                Cash $1625
+            </div>
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <tr>
+                    <th>Tax</th>
+                    <th>Amount</th>
+                    <th>Base</th>
+                    <th>Total</th>
+                </tr>
+                <tr>
+                    <td>SGST 2.5%</td>
+                    <td>40.2</td>
+                    <td>1584.8</td>
+                    <td>1625</td>
+                </tr>
+                <tr>
+                    <td>CGST 2.5%</td>
+                    <td>40.2</td>
+                    <td>1584.8</td>
+                    <td>1625</td>
+                </tr>
+            </table>
+            <t t-esc="footer" />
+            <p style="margin: 5px 0;">Odoo Point of Sale</p>
+            <p style="margin: 5px 0;">Order 0001-003-0004</p>
+            <p style="margin: 5px 0;">04/06/2024 08:30:24</p>
+        </div>
+    </template>
+</odoo>
