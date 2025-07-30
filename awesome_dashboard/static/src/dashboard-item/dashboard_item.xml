@@ -3,9 +3,6 @@
     <t t-name="awesome_dashboard.DashboardItem">
         <div t-att-style="`width: ${18*props.size}rem;`" class="d-inline-block bg-white border p-4 pb-2 me-2 mt-3">
             <t t-slot="default" />
-            <h1 class="text-success text-center display-3">
-                <t t-slot="value" />
-            </h1>
         </div>
     </t>
 </templates>

@@ -6,6 +6,7 @@ import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "../dashboard-item/dashboard_item";
 import { PieChart } from "../piechart/piechart";
+import { DashboardDialog } from "../dashboard_dialog/dashboard_dialog";
 
 export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -13,8 +14,11 @@ export class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
+        this.dialog = useService("dialog");
         this.statisticsService = useService("awesome_dashboard.statistics");
-        this.result = useState(this.statisticsService)
+        this.statistics = useState(this.statisticsService.statistics)
+        this.itemsState = useState(this.statisticsService.itemsState);
+        this.dashboardItems = registry.category("awesome_dashboard").get("awesome_dashboard.dashboard_items");
     }
 
     openCustomers() {
@@ -28,6 +32,12 @@ export class AwesomeDashboard extends Component {
             res_model: 'crm.lead',
             views: [[false, 'list'], [false, 'form']],
         });
+    }
+
+    openConfigurationDialog() {
+        this.dialog.add(DashboardDialog, {
+            items: this.dashboardItems
+        })
     }
 }
 
