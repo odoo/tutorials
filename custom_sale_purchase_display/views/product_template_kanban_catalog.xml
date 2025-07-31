@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_kanban_inherit" model="ir.ui.view">
+        <field name="name">product.product.kanban.inherit.catalog</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[contains(@name, 'o_kanban_qty_available')]" position="inside">
+                <field name="virtual_available" invisible="1"/>
+                <field name="qty_available" invisible="1"/>  <!-- Ensure loaded -->
+                <field name="last_invoice_date" invisible="1"/>  <!-- Ensure loaded -->
+                <field name="last_invoice_time_diff" invisible="1"/>  <!-- Ensure loaded -->
+                <t t-set="diff" t-value="record.virtual_available.raw_value - record.qty_available.raw_value"/>
+                <t t-if="diff &gt; 0">
+                    <div style="color: green;">(+ <t t-esc="diff"/>)</div>
+                </t>
+                <t t-elif="diff &lt; 0">
+                    <div style="color: red;">(<t t-esc="diff"/>)</div>
+                </t>
+                <t t-else="">
+                    <div>(0)</div>
+                </t>
+                <div t-if="record.last_invoice_time_diff.value" style="font-size: 80%; color: #888;">
+                    ⏱ <t t-esc="record.last_invoice_time_diff.value"/>
+                </div>
+                <div t-if="record.last_invoice_date.value" style="font-size: 80%; color: #aaa;">
+                    📅 <t t-esc="record.last_invoice_date.value"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
