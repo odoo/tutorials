@@ -39,7 +39,7 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
-        default='New',
+        default='new',
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -73,10 +73,10 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        if self.status != 'cancelled':
+        if (self.status != 'cancelled') & (not float_utils.float_is_zero(self.selling_price, 1)):
             self.status = 'sold'
         else:
-            raise UserError("Cancelled properties can not be sold")
+            raise UserError("You can't sell this property")
         return True
 
     def action_cancel(self):
