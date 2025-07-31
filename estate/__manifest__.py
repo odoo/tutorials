@@ -11,6 +11,8 @@
         'views/estate_property_tag_views.xml',
         'views/res_user_views.xml',
         'views/estate_menus.xml',
+        'data/estate.property.type.csv',
+        'data/estate_property.xml'
     ],
     'license': 'LGPL-3',
 }

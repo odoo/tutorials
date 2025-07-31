@@ -11,7 +11,7 @@ class EstateTestCase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         # add env on cls and many other things
-        super(EstateTestCase, cls).setUpClass()
+        super().setUpClass()
 
         # create the data for each tests. By doing it in the setUpClass instead
         # of in a setUp or in each test case, we reduce the testing time and
