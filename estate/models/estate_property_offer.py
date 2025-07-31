@@ -49,9 +49,11 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        property_ids = self.env['estate.property'].browse([vals['property_id'] for vals in vals_list])
+        property_ids = self.env['estate.property'].browse({vals['property_id'] for vals in vals_list})
         for vals in vals_list:
             property_id = property_ids.filtered(lambda p: p.id == vals['property_id'])
+            if not property_id:
+                raise UserError("Property ID does not exist for an offer.")
             max_existing_offer = property_id.best_price
             if vals['price'] < max_existing_offer:
                 raise UserError(f"An offer price {vals['price']} should not be less than an existing offer {max_existing_offer}.")
