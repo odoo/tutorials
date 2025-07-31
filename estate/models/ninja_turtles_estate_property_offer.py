@@ -1,8 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare
+from odoo.exceptions import UserError
 
 
 class NinjaTurtlesEstatePropertyOffer(models.Model):
@@ -11,13 +10,25 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Float(string="Price")
-    offer_status = fields.Selection([
-        ('pending', 'Pending'),
-        ('accepted', 'Accepted'),
-        ('refused', 'Refused'),
-    ], default='pending', copy=False, tracking=True)
-    validity = fields.Integer(string="Validity (days)", default=7)
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+    offer_status = fields.Selection(
+        string="Offer Status",
+        selection=[
+            ('pending', 'Pending'),
+            ('accepted', 'Accepted'),
+            ('refused', 'Refused'),
+        ],
+        default='pending',
+        copy=False,
+    )
+    validity = fields.Integer(
+        string="Validity (days)",
+        default=7,
+    )
+    date_deadline = fields.Date(
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+        store=True,
+    )
     partner_id = fields.Many2one(
         "res.partner",
         string="Partner",
