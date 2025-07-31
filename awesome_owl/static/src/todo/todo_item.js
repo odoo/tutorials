@@ -11,5 +11,20 @@ export class TodoItem extends Component {
                 isCompleted: Boolean,
             }
         },
+        toggleTaskState: {
+            type: Function,
+        },
+        taskDelete: {
+            type: Function,
+        }
+
+    }
+
+    toggleTaskState() {
+        this.props.toggleTaskState(this.props.todo.id);
+    }
+
+    taskDelete() {
+        this.props.taskDelete(this.props.todo.id);
     }
 }

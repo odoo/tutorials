@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.TodoItem">
-        <div class="d-flex mb-1" t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
-            <span><t t-esc="props.todo.id"></t>.</span>
-            <span class="ms-1"><t t-esc="props.todo.description"></t></span>
+        <div class="d-flex align-items-center gap-2">
+            <input t-att-id="props.todo.id" type="checkbox" class="form-check-input mb-2" t-att-checked="props.todo.isCompleted" t-on-change="toggleTaskState"/>
+            <div class="d-flex mb-1 p-1 ps-2 flex-grow-1" t-att-for="props.todo.id" t-att-style="!props.todo.isCompleted ? 'border-radius: 8px; background: #eaeaea;' : ''" t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}">
+                <span class="pe-2" style="border-right: 1px solid #999;"><t t-esc="props.todo.id"></t>.</span>
+                <span class="ms-2"><t t-esc="props.todo.description"></t></span>
+            </div>
+            <span class="fa fa-trash-o text-danger mb-2" t-on-click="taskDelete"/>
         </div>
     </t>
 </templates>
