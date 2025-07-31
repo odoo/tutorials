@@ -11,11 +11,11 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Float(string="Price")
-    offer_status = fields.Selection(
-        [('accepted', 'Accepted'), ('refused', 'Refused')],
-        string="Status",
-        copy=False,
-    )
+    offer_status = fields.Selection([
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('refused', 'Refused'),
+    ], default='pending', copy=False, tracking=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
     partner_id = fields.Many2one(
@@ -58,6 +58,8 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        offer_cnt = 1
+
         for vals in vals_list:
             property_id = vals.get('property_id')
             if property_id:
@@ -65,38 +67,12 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
 
                 max_offer = max(property.offer_ids.mapped('price'), default=0)
                 if vals['price'] < max_offer:
-                    raise UserError("You cannot create an offer lower than an existing offer.")
-
+                    raise UserError(f"You cannot create an offer lower than an existing offer.\n"
+                                    f"New offer in line_{offer_cnt} is causing an issue for now.")
                 property.status = 'offer received'
+            offer_cnt = offer_cnt + 1
+
         return super().create(vals_list)
-
-    '''
-    @api.model_create_multi
-    def create(self, vals):
-        offer = super().create(vals)
-        # TODO: here you're accepting to take many records and its fine, but you have to do more logic
-        #       like for example to get the maximum/best offer out of these records,
-        #       what i'm thinking about right now is to check for accepted offers first, then do the usual code down there
-        #       for that specific accepted offer
-        if offer.offer_status == 'accepted':
-            min_price = 0.9 * offer.property_id.expected_price
-            if float_compare(offer.price, min_price, precision_digits=2) < 0:
-                raise ValidationError(
-                    "Selling price cannot be lower than 90% of the expected price.\n"
-                    f"Expected: {offer.property_id.expected_price}, Minimum Allowed: {min_price}, Given: {offer.price}"
-                )
-            other_offers = offer.property_id.offer_ids - offer
-            other_offers.write({'offer_status': 'refused'})
-
-            offer.offer_status = 'accepted'
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.status = 'offer accepted'
-
-        if offer.property_id.status == 'new':
-            offer.property_id.status = 'offer received'
-        return offer
-    '''
 
     def action_accept(self):
         for offer in self:

@@ -92,6 +92,7 @@ class NinjaTurtlesEstate(models.Model):
         "ninja.turtles.estate.property.offer",
         "property_id",
         string="Offers",
+        tracking=True,
     )
 
     _sql_constraints = [

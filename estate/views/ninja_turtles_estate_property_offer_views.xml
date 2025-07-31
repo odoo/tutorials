@@ -27,7 +27,7 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
-                        <field name="offer_status"/>
+                        <field name="offer_status" readonly="1"/>
                     </group>
                 </sheet>
             </form>

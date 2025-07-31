@@ -88,7 +88,7 @@
                                             invisible="offer_status == 'accepted' or offer_status == 'refused'"/>
                                     <button name="action_refuse" type="object" icon="fa-times" title="Refuse Offer"
                                             invisible="offer_status == 'accepted' or offer_status == 'refused'"/>
-                                    <field name="offer_status"/>
+                                    <field name="offer_status" readonly="1"/>
                                 </list>
                             </field>
                         </page>
