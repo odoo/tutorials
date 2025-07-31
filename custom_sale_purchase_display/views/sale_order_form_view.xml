@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_inherit_custom" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.custom</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='date_order']" position="after">
+                <field name="last_invoice_date"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']" position="before">
+                <group invisible="partner_id == False">
+                    <group>
+                        <field name="last_sold_products" widget="many2many_tags"/>
+                        <field name="invisible_last_sold_info" invisible="1"/>
+                    </group>
+                </group>
+                <notebook colspan="4" invisible="context.get('invisible_last_sold_info', False) or not partner_id">
+                    <page string="Last Sold Product Details">
+                        <field name="last_sold_products_info" nolabel="1" readonly="1"/>
+                    </page>
+                </notebook>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='name']" position="after">
+                <field name="qty_on_hand"/>
+                <field name="forecasted_qty"/>
+                <field name="qty_difference"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="attributes">
+                <attribute name="context">{'sale_order_partner_id': parent.partner_id}</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="attributes">
+                <attribute name="context">{'sale_order_partner_id': parent.partner_id}</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
