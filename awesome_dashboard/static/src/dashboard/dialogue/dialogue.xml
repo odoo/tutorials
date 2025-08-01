@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.MyDialog">
+        <Dialog title="'Dashboard Items Configuration'">
+             <t t-foreach="items" t-as="item" t-key="item.id">
+                <p>
+                <!--
+                t-att-checked="!uncheckedSet.has(item.id)"
+                -->
+                    <span>
+                        <input type="checkbox" t-att-id="'input_' + item.id"  t-att-checked="!uncheckedSet.has(item.id)"/>
+                        <t t-esc="item.description"/>
+                    </span>
+                </p>
+            </t>
+            <footer class="modal-footer">
+                <button type="button" class="btn btn-primary" t-on-click="updateLocalStorage">Apply</button>
+            </footer>
+            
+        </Dialog>
+    </t>
+</templates>
