@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="sale_order_portal_content_inherited" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//tbody[hasclass('sale_tbody')]/t[@t-as='line']" position="attributes">
+                <attribute name="t-if">(sale_order.is_printable_kit and line.is_subproduct) or not line.is_subproduct</attribute>
+            </xpath>
+    </template>
+</odoo>
