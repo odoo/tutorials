@@ -1,0 +1,96 @@
+.o_dashboard {
+    background-color: #f0f0f0;
+}
+
+.o_dashboard_items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.o_dashboard_item {
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+    transition: all 0.2s ease;
+    min-height: 150px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+
+    &:hover {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+    .o_dashboard_item {
+        min-width: 100% !important;
+    }
+}
+
+// Dashboard configuration dialog
+.o_dashboard_config_dialog {
+    .list-group-item {
+        border: 1px solid #dee2e6;
+        padding: 12px 16px;
+        
+        &:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .form-check-input {
+            margin-top: 0;
+        }
+    }
+    
+    .fw-medium {
+        font-weight: 500;
+    }
+}
+
+// Pie chart styling
+.o_pie_chart {
+    position: relative;
+    
+    canvas {
+        cursor: pointer;
+    }
+    
+    &::after {
+        content: "Click on chart sections to view orders";
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 11px;
+        color: #6c757d;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 2px 8px;
+        border-radius: 3px;
+        white-space: nowrap;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    &:hover::after {
+        opacity: 1;
+    }
+}
+
+.o_dashboard_item_header {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #2c5aa0;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.o_dashboard_item_body {
+    color: #6c757d;
+    line-height: 1.5;
+}

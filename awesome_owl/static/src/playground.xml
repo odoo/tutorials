@@ -5,6 +5,14 @@
         <div class="container-fluid p-4">
             <h1 class="mb-4">Hello World</h1>
             
+            <!-- Mouse Position Tracker -->
+            <div class="mb-4">
+                <h2>Mouse Position Tracker</h2>
+                <div class="alert alert-info">
+                    <strong>Mouse Position: X = <t t-esc="position.x"/>, Y = <t t-esc="position.y"/></strong>
+                </div>
+            </div>
+            
             <div class="mb-4">
                 <h2>Counter Sum Demo</h2>
                 <div class="alert alert-primary mb-3">

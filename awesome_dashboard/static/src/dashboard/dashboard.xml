@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="control-panel-create-button">
+                <button class="btn btn-secondary me-2" t-on-click="openDashboardConfig" title="Dashboard Settings">
+                    <i class="fa fa-cog"/>
+                </button>
+                <button class="btn btn-primary me-2" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="p-4">
+                <h2>Welcome to your Awesome Dashboard!</h2>
+                <div class="o_dashboard_items">
+                    <t t-foreach="getCards()" t-as="card" t-key="card.id">
+                        <t t-if="!card.isChart">
+                            <AwesomeItem title="card.title" size="card.size">
+                                <t t-slot="default">
+                                    <div class="text-center">
+                                        <div class="fs-2 fw-bold text-primary mb-2" t-esc="card.value"/>
+                                        <div class="text-muted small" t-esc="card.title"/>
+                                    </div>
+                                </t>
+                            </AwesomeItem>
+                        </t>
+                        <t t-else="">
+                            <AwesomeItem title="card.title" size="card.size">
+                                <t t-slot="default">
+                                    <PieChart 
+                                        data="statistics.orders_by_size" 
+                                        title="'T-shirt Sizes Sold'"
+                                        onSectionClick="(size) => this.onPieChartSectionClick(size)"
+                                    />
+                                </t>
+                            </AwesomeItem>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.DashboardConfigDialog">
+        <Dialog size="'md'" title="'Dashboard Configuration'">
+            <div class="o_dashboard_config_dialog">
+                <p class="text-muted mb-3">Select the dashboard items you want to display:</p>
+                <div class="list-group">
+                    <t t-foreach="props.items" t-as="item" t-key="item.id">
+                        <div class="list-group-item d-flex align-items-center">
+                            <input 
+                                type="checkbox" 
+                                class="form-check-input me-3" 
+                                t-att-checked="state.itemStates[item.id]"
+                                t-on-change="() => this.toggleItem(item.id)"
+                            />
+                            <div class="flex-grow-1">
+                                <div class="fw-medium" t-esc="item.title"/>
+                                <small class="text-muted" t-esc="'Size: ' + item.size"/>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+                <button class="btn btn-primary ms-2" t-on-click="apply">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
