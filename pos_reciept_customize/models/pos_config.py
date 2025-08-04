@@ -13,6 +13,6 @@ class PosConfig(models.Model):
         string="Receipt Layout",
         default="light",
     )
-    receipt_logo = fields.Binary(string="Receipt Logo", default=lambda self: self.env.company.logo)
+    receipt_logo = fields.Binary(related="company_id.logo", string="Receipt Logo")
     receipt_header_html = fields.Html(string="Header", default="", help="Custom HTML header for receipts")
     receipt_footer_html = fields.Html(string="Footer", default="", help="Custom HTML footer for receipts")

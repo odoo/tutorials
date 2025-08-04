@@ -15,11 +15,11 @@ class ReceiptsLayout(models.TransientModel):
         ),
         required=True,
     )
-    receipt_layout = fields.Selection(related="pos_config_id.receipt_layout", required=True)
-    receipt_logo = fields.Binary(related="pos_config_id.receipt_logo")
-    receipt_header = fields.Html(related="pos_config_id.receipt_header_html")
-    receipt_footer = fields.Html(related="pos_config_id.receipt_footer_html")
-    preview = fields.Html("_compute_receipt_preview")
+    receipt_layout = fields.Selection(related="pos_config_id.receipt_layout", required=True, readonly=False)
+    receipt_logo = fields.Binary(related="pos_config_id.receipt_logo", readonly=False)
+    receipt_header = fields.Html(related="pos_config_id.receipt_header_html", readonly=False)
+    receipt_footer = fields.Html(related="pos_config_id.receipt_footer_html", readonly=False)
+    preview = fields.Html(compute="_compute_receipt_preview", readonly=False)
 
     def receipt_layout_save(self):
         return {"type": "ir.actions.act_window_close"}
@@ -42,9 +42,9 @@ class ReceiptsLayout(models.TransientModel):
     def _get_template(self):
         is_restaurant = self.pos_config_id.module_pos_restaurant
         if is_restaurant:
-            base_module = "pos_receipt.report_restaurant_preview"
+            base_module = "pos_reciept_customize.report_restaurant_preview"
         else:
-            base_module = "pos_receipt.report_receipts_wizard_preview"
+            base_module = "pos_reciept_customize.report_receipts_wizard_preview"
 
         layout_templates = {
             "light": f"{base_module}_light",
