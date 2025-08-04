@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClientAction" owl="1">
+        <div class="o_client_action">
+            <record>
+                <span class="ms-2"/>
+                <span>Clicks: </span>
+                <ClickerValue/>
+                <span class="ms-2"/>
+                <!-- draw a horizontal line + little vertical spacing -->
+                <button class="btn btn-primary" type="button" t-on-click="() => this.clicker.increment(9)">
+                    Increment
+                </button>
+
+                <button class="btn btn-primary" type="button" t-on-click="() => this.clicker.increment(10000)">
+                    Increment Max
+                </button>
+
+                <Notebook>
+                    <t t-set-slot="clicks" title="'Clicks'" isVisible="this.clicker.level >= 1">
+                        <div class="ms-1 mt-1">
+                            <h2> Bots </h2>
+                            <div class="d-flex flex-row">
+                                <t t-if="this.clicker.level gte 1" >
+                                    <div class="card me-3">
+                                        <div class="card-header">
+                                                <t t-esc="this.clicker.clickBots"/>x clickbot (10clicks/10seconds)
+                                                <i class="fa fa-android"></i>
+                                        </div>
+                                        <div class="card-body">
+                                            <button t-on-click="() => this.clicker.buyClickBot()" class="btn btn-primary" t-att-disabled="this.clicker.clicks lt 1000">
+                                                Buy clickbot (1000 clicks)
+                                            </button>
+                                        </div>
+                                    </div>
+                                </t>
+                                <t t-if="this.clicker.level gte 2">
+                                    <div class="card me-3">
+                                        <div class="card-header">
+                                                <t t-esc="this.clicker.bigBots"/>x bigbot (1000clicks/10seconds)
+                                                <i class="fa fa-android"></i>
+                                            </div>
+                                            <div class="card-body">
+                                                <button t-on-click="() => this.clicker.buyBigBot()" class="btn btn-primary" t-att-disabled="this.clicker.clicks lt 5000">
+                                                    Buy bigbot (5000 clicks)
+                                                </button>
+                                        </div>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+
+                        <t t-if="this.clicker.level gte 3" class="card me-3">
+                            <div class="ms-1 mt-1">
+                                <h2> Power multiplier</h2>
+                                <div class="d-flex flex-row">
+                                    <t t-if="this.clicker.level gte 3">
+                                        <div class="card me-3">
+                                            <div class="card-header">
+                                                    <t t-esc="this.clicker.power"/>x 
+                                                    <i class="fa fa-superpowers"></i>
+                                            </div>
+                                            <div class="card-body">
+                                                <button t-on-click="() => this.clicker.buyPower()" class="btn btn-primary" t-att-disabled="this.clicker.clicks lt 50000">
+                                                    Buy PM (50000 clicks)
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+
+                    <t t-set-slot="trees" title="'Trees'" isVisible="this.clicker.level >= 4">
+                        <t t-if="this.clicker.level gte 4" class="card me-3">
+                            <div class="ms-1 mt-1">
+                                <h2> Trees </h2>
+                                <div class="d-flex flex-row">
+                                    <div class="card me-3">
+                                        <div class="card-header">
+                                                <t t-esc="this.clicker.cherryTree"/>x cherry tree
+                                                <i class="fa fa-tree"></i>
+                                        </div>
+                                        <div class="card-body">
+                                            <button t-on-click="() => this.clicker.buyCherryTree()" class="btn btn-primary" t-att-disabled="this.clicker.clicks lt 1000000">
+                                                Buy Cherry Tree (1000000 clicks)
+                                            </button>
+                                        </div>
+                                    </div>
+                
+                                    <div class="card me-3">
+                                        <div class="card-header">
+                                                <t t-esc="this.clicker.pearTree"/>x cherry tree
+                                                <i class="fa fa-tree"></i>
+                                        </div>
+                                        <div class="card-body">
+                                            <button t-on-click="() => this.clicker.buyPearTree()" class="btn btn-primary" t-att-disabled="this.clicker.clicks lt 1000000">
+                                                Buy Pear Tree (1000000 clicks)
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+
+                        <t t-if="this.clicker.level gte 4" class="card me-3">
+                            <div class="ms-1 mt-1">
+                                <h2> Fruits </h2>
+                                <div class="d-flex flex-row">
+                                    <div class="card me-3">
+                                        <div class="card-header">
+                                                <t t-esc="this.clicker.cherries"/>x cherries
+                                               
+                                        </div>
+                                    </div>
+                
+                                    <div class="card me-3">
+                                        <div class="card-header">
+                                                <t t-esc="this.clicker.pears"/>x pears
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>                
+                </Notebook>
+            </record>
+        </div>
+    </t>
+</templates>
