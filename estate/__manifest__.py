@@ -1,10 +1,12 @@
 {
     'name': 'Estate',
     'depends': ['base'],
+    'category': 'Real Estate/Brokerage',
     'application': True,
     'installable': True,
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
@@ -12,7 +14,10 @@
         'views/res_user_views.xml',
         'views/estate_menus.xml',
         'data/estate.property.type.csv',
-        'data/estate_property.xml'
+    ],
+    'demo': [
+        'demo/estate_property.xml',
+        'demo/estate_property_offer.xml',
     ],
     'license': 'LGPL-3',
 }

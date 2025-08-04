@@ -44,6 +44,7 @@
                             <field name="property_type_id" options="{'no_create': true, 'no_open': true}"/>
                             <field name="postcode"/>
                             <field name="availability_date" string="Available From"/>
+                            <field name="company_id"/>
                         </group>
                         <group>
                             <field name="expected_price"/>

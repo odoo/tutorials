@@ -16,7 +16,7 @@
     </record>
 
     <record id="12" model="estate.property">
-         <field name="name">Trailer home</field>
+        <field name="name">Trailer home</field>
         <field name="status">cancelled</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
@@ -27,5 +27,30 @@
         <field name="living_area">10</field>
         <field name="facades">4</field>
         <field name="garage">False</field>  
+    </record>
+
+    <record id="11" model="estate.property">
+        <field name="property_type_id">1</field>
+    </record>
+
+    <record id="12" model="estate.property">
+        <field name="property_type_id">1</field>
+    </record>
+
+    <record id="13" model="estate.property">
+        <field name="name">Offer Test Property</field>
+        <field name="expected_price">10000</field>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'partner_id': 15,
+                'price': 12000,
+                'validity': 10,
+            }),
+            Command.create({
+                'partner_id': 10,
+                'price': 11000,
+                'validity': 12,
+            }),
+        ]"/>
     </record>
 </odoo>

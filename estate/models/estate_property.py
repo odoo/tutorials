@@ -43,11 +43,13 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
-    salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
+    # to add default salesperson_id use: default=lambda self: self.env.user
+    salesperson_id = fields.Many2one('res.users', string='Salesperson')
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Integer(compute="_compute_area")
     best_price = fields.Float(compute="_compute_best_price")
+    company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.user.company_id)
     _sql_constraints = [
         ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price must be positive.'),
         ('check_selling_price', 'CHECK(selling_price > 0)', 'Selling price must be positive.'),

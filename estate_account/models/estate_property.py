@@ -21,6 +21,8 @@ class EstateProperty(models.Model):
                 }),
             ]
         }
-        self.env['account.move'].create(invoice_vals)
+        user_id = self.env['estate.property'].browse(self.env.uid)
+        if user_id.check_access('write'):
+            self.env['account.move'].sudo().create(invoice_vals)
 
         return super().action_sold()
