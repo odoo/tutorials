@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.clicker_systray_item">
+        <div class="d-flex">
+            Clicks: <ClickValue/>
+            <button class="btn btn-primary" t-on-click="openClient">Open</button>
+        </div>
+    </t>
+
+</templates>

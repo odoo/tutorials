@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.client_action">
+        <div>
+            Clicks: <ClickValue/>
+        </div>
+        <div>
+            <button class="btn btn-primary" t-on-click="() => clicker.increment(9)">+10</button>
+        </div>
+        <h2>Bots</h2>
+        <div t-if="clicker.state.level >= 1">
+            <t t-esc="clicker.state.clickBots"/>x ClickBots (<t t-esc="clicker.state.clickBots * 10"/> clicks/10 seconds)
+            <button class="btn btn-primary" t-att-disabled="clicker.state.clicks lt 1000" t-on-click="() => {clicker.state.clickBots++; clicker.state.clicks-=1000;}">Buy ClickBot(1000 clicks)</button>
+        </div>
+    </t>
+
+</templates>
