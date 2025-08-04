@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="display" >
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="viewCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="viewLeads">Leads</button>
+                <span class="fa fa-gear" t-on-click="openConfigs"/>
+            </t>
+            <div t-if="stats.isReady">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1" t-if="!state.inactive_cards.includes(item.id)">
+                        <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.DashboardConfiguration">
+        <Dialog size="'md'" title="'Dashboard items configuration'">
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <!-- <CheckBox value="item.enabled" t-model="item.enabled">
+                    <t t-esc="item.description"/>
+                </CheckBox> -->
+                <p>
+                    <input type="checkbox" t-model="item.enabled"/> <t t-esc="item.description"/>
+                </p>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
