@@ -110,11 +110,12 @@ class EstateProperties(models.Model):
     # ------------------------------------------------------------
 
     def action_set_sold_property(self):
-        if self.state != 'cancelled':
-            self.state = 'sold'
-            return True
-        else:
-            raise UserError("Cancelled property can't be sold!!")
+        if self.state == 'cancelled':
+            raise UserError("Cancelled property can't be sold!")
+        if self.state in ['new', 'offer_received']:
+            raise UserError("To sell a property, it must have an offer and the state must be 'offer accepted'.")
+        self.state = 'sold'
+        return True
 
     def action_cancel_property_conditional(self):
         if self.state == 'offer_accepted':

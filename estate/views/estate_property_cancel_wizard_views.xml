@@ -15,14 +15,18 @@
                 </div>
                 
                 <footer>
-                    <button name="action_confirm_cancel" 
-                            string="Yes, Cancel Property" 
-                            type="object" 
-                            class="btn-primary"/>
-                    <button name="action_cancel_wizard" 
-                            string="No, Keep Property" 
-                            type="object" 
-                            class="btn-secondary"/>
+                    <button
+                        name="action_confirm_cancel" 
+                        string="Yes, Cancel Property" 
+                        type="object" 
+                        class="btn-primary"
+                    />
+                    <button 
+                        name="action_cancel_wizard" 
+                        string="No, Keep Property" 
+                        type="object" 
+                        class="btn-secondary"
+                    />
                 </footer>
             </form>
         </field>
