@@ -15,8 +15,17 @@
             <div class="p-3 border m-5" style="max-width: fit-content;">
                 <h1>Cards</h1>
                 <div class="d-flex gap-3">
-                    <Card title="'Gandhinagar'" content="html"/>
-                    <Card title="'Ahmedabad'" content="markup_html"/>
+                    <Card title="'Gandhinagar'">
+                        <p class="card-text">Using Slot for card 1</p>
+                    </Card>
+                    <Card title="'Ahmedabad'">
+                        <p class="card-text">
+                            <t t-out="markup_html"/>
+                        </p>
+                    </Card>
+                    <Card title="'Counter Card'">
+                        <Counter title="'Counter 3'" onChange.bind="incrementSum"/>
+                    </Card>
                 </div>
             </div>
         </div>
