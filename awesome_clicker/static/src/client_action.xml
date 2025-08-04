@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.ClientAction">
+        <div class="o_clicker_client_action p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h1 class="mb-0">Clicker Game</h1>
+                <button class="btn btn-outline-danger btn-sm" t-on-click="onReset">
+                    Reset Game
+                </button>
+            </div>
+            <div class="alert alert-primary mb-4">
+                <h3 class="mb-0">Total Clicks: <ClickValue value="clicker.state.clicks"/></h3>
+                <div class="mt-2">
+                    <small class="text-muted">Current Level: <strong><t t-esc="clicker.state.level"/></strong></small>
+                    <div t-if="clicker.state.level >= 3" class="mt-1">
+                        <small class="text-muted">Power Multiplier: <strong>x<t t-esc="clicker.state.power"/></strong></small>
+                    </div>
+                    <div class="mt-1">
+                        <small class="text-muted">
+                            Next unlock: 
+                            <span t-if="clicker.state.level == 0">1,000 clicks for ClickBots</span>
+                            <span t-if="clicker.state.level == 1">5,000 clicks for BigBots</span>
+                            <span t-if="clicker.state.level == 2">100,000 clicks for Power</span>
+                            <span t-if="clicker.state.level == 3">1,000,000 clicks for QuantumBots</span>
+                            <span t-if="clicker.state.level == 4">10,000,000 clicks for SpecialBots</span>
+                            <span t-if="clicker.state.level == 5">Max level reached!</span>
+                        </small>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-info">
+                <p>Welcome to the Awesome Clicker game!</p>
+                <button class="btn btn-primary me-2" t-on-click="onIncrement10Click">
+                    +10 Clicks
+                </button>
+                <button class="btn btn-primary me-2" t-on-click="onIncrement1000Click">
+                    +1000 Clicks
+                </button>
+                <button class="btn btn-secondary" t-on-click="onTestClick">
+                    +10M Clicks (Test)
+                </button>
+            </div>
+            
+            <!-- Bot sections (side by side) -->
+            <div t-if="clicker.state.level >= 1" class="row">
+                <!-- ClickBot section -->
+                <div class="col-md-6">
+                    <div class="alert alert-success">
+                        <h4>ClickBots</h4>
+                        <p>ClickBots: <strong><t t-esc="clicker.state.clickBots"/></strong></p>
+                        <p class="text-muted small">
+                            Each ClickBot generates <strong><t t-esc="10 * clicker.state.power"/></strong> clicks every 10 seconds
+                        </p>
+                        <button 
+                            class="btn btn-success" 
+                            t-on-click="onBuyClickBot"
+                            t-att-disabled="!canBuyClickBot"
+                        >
+                            Buy ClickBot (1000 clicks)
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- BigBot section -->
+                <div t-if="clicker.state.level >= 2" class="col-md-6">
+                    <div class="alert alert-warning">
+                        <h4>BigBots</h4>
+                        <p>BigBots: <strong><t t-esc="clicker.state.bigBots"/></strong></p>
+                        <p class="text-muted small">
+                            Each BigBot generates <strong><t t-esc="100 * clicker.state.power"/></strong> clicks every 10 seconds
+                        </p>
+                        <button 
+                            class="btn btn-warning" 
+                            t-on-click="onBuyBigBot"
+                            t-att-disabled="!canBuyBigBot"
+                        >
+                            Buy BigBot (5000 clicks)
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Power Multiplier section (only visible at level 3+) -->
+            <div t-if="clicker.state.level >= 3" class="alert alert-danger">
+                <h4>Power Multiplier</h4>
+                <p>Current Power: <strong>x<t t-esc="clicker.state.power"/></strong></p>
+                <p class="text-muted small">Multiplies the output of all bots</p>
+                <button 
+                    class="btn btn-danger" 
+                    t-on-click="onBuyPower"
+                    t-att-disabled="!canBuyPower"
+                >
+                    Upgrade Power (50,000 clicks)
+                </button>
+            </div>
+            
+            <!-- QuantumBot section (only visible at level 4+) -->
+            <div t-if="clicker.state.level >= 4" class="alert alert-warning">
+                <h4>QuantumBots</h4>
+                <p>You have <strong><t t-esc="clicker.state.quantumBots"/></strong> QuantumBots</p>
+                <p class="text-muted small">Each generates <ClickValue t-props="{value: 50 * clicker.state.power * clicker.state.power}"/> clicks per second</p>
+                <p class="text-muted small">Scales with power² for exponential growth!</p>
+                <button 
+                    class="btn btn-warning" 
+                    t-on-click="onBuyQuantumBot"
+                    t-att-disabled="!canBuyQuantumBot"
+                >
+                    Buy QuantumBot (250,000 clicks)
+                </button>
+            </div>
+            
+            <!-- SpecialBot section (only visible at level 5+) -->
+            <div t-if="clicker.state.level >= 5" class="alert alert-info">
+                <h4>SpecialBots</h4>
+                <p>You have <strong><t t-esc="clicker.state.specialBots"/></strong> SpecialBots</p>
+                <p class="text-muted small">Each generates <ClickValue t-props="{value: 25 * clicker.state.power}"/> clicks per second</p>
+                <p class="text-muted small">20% chance for 5× critical bonus!</p>
+                <button 
+                    class="btn btn-info" 
+                    t-on-click="onBuySpecialBot"
+                    t-att-disabled="!canBuySpecialBot"
+                >
+                    Buy SpecialBot (2,000,000 clicks)
+                </button>
+            </div>
+        </div>
+    </t>
+
+</templates>

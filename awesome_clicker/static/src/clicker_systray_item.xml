@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.SystrayItem">
+        <div class="o_mail_systray_item d-flex align-items-center" title="Clicker Counter">
+            <span class="me-2">Clicks: <ClickValue value="clicker.state.clicks"/></span>
+            <button class="btn btn-sm btn-secondary" t-on-click="openClientAction">
+                Open
+            </button>
+        </div>
+    </t>
+
+</templates>
