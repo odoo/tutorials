@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- ROOT menu (App switcher icon) -->
     <menuitem id="menu_ninja_turtles_estate_root"
               name="Ninja Turtle Estate"
               web_icon="estate,static/description/icon.png">

@@ -1,8 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
 
-<!--    for the table/list of estates already created that will show all the records in a separate page in a table   -->
-<!--    🧠 Think of it as the overview page where multiple properties are listed.-->
     <record id="ninja_turtles_estate_view_tree" model="ir.ui.view">
         <field name="name">ninja.turtles.estate.list</field>
         <field name="model">ninja.turtles.estate</field>
@@ -24,8 +22,6 @@
         </field>
     </record>
 
-<!--    for the form view already   -->
-<!--    🧠 Think of it as a detail page for one property.-->
     <record id="ninja_turtles_estate_view_form" model="ir.ui.view">
         <field name="name">ninja.turtles.estate.form</field>
         <field name="model">ninja.turtles.estate</field>
@@ -107,7 +103,6 @@
         </field>
     </record>
 
-<!--    🔍 This defines what the search bar can search or filter.-->
     <record id="ninja_turtles_estate_view_search" model="ir.ui.view">
         <field name="name">ninja.turtles.estate.search</field>
         <field name="model">ninja.turtles.estate</field>
@@ -134,7 +129,6 @@
         </field>
     </record>
 
-    <!-- Action to open the list/form views -->
     <record id="action_ninja_turtles_estate" model="ir.actions.act_window">
         <field name="name">Ninja Turtles Estate Properties</field>
         <field name="res_model">ninja.turtles.estate</field>

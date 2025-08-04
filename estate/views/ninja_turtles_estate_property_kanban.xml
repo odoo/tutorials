@@ -13,8 +13,12 @@
                         <div t-att-class="record.status.raw_value == 'sold' and 'text-success fw-bold'
                                        or record.status.raw_value == 'offer accepted' and 'text-success'
                                        or record.status.raw_value == 'cancelled' and 'text-danger'">
-                            <strong><field name="name"/></strong>
-                            <div>Expected Price: <field name="expected_price"/></div>
+                            <strong>
+                                <field name="name"/>
+                            </strong>
+                            <div>
+                                Expected Price: <field name="expected_price"/>
+                            </div>
                             <div t-if="record.offer_ids.raw_value.length &gt; 0">
                                 Best Offer: <field name="best_price"/>
                             </div>

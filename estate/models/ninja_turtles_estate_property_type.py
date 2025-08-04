@@ -7,9 +7,10 @@ class NinjaTurtlesEstatePropertyType(models.Model):
     _order = "sequence, name"
 
     name = fields.Char(required=True)
-    property_ids = fields.One2many("ninja.turtles.estate",
-                                   "property_type_id",
-                                   string="Properties",
+    property_ids = fields.One2many(
+        "ninja.turtles.estate",
+        "property_type_id",
+        string="Properties",
     )
     sequence = fields.Integer('Sequence', default=1)
     offer_ids = fields.One2many(

@@ -107,9 +107,9 @@ class NinjaTurtlesEstate(models.Model):
 
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
-        for record in self:
-            prices = record.offer_ids.mapped("price")
-            record.best_price = max(prices) if prices else 0.0
+        self.best_price = 0
+        for record in self.filtered(lambda r: r.offer_ids and any(r.offer_ids.mapped('price'))):
+            record.best_price = max(record.offer_ids.mapped('price'))
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -128,20 +128,16 @@ class NinjaTurtlesEstate(models.Model):
                 raise UserError("You cannot sell a property with a non-accepted offer.")
             else:
                 record.status = 'sold'
-        return True
 
     def action_cancel(self):
         for record in self:
             if record.status == 'sold':
                 raise UserError("Sold properties cannot be cancelled.")
             record.status = 'cancelled'
-        return True
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price_margin(self):
-        for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2):
-                continue  # allow 0 (no offer accepted yet)
+        for record in self.filtered(lambda p: not float_is_zero(p.selling_price, precision_digits=2)):
             min_price = 0.9 * record.expected_price
             if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
                 raise ValidationError(
@@ -151,6 +147,5 @@ class NinjaTurtlesEstate(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _check_property_deletion(self):
-        for record in self:
-            if record.status not in ['new', 'cancelled']:
-                raise UserError("You can only delete properties in 'New' or 'Cancelled' status.")
+        if any(self.filtered(lambda p: p.status not in ['new', 'cancelled'])):
+            raise UserError("You can only delete properties in 'New' or 'Cancelled' status.")

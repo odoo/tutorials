@@ -41,7 +41,7 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
         ondelete="cascade",                 # its kinda weird cuz it should only be on the property model
     )
     property_type_id = fields.Many2one(
-    "ninja.turtles.estate.property.type",
+        "ninja.turtles.estate.property.type",
         related='property_id.property_type_id',
         store=True,
     )
@@ -60,8 +60,8 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             # Fallback for create_date if missing
-            create_date = record.create_date.date() if record.create_date else fields.Date.today()
             if record.date_deadline:
+                create_date = record.create_date.date() if record.create_date else fields.Date.today()
                 delta = record.date_deadline - create_date
                 record.validity = delta.days
             else:
@@ -69,19 +69,14 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        offer_cnt = 1
-
-        for vals in vals_list:
-            property_id = vals.get('property_id')
-            if property_id:
+        for vals_i, vals in enumerate(vals_list):
+            if property_id := vals.get('property_id'):
                 property = self.env['ninja.turtles.estate'].browse(property_id)
-
-                max_offer = max(property.offer_ids.mapped('price'), default=0)
+                max_offer = property.offer_ids and max(property.offer_ids.mapped('price'), default=0)
                 if vals['price'] < max_offer:
                     raise UserError(f"You cannot create an offer lower than an existing offer.\n"
-                                    f"New offer in line_{offer_cnt} is causing an issue for now.")
+                                    f"New offer in line_{vals_i} is causing an issue for now.")
                 property.status = 'offer received'
-            offer_cnt = offer_cnt + 1
 
         return super().create(vals_list)
 
@@ -91,16 +86,16 @@ class NinjaTurtlesEstatePropertyOffer(models.Model):
                 raise UserError("You cannot accept an offer for a sold or cancelled property.")
 
             other_offers = offer.property_id.offer_ids - offer
-            other_offers.write({'offer_status': 'refused'})
+            other_offers.offer_status = 'refused'
 
             offer.offer_status = 'accepted'
-            offer.property_id.selling_price = offer.price
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.status = 'offer accepted'
-        return True
+            offer.property_id.write({
+                'selling_price': offer.price,
+                'buyer_id': offer.partner_id,
+                'status': 'offer accepted',
+            })
 
     def action_refuse(self):
         for offer in self:
             if offer.offer_status != 'accepted':
                 offer.offer_status = 'refused'
-        return True

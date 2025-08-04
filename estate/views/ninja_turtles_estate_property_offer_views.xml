@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <odoo>
-    <!-- List view for offers -->
     <record id="ninja_turtles_estate_property_offer_view_tree" model="ir.ui.view">
         <field name="name">ninja.turtles.estate.property.offer.list</field>
         <field name="model">ninja.turtles.estate.property.offer</field>
         <field name="arch" type="xml">
             <list decoration-success="offer_status == 'accepted'"
                   decoration-danger="offer_status == 'refused'"
-                  string="Offers" editable="bottom">
+                  string="Offers" editable="bottom"
+            >
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
@@ -17,7 +17,6 @@
         </field>
     </record>
 
-    <!-- Form view for offers -->
     <record id="ninja_turtles_estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">ninja.turtles.estate.property.offer.form</field>
         <field name="model">ninja.turtles.estate.property.offer</field>
@@ -34,7 +33,6 @@
         </field>
     </record>
 
-    <!-- Action for property offer -->
     <record id="action_ninja_turtles_estate_property_offer" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
         <field name="res_model">ninja.turtles.estate.property.offer</field>
