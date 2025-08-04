@@ -8,7 +8,6 @@ from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
-    # === Private attributes ===
     _name = 'estate.property.offer'
     _description = 'Offers for all the property listings.'
     _order = 'price desc'
@@ -18,13 +17,8 @@ class EstatePropertyOffer(models.Model):
         ('check_price_positive', 'CHECK(price > 0)', 'Offer price must be strictly positive.'),
     ]
 
-    # ------------------------
-    # Fields declaration
-    # -------------------------
     price = fields.Float(string='Price')
     validity = fields.Integer(default=7)
-
-    # Selection fields
     status = fields.Selection(
         [
             ('accepted', 'Accepted'),
@@ -33,11 +27,7 @@ class EstatePropertyOffer(models.Model):
         string='Status',
         copy=False
     )
-
-    # Computed fields
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline', store=True)
-
-    # Many2one fields
     partner_id = fields.Many2one('res.partner', required=True)
     property_id = fields.Many2one('estate.property', string='Property Name', required=True)
     property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)

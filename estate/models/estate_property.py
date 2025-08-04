@@ -8,7 +8,6 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
-    # === Private attributes ===
     _name = 'estate.property'
     _description = 'Estate Test'
     _order = 'id desc'
@@ -19,9 +18,6 @@ class EstateProperty(models.Model):
         ('check_selling_price_positive', 'CHECK(selling_price > 0)', 'Selling price must be strictly positive.'),
     ]
 
-    # ---------------------
-    # Fields declaration
-    # ---------------------
     name = fields.Char(string='Name', required=True)
     description = fields.Char()
     postcode = fields.Char()
@@ -35,8 +31,6 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     active = fields.Boolean(default=True)
-
-    # Selection fields
     garden_orientation = fields.Selection(
         [
             ('north', 'North'),
@@ -59,19 +53,11 @@ class EstateProperty(models.Model):
         copy=False,
         default='new'
     )
-
-    # Many2one fields
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
-
-    # Many2many fields
     tag_ids = fields.Many2many('estate.property.tag', string='Tags')
-
-    # One2many fields
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
-
-    # Computed fields
     total_area = fields.Integer(string='Total Area', compute='_compute_total_area')
     best_price = fields.Float(string='Best Offer', compute='_compute_best_price')
 
@@ -129,8 +115,15 @@ class EstateProperty(models.Model):
     # ----------------------
     def action_mark_sold(self):
         for record in self:
+            if not record.offer_ids:
+                raise UserError("You can mark this property as sold because there are no offers.")
             if record.state == 'cancelled':
                 raise UserError('Cancelled properties cannot be marked as sold.')
+
+            accepted_offer = record.offer_ids.filtered(lambda o: o.status == 'accepted')
+            if not accepted_offer:
+                raise UserError("You must accept an offer before marking the property as sold.")
+
             record.state = 'sold'
         return True
 

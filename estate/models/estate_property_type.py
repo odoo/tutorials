@@ -3,7 +3,6 @@ from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):
-    # === Private attributes ===
     _name = 'estate.property.type'
     _description = 'Property types for available in the business.'
     _order = 'sequence, name'
@@ -13,15 +12,10 @@ class EstatePropertyType(models.Model):
         ('unique_type_name', 'UNIQUE(name)', 'Type name must be unique.')
     ]
 
-    # === Fields declaration ===
     name = fields.Char(required=True)
     sequence = fields.Integer('Sequence', default=10)
-
-    # One2many fields
     property_ids = fields.One2many('estate.property', 'property_type_id', string='Properties')
     offer_ids = fields.One2many('estate.property.offer', 'property_type_id', string='Offers')
-
-    # Compute fields
     offer_count = fields.Integer(string='Number of Offers', compute='_compute_offer_count')
 
     # === Compute methods ===
