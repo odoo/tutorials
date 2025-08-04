@@ -110,9 +110,11 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
         for record in self:
             record.status = 'accepted'
-            record.property_id.state = 'offer_accepted'
-            record.property_id.selling_price = record.price
-            record.property_id.buyer_id = record.partner_id
+            record.property_id.write({
+                'state': 'offer_accepted',
+                'selling_price': record.price,
+                'buyer_id': record.partner_id
+            })
 
         (self.property_id.offer_ids - record).write({'status': 'refused'})
 

@@ -1,5 +1,7 @@
-import { Component, useState } from "@odoo/owl"
+import { Component, useState, useRef } from "@odoo/owl"
 import { TodoItem } from "../todoitem/todoitem";
+import { useAutofocus } from '../../../utils.js';
+
 
 export class TodoList extends Component {
     static template = "awesome_owl.todolist"
@@ -7,15 +9,37 @@ export class TodoList extends Component {
     static props = {}
 
     setup() {
-        this.todos = useState([
-            { id: 1, description: "Buy milk", isCompleted: false },
-            { id: 2, description: "Walk the dog", isCompleted: true },
-            { id: 3, description: "Write blog post", isCompleted: false },
-            { id: 4, description: "Call mom", isCompleted: true },
-            { id: 5, description: "Clean the house", isCompleted: false },
-            { id: 6, description: "Pay bills", isCompleted: false },
-            { id: 7, description: "Read a book", isCompleted: true },
-            { id: 8, description: "Exercise", isCompleted: false }
-        ]);
+        super.setup();
+        this.todos = useState([]);
+        this.todoInputRef = useRef("todoInputRef");
+        this.markTodo = this.markTodo.bind(this);
+
+        useAutofocus("todoInputRef");
+
+    }
+
+    addTodo(ev) {
+        if(ev.keyCode == 13) {
+            let max_id = Math.max(...this.todos.map(todo => todo.id), 0);
+            let new_description = this.todoInputRef.el.value;
+            this.todos.push({ id: max_id + 1, description: new_description, isCompleted: false});
+            this.todoInputRef.el.value = "";
+        }
+    }
+
+    markTodo(todo_id) {
+        this.todos.forEach((todo, index) => {
+            if (todo.id == todo_id) {
+                todo.isCompleted = !todo.isCompleted;
+            }
+        });
+    }
+
+    deleteTodo(todo_id) {
+        this.todos.forEach((todo, index) => {
+            if (todo.id == todo_id) {
+                this.todos.splice(index,1)
+            }
+        });
     }
 }

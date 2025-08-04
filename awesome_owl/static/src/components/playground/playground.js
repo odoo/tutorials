@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component, useState, useEffect } from "@odoo/owl";
+import { Component, useEffect, useState } from "@odoo/owl";
 import { Counter } from "../counter/counter";
 import { Card } from "../card/card";
 import { TodoList } from "../todo/todolist/todolist";
@@ -11,10 +11,11 @@ export class Playground extends Component {
     static props = {}
 
     setup() {
-        this.state = useState({ counters: 2, sum: 0 });
+        super.setup();
+        this.state = useState({ counters: 2, sum: 2 });
         
         useEffect(() => {
-            this.state.sum = this.state.counters;
+            this.state.sum += this.state.counters;
         },()=>[this.state.counters]);
 
         this.cards = [
@@ -53,6 +54,5 @@ export class Playground extends Component {
 
     incrementSum() {
         this.state.sum++;
-        
     }
 }

@@ -20,7 +20,17 @@
         <div class="mt-4">
             <h2>Card Components</h2>
             <t t-foreach="cards" t-as="card" t-key="card_index">
-                <Card t-props="card_value"/>
+                <Card t-props="{
+                    title: card.title,
+                    visit: card.visit
+                }">
+                    <t t-if="card_last or card_first">
+                        <Counter onChange.bind="incrementSum"/>
+                    </t>
+                    <t t-else="">
+                        <t t-esc="card.body"/>
+                    </t>
+                </Card>
             </t>
         </div>
 

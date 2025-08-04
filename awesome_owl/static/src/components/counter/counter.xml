@@ -5,7 +5,7 @@
             <div class="card-body">
                 <h2 class="card-title">Counter</h2>
                 <div class="d-flex" style="align-items: center; justify-content: space-between">
-                    <button class="btn btn-success" t-on-click="increment" style="background-color: 'blue'">Increment</button>
+                    <button class="btn text-bg-success" t-on-click="increment" style="background-color: 'blue'">Increment</button>
                     <p class="card-text">Value: <t t-esc="state.value"/></p>
                 </div>
             </div>

@@ -4,8 +4,25 @@
         <h2>
             Todo List
         </h2>
+
+        <!-- Add New Todo -->
+         <div class="mb-3">
+            <input
+                type="text"
+                class="form-control"
+                placeholder="Enter a new task"
+                t-ref="todoInputRef"
+                t-on-keyup="addTodo"
+            />
+        </div>
         <t t-foreach="todos" t-as="todo" t-key="todo.id">
-            <TodoItem t-props="todo_value"/>
+            <TodoItem t-props="{ 
+                    id: todo_value.id, 
+                    description: todo_value.description, 
+                    isCompleted: todo_value.isCompleted, 
+                    markTodocallback: markTodo
+                }" deleteTodocallback.bind="deleteTodo" />
+
         </t>
     </t>
 </templates>

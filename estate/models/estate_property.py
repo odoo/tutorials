@@ -14,6 +14,13 @@ class EstateProperty(models.Model):
     _order = 'id desc'
 
     # -----------------------------
+    # SQL Constraints
+    # -----------------------------
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price cannot be negative.')
+    ]
+
+    # -----------------------------
     # Field Declarations
     # -----------------------------
     name = fields.Char(string='Title', required=True, help='Title or name of the property.')
@@ -41,7 +48,8 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West'),
         ],
-        default='north', help='Direction the garden faces.')
+        default='north', help='Direction the garden faces.'
+    )
     state = fields.Selection(
         string='Status',
         selection=[
@@ -59,13 +67,6 @@ class EstateProperty(models.Model):
     sales_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user, help='Salesperson responsible for the property.')
     tag_ids = fields.Many2many('estate.property.tag', string='Tags', help='Tags to classify the property.')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers', help='Offers made on this property.')
-
-    # -----------------------------
-    # SQL Constraints
-    # -----------------------------
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0)', 'Expected price cannot be negative.')
-    ]
 
     # -----------------------------
     # Computed Fields
@@ -99,6 +100,10 @@ class EstateProperty(models.Model):
     # -----------------------------
     def action_sold(self):
         """Set property state to 'sold', with validation against invalid states."""
+        if not self.offer_ids:
+            raise UserError('No offer available for this property.')
+            return
+
         for record in self:
             if record.state == 'cancelled':
                 raise UserError('A cancelled property cannot be set as sold.')
@@ -109,6 +114,10 @@ class EstateProperty(models.Model):
 
     def action_cancel(self):
         """Set property state to 'cancelled', with validation against invalid states."""
+        if not self.offer_ids:
+            raise UserError('No offer available for this property.')
+            return
+
         for record in self:
             if record.state == 'sold':
                 raise UserError('A sold property cannot be cancelled.')
