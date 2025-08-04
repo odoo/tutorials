@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t t-name="awesome_dashboard.PieChartCard" owl="1">
+    <h5 class="mb-2 text-muted"><t t-esc="props.title" /></h5>
+    <t t-if="props.values">
+        <PieChart t-props="props" />
+    </t>
+    <t t-else="">
+        <div class="text-muted text-center py-5">
+            No data available yet.
+        </div>
+    </t>
+</t>
