@@ -80,21 +80,21 @@
             <form string="Property">
                 <header>
                     <button 
-                    name="action_set_sold" 
-                    type="object" 
-                    string="Sold"
-                    invisible="status in ['sold', 'cancelled']"
+                        name="action_set_sold" 
+                        type="object" 
+                        string="Sold"
+                        invisible="status in ['sold', 'cancelled']"
                     />
                     <button 
-                    name="action_set_cancel" 
-                    type="object" 
-                    string="Cancel"
-                    invisible="status in ['sold', 'cancelled']"
+                        name="action_set_cancel" 
+                        type="object" 
+                        string="Cancel"
+                        invisible="status in ['sold', 'cancelled']"
                     />
                     <field 
-                    name="status" 
-                    widget="statusbar" 
-                    statusbar_visible="new,offer_received,offer_accepted,sold"
+                        name="status" 
+                        widget="statusbar" 
+                        statusbar_visible="new,offer_received,offer_accepted,sold"
                     />
                 </header>
                 <sheet>
@@ -103,17 +103,18 @@
                     </group>
                     <group>
                         <field 
-                        name="tag_ids" 
-                        widget="many2many_tags" 
-                        options="{'color_field': 'color'}" 
-                        nolabel="1"/>
+                            name="tag_ids" 
+                            widget="many2many_tags" 
+                            options="{'color_field': 'color'}" 
+                            nolabel="1"
+                        />
                     </group>
                     <group>
                         <group>
                             <field
-                             name="property_type_id"
-                             options="{'no_create': true}" 
-                             string='Property Type' 
+                                name="property_type_id"
+                                options="{'no_create': true}" 
+                                string='Property Type' 
                              />
                         </group>
                         <group>
@@ -146,13 +147,13 @@
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field 
-                                name="garden_area" 
-                                string="Garden Area (sqm)" 
-                                invisible="not garden"
+                                    name="garden_area" 
+                                    string="Garden Area (sqm)" 
+                                    invisible="not garden"
                                 />
                                 <field 
-                                name="garden_orientation" 
-                                invisible="not garden"
+                                    name="garden_orientation" 
+                                    invisible="not garden"
                                 />
                                 <field name="total_area"/>
                             </group>

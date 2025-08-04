@@ -4,19 +4,22 @@
     <t t-name="awesome_owl.todoitem">
         <div class="d-flex align-items-center gap-2 py-2">
             <input 
-            type="checkbox" 
-            class="form-check-input"
-            t-on-change="checkBoxChange"/>
+                type="checkbox" 
+                class="form-check-input"
+                t-on-change="checkBoxChange"
+            />
             <span t-esc="this.props.id"/>
             <span
-            t-att-class="{
-                'text-muted text-decoration-line-through': this.props.isCompleted
-            }"
-            t-esc="this.props.description"
+                t-att-class=
+                "{
+                    'text-muted text-decoration-line-through': this.props.isCompleted
+                }"
+                t-esc="this.props.description"
             />
             <span 
-            t-on-click="deleteTodo"
-            class="fa fa-remove px-2" style="color:red"/>
+                t-on-click="deleteTodo"
+                class="fa fa-remove px-2" style="color:red"
+            />
         </div>
     </t>
 

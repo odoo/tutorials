@@ -37,18 +37,18 @@
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <button 
-                name="action_set_accepted" 
-                string="Accept" 
-                type="object" 
-                icon="fa-check"
-                invisible="status in ['accepted', 'refused']"
+                    name="action_set_accepted" 
+                    string="Accept" 
+                    type="object" 
+                    icon="fa-check"
+                    invisible="status in ['accepted', 'refused']"
                 />
                 <button 
-                name="action_set_rejected" 
-                string="Reject" 
-                type="object" 
-                icon="fa-times"
-                invisible="status in ['accepted', 'refused']"
+                    name="action_set_rejected" 
+                    string="Reject" 
+                    type="object" 
+                    icon="fa-times"
+                    invisible="status in ['accepted', 'refused']"
                 />
                 <field name="status"/>
             </list>

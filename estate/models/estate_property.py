@@ -44,19 +44,12 @@ class EstateProperty(models.Model):
         ],
         default='new'
     )
-    # Many to one relation with property type model
     property_type_id = fields.Many2one('estate.property.type', string='Property type')
-    # Customer
     partner_id = fields.Many2one('res.partner', string='Buyer', index=True)
-    # Internal User
     user_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
-    # Many to many relation with Tags model
     tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
-    # One to many relation with offer model
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
-    # Total area as computed field
     total_area = fields.Float(compute='_compute_total_area')
-    # Best Price as computed field
     best_price = fields.Float(compute='_compute_best_price')
 
     _sql_constraints = [
@@ -101,6 +94,10 @@ class EstateProperty(models.Model):
         for record in self:
             if record.status == 'cancelled':
                 raise exceptions.UserError("A cancelled property cannot be marked as sold.")
+            elif record.status == 'new':
+                raise exceptions.UserError("A property cannot be sold if their are no offers.")
+            elif record.status == 'offer_received':
+                raise exceptions.UserError("A property cannot be sold if no offers are accepted.")
             record.status = 'sold'
         return True
 

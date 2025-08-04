@@ -7,10 +7,11 @@
                 <div class="d-flex gap-3">
                     <h5 class="card-title"><t t-out="props.title"/></h5>
                     <button 
-                    type="button" 
-                    class="btn bg-secondary text-white"
-                    t-on-click="toggleBtn"
-                    >Toggle</button>
+                        type="button" 
+                        class="btn bg-secondary text-white"
+                        t-on-click="toggleBtn">
+                        Toggle
+                    </button>
                 </div>
                 <t t-if="state.flag" t-slot="default"/>
             </div>
