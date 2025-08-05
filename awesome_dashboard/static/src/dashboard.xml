@@ -1,8 +1,68 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{ controlPanel: {} }" className="'bg-secondary h-100'">
+            <t t-set-slot="control-panel-create-button">
+             <div class="d-flex gap-2">
+                    <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                    <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                </div>
+            </t>
+
+            <div class="d-flex mt-2 g-2">
+                <DashboardItem>
+                    <t t-slot="default">
+                        <p class="fs-4">Average amount of t-shirt by order this month</p>
+                        <div class="fs-1 text-success">
+                            <t t-esc="state.response.average_quantity" />
+                        </div>
+                    </t> 
+                </DashboardItem>
+                <DashboardItem size="2" >
+                    <t t-slot="default">
+                        <p class="fs-4">
+                            Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                        </p>
+                        <div class="fs-1 text-success">
+                            <t t-esc="state.response.average_time" />
+                        </div>
+                    </t> 
+                </DashboardItem>
+                <DashboardItem>
+                    <t t-slot="default">
+                        <p class="fs-4">
+                            Number of new orders this month
+                        </p>
+                        <div class="fs-1 text-success">
+                            <t t-esc="state.response.nb_new_orders" />
+                        </div>
+                    </t> 
+                </DashboardItem>
+            </div>
+            <div class="d-flex mt-2 g-2">
+                <DashboardItem>
+                    <t t-slot="default">
+                        <p class="fs-4">
+                            Number of cancelled orders this month
+                        </p>
+                        <div class="fs-1 text-success">
+                            <t t-esc="state.response.nb_cancelled_orders" />
+                        </div>
+                    </t> 
+                </DashboardItem>
+                <DashboardItem>
+                    <t t-slot="default">
+                        <p class="fs-4">
+                            Total amount of new orders this month
+                        </p>
+                        <div class="fs-1 text-success">
+                            <t t-esc="state.response.total_amount" /> 
+                        </div>
+                    </t> 
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
