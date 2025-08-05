@@ -30,5 +30,8 @@
                 </Card>
             </div>
         </div>
+        <div class="p-5">
+            <TodoList/>
+        </div>
     </t>
 </templates>
