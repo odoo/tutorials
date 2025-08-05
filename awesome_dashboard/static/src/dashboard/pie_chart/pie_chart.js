@@ -8,13 +8,13 @@ export class PieChart extends Component{
     static props = {
        data: { type: Object, optional: false }
     }
-    
+
     setup(){
         this.data = this.props.data;
         this.canvasRef = useRef("canvas");
         this.chart = null;
 
-        onWillStart(() => loadJS(["/web/static/lib/Chart/Chart.js"]))
+        onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"))
 
         useEffect(() => this.renderChart());
         onWillUnmount(this.onWillUnmount);
