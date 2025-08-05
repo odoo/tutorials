@@ -6,7 +6,7 @@ import { Card } from "../card/card";
 import { TodoList } from "../todo/todolist/todolist";
 
 export class Playground extends Component {
-    static template = "awesome_owl.playground";
+    static template = "awesome_owl.Playground";
     static components = { Counter, Card, TodoList }
     static props = {}
 

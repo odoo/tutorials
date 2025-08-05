@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="awesome_owl.todoitem">
+    <t t-name="awesome_owl.TodoItem">
         <div t-ref="todo_ref" class="card d-inline-block m-2 fade-in" style="width: 18rem;" t-att-class="{'text-muted': props.isCompleted, 'text-decoration-line-through': props.isCompleted, 'bg-body-tertiary': props.isCompleted, 'text-body-tertiary': props.isCompleted}">
             <div class="card-body">
                 <h3 class="card-title">

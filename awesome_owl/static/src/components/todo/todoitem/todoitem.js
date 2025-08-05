@@ -2,7 +2,7 @@ import { Component, onMounted, useRef } from "@odoo/owl"
 import { Card } from "../../card/card"
 
 export class TodoItem extends Component {
-    static template = "awesome_owl.todoitem"
+    static template = "awesome_owl.TodoItem"
     static components = { Card }
     static props = {
         id: { type: Number },

@@ -4,7 +4,7 @@ import { useAutofocus } from '../../../utils.js';
 
 
 export class TodoList extends Component {
-    static template = "awesome_owl.todolist"
+    static template = "awesome_owl.TodoList"
     static components = { TodoItem }
     static props = {}
 
