@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="stamp_template" xml:space="preserve">
+    <t t-name="stamp_sign.sign_svg_stamp" name="SVG Stamp Text  ">
+        <svg t-att-width="width" t-att-height="height" viewBox="0 0 300 100"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <style type="text/css">
+                    @font-face {
+                        font-family: "font";
+                        src: url(data:font/ttf;base64,<t t-esc="font" />
+) format("woff");
+                        font-weight: normal;
+                        font-style: normal;
+                    }
+                </style>
+            </defs>
+
+            <image x="30" y="15" width="90" height="70" t-attf-href="{{logo}}" />
+
+            <t t-if="company">
+                <text t-esc="company" x="150" y="30" font-size="14" t-att-textLength="Math.min(180, company.length * 9)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+            </t>
+
+            <t t-if="address">
+                <text t-esc="address" x="150" y="46" font-size="12" t-att-textLength="Math.min(180, address.length * 8)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+            </t>
+
+            <t t-if="city">
+                <text t-esc="city" x="150" y="62" font-size="12" t-att-textLength="Math.min(180, city.length * 8)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+            </t>
+
+            <t t-if="country">
+                <text t-esc="country" x="150" y="78" font-size="12" t-att-textLength="Math.min(180, country.length * 8)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+            </t>
+
+            <t t-if="vat">
+                <text t-esc="vat" x="150" y="88" font-size="10" t-att-textLength="Math.min(180, vat.length * 7)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+            </t>
+        </svg>
+    </t>
+</templates>
