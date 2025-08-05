@@ -2,7 +2,29 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        <Layout className="'o_dashboard h-100'"/>
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button type="button" class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+
+            <div class="d-flex flex-wrap gap-3 m-3">
+                <div class="d-flex flex-wrap gap-3">
+                    <t t-foreach="cards" t-as="card" t-key="card.id">
+                        <DashboardItem size="card.size">
+                            <p class="mb-0" style="text-align: left;" t-esc="card.title"/>
+                            <t t-set-slot="value">
+                                <t t-esc="card.value"/>
+                            </t>
+                        </DashboardItem>
+                    </t>
+                </div>
+                <DashboardItem size="2">
+                    <p class="mb-0 text-center">T-Shirt orders by size</p>
+                    <PieChart tshirtSales="this.result.orders_by_size"/>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
