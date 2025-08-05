@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.clicker_systray_item">
+        <div class="o_nav_entry">
+            <Dropdown>
+                <button>
+                    <ClickValue/> <i class="fa fa-mouse-pointer fa-fw"/>
+                    <t t-esc="this.numberBots"/> <i class="fa fa-android fa-fw"/>
+                    <t t-esc="this.numberTrees"/> <i class="fa fa-tree fa-fw"/>
+                    <t t-esc="this.numberFruits"/> <i class="fa fa-apple fa-fw"/>
+                </button>
+                <t t-set-slot="content">
+                    <DropdownItem>
+                        <button class="btn btn-secondary" t-on-click="this.openClientAction">
+                            Open the clicker game
+                        </button>
+                    </DropdownItem>
+                    <DropdownItem>
+                        <button class="btn btn-secondary" t-on-click="() => this.clicker.buyBot('clickBot')">
+                            Buy a ClickBot
+                        </button>
+                    </DropdownItem>
+                    <DropdownItem t-foreach="this.clicker.bots" t-as="bot" t-key="bot">
+                        <t t-esc="bot_value.purchased"/>x
+                        <t t-esc="bot"/>
+                    </DropdownItem>
+                    <DropdownItem t-foreach="this.clicker.trees" t-as="tree" t-key="tree">
+                        <t t-esc="tree_value.purchased"/>x
+                        <t t-esc="tree"/>
+                    </DropdownItem>
+                    <DropdownItem t-foreach="this.clicker.fruits" t-as="fruit" t-key="fruit">
+                        <t t-esc="fruit_value"/>x
+                        <t t-esc="fruit"/>
+                    </DropdownItem>
+                </t>
+
+            </Dropdown>
+        </div>
+    </t>
+</templates>
