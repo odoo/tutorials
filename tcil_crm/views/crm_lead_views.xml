@@ -1,21 +1,23 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <odoo>
-    <record id="crm_lead_view_form_inherit" model="ir.ui.view">
-        <field name="name">crm.lead.view.form.inherit</field>
+    <record id="crm_lead_view_form" model="ir.ui.view">
+        <field name="name">crm.lead.form.inherit.tcil.crm</field>
         <field name="model">crm.lead</field>
-        <field name="inherit_id" ref="crm.crm_lead_view_form"></field>
+        <field name="inherit_id" ref="crm.crm_lead_view_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="attributes">
+                <attribute name="string">BD Person</attribute>
+            </xpath>
+            <xpath expr="//page[@name='extra']" position="after">
+                <page string="Service Vertical" name="service_vertical" invisible="stage_sequence_no == 1"/>
+            </xpath>
             <xpath expr="//page[@name='lead']" position="after">
                 <page name="details" string="Contact details" invisible="type == 'lead'">
                     <!-- Address Details Section -->
                     <group>
-                        <field name="address_detail_ids"
-                               string="Address Details"
-                               readonly="partner_id == False"
-                               context="{'default_parent_id': partner_id, 'default_company_type': 'company', 'default_type': 'delivery', 'default_lead_id': id}"
-                               force_save="1">
+                        <field name="address_detail_ids" string="Address Detail" readonly="not partner_id" context="{'default_parent_id': partner_id, 'default_type': 'delivery'}" force_save="1">
                             <list editable="bottom">
-                                <field name="is_selected" widget="boolean" nolabel="1" force_save="1"/>
+                                <field name="is_selected_line" widget="boolean" nolabel="1" force_save="1"/>
                                 <field name="name" readonly="1"/>
                                 <field name="phone" readonly="1"/>
                                 <field name="mobile" readonly="1"/>
@@ -53,25 +55,20 @@
                             </form>
                         </field>
                     </group>
-
-                    <!-- Contact Details Section -->
                     <group>
-                        <field name="contact_detail_ids" 
-                               string="Contact Details"
-                               readonly="selected_address_id == False"
-                               widget="unlink_many2many"
-                               context="{'default_parent_id': selected_address_id, 'default_company_type': 'person', 'default_type': 'contact', 'default_lead_id': id}">
-                            <list editable="bottom">
-                                <field name="name"/>
-                                <field name="function"/>
-                                <field name="phone"/>
-                                <field name="email"/>
-                                <field name="user_id"/>
-                                <field name="street"/>
-                                <field name="city"/>
-                                <field name="state_id"/>
-                                <field name="country_id"/>
-                                <field name="company_id"/>
+                        <!-- Contact Details Section -->
+                        <field name="contact_detail_ids" string="Contact Details" readonly="not is_contact_detail_editable" context="{'default_parent_id': selected_address_partner_id, 'default_type': 'contact'}">
+                            <list class="hide_x2many_remove_btn" editable="bottom">
+                                <field name="name" readonly="1"/>
+                                <field name="function" readonly="1"/>
+                                <field name="phone" readonly="1"/>
+                                <field name="email" readonly="1"/>
+                                <field name="user_id" readonly="1"/>
+                                <field name="street" readonly="1"/>
+                                <field name="city" readonly="1"/>
+                                <field name="state_id" readonly="1"/>
+                                <field name="country_id" readonly="1"/>
+                                <field name="company_id" readonly="1"/>
                             </list>
                             <form>
                                 <sheet>
