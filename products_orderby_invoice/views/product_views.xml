@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_view_kanban_catalog_surplus_qty" model="ir.ui.view">
+            <field name="name">product.view.kanban.catalog.inherit.surplus.qty</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='o_kanban_qty_available']/field[@name='uom_id']" position="after">
+                    <span> (</span>
+                    <field name="surplus_qty"></field>
+                    <span>)</span>
+                </xpath>
+            </field>
+        </record>
+</odoo>
