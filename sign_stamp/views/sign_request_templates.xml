@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="stamp_sign._doc_sign" inherit_id="sign._doc_sign">
+        <xpath expr="//input[@id='o_sign_signer_phone_input_info']" position="before">
+            <input id="o_sign_signer_company_input_info" type="hidden" t-att-value="current_request_item.partner_id.company_id.name if current_request_item and current_request_item.partner_id else None" />
+            <input id="o_sign_signer_address_input_info" type="hidden" t-att-value="current_request_item.partner_id.street if current_request_item and current_request_item.partner_id else None" />
+            <input id="o_sign_signer_city_input_info" type="hidden" t-att-value="current_request_item.partner_id.city if current_request_item and current_request_item.partner_id else None" />
+            <input id="o_sign_signer_country_input_info" type="hidden" t-att-value="current_request_item.partner_id.country_id.name if current_request_item and current_request_item.partner_id else None" />
+            <input id="o_sign_signer_logo_input_info" type="hidden" t-att-value="logo" />
+            <input id="o_sign_signer_vat_input_info" type="hidden" t-att-value="current_request_item.partner_id.vat if current_request_item and current_request_item.partner_id else None" />
+        </xpath>
+    </template>
+</odoo>
