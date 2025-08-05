@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.pie_chart">
+        <div class="card mt-2 mx-2 text-center p-1" style="width: 38rem; height:30rem" >
+            <p class="fs-4">Shirt orders by size</p>
+            <div class="card-body">
+                <div class="canvas-container d-flex align-items-end">
+                    <canvas t-ref="canvas" class="w-100" style="height: 25rem;"/>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.dashboard_item">
+    <t t-name="awesome_dashboard.dashboard_item">
         <div class="card mt-2 mx-2 text-center p-1" t-att-style="`width: ${props.size*19}rem; height: 9rem;`" >
             <div class="card-body">
                     <t t-slot="default"/>

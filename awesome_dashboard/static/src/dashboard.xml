@@ -61,6 +61,7 @@
                         </div>
                     </t> 
                 </DashboardItem>
+                <PieChart ordersBySize="state.response.orders_by_size"  />
             </div>
         </Layout>
     </t>
