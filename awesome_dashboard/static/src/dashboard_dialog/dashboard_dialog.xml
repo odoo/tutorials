@@ -9,14 +9,15 @@
                             t-att-data-id="item.id"
                             class="form-check-input"
                             t-att-id="`check-${item.id}`" 
-                            t-att-checked="!itemsState.removedIds.includes(item.id)"
+                            t-att-checked="props.itemsState?.[item.id]"
+                            t-att-disabled="state.saving"
                         />
                         <label t-att-for="`check-${item.id}`" t-esc="item.description" />
                     </div>
                 </t>
             </div>
             <t t-set-slot="footer">
-                <button class="btn btn-primary" t-on-click="_confirm">
+                <button class="btn btn-primary" t-on-click="_confirm" t-att-disabled="state.saving">
                     Done
                 </button>
             </t>

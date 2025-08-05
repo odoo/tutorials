@@ -8,23 +8,39 @@ export class DashboardDialog extends Component {
         close: Function,
         items: {
             type: Object,
+        },
+        itemsState: {
+            type: Object,
         }
     }
     static components = { Dialog }
     setup() {
         this.statisticsService = useService("awesome_dashboard.statistics");
-        this.itemsState = useState(this.statisticsService.itemsState);
+        this.orm = useService("orm");
+        this.state = useState({ saving: false });
     }
 
-    _confirm() {
+    async _confirm() {
+        this.state.saving = true;
         const checkboxes = document.getElementsByClassName("form-check-input");
-        const removedIds = Array.from(checkboxes).reduce((acc, checkbox) => {
-            if (!checkbox.checked) {
-                acc.push(checkbox.dataset.id);
-            }
+        const settings = Array.from(checkboxes).reduce((acc, checkbox) => {
+            const id = 'dataset' in checkbox ? checkbox.dataset['id'] : null;
+            const visibility = 'checked' in checkbox ? checkbox.checked : false;
+            acc = { ...acc, [id]: visibility }
             return acc;
-        }, []);
-        this.itemsState.removedIds = removedIds;
+        }, {});
+        await this.setConfigSetting(settings);
+        location.reload();
         this.props.close();
+        this.state.saving = false;
+    }
+
+    async setConfigSetting(data) {
+        const value = await this.orm.call("res.config.settings", "web_save",
+            [[], [data]],
+            { context: { model: 'awesome_dashboard' }, specification: {} })
+
+        const res = await this.orm.call("res.config.settings", "execute", [[value[0].id]], { context: { model: 'awesome_dashboard' } });
+        return value;
     }
 }

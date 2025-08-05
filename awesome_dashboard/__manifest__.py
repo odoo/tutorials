@@ -19,6 +19,7 @@
     'depends': ['base', 'web', 'mail', 'crm'],
 
     'data': [
+        'views/res_config_settings_view.xml',
         'views/views.xml',
     ],
     'assets': {
