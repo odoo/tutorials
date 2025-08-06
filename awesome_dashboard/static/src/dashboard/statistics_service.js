@@ -19,9 +19,13 @@ const statisticsService = {
         })
 
         const loadStatistics = (async () => {
-            const result = await rpc("/awesome_dashboard/statistics");
-            for (const key in result) {
-                response[key] = result[key];
+            try {
+                const result = await rpc("/awesome_dashboard/statistics");
+                for (const key in result) {
+                    response[key] = result[key];
+                }
+            } catch (error) {
+                console.log("Error while fetching data from statistics!!")
             }
         });
 

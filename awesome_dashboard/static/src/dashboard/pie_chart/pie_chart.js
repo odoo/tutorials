@@ -6,7 +6,8 @@ export class PieChart extends Component {
     static template = "awesome_dashboard.pie_chart";
 
     static props = {
-        ordersBySize: {
+        title: { type: String },
+        value: {
             type: Object,
             shape: {
                 m: Number,
@@ -39,7 +40,7 @@ export class PieChart extends Component {
     }
 
     getChartConfig() {
-        const data = [this.props.ordersBySize.m, this.props.ordersBySize.s, this.props.ordersBySize.xl]
+        const data = [this.props.value.m, this.props.value.s, this.props.value.xl]
         return {
             type: 'pie',
             data: {
