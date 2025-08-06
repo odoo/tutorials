@@ -7,8 +7,11 @@ export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
     
     static props = {
-        tshirtSales: {
-            type: Object,
+        title: {
+            type: String,
+        },
+        value: {
+            type: String | Number,
         }
     }
 
@@ -21,17 +24,17 @@ export class PieChart extends Component {
         useEffect(() => {
             this.createChart();
             return () => this.chart?.destroy();
-        }, () => []);
+        });
     }
 
     getChartConfig() {
-        if (!this.props.tshirtSales) return {};
+        if (!this.props.value) return {};
         return {
             type: 'pie',
             data: {
-                labels: Object.keys(this.props.tshirtSales),
+                labels: Object.keys(this.props.value),
                 datasets: [{
-                    data: Object.values(this.props.tshirtSales),
+                    data: Object.values(this.props.value),
                 }]
             },
             options: {
