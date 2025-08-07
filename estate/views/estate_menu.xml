@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <!-- Root menu for the Real Estate module -->
+        <menuitem id="estate_property_menu_root" name="Real Estate"
+            web_icon="estate,static/description/building_icon.png">
+
+            <!-- Advertisements Menu -->
+            <menuitem id="advertisement_menu_action" name="Advertisements">
+                <menuitem id="property_menu_action" name="Properties"
+                    action="estate_property_action" />
+            </menuitem>
+
+            <!-- Settings Menu -->
+            <menuitem id="settings_menu_action" name="Settings">
+                <menuitem id="property_type_menu_action" name="Property Types"
+                    action="estate_property_type_action" />
+                <menuitem id="property_tag_menu_action" name="Property Tags"
+                    action="estate_property_tag_action" />
+            </menuitem>
+        </menuitem>
+    </data>
+</odoo>
