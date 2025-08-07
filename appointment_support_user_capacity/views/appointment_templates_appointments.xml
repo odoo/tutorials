@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <template id="inherit_appointment_info" inherit_id="appointment.appointment_info">
+            <xpath expr="//div[@class='row']/div[2]/div" position="replace">
+                <div t-if="appointment_type.capacity_type == 'multiple_seats'">
+                    <div t-if="slots and max_capacity" class="mb-4">
+                        <input type="hidden" name="max_capacity" t-att-value="max_capacity"/>
+                        <label class="mb-2 o_editable" for="resourceCapacity">Number of people</label>
+                        <select class="form-select cursor-pointer" name="resourceCapacity" id="resourceCapacity">
+                            <option value="1" t-att-selected="not asked_capacity and 'selected'" data-placeholder-option="True">-</option>
+                            <option t-foreach="range(1, max_capacity + 1)" t-as="counter"
+                                t-att-value="counter" t-att-selected="counter == asked_capacity and 'selected'">
+                                <t t-out="counter"/>
+                            </option>
+                        </select>
+                    </div>
+                    <div class="o_appointment_no_capacity d-flex mt-2 pb-0 text-center"/>
+                </div>
+            </xpath>
+        </template>
+    </data>
+</odoo>
