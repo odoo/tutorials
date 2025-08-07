@@ -1,0 +1,15 @@
+{
+    'name': 'Estate Account',
+    'version': '1.0',
+    'sequence': 2,
+    'depends': ['base', 'account'],
+    'category': 'Real Estate',
+    'author': 'prbo',
+    'summary': 'Invoice integration with Real Estate',
+    'description': 'Creates an invoice when a property is sold.',
+    'license': 'LGPL-3',
+    'data': [],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+}
