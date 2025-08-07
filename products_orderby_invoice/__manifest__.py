@@ -8,4 +8,5 @@
         'views/product_views.xml',
     ],
     'installable': True,
+    'license': 'LGPL-3',
 }
