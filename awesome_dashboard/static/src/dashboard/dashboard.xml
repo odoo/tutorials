@@ -7,29 +7,23 @@
                 <button type="button" class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="d-print-none btn p-0 border-0" data-hotkey="u" t-on-click="openDialog" data-tooltip="Actions">
+                    <i class="fa fa-fw fa-cog"/>
+                </button>
+            </t>
 
             <div class="d-flex flex-wrap gap-3 m-3">
                 <div class="d-flex flex-wrap gap-3">
                     <t t-foreach="items" t-as="item" t-key="item.id">
-                        <DashboardItem size="item.size || 1">
-                            <t t-set="itemProp" t-value="item.props ? item.props(result) : {'data': result}"/>
-                            <t t-log="itemProp"/>
-                            <t t-component="item.Component" t-props="itemProp"/>
-                        </DashboardItem>
+                        <t t-if="state.metricConfigs[item.id]">
+                            <DashboardItem size="item.size || 1">
+                                <t t-set="itemProp" t-value="item.props ? item.props(result) : {'data': result}"/>
+                                <t t-component="item.Component" t-props="itemProp"/>
+                            </DashboardItem>
+                        </t>
                     </t>
-                    <!-- <t t-foreach="cards" t-as="card" t-key="card.id">
-                        <DashboardItem size="card.size">
-                            <p class="mb-0" style="text-align: left;" t-esc="card.title"/>
-                            <t t-set-slot="value">
-                                <t t-esc="card.value"/>
-                            </t>
-                        </DashboardItem>
-                    </t> -->
                 </div>
-                <!-- <DashboardItem size="2">
-                    <p class="mb-0 text-center">T-Shirt orders by size</p>
-                    <PieChart tshirtSales="chart"/>
-                </DashboardItem> -->
             </div>
         </Layout>
     </t>

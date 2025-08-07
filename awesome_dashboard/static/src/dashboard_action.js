@@ -10,4 +10,3 @@ export class LazyDashboardLoader extends Component {
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", LazyDashboardLoader);
-

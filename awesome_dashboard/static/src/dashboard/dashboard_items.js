@@ -1,6 +1,7 @@
 
 import { NumberCard } from "./NumberCard/number_card";
 import { PieChart } from "./PieChartCard/pie_chart";
+import { registry } from "@web/core/registry";
 
 export const dashboardCards = [
     {
@@ -64,3 +65,5 @@ export const dashboardCards = [
         }),
     }
 ]
+
+registry.category("awesome_dashboard_cards").add("awesome_dashboard.Cards", dashboardCards);

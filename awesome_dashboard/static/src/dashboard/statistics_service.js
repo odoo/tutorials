@@ -4,15 +4,13 @@ import { registry } from "@web/core/registry";
 import { rpc } from "@web/core/network/rpc";
 import { reactive } from "@odoo/owl";
 
-let statisticsObj = reactive({
+const statisticsObj = reactive({
     nb_new_orders: 0,
     total_amount: 0,
     average_quantity: 0,
     nb_cancelled_orders: 0,
     average_time: 0,
     orders_by_size: {}
-}, () => {
-    console.log("Observed");
 });
 
 const loadStatistics = async() => {
@@ -34,7 +32,7 @@ export const loadStatService = {
         return {
             get stats() {
                 return statisticsObj;
-            }
+            },
         }
     }
 }
