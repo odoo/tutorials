@@ -4,14 +4,19 @@
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout display="{ controlPanel: {} }" className="'bg-secondary h-100'">
             <t t-set-slot="control-panel-create-button">
-             <div class="d-flex gap-2">
+                <div class="d-flex gap-2">
                     <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                     <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
                 </div>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn" t-on-click="openSettings">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                </button>
+            </t>
             <div class="d-flex mt-2 g-2 flex-wrap">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
+                    <DashboardItem t-if="state.card_preference.includes(item.id)" size="item.size || 1">
                         <t t-set="itemProp" t-value="item.props ? item.props(state.response) : {'data': state.response}"/>
                         <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>
