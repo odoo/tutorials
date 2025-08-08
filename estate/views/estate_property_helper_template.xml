@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- needs improvement-->
+    <template id="estate_property_action_helper" name="estate property action helper">
+        <p class="o_view_nocontent_smiling_face">
+            No available properties
+        </p>
+        <p class="o_view_nocontent_description">
+            Click on <strong>Create</strong> to add a new property and start managing your listings.
+        </p>
+    </template>
+</odoo>
