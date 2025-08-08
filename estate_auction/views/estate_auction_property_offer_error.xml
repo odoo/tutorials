@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_estate_auction_property_offer_error" name="Property Offer">
+        <t t-call="website.layout">
+            <t t-set="title">Error</t>
+            <div class="d-flex align-items-center justify-content-center min-vh-100">
+                <div class="alert alert-danger text-center p-4 shadow rounded" role="alert">
+                    <h4 class="mb-3">
+                        <t t-esc="error_title"/>
+                    </h4>
+                    <p class="mb-4">
+                        <t t-esc="error_message"/>
+                    </p>
+                    <a href="/property" class="btn btn-primary">Go Back</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
