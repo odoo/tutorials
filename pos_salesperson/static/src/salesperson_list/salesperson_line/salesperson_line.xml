@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_salesperson.SalespersonLine">
+        <t t-if="ui.isSmall">
+            <div class="salesperson-info d-flex flex-column p-1 border-bottom" t-att-class="{'bg-primary-subtle': props.isSelected}" t-att-data-id="props.salesperson.id"
+                t-on-click="() => this.props.onClickSalesperson(props.salesperson)">
+                <div class="d-flex justify-content-between align-items-center p-1">
+                    <div>
+                        <b t-esc="props.salesperson.name or ''" />
+                        <div class="company-field text-bg-muted" t-esc="props.salesperson.parent_name or ''" />
+                    </div>
+                </div>
+                <div class="salesperson-line-email p-1">
+                    <div t-if="props.salesperson.work_contact_id.email" class="email-field mb-1">
+                        <i class="fa fa-fw fa-paper-plane-o me-2" /><t t-esc="props.salesperson.work_contact_id.email" />
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between align-items-center p-1">
+                    <button t-if="props.isSelected" t-on-click.stop="props.onClickUnselect" class="unselect-tag-mobile d-inline-block d-lg-none btn btn-light border ms-2">
+                        <i class="fa fa-times me-1"></i>
+                        <span>UNSELECT</span>
+                    </button>
+                </div>
+            </div>
+        </t>
+        <t t-else="">
+            <tr class="salesperson-line salesperson-info" t-att-class="{'selected': props.isSelected}" t-att-data-id="props.salesperson.id"
+                t-on-click="() => this.props.onClickSalesperson(props.salesperson)">
+                <td>
+                    <b t-esc="props.salesperson.name or ''" />
+                    <div class="company-field text-bg-muted" t-esc="props.salesperson.parent_name or ''" />
+                </td>
+                <td class="salesperson-line-email ">
+                    <div t-if="props.salesperson.work_contact_id.email" class="email-field">
+                        <i class="fa fa-fw fa-paper-plane-o me-2"/><t t-esc="props.salesperson.work_contact_id.email" />
+                    </div>
+                </td>
+                <td class="edit-salesperson-button-cell align-middle pe-0">
+                    <button t-if="props.isSelected" t-on-click.stop="props.onClickUnselect" class="unselect-tag d-lg-inline-block d-none btn btn-link btn-lg mt-1 float-end">
+                        <i class="fa fa-check"/>
+                    </button>
+                </td>
+            </tr>
+        </t>
+    </t>
+
+</templates>

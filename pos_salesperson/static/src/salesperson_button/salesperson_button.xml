@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="pos_salesperson.SelectSalespersonButton">
+        <button class="btn btn-light btn-lg lh-lg flex-grow-1" t-on-click="() => this.pos.selectSalesperson()">
+            <div t-if="this.salesperson" t-esc="this.salesperson?.name" class="text-truncate text-action" />
+            <t t-else="">Salesperson</t>
+        </button>
+    </t>
+</templates>
