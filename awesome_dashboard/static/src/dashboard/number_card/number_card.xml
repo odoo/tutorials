@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.NumberCard" owl="1">
+        <t t-esc="props.title"/>
+        <h1 className="'o_dashboard_number'">
+            <t t-esc="props.value"/>
+        </h1>
+    </t>
+
+</templates>
