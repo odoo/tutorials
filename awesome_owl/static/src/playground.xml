@@ -1,10 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="d-flex flex-column gap-3">
+            <div class="w-100 d-inline-flex justify-content-center mt-2">
+                Counter Application
+            </div>
+            <div class="w-100 d-inline-flex justify-content-center align-items-center">
+                <div class="mt-2 p-3 border d-flex flex-column rounded align-items-center">
+                    <div class="mb-2 d-inline-flex align-items-center gap-3">
+                        <Card title="'Card (slot)'">
+                            <Counter onChange.bind="onChange"/>
+                        </Card>
+                        <Card title="'Card (slot)'">
+                            <Counter onChange.bind="onChange"/>
+                        </Card>
+                    </div>
+                    <h5>The sum is: <t t-esc="sum.value"/></h5>
+                </div>
+            </div>
+            <div class="w-100 d-inline-flex justify-content-center mt-2">
+                Card Component with props
+            </div>
+            <div class="w-100 d-inline-flex justify-content-center">
+                <Card title="'Card 1(simple: t-out)'">
+                    <t t-out="this.content1"/>
+                </Card>
+                <Card title="'Card 2(markup)'">
+                    <t t-out="this.content2"/>
+                </Card>
+            </div>
+            <div class="w-100 d-inline-flex justify-content-center mt-2">
+                A To-Do List
+            </div>
+            <div class="w-100 d-inline-flex justify-content-center">
+                <TodoList/>
+            </div>
         </div>
     </t>
-
 </templates>

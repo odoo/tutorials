@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Real Estate (TOP MENU) -->
+    <menuitem
+        id="estate_property_menu_root"
+        name="Real Estate"
+        web_icon="estate,static/description/icon.png"/>
+
+    <!-- Advertisement (MAIN USER MENU) -->
+    <menuitem
+        id="estate_property_menu_advertisement"
+        name="Advertisement"
+        parent="estate_property_menu_root"
+        sequence="1"/>
+
+    <!-- Properties (Advertisement SUB-MENU) -->
+    <menuitem
+        id="estate_property_menu_properties"
+        name="Properties"
+        parent="estate_property_menu_advertisement"
+        action="estate.estate_property_properties_action"
+        sequence="1"/>
+
+    <!-- Configuration (MAIN USER MENU) -->
+    <menuitem
+        id="estate_property_menu_configuration"
+        name="Configuration"
+        parent="estate_property_menu_root"
+        sequence="3"/>
+
+    <!-- Setting (Configuration SUB MENU) -->
+    <menuitem
+        id="estate_property_type_menu_setting"
+        name="Setting"
+        parent="estate_property_menu_configuration"
+        action="estate.action_estate_config"
+        sequence="1"/>
+
+    <!-- Property Types (Configuration SUB MENU) -->
+    <menuitem
+        id="estate_property_type_menu_property_types"
+        name="Property Types"
+        parent="estate_property_menu_configuration"
+        action="estate.estate_property_type_action"
+        sequence="2"/>
+
+    <!-- Property Tag (Configuration SUB MENU) -->
+    <menuitem
+        id="estate_property_tag_menu_property_tags"
+        name="Property Tags"
+        parent="estate_property_menu_configuration"
+        action="estate.estate_property_tag_action"
+        sequence="3"/>
+
+
+    
+</odoo>
