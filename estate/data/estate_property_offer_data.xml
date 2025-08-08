@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_offer_1" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_1"/>
+        <field name="price">100000.0</field>
+        <field name="validity">14</field>
+    </record>
+
+    <record id="estate_property_offer_2" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_2"/>
+        <field name="price">1500000.0</field>
+        <field name="validity">10</field>
+    </record>
+
+    <record id="estate_property_offer_3" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate_property_1"/>
+        <field name="price">101000.0</field>
+        <field name="validity">14</field>
+    </record>
+
+    <record id="estate_property_offer_4" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_10"/>
+        <field name="property_id" ref="estate_property_1"/>
+        <field name="price">101500.0</field>
+        <field name="validity">10</field>
+    </record>
+
+    <record id="estate_property_offer_5" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_3"/>
+        <field name="price">1500000.0</field>
+        <field name="validity">14</field>
+    </record>
+
+    <record id="estate_property_offer_6" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate_property_3"/>
+        <field name="price">1501000.0</field>
+        <field name="validity">10</field>
+    </record>
+
+    <record id="estate_property_offer_7" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate_property_5"/>
+        <field name="price">480000.0</field>
+        <field name="validity">10</field>
+    </record>
+
+    <function model="estate.property.offer" name="action_refuse">
+        <value eval="[ref('estate_property_offer_1'), ref('estate_property_offer_3')]"/>
+    </function>
+
+    <function model="estate.property.offer" name="action_accept">
+        <value eval="[ref('estate_property_offer_4')]"/>
+    </function>
+
+</odoo>
