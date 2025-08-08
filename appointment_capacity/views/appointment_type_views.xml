@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="appointment_type_form_view_inherit" model="ir.ui.view">
+        <field name="name">appointment.type.view.form.inherit</field> 
+        <field name="model">appointment.type</field>
+        <field name="inherit_id" ref="appointment.appointment_type_view_form"/>
+        <field name="arch" type="xml">
+            <field name="assign_method" position="before">
+                <field name="resource_capacity"/>
+                <span invisible="schedule_based_on == 'users' or resource_capacity == 'one_booking'">
+                Total: <field name="resource_total_capacity" class="oe_inline o_input_5ch me-1 form-control form-control-sm w-auto border border-primary rounded"/>
+                        <span class="badge bg-secondary" invisible="resource_capacity == 'multi_booking'">seats</span>
+                        <span class="badge bg-secondary" invisible="resource_capacity == 'multi_seat'">bookings</span>
+                </span>
+                <div invisible="schedule_based_on == 'users'">
+                    <button name="action_appointment_resources"
+                        class="btn-link mb-1 px-0 oe_inline"
+                        string="Manage Resources"
+                        type="object"
+                        icon="oi-arrow-right"/>
+                </div>
+            </field>
+
+            <xpath expr="//field[@name='resource_manage_capacity']/.." position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <!-- This is add the Integer field add the user can add the value of number -->
+            <xpath expr="//field[@name='assign_method']" position="before">
+                <div>
+                <span invisible="resource_capacity == 'one_booking' or schedule_based_on == 'resources'">
+                    <label for="capacity_count" invisible="schedule_based_on == 'resources' or resource_capacity == 'one_booking'"/>
+                    <field name="capacity_count" class="oe_inline" invisible="schedule_based_on == 'resources' or resource_capacity == 'one_booking'"/>
+                    <span class="badge bg-info" invisible="resource_capacity == 'multi_booking'">seats</span>
+                    <span class="badge bg-info" invisible="resource_capacity == 'multi_seat'">bookings</span>
+                </span>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
