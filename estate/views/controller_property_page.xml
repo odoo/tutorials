@@ -1,0 +1,58 @@
+<odoo>
+    <data noupdate="1">
+    <record id="properties" model="website.menu">
+            <field name="name">Properties</field>
+            <field name="url">/properties</field>
+            <field name="parent_id" ref="website.main_menu"/>
+    </record>
+    <template id="property_detail_page" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <form action="/properties" method="get">
+                            <!-- Date Picker -->
+                            <div class="input-group">
+                                <input type="date" name="listed_after" class="form-control" placeholder="Select Date"/>
+                                <button class="btn btn-primary" type="submit">Listed After</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- Property Image -->
+                        <t t-if="property.image">
+                            <img t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" 
+                                 class="img-fluid" alt="Property Image" />
+                        </t>
+                    </div>
+                    <div class="col-md-6">
+                        <h1 class="property-title" t-esc="property.name"/>
+                        <p class="text-muted" t-esc="property.status"/> <!-- Display Status -->
+
+                        <div class="property-price">
+                            <h4>Price: <span t-esc="property.expected_price" /></h4>
+                        </div>
+
+                        <p class="property-description" t-esc="property.description"/>
+
+                        <h5>Features</h5>
+                        <ul>
+                            <li><strong>Bedrooms:</strong> <t t-esc="property.bedrooms" /></li>
+                            <li><strong>Living Area:</strong> <t t-esc="property.living_area" /> m²</li>
+                            <li><strong>Garden Area:</strong> <t t-esc="property.garden_area" /> m²</li>
+                            <li><strong>Garage:</strong> <t t-esc="property.garage" /></li>
+                        </ul>
+
+                        <!-- Property action buttons -->
+                        <a t-att-href="'/contact'">
+                            <button class="btn btn-primary">Contact Seller</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    </data>
+</odoo>
