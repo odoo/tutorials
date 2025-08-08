@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_meeting_room" model="ir.actions.act_window">
+            <field name="name">Rooms</field>
+            <field name="res_model">meeting.room</field>
+            <field name="view_mode">list,form</field>
+        </record>
+
+        <record id="action_meeting_booking" model="ir.actions.act_window">
+            <field name="name">Bookings</field>
+            <field name="res_model">meeting.booking</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data> 
+</odoo>

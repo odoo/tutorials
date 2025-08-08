@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_meeting_room_tree" model="ir.ui.view">
+            <field name="name">meeting.room.tree</field>
+            <field name="model">meeting.room</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name" />
+                    <field name="capacity" />
+                    <field name="location" />
+                    <field name="availability" />
+                </list>
+            </field>
+        </record>
+
+        <record id="view_meeting_room_form" model="ir.ui.view">
+            <field name="name">meeting.room.form</field>
+            <field name="model">meeting.room</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name" />
+                            <field name="capacity" />
+                            <field name="location" />
+                            <field name="availability" />                        
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>
+
