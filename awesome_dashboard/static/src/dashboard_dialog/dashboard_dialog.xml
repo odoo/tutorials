@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardDialog">
+        <Dialog>
+            <t t-set-slot="header">
+                <h3 class="modal-title text-break">
+                    Dashboard Item Configuration
+                </h3>
+                <button type="button" class="btn-close" aria-label="close" t-on-click="closeDialog"/>
+            </t>
+            <div>
+                <p>
+                    Which metrics do you want to see?
+                </p >
+                <t t-foreach="props.metrics" t-as="metric" t-key="metric.id">
+                    <div class="d-flex gap-2 m-2">
+                        <CheckBox value="state.metricConfigs[metric.id]" onChange.bind="(checked) => this.toggleMetricConfig(metric.id, checked)">
+                            <t t-esc="metric.description"/>
+                        </CheckBox>
+                    </div>
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button class="button btn btn-lg btn-primary" t-on-click="applyChanges">
+                    Apply
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
