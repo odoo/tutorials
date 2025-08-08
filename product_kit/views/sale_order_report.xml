@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_saleorder_document_inherit" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//table[@id='sales_order_table']//tbody[@class='sale_tbody']//t[@t-foreach='lines_to_report']" position="attributes">
+            <attribute name="t-if">
+                (not line.is_subProduct) or (sale_order.is_kit_printable and line.is_subProduct)
+            </attribute>
+        </xpath>
+    </template>
+    <template id="report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//tbody/t[@t-foreach='lines_to_report']" position="attributes">
+            <attribute name="t-if">
+                not line.is_subProduct or doc.is_kit_printable
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
