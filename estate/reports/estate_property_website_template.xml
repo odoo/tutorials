@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="menu_property" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+        <field name="parent_id" ref="website.main_menu"/>
+    </record>
+
+    <template id="estate_property_website_template" name="Property">
+        <title>Properties</title>
+        <t t-call="website.layout">
+            <style>
+                .property-image {
+                    width: 100%; 
+                    height: 200px; 
+                    object-fit: cover; 
+                }
+            </style>
+            <section class="container my-5">
+                <h2 class="text-center mb-4">
+                    Available Properties
+                </h2>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                            <div class="card shadow border-light">
+                                <t t-if="property.property_image"> 
+                                    <img t-attf-src="data:image/*;base64,#{property.property_image}" alt="Property Image"/>
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-esc="property.name"/>
+                                    </h5>
+                                    <p class="card-text">
+                                        <strong>Salesman:</strong> 
+                                        <t t-esc="property.seller_id.name"/>
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>State:</strong> 
+                                        <t t-esc="property.state"/>
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Expected Price:</strong>
+                                        <t t-esc="property.expected_price"/> $
+                                    </p>
+                                    <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="pagination d-flex justify-content-between align-items-center">
+                    <a t-att-href="pager['page_previous']['url']" class="btn btn-secondary">Previous</a>
+                    <span>Page <t t-esc="pager['page']['num']"/> of <t t-esc="pager['page_count']"/></span>
+                    <a t-att-href="pager['page_next']['url']" class="btn btn-secondary">Next</a>
+                </div>
+            </section>
+        </t>
+    </template>
+</odoo>
