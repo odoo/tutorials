@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="pie_card.pie_card">
+        <Card size="size">
+            <h3><t t-esc="title"/></h3>
+            <t t-out="canvas"/>
+        </Card>	
+    </t>
+
+</templates>

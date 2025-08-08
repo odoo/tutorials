@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+	<t t-name="todo_list.todo_list">
+		<div class="todolist">
+			<form t-on-keyup="create_task" style="display: flex;flex-direction: column;justify-content: center;align-items: center;margins: 0; padding: 0;">
+				<input type="text" name="title" id="title" placeholder="Title"/>
+				<input type="text" name="description" id="description" placeholder="Description"/>
+			</form>
+			<t t-foreach="list.items" t-as="item" t-key="item.id">
+				
+				<TodoItem id="item.id" title="item.title" description="item.description" isCompleted="item.isCompleted" update.bind="update" remove.bind="remove"/>
+			</t>
+		</div>
+	</t>
+
+</templates>
