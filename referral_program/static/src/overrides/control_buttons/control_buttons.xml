@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="point_of_sale.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//OrderlineNoteButton" position="after">
+            <label for="referrer" class="bg-light fs-4 lh-lg px-3 py-2 rounded">
+                <div t-if="partner and partner.referred_by" class="text-truncate text-action">
+                    <t t-esc="partner.referred_by.name"/>
+                </div>
+                <div t-else="" class="text-truncate">
+                    Referred By
+                </div>
+            </label>
+        </xpath>
+    </t>
+
+</templates>
