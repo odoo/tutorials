@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="approval_request_form_view_inherit_approval_sales" model="ir.ui.view">
+        <field name="name">approval.request.form.view.inherit.approval.sales</field>
+        <field name="model">approval.request</field>
+        <field name="inherit_id" ref="approvals.approval_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_approve']" position="after">
+                <button name="action_submit_final_price" string="Submit Final Price" type="object"
+                    invisible="request_status != 'approved' or approval_type != 'sales' or is_final_price_sent == True"
+                    class="btn-primary" />
+            </xpath>
+            <xpath expr="//button[@name='action_get_attachment_view']" position="after">
+                <button name="action_open_sale_order" type="object"
+                    class="oe_stat_button" icon="fa-dollar"
+                    invisible="sale_order_count == 0">
+                    <field name="sale_order_count" string="Sale Order" widget="statinfo"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='product_line_ids']" position="attributes">
+                <attribute name="invisible">approval_type == 'sales'</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_line_ids']" position="after">
+                <field name="product_line_ids"
+                    context="{'list_view_ref': 'approval_sales.approval_sale_product_line_view_tree'}"
+                    invisible="approval_type != 'sales'"
+                    readonly="request_status not in ['new']"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

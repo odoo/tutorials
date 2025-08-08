@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="approval_sale_product_line_view_tree" model="ir.ui.view">
+        <field name="name">approval.sale.product.line.view.list</field>
+        <field name="model">approval.product.line</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" string="Products" create="false">
+                <field name="company_id" column_invisible="True"/>
+                <field name="product_id" column_invisible="parent.has_sale_product == 'no'"
+                    readonly="parent.has_sale_product == 'readonly'"/>
+                <field name="description" readonly="1"/>
+                <field name="quantity" column_invisible="parent.has_sale_quantity == 'no'"
+                    readonly="parent.has_sale_quantity == 'readonly' or parent.request_status != 'new'"/>
+                <field name="product_uom_id" groups="uom.group_uom"
+                    options="{'no_create': True, 'no_open': True}"/>
+                <field name="unit_price" column_invisible="parent.has_unit_price == 'no'"
+                    readonly="parent.has_unit_price == 'readonly'"/>
+                <field name="cost_price" column_invisible="parent.has_cost_price == 'no'"
+                    readonly="parent.has_cost_price == 'readonly'"/>
+                <field name="margin" column_invisible="parent.has_margin == 'no'"
+                    readonly="parent.has_margin == 'readonly'"/>
+                <field name="custom_margin" column_invisible="parent.has_margin_custom == 'no'"
+                    readonly="parent.has_margin_custom == 'readonly'"/>
+                <field name="final_price" column_invisible="parent.has_final_price == 'no'"
+                    readonly="parent.has_final_price == 'readonly'"/>
+            </list>
+        </field>
+    </record>
+</odoo>

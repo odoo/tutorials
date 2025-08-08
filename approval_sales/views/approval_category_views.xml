@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="approval_category_form_view_inherit_approval_sales" model="ir.ui.view">
+        <field name="name">approval.category.form.view.inherit.approval.sales</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='options']" position="attributes">
+                <attribute name="invisible">approval_type == 'sales'</attribute>
+            </xpath>
+            <xpath expr="//page[@name='options']" position="after">
+                <page string="Options" name="options" invisible="approval_type not in 'sales'">
+                    <group>
+                        <group string="Fields" name="option_settings">
+                            <field name="active" invisible="1"/>
+                            <field name="has_sale_product" string="Product" widget="radio" options="{'horizontal': true}"/>
+                            <field name="has_sale_quantity" string="Quantity" widget="radio" options="{'horizontal': true}"/>
+                            <field name="has_unit_price" string="Unit Price" widget="radio" options="{'horizontal': true}"/>
+                            <field name="has_cost_price" string="Cost Price" widget="radio" options="{'horizontal': true}"/>
+                            <field name="has_margin" string="Margin" widget="radio" options="{'horizontal': true}"/>
+                            <field name="has_margin_custom" string="Custom Margin (%)" widget="radio" options="{'horizontal': true}"/>
+                            <field name="has_final_price" string="Final Price" widget="radio" options="{'horizontal': true}"/>
+                        </group>
+                        <group string="Approvers" name="approvers">
+                            <field name="manager_approval"/>
+                            <separator colspan="2"/>
+                            <field name="approver_ids"/>
+                            <field name="approver_sequence" invisible="approval_minimum == 0"/>
+                            <field name="approval_minimum"/>
+                            <field name="invalid_minimum" invisible="1"/>
+                            <div class="text-warning" colspan="2" invisible="not invalid_minimum">
+                                <span class="fa fa-warning" title="Invalid minimum approvals"/>
+                                <field name="invalid_minimum_warning" nolabel="1"/>
+                            </div>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="approval_category_kanban_view_inherit_approval_sales" model="ir.ui.view">
+        <field name="name">approval.category.kanban.view.inherit.approval.sales</field>
+        <field name="model">approval.category</field>
+        <field name="inherit_id" ref="approvals.approval_category_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='create_request']" position="attributes">
+                <attribute name="invisible">approval_type == 'sales'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
