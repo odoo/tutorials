@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="vendor_portal_template" name="Vendor Portal">
+        <t t-call="website.layout">
+            <div class="container mt-5 mb-5">
+                <h2 class="text-center mb-4">Vendor Portal</h2>
+                <t t-if="request.params.get('success') == '1'">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        ✅ Purchase Order Created Successfully!
+                        <a href="/vendor-portal" class="btn-close" aria-label="Close"></a>
+                    </div>
+                </t>
+                <t t-if="request.params.get('error') == '1'">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        ❌ Invalid input data. Please enter valid product and vendor.
+                        <a href="/vendor-portal" class="btn-close" aria-label="Close"></a>
+                    </div>
+                </t>
+                <form method="get" action="/vendor-portal">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <select class="form-control" name="country_id" id="country_id">
+                                <option value="" t-att-selected="not selected_country and 'selected' or None">Select Vendor's Country</option>
+                                <t t-foreach="countries" t-as="country">
+                                    <option t-att-value="country.id" t-att-selected="str(country.id) == (selected_country or '') and 'selected' or None">
+                                        <t t-esc="country.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div>
+                            <select class="form-control" name="vendor_id" id="vendor_id">
+                                <option value="" t-att-selected="not selected_vendor and 'selected' or None">Select Vendor</option>
+                                <t t-foreach="vendors" t-as="vendor">
+                                    <option t-att-value="vendor.id" t-att-selected="str(vendor.id) == (selected_vendor or '') and 'selected' or None">
+                                        <t t-esc="vendor.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div>
+                            <select class="form-control" name="category_id" id="category_id">
+                                <option value="" t-att-selected="not selected_category and 'selected' or None">Select Product Category</option>
+                                <t t-foreach="categories" t-as="cat">
+                                    <option t-att-value="cat.id" t-att-selected="str(cat.id) == (selected_category or '') and 'selected' or None">
+                                        <t t-esc="cat.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div>
+                            <select class="form-control" name="product_id" id="product_id">
+                                <option value="" t-att-selected="not selected_product and 'selected' or None">Select Product</option>
+                                <t t-foreach="products" t-as="prod">
+                                    <option t-att-value="prod.id" t-att-selected="str(prod.id) == (selected_product or '') and 'selected' or None">
+                                        <t t-esc="prod.name"/>
+                                    </option>
+                                </t>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="mt-5">
+                    <h4>Search Results</h4>
+                    <t t-if="filtered_products">
+                        <div class="row">
+                            <t t-foreach="filtered_products" t-as="p">
+                                <div class="col-12 mb-4 border">
+                                    <div class="p-2 d-flex justify-content-between align-items-center border-bottom">
+                                        <div class="d-flex align-items-start gap-3" style="width: 80%;">
+                                            <h5 class="my-auto" style="min-width: 30%; max-width: 30%; word-wrap: break-word;">
+                                                <t t-esc="p.name"/>
+                                            </h5>
+                                            <t t-set="vendor_prices" t-value="[seller.price for seller in p.seller_ids]"/>
+                                            <div style="min-width: 70%; max-width: 70%;">
+                                                <div>
+                                                    <strong>Min Price :</strong>
+                                                    <t t-if="len(vendor_prices) > 0">
+                                                        <span t-esc="p.currency_id.symbol"/>
+                                                    </t>
+                                                    <span t-esc="vendor_prices and min(vendor_prices) or 'N/A'"/>
+                                                </div>
+                                                <div>
+                                                    <strong>Max Price :</strong>
+                                                    <t t-if="len(vendor_prices) > 0">
+                                                        <span t-esc="p.currency_id.symbol"/>
+                                                    </t>
+                                                    <span t-esc="vendor_prices and max(vendor_prices) or 'N/A'"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div style="max-width: 100px; max-height: 100px;">
+                                            <t t-set="image_holder" t-value="p._get_image_holder()"/>
+                                            <t t-if="image_holder.image_1920">
+                                                <span t-field="image_holder.image_1920" t-options="{'widget': 'image'}"/>
+                                            </t>
+                                            <t t-else="">
+                                                <span t-if="not p.image_1920">No Image</span>
+                                            </t>
+                                        </div>
+                                    </div>
+                                    <div class="p-2 d-flex align-items-start justify-content-between">
+                                        <t t-if="p.seller_ids">
+                                            <table style="width: 40%;">
+                                                <tbody>
+                                                    <t t-foreach="p.seller_ids" t-as="seller">
+                                                        <tr>
+                                                            <td>
+                                                                <t t-esc="seller.partner_id.name or 'Unknown Vendor'"/>
+                                                            </td>
+                                                            <td>
+                                                                <span t-esc="seller.currency_id.symbol"/>
+                                                                <t t-esc="seller.price"/>
+                                                            </td>
+                                                        </tr>
+                                                    </t>
+                                                </tbody>
+                                            </table>
+                                        </t>
+                                        <t t-else="">
+                                            <p>No vendor offers for this product.</p>
+                                        </t>
+                                        <button type="button" class="btn btn-primary mt-auto" data-bs-toggle="modal" t-att-data-bs-target="'#purchaseModal-%s' % p.id">
+                                            Create Purchase
+                                        </button>
+                                        <div class="modal fade" t-att-id="'purchaseModal-%s' % p.id" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="modalLabel">Create Purchase Order</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"/>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <form method="post" action="/create-purchase-order">
+                                                            <div class="mb-3">
+                                                                <strong>
+                                                                    <label class="form-label">Product:</label>
+                                                                </strong>
+                                                                <t t-esc="p.name"/>
+                                                            </div>
+                                                            <input type="hidden" name="product_id" t-att-value="p.id"/>
+                                                            <t t-if="len(p.seller_ids) > 0">
+                                                                <div class="mb-3">
+                                                                    <strong>
+                                                                        <label class="form-label">Select Vendor:</label>
+                                                                    </strong>
+                                                                    <select class="form-control" name="vendor_id">
+                                                                        <t t-foreach="p.seller_ids" t-as="seller">
+                                                                            <option t-att-value="seller.partner_id.id">
+                                                                                <t t-esc="seller.partner_id.name"/>
+                                                                            </option>
+                                                                        </t>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="d-flex align-items-center justify-content-end gap-3">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                    <button type="submit" class="btn btn-primary">Submit Purchase Order</button>
+                                                                </div>
+                                                            </t>
+                                                            <t t-else="">
+                                                                <div class="mb-3">
+                                                                    No vendor offers for this product.
+                                                                </div>
+                                                                <div class="d-flex align-items-center justify-content-end gap-3">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </t>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                        <t t-if="total_pages > 1">
+                            <t t-set="prev_page" t-value="current_page - 1"/>
+                            <t t-set="next_page" t-value="current_page + 1"/>
+                            <nav aria-label="Product Pagination" class="mt-4">
+                                <ul class="pagination justify-content-center">
+                                    <t t-if="current_page &gt; 1">
+                                        <li class="page-item">
+                                            <a class="page-link" t-att-href="'/vendor-portal?page=%s&amp;country_id=%s&amp;vendor_id=%s&amp;category_id=%s&amp;product_id=%s' %% (prev_page, selected_country or '', selected_vendor or '', selected_category or '', selected_product or '')">
+                                                <span>Previous</span>
+                                            </a>
+                                        </li>
+                                    </t>
+                                    <li class="page-item" t-att-class="1 == current_page and 'active' or ''">
+                                        <a class="page-link" t-att-href="'/vendor-portal?page=1&amp;country_id=%s&amp;vendor_id=%s&amp;category_id=%s&amp;product_id=%s' %% (selected_country or '', selected_vendor or '', selected_category or '', selected_product or '')">1</a>
+                                    </li>
+                                    <t t-if="current_page > 4">
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    </t>
+                                    <t t-foreach="range(max(2, current_page - 1), min(total_pages, current_page + 2))" t-as="p">
+                                        <t t-if="p != 1 and p != total_pages">
+                                            <li class="page-item" t-att-class="p == current_page and 'active' or ''">
+                                                <a class="page-link" t-att-href="'/vendor-portal?page=%s&amp;country_id=%s&amp;vendor_id=%s&amp;category_id=%s&amp;product_id=%s' %% (p, selected_country or '', selected_vendor or '', selected_category or '', selected_product or '')">
+                                                    <t t-esc="p"/>
+                                                </a>
+                                            </li>
+                                        </t>
+                                    </t>
+                                    <t t-if="current_page &lt; total_pages - 3">
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    </t>
+                                    <t t-if="total_pages &gt; 1">
+                                        <li class="page-item" t-att-class="total_pages == current_page and 'active' or ''">
+                                            <a class="page-link" t-att-href="'/vendor-portal?page=%s&amp;country_id=%s&amp;vendor_id=%s&amp;category_id=%s&amp;product_id=%s' %% (total_pages, selected_country or '', selected_vendor or '', selected_category or '', selected_product or '')">
+                                                <t t-esc="total_pages"/>
+                                            </a>
+                                        </li>
+                                    </t>
+                                    <t t-if="current_page &lt; total_pages">
+                                        <li class="page-item">
+                                            <a class="page-link" t-att-href="'/vendor-portal?page=%s&amp;country_id=%s&amp;vendor_id=%s&amp;category_id=%s&amp;product_id=%s' %% (next_page, selected_country or '', selected_vendor or '', selected_category or '', selected_product or '')">
+                                                <span>Next</span>
+                                            </a>
+                                        </li>
+                                    </t>
+                                </ul>
+                            </nav>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <p>No products found.</p>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
