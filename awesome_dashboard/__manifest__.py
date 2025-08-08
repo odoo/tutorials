@@ -21,9 +21,12 @@
     'data': [
         'views/views.xml',
     ],
-    'assets': {
-        'web.assets_backend': [
-            'awesome_dashboard/static/src/**/*',
+    "assets": {
+        "web.assets_backend": [
+            "awesome_dashboard/static/src/**/*",
+        ],
+        "awesome_dashboard.dashboard": [
+            "awesome_dashboard/static/src/dashboard/**/*",
         ],
     },
     'license': 'AGPL-3'
