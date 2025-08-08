@@ -5,6 +5,21 @@
         <div class="p-3">
             hello world
         </div>
+        <Counter onChange.bind="incrementSum"/>
+        <Counter onChange.bind="incrementSum"/>
+        <div class="p-3">
+            <Card title="'With Markup'">
+                <Counter/>
+            </Card>
+            <Card title="'Without Markup'">
+                <Counter/>
+            </Card>
+            <Card title="'1'">
+                <Counter/>
+            </Card>
+        </div>
+        <h3 class="mt-3">Total sum: <t t-out="state.sum"/></h3>
+        <TodoList/>
     </t>
 
 </templates>
