@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="seq_estate_property" model="ir.sequence">
+        <field name="name">Estate Property Sequence</field>
+        <field name="code">estate.property</field>
+        <field name="prefix">S</field>
+        <field name="padding">5</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+    </record>
+</odoo>
