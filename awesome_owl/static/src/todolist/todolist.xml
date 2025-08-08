@@ -1,0 +1,10 @@
+<template id="todo_list_template" name="TodoList">
+    <t t-name="awesome_owl.todo_list_template">
+    <div>
+        <input t-ref="input" type="text" placeholder="Enter a new task" t-on-keyup="addtodo" class='form-control'/>
+                <div t-foreach="todos" t-as="todo" t-key="todo.id">
+             <TodoItem todo="todo" removeTodo.bind="removeTodo"/>
+        </div>
+    </div>
+    </t>
+</template>
