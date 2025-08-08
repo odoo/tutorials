@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+<odoo>
+     
+    <record id="estate_property_offer_1" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12" />
+        <field name="property_id" ref="estate.estate_property_1" />
+        <field name="price">100000000000000000</field>
+        <field name="validity">14</field>
+        <field name="date_deadline" eval="datetime.now() + relativedelta(days=14)"></field>
+    </record>
+
+    <function model="estate.property.offer" name="set_offer_accepted">
+        <value eval="[ref('estate.estate_property_offer_1')]"/>
+    </function>
+
+    <function model="estate.property.offer" name="set_offer_rejected">
+        <value eval="[ref('estate.estate_property_offer_1')]"/>
+    </function>
+
+</odoo>
+
