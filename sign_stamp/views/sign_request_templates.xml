@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="sign_stamp._doc_sign" name="Document Sign" inherit_id="sign._doc_sign">
+        <xpath expr="//input[@id='o_sign_signer_name_input_info']" position="after">
+            <input id="o_sign_signer_company_info" type="hidden"
+                t-att-value="current_request_item.partner_id.company_id.name if current_request_item and current_request_item.partner_id else None"/>
+            <input id="o_sign_signer_address_info" type="hidden"
+                t-att-value="current_request_item.partner_id.street if current_request_item and current_request_item.partner_id else None"/>
+            <input id="o_sign_signer_city_info" type="hidden"
+                t-att-value="current_request_item.partner_id.city if current_request_item and current_request_item.partner_id else None"/>
+            <input id="o_sign_signer_country_info" type="hidden"
+                t-att-value="current_request_item.partner_id.country_id.name if current_request_item and current_request_item.partner_id else None"/>
+            <input id="o_sign_signer_vat_info" type="hidden"
+                t-att-value="current_request_item.partner_id.vat if current_request_item and current_request_item.partner_id else None"/>
+            <input id="o_sign_signer_logo_info" type="hidden"
+                t-att-value="logo"/>
+        </xpath>
+    </template>
+
+    <template id="sign_stamp.doc_sign" name="Document Sign" inherit_id="sign.doc_sign">
+        <xpath expr="//t[@t-set='head']/script[contains(., 'initDocumentToSign')]" position="replace">
+            <script type="text/javascript">
+                odoo.define("sign_stamp.sign_document_custom_page", ["@sign_stamp/components/sign_request/document_signable"], function (require) {
+                                var { initDocumentToSign } = require("@sign_stamp/components/sign_request/document_signable");
+                                initDocumentToSign(document);
+                });
+            </script>
+        </xpath>
+    </template>
+
+</odoo>
