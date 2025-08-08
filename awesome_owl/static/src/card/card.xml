@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <p class="card-title text-primary">Title: <t t-out="props.title"/></p>
+                <p class="card-text">Description: <t t-out="props.description"/></p>
+                <div t-if="this.state.isOpen">
+                    <t t-slot="default"></t>
+                </div>
+                <button t-on-click="this.toggleVisibility">View More</button>
+            </div>
+        </div>
+    </t>
+</templates>

@@ -1,10 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+    <t t-name="awesome_owl.Playground">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <h1>Counter Components</h1>
+        <div class="d-flex">
+            <Counter value="0" onChange.bind="this.incrementSum"/>
+            <Counter value="0" onChange.bind="this.incrementSum"/>
+            <p>The sum is: <t t-esc="this.state.sum"/></p>
         </div>
+        <h1>Card Components</h1>
+        <Card title="'odoo'" description="'On Demand Open Object'">This is odoo card</Card>
+        <Card title="'Linux'" description="'High Performance OS'">This is linux card</Card>
+        <Card>
+            <Counter/>
+        </Card>
+        <TodoList/>
+    </div>
     </t>
-
 </templates>
