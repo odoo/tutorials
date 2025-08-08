@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="layout-buttons">
+                <button type="button" class="btn btn-primary" t-on-click="opoenCustomers">Customers</button>
+                <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                <button type="button" class="btn" t-on-click="openSettings">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
+            <t t-foreach="selectedItems" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size || 1">
+                    <t t-set="itemProp" t-value="item.props ? item.props(result.data) : {'data': result.data}"/>
+                    <t t-component="item.Component" t-props="itemProp" />
+                </DashboardItem>
+            </t>
+        </Layout>
+    </t>
+</templates>
