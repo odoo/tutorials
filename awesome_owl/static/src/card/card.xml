@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+     <t t-name="awesome_owl.card">
+        <div class="border rounded p-3 m-2" style="width: 300px;">
+            <t t-if="props.title">
+                <h3 t-esc="props.title" class="mb-2"/>
+                <button class="btn btn-sm btn-secondary" t-on-click="toggleContent">
+                    <t t-esc="state.isOpen ? 'Hide' : 'Show'"/>
+                </button>
+            </t>
+            <div>
+                <t t-slot="default" t-if="state.isOpen"/>
+            </div>
+        </div>
+    </t>
+    
+</templates>
