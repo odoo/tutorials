@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <h1 class="mt-2 ms-2">Hello World</h1>
+        <div class="card d-inline-block ms-2 p-3 mb-3">
+            <Counter onChange.bind="totalsum" />
+            <Counter onChange.bind="totalsum" />
+            <div class="fw-bold text-center">Total Count --- <t t-esc="sum.value"/> </div>
+        </div> 
+        <br/>
+        <Card title="'Title of Card 1'" content="'Counter component inside Card 1'">
+            <Counter onChange.bind="totalsum" />
+        </Card>
+        <Card title="'Title of Card 2'" content="'Counter component inside Card 2'">
+            <Counter onChange.bind="totalsum" />
+        </Card>
+        <div>
+            <TodoList />
         </div>
     </t>
-
 </templates>

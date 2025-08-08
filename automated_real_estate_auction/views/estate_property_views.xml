@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">inherited.estate.property.view.form</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//h1" position="before">
+                <div name="button_box" >
+                    <button name="invoices_btn" type="object" class="oe_stat_button" icon="fa-th-list" invisible="status != 'sold' or auction_stages != 'sold'">
+                        invoices
+                    </button>
+                </div>
+            </xpath>
+
+            <xpath expr="//button[@name='property_sold']" position="before">
+                <button name="start_auction" type="object" string="Start Auction" invisible="property_selling_way != 'auction' or auction_stages != 'template'"/>
+            </xpath>
+
+            <xpath expr="//h1" position="replace">
+                <group>
+                    <group class="d-flex flex-column">
+                        <field name="name" class="fs-1" nolabel="1" />
+                        <field name="property_selling_way" nolabel="1" class="o_form_label" options="{'horizontal': True}" widget="radio" readonly="status not in 'new'"/>
+                    </group>
+                    <group class="d-flex flex-column align-items-end">
+                        <field name="auction_stages" nolabel="1" widget="auction_status_selection_form" invisible="property_selling_way not in 'auction'"/>
+                        <field name="image" nolabel="1" widget='image' optional="show" class="oe_avatar" style="max-width: 150px; max-height: 150px;"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <xpath expr="//group[@name='description_group']" position="after">
+                <group class="mt-5" invisible="property_selling_way not in 'auction'">
+                    <field name="end_time" readonly="status in 'sold'"/>
+                    <field name="best_offer" string="Highest Offer"/>
+                    <field name="highest_bidder"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">inherited.estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//strong" position="replace">
+                <div class="d-flex justify-content-between align-items-center">
+                    <strong>
+                        <field name="name"/>
+                    </strong>
+                    <field name="auction_stages" widget="auction_status_selection" invisible="property_selling_way != 'auction'"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
