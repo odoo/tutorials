@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Action Definition -->
+    <record id="action_estate_property_type" model="ir.actions.act_window">
+        <field name="name">Estate Property Type</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form,kanban</field>
+    </record>
+   
+</odoo>
