@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_secondary_uom.SecondaryUomDialog">
+        <div class="modal-backdrop show"></div>
+        <div class="modal d-block" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content p-4">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Enter Quantity in Drozen</h5>
+                        <button type="button" class="btn-close" aria-label="Close" t-on-click="cancel"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div >
+                            <label for="secondary-uom-input">Quantity (Secondary UoM)</label>
+                            <input
+                                id="secondary-uom-input"
+                                type="number"
+                                t-model="state.quantity"    
+                            />
+                        </div>
+                    </div>
+                    <div class="modal-footer d-flex justify-end mt-3">
+                        <button type="button" class="btn btn-primary me-2" t-on-click="confirm">Confirm</button>
+                        <button type="button" class="btn btn-secondary" t-on-click="cancel">Discard</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="pos_secondary_uom.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+    <xpath expr="//SelectPartnerButton" position="after">
+            <button t-if="this.pos.selectedOrder.get_selected_orderline()?.product_id.pos_secondary_uom_id !== undefined and !currentOrder?.is_empty() and pos.get_order()?.uiState.selected_orderline_uuid" class="btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="openSecondaryUomDialog">
+                Add Quantity
+            </button>   
+    </xpath>
+</t>
+
+</templates>
