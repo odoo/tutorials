@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product" inherit_id="website_sale.product" >
+        <xpath expr="//div[@id='product_detail_main']" position="after">
+            <div class="text-break" t-if="ecommerce_extended_description">
+                <h3>Description</h3>
+                <t t-out="ecommerce_extended_description"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>
