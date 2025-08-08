@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_second_uom.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//SelectPartnerButton" position="after">
+            <button t-if="!props.showRemainingButtons" class="btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="setSecondUom">
+                <div t-if="secondUomName" t-esc="secondUomName" class="text-truncate text-action"/>
+                <t t-else="">Second UOM</t>
+            </button>
+        </xpath>
+    </t>
+</templates>
