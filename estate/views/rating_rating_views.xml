@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="rating_rating_action_estate_property" model="ir.actions.act_window">
+        <field name="name">Customer Ratings</field>
+        <field name="res_model">rating.rating</field>
+        <field name="view_mode">kanban,pivot,graph</field>
+        <field name="domain">[('res_model', '=', 'estate.property'), ('res_id', '=', active_id), ('consumed', '=', True)]</field>
+    </record>
+
+    <record id="estate_property_view_form_inherit_rating" model="ir.ui.view">
+        <field name="name">estate.property.view.form.inherit.rating</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"></field>
+        <field name="arch" type="xml">
+            <xpath expr="//header/field[@name='state']" position="after">
+                <button name="%(rating_rating_action_estate_property)d" type="action" class="oe_stat_button" icon="fa-star">
+                    <field name="rating_count" string="Ratings" widget="statinfo"></field>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>
