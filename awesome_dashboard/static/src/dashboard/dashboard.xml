@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-slot="controlPanel">
+                <div class="o_dashboard_buttons">
+                    <button t-on-click="openCustomersAction" class="btn btn-primary">Customers</button>
+                    <button t-on-click="openLeadsAction" class="btn btn-primary">Leads</button>
+                </div>
+            </t>
+            <t t-slot="default">
+                <div>
+                    <p>Awesome dashboard</p>
+                </div>
+            </t>
+            <div class="d-flex flex-wrap" t-if="statistics.isReady">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+    <t t-name="awesome_dashboard.configurationdialog">
+        <Dialog title="'Dashboard Items Configuration'">
+            <p>Which cards do you wish to see?</p>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <label>
+                    <input type="checkbox" t-att-checked="item.enabled" t-on-change="ev => this.onChange(ev, item)"/>
+                    <t t-esc="item.description"/>
+                </label>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
