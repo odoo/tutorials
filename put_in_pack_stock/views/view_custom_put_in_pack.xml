@@ -1,0 +1,12 @@
+<odoo>
+    <record id="view_picking_type_tree_inherit" model="ir.ui.view">
+        <field name="name">Operation types Inherit</field>
+        <field name="model">stock.picking.type</field>
+        <field name="inherit_id" ref="stock.view_picking_type_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="before">
+                <field name="put_in_pack_toggle" string="Put in Pack" widget="boolean_toggle"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
