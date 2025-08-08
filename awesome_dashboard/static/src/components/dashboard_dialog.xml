@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboardDialog">
+        <Dialog title="dialogTitle">
+            <p>Check items to be displayed:</p>
+            <t t-foreach="dashboardItems" t-as="item" t-key="item.id">
+                <CheckBox value="itemCheckmarks[item.id]" onChange="(ev) => this.itemToggle(ev, item.id)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="dialogSave">Save</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
