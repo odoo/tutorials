@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_add_offer_wizard_form" model="ir.ui.view">
+        <field name="name">Add Offer Wizard Form</field>
+        <field name="model">estate.add.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Add Offer to Properties">
+                <group>
+                    <field name="price"/>
+                    <field name="buyer_id" options="{'no_create': True}"/>
+                    <field name="offer_status"/>
+                </group>
+                <footer>
+                    <button string="Make Offer" type="object" name="make_offer" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_add_offer_wizard" model="ir.actions.act_window">
+        <field name="name">Add Offer</field>
+        <field name="res_model">estate.add.offer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- Button in list View -->
+    <record id="action_property_list_view" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_list"/>
+        <field name="arch" type="xml">
+            <header>
+                <button string="Add Offer" type="action" name="%(action_add_offer_wizard)d" class="btn-primary"/>
+            </header>
+        </field>
+    </record>
+</odoo>

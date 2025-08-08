@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <!-- Company Information Section -->
+                        <div class="text-center mb-4">
+                            <h3 t-field="property.company_id.name"/>
+                            <p>
+                                <strong>Email:</strong> <span t-field="property.company_id.email"/><br/>
+                                <strong>Mobile:</strong> <span t-field="property.company_id.phone"/>
+                            </p>
+                        </div>
+                        <hr/>
+
+                        <h1>Salesman: <span t-field="property.seller_id"/> </h1>
+                        <h2>Property: <span t-field="property.name"/></h2>
+                        <p>
+                            <strong>Expected Price:</strong>
+                            <span t-field="property.expected_price"/>
+                            <br/>
+                            <strong>Status:</strong>
+                            <span t-field="property.state"/>
+                        </p>
+                        <t t-if="property.offer_ids">
+                            <h4>Offers:</h4>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Offer Price</th>
+                                        <th>Buyer</th>
+                                        <th>Offer Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="property.offer_ids" t-as="offer">
+                                        <td>
+                                            <span t-field="offer.price"/>
+                                        </td>
+                                        <td><span t-field="offer.partner_id.name"/></td>
+                                        <td><span t-field="offer.create_date"/></td>
+                                        <td><span t-field="offer.status"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <p>No offers available for this property yet.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
