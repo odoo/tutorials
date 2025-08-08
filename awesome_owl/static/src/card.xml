@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card-body">
+            <h5 t-out="props.title"></h5>
+            <button t-on-click="toggleVisability">Toggle</button>
+            <t t-if="state.visable">
+                <t t-slot="default"/>
+            </t>
+        </div>
+    </t>
+
+</templates>

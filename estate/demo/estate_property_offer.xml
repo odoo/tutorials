@@ -1,0 +1,35 @@
+<odoo>
+<record id="100" model="estate.property.offer">
+        <field name="partner_id">15</field>
+        <field name="property_id">1</field>
+        <field name="price">10000</field>
+        <!-- <field name="validity">14</field> -->
+        <field name="date_deadline" eval="datetime.now() + relativedelta(days=11)"></field>
+    </record>
+
+    <record id="101" model="estate.property.offer">
+        <field name="partner_id">15</field>
+        <field name="property_id">1</field>
+        <field name="price">1500000</field>
+        <!-- <field name="validity">14</field> -->
+        <field name="date_deadline" eval="datetime.now() + relativedelta(days=12)"></field>
+    </record>
+
+    <record id="102" model="estate.property.offer">
+        <field name="partner_id">10</field>
+        <field name="property_id">1</field>
+        <field name="price">1500001</field>
+        <!-- <field name="validity">14</field> -->
+        <field name="date_deadline" eval="datetime.now() + relativedelta(days=13)"></field>
+    </record>
+
+    <function model="estate.property.offer" name="action_offer_refuse">
+        <value eval="[ref('1')]"/>
+    </function>
+    <function model="estate.property.offer" name="action_offer_refuse">
+        <value eval="[ref('3')]"/>
+    </function>
+    <function model="estate.property.offer" name="action_offer_accept">
+        <value eval="[ref('2')]"/>
+    </function>
+</odoo>
