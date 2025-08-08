@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.estate</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Real Estate" string="Real Estate" name="estate">
+                    <block title="Estate Info" id="estate_info_settings">
+                        <setting id="automate_invoicing" name="invoicing" string="Invoicing" help="Allows the use of Estate Account Module">
+                            <field name="module_estate_account"/>
+                        </setting>
+                        <setting id="automate_auction" name="automate_auction" string="Automated Auctions" help="Allows the use of Auction Management Module">
+                            <field name="module_estate_auction"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
