@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="pos_salesperson.SelectSalespersonButton">
+        <button class="set-salesperson btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="selectSalesperson">
+            <t t-esc="this.salesperson.name"/>
+        </button>
+    </t>
+</templates>
