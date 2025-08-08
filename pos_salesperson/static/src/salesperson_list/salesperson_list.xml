@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="pos_salesperson.SalespersonList">
+        <Dialog bodyClass="'salesperson-list overflow-y-auto'" contentClass="'h-100'">
+            <t t-set-slot="header">
+                <Input tModel="[state, 'query']"
+                    class="'ms-auto'"
+                    isSmall="ui.isSmall"
+                    placeholder.translate="Search salesperson..."
+                    icon="{type: 'fa', value: 'fa-search'}"
+                    autofocus="true"
+                    debounceMillis="100" />
+            </t>
+            <table class="table table-hover">
+                <thead t-if="!ui.isSmall">
+                    <tr>
+                        <th class="py-2">Name</th>
+                        <th class="salesperson-line-email py-2">Contact</th>
+                        <th class="py-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="getSalespersons()" t-as="salesperson" t-key="salesperson.id">
+                        <SalespersonLine
+                            close="props.close"
+                            salesperson="salesperson"
+                            isSelected="props.salesperson?.id === salesperson.id"
+                            onClickUnselect.bind="() => this.clickSalesperson()"
+                            onClickSalesperson.bind="clickSalesperson"/>
+                    </t>
+                </tbody>
+            </table>
+            <div t-if="state.query" class="search-more-button d-flex justify-content-center my-2">
+                <button class="btn btn-lg btn-primary" t-on-click="onEnter">Search more</button>
+            </div>
+        </Dialog>
+    </t>
+</templates>
