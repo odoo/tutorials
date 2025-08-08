@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="action_custom_report_mo_views" model="ir.actions.report">
+            <field name="name">Mo Delivery note</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">custom_report.custom_report_mo_views</field>
+            <field name="report_file">custom_report.custom_report_mo_views</field>
+            <field name="print_report_name">'Mo Delivery Note -- %s - %s' % (object.partner_id.name or '', object.name)</field>
+            <field name="binding_model_id" ref="stock.model_stock_picking" />
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
