@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_receipt_lined" t-name="custom_receipt_handwritten">
+        <div style="width: 320px; margin: auto; border: 2px solid black; padding: 10px; text-align: center;">
+            <img t-if="logo" t-att-src="image_data_uri(logo)" alt="Logo" style="height: 70px; "/>
+            <div style="font-size: 12px; line-height: 1.5;">
+            Odoo India pvt ltd<br/>
+            Infocity Gandhinagar<br/>
+            <strong>Tax Id: 2233004900223</strong>
+            </div>
+            <t t-esc="header"/>
+            <h1 style="margin: 10px 0; font-size: 22px; font-weight: bold;">701</h1>
+            <t t-if="is_restaurant">
+            Served by MOG <br/>
+            Table 5 Guest 3
+            </t> 
+            <table style="width: 100%; font-size: 12px; text-align: left; border-collapse: collapse; margin-top: 10px;">
+                <thead class="border-top border-bottom border-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Prices</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Margarita Pizza</td>
+                        <td>3</td>
+                        <td>200</td>
+                        <td>600</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Bacon Burger</td>
+                        <td>5</td>
+                        <td>150</td>
+                        <td>750</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Apple Pie</td>
+                        <td>2</td>
+                        <td>100</td>
+                        <td>200</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Cheese Burger</td>
+                        <td>1</td>
+                        <td>75</td>
+                        <td>75</td>
+                    </tr>
+                </tbody>
+            </table> 
+            <div class="border-top border-dark py-1 mb-2">
+                <div class="d-flex justify-content-between small">
+                    <span>Total Qty
+                        12
+                    </span>
+                    <span class="bg-dark text-white">Sub Total $
+                        1625
+                    </span>
+                </div>
+            </div>
+            <div class="text-end mb-2 fw-bold small">
+                Bank
+                1625
+            </div>
+            
+            <table style="width: 100%; font-size: 12px; text-align: left; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>Tax</th>
+                        <th>Amount</th>
+                        <th>Base</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i>SGST 2.5%</i></td>
+                        <td>40.2</td>
+                        <td>1584.8</td>
+                        <td>1625</td>
+                    </tr>
+                    <tr>
+                        <td><i>CGST 2.5%</i></td>
+                        <td>40.2</td>
+                        <td>1584.8</td>
+                        <td>1625</td>
+                    </tr>
+                </tbody>
+            </table>
+            <t t-esc="footer"/>
+            <div style="text-align: center; font-size: 12px; margin-top: 10px;">
+                <strong>Odoo Point of Sale</strong><br/>
+                Order 0001-003-0004<br/>
+                04/06/2024 08:30:24
+            </div>
+        </div>
+    </template>
+</odoo>
