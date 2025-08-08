@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="ninja_turtles_estate_property_offer_view_tree" model="ir.ui.view">
+        <field name="name">ninja.turtles.estate.property.offer.list</field>
+        <field name="model">ninja.turtles.estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list decoration-success="offer_status == 'accepted'"
+                  decoration-danger="offer_status == 'refused'"
+                  string="Offers" editable="bottom"
+            >
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <field name="property_type_id"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="ninja_turtles_estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">ninja.turtles.estate.property.offer.form</field>
+        <field name="model">ninja.turtles.estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form string="Offer">
+                <sheet>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="offer_status" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_ninja_turtles_estate_property_offer" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">ninja.turtles.estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+</odoo>

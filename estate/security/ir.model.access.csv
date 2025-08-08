@@ -1,0 +1,5 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_ninja_turtles_estate_user,access.ninja.turtles.estate.user,model_ninja_turtles_estate,base.group_user,1,1,1,1
+access_ninja_turtles_estate_property_type_user,access.ninja.turtles.estate.property.type,model_ninja_turtles_estate_property_type,base.group_user,1,1,1,1
+access_ninja_turtles_estate_property_tag_user,access.ninja.turtles.estate.property.tag,model_ninja_turtles_estate_property_tag,base.group_user,1,1,1,1
+access_ninja_turtles_estate_property_offer_user,access.ninja.turtles.estate.property.offer,model_ninja_turtles_estate_property_offer,base.group_user,1,1,1,1

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <menuitem id="menu_ninja_turtles_estate_root"
+              name="Ninja Turtle Estate"
+              web_icon="estate,static/description/icon.png">
+
+        <menuitem id="menu_ninja_estate_ads" name="Advertisements">
+            <menuitem id="menu_ninja_estate_properties" name="Properties"
+                      action="action_ninja_turtles_estate"/>
+        </menuitem>
+        <menuitem id="menu_ninja_estate_set" name="Settings">
+            <menuitem id="menu_ninja_estate_property_types" name="Property Types"
+                      action="action_ninja_turtles_estate_property_type"/>
+            <menuitem id="menu_ninja_estate_property_tag" name="Property Tags"
+                      action="action_ninja_turtles_estate_property_tag"/>
+        </menuitem>
+    </menuitem>
+</odoo>

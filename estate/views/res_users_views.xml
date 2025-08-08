@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_users_form_inherit_estate" model="ir.ui.view">
+            <field name="name">res.users.form.inherit.estate</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Ninja turtles Properties">
+                        <field name="property_ids">
+                            <list decoration-success="not status == 'cancelled'"
+                                  decoration-danger="status == 'cancelled'">
+                                <field name="name"/>
+                                <field name="property_type_id"/>
+                                <field name="postcode"/>
+                                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
