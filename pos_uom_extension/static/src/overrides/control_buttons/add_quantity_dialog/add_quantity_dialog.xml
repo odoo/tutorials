@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="pos_uom_extension.AddQuantityDialog">
+        <Dialog size="'sm'" header="false">
+            <t t-set-slot="default">
+                <div>
+                    <label for="quantityInput" class="form-label">
+                        Enter Quantity in <b><t t-out="props.secondUomName"/></b>
+                    </label>
+                    <input type="number" min="0" class="form-control" id="quantityInput"
+                        placeholder="Enter quantity" t-ref="quantityInput" />
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="confirm">
+                    Confirm
+                </button>
+                <button class="btn btn-secondary" t-on-click="props.close">
+                    Cancel
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
