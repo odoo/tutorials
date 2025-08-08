@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="p-3 text-primary fs-4 text-center">
+            OWL Playground
+        </div>
+        <hr/>
+        <div class="text-center">
+            <h2>The sum is : <t t-out="sum.value"/>
+            </h2>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+        </div>
+        <hr/>
+        <div class="d-flex align-items-center justify-content-center text-center">
+            <Card title="'card 1'" content="state.safeHtml"/>
+            <Card title="'card 2'">
+                <Counter/>
+            </Card>
+        </div>
+        <hr/>
+        <div class="text-center">
+            <TodoList />
         </div>
     </t>
-
 </templates>
