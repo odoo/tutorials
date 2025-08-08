@@ -1,0 +1,91 @@
+from datetime import date
+from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models
+from odoo.exceptions import UserError
+
+
+class EstateProperty(models.Model):
+    _name = "estate.property"
+    _description = "Estate Property is defined"
+    _order = "id desc"
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0 AND selling_price > 0)',
+         'The Price must be positve.')
+    ]
+
+    name = fields.Char(required=True)
+    description = fields.Text(string='Description')
+    postcode = fields.Char(string='Postcode')
+    date_avaiblity = fields.Date(copy=False, default=date.today() + relativedelta(months=3))
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer(string='Living Area')
+    facades = fields.Integer(string='Facades')
+    garage = fields.Boolean(string='Garage')
+    garden = fields.Boolean(string='Garden')
+    garden_area = fields.Integer(string='Garden Area')
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    salesman_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', index=True, default=lambda self: self.env.user.partner_id.id)
+    property_tag_ids = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    total_area = fields.Float(compute="_compute_total")
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer Price", readonly=True)
+    active = fields.Boolean(default=True)
+    company_id = fields.Many2one("res.company", required=True, default=lambda self: self.env.company)
+
+    @api.depends("garden_area", "living_area")
+    def _compute_total(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = 0.0
+
+    garden_orientation = fields.Selection(
+        string='Direction',
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
+        help="This is used to locate garden's direction"
+    )
+
+    state = fields.Selection(
+        selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        default='new',
+        required=True,
+        copy=False,
+    )
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties cannot be cancelled.")
+            record.state = 'cancelled'
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled properties cannot be marked as sold.")
+            elif record.state != 'offer accepted':
+                raise UserError("Atleast one offer should be accepted.")
+            record.state = 'sold'
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state_delete(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError("Only properties in 'New' or 'Cancelled' state can be deleted.")
