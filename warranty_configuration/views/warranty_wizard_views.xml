@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="warranty_wizard_form_view" model="ir.ui.view">
+        <field name="name">warranty.wizard.fom</field>
+        <field name="model">warranty.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="warranty_line_wizard_ids"/>
+                <footer>
+                    <button name="add_warranty" type="object" string="Add" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

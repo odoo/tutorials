@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_view_inherited" model="ir.ui.view">
+        <field name="name">sale.order.form.inherited</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@widget='sol_text']" position="after">
+                <button type="action" name="%(action_sub_product_wizard)d" string="Sub Product" invisible="not product_is_kit"/>
+            </xpath>
+            <xpath expr="//field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly" add="parent_sale_order_line_id" separator=" or "/>
+            </xpath>
+            <xpath expr="(//field[@name='product_id'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_sale_order_line_id" separator=" or "/>
+            </xpath>
+            <xpath expr="(//field[@name='product_uom_qty'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_sale_order_line_id" separator=" or "/>
+            </xpath>
+            <xpath expr="(//field[@name='customer_lead'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_sale_order_line_id" separator=" or "/>
+            </xpath>
+            <xpath expr="(//field[@name='price_unit'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_sale_order_line_id" separator=" or "/>
+            </xpath>
+            <xpath expr="(//field[@name='tax_id'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_sale_order_line_id" separator=" or "/>
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="is_print"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
