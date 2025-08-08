@@ -1,0 +1,18 @@
+<odoo>
+    <record id="email_template_estate_property" model="mail.template">
+        <field name="name">Estate Property Email Template</field>
+        <field name="model_id" ref="model_estate_properties"/>
+        <field name="subject">Hello from Odoo</field>
+        <field name="email_from">{{(object.users_id.email)}}</field>
+        <field name="email_to">{{(object.partner_id.email)}}</field>
+        <field name="body_html">
+            <![CDATA[
+                <p>Partner Name : <strong><t t-esc="object.partner_id.email or ''"></t></strong></p>
+                <p>Dear <strong><t t-esc="object.partner_id.email or ''"></t></strong></p>
+                <p>This is a sample email sent from Odoo.</p>
+                <p>Best regards,</p>
+                <p><strong><t t-esc="object.users_id.email or ''"></t></strong></p>
+            ]]>
+        </field>
+    </record>
+</odoo>

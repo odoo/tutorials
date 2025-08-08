@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="display">
+            <div style="display:flex; flex-direction:row; align-items:center; justify-center:center; gap:10px; padding:10px;">
+                <button class="btn btn-primary" t-on-click="this.navigateCustomer">Customer</button>
+                <button class="btn btn-primary" t-on-click="this.navigateJournal">Leads</button>
+                <p style="font-size:16px; margin-top:0px; margin-bottom:0px;">
+        Dashboard
+                </p>
+            </div>
+                <t t-set-slot="control-panel-additional-actions">
+                    <button class="btn" t-on-click="openDashboardDialog">
+                        <i class="fa fa-gear"/>
+                    </button>
+                </t>
+            <div class="container">
+                <t t-foreach="this.state" t-as="i" t-key="i.id">
+                    <DashboardItems size="i.size">
+                        <t t-component="i.Component" t-props="i.props"/>
+                    </DashboardItems>
+                </t>
+            </div>
+        </Layout>
+    </t>
+
+</templates>

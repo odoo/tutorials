@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="estate_property_offer" model="estate.properties.offer">
+        <field name="price">1700000</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="real_estate.estate_properties_big_villa"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="date_deadline" eval="datetime.now().date()"/>
+    </record>
+    <record id="estate_property_offer_1" model="estate.properties.offer">
+        <field name="price">1800000</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="real_estate.estate_properties_big_villa"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="date_deadline" eval="datetime.now().date()"/>
+    </record>
+    <record id="estate_property_offer_2" model="estate.properties.offer">
+        <field name="price">1900000</field>
+        <field name="validity">14</field>
+        <field name="property_id" ref="real_estate.estate_properties_big_villa"/>
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="date_deadline" eval="datetime.now().date()"/>
+    </record>
+</odoo>
