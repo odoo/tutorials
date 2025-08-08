@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="purchase_order_view_last_product_sold" model="ir.ui.view">
+        <field name="name">purchase.order.view.last.product.sold</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list//field[@name='product_id']" position="attributes">
+                <attribute name="context">{
+                    'partner_id': parent.partner_id,
+                    'quantity': product_qty,
+                    'company_id': parent.company_id,
+                    'order_type': 'purchase'
+                }</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

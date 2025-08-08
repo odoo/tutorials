@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_view_kanban_catalog_last_order_products" model="ir.ui.view">
+        <field name="name">product.view.kanban.catalog.last.order.products</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@t-if='record.default_code.value']" position="replace">
+                <div t-if="record.default_code.value">
+                    <field name="default_code"/>
+                </div>
+            </xpath>
+            <field name="product_template_attribute_value_ids" position="after">
+                <span invisible="not last_date_str" class="text-success"><field name="last_date_str"/> ago</span>
+                <span invisible="true"><field name="last_order_time"/></span>
+            </field>
+        </field>
+    </record>
+</odoo>
