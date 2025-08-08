@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_category_property_form" model="ir.ui.view">
+        <field name="name">product.category.property.form.inherit</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <group name="account_property" position="after">
+                <field name="attribute_ids" string="attribute" widget="many2many_tags"/>
+            </group>
+        </field>
+    </record>
+
+    <record id="view_category_property_form_stock" model="ir.ui.view">
+        <field name="name">product.category.stock.property.form.inherit.stock</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="stock.product_category_form_view_inherit"/>
+        <field name="arch" type="xml">
+            <field name="property_cost_method" position="after">
+                <field name="global_info" string="Show on Global Info"/>
+            </field>
+        </field>
+    </record>
+</odoo>
