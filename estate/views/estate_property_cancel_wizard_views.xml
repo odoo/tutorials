@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_estate_property_cancel_wizard_form" model="ir.ui.view">
+        <field name="name">estate.property.cancel.wizard.form</field>
+        <field name="model">estate.property.cancel.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Confirm Property Cancellation">
+                <div class="alert alert-warning" role="alert">
+                    <h4>Confirmation Required</h4>
+                    <p>
+                        You are about to cancel the property 
+                        <strong><field name="property_name" readonly="1" nolabel="1"/></strong>
+                        which has an accepted offer.
+                    </p>
+                </div>
+                
+                <footer>
+                    <button
+                        name="action_confirm_cancel" 
+                        string="Yes, Cancel Property" 
+                        type="object" 
+                        class="btn-primary"
+                    />
+                    <button 
+                        name="action_cancel_wizard" 
+                        string="No, Keep Property" 
+                        type="object" 
+                        class="btn-secondary"
+                    />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

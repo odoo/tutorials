@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="awesome_dashboard.settingDialog">
+        <Dialog size="'md'" title.translate="Dashboard items configuration">
+            <div>
+                <p class="fs-3">Which cards do you want to see?</p>
+                <t t-foreach="this.cards_types" t-as="card" t-key="card.id">
+                    <p class="fs-4">
+                        <input role="button" type="checkbox" t-att-id="card.id" t-on-change="chooseCard" t-att-checked="this.selected_cards.includes(card.id)" />
+                        <label t-att-for="card.id" class="mx-2">
+                            <t t-esc="card.description" />
+                        </label>
+                    </p>
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <div class="modal-footer-right d-flex">
+                    <button class="btn btn-primary" t-on-click="applyPreference">
+                        Apply
+                    </button>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
