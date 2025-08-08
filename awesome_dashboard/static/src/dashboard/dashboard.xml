@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="layout-buttons">
+                <button class="text-light rounded btn bg-primary" t-on-click="openCutomerKanban">Customer</button>
+                <button class="text-light rounded btn bg-primary" t-on-click="openCrmLead">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions w-100">
+                <span class="fa fa-cog" role="button" t-on-click="openConfigurationDialog"/>
+            </t>
+            <div class="d-flex flex-column gap-3">
+                <div class="w-100 d-inline-flex justify-content-center mt-3">
+                    <h2 class="text-white">Card component with props and default slot</h2>
+                </div>
+                <div class="w-100 justify-content-center">
+                    <div class="col-12 col-md-auto d-flex flex-wrap justify-content-center p-2 gap-2">
+                        <DashboardItem>Some Content</DashboardItem>
+                        <DashboardItem>I love milk</DashboardItem>
+                    </div>
+                </div>
+                <div class="w-100 d-inline-flex justify-content-center mt-3">
+                    <h2 class="text-white">Card component with statistics</h2>
+                </div>
+                <div class="w-100 d-flex flex-wrap justify-content-center" style="margin-bottom: 60px" t-if="statistics.isAvailable">
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <div class="col-12 col-md-auto d-flex justify-content-center p-2"
+                            t-if="!state.disabledItems.includes(item.id)">
+                            <DashboardItem size="item.size">
+                                <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                                <t t-component="item.Component" t-props="itemProp" />
+                            </DashboardItem>
+                        </div>
+                    </t>
+                </div>
+                <t t-else="">
+                    <h2 class="mt-2">Loading statistics...</h2>
+                </t>
+            </div>
+        </Layout>
+    </t>
+</templates>
