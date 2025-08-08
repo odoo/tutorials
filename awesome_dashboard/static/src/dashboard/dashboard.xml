@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard" >
+        <Layout className="'o_dashboard h-100 w-full'" t-props="layoutProps">
+            <t t-slot="controlPanel">
+            <div class="bg-white py-2">
+                <button class="btn btn-primary mx-2" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                <button class="btn btn-light " >Dashboard</button>
+                <button class="btn btn-light" t-on-click="openSettings">
+                    <i class="fa fa-cog"></i> 
+                </button>
+            </div>
+            </t>
+            <div class="d-flex justify-content-center">
+                <DashboardItem>
+                    <p>some content</p>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <p>I love milk</p>
+                </DashboardItem>
+                
+                <DashboardItem>
+                    <p>some content</p>
+                </DashboardItem>
+            </div>
+            <div class="d-flex justify-content-center flex-wrap">
+                <t t-foreach="state.items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+    
+</templates>

@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<odoo>
+	<menuitem id="home_real_estate" web_icon="real_estate,static/src/img/real_estate_icon.png" name="Real Estate">
+		<menuitem id="properties_tab" name="Properties">
+			<menuitem id="estate_property_menu" action="estate_properties_action"/>
+		</menuitem>
+		<menuitem id="settings_tab" groups="real_estate.estate_group_manager" name="Settings">
+			<menuitem id="property_type_menu" action="estate_property_type_action"/>
+			<menuitem id="property_tag_menu" action="estate_property_tag_action"/>
+		</menuitem>
+	</menuitem>
+</odoo>
