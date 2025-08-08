@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.pie_chart_card">
+        <div>
+            <t t-esc="props.title"/>
+            <PieChart data="props.values"/>
+        </div>
+    </t>
+</templates>

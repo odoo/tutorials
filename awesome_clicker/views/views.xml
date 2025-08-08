@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.actions.client" id="action_awesome_clicker_client_action">
+            <field name="name">Clicker Game</field>
+            <field name="tag">awesome_clicker.client_action</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
