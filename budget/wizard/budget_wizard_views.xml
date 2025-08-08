@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_budget_wizard" model="ir.ui.view">
+        <field name="name">budget.wizard.form</field>
+        <field name="model">budget.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Multiple Budgets">
+                <sheet>
+                    <group>
+                        <field name="date_from" string="Duration" widget="daterange"
+                            options="{'end_date_field': 'date_to', 'always_range': '1'}"
+                            optional="hide" />
+                        <field name="date_to" invisible="1" />
+                        <field name="periods" widget="radio" />
+                    </group>
+                    <group class="mb16">
+
+                        <field name="analytical_plan_ids" string="Analytic Accounts"
+                            widget="many2many_tags" />
+                    </group>
+                </sheet>
+                <footer>
+                    <button string="Create" name="action_add_budget" type="object"
+                        class="btn-primary" default_focus="1" />
+                    <button string="Discard" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+     
+</odoo>

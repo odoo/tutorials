@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_budget_line_list" model="ir.ui.view">
+        <field name="name">budget.line.list</field>
+        <field name="model">budget.budget.lines</field>
+        <field name="arch" type="xml">
+            <list string="Budget Lines" default_order="id desc" create="0">
+
+                <field name="currency_id" column_invisible="1" />
+                <field name="budget_id" />
+                <field string="Analytic Account" name="analytic_account_id" />
+                <field string="Budget Amount" name="planned_amount" />
+                <field string="Achieved Amount" name="practical_amount" />
+            </list>
+        </field>
+    </record>
+
+
+    <record model="ir.ui.view" id="view_budget_budget_line_pivot">
+        <field name="name">budget.budget.line.pivot</field>
+        <field name="model">budget.budget.lines</field>
+        <field name="arch" type="xml">
+            <pivot string="Budget Lines" sample="1">
+                <field name="analytic_account_id" type="row" />
+                <field name="count" />
+            </pivot>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_budget_budget_line_graph">
+        <field name="name">budget.budget.line.graph</field>
+        <field name="model">budget.budget.lines</field>
+        <field name="arch" type="xml">
+            <graph string="Budget Lines" sample="1" disable_linking="1" stacked="0">
+                <field name="analytic_account_id" type="row" />
+                <field name="practical_amount" type="measure" operator="+"/>
+                <field name="over_budget" type="measure" operator="+"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_budget_budget_line_gantt" model="ir.ui.view">
+        <field name="name">budget.budget.line.gantt</field>
+        <field name="model">budget.budget.lines</field>
+        <field name="arch" type="xml">
+            <gantt string="Budget Gantt" color="analytic_account_id" display_mode="sparse" progress_bar="analytic_account_id" date_start="budget_start_date" date_stop="budget_end_date" default_scale="month" default_group_by="budget_id">
+
+            <field name="user_id"  string="Responsible" widget="many2one_avatar" />
+            </gantt>
+        </field>
+    </record>
+
+
+
+    <record model="ir.actions.act_window" id="action_budget_budget_line">
+        <field name="name">Budget lines</field>
+        <field name="res_model">budget.budget.lines</field>
+        <field name="view_mode">list,pivot,graph,gantt</field>
+        <field name="view_id" ref="budget.view_budget_line_list" />
+
+    </record>
+
+
+</odoo>

@@ -1,0 +1,11 @@
+<odoo>
+    <record id="action_print_report_by_salesman" model="ir.actions.report">
+        <field name="name">Real Estate Property List</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_by_salesman</field>
+        <field name="report_file">estate.report_property_by_salesman</field>
+        <field name="print_report_name">'Property Report By Salesman'</field>
+        <field name="binding_model_id" ref="base.model_res_users" />
+    </record>
+</odoo>
