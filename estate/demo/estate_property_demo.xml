@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="demo_estate_property_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="property_type_id" ref="estate.property_type_residential" />
+        <field name="status">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">1600000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_tag_id" eval="[(6, 0, [ref('property_tag_luxury'), ref('property_tag_ocean_view')])]"/>
+    </record>
+
+    <record id="demo_estate_property_2" model="estate.property">
+        <field name="name">Modern Penthouse</field>
+        <field name="property_type_id" ref="estate.property_type_residential" />
+        <field name="status">cancelled</field>
+        <field name="description">A luxurious penthouse with a rooftop pool</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability">2023-05-10</field>
+        <field name="expected_price">2200000</field>
+        <field name="bedrooms">4</field>
+        <field name="living_area">180</field>
+        <field name="facades">2</field>
+        <field name="garage">True</field>
+        <field name="garden">False</field>
+        <field name="property_tag_id" eval="[(6, 0, [ref('property_tag_luxury'), ref('property_tag_city_view')])]"/>
+    </record>
+
+    <record id="demo_estate_property_3" model="estate.property">
+        <field name="name">Cozy Suburban House</field>
+        <field name="property_type_id" ref="estate.property_type_land" />
+        <field name="status">new</field>
+        <field name="description">A comfortable home in a quiet neighborhood</field>
+        <field name="postcode">11223</field>
+        <field name="date_availability">2024-08-15</field>
+        <field name="expected_price">350000</field>
+        <field name="bedrooms">3</field>
+        <field name="living_area">120</field>
+        <field name="facades">3</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">500</field>
+        <field name="garden_orientation">west</field>
+        <field name="property_tag_id" eval="[(6, 0, [ref('property_tag_cozy'), ref('property_tag_wooden'), ref('property_tag_ocean_view')])]"/>
+        <field name="offer_ids"
+            eval="[
+            Command.create({
+                'price': 350000,
+                'validity': 12,
+                'partner_id': ref('base.res_partner_12')
+            }),
+            Command.create({
+                'price': 300000,
+                'validity': 11,
+                'partner_id': ref('base.res_partner_10')
+            }),
+            Command.create({
+                'price': 400000,
+                'validity': 1,
+                'partner_id': ref('base.res_partner_2')
+            }),
+        ]" />
+    </record>
+</odoo>
