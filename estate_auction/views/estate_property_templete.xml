@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate_property_auction_template" inherit_id="estate.estate_property_template">
+        <xpath expr="//div[@id='filter-apply-btn']" position="before">
+            <div class="w-100">
+                <label for="sale_type" class="form-label">Sale Type</label>
+                <select name="sale_type" id="sale_type" class="form-control">
+                    <option value="">All</option>
+                    <option value="auction" t-att-selected="sale_type == 'auction'" >Auction</option>
+                    <option value="regular" t-att-selected="sale_type == 'regular'" >Regular</option>
+                </select>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="property_details_auction_template" inherit_id="estate.property_details_template">
+        <xpath expr="//h1" position="before">
+            <div class="d-flex justify-content-between align-items-center">
+                <t t-if="property.sale_type == 'auction'">
+                    <div class="d-inline-flex align-items-center gap-2">
+                        <t t-if="property.timer_running">
+                            <span class="auction_countdown text-muted fw-bold"
+                                t-att-data-auction-endtime="property.auction_endtime">
+                            </span>
+                        </t>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+        <xpath expr="//t[@t-if='property.property_tag_ids']" position="after">
+            <t t-if="property.timer_running">
+                <a t-att-href="'/property/' + str(property.id)+'/offer/new'"
+                    class="btn btn-secondary btn-lg mt-4 w-100">Create Offer</a>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="property_offer_template">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card shadow-lg">
+                            <div class="card-header bg-primary text-white text-center">
+                                <h3 class="mb-0">Add Property Offer</h3>
+                            </div>
+                            <div class="card-body p-4">
+                                <form t-attf-action="/property/#{property_id}/offer/submit" method="get">
+                                    <div class="mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" t-att-value="name"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="price" class="form-label">Price</label>
+                                        <input type="number" id="price" name="price" class="form-control" required="True"/>
+                                    </div>
+                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                        <button type="submit" class="btn btn-primary px-4">Submit</button>
+                                        <a t-attf-href="/property/#{property_id}" class="btn btn-secondary px-4">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_offer_status_template">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card shadow-lg">
+                            <div class="card-body text-center p-4">
+                                <t t-if="success">
+                                    <div class="alert alert-success" role="alert">
+                                        <h4 class="alert-heading">Offer Submitted Successfully!</h4>
+                                        <p>Congratulations! Your offer has been successfully placed. we will notify you of the result as soon as auction concludes.</p>
+                                    </div>
+                                </t>
+                                <t t-else="">
+                                    <div class="alert alert-danger" role="alert">
+                                        <h4 class="alert-heading">Offer Rejected!</h4>
+                                        <p>Your offer is lower than the expected price. Please increase your offer.</p>
+                                    </div>
+                                </t>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                    <a t-attf-href="/property/#{property_id}" class="btn btn-secondary px-4">
+                                        Go to Property
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
