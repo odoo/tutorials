@@ -1,0 +1,7 @@
+<odoo>
+    <record id="estate.house_tag_action" model="ir.actions.act_window">
+        <field name="name">House Tag</field>
+        <field name="res_model">estate.house.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

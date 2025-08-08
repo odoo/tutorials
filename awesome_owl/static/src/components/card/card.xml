@@ -1,0 +1,17 @@
+<templates>
+    <t t-name='awesome_owl.card'>
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <t t-if="!this.state.hidden">
+                <div class="card-body">
+                    <t t-slot="title" />
+                    <p class="card-text">
+                        <t t-slot="content" />
+                    </p>
+                </div>
+            </t>
+            <button t-on-click="hide">
+                <t t-out="!this.state.hidden ? 'Hide':'Show'" />
+            </button>
+        </div>
+    </t>
+</templates>

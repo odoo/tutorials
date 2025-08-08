@@ -5,6 +5,31 @@
         <div class="p-3">
             hello world
         </div>
+        <Card>
+            <t t-set-slot="title">
+                <t t-out="this.card1_title_slot" />
+            </t>
+
+            <t t-set-slot="content">
+                <Counter callback="this.increment" />
+            </t>
+        </Card>
+
+        <Card>
+            <t t-set-slot="title">
+                <t t-out="this.card2_title_slot" />
+            </t>
+
+            <t t-set-slot="content">
+                <Counter callback="this.increment" />
+            </t>
+        </Card>
+        <div>
+            The total sum is <t t-out="this.state.sum" />
+        </div>
+
+        <br />
+        <TodoList />
     </t>
 
 </templates>
