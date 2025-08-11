@@ -9,11 +9,11 @@ class Property(models.Model):
     _description = 'Estate Model'
     _order = 'id desc'
 
-    # SQL Constraints
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price > 0.00)', "The expected price must be strictly positive"),
-        ('check_selling_price', 'CHECK(selling_price > 0.00)', "The selling price must be strictly positive")
-    ]
+    # # SQL Constraints
+    # _sql_constraints = [
+    #     ('check_expected_price', 'CHECK(expected_price > 0.00)', "The expected price must be strictly positive"),
+    #     ('check_selling_price', 'CHECK(selling_price > 0.00)', "The selling price must be strictly positive")
+    # ]
 
     # Basic Fields
     name = fields.Char(string="Property Name", required=True, tracking=True)
@@ -25,6 +25,7 @@ class Property(models.Model):
         default=lambda self: self.env.user.company_id,
         required=True
     )
+    commission_fee = fields.Float(string="Commission", required=True, default=lambda self: self.env.user.commission_fee)
 
     # Relational Fields
     property_type_id = fields.Many2one(
@@ -79,6 +80,13 @@ class Property(models.Model):
     # Computed Fields
     total_area = fields.Integer(compute='_compute_total', string="Total Area")
     best_price = fields.Float(compute='_compute_best_price', string="Best Price")
+    is_rent_property = fields.Boolean(string="Is For Rent")
+    rent_price = fields.Float(string="Rent Price")
+    rent_deposit = fields.Float(string="Rent Deposit")
+    rent_start_date = fields.Date(string="Rent Start Date")
+    rent_duration = fields.Integer(string="Rent Duration (months)", help="Duration of rental agreement in months")
+    rent_end_date = fields.Date(string="Rent End Date", compute='_compute_rent_end_date')
+    tenant_id = fields.Many2one('res.partner', string="Tenant")
 
     # Computed Methods
     @api.depends('living_area', 'garden_area')
@@ -90,6 +98,34 @@ class Property(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0)
+
+    @api.depends('rent_start_date', 'rent_duration')
+    def _compute_rent_end_date(self):
+        for record in self:
+            if record.rent_start_date and record.rent_duration:
+                record.rent_end_date = fields.Date.add(record.rent_start_date, months=record.rent_duration)
+            else:
+                record.rent_end_date = False
+
+    @api.constrains('is_rent_property', 'rent_price')
+    def _check_rent_price(self):
+        for record in self:
+            if record.is_rent_property and record.rent_price <= 0:
+                raise ValidationError(_("Rent price must be strictly positive for rental properties."))
+
+    @api.onchange('rent_price')
+    def _onchange_rent_price(self):
+        if self.rent_price:
+            self.rent_deposit = self.rent_price * 2
+
+    @api.constrains('expected_price', 'selling_price', 'is_rent_property')
+    def _check_prices_for_sale(self):
+        for record in self:
+            if not record.is_rent_property:  # Only for Sale properties
+                if record.expected_price <= 0:
+                    raise ValidationError(_("The expected price must be strictly positive for sale properties."))
+                if record.selling_price and record.selling_price <= 0:
+                    raise ValidationError(_("The selling price must be strictly positive for sale properties."))
 
     # Python Constraints
     @api.constrains('selling_price')

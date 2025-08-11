@@ -16,9 +16,9 @@ class EstateProperty(models.Model):
                 'property_id': record.id,
                 'invoice_line_ids': [
                     Command.create({
-                        'name': "Service Fee(6%)",
+                        'name': "Service Fee",
                         'quantity': 1,
-                        'price_unit': record.selling_price * 0.06,
+                        'price_unit': record.selling_price * record.commission_fee / 100,
                     }),
                     Command.create({
                         'name': "Administrative Fee",

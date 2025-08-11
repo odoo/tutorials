@@ -19,10 +19,10 @@
                 </div>
             </xpath>
             <xpath expr="//h1" position="after">
-                <field name="property_auction_type" widget="radio" options="{'horizontal': true}"/>
+                <field name="property_auction_type" widget="radio" options="{'horizontal': true}" invisible="is_rent_property"/>
             </xpath>
-            <xpath expr="//group[@name='property_description_groups']" position="inside">
-                <group name="auction_details" string="Auction Details" invisible="property_auction_type == 'regular'">
+            <xpath expr="//group[@name='property_details']" position="after">
+                <group name="auction_details" string="Auction Details" invisible="property_auction_type == 'regular' or is_rent_property">
                     <field name="end_time" string="Auction End Time"/>
                     <field name="best_price" string="Highest Amount"/>
                     <field name="highest_offer_bidder" string="Highest Bidder"/>

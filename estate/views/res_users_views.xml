@@ -11,6 +11,9 @@
                     <field name="property_ids"/>
                 </page>
             </notebook>
+            <xpath expr="//group/field[@name='partner_id']" position="after">
+                <field name="commission_fee"/>
+            </xpath>
         </field>
     </record>
 </odoo>

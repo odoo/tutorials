@@ -6,18 +6,22 @@
                 <!-- Filter by property type -->
                 <div class="mb-2">
                     <form method="get" action="/properties">
-                        <label class="col-form-label fw-bold text-primary" for="property_type">Property Type</label>
-                        <select name="property_type" class="form-select" onchange="this.form.submit()">
-                            <option value="">All</option>
-                            <t t-foreach="property_types" t-as="type">
-                                <option
-                                    t-att-value="type.id"
-                                    t-att-selected="selected_type == type.id"
-                                >
-                                    <t t-out="type.name"/>
-                                </option>
-                            </t>
-                        </select>
+                        <div class="d-flex justify-content-between gap-3">
+                            <div id="property_type" class="flex-grow-1">
+                                <label class="col-form-label fw-bold text-primary" for="property_type">Property Type</label>
+                                <select name="property_type" class="form-select" onchange="this.form.submit()">
+                                    <option value="">All</option>
+                                    <t t-foreach="property_types" t-as="type">
+                                        <option
+                                            t-att-value="type.id"
+                                            t-att-selected="selected_type == type.id"
+                                        >
+                                            <t t-out="type.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
                     </form>
                 </div>
                 <div class="row g-4">
@@ -137,5 +141,5 @@
                 </div>
             </div>
         </t>
-    </template>
+    </template>    
 </odoo>

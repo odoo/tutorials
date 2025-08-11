@@ -1,7 +1,7 @@
 {
     'name': "Estate",
     'version': '1.0',
-    'depends': ['base', 'mail', 'website'],
+    'depends': ['base', 'crm', 'mail', 'website'],
     'author': "ppch",
     'category': 'Real Estate/Brokerage',
     'description': """

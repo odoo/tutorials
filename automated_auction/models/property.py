@@ -30,6 +30,12 @@ class Property(models.Model):
             highest_offer = max(record.offer_ids, key=lambda o: o.price, default=None)
             record.highest_offer_bidder = highest_offer.partner_id if highest_offer else False
 
+    @api.onchange('is_rent_property')
+    def _onchange_is_rent_property(self):
+        for record in self:
+            if record.is_rent_property:
+                record.property_auction_type = 'regular'
+
     def write(self, vals):
         '''Write method to prevent auction state update manually'''
         if self.env.context.get('bypass_write_check'):

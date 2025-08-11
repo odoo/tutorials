@@ -80,19 +80,22 @@
                     <group>
                         <group>
                             <field name="property_type_id" options="{'no_create': True, 'no_create_edit': True}"/>
+                            <field name="is_rent_property"/>
                             <field name="postcode"/>
-                            <field name="date_availability"/>
+                            <field name="date_availability" invisible="is_rent_property"/>
+                            <field name="commission_fee"/>
                         </group>
                         <group>
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
-                            <field name="best_price"/>
+                            <field name="expected_price" invisible="is_rent_property"/>
+                            <field name="rent_price" invisible="not is_rent_property"/>
+                            <field name="selling_price" invisible="is_rent_property"/>
+                            <field name="best_price" invisible="is_rent_property"/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group colspan="2" name="property_description_groups">
-                                <group>
+                                <group name="property_details">
                                     <field name="description"/>
                                     <field name="bedrooms"/>
                                     <field name="living_area"/>
@@ -104,9 +107,15 @@
                                     <field name="garage"/>
                                     <field name="active"/>
                                 </group>
+                                <group name="rental_details" string="Rental Details" invisible="not is_rent_property">
+                                    <field name="rent_deposit"/>
+                                    <field name="rent_duration"/>
+                                    <field name="rent_start_date"/>
+                                    <field name="rent_end_date"/>
+                                </group>
                             </group>
                         </page>
-                        <page string="Offers">
+                        <page string="Offers" invisible="is_rent_property">
                             <group>
                                 <field
                                     name="offer_ids"
@@ -118,7 +127,8 @@
                         <page string="Other Info">
                             <group>
                                 <field name="salesperson_id"/>
-                                <field name="buyer_id"/>
+                                <field name="tenant_id" invisible="not is_rent_property"/>
+                                <field name="buyer_id" invisible="is_rent_property"/>
                             </group>
                         </page>
                     </notebook>
