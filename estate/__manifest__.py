@@ -5,4 +5,5 @@
     "sequence": 1,
     "license": "LGPL-3",
     "application": True,
+    "installable": True,
 }
