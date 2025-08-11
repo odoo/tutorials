@@ -1,0 +1,8 @@
+{
+    "name": "Real Estate",
+    "description": "",
+    "depends": ['base'],
+    "sequence": 1,
+    "license": "LGPL-3",
+    "application": True,
+}
