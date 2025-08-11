@@ -38,7 +38,7 @@
         </xpath>
     </template>
 
-    <!-- Disable Search everywhere -->
+    <!-- Disable Search in shop & product page -->
     <template id="search" inherit_id="website_sale.search" name="Airproof - Search">
         <xpath expr="//t[@t-call='website.website_search_box_input']" position="replace" />
     </template>
@@ -54,6 +54,16 @@
 
 <!-- PRODUCT PAGE -->
     <template id="product" inherit_id="website_sale.product" name="Airproof - Product">
+        <!-- Move breadcrumb -->
+        <xpath expr="//section[@id='product_detail']/div" position="attributes">
+            <attribute name="class" add="justify-content-end" separator=" "/>
+        </xpath>
+        <xpath expr="//section[@id='product_detail']/div/div[1]" position="attributes">
+            <attribute name="class" add="col-lg-4" remove="col order-1 order-lg-0" separator=" "/>
+        </xpath>
+        <xpath expr="//section[@id='product_detail']/div/div[2]" position="attributes">
+            <attribute name="class" add="col-lg-2" remove="col-lg-4" separator=" "/>
+        </xpath>
         <!-- Adapt "Add to wishlist" button -->
         <xpath expr="//div[@id='add_to_cart_wrap']" position="attributes">
             <attribute name="t-attf-class" add="my-2 me-4" remove="mb-2 me-auto" separator=" "/>
@@ -66,23 +76,53 @@
             <img src="/web/image/website_airproof.img_shopping" alt="Shopping icon" class="img img-fluid me-1"/>
             Add to cart
         </xpath>
-        <!-- product_attributes_simple - Specification title -->
-        <xpath expr="//div[@id='product_attributes_simple']/table" position="before">
-            <h2 t-if="single_value_attributes" class="h6 mb-3 mt-5">Specifications</h2>
-        </xpath>
+        <!-- Delete product specifications to move in accordion -->
+        <xpath expr="//div[@id='product_attributes_simple']" position="replace"/>
         <!-- Add drop zone on all products -->
         <xpath expr="//section[@id='product_detail']" position="after">
             <div id="oe_structure_layout_airproof_products" class="oe_structure oe_empty" data-editor-message="DROP ZONE VISIBLE ACROSS ALL PRODUCTS"/>
         </xpath>
     </template>
 
+    <!-- Add product specifications in accordion -->
+    <template id="product_accordion" inherit_id="website_sale.product_accordion" name="Airproof - Product specifications">
+        <xpath expr="//div[@id='product_accordion']" position="inside">
+            <div class="accordion-item">
+            <div t-if="product.valid_product_template_attribute_line_ids._prepare_single_value_for_display()" class="accordion-header my-0 h6">
+                <button class="accordion-button collapsed fw-medium" type="button" data-bs-toggle="collapse" data-bs-target="#specifications" aria-expanded="false" aria-controls="specifications">
+                    Specifications
+                </button>
+            </div>
+            <div id="specifications" class="accordion-collapse collapse" data-bs-parent="#product_accordion">
+                <div class="accordion-body pt-0">
+                    <div t-if="not is_view_active('website_sale_comparison.accordion_specs_item')" id="product_attributes_simple" >
+                        <t t-set="single_value_attributes" t-value="product.valid_product_template_attribute_line_ids._prepare_single_value_for_display()"/>
+                        <table t-attf-class="table table-sm text-muted {{'' if single_value_attributes else 'd-none'}}">
+                            <t t-foreach="single_value_attributes" t-as="attribute">
+                                <tr>
+                                    <td class="border-0">
+                                        <span t-field="attribute.name"/>:
+                                        <t t-foreach="single_value_attributes[attribute]" t-as="ptal">
+                                            <span t-field="ptal.product_template_value_ids._only_active().name"/><t t-if="not ptal_last">, </t>
+                                        </t>
+                                    </td>
+                                </tr>
+                            </t>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </xpath>
+    </template>
+
     <!-- Product - Img carousel indicators -->
     <template id="carousel_product_indicators" inherit_id="website_sale.carousel_product_indicators" name="Airproof - Carousel product indicators">
         <xpath expr="//ol" position="attributes">
-            <attribute name="t-attf-class" add="justify-content-center p-3" remove="pt-2 pt-lg-0" separator=" "/>
+            <attribute name="t-att-class" add="' justify-content-center p-3'" separator=" + "/>
         </xpath>
         <xpath expr="//li" position="attributes">
-            <attribute name="t-attf-class" add=" border-0 rounded" remove="" separator=" "/>
+            <attribute name="t-attf-class" add="border-0 rounded" separator=" "/>
         </xpath>
     </template>
 
@@ -90,7 +130,7 @@
     <template id="alternative_products" inherit_id="website_sale.alternative_products" name="Airproof - Alternative products">
         <!-- Title -->
         <xpath expr="//div[@id='oe_structure_website_sale_recommended_products']" position="before">
-            <section class="s_title pt64 pb40 o_colored_level" data-snippet="s_title" data-name="Title" style="background-color: #E6E7E8;" t-if="product.alternative_product_ids">
+            <section class="s_title pt64 pb64 o_colored_level" data-vcss="001" data-snippet="s_title" data-name="Title" style="background-color: #E6E7E8;" t-if="product.alternative_product_ids">
                 <div class="container s_allow_columns">
                     <h2 class="text-center fw-bold">You might also like</h2>
                 </div>
