@@ -2,17 +2,12 @@
 <odoo>
 <!-- Add custom snippets to the builder -->
     <template id="snippets" inherit_id="website.snippets" name="Airproof - Custom Snippets">
-        <xpath expr="//*[@id='default_snippets']" position="before">
-            <t id="x_theme_snippets">
-                <div id="x_airproof_snippets" class="o_panel">
-                    <div class="o_panel_header">Airproof</div>
-                    <div class="o_panel_body">
-                        <!-- Carousel snippet -->
-                        <t t-snippet="website_airproof.s_airproof_carousel" t-thumbnail="/website_airproof/static/src/img/wbuilder/s-airproof-snippet.svg">
-                            <keywords>Carousel block</keywords>
-                        </t>
-                    </div>
-                </div>
+        <xpath expr="//snippets[@id='snippet_groups']/*[1]" position="before">
+            <t snippet-group="airproof" t-snippet="website.s_snippet_group" string="Airproof" t-thumbnail="/website_airproof/static/src/img/wbuilder/s-airproof-snippet.svg"/>
+        </xpath>
+        <xpath expr="//snippets[@id='snippet_structure']/*[1]" position="before">
+            <t t-snippet="website_airproof.s_airproof_carousel" string="Custom snippet" group="airproof">
+                <keywords>Carousel block</keywords>
             </t>
         </xpath>
     </template>
