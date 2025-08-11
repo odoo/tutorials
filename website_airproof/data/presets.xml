@@ -57,9 +57,13 @@
     <record id="website_sale.products_categories_top" model="ir.ui.view">
         <field name="active" eval="False"/>
     </record>
-    <!-- Collapse products categories -->
+    <!-- Enable Collapse products categories -->
     <record id="website_sale.option_collapse_products_categories" model="ir.ui.view">
         <field name="active" eval="True"/>
+    </record>
+    <!-- Disable Collapse categories recursive -->
+    <record id="website_sale.option_collapse_products_categories" model="ir.ui.view">
+        <field name="active" eval="False"/>
     </record>
     <!-- Enable Product Attributes filtring -->
     <record id="website_sale.products_attributes" model="ir.ui.view">
@@ -79,7 +83,7 @@
     <record id="website_sale_wishlist.product_add_to_wishlist" model="ir.ui.view">
         <field name="active" eval="True"/>
     </record>
-    <!-- Disable quantity -->
+    <!-- Disable Quantity -->
     <record id="website_sale.product_quantity" model="ir.ui.view">
         <field name="active" eval="False"/>
     </record>
@@ -90,5 +94,9 @@
     <!-- Disable Share buttons -->
     <record id="website_sale.product_share_buttons" model="ir.ui.view">
         <field name="active" eval="False"/>
+    </record>
+    <!-- Enable More information -->
+    <record id="website_sale.accordion_more_information" model="ir.ui.view">
+        <field name="active" eval="True"/>
     </record>
 </odoo>

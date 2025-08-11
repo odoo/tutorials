@@ -9,6 +9,13 @@
                 data-customize-website-variable="'airproof'"
                 data-img="/website_airproof/static/src/img/wbuilder/template-header-opt.svg"/>
         </xpath>
+        <xpath expr="//*[@data-name='mega_menu_template_opt']/*" position="before">
+            <t t-set="_label">Airproof</t>
+            <we-button t-att-data-select-label="_label"
+                data-select-template="website_airproof.s_mega_menu_airproof"
+                data-img="/website_airproof/static/src/img/wbuilder/template-header-opt.svg"
+                t-out="_label"/>
+        </xpath>
     </template>
     <!-- Custom header -->
     <record id="header" model="ir.ui.view">
@@ -101,6 +108,56 @@
         </field>
     </record>
 
+    <!-- Mega menu template -->
+    <template id="s_mega_menu_airproof" name="Airproof" groups="base.group_user">
+        <section class="s_mega_menu_airproof pt24 pb24" style="background-color: #F4F4F4 !important;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-mini-1" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_mini" alt="Drone Airproof Mini" class="img-fluid img"/>
+                            <div class="p-2">
+                                <font class="fw-bold">Airproof Mini</font>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-pro-2" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_pro" alt="Drone Airproof Pro" class="img-fluid img"/>
+                            <div class="p-2">
+                                <font class="fw-bold">Airproof Pro</font>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-robin-3" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_robin" alt="Drone Airproof Robin" class="img-fluid img"/>
+                            <div class="d-block p-2">
+                                <font class="fw-bold">Airproof Robin</font>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-falcon-4" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_falcon" alt="Drone Airproof Falcon" class="img-fluid img"/>
+                            <div class="d-block p-2">
+                                <font class="fw-bold">Airproof Falcon</font>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-eagle-5" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_eagle" alt="Drone Airproof Eagle" class="img-fluid img"/>
+                            <div class="d-block p-2">
+                                <font class="fw-bold">Airproof Eagle</font>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
 <!-- FOOTER -->
     <!-- Add option footer -->
     <template id="template_footer_opt" inherit_id="website.snippet_options" name="Airproof Footer Template - Option">
@@ -128,11 +185,14 @@
                                 </div>
                                 <div class="pt40 pb8 o_colored_level col-lg-6">
                                     <div class="s_newsletter_subscribe_form s_newsletter_list js_subscribe" data-vxml="001" data-list-id="0" data-name="Newsletter Form" data-snippet="s_newsletter_subscribe_form">
-                                        <div class="input-group">
-                                            <input type="email" name="email" class="js_subscribe_email form-control border-0 me-3" placeholder="your email..."/>
-                                            <a role="button" href="#" class="js_subscribe_btn o_submit btn btn-primary fw-bold">Subscribe
-                                            </a>
-                                            <a role="button" href="#" class="btn btn-success js_subscribed_btn o_submit d-none fw-bold" disabled="disabled">Thanks</a>
+                                        <div class="js_subscribed_wrap d-none">
+                                            <p class="text-end text-success"><i class="fa fa-check-circle-o" role="img"/> Thanks for registering!</p>
+                                        </div>
+                                        <div class="js_subscribe_wrap">
+                                            <div class="input-group">
+                                                <input type="email" name="email" class="js_subscribe_value form-control border-0 me-3" placeholder="Your email..."/>
+                                                <a role="button" href="#" class="btn btn-primary o_cc o_cc3 js_subscribe_btn o_submit">Subscribe</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -190,10 +250,9 @@
         </field>
     </record>
 
-<!-- Copyright -->
+    <!-- Copyright -->
     <template id="copyright" inherit_id="website.layout">
         <xpath expr="//div[hasclass('o_footer_copyright')]/div[hasclass('container')]" position="replace">
-            <!-- Content -->
             <div class="container pt24 pb24">
                 <div class="row d-flex flex-row align-items-center justify-content-between">
                     <div class="col-12 col-md-6 col-lg-6 s_social_media text-start o_not_editable no_icon_color" data-snippet="s_social_media" data-name="Social Media">

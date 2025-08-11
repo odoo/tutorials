@@ -5,7 +5,9 @@
         .carousel-control-next-icon,
         .carousel-control-prev-icon,
         .carousel-control-next .fa,
-        .carousel-control-prev .fa {
+        .carousel-control-prev .fa,
+        .carousel-control-next .oi,
+        .carousel-control-prev .oi {
             display: none;
         }
         .carousel-control-next:after,
@@ -46,7 +48,7 @@
         .carousel-control-prev:after { border-radius: 10px 0 0 10px !important; }
         .carousel-control-next:after {
             border-radius: 0 10px 10px 0 !important;
-            left: 0 !important;
+            left: -4rem !important;
         }
         .carousel-control-prev {
             left: auto !important;
