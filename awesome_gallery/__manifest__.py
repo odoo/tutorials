@@ -22,5 +22,6 @@
             'awesome_gallery/static/src/**/*',
         ],
     },
+    'author': 'Odoo S.A.',
     'license': 'AGPL-3'
 }
