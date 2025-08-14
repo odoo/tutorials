@@ -22,5 +22,6 @@
             'awesome_kanban/static/src/**/*',
         ],
     },
+    'author': 'Odoo S.A.',
     'license': 'AGPL-3'
 }
