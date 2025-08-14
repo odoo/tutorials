@@ -32,7 +32,7 @@ class SaleModuleTypeWizard(models.TransientModel):
             lines.module_type_id.write({
                 'value': lines.value
             })
-            
+        
 
 class SaleModuleTypeWizardLine(models.TransientModel):
     _name = "sale.module.type.wizard.line"
