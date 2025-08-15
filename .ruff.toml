@@ -1,0 +1,121 @@
+
+target-version = "py310"
+fix = true
+show-fixes = true
+line-length = 120
+
+[lint]
+select = [
+    # entire rule-sets (inspired by RD configs)
+    "A",       # flake8-builtins
+    "F",       # PyFlakes
+    "E",       # pycodestyle errors
+    "W",       # pycodestyle warnings
+    "I",       # isort
+    "D",       # PyDocStyle
+    "ASYNC",   # flake8-async
+    "FBT",     # flake8-boolean-trap
+    "B",       # flake8-bugbear
+    "C4",      # flake8-comprehensions
+    "T10",     # flake8-debugger
+    "EXE",     # flake8-executable
+    "ISC",     # flake8-implicit-str-concat
+    "ICN",     # flake8-import-conventions
+    "PIE",     # flake8-pie
+    "T20",     # flake8-print
+    "RET",     # flake8-return
+    "ERA",     # flake8-eradicate
+    "PL",      # Pylint
+    "TRY",     # tryceratops
+    "RUF",     # ruff-specific-rules
+
+    # additional entire rule-sets (picked by ABT)
+    "N",       # PEP8 naming
+    "UP",      # PyUpgrade
+    "S",       # flake8-bandit
+    "BLE",     # flake8-blind-except
+    "Q",       # flake8-quotes
+    "RSE",     # flake8-raise
+    "SLOT",    # flake8-slots
+    "SIM",     # flake8-simplify
+    "TID",     # flake8-tidy-imports
+    "INT",     # flake8-gettext
+    "PGH",     # flake8-pygrep-hooks
+    "FLY",     # flynt
+    "PERF",    # perflint
+    "LOG",     # flake8-logging
+
+    # explicit rules (inspired by RD configs)
+    "COM818",  # trailing comma on bare tuple prohibited
+    "G010",    # logging statement uses `warn` instead of `warning`
+    "G101",    # logging statement uses an `extra` field that clashes with LogRecord
+    "G201",    # `logging.exception` should be used instead of `logging.error(..., exc_info=True)`
+    "G202",    # logging statement has redundant `exc_info`
+]
+ignore = [
+    "C408",     # unnecessary dict call - rewrite as a literal
+    "D1",       # undocumented-*
+    "D203",     # 1 blank line required before class docstring
+    "D205",     # 1 blank line required between summary line and description
+    "D212",     # multi-line docstring summary should start at the first line
+    "E731",     # do not assign a lambda expression, use a def
+    "N806",     # variable in function should be lowercase
+    "PERF203",  # try-except within a for loop incurs performance overhead
+    "PLR09",    # too-many-*; unwanted code complexity checks
+    "PLR2004",  # magic value used in comparison, consider replacing {value} with a constant variable
+    "PLR6301",  # method could instead be a function, class method, or static method
+    "PLW0602",  # `global` for variable but no assignment
+    "RET505",   # unnecessary else/elif after return statement
+    "RUF012",   # mutable class attributes should be annotated with typing.ClassVar
+    "S101",     # use of assert detected
+    "S307",     # usage of builtin `eval()`
+    "S311",     # cryptographic usage of `random` module
+    "S320",     # usage of `lxml`
+    "S404",     # usage of `subprocess` module
+    "S603",     # subprocess call - check for execution of untrusted input
+    "SIM105",   # prefer `contextlib.suppress` over `try/except/pass`
+    "TRY003",   # long message in exception call
+    "TRY301",   # raise within try - abstract raise to an inner function
+
+    # ruff format incompatible/overlaps
+    "E111",     # indentation-with-invalid-multiple
+    "E114",     # indentation-with-invalid-multiple-comment
+    "E117",     # over-indented
+    "E501",     # line-too-long
+    "ISC001",   # single-line-implicit-string-concatenation
+    "ISC002",   # multi-line-implicit-string-concatenation
+    "W191",     # tab-indentation
+]
+
+[lint.per-file-ignores]
+"**/__init__.py" = [
+    "F401",  # ignore unused imports
+    "F403",  # ignore * imports
+    "I001",  # ignore unsorted imports
+]
+"**/__manifest__.py" = [
+    "B018",  # ignore useless expression (i.e. the manifest data)
+]
+"**/tests/**" = [
+    "D",     # ignore docstring rules
+]
+"**/{migrations,upgrade}/**" = [
+    "D",     # ignore docstring rules
+    "S608",  # string-based SQL query construction
+]
+
+[lint.pydocstyle]
+convention = "pep257"
+
+[lint.isort]
+section-order = ["future", "standard-library", "third-party", "odoo", "odoo-addons", "odoo-upgrade", "first-party", "local-folder"]
+lines-after-imports = 2
+combine-as-imports = true
+
+[lint.isort.sections]
+"odoo" = ["odoo", "openerp"]
+"odoo-addons" = ["odoo.addons", "openerp.addons"]
+"odoo-upgrade" = ["odoo.upgrade", "openerp.upgrade", "odoo.base.maintenance.migrations", "openerp.base.maintenance.migrations"]
+
+[lint.mccabe]
+max-complexity = 16
