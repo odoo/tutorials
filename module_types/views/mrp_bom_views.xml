@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_mrp_bom_form_inherit_properties" model="ir.ui.view">
+        <field name="name">res.mrp.bom.form.inherit.module_types</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='components']//field[@name='product_qty']" position="before">
+                <field 
+                    name="module_types_id"
+                    options="{'no_create': true}"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
