@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<template xml:space="preserve">
+    <t t-name="todo_list.todo_list">
+       <div class="border m-5 p-3">
+           <input type="text" t-on-keypress="ev => this.addTodo(ev)" t-ref="todo_item_input" placeholder="Enter a new task"/>
+           <div t-attf-class="{{ 'mt-2' ? props.todo : '' }}" >
+               <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                   <div class="d-flex">
+                       <TodoItem todo="todo" id="todo.id" clickOnCheckBox.bind="ev => toggleState(ev, todo)" clickOnCross.bind="() => this.removeTodo(todo)"/>
+                   </div>
+               </t>
+           </div>
+        </div>
+    </t>
+</template>
