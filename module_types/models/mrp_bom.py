@@ -12,7 +12,7 @@ class MrpBom(models.Model):
     )
 
     @api.onchange('product_tmpl_id')
-    def _onchange_garden(self):
+    def _onchange_parent_product(self):
         if self.bom_line_ids:
             for line in self.bom_line_ids:
                 line.module_types_id = False
