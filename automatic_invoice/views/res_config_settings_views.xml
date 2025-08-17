@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="res_config_settings_view" model="ir.ui.view">
+        <field name="name">res.config.settings.inherit.view.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//block//setting[@id='display_invoice_tax_company_currency']" position="after">
+                <setting id="automatic_send_invoice" help="Send invoices automatically through email by configuring the duration">
+                    <field name="enable_auto_invoice_sending" />
+                    <div invisible="not enable_auto_invoice_sending">
+                        <label for="invoice_send_delay_days" />
+                        <field name="invoice_send_delay_days" />
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
