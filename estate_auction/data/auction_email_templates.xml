@@ -1,0 +1,42 @@
+<odoo>
+    <data>
+        <record id="offer_accepted_email" model="mail.template">
+            <field name="name">Offer Accepted Email</field>
+            <field name="model_id" ref="estate.model_estate_property_offer"/>
+            <field name="subject">Congratulations! Your offer for ${object.property_id.name} has been accepted</field>
+            <field name="email_from">${(object.company_id.email or 'no-reply@yourdomain.com') if
+                object.company_id else 'no-reply@yourdomain.com'}
+            </field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.partner_id.name},</p>
+                    <p>We're pleased to inform you that your offer of <strong>${object.price}</strong> on the property <strong>${object.property_id.name}</strong> has been accepted!</p>
+                    <p>Our team will be in touch shortly to guide you through the next steps in the process.</p>
+                    <p>Warm regards,</p>
+                    <p>The Real Estate Team</p>
+                ]]>
+            </field>
+        </record>
+
+        <record id="offer_refused_email" model="mail.template">
+            <field name="name">Offer Refused Email</field>
+            <field name="model_id" ref="estate.model_estate_property_offer"/>
+            <field name="subject">Sorry! Your offer for ${object.property_id.name} has been refused</field>
+            <field name="email_from">${(object.company_id.email or 'no-reply@yourdomain.com') if
+                object.company_id else 'no-reply@yourdomain.com'}
+            </field>
+            <field name="email_to">${object.partner_id.email}</field>
+            <field name="body_html">
+                <![CDATA[
+                    <p>Dear ${object.partner_id.name},</p>
+                    <p>Thank you for your interest in the property <strong>${object.property_id.name}</strong> and for submitting your offer of <strong>${object.price}</strong>.</p>
+                    <p>We regret to inform you that your offer was not accepted.</p>
+                    <p>We appreciate your time and encourage you to explore other listings with us.</p>
+                    <p>Kind regards,</p>
+                    <p>The Real Estate Team</p>
+                ]]>
+            </field>
+        </record>
+    </data>
+</odoo>
