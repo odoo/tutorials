@@ -1,0 +1,35 @@
+<odoo>
+    <record id="action_gfsi_grade" model="ir.actions.act_window">
+        <field name="name">GFSI Grades</field>
+        <field name="res_model">gfsi.grade</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create GFSI Grades here.
+            </p>
+        </field>
+    </record>
+    <record id="view_gfsi_grade_list" model="ir.ui.view">
+        <field name="name">gfsi.grade.list</field>
+        <field name="model">gfsi.grade</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_gfsi_grade_form" model="ir.ui.view">
+        <field name="name">gfsi.grade.form</field>
+        <field name="model">gfsi.grade</field>
+        <field name="arch" type="xml">
+            <form string="GFSI grade">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

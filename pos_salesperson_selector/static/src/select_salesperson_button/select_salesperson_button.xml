@@ -1,0 +1,10 @@
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_salesperson_selector.SelectSalespersonButton">
+        <button class="btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="this.pos.SelectSalesperson">
+            <div t-if="props.salesperson" t-esc="props.salesperson.name" class="text-truncate text-action"/>
+            <div t-else="">
+                Salesperson
+            </div>
+        </button>
+    </t>
+</templates>

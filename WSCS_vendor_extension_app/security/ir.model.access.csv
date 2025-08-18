@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+WSCS_vendor_extension_app.access_vendor_status,access_vendor_status,WSCS_vendor_extension_app.model_vendor_status,base.group_user,1,1,1,1
+WSCS_vendor_extension_app.access_gfsi_certificate,access_gfsi_certificate,WSCS_vendor_extension_app.model_gfsi_certificate,base.group_user,1,1,1,1
+WSCS_vendor_extension_app.access_gfsi_scheme,access_gfsi_scheme,WSCS_vendor_extension_app.model_gfsi_scheme,base.group_user,1,1,1,1
+WSCS_vendor_extension_app.access_gfsi_grade,access_gfsi_grade,WSCS_vendor_extension_app.model_gfsi_grade,base.group_user,1,1,1,1

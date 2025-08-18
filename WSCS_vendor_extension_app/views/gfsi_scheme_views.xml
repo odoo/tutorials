@@ -1,0 +1,35 @@
+<odoo>
+    <record id="action_gfsi_scheme" model="ir.actions.act_window">
+        <field name="name">GFSI Schemes</field>
+        <field name="res_model">gfsi.scheme</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create GFSI Schemes here.
+            </p>
+        </field>
+    </record>
+    <record id="view_gfsi_scheme_list" model="ir.ui.view">
+        <field name="name">gfsi.scheme.list</field>
+        <field name="model">gfsi.scheme</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_gfsi_scheme_form" model="ir.ui.view">
+        <field name="name">gfsi.scheme.form</field>
+        <field name="model">gfsi.scheme</field>
+        <field name="arch" type="xml">
+            <form string="GFSI Scheme">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
