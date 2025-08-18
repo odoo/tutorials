@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <t t-name="crm_contact_details.HideRemoveListRenderer.RecordRow" t-inherit-mode="primary" t-inherit="web.ListRenderer.RecordRow">
+        <xpath expr="//t[@t-if='hasX2ManyAction']" position="replace">
+            <t t-if="0"/>
+        </xpath>
+    </t>
+</odoo>
