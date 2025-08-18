@@ -1,0 +1,22 @@
+.o_dashboard {
+    background-color: #714B67;
+    min-height: 100vh;
+
+    .card {
+        border-radius: 0.5rem;
+        border: 1px solid #06121f;
+        background-color: #ffffff;
+        transition: transform 0.2s ease-in-out;
+
+        &:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(199, 182, 182, 0.1);
+        }
+
+        .card-body {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #343a40;
+        }
+    }
+}
