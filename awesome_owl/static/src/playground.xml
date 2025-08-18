@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
+    <t t-name="awesome_owl.Playground">
+        <div class="p-5">
+            <div class="text-center">
+                <h2 class="flex">
+                    Hello dear,
+                    <img src="./awesome_owl/static/src/Owl.png" alt="Owl Picture" style="width: 50px; height: 80px;"/>
+                </h2>
+                <p class="italic">
+                    "Wisdom doesn’t always hoot the loudest, but it listens the best."
+                </p>
+            </div>
+            <div class="flex-column">
+                <div class="mb-2">
+                    <Counter onChange.bind="incrementSum"/>
+                    <Counter onChange.bind="incrementSum" />
+                </div>
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+                <div class="mb-40">
+                    <p>Total Sum: <t t-esc="sum.value" /></p>
+                </div>
+            </div>
+            <div>
+                <Card heading="'Wisdom 1'" content="'Knowledge flies on quiet wings — not loud ones.'">
+                    <t t-out="this.str2" />
+                </Card>
+                <Card heading="'Wisdom 2'" content="'True wisdom doesn’t flutter — it soars slowly and surely.'">
+                    <Counter />
+                </Card>
+            </div>
+        </div>
+        <div class="p-5">
+            <TodoList/>
         </div>
     </t>
-
 </templates>
