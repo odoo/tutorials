@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="company_report_header">
+        <div style="width:100%; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-bottom: 10px;">
+            <table width="100%">
+                <tr>
+                    <td style="width: 20%;">
+                        <t t-if="company.logo">
+                            <img t-att-src="image_data_uri(company.logo)" style="max-height: 50px;"
+                                alt="Company Logo" />
+                        </t>
+                        <t t-else="">
+                            <span class="fw-bold">Your logo</span>
+                        </t>
+                    </td>
+                    <td style="width: 80%; text-align: left;">
+                        <div class="fw-bold">
+                            <t t-out="company.name">YourCompany</t>
+                        </div>
+                        <div t-if="company.street">
+                            <t t-out="company.street" />
+                        </div>
+                        <div t-if="company.city">
+                            <t t-out="company.city" />
+                            <t t-if="company.zip">, <t t-out="company.zip" /></t>
+                        </div>
+                        <div t-if="company.country_id.name">
+                            <t t-out="company.country_id.name" />
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </template>
+    <template id="report_salesman_properties">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>Properties for <span t-field="user.name"/></h2>
+                        <t t-set="properties" t-value="env['estate.property'].search([('salesperson_id', '=', user.id)])"/>
+                        <t t-if="properties">
+                            <t t-foreach="properties" t-as="property">
+                                <div class="mt-4 mb-4 p-3 border rounded">
+                                    <h3 class="mb-3">
+                                        <span t-field="property.name"/>
+                                    </h3>
+                                    <div class="row mb-3">
+                                        <div class="col-4">
+                                            <strong>Expected Price: </strong>
+                                            <span t-field="property.expected_price"/>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong>Status: </strong>
+                                            <span t-field="property.status"/>
+                                        </div>
+                                        <div class="col-4">
+                                            <strong>Property Type: </strong>
+                                            <span t-field="property.property_type_id.name"/>
+                                        </div>
+                                    </div>
+                                    <h4 class="mt-3">Offers</h4>
+                                    <t t-call="estate.report_property_offer_info"/>
+                                </div>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <div class="alert alert-info mt-4">
+                                <p>No properties assigned to this salesperson.</p>
+                            </div>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

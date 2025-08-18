@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_listing_filters_extension" inherit_id="estate.property_listing_template">
+        <xpath expr="//div[hasclass('input-group')][1]" position="after">
+            <div class="input-group w-auto">
+                <span class="input-group-text bg-light border-0">
+                    <i class="fa fa-gavel text-primary"></i>
+                </span>
+                <select id="filter-sale-type" class="form-select border-0 shadow-none">
+                    <option value="all">Sale Type (All)</option>
+                    <option value="auction">Auction</option>
+                    <option value="regular">Regular Sale</option>
+                </select>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('property-item')]" position="attributes">
+            <attribute name="t-att-data-sale-type">property.sale_type</attribute>
+        </xpath>
+        <xpath expr="//script" position="replace">
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const filterBtn = document.getElementById("filter-btn");
+                    const dateInput = document.getElementById("filter-date");
+                    const typeSelect = document.getElementById("filter-sale-type");
+                    const properties = document.querySelectorAll(".property-item");
+                    filterBtn.addEventListener("click", function() {
+                        const date = dateInput.value;
+                        const saleType = typeSelect.value;
+                        if (!date &amp;&amp; !saleType) {
+                            alert("Please select a date or sale type!");
+                            return;
+                        }
+                        properties.forEach(function(item) {
+                            let visible = true;
+                            if (date) {
+                                const propDate = new Date(item.getAttribute("data-date")).getTime();
+                                if (propDate &lt; new Date(date).getTime()) visible = false;
+                            }
+                            if (visible &amp;&amp; saleType &amp;&amp; saleType != "all" &amp;&amp; item.getAttribute("data-sale-type") !== saleType) {
+                                visible = false;
+                            }
+                            item.style.display = visible ? "block" : "none";
+                        });
+                    });
+                    typeSelect.addEventListener("change", function() {
+                        if (typeSelect.value) filterBtn.click();
+                    });
+                });
+            </script>
+        </xpath>
+    </template>
+</odoo>
