@@ -1,0 +1,103 @@
+<odoo>
+    <template id="property_details_auction_filter" inherit_id="estate.property_list_template">
+        <xpath expr="//div[@id='property_type']" position="after">
+            <div class="flex-grow-1">
+                <label class="col-form-label fw-bold text-primary" for="selected_property_auction_type">Property Auction Type</label>
+                <select name="selected_property_auction_type" class="form-select" onchange="this.form.submit()">
+                    <option value="all" t-att-selected="selected_property_auction_type == 'all'">All</option>
+                    <option value="auction" t-att-selected="selected_property_auction_type == 'auction'">Auction</option>
+                    <option value="regular" t-att-selected="selected_property_auction_type == 'regular'">Regular</option>
+                </select>
+            </div>
+            <div class="flex-grow-1">
+                <label class="col-form-label fw-bold text-primary" for="selected_property_auction_type">Property Selling Type</label>
+                <select name="selected_is_rent_or_not" class="form-select" onchange="this.form.submit()">
+                    <option value="all" t-att-selected="selected_is_rent_or_not == 'all'">All</option>
+                    <option value="sale" t-att-selected="selected_is_rent_or_not == 'sale'">Sale</option>
+                    <option value="rent" t-att-selected="selected_is_rent_or_not == 'rent'">Rent</option>
+                </select>
+            </div>
+        </xpath>
+    </template>
+    <template id="property_details_auction_template" inherit_id="estate.property_detail_template">
+        <xpath expr="//h2[@name='property_name']" position="before">
+            <t t-if="property_details.property_auction_type == 'auction'">
+                <div class="text-center bg-primary text-white p-3 rounded" id="auction_timer" t-att-data-end-time="property_details.end_time">
+                    <t t-if="property_details.auction_state == 'in_template'">
+                        <span class="fw-bold">Auction is not started yet</span>
+                    </t>
+                    <t t-elif="property_details.auction_state == 'in_auction'">
+                        <span class="fw-bold">In Auction</span>
+                    </t>
+                    <t t-elif="property_details.auction_state == 'done'">
+                        <span class="fw-bold">Auction Ended</span>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+        <xpath expr="//div[@name='property_details_only']" position="inside">
+            <t t-if="property_details.property_auction_type == 'auction'">
+                <t t-if="property_details.auction_state == 'in_auction'">
+                    <div class="form-check">
+                        <input type="checkbox" id="agree_terms" class="form-check-input"/>
+                        <label class="form-check-label" for="agree_terms">
+                            I agree to the <a href="/terms-and-conditions" target="_blank">Terms and Conditions</a>
+                        </label>
+                    </div>
+                    <a t-attf-href="/properties/#{property_details.id}/add_offer" class="btn btn-primary">
+                        Create Offer
+                    </a>
+                </t>
+            </t>
+            <a t-attf-href="/properties/#{property_details.id}/interested" class="btn btn-primary">
+                I'm Interested
+            </a>
+        </xpath>
+    </template>
+
+    <template id="terms_conditions_page" name="Terms and Conditions Page">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <h1>Terms and Conditions</h1>
+                <p>
+                    Welcome to our Estate Platform! Before using our services, please read the following terms and conditions carefully.
+                </p>
+
+                <h2>1. Introduction</h2>
+                <p>
+                    These Terms and Conditions govern the use of our Estate platform and services. By accessing our platform, you agree to these terms.
+                </p>
+
+                <h2>2. Property Listings</h2>
+                <p>
+                    All property listings are subject to availability and can be updated without prior notice. The platform is not liable for any inaccuracies in property listings.
+                </p>
+
+                <h2>3. Rental Agreements</h2>
+                <p>
+                    In case of rental properties, terms of rental agreements will be provided upon inquiry or upon acceptance of offers.
+                </p>
+
+                <h2>4. Personal Information</h2>
+                <p>
+                    We value your privacy. Your personal information will be handled according to our privacy policy. We do not share your details with third parties.
+                </p>
+
+                <h2>5. Limitation of Liability</h2>
+                <p>
+                    Our platform will not be held liable for any direct, indirect, or consequential damages arising from the use of our services or platform.
+                </p>
+
+                <h2>6. Contact Us</h2>
+                <p>
+                    If you have any questions regarding these Terms and Conditions, please <a href="/contactus">contact us</a>.
+                </p>
+
+                <hr/>
+                <p class="text-center">
+                    <strong>By continuing to use our platform, you accept these Terms and Conditions.</strong>
+                </p>
+            </div>
+        </t>
+    </template>
+</odoo>
