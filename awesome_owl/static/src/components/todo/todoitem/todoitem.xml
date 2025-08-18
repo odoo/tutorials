@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+        <div t-ref="todo_ref" class="card d-inline-block m-2 fade-in" style="width: 18rem;" t-att-class="{'text-muted': props.isCompleted, 'text-decoration-line-through': props.isCompleted, 'bg-body-tertiary': props.isCompleted, 'text-body-tertiary': props.isCompleted}">
+            <div class="card-body">
+                <h3 class="card-title">
+                    <div class="d-flex gap-3" style="justify-content: space-between">
+                        <div class="d-flex gap-3">
+                        <input t-att-id="'todo-' + props.id" style="accent-color: grey; width: 18px" t-ref="todo_togglestatus" type="checkbox" />
+                        <label
+                            t-att-for="'todo-' + props.id"
+                            class="cursor-pointer"
+                        >
+                        <t t-esc="props.id"/>
+                        </label>
+                        </div>
+                        <button
+                            class="btn btn-sm text-bg-danger"
+                            style="text-decoration: none"
+                            t-on-click="deleteTodo"
+                        >
+                            <i class="fa fa-trash fa-lg"></i>
+                        </button>
+                    </div>
+                </h3>
+                <p class="card-text">
+                    <t t-esc="props.description"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>
