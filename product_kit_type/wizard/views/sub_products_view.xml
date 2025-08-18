@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="subproducts_view_form" model="ir.ui.view">
+        <field name="name">product_kit_type.subproducts.form</field>
+        <field name="model">product_kit_type.subproducts</field>
+        <field name="arch" type="xml">
+            <form>
+                <field name="sub_product_line_ids" nolabel="1">
+                    <list editable="bottom" create='0'>
+                        <field name="product_id" />
+                        <field name="product_qty"/>
+                        <field name="price_unit"/>
+                    </list>
+                </field>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary" />
+                    <button string="Cancel" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
