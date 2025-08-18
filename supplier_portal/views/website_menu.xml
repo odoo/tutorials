@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">
+        <record id="menu_upload_invoice" model="website.menu">
+            <field name="name">Upload Invoice</field>
+            <field name="url">/upload-invoice</field>
+            <field name="parent_id" ref="website.main_menu" />
+            <field name="sequence">50</field>
+            <field name="group_ids" eval="[(4, ref('supplier_portal.group_supplier_portal'))]" />
+        </record>
+    </data>
+</odoo>
