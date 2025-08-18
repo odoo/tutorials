@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit.product_type_kit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <button name="action_sub_products" icon="fa-tags" title="Sub Products" type="object" invisible="is_kit == False or state != 'draft'" />
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="decoration-warning">is_sub_product</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">is_sub_product</attribute>
+            </xpath>
+
+            <xpath expr="//group[@name='order_details']" position="inside">
+                <field name="print_in_report" string="Print in report?" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
