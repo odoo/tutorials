@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <div class="d-flex align-items-center mb-2">
+                    <h5 class="card-title"><t t-esc="props.title"/></h5>
+                    <button 
+                        type="button" 
+                        class="btn bg-secondary-subtle w-50 ms-4 mb-2" 
+                        t-on-click="onToggleContent"
+                    >
+                        Toggle
+                    </button>
+                </div>
+                <t t-if="state.isVisibleContent">
+                    <t t-slot="content"/>
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>
