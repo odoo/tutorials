@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="card align-items-center" t-att-style="`width: ${this.width}rem`">
+            <div class="card-body">
+                <t t-slot="default"/>
+                <h1 class="text-center text-sucess" style="color: green;">
+                    <t t-slot="value"/>
+                </h1>
+            </div>
+        </div>
+    </t>
+</templates>
