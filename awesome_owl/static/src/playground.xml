@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+    <t t-name="awesome_owl.Playground">
+        <!-- Sub Components -->
+        <div class="p-3 border m-2">
+            <h1>Sub Components</h1>
+            <div class="d-flex gap-3">
+                <Counter onChange.bind="incrementSum" />
+                <Counter onChange.bind="incrementSum" />
+            </div>
+            <p>The sum is <t t-esc="state.sum" /></p>
+        </div>
+
+        <!-- Card Component -->
+        <div class="p-3 border m-2">
+            <h1>Card Component</h1>
+            <div class="d-flex gap-3">
+                <Card title="'Card 1'">
+                    <p class="card-text">testing</p>
+                </Card>
+                <Card title="'Card 2'">
+                    <p class="card-text">
+                        <t t-out="markup_html" />
+                    </p>
+                </Card>
+                <Card title="'Card 3'">
+                    <Counter onChange.bind="incrementSum" />
+                </Card>
+            </div>
+        </div>
+
+        <!-- Todo List -->
+        <div class="p-3 border m-2">
+            <h1>TodoList</h1>
+            <TodoList />
         </div>
     </t>
 
