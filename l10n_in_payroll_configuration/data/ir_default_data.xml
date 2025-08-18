@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <function model="ir.default" name="set" eval="('hr.contract', 'l10n_in_basic_salary_percent', 50.0)"/>
+        <function model="ir.default" name="set" eval="('hr.contract', 'l10n_in_hra_percent', 50.0)"/>
+        <function model="ir.default" name="set" eval="('hr.contract', 'l10n_in_performance_bonus_percent', 20.0)"/>
+        <function model="ir.default" name="set" eval="('hr.contract', 'l10n_in_leave_travel_allowance_percent', 20.0)"/>
+        <function model="ir.default" name="set" eval="('hr.contract', 'l10n_in_std_allowance', 4167.0)"/>
+        <function model="ir.default" name="set" eval="('hr.contract', 'l10n_in_leave_days', 1)"/>
+        <function model="ir.default" name="set" eval="('hr.contract', 'l10n_in_gratuity', 0.0)"/>
+        <function model="ir.default" name="set" eval="('hr.contract', 'l10n_in_supplementary_allowance', 0.0)"/>
+    </data>
+</odoo>
