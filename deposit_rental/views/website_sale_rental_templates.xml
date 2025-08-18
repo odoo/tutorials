@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <template id="product_deposit_info" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.require_deposit">
+                <div class="alert alert-info mt-2 p-3 shadow-sm rounded">
+                    <h6 class="mb-1 fw-semibold">Deposit Required</h6>
+                    <p class="mb-0 fw-semibold">
+                        <span class="h5" t-esc="product.currency_id.symbol"/>
+                        <span class="h5" t-esc="product.deposit_amount"/> / <span t-esc="product.name"/>
+                    </p>
+                </div>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="deposit_product_inside_main_line" inherit_id="website_sale.cart_lines">
+        <xpath expr="//div[@name='o_wsale_cart_line_button_container']" position="before">
+            <t t-if="not line.linked_line_id">
+                <div class="text-muted small my-2">
+                    Deposit for<span class="text-primary fw-semibold ms-1" t-esc="line.product_id.name"/>
+                </div>
+            </t>
+            
+            <t t-if="line.linked_line_id">
+                <div class="text-muted small mt-2">
+                    This Deposit is for<span class="text-primary fw-semibold ms-1" t-esc="line.linked_line_id.product_id.name"/>
+                </div>
+            </t>
+          
+        </xpath>
+
+        <xpath expr="//div[@name='website_sale_cart_line_price']" position="after">
+            <t t-set="deposit_line" t-value="request.env['sale.order.line'].sudo().search([('linked_line_id', '=', line.id)], limit=1)"/>
+            <t t-if="deposit_line">
+                <div class="small text-muted my-2">
+                    <span t-esc="line.currency_id.symbol"/>
+                    <span t-esc="deposit_line.price_unit * deposit_line.product_uom_qty"/>
+                </div>
+            </t> 
+        </xpath>
+    </template>
+    
+</odoo>
