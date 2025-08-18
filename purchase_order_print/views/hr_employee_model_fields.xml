@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="field_hr_employee_signature_seal" model="ir.model.fields">
+        <field name="name">x_signature_seal_image</field>
+        <field name="model">hr.employee</field>
+        <field name="model_id" ref="hr.model_hr_employee"/>
+        <field name="field_description">Signature/Seal Image</field>
+        <field name="ttype">binary</field>
+        <field name="store">True</field>
+    </record>
+</odoo>

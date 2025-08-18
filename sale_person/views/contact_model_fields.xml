@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--This file defines model and its fields similar to model's .py file-->
+
+    <!--Contact model-->
+    <record id="model_x_contact" model="ir.model">
+        <field name="name">Contact</field>
+        <field name="model">x_contact</field>
+        <field name="state">manual</field>
+    </record>
+
+    <!--Fields for Contact model-->
+
+    <!--contact name-->
+    <record id="field_x_contact_name" model="ir.model.fields">
+        <field name="model_id" ref="model_x_contact"/>
+        <field name="name">x_name</field>
+        <field name="ttype">char</field>
+        <field name="field_description">Name</field>
+    </record>
+
+    <!--customer type-->
+    <record id="field_x_contact_customer_type" model="ir.model.fields">
+        <field name="model_id" ref="model_x_contact"/>
+        <field name="name">x_customer_type</field>
+        <field name="ttype">char</field>
+        <field name="field_description">Customer Type</field>
+    </record>
+
+    <!--city-->
+    <record id="field_x_contact_city" model="ir.model.fields">
+        <field name="model_id" ref="model_x_contact"/>
+        <field name="name">x_city</field>
+        <field name="ttype">char</field>
+        <field name="field_description">City</field>
+    </record>
+
+    <!--state-->
+    <record id="field_x_contact_area" model="ir.model.fields">
+        <field name="model_id" ref="model_x_contact"/>
+        <field name="name">x_area</field>
+        <field name="ttype">char</field>
+        <field name="field_description">Area</field>
+    </record>
+
+    <!--pincode-->
+    <record id="field_x_contact_pin_code" model="ir.model.fields">
+        <field name="model_id" ref="model_x_contact"/>
+        <field name="name">x_pin_code</field>
+        <field name="ttype">char</field>
+        <field name="field_description">Pin Code</field>
+    </record>
+</odoo>
