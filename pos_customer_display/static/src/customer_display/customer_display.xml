@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.CustomerDisplay" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_customer_display_main')]/div[hasclass('py-3', 'px-4')]/div[hasclass('gap-1', 'w-sm-50')]" position="after">
+            <div class="d-flex flex-column justify-content-center gap-1 w-100 w-sm-50 ms-auto">
+                <div class="row fs-3 fw-bolder">
+                    <div class="col text-end">Customer: </div>
+                    <div class="col text-end" t-esc="order.partner?.name"/>
+                </div>
+                <div class="row fs-5">
+                    <div class="col text-end">Amount Per Guest: </div>
+                    <div class="col text-end" t-esc="order.amountperguest.toFixed(2)"/>
+                </div>
+            </div>
+        </xpath>
+        
+        <xpath expr="//div[hasclass('o_customer_display_main')]/OrderWidget" position="attributes">
+            <attribute name="lines" add="order.orderLines" remove="order.lines"></attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_customer_display_main')]/OrderWidget" position="after">
+            <div class="fs-2 fw-bolder">Refunds</div>
+            <OrderWidget t-if="!order.finalized" lines="order.refundLines" class="'gap-0 p-0 mx-2 pb-3 bg-view'" style="'scroll-snap-type: y mandatory;'" generalNote="order.generalNote or ''">
+            </OrderWidget>
+        </xpath>
+    </t>
+</templates>
