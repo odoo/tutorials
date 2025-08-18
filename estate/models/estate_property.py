@@ -1,0 +1,117 @@
+from odoo import exceptions, api, fields, models
+from odoo.tools.float_utils import float_compare, float_is_zero
+
+
+class EstateProperty(models.Model):
+    _name = 'estate.property'
+    _description = 'Estate Property'
+    _order = 'id desc'
+
+    name = fields.Char('Property Name', required=True)
+    description = fields.Text('Description')
+    postcode = fields.Char('Postcode')
+    date_availability = fields.Date(
+        'Available from',
+        default=lambda self: fields.Date.add(fields.Date.context_today(self), months=3),
+        copy=False
+    )
+    expected_price = fields.Float('Expected Price', required=True)
+    selling_price = fields.Float('Selling price', readonly=True, copy=False)
+    bedrooms = fields.Integer('Bedrooms', default=2)
+    living_area = fields.Integer('Living Area')
+    facades = fields.Integer('Facades')
+    garage = fields.Boolean('Garage')
+    garden = fields.Boolean('Garden')
+    garden_area = fields.Integer('Garden Area')
+    garden_orientation = fields.Selection(
+        string='Garden Orientation',
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ]
+    )
+    active = fields.Boolean('Active', default=True)
+    status = fields.Selection(
+        string='Status',
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+        default='new'
+    )
+    property_type_id = fields.Many2one('estate.property.type', string='Property type')
+    partner_id = fields.Many2one('res.partner', string='Buyer', index=True)
+    user_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
+    tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    total_area = fields.Float(compute='_compute_total_area')
+    best_price = fields.Float(compute='_compute_best_price')
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price > 0)', 'The expected price should be strictly positive')
+    ]
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            # Skip the check if selling_price is zero
+            if float_is_zero(record.selling_price, precision_rounding=0.01):
+                continue
+
+            # Compare selling_price with 90% of expected_price
+            min_price = record.expected_price * 0.9
+            if float_compare(record.selling_price, min_price, precision_rounding=0.01) < 0:
+                raise exceptions.ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price') or [0.0])
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    # Method to set property sold
+    def action_set_sold(self):
+        for record in self:
+            if record.status == 'cancelled':
+                raise exceptions.UserError("A cancelled property cannot be marked as sold.")
+            elif record.status == 'new':
+                raise exceptions.UserError("A property cannot be sold if their are no offers.")
+            elif record.status == 'offer_received':
+                raise exceptions.UserError("A property cannot be sold if no offers are accepted.")
+            record.status = 'sold'
+        return True
+
+    # Method to cancel the property
+    def action_set_cancel(self):
+        for record in self:
+            if record.status == 'sold':
+                raise exceptions.UserError("A sold property cannot be cancelled.")
+            record.status = 'cancelled'
+        return True
+
+    # Method to check delete if status is not 'New' or 'Cancelled'
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_delete(self):
+        for record in self:
+            if record.status not in ['new', 'cancelled']:
+                raise exceptions.UserError("You can only delete properties that are New or Cancelled.")
