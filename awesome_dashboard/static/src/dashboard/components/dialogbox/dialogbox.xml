@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.SettingDialog">
+        <div class="modal d-block">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Dashboard items configuration</h5>
+                        <button class="btn-close" t-on-click="closeSetting"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Which cards do you wish to see ?</p>
+                        <ul class="list-group">
+                            <t t-foreach="state.items" t-as="item" t-key="item.id">
+                                <li class="list-group-item d-flex gap-2 align-items-center">
+                                    <input type="checkbox" t-att-id="'item-' + item.id" class="form-check-input" t-model="item.enabled" />
+                                    <label class="form-check-label" t-att-for="'item-' + item.id">
+                                        <t t-esc="item.description" />
+                                    </label>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" t-on-click="applySettings">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

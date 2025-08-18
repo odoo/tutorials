@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo> 
+    <template id="website_auction_property_list_template" inherit_id="real_estate.website_property_template">
+        <xpath expr="//div/h1[@id='heading']" position="before">
+            <form class="d-flex p-2 justify-content-center" action="/properties" method="post">
+                <div class="p-3 ">
+                    <label for="property_status">Status</label>
+                    <select name="property_status" id="property_status" class="form-control">
+                        <option value="">All</option>
+                        <option value="new" t-att-selected="'new' == request.params.get('property_status')">New</option>
+                        <option value="offer_received" t-att-selected="'offer_received' == request.params.get('property_status')">Offer Received</option>
+                        <option value="offer_accepted" t-att-selected="'offer_accepted' == request.params.get('property_status')">Offer Accepted</option>
+                        <option value="sold" t-att-selected="'sold' == request.params.get('property_status')">Sold</option>
+                        <option value="canceled" t-att-selected="'canceled' == request.params.get('property_status')">Canceled</option>
+                    </select>
+                </div>
+                <div class="p-3">
+                    <label for="min_price">Min Price</label>
+                    <input type="number" name="min_price" id="min_price" class="form-control" placeholder="Min Price"
+                        t-att-value="request.params.get('min_price')"/>
+                </div>
+                <div class="p-3">
+                    <label for="max_price">Max Price</label>
+                    <input type="number" name="max_price" id="max_price" class="form-control" placeholder="Max Price"
+                        t-att-value="request.params.get('max_price')"/>
+                </div>
+                <div class="p-3">
+                    <label for="bid_type">Auction</label>
+                    <select name="bid_type" id="bid_type" class="form-control">
+                        <option value="">All</option>
+                        <option value="auction" t-att-selected="'auction' == request.params.get('bid_type')">Auction</option>
+                        <option value="regular" t-att-selected="'regular' == request.params.get('bid_type')">Regular</option>
+                    </select>
+                </div>
+                <div class="p-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </form>
+        </xpath>
+    </template>
+    <template id="website_auction_property_details_template" inherit_id="real_estate.property_detail_template">
+        <xpath expr="//div[@id='container_box']" position="before">
+            <t t-if="property.bid_type == 'auction'">
+                <t t-if="property.auction_end_time">
+                    <div class="auction-timer text-center mb-3 bg-primary text-white p-3 rounded mx-auto">
+                        <strong>Auction Ends In:</strong>
+                        <span id="auction-timer" t-if="property.auction_end_time"
+                            t-att-data-end-time="property.auction_end_time.strftime('%Y-%m-%dT%H:%M:%SZ')">
+                        </span>
+                    </div>
+                </t>
+            </t>
+            <script type="text/javascript">
+                document.addEventListener("DOMContentLoaded", function () {
+                    let timerElement = document.getElementById("auction-timer");
+                    if (!timerElement) return;
+
+                    let endTimeStr = timerElement.getAttribute("data-end-time");
+                    if (!endTimeStr) {
+                        timerElement.innerHTML = "Auction Time Not Set";
+                        return;
+                    }
+                    let endTime = new Date(endTimeStr).getTime();
+                    function updateAuctionTimer() {
+                        let now = new Date().getTime();
+                        let timeLeft = endTime - now;
+
+                        timeLeft = Math.max(0, timeLeft); 
+                        if (!timeLeft) {  
+                            clearInterval(timerInterval);
+                            timerElement.innerHTML = "Auction Ended";
+                            return;
+                        }
+                        let days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                        let hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                        let minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                        let seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                        // Add leading zeros for better display
+                        hours = hours.toString().padStart(2, '0');
+                        minutes = minutes.toString().padStart(2, '0');
+                        seconds = seconds.toString().padStart(2, '0');
+
+                        timerElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                    }
+                    let timerInterval = setInterval(updateAuctionTimer, 1000);
+                    updateAuctionTimer();
+                });
+            </script>
+        </xpath>
+        <xpath expr="//ul[@class='list-unstyled']" position="inside">
+            <li><strong>Bid Type:</strong> <span t-esc="property.bid_type"/></li>
+        </xpath>
+        <xpath expr="//div[@class='offers mt-4 p-4 border rounded bg-light shadow-sm']" position="attributes">
+                <attribute name="t-if">property.bid_type != 'auction'</attribute>
+        </xpath>
+        <xpath expr="//ul[@class='list-unstyled']" position="after">
+           <t t-if="property.bid_type == 'auction' and property.status not in ('sold', 'cancelled')">
+                <a t-att-href="'/create/offer/%d' % property.id" class="btn btn-primary btn-md">Create Offer</a>
+            </t>
+        </xpath>
+    </template>
+</odoo>
