@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_line_kit_button" model="ir.ui.view">
+        <field name="name">sale.order.line.kit.button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']//list/field[@name='product_id']" position="after">
+                <button name="open_kit_wizard" type="object" string="Add Kit" class="btn-primary" invisible="(not is_kit_product) or (state != 'draft')" />
+            </xpath>
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="display_in_report"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
