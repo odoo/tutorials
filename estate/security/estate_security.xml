@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
+    </record>
+
+    <record id="exclusive_property_access_rule" model="ir.rule">
+        <field name="name">Agent's ability to read properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="perm_create" eval="False" />
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
+        <field name="domain_force">['|', ('user_id', '=', user.id), ('user_id', '=', False)]</field>
+    </record>
+
+    <record id="estate_manager_rule" model="ir.rule">
+        <field name="name">Estate Manager rules for all properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]" />
+        <field name="domain_force">[(1,'=',1)]</field>
+    </record>
+
+    <record id="estate_company_rule" model="ir.rule">
+        <field name="name">Estate property multi-company rules</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[
+             ('company_id', 'in', company_ids)
+        ]</field>
+    </record>
+    
+</odoo>

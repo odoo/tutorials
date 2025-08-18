@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="property_listing_page" name="Estate Property Listing">
+        <t t-call="website.layout">
+            <div class="container">
+                <section class="bg-primary text-white text-center py-5">
+                    <h1 class="fw-bold display-4">Unlock Your Dream Home</h1>
+                    <p class="fs-5">Browse our latest listings and discover your perfect property.</p>
+                </section>
+
+                <!-- Date Filter Form -->
+                <form action="/properties" method="GET" class="row mb-3 align-items-center">
+                    <div class="col-md-4">
+                        <input type="date" name="listed_after" class="form-control" t-att-value="selected_date"/>
+                    </div>
+                    <div class="col-md-2 d-flex justify-content-end">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-filter"></i> Listed After
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Property Listing -->
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col">
+                            <div class="card shadow-lg border-0 h-100">
+                                <div class="ratio ratio-4x3 overflow-hidden rounded-top">
+                                    <t t-if="property.image">
+                                        <img t-att-src="'/web/image/estate.property/%d/image' % property.id" class="card-img-top object-fit-cover" alt="Property Image"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img t-att-src="'/estate/static/src/image/2.jpg'" class="card-img-top object-fit-cover" alt="Default Property Image"/>
+                                    </t>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title text-primary fw-bold">
+                                        <t t-esc="property.name"/>
+                                    </h5>
+                                    <p class="card-text text-muted flex-grow-1">
+                                        <strong>Price:</strong>
+                                        <t t-esc="property.expected_price"/>$
+                                    </p>
+                                    <a t-att-href="'/properties/%d' % property.id" class="btn btn-primary mt-auto">
+                                        <i class="fa fa-info-circle me-1"></i> View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center my-4">
+                    <t t-call="website.pager" t-set="pager"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Property details page template -->
+    <template id="property_detail_page_template" name="Customer Property View">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <!-- Title Section -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h1 class="text-primary fw-bold display-4">
+                        <t t-esc="property.name" />
+                    </h1>
+                </div>
+
+                <!-- Property Image -->
+                <div class="text-center mb-5">
+                    <t t-if="property.image">
+                        <img t-att-src="'/web/image/estate.property/%d/image' % property.id" class="img-fluid rounded shadow-lg w-75 border" alt="Property Image" />
+                    </t>
+                    <t t-else="">
+                        <img src="/estate/static/src/image/2.jpg" class="img-fluid rounded shadow-lg w-75 border" alt="Default Property Image" />
+                    </t>
+                </div>
+
+                <!-- Basic Property Details -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-lg border-0 h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">Basic Information</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-map-marker-alt text-danger"></i> Postcode:</strong>
+                                        <span>
+                                            <t t-esc="property.postcode" />
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-calendar-alt text-primary"></i> Date Availability:</strong>
+                                        <span>
+                                            <t t-esc="property.date_availability" />
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card shadow-lg border-0 h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">Pricing</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-dollar-sign text-warning"></i> Expected Price:</strong>
+                                        <span class="text-success fw-bold fs-4">
+                                            <t t-esc="property.expected_price" />$
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Amenities -->
+                <h3 class="mb-3 text-primary text-center">Property Amenities</h3>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card shadow-lg border-0 h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">Interior</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-bed"></i> Bedrooms:</strong>
+                                        <span>
+                                            <t t-esc="property.bedrooms" />
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-couch"></i> Living Area:</strong>
+                                        <span>
+                                            <t t-esc="property.living_area" />m²</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-car"></i> Garage:</strong>
+                                        <span>
+                                            <i t-if="property.garage" class="fa fa-check text-success"></i>
+                                            <i t-if="not property.garage" class="fa fa-times text-danger"></i>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card shadow-lg border-0 h-100">
+                            <div class="card-body">
+                                <h5 class="card-title text-primary">Exterior</h5>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-tree"></i> Garden:</strong>
+                                        <span>
+                                            <i t-if="property.garden" class="fa fa-check text-success"></i>
+                                            <i t-if="not property.garden" class="fa fa-times text-danger"></i>
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-leaf"></i> Garden Area:</strong>
+                                        <span>
+                                            <t t-esc="property.garden_area" />m²</span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-compass"></i> Garden Orientation:</strong>
+                                        <span>
+                                            <t t-esc="property.garden_orientation" />
+                                        </span>
+                                    </li>
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>
+                                            <i class="fa fa-ruler-combined"></i> Total Area:</strong>
+                                        <span>
+                                            <t t-esc="property.total_area" />m²</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property Offers -->
+            <h3 class="mt-1 text-primary">Exclusive Bids &amp; Proposals</h3>
+            <t t-if="property.offer_ids">
+                <div class="table-responsive">
+                    <table class="table table-hover shadow-sm border rounded">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Price</th>
+                                <th>Partner</th>
+                                <th>Validation</th>
+                                <th>Deadline</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="property.offer_ids" t-as="offer">
+                                <tr t-att-class="'table-success' if offer.status == 'accepted' else 'table-danger' if offer.status == 'refused' else ''">
+                                    <td>
+                                        <t t-esc="offer.price or 'N/A'" />$</td>
+                                    <td>
+                                        <t t-esc="offer.partner_id.name or 'Unknown'" />
+                                    </td>
+                                    <td>
+                                        <t t-esc="offer.validate or 'N/A'" />
+                                    </td>
+                                    <td>
+                                        <t t-esc="offer.date_deadline or 'N/A'" />
+                                    </td>
+                                    <td>
+                                        <span t-if="offer.status == 'accepted'" class="badge bg-success">Accepted</span>
+                                        <span t-if="offer.status == 'refused'" class="badge bg-danger">Refused</span>
+                                        <span t-if="offer.status not in ('accepted', 'refused')" class="badge bg-secondary">Pending</span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+                </div>
+            </t>
+            <t t-else="">
+                <div class="alert alert-warning">No offers available for this property.</div>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>
