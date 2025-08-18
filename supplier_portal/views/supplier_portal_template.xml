@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="supplier_portal_upload_template">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h2 class="text-center text-primary mb-4">Upload Supplier Documents</h2>
+                <form action="/supplier/portal/submit" method="post" enctype="multipart/form-data" class="shadow p-4 bg-white rounded">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <!-- Company Selection -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Select Company</label>
+                        <select id="company" name="company" class="form-select" required="true">
+                            <t t-foreach="request.env.user.company_ids" t-as="company">
+                                <option t-att-value="company.id">
+                                    <t t-esc="company.name"/>
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <!-- Upload file with .pdf or .xml extension -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Upload</label>
+                        <input type="file" name="upload_file" class="form-control" multiple="multiple" accept=".pdf,.xml"/>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary px-4">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+    <template id="after_submit_message_template">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <t t-if="success_message">
+                    <div class="alert alert-success text-center" role="alert">
+                        <t t-esc="success_message" />
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
