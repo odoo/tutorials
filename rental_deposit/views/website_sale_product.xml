@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="rental_deposit_product" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.rent_ok and product.require_deposit">
+                <div class="mt16 alert alert-info">
+                    <strong>Deposit Required: </strong>
+                    <span t-esc="product.deposit_amount" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+    <template id="cart_lines_deposit_control" inherit_id="website_sale.cart_lines">
+        <xpath expr="//div[@name='website_sale_cart_line_quantity']" position="replace">
+            <div name="website_sale_cart_line_quantity" class="css_quantity input-group">
+                <a href="#" class="js_add_cart_json btn btn-link border-end-0" aria-label="Remove one">
+                    <i class="fa fa-minus"/>
+                </a>
+                <input type="text" class="js_quantity quantity form-control border-start-0 border-end-0" t-att-data-line-id="line.id" t-att-data-product-id="line.product_id.id" t-att-value="line.product_uom_qty"/>
+                <a href="#" class="js_add_cart_json btn btn-link border-start-0" aria-label="Add one">
+                    <i class="fa fa-plus"/>
+                </a>
+            </div>
+        </xpath>
+        <xpath expr="//a[hasclass('js_delete_product')]" position="attributes">
+            <attribute name="t-if">not line.is_deposit_line</attribute>
+        </xpath>
+    </template>
+</odoo>
