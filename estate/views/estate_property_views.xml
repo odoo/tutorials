@@ -18,28 +18,32 @@
                 <field name="expected_price" string="Expected Price" />
                 <field name="selling_price" string="Selling Price" />
                 <field name="date_availaility" string="Available From" />
+                <field name="property_type" />
+                <field name="tag_ids" widget="many2many_tags"/>
             </list>
         </field>
     </record>
 
-     <record id="estate_property_search" model="ir.ui.view">
+    <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="find">
-                <field name="name"/>
-                <field name="postcode"/>
+                <field name="name" />
+                <field name="postcode" />
                 <field name="expected_price" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="facades" />
+                <field name="property_type" />
 
-            
-            
-            <filter string="Status" name="state" domain="[('state','in',['new','offer_received'])]"/>
-            <group string="Group By">
-                <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode', 'residual_visible':True}"/>
-            </group>
+
+                <filter string="Status" name="state"
+                    domain="[('state','in',['new','offer_received'])]" />
+                <group string="Group By">
+                    <filter string="Postcode" name="group_by_postcode"
+                        context="{'group_by':'postcode', 'residual_visible':True}" />
+                </group>
             </search>
         </field>
     </record>
@@ -50,9 +54,13 @@
         <field name="arch" type="xml">
             <form string="edit_form">
                 <sheet>
+                     <group>
                     <h1>
                         <field name="name"></field>
                     </h1>
+                   
+                    <field name="tag_ids" widget="many2many_tags"/>
+                    </group>
                     <group>
                         <group>
                             <field name="postcode" />
@@ -75,6 +83,18 @@
                                 <field name="garden" />
                                 <field name="garden_area" string="Garden Area (sqm)" />
                                 <field name="garden_orientation" string="Garden Orientation" />
+                                <field name="property_type" />
+                                <field name="active"/>
+                                <field name="state"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offers_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman" />
+                                <field name="buyer" />
                             </group>
                         </page>
                     </notebook>
@@ -83,5 +103,5 @@
             </form>
         </field>
     </record>
-   
+
 </odoo>
