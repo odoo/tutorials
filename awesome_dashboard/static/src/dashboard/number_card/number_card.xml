@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.NumberCard" owl="1">
+        <div class="card-body">
+            <t t-out="props.title"/>
+            <div class="d-flex justify-content-center mt-3">
+                <h1><span class="badge text-bg-secondary text-success"><t t-out="props.value"/></span></h1>
+            </div>
+        </div>
+    </t>
+</templates>

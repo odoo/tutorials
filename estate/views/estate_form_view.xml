@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_form_view" model="ir.ui.view">
+        <field name="name">estate.property.form.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Form view">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" invisible="state == 'sold' or state =='cancelled'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'sold' or state =='cancelled'"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <group>
+                        <group>
+                            <field name="property_type_id" widget="many2one"  options="{'no_create': true}"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offers_ids" readonly="state == 'sold' or state == 'cancelled'"/>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
