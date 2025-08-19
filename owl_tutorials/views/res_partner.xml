@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_partner_list_view_inherit_owl_tutorials" model="ir.ui.view">
+        <field name="name">res.partner.list.view.inherit.owl.tutorials</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//list" position="attributes">
+                <attribute name="js_class">res_partner_list_view</attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="res_partner_kanban_view_inherit_owl_tutorials" model="ir.ui.view">
+        <field name="name">res.partner.kanban.view.inherit.owl.tutorials</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="js_class">res_partner_kanban_view</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
