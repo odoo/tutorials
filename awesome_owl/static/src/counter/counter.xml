@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.counter">
+        <div class="container text-center py-4 px-3 border rounded-3 shadow-sm bg-light">
+            <h4 class="text-dark fw-semibold">Counter Widget</h4>
+            <p class="fs-4 text-success fw-bold mb-3">
+            Count: <t t-esc="state.value"/> 
+            </p>
+
+            <div class="d-flex justify-content-center gap-3">
+                <button class="btn btn-outline-danger px-3 py-1" t-on-click="decrement">
+                    <i class="fa fa-minus"></i> Reduce
+                </button>
+                <button class="btn btn-outline-primary px-3 py-1" t-on-click="increment">
+                    <i class="fa fa-plus"></i> Add
+                </button>
+            </div>
+        </div>
+    </t>
+</templates>
