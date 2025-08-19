@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_inventory_inherit_stancor_customization" inherit_id="stock.report_inventory">
+            <xpath expr="//thead/tr" position="inside">
+                <th class="text-end">Quantity (MTR)</th>
+                <th class="text-end">Quantity (PCS)</th>
+            </xpath>
+            <xpath expr="//tbody/t/tr[not(@groups)]" position="inside">
+                <td class="text-end">
+                    <span t-field="line.quantity_mtr"/>
+                </td>
+                <td class="text-end">
+                    <span t-field="line.quantity_pcs"/>
+                </td>
+            </xpath>
+        </template>
+    </data>
+</odoo>

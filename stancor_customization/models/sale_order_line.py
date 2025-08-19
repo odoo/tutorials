@@ -1,0 +1,40 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import api, fields, models
+
+
+class SaleOrderLine(models.Model):
+    _inherit="sale.order.line"
+
+    s_quantity = fields.Float(string="S. Quantity")
+    s_unit = fields.Selection(
+        string="S. Unit",
+        selection=[("kg", "Kg"),
+                   ("mtrs", "Mtrs."),
+                   ("pcs", "PCs."),],
+        default="mtrs",
+        store=True
+    )
+
+    @api.onchange("s_quantity", "s_unit", "product_id")
+    def _onchange_s_unit(self):
+        if not self.product_id or not self.s_unit:
+            return
+        
+        wt_per_mt = self.product_id.wt_per_mt or 0.0
+        wt_per_pc = self.product_id.wt_per_pc or 0.0
+        unit_multipliers = {
+            "mtrs": wt_per_mt,
+            "pcs": wt_per_pc,
+            "kg": 1  
+        }
+        multiplier = unit_multipliers.get(self.s_unit, 1)
+        self.product_uom_qty = self.s_quantity * multiplier
+        self.price_unit = self.product_id.lst_price * multiplier
+
+    def _prepare_invoice_line(self, **optional_values):
+        invoice_line_vals = super()._prepare_invoice_line(**optional_values)
+        if self.product_id.invoice_policy == 'order':  
+            invoice_line_vals['quantity'] = self.s_quantity
+        return invoice_line_vals
