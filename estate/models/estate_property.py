@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 class EstateProperty(models.Model):
@@ -92,3 +93,23 @@ class EstateProperty(models.Model):
             else:
                 property.garden_area = 0
                 property.garden_orientation = False
+
+    def action_set_sold(self):
+        for property in self:
+            if property.selling_price > 0.0 and property.state != "cancelled":
+                property.state = 'sold'
+            elif property.state == "cancelled":
+                raise UserError("A cancelled property cannot be sold.")
+            elif property.state == "new" or property.state == "offer received":
+                raise UserError("This property must have an accepted offer before it can be sold.")
+            elif property.state == "sold":
+                raise UserError("This property is already sold.")
+            
+    def action_set_cancelled(self):
+        for property in self:
+            if property.state != "cancelled" and property.state != "sold":
+                property.state = 'cancelled'
+            elif property.state == "cancelled":
+                raise UserError("This property is already cancelled.")
+            elif property.state == "sold":
+                raise UserError("A sold property cannot be cancelled.")
