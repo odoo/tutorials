@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 from datetime import timedelta
 
 class EstateProperty(models.Model):
@@ -34,6 +34,10 @@ class EstateProperty(models.Model):
             ('west', 'West')
         ],
     )
+    total_area = fields.Integer(
+        string="Total Area (sqm)",
+        compute="_compute_total_area",
+    )
     state = fields.Selection(
         string="State",
         required=True,
@@ -63,3 +67,28 @@ class EstateProperty(models.Model):
         'property_id',
         string='Offers',
         help='Offers made on this property.')
+    
+    best_price = fields.Float(
+        string = "Best Offer",
+        compute = "_compute_best_price",
+    )
+    
+    @api.depends('living_area', 'garden_area', 'garden')
+    def _compute_total_area(self):
+        for property in self:
+            property.total_area = property.living_area + (property.garden_area if property.garden else 0)
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for property in self:
+            property.best_price = max(property.offer_ids.mapped("price"), default=0.0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        for property in self:
+            if property.garden:
+                property.garden_area = 10
+                property.garden_orientation = 'north'
+            else:
+                property.garden_area = 0
+                property.garden_orientation = False
