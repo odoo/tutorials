@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate_property_template" name="Single Property">
+        <div class="container my-5">
+            <h1 class="text-center mb-4" t-field="property.name"/>
+            <div class="d-flex align-items-center">
+                <div class="w-50">
+                    <img t-if="property.property_image" 
+                        t-att-src="image_data_uri(property.property_image)" 
+                        class="img-fluid rounded shadow-sm w-100" 
+                        style="object-fit: cover;" 
+                        alt="Property Image"/>
+                </div>
+                <div class="ms-3">
+                    <div>
+                        <strong>Description: </strong>
+                        <span t-field="property.description"/>
+                    </div>
+                    <div>
+                        <strong>Expected Price: </strong>
+                        <span t-field="property.expected_price"/>
+                    </div>
+                    <div>
+                        <strong>Available From: </strong>
+                        <span t-field="property.date_availability"/>
+                    </div>
+                    <div>
+                        <strong>Bedrooms: </strong>
+                        <span t-field="property.bedrooms"/>
+                    </div>
+                    <div>
+                        <strong>Living Area: </strong>
+                        <span t-field="property.living_area"/> sqm
+                    </div>
+                    <div>
+                        <strong>Garden: </strong>
+                        <span t-if="property.garden">Yes</span>
+                        <span t-if="not property.garden">No</span>
+                        <t t-if="property.garden">
+                            <span> (Garden Area: <t t-esc="property.garden_area"/> sqm, Garden Orientation: <t t-esc="dict([('north','North'), ('south','South'), ('east','East'), ('west','West')]).get(property.garden_orientation)"/>)</span>
+                        </t>
+                    </div>
+                    <div>
+                        <strong>Garage: </strong>
+                        <span t-if="property.garage">Yes</span>
+                        <span t-if="not property.garage">No</span>
+                    </div>
+                    <div>
+                        <strong>Facades: </strong>
+                        <span t-field="property.facades"/>
+                    </div>
+                    <div>
+                        <strong>Postcode: </strong>
+                        <span t-field="property.postcode"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template id="estate_property_report_offers_table">
+        <t t-set="offers" t-value="property.offer_ids"/>
+        <div class="mt-3">
+            <t t-if="property.offer_ids">
+                <h4>
+                    Offers:
+                </h4>
+                <table class="table" style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                        <tr style="background-color: #f5f5f5; border-bottom: 2px solid #ccc;">
+                            <th class="p-2">Price</th>
+                            <th class="p-2">Partner</th>
+                            <th class="p-2">Validity (days)</th>
+                            <th class="p-2">Deadline</th>
+                            <th class="p-2">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr t-foreach="offers" t-as="offer" style="border-bottom: 1px solid #e0e0e0;">
+                            <td class="p-2">
+                                <span t-field="offer.price"/>
+                            </td>
+                            <td class="p-2">
+                                <span t-field="offer.partner_id.name"/>
+                            </td>
+                            <td class="p-2">
+                                <span t-field="offer.validity"/>
+                            </td>
+                            <td class="p-2">
+                                <span t-field="offer.date_deadline"/>
+                            </td>
+                            <td class="p-2">
+                                <span t-field="offer.status"/>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </t>
+            <t t-else="">
+                <strong>There is not any offer yet.</strong>
+            </t>
+        </div>
+    </template>
+
+    <template id="estate_property_report_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-call="estate.estate_property_template"/>
+                    <t t-call="estate.estate_property_report_offers_table"/>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate_property_report_user_offers">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-set="properties" t-value="user.property_ids"/>
+                    <t t-if="properties">
+                        <div style="border-bottom: 2px solid #007bff; margin-bottom: 20px; padding-bottom: 10px; text-align: center;">
+                            <span style="color: #6c757d; font-size: 20px;">All properties linked to </span>
+                            <h2 style="color: #007bff; margin: 0;">
+                                <span t-field="user.name"/>
+                            </h2>
+                        </div>
+                        <t t-foreach="properties" t-as="property">
+                            <div style="page-break-inside: avoid;">
+                                <t t-call="estate.estate_property_template"/>
+                            </div>
+                            <t t-call="estate.estate_property_report_offers_table"/>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <h2>
+                            There are no properties linked to 
+                            <span t-field="user.name"/> 
+                            yet.
+                        </h2>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_invoice" inherit_id="estate.estate_property_report_offers_table">
+        <xpath expr="//div" position="before">
+            <t t-if="property.state == 'sold' and property.invoice_id">
+                <strong>Invoice Reference: </strong>
+                <span t-field="property.invoice_id.name" />
+                <br />
+                <strong>Invoice Amount: </strong>
+                <span t-field="property.invoice_id.amount_total" />
+                <br />
+                <strong>Invoice Status: </strong>
+                <span t-field="property.invoice_id.state" />
+            </t>
+            <t t-else="">
+                <strong>There is not any Invoice created yet</strong>
+            </t>
+        </xpath>
+    </template>
+</odoo>
