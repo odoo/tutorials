@@ -35,3 +35,8 @@ class EstateModel(models.Model):
         ],
         help="Select the direction the garden faces"
     )
+    property_type_id= fields.Many2one("estate.property.type")
+    buyer= fields.Many2one("res.partner")
+    salesman= fields.Many2one("res.users")
+    tag_ids= fields.Many2many("estate.property.tag")
+    offer_ids= fields.One2many("estate.property.offer", inverse_name="property_id")

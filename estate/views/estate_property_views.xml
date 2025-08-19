@@ -36,12 +36,18 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <h1>
+                    <div>
+                        <h1>
                         <field name="name"/>
                     </h1>
+                    <span>
+                        <field name="tag_ids" widget="many2many_tags" />
+                    </span>
+                    </div>
                     <group>
                         <group>
                             <field name="postcode" string="Postcode" />
+                             <field name="property_type_id"/>
                             <field name="date_availability" string="Available From" />
                         </group>
                         <group>
@@ -63,6 +69,16 @@
                                 <field name="state" string="State" />
                             </group>
                         </page>
+                        <page string="Offers">
+                            <!-- <field name="offer_ids" readonly="status in ['offer_accepted', 'sold', 'cancelled']"></field> -->
+                            <field name="offer_ids" />
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesman" string="Salesman"/>
+                                <field name="buyer" string="Buyer" />
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -82,7 +98,7 @@
                 <field name="living_area" string="Living Area (sqm)" />
                 <field name="facades" string="Facades" />
 
-                <filter string="Avaialble" domain="['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]"/>
+                <filter string="Available" name="state" domain="['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>

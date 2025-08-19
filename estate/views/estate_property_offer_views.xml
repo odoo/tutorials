@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<odoo>
+    <record id="action_estate_property_offer" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create the first property Type
+            </p>
+        </field>
+    </record>
+
+       <!-- list view -->
+    <record id="list_view_estate_property_offer" model="ir.ui.view">
+        <field name="name">Estate Properties Offer list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="price" string="Price" />
+                <field name="partner_id" string="Partner" />
+                <field name="status" string="Status" />
+            </list>
+        </field>
+    </record>
+
+</odoo>
