@@ -1,0 +1,22 @@
+<odoo>
+    <data>
+        <record id="project_project_form_inherit_view" model="ir.ui.view">
+            <field name="name">project.project.form.inherit.view</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/header" position="after">
+                    <div class="alert alert-info" role="alert" invisible="not is_sync_required">
+                        You have still journal items needs to be recognised from <field name="date_start" class="fw-bold" readonly="1"></field>
+                    </div>
+                </xpath>
+
+                <xpath expr="//field[@name='date']" position="after">
+                    <button name="open_recognition_date_sync_wizard" type="object"
+                        string="Sync Recognition Date" help="Recompute the recognition date based on the project start date"
+                        icon="fa-refresh" class="btn-link mb-1 px-0" invisible="not is_sync_required"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
