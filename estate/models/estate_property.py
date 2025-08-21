@@ -1,13 +1,14 @@
+from datetime import timedelta
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from odoo.exceptions import UserError
 from odoo.tools import float_is_zero, float_compare
-from datetime import timedelta
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
@@ -56,6 +57,8 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
+        compute="_compute_state",
+        store=True,
     )
     salesman_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
@@ -91,6 +94,14 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for property in self:
             property.best_price = max(property.offer_ids.mapped("price"), default=0.0)
+
+    @api.depends("offer_ids")
+    def _compute_state(self):
+        for record in self:
+            if record.offer_ids and record.selling_price == 0.0:
+                record.state = "offer received"
+            else:
+                record.state = "new"
 
     @api.onchange("garden")
     def _onchange_garden(self):

@@ -1,11 +1,12 @@
+from datetime import timedelta
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-from datetime import timedelta
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -16,7 +17,7 @@ class EstatePropertyOffer(models.Model):
         ],
     )
     validity = fields.Integer(
-        string="Validity (days)",
+        string="Validity(days)",
         default=7,
         help="Validity of the offer in days, after that it will be refused automatically.",
     )
@@ -28,6 +29,12 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+        related="property_id.property_type_id",
+        store=True,
+    )
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -76,7 +83,9 @@ class EstatePropertyOffer(models.Model):
 
     def action_set_refused(self):
         for offer in self:
-            if offer.status == "accepted":
+            if offer.status is False:
+                offer.status = "refused"
+            elif offer.status == "accepted":
                 offer.status = "refused"
                 offer.property_id.state = "offer received"
                 offer.property_id.buyer_id = False
