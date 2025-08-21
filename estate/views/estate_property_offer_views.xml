@@ -14,7 +14,6 @@
         <field name="arch" type="xml">
             <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                 <field name="price"/>
-                <field name="status"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <button name="action_set_accepted" string="Accepted" type="object" icon="fa-check" 

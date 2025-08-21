@@ -1,7 +1,6 @@
 from datetime import timedelta
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
-from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools import float_is_zero, float_compare
 
 
@@ -57,31 +56,42 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        compute="_compute_state",
-        store=True,
     )
     salesman_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     tag_ids = fields.Many2many(
         "estate.property.tag",
         string="Tags",
         help="Properties associated with this tag.",
     )
-
     offer_ids = fields.One2many(
         "estate.property.offer",
         "property_id",
         string="Offers",
         help="Offers made on this property.",
     )
-
     best_price = fields.Float(
         string="Best Offer",
         compute="_compute_best_price",
     )
+    
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price must be greater than 0.",
+        ),
+    ]
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_check(self):
+        for property in self:
+            if property.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "You cannot delete a property that is not new or cancelled."
+                )
 
     @api.depends("living_area", "garden_area", "garden")
     def _compute_total_area(self):
@@ -94,14 +104,6 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for property in self:
             property.best_price = max(property.offer_ids.mapped("price"), default=0.0)
-
-    @api.depends("offer_ids")
-    def _compute_state(self):
-        for record in self:
-            if record.offer_ids and record.selling_price == 0.0:
-                record.state = "offer received"
-            else:
-                record.state = "new"
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -134,14 +136,6 @@ class EstateProperty(models.Model):
                 raise UserError("This property is already cancelled.")
             elif property.state == "sold":
                 raise UserError("A sold property cannot be cancelled.")
-
-    _sql_constraints = [
-        (
-            "check_expected_price",
-            "CHECK(expected_price > 0)",
-            "The expected price must be greater than 0.",
-        ),
-    ]
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
