@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="x_estate_property_action" model="ir.actions.act_window">
+        <field name="name">Property</field>
+        <field name="res_model">x_estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+
+    <record id="x_estate_property_list_view" model="ir.ui.view">
+        <field name="name">x_estate.property.list</field>
+        <field name="model">x_estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="x_name"/>
+                <field name="x_postcode"/>
+                <field name="x_bedrooms"/>
+                <field name="x_living_area" string="Living Area (sqm)"/>
+                <field name="x_expected_price"/>
+                <field name="x_selling_price"/>
+                <field name="x_date_availability" string="Available From"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="x_estate_property_form_view" model="ir.ui.view">
+        <field name="name">x_estate.property.form</field>
+        <field name="model">x_estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <h1><field name="x_name"/></h1>
+                    <field name="x_property_tag_ids" widget="many2many_tags"/>
+                    <group>
+                        <group> 
+                            <field name="x_postcode"/>
+                            <field name="x_date_availability"/>
+                            <field name="x_property_type_id" string="Property Type"/>
+                        </group>
+                        <group>
+                            <field name="x_expected_price"/>
+                            <field name="x_selling_price"/>
+                            <field name="x_api_published" string="Published on API"/>
+                        </group>
+                        
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="x_description"/>
+                                <field name="x_bedrooms"/>
+                                <field name="x_facades"/>
+                                <field name="x_garage"/>
+                                <field name="x_garden"/>                   
+                                <field name="x_garden_area" string="Garden Area (sqm)" invisible="x_garden == False"/>
+                                <field name="x_living_area" string="Living Area (sqm)"/>
+                                <field name="x_total_area" string="Total Area (sqm)"/>
+                                <field name="x_garden_orientation"/>
+                            </group>
+                        </page>
+
+                        <page string="Offers">
+                            <field name="x_offer_ids"/>
+                        </page>
+
+                        <page string="Other Info">
+                            <group>
+                                <field name="x_user_id" string="Salesman"/>
+                                <field name="x_partner_id" string="Buyer"/>
+                            </group>
+                        </page>
+                    </notebook> 
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

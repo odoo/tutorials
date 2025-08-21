@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="model_real_estate_property" model="ir.model">
+        <field name="name">Real Estate Property</field>
+        <field name="model">x_estate.property</field>
+    </record>
+
+    <record id="model_real_estate_property_type" model="ir.model">
+        <field name="name">Property Type</field>
+        <field name="model">x_estate.property.type</field>
+    </record>
+
+    <record id="model_real_estate_property_tag" model="ir.model">
+        <field name="name">Property Tag</field>
+        <field name="model">x_estate.property.tag</field>
+    </record>
+
+
+    <record id="model_real_estate_property_offer" model="ir.model">
+        <field name="name">Property Offer</field>
+        <field name="model">x_estate.property.offer</field>
+    </record>
+
+</odoo>
