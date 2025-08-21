@@ -11,4 +11,5 @@
         "views/estate_property_offer_views.xml",
         "views/estate_menus.xml",
     ],
+    "license": "LGPL-3"
 }

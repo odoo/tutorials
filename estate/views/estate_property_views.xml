@@ -11,8 +11,6 @@
             </p>
         </field>
     </record>
-
-    <!-- list view -->
     <record id="list_view_estate_property" model="ir.ui.view">
         <field name="name">Estate Properties list</field>
         <field name="model">estate.property</field>
@@ -28,26 +26,29 @@
             </list>
         </field>
     </record>
-
-    <!-- form view -->
     <record id="form_view_estate_property" model="ir.ui.view">
         <field name="name">Estate Property Form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_property_sold" type="object" string="Sold"/>
+                    <button name="action_property_cancelled" type="object" string="Cancelled"/>
+                </header>
                 <sheet>
                     <div>
                         <h1>
-                        <field name="name"/>
-                    </h1>
-                    <span>
-                        <field name="tag_ids" widget="many2many_tags" />
-                    </span>
+                            <field name="name"/>
+                        </h1>
+                        <span>
+                            <field name="tag_ids" widget="many2many_tags" />
+                        </span>
                     </div>
                     <group>
                         <group>
+                            <field name="state" string="State" />
                             <field name="postcode" string="Postcode" />
-                             <field name="property_type_id"/>
+                            <field name="property_type_id"/>
                             <field name="date_availability" string="Available From" />
                         </group>
                         <group>
@@ -65,9 +66,8 @@
                                 <field name="facades" string="Facades" />
                                 <field name="garage" string="Garage" />
                                 <field name="garden" string="Garden" />
-                                <field name="garden_area" string="Garden Area (sqm)" />
-                                <field name="garden_orientation" string="Garden Orientation" />
-                                <field name="state" string="State" />
+                                <field name="garden_area" string="Garden Area (sqm)" invisible="not garden" />
+                                <field name="garden_orientation" string="Garden Orientation" invisible="not garden" />
                                 <field name="total_area" string="Total Area (sqm)" />
                             </group>
                         </page>
@@ -87,25 +87,21 @@
             </form>
         </field>
     </record>
-
-    <!-- search view -->
     <record id="search_view_estate_property" model="ir.ui.view">
         <field name="name">Estate Property Search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-             <search string="Search Properties">
+            <search string="Search Properties">
                 <field name="name" string="Title" />
                 <field name="postcode" string="Postcode" />
                 <field name="expected_price" string="Expected Price" />
                 <field name="bedrooms" string="Bedrooms" />
                 <field name="living_area" string="Living Area (sqm)" />
                 <field name="facades" string="Facades" />
-
                 <filter string="Available" name="state" domain="['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>
-
             </search>
         </field>
     </record>

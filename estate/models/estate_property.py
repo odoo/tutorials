@@ -1,5 +1,6 @@
-from odoo import models, fields, api
 from datetime import timedelta
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateModel(models.Model):
@@ -45,7 +46,7 @@ class EstateModel(models.Model):
         help="Select the direction the garden faces",
     )
     property_type_id = fields.Many2one("estate.property.type")
-    buyer = fields.Many2one("res.partner")
+    buyer = fields.Many2one("res.partner", readonly=True)
     salesman = fields.Many2one("res.users")
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id")
@@ -62,7 +63,6 @@ class EstateModel(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
-    # the onchange method will access self which will hold the current form value object not all the value objects
     @api.onchange("garden")
     def _set_garden_default_values(self):
         if self.garden:
@@ -71,3 +71,13 @@ class EstateModel(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ""
+
+    def action_property_sold(self):
+        if self.state in ["Sold", "Cancelled"]:
+            raise UserError(f"Property is already {self.state}")
+        self.state = "Sold"
+
+    def action_property_cancelled(self):
+        if self.state in ["Sold", "Cancelled"]:
+            raise UserError(f"Property is already {self.state}")
+        self.state = "Cancelled"

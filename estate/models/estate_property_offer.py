@@ -1,5 +1,6 @@
-from odoo import models, fields, api
 from datetime import timedelta
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateOfferModel(models.Model):
@@ -29,3 +30,23 @@ class EstateOfferModel(models.Model):
                 if record.date_deadline
                 else 0
             )
+
+    def action_offer_confirm(self):
+        for record in self:
+            if record.status in ["Accepted", "Refused"]:
+                raise UserError(f"Offer is already {record.status}")
+
+            for offer in record.property_id.offer_ids:
+                if offer.id == record.id:
+                    record.status = "Accepted"
+                    record.property_id.state = "Offer Accepted"
+                    record.property_id.buyer = record.partner_id
+                    record.property_id.selling_price = record.price
+                else:
+                    offer.status = "Refused"
+
+    def action_offer_cancel(self):
+        for record in self:
+            if record.status in ["Accepted", "Refused"]:
+                raise UserError(f"Offer is already {record.status}")
+            record.status = "Refused"
