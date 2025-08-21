@@ -11,11 +11,13 @@
         <field name="model">estate.property.offers</field>
         <field name="arch" type="xml">
             <list>
-                <field name="partner_id"/>
-                <field name="price"/>
-                <field name="validity"/>
-                <field name="date_deadline"/>
-                <field name="status"/>
+                <field name="partner_id" />
+                <field name="price" />
+                <field name="validity" />
+                <field name="date_deadline" />
+                <button name="action_accepted" type="object" string="Accepted" icon="fa-check" />
+                <button name="action_refused" type="object" string="Refused" icon="fa-times" />
+                <field name="status" />
             </list>
         </field>
     </record>
@@ -26,11 +28,10 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                <field name="partner_id"/>
-                <field name="price"/>
-                <field name="validity"/>
-                <field name="date_deadline"/>
-                <field name="status"/>
+                    <field name="partner_id" />
+                    <field name="price" />
+                    <field name="validity" />
+                    <field name="date_deadline" />
                 </group>
             </form>
         </field>
