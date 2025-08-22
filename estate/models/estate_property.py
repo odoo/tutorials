@@ -106,6 +106,10 @@ class EstateModel(models.Model):
     def action_property_sold(self):
         if self.state in ["Sold", "Cancelled"]:
             raise UserError(f"Property is already {self.state}")
+        if float_is_zero(self.selling_price, precision_rounding=0.01):
+            raise UserError(
+                "Atleast one offer must be accepted before selling the property"
+            )
         self.state = "Sold"
 
     def action_property_cancelled(self):

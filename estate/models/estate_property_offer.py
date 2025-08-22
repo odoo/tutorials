@@ -13,7 +13,10 @@ class EstateOfferModel(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
-    validity = fields.Integer(default=7)
+    validity = fields.Integer(
+        default=7,
+        help="offer validity period in days; the offer will be automatically refused when this expires.",
+    )
     date_deadline = fields.Date(default=fields.Date.today() + timedelta(days=7))
 
     _sql_constraints = [
