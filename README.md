@@ -1,4 +1,5 @@
 # Odoo tutorials
+Testing my first Odoo tutorial change
 
 This repository hosts the code for the bases of the modules used in the
 [official Odoo tutorials](https://www.odoo.com/documentation/latest/developer/tutorials.html).
