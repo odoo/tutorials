@@ -76,7 +76,7 @@ class EstateProperty(models.Model):
         string="Best Offer",
         compute="_compute_best_price",
     )
-    
+
     _sql_constraints = [
         (
             "check_expected_price",
