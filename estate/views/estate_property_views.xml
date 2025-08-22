@@ -72,7 +72,7 @@
                             <field name="date_availaility" string="Available From" />
                         </group>
                         <group>
-                            <field name="expected_price" />
+                            <field name="expected_price"/>
                             <field name="best_price" />
                             <field name="selling_price" />
                         </group>
