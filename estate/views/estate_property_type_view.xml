@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_type_action" model="ir.actions.act_window"> <!-- Action-->
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="action_view_offers" model="ir.actions.act_window">
+        <field name="name">Offers</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
+    </record>
+
+    <record id="estate_property_type_view_form" model="ir.ui.view"> <!--FormView-->
+        <field name="name"> Estate.property.type.form </field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Estate Property Type">
+                <sheet>
+                    <header>
+                        <button class="oe_stat_button" name="%(estate.action_view_offers)d"
+                            type="action" icon="fa-star">
+                            <field name="offer_count" string="Offers" widget="statinfo"/>
+                        </button>
+                    </header>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <notebook>
+                        <page name="Properties">
+                            <group>
+                                <field name="property_ids"> <!-- One2many -->
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_proprty_type_list" model="ir.ui.view"> <!--ListView-->
+        <field name="name">estate.property.type.view </field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Estate Property Type" default_order="sequence, name"> <!-- order from UI-->
+                <field name="sequence" widget="handle"/> <!--manual Ordering-->
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+</odoo>
