@@ -1,0 +1,8 @@
+<t t-name="awesome_owl.TodoList">
+    <div class="card p-3 m-3">
+        <input type="text" class="card mb-3" placeholder="Add a new todo item" t-ref="todoInput" t-on-keyup="ev=> this.addTodo(ev)"/>
+        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+            <TodoItem todo="todo" onToggle.bind="toggleState" onDelete.bind="deleteTodo"/>
+        </t>
+    </div>
+</t>
