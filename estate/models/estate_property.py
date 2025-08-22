@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateModel(models.Model):
     _name = "estate.property"
     _description = "Real Estate Advertisement Model"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -25,15 +26,15 @@ class EstateModel(models.Model):
     garden_area = fields.Integer()
     state = fields.Selection(
         string="state",
-        default="New",
+        default="new",
         required=True,
         copy=False,
         selection=[
-            ("New", "New"),
-            ("Offer Received", "Offer Received"),
-            ("Offer Accepted", "Offer Accepted"),
-            ("Sold", "Sold"),
-            ("Cancelled", "Cancelled"),
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
     )
     garden_orientation = fields.Selection(
@@ -51,8 +52,8 @@ class EstateModel(models.Model):
     salesman = fields.Many2one("res.users")
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id")
-    total_area = fields.Float(compute="_compute_total_area")
-    best_price = fields.Float(compute="_compute_best_price")
+    total_area = fields.Float(compute="_compute_total_area", store=True)
+    best_price = fields.Float(compute="_compute_best_price", store=True)
 
     _sql_constraints = [
         (
@@ -97,18 +98,20 @@ class EstateModel(models.Model):
     @api.onchange("garden")
     def _set_garden_default_values(self):
         if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
+            self.write({"garden_area": 10, "garden_orientation": "north"})
         else:
-            self.garden_area = 0
-            self.garden_orientation = ""
+            self.write({"garden_area": 0, "garden_orientation": ""})
 
     def action_property_sold(self):
-        if self.state in ["Sold", "Cancelled"]:
+        if self.state in ["sold", "cancelled"]:
             raise UserError(f"Property is already {self.state}")
-        self.state = "Sold"
+        if float_is_zero(self.selling_price, precision_rounding=0.01):
+            raise UserError(
+                "Atleast one offer must be accepted before selling the property"
+            )
+        self.state = "sold"
 
     def action_property_cancelled(self):
-        if self.state in ["Sold", "Cancelled"]:
+        if self.state in ["sold", "cancelled"]:
             raise UserError(f"Property is already {self.state}")
-        self.state = "Cancelled"
+        self.state = "cancelled"

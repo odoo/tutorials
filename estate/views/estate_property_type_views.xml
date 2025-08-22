@@ -1,6 +1,17 @@
 <?xml version="1.0"?>
 
 <odoo>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list name="estate_property_type_list" string="Estate Property Type">
+                <field name="sequence" widget="handle" />
+                <field name="name"></field>
+            </list>
+        </field>
+    </record>
     <record id="action_estate_property_type" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
@@ -9,6 +20,27 @@
             <p class="o_view_nocontent_smiling_face">
                 Create the first property Type
             </p>
+        </field>
+    </record>
+    <record id="action_estate_property_type_form" model="ir.ui.view">
+        <field name="name">Properties by Types</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <notebook>
+                        <page name="properties" string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" string="Expected Price" />
+                                    <field name="state" string="State" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
         </field>
     </record>
 </odoo>

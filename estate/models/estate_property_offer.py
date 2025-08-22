@@ -6,14 +6,18 @@ from odoo.exceptions import UserError
 class EstateOfferModel(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer Model"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
-        [("Accepted", "Accepted"), ("Refused", "Refused")], copy=False
+        [("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
-    validity = fields.Integer(default=7)
+    validity = fields.Integer(
+        default=7,
+        help="offer validity period in days; the offer will be automatically refused when this expires.",
+    )
     date_deadline = fields.Date(default=fields.Date.today() + timedelta(days=7))
 
     _sql_constraints = [
@@ -41,20 +45,24 @@ class EstateOfferModel(models.Model):
 
     def action_offer_confirm(self):
         for record in self:
-            if record.status in ["Accepted", "Refused"]:
+            if record.status in ["accepted", "refused"]:
                 raise UserError(f"Offer is already {record.status}")
-
+            # breakpoint()
             for offer in record.property_id.offer_ids:
                 if offer.id == record.id:
-                    record.status = "Accepted"
-                    record.property_id.state = "Offer Accepted"
-                    record.property_id.buyer = record.partner_id
-                    record.property_id.selling_price = record.price
+                    record.status = "accepted"
+                    record.property_id.write(
+                        {
+                            "state": "offer_accepted",
+                            "buyer": record.partner_id,
+                            "selling_price": record.price,
+                        }
+                    )
                 else:
-                    offer.status = "Refused"
+                    offer.status = "refused"
 
     def action_offer_cancel(self):
         for record in self:
-            if record.status in ["Accepted", "Refused"]:
+            if record.status in ["accepted", "refused"]:
                 raise UserError(f"Offer is already {record.status}")
-            record.status = "Refused"
+            record.status = "refused"

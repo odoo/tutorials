@@ -34,6 +34,7 @@
                 <header>
                     <button name="action_property_sold" type="object" string="Sold"/>
                     <button name="action_property_cancelled" type="object" string="Cancelled"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
                     <div>
@@ -98,7 +99,7 @@
                 <field name="bedrooms" string="Bedrooms" />
                 <field name="living_area" string="Living Area (sqm)" />
                 <field name="facades" string="Facades" />
-                <filter string="Available" name="state" domain="['|', ('state', '=', 'New'), ('state', '=', 'Offer Received')]"/>
+                <filter string="Available" name="state" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>
