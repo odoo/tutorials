@@ -36,8 +36,8 @@ class TestPOSConfigureReceipt(TransactionCase):
         wizard.action_apply_configuration()
 
         self.assertEqual(self.pos_config.receipt_layout, 'lined')
-        self.assertEqual(self.pos_config.receipt_header, '<p>Header</p>')
-        self.assertEqual(self.pos_config.receipt_footer, '<p>Footer</p>')
+        self.assertEqual(self.pos_config.receipt_header, 'Header')
+        self.assertEqual(self.pos_config.receipt_footer, 'Footer')
 
         param = self.env['ir.config_parameter'].sudo().get_param('pos.receipt.layout')
         self.assertEqual(param, 'lined')
