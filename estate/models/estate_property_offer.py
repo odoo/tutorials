@@ -6,6 +6,9 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _sql_constraints = [
+        ("check_price", "CHECK(price > 0)", "The price must be greater than 0."),
+    ]
     _order = "price desc"
 
     price = fields.Float(string="Price")
@@ -36,23 +39,6 @@ class EstatePropertyOffer(models.Model):
         store=True,
     )
 
-    _sql_constraints = [
-        ("check_price", "CHECK(price > 0)", "The price must be greater than 0."),
-    ]
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        for record in vals_list:
-            property = self.env["estate.property"].browse(record["property_id"])
-
-            if record.get("price") < property.best_price:
-                raise UserError(
-                    "You cannot create an offer lower than an existing one."
-                )
-
-            property.state = "offer received"
-        return super().create(vals_list)
-
     @api.depends("validity")
     def _compute_date_deadline(self):
         for offer in self:
@@ -74,6 +60,19 @@ class EstatePropertyOffer(models.Model):
                 offer.validity = (offer.date_deadline - base_date).days
             else:
                 offer.validity = 0
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for record in vals_list:
+            property = self.env["estate.property"].browse(record["property_id"])
+
+            if record.get("price") < property.best_price:
+                raise UserError(
+                    "You cannot create an offer lower than an existing one."
+                )
+
+            property.state = "offer received"
+        return super().create(vals_list)
 
     def action_set_accepted(self):
         for offer in self:

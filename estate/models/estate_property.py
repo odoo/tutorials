@@ -7,6 +7,13 @@ from odoo.tools import float_is_zero, float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _sql_constraints = [
+        (
+            "check_expected_price",
+            "CHECK(expected_price > 0)",
+            "The expected price must be greater than 0.",
+        ),
+    ]
     _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
@@ -77,22 +84,6 @@ class EstateProperty(models.Model):
         compute="_compute_best_price",
     )
 
-    _sql_constraints = [
-        (
-            "check_expected_price",
-            "CHECK(expected_price > 0)",
-            "The expected price must be greater than 0.",
-        ),
-    ]
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_check(self):
-        for property in self:
-            if property.state not in ["new", "cancelled"]:
-                raise UserError(
-                    "You cannot delete a property that is not new or cancelled."
-                )
-
     @api.depends("living_area", "garden_area", "garden")
     def _compute_total_area(self):
         for property in self:
@@ -105,6 +96,24 @@ class EstateProperty(models.Model):
         for property in self:
             property.best_price = max(property.offer_ids.mapped("price"), default=0.0)
 
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for property in self:
+            if float_is_zero(property.selling_price, precision_rounding=2):
+                continue
+
+            if (
+                float_compare(
+                    property.selling_price,
+                    property.expected_price * 0.9,
+                    precision_rounding=2,
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    "The selling price cannot be lower than 90'%' of the expected price!"
+                )
+
     @api.onchange("garden")
     def _onchange_garden(self):
         for property in self:
@@ -114,6 +123,14 @@ class EstateProperty(models.Model):
             else:
                 property.garden_area = 0
                 property.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_check(self):
+        for property in self:
+            if property.state not in ["new", "cancelled"]:
+                raise UserError(
+                    "You cannot delete a property that is not new or cancelled."
+                )
 
     def action_set_sold(self):
         for property in self:
@@ -136,21 +153,3 @@ class EstateProperty(models.Model):
                 raise UserError("This property is already cancelled.")
             elif property.state == "sold":
                 raise UserError("A sold property cannot be cancelled.")
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        for property in self:
-            if float_is_zero(property.selling_price, precision_rounding=2):
-                continue
-
-            if (
-                float_compare(
-                    property.selling_price,
-                    property.expected_price * 0.9,
-                    precision_rounding=2,
-                )
-                < 0
-            ):
-                raise ValidationError(
-                    "The selling price cannot be lower than 90'%' of the expected price!"
-                )
