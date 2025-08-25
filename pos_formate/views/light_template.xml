@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_receipt_light" t-name="pos_formate.custom_receipt_light">
+        <div
+            style="width: 350px; margin: auto; border: 2px solid black; padding: 10px; text-align: center;">
+            <img t-if="logo" t-att-src="image_data_uri(logo)" alt="Logo"
+                style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+            <div style="font-size: 12px; margin: 5px 0;">
+                <t t-out="company_name" />
+                <br />
+                <t t-out="company_address" />
+                <br />
+                <strong t-if="tax_id">Tax Id: <t t-out="tax_id" /></strong>
+            </div>
+
+            <t t-esc="header" />
+            <h2 style="margin:5px 0;">
+                <t t-out="order_number" />
+            </h2>
+
+            <table style="width: 100%; text-align: left; font-size: 14px;  margin-top: 12px;">
+                <t t-foreach="orderlines" t-as="line">
+                    <tr>
+                        <td>
+                            <b>
+                                <t t-esc="line['name']" />
+                            </b>
+                        </td>
+                        <td style="text-align: right;"> $ <t t-esc="line['qty'] * line['price']" />
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2">
+                            <span style="border: 1px solid #000; padding: 2px 5px;">
+                                <t t-esc="line['qty']" />
+                            </span> x $<t
+                                t-esc="line['price']" /> / Units </td>
+                    </tr>
+                </t>
+            </table>
+            <hr style="border: 1px solid #000; margin: 8px 0;" />
+
+            <table style="width: 100%; font-size: 14px;">
+                <tr>
+                    <td>
+                        <b>Total Qty</b>
+                    </td>
+                    <td style="text-align: right;">
+                        <b>
+                            <t t-esc="total_qty" />
+                        </b>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>Sub Total</b>
+                    </td>
+                    <td style="text-align: right;">$ <t t-esc="sub_total" /></td>
+                </tr>
+                <t t-foreach="taxes" t-as="tax">
+                    <tr>
+                        <td>
+                            <t t-esc="tax['name']" />
+                        </td>
+                        <td style="text-align: right;">$ <t t-esc="tax['amount']" /></td>
+                    </tr>
+                </t>
+                <tr>
+                    <td>
+                        <b>Paid</b>
+                    </td>
+                    <td style="text-align: right;">
+                        <b>$ <t t-esc="paid_amount" /></b>
+                    </td>
+                </tr>
+            </table>
+            <t t-esc="footer" />
+            <div style="text-align:center; font-size:12px; margin-top:8px;">
+                <p style="margin:3px 0;">Order <t t-esc="order_number" /></p>
+                <p style="margin:3px 0;">
+                    <t t-esc="date" />
+                </p>
+                <p style="margin:3px 0;">Payment: <t t-esc="payment_method" /></p>
+            </div>
+        </div>
+    </template>
+</odoo>

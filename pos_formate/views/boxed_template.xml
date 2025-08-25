@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_receipt_boxes" t-name="pos_formate.custom_receipt_boxes">
+        <div
+            style="text-align:center; width:350px; margin:auto; border:2px solid black; padding:10px;">
+
+            <img t-if="logo" t-att-src="image_data_uri(logo)" alt="Logo"
+                style="max-width:100%; height:auto; display:block; margin:0 auto;" />
+            <p style="margin:5px 0;">
+                <t t-out="company_name" />
+                <br />
+                <t t-out="company_address" />
+                <br />
+                <t t-if="tax_id">Tax Id: <t t-out="tax_id" /></t>
+            </p>
+
+            <t t-esc="header" />
+
+            <h2 style="margin:5px 0;">
+                <t t-out="order_number" />
+            </h2>
+
+            <table
+                style="width:100%; border-collapse:collapse; text-align:left; border:1px solid black;">
+                <tr style="background:#f2f2f2; border:1px solid black;">
+                    <th style="border:1px solid black; padding:3px;">No</th>
+                    <th style="border:1px solid black; padding:3px;">Item</th>
+                    <th style="border:1px solid black; padding:3px;">Amount</th>
+                </tr>
+                <t t-foreach="orderlines" t-as="l">
+                    <tr style="border:1px solid black;">
+                        <td style="border:1px solid black; padding:3px;">
+                            <t t-out="l['no']" />
+                        </td>
+                        <td style="border:1px solid black; padding:3px;">
+                            <t t-out="l['name']" /><br />
+                            <t t-out="l['qty']" /> x <t
+                                t-out="l['price']" />
+                            <t t-if="l['hsn']"><br />HSN: <t
+                                    t-out="l['hsn']" /></t>
+                        </td>
+                        <td style="border:1px solid black; padding:3px;">
+                            <t t-out="l['qty'] * l['price']" />
+                        </td>
+                    </tr>
+                </t>
+            </table>
+
+            <div
+                style="font-size:12px; margin-top:10px; border-top:2px solid black; padding-top:5px;">
+                <span>Total Qty <t t-out="total_qty" /></span> | <span>Sub Total <t
+                        t-out="sub_total" /></span>
+            </div>
+
+            <p style="margin:5px 0;">
+                <t t-out="payment_method" /> : <t t-out="paid_amount" />
+            </p>
+
+            <table
+                style="width:100%; border-collapse:collapse; text-align:left; border:1px solid black;">
+                <tr style="background:#f2f2f2; border:1px solid black;">
+                    <th style="border:1px solid black; padding:3px;">Tax</th>
+                    <th style="border:1px solid black; padding:3px;">Amount</th>
+                    <th style="border:1px solid black; padding:3px;">Base</th>
+                    <th style="border:1px solid black; padding:3px;">Total</th>
+                </tr>
+                <t t-foreach="taxes" t-as="t">
+                    <tr style="border:1px solid black;">
+                        <td style="border:1px solid black; padding:3px;">
+                            <t t-out="t['name']" />
+                        </td>
+                        <td style="border:1px solid black; padding:3px;">
+                            <t t-out="t['amount']" />
+                        </td>
+                        <td style="border:1px solid black; padding:3px;">
+                            <t t-out="t['base']" />
+                        </td>
+                        <td style="border:1px solid black; padding:3px;">
+                            <t t-out="t['total']" />
+                        </td>
+                    </tr>
+                </t>
+            </table>
+
+            <t t-esc="footer" />
+            <p style="margin:5px 0;">Odoo Point of Sale</p>
+            <p style="margin:5px 0;">
+                <t t-out="date" />
+            </p>
+        </div>
+    </template>
+</odoo>
