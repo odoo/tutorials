@@ -11,18 +11,10 @@
     'website': 'https://www.odoo.com/page/estate',
     "application": True,
     'depends': [
-        'base_setup',
-        'sales_team',
-        'mail',
-        'calendar',
-        'resource',
-        'utm',
-        'web_tour',
-        'contacts',
-        'digest',
-        'phone_validation',
+        'base'
     ],
     'data': [
+        "security/ir.model.access.csv"
     ],
     'demo': [
     ],
