@@ -5,6 +5,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -43,8 +44,9 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default="new",
+        string="Status",
     )
-    property_type = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_ids = fields.Many2one("estate.property.type", string="Property Type")
     salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
     buyer = fields.Many2one("res.partner", readonly=True, copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")

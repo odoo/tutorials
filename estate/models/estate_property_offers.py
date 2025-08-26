@@ -4,21 +4,24 @@ from odoo import fields, models, api, exceptions
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offers"
     _description = "Estate Property Offer"
+    _order = "price desc"
+    _sql_constraints = [
+        ("postive_price", "CHECK(price > 0)", "Prices must be positive")
+    ]
 
     price = fields.Float()
     status = fields.Selection(
-        [("Accepted", "accepted"), ("refused", "Refused")], copy=False
+        [("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.property_type_ids", required=True
+    )
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_deadline", inverse="_inverse_deadline", store=True
     )
-
-    _sql_constraints = [
-        ("postive_price", "CHECK(price > 0)", "Prices must be positive")
-    ]
 
     # date_deadline
     @api.depends("create_date", "validity")
@@ -53,6 +56,17 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = record.price
                 record.property_id.buyer = record.partner_id
                 record.property_id.state = "offer_accepted"
+
+                # if one offer is accepted then other offers are refused automatically
+
+                other_record = self.env["estate.property.offers"].search(
+                    [
+                        ("property_id", "=", record.property_id.id),
+                        ("id", "!=", record.id),
+                    ]
+                )
+                other_record.write({"status": "refused"})
+
             else:
                 raise exceptions.UserError("Already One Offer is Accepted")
 
