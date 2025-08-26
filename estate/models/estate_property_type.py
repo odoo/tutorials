@@ -4,10 +4,11 @@ from odoo import models, fields, api
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type"
+    _order = "sequence,name"
+
     _sql_constraints = [
         ("unique_name", "UNIQUE(name)", "A type with same name is already exists."),
     ]
-    _order = "sequence,name"
 
     name = fields.Char(required=True)
     property_ids = fields.One2many(

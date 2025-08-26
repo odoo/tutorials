@@ -7,6 +7,8 @@ from odoo.tools import float_is_zero, float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
+
     _sql_constraints = [
         (
             "check_expected_price",
@@ -14,7 +16,6 @@ class EstateProperty(models.Model):
             "The expected price must be greater than 0.",
         ),
     ]
-    _order = "id desc"
 
     name = fields.Char(string="Name", required=True)
     description = fields.Text(string="Description")
@@ -58,8 +59,8 @@ class EstateProperty(models.Model):
         copy=False,
         selection=[
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -138,7 +139,7 @@ class EstateProperty(models.Model):
                 property.state = "sold"
             elif property.state == "cancelled":
                 raise UserError("A cancelled property cannot be sold.")
-            elif property.state == "new" or property.state == "offer received":
+            elif property.state == "new" or property.state == "offer_received":
                 raise UserError(
                     "This property must have an accepted offer before it can be sold."
                 )

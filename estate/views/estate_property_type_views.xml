@@ -6,9 +6,9 @@
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
         <field name="help" type="html">
-          <p class="o_view_nocontent_smiling_face">
-            Create your first property type
-          </p>
+            <p class="o_view_nocontent_smiling_face">
+                Create your first property type
+            </p>
         </field>
     </record>
 

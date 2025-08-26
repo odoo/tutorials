@@ -6,10 +6,11 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
+
     _sql_constraints = [
         ("check_price", "CHECK(price > 0)", "The price must be greater than 0."),
     ]
-    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -71,8 +72,19 @@ class EstatePropertyOffer(models.Model):
                     "You cannot create an offer lower than an existing one."
                 )
 
-            property.state = "offer received"
+            property.state = "offer_received"
         return super().create(vals_list)
+
+    @api.model
+    def _cron_refuse_expired_offers(self):
+        today = fields.Date.context_today(self)
+        expired_offers = self.search(
+            [
+                ("status", "!=", "accepted"),
+                ("date_deadline", "<=", today),
+            ]
+        )
+        expired_offers.write({"status": "refused"})
 
     def action_set_accepted(self):
         for offer in self:
@@ -81,7 +93,7 @@ class EstatePropertyOffer(models.Model):
 
                 offer.property_id.write(
                     {
-                        "state": "offer accepted",
+                        "state": "offer_accepted",
                         "selling_price": offer.price,
                         "buyer_id": offer.partner_id.id,
                     }
@@ -96,7 +108,7 @@ class EstatePropertyOffer(models.Model):
     def action_set_refused(self):
         for offer in self:
             if offer.status == "accepted":
-                offer.property_id.state = "offer received"
+                offer.property_id.state = "offer_received"
                 offer.property_id.buyer_id = False
                 offer.property_id.selling_price = 0.0
             offer.status = "refused"

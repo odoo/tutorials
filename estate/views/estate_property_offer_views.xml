@@ -13,16 +13,16 @@
         <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
-                <field name="price"/>
-                <field name="partner_id"/>
-                <field name="validity"/>
+            <list class="price-left-align" editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+                <field name="price" width="20%"/>
+                <field name="partner_id" width="40%"/>
+                <field name="validity" width="10%"/>
                 <button name="action_set_accepted" string="Accepted" type="object" icon="fa-check" 
-                invisible="status != False"/>
+                    invisible="status != False" width="5%"/>
                 <button name="action_set_refused" string="Refused" type="object" icon="fa-times" 
-                invisible="status != False"/>
-                <field name ="status" readonly="1"/>
-                <field name="date_deadline"/>
+                    invisible="status != False" width="5%"/>
+                <field name ="status" readonly="1" width="10%"/>
+                <field name="date_deadline" width="10%"/>
             </list>
         </field>
     </record>
