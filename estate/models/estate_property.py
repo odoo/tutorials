@@ -1,7 +1,7 @@
 from datetime import datetime, timedelta
 from odoo import fields, models
 
-
+# estate.property model 
 class estateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property database table"
@@ -20,7 +20,7 @@ class estateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[('north','North'),('south','South'), ('east','East'), ('west','West')])
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         string='State',
         default="new",
