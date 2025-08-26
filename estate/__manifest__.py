@@ -14,10 +14,13 @@
         'base'
     ],
     'data': [
-        "security/ir.model.access.csv"
+        "security/ir.model.access.csv",
+        "views/estate_property_views.xml",
+        "views/estate_property_menus.xml"
     ],
     'demo': [
     ],
+    "license": "LGPL-3",
     'css': ['static/src/css/crm.css'],
     'installable': True,
     'application': True,
