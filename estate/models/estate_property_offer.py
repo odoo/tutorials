@@ -1,0 +1,71 @@
+from dateutil.relativedelta import relativedelta
+from datetime import date
+
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
+
+
+class EstatePropertyOffer(models.Model):
+    _name = 'estate.property.offer'
+    _description = 'for adding offers of properties'
+    _order = 'price desc'
+
+    price=fields.Float(string='Price', required = True)
+    status=fields.Selection(
+        string='Status',
+        selection=[
+            ('accepted','Accepted'),
+            ('refused','Refused')
+        ],
+        copy=False
+    )
+    partner_id=fields.Many2one('res.partner', string='Partner', required=True)
+    property_id=fields.Many2one('estate.property', string='Property', required=True, ondelete='cascade')
+    validity = fields.Integer(string='Validity (days)', default=7,)
+    date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
+
+    _sql_constraints = [
+        ('offer_price_check','CHECK( price >= 0 )', 'An offer price must be strictly positive')
+    ]
+
+    @api.depends('create_date','validity')
+    def _compute_date_deadline(self):
+        for offer in self:
+            if offer.create_date:
+                offer.date_deadline = offer.create_date.date() + relativedelta(days=offer.validity)
+            else:
+                offer.date_deadline = date.today() + relativedelta(days=offer.validity)
+
+    def _inverse_date_deadline(self):
+        for offer in self:
+            if offer.create_date and offer.date_deadline:
+                offer.validity = (offer.date_deadline - offer.create_date.date()).days
+
+    def action_offer_accept_btn(self):
+        for offer in self:
+            if offer.property_id.offer_ids.filtered(lambda offer: offer.status=='accepted'):
+                raise UserError(_('Already one offer is accepted'))
+            offer.status = 'accepted'
+            offer.property_id.selling_price = offer.price
+            offer.property_id.buyer = offer.partner_id
+            offer.property_id.state = 'offer_accepted'
+        return True
+
+    def action_offer_reject_btn(self):
+        for offer in self:
+            offer.status = 'refused'
+        return True
+
+    @api.model_create_multi
+    def create(self,vals):
+        property_obj = self.env['estate.property'].browse(vals[0]['property_id'])
+        if property_obj.state == "sold":
+            raise UserError(_("offer cant be created for sold properties"))
+        prices = [val['price'] for val in vals]
+        min_price = min(prices, default=property_obj.best_price)
+        if min_price < property_obj.best_price:
+            raise UserError(_("offer with a lower amount than an existing offer"))
+        if property_obj.state == 'new':
+            property_obj.state = 'offer_received'
+        return super().create(vals)
