@@ -1,0 +1,27 @@
+{
+    "name" : "estate",
+    "depends" : ['base','mail','website','whatsapp'],
+    "category" : "Real Estate/Brokerage",
+    'data' : [
+        'views/res_users.xml',
+        'data/estate_demo.xml',
+        'demo/estate_demo_offer.xml',
+        'wizard/estate_property_offer_wizard.xml',
+        'views/estate_property_offer.xml',
+        'views/estate_property_type.xml',
+        'views/estate_property_tag.xml',
+        'views/estate_property_views.xml',
+        'views/estate_menus.xml',
+        'data/sold_email_template.xml',
+        'data/whatsapp_template.xml',
+        'report/res_users_report.xml',
+        'report/estate_property_report_template.xml',
+        'report/estate_property_reports.xml',
+        'views/estate_property_listing_template.xml',
+        'security/security.xml',
+        'security/ir.model.access.csv',
+    ],
+    'installable': True,
+    'auto_install': True,
+    'license': 'LGPL-3'
+}

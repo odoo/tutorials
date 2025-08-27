@@ -1,0 +1,23 @@
+<odoo>
+    <template id="res_users_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h1><span t-field="docs.partner_id.name"/></h1>
+                    <hr/>
+                    <t t-foreach="docs.property_ids" t-as="property">
+                        <h2>
+                            <span t-field="property.name"/>
+                        </h2>
+                        <h3><span>Status: </span><span t-field="property.state"/></h3>
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price"/>
+                        </div>
+                        <t t-call="estate.estate_property_offers_template"/>                           
+                    </t>                     
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
