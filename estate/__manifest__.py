@@ -1,0 +1,27 @@
+{
+    "name": "estate",
+    "sequence": 1,
+    "category": "Real Estate/Brokerage",
+    "description": "",
+    "depends": ["base", "mail", "website"],
+    "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "data/estate.property.type.csv",
+        "views/estate_property_views.xml",
+        "views/estate_property_offer_views.xml",
+        "views/estate_property_type_views.xml",
+        "views/estate_property_tag_views.xml",
+        "views/estate_menus.xml",
+        "views/res_user_views.xml",
+        "views/estate_property_template.xml",
+        "report/estate_property_templates.xml",
+        "report/estate_property_report.xml",
+    ],
+    "demo":[
+        "demo/estate_property_demo.xml",
+    ],
+    "application": True,
+    "installable": True,
+    "license": "LGPL-3",
+}
