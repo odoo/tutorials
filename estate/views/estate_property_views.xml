@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <!-- Estate Properties Action -->
     <record id="estate_property_actions" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
+
+    <!-- Estate Properties List View -->
     <record id="estate_property_view_tree" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
@@ -17,24 +21,29 @@
                 <field name="expected_price" string="Expected Price" />
                 <field name="selling_price" string="Selling Price" />
                 <field name="date_availability" string="Available From" />
+                <field name="buyer_id" string="Buyer" />
+                <field name="salesman_id" string="Salesman" />
             </list>
         </field>
     </record>
+
+    <!-- Estate Properties Form View -->
     <record id="estate.property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="New Property XX">
+            <form string="Estate Property Form">
                 <sheet>
-                    <div class="oe_title">
+                    <div>
                         <h1>
-
                             <field name="name" placeholder="Enter your Estate Property Name"
                                 required="True"></field>
                         </h1>
+                        <field name="tag_ids" string="Property Tags" widget="many2many_tags" />
                     </div>
                     <group>
                         <group>
+                            <field name="property_type_id" string="Property Type" />
                             <field name="postcode" string="Postcode" />
                             <field name="date_availability" string="Available from" />
                         </group>
@@ -54,7 +63,17 @@
                                 <field name="garden" string="Garden" />
                                 <field name="garden_area" string="Garden Area (sqm)" />
                                 <field name="garden_orientation" string="Garden orientation" />
-                                <field name="state" string="Current state"></field>
+                                <field name="state" string="Current state" />
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                            </field>
+                        </page>
+                        <page string="Page Info">
+                            <group>
+                                <field name="buyer_id" string="Buyer" />
+                                <field name="salesman_id" string="Salesman" />
                             </group>
                         </page>
                     </notebook>
@@ -62,6 +81,8 @@
             </form>
         </field>
     </record>
+
+    <!-- Estate Properties search -->
     <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -80,4 +101,5 @@
             </search>
         </field>
     </record>
+
 </odoo>

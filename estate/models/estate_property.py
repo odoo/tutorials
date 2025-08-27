@@ -1,12 +1,12 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
 from datetime import datetime, timedelta
 from odoo import models, fields
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Estate Property"
+    _name = 'estate.property'
+    _description = 'Estate Property'
 
     name = fields.Char(string='Estate Property Name', required=True)
     description = fields.Text(string='Estate Property Description')
@@ -22,16 +22,28 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer(string='Number of Garden Area')
     garden_orientation = fields.Selection(
         string='Orientation of Garden',
-        selection=[('north', 'North'),
-                   ('south', 'Sou hhjghjth'),
-                   ('east', 'East'),
-                   ('west', 'West')],
-        help="Different Types of Directions")
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ],
+        help='Different Types of Directions')
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string='State',
-        default="new",
+        default='new',
         copy=False,
         required=True,
-        selection=[('new', 'New'), ('offer_recieved', 'Offer Received'), ('offer_accepted' , 'Offer Accepted'), ('sold_and_cancelled', 'Sold and Cancelled')],
-        help="State of the property")
+        selection=[
+            ('new', 'New'),
+            ('offer_recieved', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold_and_cancelled', 'Sold and Cancelled')
+        ],
+        help='State of the property')
+    property_type_id = fields.Many2one('estate.property.type', string='Property Type Id')
+    buyer_id = fields.Many2one('res.users', string='Buyer', copy=False)
+    salesman_id = fields.Many2one('res.partner', string='Salesman', default=lambda self: self.env.user)
+    tag_ids = fields.Many2many('estate.property.tag', string='Estate property Tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='offer')
