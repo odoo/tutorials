@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_l10n_in_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.l10n_in.custom.import.export.duty</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="l10n_in.res_config_settings_view_form_inherit_l10n_in" />
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='india_localization']" position="inside">
+                <setting
+                    name="custom_duty_settings"
+                    help="Enable this feature to apply custom duty on import/export transactions, including Bill of Entry and Shipping Bills">
+
+                    <field name="l10n_in_custom_duty_enabled" />
+                    
+                    <div invisible="not l10n_in_custom_duty_enabled">
+                        <!-- import section -->
+                        <div class="mb-3">
+                            <div class="oe_title mb-2 fw-semibold fs-5">Import</div>
+                            <div class="oe_row">
+                                <div class="custom_import_journal">
+                                    <label for="import_custom_duty_journal_id" string="Journal" class="col-5 o_light_label" />
+                                    <field name="import_custom_duty_journal_id" />
+                                </div>
+                                <div class="custom_import_account">
+                                    <label for="import_custom_duty_account_id" string="Custom Duty Account" class="col-5 o_light_label" />
+                                    <field name="import_custom_duty_account_id" />
+                                </div>
+                                <div class="import_default_tax">
+                                    <label for="import_default_tax_account_id" string="Default Tax Account" class="col-5 o_light_label" />
+                                    <field name="import_default_tax_account_id" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- export section -->
+                        <div class="mb-3">
+                            <div class="oe_title mb-2 fw-semibold fs-5">Export</div>
+                            <div class="oe_row">
+                                <div class="custom_export_journal">
+                                    <label for="export_custom_duty_journal_id" string="Journal" class="col-5 o_light_label" />
+                                    <field name="export_custom_duty_journal_id" />
+                                </div>
+                                <div class="custom_export_account">
+                                    <label for="export_custom_duty_account_id" string="Custom Duty Account" class="col-5 o_light_label" />
+                                    <field name="export_custom_duty_account_id" />
+                                </div>
+                                <div class="export_default_tax">
+                                    <label for="export_default_tax_account_id" string="Default Tax Account" class="col-5 o_light_label" />
+                                    <field name="export_default_tax_account_id" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="account_move_view_form" model="ir.ui.view">
+        <field name="name">account.move.view.form.inherit.custom.duty</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_invoice"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-file-text"
+                    string="Bill of Entry"
+                    invisible="not bill_of_entry_id or not l10n_in_custom_duty_enabled or move_type != 'in_invoice'"
+                    />
+            </xpath>
+
+            <xpath expr="//form/header" position="inside">
+                <button
+                    name="%(account_move_custom_duty_action)d"
+                    string="Bill of Entry"
+                    type="action"
+                    invisible="not l10n_in_custom_duty_enabled or state != 'posted' or l10n_in_gst_treatment not in ['overseas', 'special_economic_zone', 'deemed_export'] or move_type != 'in_invoice'" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
