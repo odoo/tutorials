@@ -14,11 +14,18 @@ class EstateOfferModel(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.property_type_id", required=True
+    )
     validity = fields.Integer(
         default=7,
         help="offer validity period in days; the offer will be automatically refused when this expires.",
     )
-    date_deadline = fields.Date(default=fields.Date.today() + timedelta(days=7))
+    date_deadline = fields.Date(
+        compute="_compute_date_deadline",
+        inverse="_inverse_date_deadline",
+        default=fields.Date.today() + timedelta(days=7),
+    )
 
     _sql_constraints = [
         (
@@ -44,22 +51,26 @@ class EstateOfferModel(models.Model):
             )
 
     def action_offer_confirm(self):
-        for record in self:
-            if record.status in ["accepted", "refused"]:
-                raise UserError(f"Offer is already {record.status}")
-            # breakpoint()
-            for offer in record.property_id.offer_ids:
-                if offer.id == record.id:
-                    record.status = "accepted"
-                    record.property_id.write(
-                        {
-                            "state": "offer_accepted",
-                            "buyer": record.partner_id,
-                            "selling_price": record.price,
-                        }
-                    )
-                else:
-                    offer.status = "refused"
+        if self.status in ["accepted", "refused"]:
+            raise UserError(f"Offer is already {self.status}")
+
+        # update the current selected offer
+        self.status = "accepted"
+        self.property_id.write(
+            {
+                "state": "offer_accepted",
+                "buyer": self.partner_id,
+                "selling_price": self.price,
+            }
+        )
+
+        # update the rest offers status to "refused"
+        refused_offers = self.property_id.offer_ids - self
+        refused_offers.write(
+            {
+                "status": "refused",
+            }
+        )
 
     def action_offer_cancel(self):
         for record in self:
