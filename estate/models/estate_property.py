@@ -20,11 +20,12 @@ class estateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[
-            ('north','North'),
-            ('south','South'),
-            ('east','East'),
-            ('west','West')
-            ])
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ]
+    )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string='State',
@@ -32,12 +33,13 @@ class estateProperty(models.Model):
         copy=False,
         required=True,
         selection=[
-            ('new','New'), 
-            ('offer_recieved','Offer Received'), 
-            ('offer_accepted','Offer Accepted'), 
-            ('sold_and_cancelled','Sold and Cancelled')
+            ('new', 'New'),
+            ('offer_recieved', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold_and_cancelled', 'Sold and Cancelled')
             ],
-        help="State of the property")
+        help="State of the property"
+    )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
@@ -50,17 +52,16 @@ class estateProperty(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-    
+
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
             if record.offer_ids:
-                for offer in record.offer_ids:
-                    if offer.price > record.best_price:
-                        record.best_price = offer.price
+                record.best_price = max(map(lambda x: x.price, record.offer_ids))
+                print("res",record.best_price)
             else:
                 record.best_price = 0.0
-    
+
     @api.onchange("garden")
     def _comoute_garden(self):
         if self.garden is True:
@@ -69,4 +70,3 @@ class estateProperty(models.Model):
         else:
             self.garden_orientation = False
             self.garden_area = 0
-
