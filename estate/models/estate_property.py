@@ -13,7 +13,8 @@ class EstateModel(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=fields.Date.today() + timedelta(days=90)
+        copy=False,
+        default=fields.Date.today() + timedelta(days=90),
     )
     active = fields.Boolean(default=True)
     expected_price = fields.Float(required=True)
@@ -25,7 +26,7 @@ class EstateModel(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     state = fields.Selection(
-        string="state",
+        string="State",
         default="new",
         required=True,
         copy=False,
@@ -53,7 +54,7 @@ class EstateModel(models.Model):
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id")
     total_area = fields.Float(compute="_compute_total_area", store=True)
-    best_price = fields.Float(compute="_compute_best_price", store=True)
+    best_price = fields.Float(compute="_compute_best_price", store=True, default=0.0)
 
     _sql_constraints = [
         (
@@ -93,7 +94,13 @@ class EstateModel(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
+            self.write(
+                {
+                    "best_price": max(record.offer_ids.mapped("price"), default=0.0),
+                }
+            )
+        if record.best_price > 0.0:
+            record.state = "offer_received"
 
     @api.onchange("garden")
     def _set_garden_default_values(self):
@@ -103,8 +110,6 @@ class EstateModel(models.Model):
             self.write({"garden_area": 0, "garden_orientation": ""})
 
     def action_property_sold(self):
-        if self.state in ["sold", "cancelled"]:
-            raise UserError(f"Property is already {self.state}")
         if float_is_zero(self.selling_price, precision_rounding=0.01):
             raise UserError(
                 "Atleast one offer must be accepted before selling the property"
@@ -112,6 +117,7 @@ class EstateModel(models.Model):
         self.state = "sold"
 
     def action_property_cancelled(self):
-        if self.state in ["sold", "cancelled"]:
-            raise UserError(f"Property is already {self.state}")
         self.state = "cancelled"
+        for offer in self.offer_ids:
+            if not offer.status:
+                offer.status = "refused"
