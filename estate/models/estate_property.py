@@ -9,22 +9,37 @@ class EstateModel(models.Model):
     _description = "Real Estate Advertisement Model"
     _order = "id desc"
 
-    name = fields.Char(required=True)
-    description = fields.Text()
-    postcode = fields.Char()
+    active = fields.Boolean(default=True)
+    bedrooms = fields.Integer(default=2)
+    best_price = fields.Float(compute="_compute_best_price", store=True, default=0.0)
+    buyer = fields.Many2one("res.partner", readonly=True)
     date_availability = fields.Date(
         copy=False,
         default=fields.Date.today() + timedelta(days=90),
     )
-    active = fields.Boolean(default=True)
+    description = fields.Text()
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    garden_orientation = fields.Selection(
+        string="Garden Orientation",
+        selection=[
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ],
+        help="Select the direction the garden faces",
+    )
+    living_area = fields.Integer()
+    name = fields.Char(required=True)
+    offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id")
+    postcode = fields.Char()
+    property_type_id = fields.Many2one("estate.property.type")
+    salesman = fields.Many2one("res.users")
+    selling_price = fields.Float(readonly=True, copy=False)
     state = fields.Selection(
         string="State",
         default="new",
@@ -38,23 +53,8 @@ class EstateModel(models.Model):
             ("cancelled", "Cancelled"),
         ],
     )
-    garden_orientation = fields.Selection(
-        string="Garden Orientation",
-        selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
-        ],
-        help="Select the direction the garden faces",
-    )
-    property_type_id = fields.Many2one("estate.property.type")
-    buyer = fields.Many2one("res.partner", readonly=True)
-    salesman = fields.Many2one("res.users")
     tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", inverse_name="property_id")
     total_area = fields.Float(compute="_compute_total_area", store=True)
-    best_price = fields.Float(compute="_compute_best_price", store=True, default=0.0)
 
     _sql_constraints = [
         (
