@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            Playground
+        </div>  
+        
+        <div class="p-3">
+            <span style="display: flex; gap: 10px;">
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+                <p> The sum is: <t t-esc="state.sum"/> </p>
+            </span>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap;">               
+            <!-- <Card title="'Odoo1'" content="content_1"/>
+            <Card title="'Odoo2'" content="content_2"/>
+            <Card title="'optional prop'" /> -->
+            <Card title="'Odoo1'">
+                <Counter onChange.bind="incrementSum"/>
+            </Card>
+            <Card title="'Odoo2'">
+                <Counter onChange.bind="incrementSum"/>
+            </Card>
+        </div>
+
+        <div>
+            <TodoList/>
         </div>
     </t>
 
