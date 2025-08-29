@@ -112,3 +112,11 @@ class EstateProperty(models.Model):
                     raise exceptions.UserError(
                         "Selling price must be at least 90% of the expected price."
                     )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_status_not_set(self):
+        if any(
+            record.state in ["offer_received", "offer_accepted", "sold"]
+            for record in self
+        ):
+            raise exceptions.UserError("Can't delete an Offer")
