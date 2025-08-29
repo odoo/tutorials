@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoItem">
+
+        <!-- Flexbox row for item layout -->
+        <div class="d-flex justify-content-between align-items-center">
+
+           <!-- Left side: checkbox + id + description -->
+            <div class="d-flex align-items-center">
+
+                <!-- Checkbox -->
+                <input type="checkbox"
+                       class="form-check-input me-2"
+                       t-att-checked="props.isCompleted"
+                       t-on-change="() => props.toggleState(props.id)"/>
+
+                <!-- Task id + description -->
+                <span class="fw-medium">
+                    <span class="me-2"><t t-esc="props.id"/></span>
+                    <span t-att-class="props.isCompleted ? 'text-muted text-decoration-line-through' : ''">
+                        <t t-esc="props.description"/>
+                    </span>
+                </span>
+            </div>
+
+            <!-- Right side: status badge + delete button -->
+            <div class="d-flex align-items-center gap-2">
+                <span t-if="props.isCompleted" class="badge bg-success">Done</span>
+                <span t-else="" class="badge bg-warning text-dark">Pending</span>
+
+                <!-- Delete button (Bootstrap icon trash) -->
+                <button type="button"
+                        class="btn btn-primary"
+                        title="Delete task"
+                        t-on-click="() => props.removeTodo(props.id)">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    </t>
+</templates>
