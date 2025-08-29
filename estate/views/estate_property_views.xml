@@ -33,13 +33,18 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_sold" type="object" string="Sold"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <group>
                         <h1>
                             <field name="name" placeholder="Real Estate Title"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="state"/>
                     </group>
-                    <field name="tag_ids" widget="many2many_tags"/>
                     <group>
                         <group>
                             <field name="property_type_id"/>
@@ -60,7 +65,6 @@
                                 <field name="living_area"/>
                                 <field name="garden_area"/>
                                 <field name="total_area"/>
-                                <field name="state"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
