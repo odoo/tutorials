@@ -121,3 +121,12 @@ class EstateModel(models.Model):
         for offer in self.offer_ids:
             if not offer.status:
                 offer.status = "refused"
+
+    @api.ondelete(at_uninstall=False)
+    def _check_before_deleting_record(self):
+        # more than one record can be present in recordset
+        for record in self:
+            if record.state in ["offer_received", "offer_accepted", "sold"]:
+                raise UserError(
+                    "Properties with received offers, accepted offers, or that have been sold cannot be deleted."
+                )

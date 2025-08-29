@@ -58,7 +58,6 @@ class EstateOfferModel(models.Model):
         self.status = "accepted"
         self.property_id.write(
             {
-                "state": "offer_accepted",
                 "buyer": self.partner_id,
                 "selling_price": self.price,
             }
@@ -77,3 +76,16 @@ class EstateOfferModel(models.Model):
             if record.status in ["accepted", "refused"]:
                 raise UserError(f"Offer is already {record.status}")
             record.status = "refused"
+
+    @api.model_create_multi
+    def create(self, vals):
+        for record in vals:
+            property = self.env["estate.property"].browse(record["property_id"])
+
+            if record.get("price") < property.best_price:
+                raise UserError(
+                    "The offers price cannot be lower than the existing offers"
+                )
+
+            property.state = "offer_received"
+        return super().create(vals)
