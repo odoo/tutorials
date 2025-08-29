@@ -7,13 +7,17 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list>
-                <field name="price" />
-                <field name="partner_id" />
+                <field name="price" string="Price" />
+                <field name="partner_id" string="Partner" />
+                <field name="validity" string="Validity (days)" />
+                <field name="date_deadline" string="Deadline" />
+                <button name="offer_accepted_action" string="Accept" type="object" icon="fa-check" />
+                <button name="offer_refused_action" string="Refuse" type="object" icon="fa-times" />
                 <field name="status" />
             </list>
         </field>
     </record>
-
+    
     <!-- Form View -->
     <record id="estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">estate.property.offer.form</field>
@@ -22,9 +26,11 @@
             <form string="Offer Price Form">
                 <sheet>
                     <group>
-                        <field name="price" string="Offer Price" />
-                        <field name="status" string="Offer Status" />
-                        <field name="partner_id" string="Offer Partner" />
+                        <field name="price" string="Price" />
+                        <field name="partner_id" string="Partner" />
+                        <field name="validity" string="Validity (days) " />
+                        <field name="date_deadline" string="Deadline" />
+                        <field name="status" />
                     </group>
                 </sheet>
             </form>
