@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout 
+        className="'o_dashboard h-100'"
+        display="{controlPanel: {} }"
+        >
+            <t t-set-slot="layout-buttons">
+                <button type="button" class="btn btn-primary" t-on-click="openCustomersKanban">Customers</button>
+                <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
+
+            <t t-if="this.state.openPopup">
+                <div class="modal fade show d-block" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Dashboard items configuration</h5>
+                                <button type="button" class="btn-close" aria-label="Close" t-on-click="closeConfiguration"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Which cards do you want to see?</p>
+                                <t t-foreach="items" t-as="item" t-key="item.id">
+                                    <p><input type="checkbox" t-att-checked="!this.hiddenItems.includes(item.id)" t-on-change="() => disableItem(item.id)"/> <t t-esc="item.description"/></p>
+                                </t>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" t-on-click="applyChanges">Done</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+            <div class="d-flex flex-wrap gap-1">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem t-if="!this.state.hiddenItems.includes(item.id)" size="item.size || 1">
+                       <t t-set="itemProp" t-value="item.props ? item.props(result.data) : {'data': result.data}"/>
+                       <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                 </t>
+            </div>
+        </Layout>
+    </t>
+
+</templates>
