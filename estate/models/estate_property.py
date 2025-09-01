@@ -1,12 +1,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import datetime, timedelta
-from odoo import api, models, fields, exceptions
+from odoo import api, models, fields
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
+    _order = 'id desc'
 
     name = fields.Char(string='Estate Property Name', required=True)
     description = fields.Text(string='Estate Property Description')
@@ -51,6 +53,11 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price', string='Best Offer Price')
 
+    _sql_constraints = [
+        ('expected_price', 'CHECK(expected_price > 0)', 'Expected price of the property must be positive'),
+        ('selling_price', 'CHECK(selling_price >= 0)', 'Selling price of the property must be positive'),
+    ]
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -74,7 +81,7 @@ class EstateProperty(models.Model):
     def property_sold_action(self):
         for record in self:
             if record.state == 'cancel':
-                raise exceptions.UserError('Cancelled property can not be sold')
+                raise UserError('Cancelled property can not be sold')
             else:
                 record.state = 'sold'
         return True
@@ -82,7 +89,13 @@ class EstateProperty(models.Model):
     def property_cancel_action(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError('Sold property can not be cancelled')
+                raise UserError('Sold property can not be cancelled')
             else:
                 record.state = 'cancel'
         return True
+
+    @api.constrains('selling_price')
+    def check_offer_price(self):
+        for record in self:
+            if record.offer_ids.price < (0.9 * record.expected_price):
+                raise ValidationError(f'Selling price ({record.selling_price}) should be greater than 90% ({0.9 * record.expected_price}) of the expected price ({record.expected_price})')
