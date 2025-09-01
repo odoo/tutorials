@@ -1,10 +1,17 @@
 from odoo import models, fields, Command
+from odoo.exceptions import AccessError
 
 
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self):
+
+        try:
+            self.check_access("write")
+        except AccessError:
+            raise AccessError("You are not allowed to sell this property. Contact your manager.")
+
         self.env["account.move"].sudo().create(
             {
                 "partner_id": self.buyer_id.id,
