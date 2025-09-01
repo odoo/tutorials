@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_config_settings_view_form" model="ir.ui.view">
+        <field name="name">estate.config.settings.view.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="Estate" name="estate">
+                    <block title="Estate Settings">
+                        <setting help="Enable this option to enable creating invoices.">
+                            <field name="module_estate_account" />
+                        </setting>
+                        <setting help="Enable this option to install the Estate Auction module.">
+                            <field name="module_estate_auction" />
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

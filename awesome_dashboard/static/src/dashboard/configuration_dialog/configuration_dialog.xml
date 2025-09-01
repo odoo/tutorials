@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<template xml:space="preserve">
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="props.title">
+            <p t-esc="props.message"/>
+            <t t-if="props.items">                
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <div class="d-flex gap-2 align-items-baseline">                   
+                        <input 
+                            type="checkbox"
+                            t-att-checked="item.enabled"
+                            t-on-change="(event) => this.onChange(event.target.checked, item)"
+                            />
+                        <p><t t-esc="item.description"/></p>
+                    </div>
+                </t>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+</template>

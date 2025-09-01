@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div>
+            <Counter onChange.bind="incrementSum" />
+            <Counter onChange.bind="incrementSum" />
+            <Counter />
+            <h3>Sum Value: <t t-esc="sum.value"/></h3>
+        </div>
+
+        <div>
+            <Card title="headingPrimaryEsc">Content for another card</Card>
+            <Card title="headingPrimaryMarkup">Content for another card</Card>
+            <Card title="'Card with default slot'">
+                Content with a counter
+                <Counter onChange.bind="incrementSum" />
+                <Counter />
+            </Card> 
+        </div>
+
+        <div class="px-3">
+            <TodoList />
         </div>
     </t>
-
 </templates>
