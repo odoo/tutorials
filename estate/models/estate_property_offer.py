@@ -25,6 +25,7 @@ class EstateOfferModel(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
         default=fields.Date.today() + timedelta(days=7),
+        store=True
     )
 
     _sql_constraints = [
