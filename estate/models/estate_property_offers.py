@@ -11,7 +11,7 @@ class EstatePropertyOffer(models.Model):
 
     price = fields.Float()
     status = fields.Selection(
-        [("accepted", "Accepted"), ("refused", "Refused")], copy=False
+        [("Accepted", "accepted"), ("refused", "Refused")], copy=False
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
@@ -84,6 +84,6 @@ class EstatePropertyOffer(models.Model):
                     property.state = "offer_received"
                 if record["price"] < property.best_price:
                     raise exceptions.UserError(
-                        f"The offer price is higher than {property.best_price}"
+                        f"The offer price should be higher than {property.best_price}"
                     )
         return super().create(vals)
