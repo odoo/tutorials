@@ -1,7 +1,6 @@
 
 from datetime import timedelta
 from odoo import api, fields, models
-from odoo.exceptions import UserError
 
 
 # estate.property.offer model
@@ -28,6 +27,13 @@ class estatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         store=True,
     )
+    _sql_constraints = [
+        (
+            "check_price",
+            "CHECK(price > 0)",
+            "Offer price must be positive",
+        ),
+    ]
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
