@@ -50,25 +50,20 @@ class EstatePropertyOffer(models.Model):
 
     def action_accepted(self):
         for record in self:
-            # selling price is default 0 and field is readonly then when the selling_price 0 so their is no offer is accepted yet
-            if record.property_id.selling_price == 0:
-                record.status = "Accepted"
-                record.property_id.selling_price = record.price
-                record.property_id.buyer = record.partner_id
-                record.property_id.state = "offer_accepted"
+            record.status = "Accepted"
+            record.property_id.selling_price = record.price
+            record.property_id.buyer = record.partner_id
+            record.property_id.state = "offer_accepted"
 
-                # if one offer is accepted then other offers are refused automatically
+            # if one offer is accepted then other offers are refused automatically
 
-                other_record = self.env["estate.property.offers"].search(
-                    [
-                        ("property_id", "=", record.property_id.id),
-                        ("id", "!=", record.id),
-                    ]
-                )
-                other_record.write({"status": "refused"})
-
-            else:
-                raise exceptions.UserError("Already One Offer is Accepted")
+            other_record = self.env["estate.property.offers"].search(
+                [
+                    ("property_id", "=", record.property_id.id),
+                    ("id", "!=", record.id),
+                ]
+            )
+            other_record.write({"status": "refused"})
 
     def action_refused(self):
         for record in self:
