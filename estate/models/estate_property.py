@@ -1,0 +1,98 @@
+from odoo import fields, models, api, _
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_is_zero, float_compare
+
+
+class EstateProperty(models.Model):
+    _name = 'estate.property'
+    _description = 'Estate properties'
+    _order = "id desc"
+
+    _check_strictly_positive_expected_price = (models.Constraint("""CHECK (expected_price > 0)""",
+             "The property expected price must be strictly positive."))
+
+    _check_positive_selling_price = (models.Constraint("""CHECK (selling_price >= 0)""",
+             "The property selling price must be positive."))
+
+    name = fields.Char('Title', required=True, translate=True)
+    description = fields.Text()
+    postcode = fields.Integer(help='Your post code in 4 or 5 digits.')
+    date_availability = fields.Date('Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer(string='Living Area (m²)')
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer('Garden Area (m²)')
+    garden_orientation = fields.Selection(
+        string='Garden Orientation',
+        selection=[('north', 'North'), ('west', 'West'), ('south', 'South'), ('east', 'East')],
+        help='The selection of the garden orientation.')
+    active = fields.Boolean(default=True)
+    state = fields.Selection(string="Status",
+        required=True,
+        copy=False,
+        default='new',
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    total_area = fields.Float(compute="_compute_total_area")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    best_offer = fields.Float(compute="_find_best_offer")
+
+    @api.depends("offer_ids")
+    def _find_best_offer(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_offer = max(self.offer_ids.mapped('price'))
+            else:
+                record.best_offer = 0.0
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_offer_price(self):
+        for record in self:
+            if float_compare((record.expected_price * 0.9), record.selling_price, precision_rounding=0.01) >= 0 and not float_is_zero(record.selling_price, precision_rounding=0.001):
+                raise ValidationError(_("Offer price cannot be lower than 90% of the expected price."))
+
+    @api.onchange("garden")
+    def _onchange_has_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
+            return {'warning': {
+                'title': _("Warning"),
+                'message': _('Unchecking the garden option removed the area value and orientation.')}}
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled_property(self):
+        if any(estate_property.state in ['offer_received', 'offer_accepted', 'sold'] for estate_property in self):
+            raise UserError(_("Can't delete a property that is not new of cancelled!"))
+
+    def action_btn_sold(self):
+        for record in self:
+            if record.state != 'cancelled':
+                record.state = "sold"
+            else:
+                raise UserError(_("This property is already cancelled and thus cannot be sold anymore."))
+        return True
+
+    def action_btn_cancel(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = "cancelled"
+            else:
+                raise UserError(_("This property is already sold and thus cannot be cancelled anymore."))
+        return True
