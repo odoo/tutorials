@@ -30,6 +30,7 @@
                 <field name="date_availability" string="Available From" optional="True" />
                 <field name="buyer_id" string="Buyer" />
                 <field name="salesman_id" string="Salesman" />
+                <field name="state" string="State" />
             </list>
         </field>
     </record>

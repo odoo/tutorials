@@ -69,9 +69,9 @@ class EstateProperty(models.Model):
             record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
-    def _on_change_garden(self):
+    def _onchange_garden(self):
         for record in self:
-            if self.garden:
+            if record.garden:
                 record.garden_area = 10
                 record.garden_orientation = 'north'
             else:
@@ -99,3 +99,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.offer_ids.price < (0.9 * record.expected_price):
                 raise ValidationError(f'Selling price ({record.selling_price}) should be greater than 90% ({0.9 * record.expected_price}) of the expected price ({record.expected_price})')
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_user_state(self):
+        if any(user.state not in ['new', 'cancel'] for user in self):
+            raise UserError('Can\'t delete property which is in offer received or offer accepted or sold state.')
