@@ -7,6 +7,7 @@ from odoo import api, fields, models
 class estatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate property offer database table"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -27,6 +28,7 @@ class estatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         store=True,
     )
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     _sql_constraints = [
         (
             "check_price",
