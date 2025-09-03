@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_purchase_order_create_containerisation_form" model="ir.ui.view">
+        <field name="name">purchase.order.create.containerisation.form</field>
+        <field name="model">purchase.order.create.containerisation</field>
+        <field name="arch" type="xml">
+            <form string="Containerisation Wizard">
+                <div name="options">
+                    <span class="d-inline-flex" style="gap: 20px;">
+                        <field name="create_new_container"/>
+                        <label for="create_new_container"/>
+                    </span><br/>
+                    <span class="d-inline-flex">
+                        <div style="width: 40px;"/>
+                        <div class="d-inline-flex" style="gap: 16px;">
+                            <label for="destination_location_id" invisible="create_new_container == False"/>
+                            <field name="destination_location_id" invisible="create_new_container == False"/>
+                        </div>
+                    </span>
+                </div>
+                <div name="options">
+                    <span class="d-inline-flex" style="gap: 20px;">
+                        <field name="add_to_existing"/>
+                        <label for="add_to_existing"/>
+                    </span><br/>
+                    <span class="d-inline-flex">
+                        <div style="width: 40px;"/>
+                        <div class="d-inline-flex" style="gap: 16px;">
+                            <label for="existing_container_id" invisible="add_to_existing == False"/>
+                            <field name="existing_container_id" invisible="add_to_existing == False" domain="[('partner_id', '=', context.get('default_supplier_id')), ('is_container_picking', '=', True), ('lifecycle_status', 'in', ['in_production', 'containerised'])]"/>
+                        </div>
+                    </span>
+                </div>
+                <footer>
+                    <button name="action_confirm" type="object" string="Continue" class="oe_highlight"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_containerisation_wizard" model="ir.actions.act_window">
+        <field name="name">Add to Existing or Create New</field>
+        <field name="res_model">purchase.order.create.containerisation</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_purchase_order_create_containerisation_form"/>
+        <field name="target">new</field>
+    </record>
+</odoo>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_picking_form_containerisation" model="ir.ui.view">
+        <field name="name">view.picking.form.containerisation</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='picking_type_id']" position="after">
+                <field name="location_dest_id" invisible="is_container_picking == False" readonly="state in ('done', 'cancel')" groups="!stock.group_stock_multi_locations"/>
+                <field name="lifecycle_status" invisible="is_container_picking == False"/>
+            </xpath>
+            <xpath expr="//field[@name='origin']" position="after">
+                <field name="source_transfers" invisible="is_container_picking == False" readonly="state in ('done', 'cancel')"/>
+                <field name="is_container_picking" invisible="is_container_picking == False"/>
+                <field name="vessel_tracking" invisible="is_container_picking == False" readonly="state in ('done', 'cancel')"/>
+            </xpath>
+            <xpath expr="//button[@name='action_assign']" position="attributes">
+                <attribute name="invisible">not show_check_availability or is_container_picking</attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_confirm']" position="attributes">
+                <attribute name="invisible">state != 'draft' or is_container_picking</attribute>
+            </xpath>
+            <xpath expr="//button[hasclass('o_btn_validate')]" position="attributes">
+                <attribute name="invisible">is_container_picking or state in ('waiting', 'assigned', 'done', 'cancel')</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_validate']" position="attributes">
+                <attribute name="invisible">(lifecycle_status not in ['customs', 'booked_in'] and is_container_picking) or state in ('draft', 'confirmed', 'done', 'cancel')</attribute>
+            </xpath>
+            <xpath expr="//button[@name='button_validate']" position="before">
+                <button name="button_containerise" string="Containerise" type="object" class="oe_highlight" invisible="not (lifecycle_status == 'in_production' and is_container_picking)  or state in ('done', 'cancel')"/>
+                <button name="button_on_water" string="On The Water" type="object" class="oe_highlight" invisible="not (lifecycle_status == 'containerised' and is_container_picking) or state in ('done', 'cancel')"/>
+                <button name="button_at_custom" string="At Customs" type="object" class="oe_highlight" invisible="lifecycle_status != 'on_water' or state in ('done', 'cancel')"/>
+            </xpath>
+            <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">
+                <attribute name="invisible">is_container_picking</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="search_picking_containerisation" model="ir.ui.view">
+        <field name="name">search.picking.containerisation</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='internal']" position="after">
+                <filter name="containerisation" string="Containerisation" domain="[('is_container_picking', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_picking_list_containerisation" model="ir.ui.view">
+        <field name="name">view.picking.list.containerisation</field>
+        <field name="model">stock.picking</field>
+        <field name="arch" type="xml">
+            <list name="purchase_order_containerisation_list" string="Purchase Order">
+                <field name="name"/>
+                <field name="partner_id" string="Supplier"/>
+                <field name="location_dest_id" string="Destination"/>
+                <field name="scheduled_date" string="Scheduled Arrival"/>
+                <field name="origin" string="Source PO's"/>
+                <field name="source_transfers"/>
+            </list>
+        </field>
+    </record>
+</odoo>
