@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="offer_1_big_villa" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1" />
+        <field name="property_id" ref="property_big_villa" />
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="offer_2_big_villa" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="property_id" ref="property_big_villa" />
+        <field name="price">1550000</field>
+        <field name="validity">10</field>
+    </record>
+    
+    <record id="offer_1_modern_office" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="property_id" ref="property_modern_office" />
+        <field name="price">1150000</field>
+        <field name="validity">10</field>
+    </record>
+    <record id="offer_2_modern_office" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1" />
+        <field name="property_id" ref="property_modern_office" />
+        <field name="price">1180000</field>
+        <field name="validity">12</field>
+    </record>
+    
+    <record id="offer_1_industrial_warehouse" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1" />
+        <field name="property_id" ref="property_industrial_warehouse" />
+        <field name="price">4800000</field>
+        <field name="validity">30</field>
+    </record>
+    <record id="offer_2_industrial_warehouse" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="property_id" ref="property_industrial_warehouse" />
+        <field name="price">4900000</field>
+        <field name="validity">25</field>
+    </record>
+    
+    <record id="offer_1_land_investment" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1" />
+        <field name="property_id" ref="property_land_investment" />
+        <field name="price">3400000</field>
+        <field name="validity">20</field>
+    </record>
+    <record id="offer_2_land_investment" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="property_id" ref="property_land_investment" />
+        <field name="price">3450000</field>
+        <field name="validity">22</field>
+    </record>
+    
+    <record id="offer_1_city_apartment" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="property_id" ref="property_city_apartment" />
+        <field name="price">850000</field>
+        <field name="validity">15</field>
+    </record>
+    <record id="offer_2_city_apartment" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1" />
+        <field name="property_id" ref="property_city_apartment" />
+        <field name="price">870000</field>
+        <field name="validity">18</field>
+    </record>
+    
+    <record id="offer_1_suburban_house" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1" />
+        <field name="property_id" ref="property_suburban_house" />
+        <field name="price">580000</field>
+        <field name="validity">12</field>
+    </record>
+    <record id="offer_2_suburban_house" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="property_id" ref="property_suburban_house" />
+        <field name="price">590000</field>
+        <field name="validity">14</field>
+    </record>
+    
+    <record id="offer_1_luxury_condo" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1" />
+        <field name="property_id" ref="property_luxury_condo" />
+        <field name="price">1450000</field>
+        <field name="validity">25</field>
+    </record>
+    <record id="offer_2_luxury_condo" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2" />
+        <field name="property_id" ref="property_luxury_condo" />
+        <field name="price">1480000</field>
+        <field name="validity">20</field>
+    </record>
+</odoo>
