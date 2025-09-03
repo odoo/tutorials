@@ -1,14 +1,23 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { memoize } from "@web/core/utils/functions";
+import { reactive } from "@odoo/owl";
 import { rpc } from "@web/core/network/rpc";
 
 const statisticsService = {
-    async: ["loadStatistics"],
     start() {
+        const statistics = reactive({});
+
+        async function loadStatistics(){
+            const data = await rpc("/awesome_dashboard/statistics");
+            Object.assign(statistics,data);
+        }
+
+        loadStatistics();
+        setInterval(loadStatistics, 10*60*1000);
+
         return {
-            loadStatistics : memoize(()=>rpc("/awesome_dashboard/statistics"))
+            statistics,
         };
     },
 };

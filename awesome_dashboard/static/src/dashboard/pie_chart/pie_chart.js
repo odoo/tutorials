@@ -8,7 +8,7 @@ export class PieChart extends Component{
         label: String,
         data: Object,
     };
-    
+
     setup(){
         this.canvasRef = useRef("canvas");
         onWillStart(()=>loadJS("/web/static/lib/Chart/Chart.js"));
@@ -16,7 +16,9 @@ export class PieChart extends Component{
             this.renderChart();
         });
         onWillUnmount(() => {
-            this.chart.destroy();
+            if(this.chart){
+                this.chart.destroy();
+            }
         });
     }
 
