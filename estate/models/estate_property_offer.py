@@ -48,7 +48,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             existing_offer = self.search([('property_id', '=', record.property_id.id), ('status', '=', 'accepted')])
             if existing_offer:
-                raise UserError("This property already has an accepted offer.")
+                raise UserError('This property already has an accepted offer.')
             property_record = record.property_id
             property_record.selling_price = record.price
             property_record.buyer_id = record.partner_id
