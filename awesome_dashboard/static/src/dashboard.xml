@@ -24,7 +24,7 @@
                 <DashboardItem>
                     <div class="d-flex flex-column align-items-center text-center">
                         <span>Number of new orders this month</span>
-                        <span class="fs-1 fw-bold; color: green"><t t-esc="statistics.nb_new_orders"/></span>
+                        <span class="fs-1 fw-bold"><t t-esc="statistics.nb_new_orders"/></span>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
