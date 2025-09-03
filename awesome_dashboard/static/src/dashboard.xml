@@ -2,9 +2,22 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-       <Layout display="display" className="'o_dashboard h-100'">
-        hello dashboard
-       </Layout>
+        <Layout display="display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            Some content.
+        </Layout>
+        <DashboardItem>
+        i am a dashboard item
+        </DashboardItem>
+        <DashboardItem size="2">
+                i am a dashboard item twice as big
+        </DashboardItem>
+        <DashboardItem>
+                another dashboard item
+        </DashboardItem>
     </t>
 
 </templates>
