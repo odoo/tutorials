@@ -7,19 +7,41 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-        <div class="d-flex flex-wrap">
-        <DashboardItem>
-        some content
-        </DashboardItem>
-        <DashboardItem size="2">
-                i am a dashboard item twice as big
-        </DashboardItem>
-        <DashboardItem>
-                some content
-        </DashboardItem>
-            </div>
-        </Layout>
 
+            <div class="d-flex flex-wrap align-items-start p-3">
+                <DashboardItem>
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <span>Average amount of t-shirt by order this month</span>
+                        <span class="fs-1 fw-bold"><t t-esc="statistics.average_quantity"/></span>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <span>Average time for an order to go from 'new' to 'sent' or 'cancelled'</span>
+                        <span class="fs-1 fw-bold"><t t-esc="statistics.average_time"/></span>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <span>Number of new orders this month</span>
+                        <span class="fs-1 fw-bold; color: green"><t t-esc="statistics.nb_new_orders"/></span>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <span>Number of cancelled orders this month</span>
+                        <span class="fs-1 fw-bold"><t t-esc="statistics.nb_cancelled_orders"/></span>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="d-flex flex-column align-items-center text-center">
+                        <span>Total amount of new orders this month</span>
+                        <span class="fs-1 fw-bold">$ <t t-esc="statistics.total_amount"/></span>
+                    </div>
+                </DashboardItem>
+            </div>
+
+        </Layout>
     </t>
 
 </templates>
