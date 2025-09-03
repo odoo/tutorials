@@ -29,7 +29,7 @@
                     <div class="oe_button_box" name="button_box">
                         <button
                             type="action"
-                            name="%(estate.estate_property_offer_action)d"
+                            name="%(estate_property_offer_action)d"
                             string="Offers"
                             class="oe_stat_button">
                             <div class="o_stat_info">

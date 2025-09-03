@@ -1,6 +1,7 @@
 
 from datetime import timedelta
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 # estate.property.offer model
@@ -67,3 +68,15 @@ class estatePropertyOffer(models.Model):
                 record.property_id.buyer = False
             record.status = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals):
+        for record in vals:
+            property_id = record['property_id']
+            property = self.env['estate.property'].browse(property_id)
+            if property and property.best_price:
+                if record['price'] <= property.best_price:
+                    raise UserError('Offer price must be greater than best offer price')
+            if property.state == 'new':
+                property.state = 'received'
+        return super().create(vals)
