@@ -7,17 +7,19 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
-            Some content.
-        </Layout>
+        <div class="d-flex flex-wrap">
         <DashboardItem>
-        i am a dashboard item
+        some content
         </DashboardItem>
         <DashboardItem size="2">
                 i am a dashboard item twice as big
         </DashboardItem>
         <DashboardItem>
-                another dashboard item
+                some content
         </DashboardItem>
+            </div>
+        </Layout>
+
     </t>
 
 </templates>
