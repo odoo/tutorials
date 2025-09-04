@@ -1,3 +1,24 @@
-.o_dashboard{
-    background-color: grey;
+.o_dashboard {
+    height: 100%;
+    width: 100%;
+    background-color: grey;   // layout = header + content
+}
+
+.o_dashboard_scroll {
+    flex: 1 1 auto;
+    overflow: auto;           // scroll here
+    padding-bottom: 3rem;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: row;      // cards in a row
+    flex-wrap: wrap;          // wrap to next line if needed
+    gap: 1rem;                // spacing between cards
+}
+
+@media (min-width: 640px) {
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

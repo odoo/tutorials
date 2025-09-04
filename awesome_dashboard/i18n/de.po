@@ -1,0 +1,124 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* awesome_dashboard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-09-04 13:09+0000\n"
+"PO-Revision-Date: 2025-09-04 13:09+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard.js:0
+msgid "All leads"
+msgstr "Alle Leads"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average amount of t-shirt"
+msgstr "Durchschnittliche Anzahl T-Shirts"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average amount of t-shirt by order this month"
+msgstr "Durchschnittliche Anzahl T-Shirts pro Bestellung in diesem Monat"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average time for an order"
+msgstr "Durchschnittliche Bearbeitungszeit einer Bestellung"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average time for an order to go from 'new' to 'sent' or 'cancelled'"
+msgstr "Durchschnittliche Zeit von ‚Neu‘ bis ‚Gesendet‘ oder ‚Storniert‘"
+
+#. module: awesome_dashboard
+#: model:ir.ui.menu,name:awesome_dashboard.menu_root
+msgid "Awesome Dashboard"
+msgstr "Geniales Dashboard"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Cancelled orders this month"
+msgstr "Stornierte Bestellungen in diesem Monat"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "Customers"
+msgstr "Kunden"
+
+#. module: awesome_dashboard
+#: model:ir.actions.client,name:awesome_dashboard.dashboard
+#: model:ir.ui.menu,name:awesome_dashboard.dashboard_menu
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "Done"
+msgstr "Fertig"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "Leads"
+msgstr "Leads"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "New orders this month"
+msgstr "Neue Bestellungen in diesem Monat"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Number of cancelled orders this month"
+msgstr "Anzahl stornierter Bestellungen in diesem Monat"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Number of new orders this month"
+msgstr "Anzahl neuer Bestellungen in diesem Monat"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Shirt orders by size"
+msgstr "T-Shirt-Bestellungen nach Größe"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Total amount of new orders this month"
+msgstr "Gesamtanzahl neuer Bestellungen in diesem Monat"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard.xml:0
+msgid "Which cards do you whish to see ?"
+msgstr "Welche Karten möchten Sie sehen?"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "amount orders this month"
+msgstr "Bestellmenge in diesem Monat"
+
