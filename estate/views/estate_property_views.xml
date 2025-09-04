@@ -3,15 +3,15 @@
 
     <!-- Estate Properties Action -->
     <record id="estate_property_actions" model="ir.actions.act_window">
-        <field name="name">Properties</field>
+        <field name="name">Estate Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_state': True, 'search_default_current': True}</field>
     </record>
 
     <!-- Estate Properties List View -->
-    <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list

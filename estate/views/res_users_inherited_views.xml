@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <!-- View Users Form Inherit View -->
     <record id="view_users_form_inherit" model="ir.ui.view">
         <field name="name">res.users.inherited.form.inherit</field>
         <field name="model">res.users</field>

@@ -2,8 +2,8 @@
 
 
 {
-    'name': "Estate Property",
-    'description': 'Real Estate Property Module which will used to help users regarding real estate properties',
+    'name': "Estate Account",
+    'description': 'Real Estate Account Module which will used to help users regarding real estate properties',
     'version': '1.0',
     'category': 'Category',
     'depends': [

@@ -60,16 +60,35 @@ class EstateProperty(models.Model):
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
+        """
+        This will compute total area whenever living area and garden area is changed
+        and count total area in for the record
+        """
+
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
+        """
+        This will compute best offer price among all offers
+        """
+
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
+        """
+        Handles changes to the `garden` field.
+        - If `garden` is checked (True), sets default values:
+            - `garden_area` to 10
+            - `garden_orientation` to `north`
+        - If `garden` is unchecked (False), clears both fields:
+            - `garden_area` and `garden_orientation` are set to False
+        This method is intended to be used as an onchange handler in Odoo views.
+        """
+
         for record in self:
             if record.garden:
                 record.garden_area = 10
@@ -79,6 +98,16 @@ class EstateProperty(models.Model):
                 record.garden_orientation = False
 
     def property_sold_action(self):
+        """
+        Sold action for property
+
+        Raises:
+            UserError: If the property already sold
+
+        Returns:
+            bool: True if operation is successful.
+        """
+
         for record in self:
             if record.state == 'cancel':
                 raise UserError('Cancelled property can not be sold')
@@ -87,6 +116,16 @@ class EstateProperty(models.Model):
         return True
 
     def property_cancel_action(self):
+        """
+        Cancel action for property
+
+        Raises:
+            UserError: If the property already cancelled
+
+        Returns:
+            bool: True if operation is successful.
+        """
+
         for record in self:
             if record.state == 'sold':
                 raise UserError('Sold property can not be cancelled')
@@ -96,11 +135,26 @@ class EstateProperty(models.Model):
 
     @api.constrains('selling_price')
     def check_offer_price(self):
+        """
+        This python constraint will check that selling price of the property
+        should be greater than 90 % of expected price of the property
+
+        Raises:
+            ValidationError: If selling price of property is less than
+            90% of expected price of the property
+        """
         for record in self:
-            if record.offer_ids.price < (0.9 * record.expected_price):
+            if record.selling_price and record.selling_price < (0.9 * record.expected_price):
                 raise ValidationError(f'Selling price ({record.selling_price}) should be greater than 90% ({round(0.9 * record.expected_price, 2)}) of the expected price ({record.expected_price})')
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_user_state(self):
+        """
+        This validation will be checked for deletion of the property and
+        it will be deleted if property state should not be in `new` or `cancel`
+
+        Raises:
+            UserError: If property is in `offer_received` or `offer_accepted` or `sold` state.
+        """
         if any(user.state not in ['new', 'cancel'] for user in self):
-            raise UserError('Can\'t delete property which is in offer received or offer accepted or sold state.')
+            raise UserError('You can\'t delete property which is in offer received or offer accepted or sold state.')
