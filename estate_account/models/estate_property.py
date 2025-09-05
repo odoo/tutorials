@@ -23,4 +23,3 @@ class AccountMove(models.Model):
             ],
         })
         return super().action_sold()
-
