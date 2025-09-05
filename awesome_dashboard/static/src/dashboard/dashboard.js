@@ -1,14 +1,25 @@
 /** @odoo-module **/
 
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { Dialog } from "@web/core/dialog/dialog";
 import { CheckBox } from "@web/core/checkbox/checkbox";
-import { browser } from "@web/core/browser/browser";
 import { _t } from "@web/core/l10n/translation";
+import { rpc } from "@web/core/network/rpc";
+
+async function saveDisabledItems(ids) {
+    await rpc("/awesome_dashboard/save_disabled_items", {
+        disabled_items: JSON.stringify(ids),
+    });
+}
+
+async function loadDisabledItems() {
+    const res = await rpc("/awesome_dashboard/get_disabled_items");
+    return JSON.parse(res);
+}
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -21,8 +32,16 @@ class AwesomeDashboard extends Component {
         this.dialog = useService("dialog");
         this.display = { controlPanel: {} };
         this.items = registry.category("awesome_dashboard").getAll();
+        // this.state = useState({
+        //     disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || []
+        // });
+
         this.state = useState({
-            disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || []
+            disabledItems: [],
+        });
+
+        onWillStart(async () => {
+            this.state.disabledItems = await loadDisabledItems();
         });
     }
 
@@ -35,7 +54,8 @@ class AwesomeDashboard extends Component {
     }
 
     updateConfiguration(newDisabledItems) {
-        this.state.disabledItems = newDisabledItems;
+        this.state.disabledItems = newDisabledItems;   // updates UI
+        saveDisabledItems(newDisabledItems);
     }
 
 
@@ -79,11 +99,6 @@ class ConfigurationDialog extends Component {
         const newDisabledItems = Object.values(this.items).filter(
             (item) => !item.enabled
         ).map((item) => item.id)
-
-        browser.localStorage.setItem(
-            "disabledDashboardItems",
-            newDisabledItems,
-        );
 
         this.props.onUpdateConfiguration(newDisabledItems);
     }
