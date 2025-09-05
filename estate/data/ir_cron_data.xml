@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="ir_cron_estate_property_offer_expire" model="ir.cron">
+            <field name="name">Expire Property Offers</field>
+            <field name="model_id" ref="model_estate_property_offer"></field>
+            <field name="state">code</field>
+            <field name="code">model._cron_refuse_expired_offers()</field>
+            <field name="active" eval="True"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="nextcall">2025-08-26 18:30:00</field>
+        </record>
+    </data>    
+</odoo>
