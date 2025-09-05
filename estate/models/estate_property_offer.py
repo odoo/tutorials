@@ -25,7 +25,7 @@ class EstateOfferModel(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
         default=fields.Date.today() + timedelta(days=7),
-        store=True
+        store=True,
     )
 
     _sql_constraints = [
@@ -90,3 +90,13 @@ class EstateOfferModel(models.Model):
 
             property.state = "offer_received"
         return super().create(vals)
+
+    @api.model
+    def _cron_refuse_expired_offer_scheduler(self):
+        today = fields.Date.context_today(self)
+        expired_offer = self.search(
+            [("date_deadline", "<=", today), ("status", "=", False)]
+        )
+
+        if expired_offer:
+            expired_offer.write({"status": "refused"})

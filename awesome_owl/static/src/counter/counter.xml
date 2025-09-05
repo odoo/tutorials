@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.counter">
+        <div class="rounded-3 p-4" style="background-color: #dadada">
+            <p>
+                <strong>
+                    <t t-esc="props.name" />
+: </strong>
+                <t t-if="state.value &lt; 0">
+                    <p class="text-danger">value cannot be less that zero</p>
+                </t>
+                <t t-else="">
+                    <t t-esc="state.value" />
+                </t>
+            </p>
+            <br />
+            <div class="d-flex gap-3">
+                <button class="btn bg-primary text-white" t-on-click="increment">Increment</button>
+                <button class="btn bg-secondary text-white" t-on-click="decrement">Decrement</button>
+            </div>
+        </div>
+    </t>
+
+</templates>

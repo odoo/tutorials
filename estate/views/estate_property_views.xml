@@ -79,6 +79,8 @@
                 </header>
 
                 <sheet>
+                    <widget name="web_ribbon" title="Sold" bg_color="bg-success" invisible="state != 'sold'" />
+                    <widget name="web_ribbon" title="Cancelled" bg_color="bg-danger" invisible="state != 'cancelled'" />
                     <div>
                         <h1>
                             <field name="name" placeholder="Property Name" />
