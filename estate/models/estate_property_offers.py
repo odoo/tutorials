@@ -16,14 +16,17 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
     property_type_id = fields.Many2one(
-        "estate.property.type", related="property_id.property_type_ids", required=True
+        "estate.property.type",
+        related="property_id.property_type_ids",
+        required=True,
+        store=True,
     )
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_deadline", inverse="_inverse_deadline", store=True
     )
 
-    # date_deadline
+    # If you set the validity date, the date will be computed accordingly.
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for record in self:
@@ -37,6 +40,7 @@ class EstatePropertyOffer(models.Model):
                     fields.Date.today(), days=record.validity
                 )
 
+    # by this, you can change the date, and the validity days will be set accordingly.
     def _inverse_deadline(self):
         for record in self:
             if record.create_date:
@@ -55,20 +59,23 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer = record.partner_id
             record.property_id.state = "offer_accepted"
 
-            # if one offer is accepted then other offers are refused automatically
+        # if one offer is accepted then other offers are refused automatically
 
-            other_record = self.env["estate.property.offers"].search(
-                [
-                    ("property_id", "=", record.property_id.id),
-                    ("id", "!=", record.id),
-                ]
-            )
+        other_record = self.env["estate.property.offers"].search(
+            [
+                ("property_id", "=", record.property_id.id),
+                ("id", "!=", record.id),
+            ]
+        )
+        if other_record:
             other_record.write({"status": "refused"})
 
     def action_refused(self):
         for record in self:
             record.status = "refused"
 
+    # if any offer is received, the property moves to the 'offer_received' stage
+    # if the offer price is less than the best price, display an error message
     @api.model_create_multi
     def create(self, vals):
         for record in vals:
@@ -82,3 +89,15 @@ class EstatePropertyOffer(models.Model):
                         f"The offer price should be higher than {property.best_price}"
                     )
         return super().create(vals)
+
+    # if the offer deadline has passed, the offer will automatically be moved to the rejected stage
+    @api.model
+    def cron_update_mandates_states(self):
+        today = fields.Date.context_today(self)
+
+        expired_offers = self.env["estate.property.offers"].search(
+            [("status", "=", False), ("date_deadline", "<", today)]
+        )
+
+        if expired_offers:
+            expired_offers.write({"status": "refused"})

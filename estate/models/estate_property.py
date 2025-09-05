@@ -113,4 +113,6 @@ class EstateProperty(models.Model):
             record.state in ["offer_received", "offer_accepted", "sold"]
             for record in self
         ):
-            raise exceptions.UserError("Can't delete an Offer")
+            raise exceptions.UserError(
+                "You can not delete the offer as it is already in this state."
+            )
