@@ -6,10 +6,11 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { PieChart } from "./pie_chart/pie_chart";
+import { DoubleCounter } from "./double_counter/double_counter";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem, PieChart, DoubleCounter };
 
     setup() {
         this.action = useService("action");
