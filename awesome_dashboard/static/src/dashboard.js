@@ -14,13 +14,10 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.statistics = useService("awesome_dashboard.statistics");
+        this.statistics = useState(useService("awesome_dashboard.statistics"));
         this.display = {
             controlPanel: {},
         };
-        onWillStart(async () => {
-            this.statistics = await this.statistics.loadStatistics();
-        });
     }
 
     openCustomerView() {
