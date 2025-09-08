@@ -1,3 +1,5 @@
+/** @odoo-module **/
+
 import { loadJS } from "@web/core/assets";
 import { getColor } from "@web/core/colors/colors";
 import { Component, onWillStart, useRef, onMounted, onWillUnmount, onWillUpdateProps } from "@odoo/owl";

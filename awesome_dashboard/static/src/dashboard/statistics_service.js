@@ -1,3 +1,5 @@
+/** @odoo-module **/
+
 import { registry } from "@web/core/registry";
 import { reactive } from "@odoo/owl";
 import { rpc } from "@web/core/network/rpc";
