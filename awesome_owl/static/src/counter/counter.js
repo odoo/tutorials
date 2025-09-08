@@ -15,6 +15,5 @@ export class Counter extends Component {
         if (this.props.onchange) {
             this.props.onchange();
         }
-
     }
 }
