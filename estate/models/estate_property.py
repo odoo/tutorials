@@ -116,16 +116,6 @@ class EstateProperty(models.Model):
         return True
 
     def property_cancel_action(self):
-        """
-        Cancel action for property
-
-        Raises:
-            UserError: If the property already cancelled
-
-        Returns:
-            bool: True if operation is successful.
-        """
-
         for record in self:
             if record.state == 'sold':
                 raise UserError('Sold property can not be cancelled')
