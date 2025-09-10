@@ -52,4 +52,13 @@
         </field>
     </record>
 
+    <record id="estate_property_offer_cron" model="ir.cron">
+        <field name="name">Offer Refuse Cron</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="state">code</field>
+        <field name="code">model._cron_refuse_expired_offers()</field>
+    </record>
+
 </odoo>

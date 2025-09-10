@@ -29,6 +29,15 @@ class EstatePropertyOffer(models.Model):
         ('price', 'CHECK(price >= 0)', 'Offer price must be strictly positive')
     ]
 
+    @api.model
+    def _cron_refuse_expired_offers(self):
+        today = fields.Date.context_today(self)
+        expired_offers = self.search([
+            ('date_deadline', '<', today),
+            ('status', '!=', 'refused')
+        ])
+        expired_offers.write({'status': 'refused'})
+
     @api.depends('created_date', 'validity')
     def _compute_date_deadline(self):
         """
