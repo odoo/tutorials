@@ -4,6 +4,9 @@
         <div class="m-2 p-2 border d-inline-block">
             <span class="me-2">Counter: <t t-esc="state.value"/></span>
             <button class="btn btn-primary" t-on-click="increment">Increment</button>
+            <t t-if="props.showDecr">
+                <button class="btn btn-primary" t-on-click="decrement">Decrement</button>
+            </t>
         </div>
     </t>
 </templates>

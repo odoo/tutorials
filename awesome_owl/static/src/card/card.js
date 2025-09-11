@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @odoo-module alias=@awesome_owl/card/Card default=false**/
 
 import { Component, useState } from "@odoo/owl";
 

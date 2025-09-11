@@ -1,4 +1,4 @@
-/** @odoo-module */
+/** @odoo-module alias=@awesome_owl/todo_list/TodoItem default=false**/
 
 import { Component } from "@odoo/owl";
 

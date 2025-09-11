@@ -1,9 +1,9 @@
-/** @odoo-module **/
+/** @odoo-module alias=@awesome_owl/ default=false**/
 
-import { Component, markup, useState } from "@odoo/owl";
-import { Counter } from "./counter/counter";
-import { Card } from "./card/card";
-import { TodoList } from "./todo_list/todo_list"
+import { TodoList } from "@awesome_owl/todo_list/TodoList";
+import { Component, useState } from "@odoo/owl";
+import { Card } from "@awesome_owl/card/Card";
+import { Counter } from "@awesome_owl/counter/Counter";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
@@ -15,5 +15,9 @@ export class Playground extends Component {
 
     incrementSum() {
         this.sum.value++;
+    }
+
+    decrementSum() {
+        this.sum.value--;
     }
 }

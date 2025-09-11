@@ -1,8 +1,8 @@
-/** @odoo-module */
+/** @odoo-module alias=@awesome_owl/todo_list/TodoList default=false**/
 
 import { Component, useState } from "@odoo/owl";
 import { useAutoFocus } from "../utils";
-import { TodoItem } from "./todo_item";
+import { TodoItem } from "@awesome_owl/todo_list/TodoItem";
 
 export class TodoList extends Component {
     static template = "awesome_owl.TodoList";
