@@ -1,13 +1,13 @@
-/** @odoo-module **/
+/** @odoo-module alias=@awesome_dashboard/ default=false**/
 
 import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
-import { DashboardItem } from "./DashboardItem/dashboard_item";
 import { Dialog } from "@web/core/dialog/dialog";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { browser } from "@web/core/browser/browser"
+import { DashboardItem } from "@awesome_dashboard/DashboardItem/dashboard_item";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";

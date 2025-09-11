@@ -1,6 +1,6 @@
 import { registry } from "@web/core/registry";
-import { PieChartCard } from "./PieChartCard/pie_chart_card"
-import { NumberCard } from "./NumberCard/number_card"
+import { PieChartCard } from "@awesome_dashboard/PieChartCard/pie_chart_card"
+import { NumberCard } from "@awesome_dashboard/NumberCard/number_card"
 const items = [
     {
         id: "average_quantity",

@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=@awesome_dashboard/PieChart/pie_chart default=false**/
 
 import { loadJS } from "@web/core/assets";
 import { Component, onWillStart, onMounted, onWillUnmount, useRef } from "@odoo/owl"

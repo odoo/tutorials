@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=@awesome_dashboard/NumberCard/number_card default=false**/
 
 import { Component } from "@odoo/owl";
 

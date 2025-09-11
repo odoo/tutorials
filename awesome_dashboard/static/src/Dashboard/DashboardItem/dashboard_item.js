@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/** @odoo-module alias=@awesome_dashboard/DashboardItem/dashboard_item default=false**/
 
 import { Component } from "@odoo/owl"
 
