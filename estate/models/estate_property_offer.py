@@ -82,3 +82,12 @@ class estatePropertyOffer(models.Model):
             if property.state == 'new':
                 property.state = 'received'
         return super().create(vals)
+
+    @api.model
+    def _cron_expired_offers(self):
+        today = fields.Date.today(self)
+        expired_offers = self.search([
+            ('date_deadline', '<', today),
+            ('status', '!=', 'refused')
+        ])
+        expired_offers.write({'status': 'refused'})
