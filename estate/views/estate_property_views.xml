@@ -75,6 +75,10 @@
                 <header>
                     <button name="action_property_sold" type="object" string="Sold" invisible="state in ['sold','cancelled']"/>
                     <button name="action_property_cancelled" type="object" string="Cancelled" invisible="state in ['sold','cancelled']"/>
+
+                    <button name="action_property_tag_open" type="object" string="Open Tags"/>
+
+                    
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
 

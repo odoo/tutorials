@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<template>
+    <t t-name="awesome_dashbaord.number_card">
+        <div class="d-flex flex-column justify-content-center align-items-center gap-2">
+            <t t-esc="props.title" />
+            <h3 class="text-success">
+                <t t-esc="props.value" />
+            </h3>
+        </div>
+    </t>
+</template>

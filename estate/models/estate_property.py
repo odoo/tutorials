@@ -130,3 +130,12 @@ class EstateModel(models.Model):
                 raise UserError(
                     "Properties with received offers, accepted offers, or that have been sold cannot be deleted."
                 )
+
+    def action_property_tag_open(self):
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "estate.property.tag",
+            "view_mode": "list",
+            "name": "open_tag",
+            "target": "current",
+        }
