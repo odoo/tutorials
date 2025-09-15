@@ -1,7 +1,7 @@
 from odoo import fields, models
 
 class EstateProperty(models.Model):
-    _name = "estate.estate.property"
+    _name = "estate.property"
     _description = "Real Estate Properties to sell"
     _order = "sequence"
 
