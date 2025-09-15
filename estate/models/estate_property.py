@@ -1,23 +1,15 @@
-# -*- coding: utf-8 -*-
 from datetime import timedelta
 from odoo import fields, models
 
-class EstatePropertyType(models.Model):
-    _name = 'estate.property.type'
-    _description = 'Property Type'
-    _order = 'name'
-    
-    name = fields.Char("Property Type", required=True)
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Property'
     _order = 'name'
 
-
     name = fields.Char("Property", required=True)
     description = fields.Text("Description")
-    
+
     active = fields.Boolean(string="Active", default=True, required=True)
     state = fields.Selection(
         string="State",
@@ -44,12 +36,22 @@ class EstateProperty(models.Model):
         string='Property Type',
     )
 
+    property_tag_ids = fields.Many2many(
+        comodel_name='estate.property.tag',
+        string='Tags',
+    )
+
+    property_offer_ids = fields.One2many(
+        comodel_name='estate.property.offer',
+        string='Offers',
+    )
+
     buyer_id = fields.Many2one(
         comodel_name='res.partner',
         string="Buyer",
         copy=False,
     )
-    
+
     seller_id = fields.Many2one(
         comodel_name='res.users',
         string="Seller",
@@ -57,32 +59,16 @@ class EstateProperty(models.Model):
     )
 
     # Price fields:
-    currency_id = fields.Many2one(
-        comodel_name='res.currency',
-        string="Currency",
-    )
-    expected_price = fields.Monetary(
+    expected_price = fields.Float(
         string="Expected Price",
         required=True,
     )
-    selling_price = fields.Monetary(
+    selling_price = fields.Float(
         string="Selling Price",
     )
 
     # Address fields:
-    street = fields.Char("Street")
-    street2 = fields.Char("Street (line 2)")
-    city = fields.Char("City")
     postcode = fields.Char("Postcode")
-    state_id = fields.Many2one(
-        comodel_name="res.country.state",
-        string='State',
-        domain="[('country_id', '=?', country_id)]",
-    )
-    country_id = fields.Many2one(
-        comodel_name='res.country',
-        string='Country',
-    )
 
     # Amenity fields:
     bedrooms = fields.Integer(string="Bedrooms", default=2, help="Number of bedrooms")
