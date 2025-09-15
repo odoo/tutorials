@@ -36,12 +36,12 @@ class EstateProperty(models.Model):
         string='Property Type',
     )
 
-    property_tag_ids = fields.Many2many(
+    tag_ids = fields.Many2many(
         comodel_name='estate.property.tag',
         string='Tags',
     )
 
-    property_offer_ids = fields.One2many(
+    offer_ids = fields.One2many(
         'estate.property.offer',
         'property_id',
         string='Offers',
