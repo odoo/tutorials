@@ -3,11 +3,14 @@
 {
     'name': 'Estate',
     'version': '0.0.1',
-    'category': 'Sales/CRM',
+    'category': 'Sales',
+    'depends': [
+        'base',
+    ],
     'summary': 'Real Estate Module - Training',
     'website': 'https://www.odoo.com/jobs',
     'installable': True,
-    'application': False,
-    'author': 'Odoo S.A.',
+    'application': True,
+    'author': 'Jérémie Parisel',
     'license': 'LGPL-3',
 }
