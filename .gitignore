@@ -109,8 +109,6 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-# Used by pyright linter
-pyrightconfig.json
 
 # Spyder project settings
 .spyderproject
