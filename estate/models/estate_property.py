@@ -1,0 +1,58 @@
+# -*- coding: utf-8 -*-
+from odoo import fields, models
+
+class EstateProperty(models.Model):
+    _name = 'estate.property'
+    _description = 'Property'
+    _order = 'name'
+
+    name = fields.Char("Property", required=True)
+    description = fields.Text("Description")
+
+    date_availability = fields.Date("Date available")
+
+    # Price fields:
+    currency_id = fields.Many2one(
+        comodel_name='res.currency',
+        string="Currency",
+    )
+    expected_price = fields.Monetary(
+        string="Expected price",
+        required=True,
+    )
+    selling_price = fields.Monetary(
+        string="Selling price",
+    )
+
+    # Address fields:
+    street = fields.Char("Street")
+    street2 = fields.Char("Street (line 2)")
+    city = fields.Char("City")
+    postcode = fields.Char("Postal code")
+    state_id = fields.Many2one(
+        comodel_name="res.country.state",
+        string='State',
+        domain="[('country_id', '=?', country_id)]",
+    )
+    country_id = fields.Many2one(
+        comodel_name='res.country',
+        string='Country',
+    )
+
+    # Amenity fields:
+    bedrooms = fields.Integer(string="Bedrooms", help="Number of bedrooms")
+    living_area = fields.Integer(string="Living area", help="Habitable area of the property (m^2)")
+    facades = fields.Integer(string="Facades", help="Number of facades")
+    garage = fields.Boolean(string="Garage")
+    garden = fields.Boolean(string="Garden")
+    garden_area = fields.Integer(string="Garden area", help="Size of the garden (m^2)")
+    garden_orientation = fields.Selection(
+        string='Garden orientation',
+        selection=[
+            ('n', 'North'),
+            ('s', 'South'),
+            ('e', 'East'),
+            ('w', 'West'),
+        ],
+        help="Direction the garden faces",
+    )
