@@ -42,7 +42,8 @@ class EstateProperty(models.Model):
     )
 
     property_offer_ids = fields.One2many(
-        comodel_name='estate.property.offer',
+        'estate.property.offer',
+        'property_id',
         string='Offers',
     )
 
