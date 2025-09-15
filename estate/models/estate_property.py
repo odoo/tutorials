@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
 from odoo import fields, models
 
 class EstateProperty(models.Model):
@@ -9,7 +10,7 @@ class EstateProperty(models.Model):
     name = fields.Char("Property", required=True)
     description = fields.Text("Description")
 
-    date_availability = fields.Date("Date available")
+    date_availability = fields.Date("Date available", default=(lambda _: fields.Date.today() + timedelta(days=90)))
 
     # Price fields:
     currency_id = fields.Many2one(
@@ -40,7 +41,7 @@ class EstateProperty(models.Model):
     )
 
     # Amenity fields:
-    bedrooms = fields.Integer(string="Bedrooms", help="Number of bedrooms")
+    bedrooms = fields.Integer(string="Bedrooms", default=2, help="Number of bedrooms")
     living_area = fields.Integer(string="Living area", help="Habitable area of the property (m^2)")
     facades = fields.Integer(string="Facades", help="Number of facades")
     garage = fields.Boolean(string="Garage")
