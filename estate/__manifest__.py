@@ -1,7 +1,8 @@
-
-
 {
     'name': 'Estate',
     'depends': ['base'],
-    'application': True
+    'application': True,
+    'data': [
+        'security/ir.model.access.csv',
+    ],
 }   
