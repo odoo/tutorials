@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Configuration/Lead & Opportunities/Lost Reasons Menu -->
+    <record id="estate_model_action" model="ir.actions.act_window">
+        <field name="name">Estate action</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
