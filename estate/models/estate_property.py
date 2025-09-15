@@ -2,6 +2,13 @@
 from datetime import timedelta
 from odoo import fields, models
 
+class EstatePropertyType(models.Model):
+    _name = 'estate.property.type'
+    _description = 'Property Type'
+    _order = 'name'
+    
+    name = fields.Char("Property Type", required=True)
+
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Property'
@@ -30,6 +37,23 @@ class EstateProperty(models.Model):
         string="Available From",
         default=(lambda _: fields.Date.today() + timedelta(days=90)),
         copy=False,
+    )
+
+    property_type_id = fields.Many2one(
+        comodel_name='estate.property.type',
+        string='Property Type',
+    )
+
+    buyer_id = fields.Many2one(
+        comodel_name='res.partner',
+        string="Buyer",
+        copy=False,
+    )
+    
+    seller_id = fields.Many2one(
+        comodel_name='res.users',
+        string="Seller",
+        default=lambda self: self.env.user,
     )
 
     # Price fields:
