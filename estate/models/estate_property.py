@@ -1,4 +1,5 @@
 from odoo import fields, models
+from dateutil import relativedelta
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -7,11 +8,10 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-    date_availability = fields.Date()
-    date_availability = fields.Date()
+    date_availability = fields.Date(default=fields.Date.today() + relativedelta.relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float()
-    bedrooms = fields.Integer()
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
