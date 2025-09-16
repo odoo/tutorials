@@ -82,11 +82,11 @@ class EstateProperty(models.Model):
     
     @api.constrains('selling_price')
     def _check_selling_price_not_too_low(self):
-        for record in self:
+        for property in self:
             if (
-                record.selling_price
-                and not float_is_zero(record.selling_price, 2)
-                and float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 0
+                property.selling_price
+                and not float_is_zero(property.selling_price, 2)
+                and float_compare(property.selling_price, 0.9 * property.expected_price, 2) < 0
             ):
                 raise ValidationError("Property selling price cannot be lower than 90% of the expected price.")
 
@@ -98,8 +98,8 @@ class EstateProperty(models.Model):
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
-        for record in self:
-            record.best_price = max((offer.price for offer in record.offer_ids), default=None)
+        for property in self:
+            property.best_price = max((offer.price for offer in property.offer_ids), default=None)
 
     # Address fields:
     postcode = fields.Char("Postcode")
@@ -126,11 +126,11 @@ class EstateProperty(models.Model):
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        for record in self:
-            if record.living_area is None or record.garden_area is None:
-                record.total_area = None
+        for property in self:
+            if property.living_area is None or property.garden_area is None:
+                property.total_area = None
             else:
-                record.total_area = record.living_area + record.garden_area
+                property.total_area = property.living_area + property.garden_area
 
 
     @api.onchange("garden")
@@ -144,18 +144,18 @@ class EstateProperty(models.Model):
 
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
+        for property in self:
+            if property.state == 'sold':
                 raise UserError("Can't cancel a property that's already sold")
             else:
-                record.state = 'cancelled'
+                property.state = 'cancelled'
         return True
 
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
+        for property in self:
+            if property.state == 'cancelled':
                 raise UserError("Can't sell a cancelled property")
             else:
-                record.state = 'sold'
+                property.state = 'sold'
         return True
