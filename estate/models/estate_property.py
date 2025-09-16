@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 from datetime import timedelta
 
 
@@ -56,7 +56,6 @@ class RealEstateProperty(models.Model):
         for record in self:
             record.best_offer = max(record.offers_ids.mapped("price")) if record.offers_ids else 0
 
-
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -65,4 +64,16 @@ class RealEstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+            
+    def sold_property(self):
+        for record in self:
+            if record.state in ['canceled', 'new']:
+                raise exceptions.UserError("Only properties with an accepted offer can be sold.")
+            record.state = 'sold'
+    
+    def cancel_property(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError("Sold properties cannot be canceled.")
+            record.state = 'canceled'
             

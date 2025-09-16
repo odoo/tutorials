@@ -1,4 +1,4 @@
-from odoo import models, fields  # type: ignore
+from odoo import fields, models  # type: ignore
 
 
 class RealEstatePropertyType(models.Model):
