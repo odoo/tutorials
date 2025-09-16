@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import api, models, fields
 from datetime import date, timedelta
 
 
@@ -20,6 +20,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    total_area = fields.Integer(compute="_compute_total_area")
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
@@ -47,3 +48,27 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one('res.users', string="Salesman")
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+
+    best_price = fields.Float(compute="_compute_best_offer")
+
+    @api.depends('garden_area', 'living_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends('offer_ids')
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_price = 0
+            for offer in record.offer_ids:
+                if record.best_price < offer.price:
+                    record.best_price = offer.price
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
