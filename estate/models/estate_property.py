@@ -6,7 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _description = 'Property'
+    _description = "Property"
     _order = 'id desc'
 
     name = fields.Char("Property", required=True)
@@ -16,13 +16,13 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         string="Status",
         selection=[
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
-        default="new",
+        default='new',
         required=True,
         copy=False,
     )
@@ -35,18 +35,18 @@ class EstateProperty(models.Model):
 
     property_type_id = fields.Many2one(
         comodel_name='estate.property.type',
-        string='Property Type',
+        string="Property Type",
     )
 
     tag_ids = fields.Many2many(
         comodel_name='estate.property.tag',
-        string='Tags',
+        string="Tags",
     )
 
     offer_ids = fields.One2many(
         'estate.property.offer',
         'property_id',
-        string='Offers',
+        string="Offers",
     )
 
     buyer_id = fields.Many2one(
@@ -112,7 +112,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area (sqm)", help="Size of the garden (m^2)")
     garden_orientation = fields.Selection(
-        string='Garden orientation',
+        string="Garden orientation",
         selection=[
             ('north', "North"),
             ('south', "South"),
@@ -122,7 +122,7 @@ class EstateProperty(models.Model):
         help="Direction the garden faces",
     )
 
-    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
+    total_area = fields.Integer(string="Total Area (sqm)", compute='_compute_total_area')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -133,7 +133,7 @@ class EstateProperty(models.Model):
                 property.total_area = property.living_area + property.garden_area
 
 
-    @api.onchange("garden")
+    @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
