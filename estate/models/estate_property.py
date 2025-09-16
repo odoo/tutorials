@@ -1,53 +1,58 @@
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError, UserError
-from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools.float_utils import float_compare
+
 
 class Property(models.Model):
-    _name = "estate.property"
+    _name = 'estate.property'
     _description = "Estate property"
+    _order = 'id desc'
 
-    name = fields.Char('Title', required=True)
-    description = fields.Text('Description')
-    postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
-    expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
-    bedrooms = fields.Integer('Bedrooms', default=2)
-    living_area = fields.Integer('Living Area (sqm)')
-    facades = fields.Integer('Number of Facades')
-    garage = fields.Boolean('Garage')
-    garden = fields.Boolean('Garden')
-    garden_area = fields.Integer('Garden Area (sqm)')
-    garden_orientation = fields.Selection(selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
-    active = fields.Boolean('Active', default=False)
+    def _today_plus_three_months(self):
+        return fields.Date.add(fields.Date.today(), months=3)
+
+    name = fields.Char("Title", required=True)
+    description = fields.Text()
+    postcode = fields.Char()
+    date_availability = fields.Date("Available From", copy=False, default=_today_plus_three_months)
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer("Living Area (sqm)")
+    facades = fields.Integer("Number of Facades")
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer("Garden Area (sqm)")
+    garden_orientation = fields.Selection(selection=[('north', "North"), ('south', "South"), ('east', "East"), ('west', "West")])
+    active = fields.Boolean(default=True)
     state = fields.Selection(selection=[
-                                ('new', 'New'), 
-                                ('offer_received', 'Offer Received'), 
-                                ('offer_accepted', 'Offer Accepted'), 
-                                ('sold', 'Sold'),
-                                ('cancelled', 'Cancelled')
-                            ])
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    salesman_id = fields.Many2one("res.users", string="Salesman")
-    buyer_id = fields.Many2one("res.partner", string="Buyer")
-    tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id")
-    total_area = fields.Integer(compute="_compute_total_area")
-    best_price = fields.Float('Best Offer', compute="_compute_best_price")
+                                ('new', "New"),
+                                ('offer_received', "Offer Received"),
+                                ('offer_accepted', "Offer Accepted"),
+                                ('sold', "Sold"),
+                                ('cancelled', "Cancelled")
+                            ], default='new', required=True, copy=False, string="Status")
+    property_type_id = fields.Many2one('estate.property.type')
+    salesman_id = fields.Many2one('res.users')
+    buyer_id = fields.Many2one('res.partner')
+    tag_ids = fields.Many2many('estate.property.tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
+    total_area = fields.Integer(compute='_compute_total_area')
+    best_price = fields.Float("Best Offer", compute='_compute_best_price')
 
-    _expected_price_positive = models.Constraint('CHECK(expected_price >= 0)', 'The expected price must be positive.')
-    _selling_price_positive = models.Constraint('CHECK(selling_price >= 0)', 'The selling price must be positive.')
+    _expected_price_positive = models.Constraint('CHECK(expected_price >= 0)', "The expected price must be positive.")
+    _selling_price_positive = models.Constraint('CHECK(selling_price >= 0)', "The selling price must be positive.")
 
-    @api.depends("living_area", "garden_area")
+    @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    @api.depends("offer_ids.price")
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
             if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped("price"))
+                record.best_price = max(record.offer_ids.mapped('price'))
             else:
                 record.best_price = 0
 
