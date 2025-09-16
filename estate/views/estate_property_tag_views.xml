@@ -1,18 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
 
-
-    <!-- <record id="estate_property_type_view_list" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
-        <field name="model">estate.property.type</field>
-        <field name="arch" type="xml">
-            <list string="Properties">
-                <field name="name" options="{'column_width': 200}"/>
-            </list>
-        </field>
-    </record> -->
-
-
     <record id="estate_property_tag_view_form" model="ir.ui.view">
         <field name="name">estate.property.tag.form</field>
         <field name="model">estate.property.tag</field>
@@ -26,8 +14,6 @@
             </form>
         </field>
     </record>
-
-
 
     <record id="estate_property_action_property_tags" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
