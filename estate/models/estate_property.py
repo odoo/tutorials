@@ -109,6 +109,7 @@ class EstateProperty(models.Model):
             else:
                 record.total_area = record.living_area + record.garden_area
 
+
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
@@ -117,3 +118,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+
+    def action_cancel(self):
+        for record in self:
+            record.state = 'cancelled'
+        return True
+
+
+    def action_sold(self):
+        for record in self:
+            record.state = 'sold'
+        return True
