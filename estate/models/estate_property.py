@@ -11,14 +11,14 @@ class RealEstateProperty(models.Model):
     date_availability = fields.Date(
         copy=False, 
         default=(lambda x: fields.Date.today() + timedelta(days=90)))
-    expected_price = fields.Float(required=True, readonly=True)
+    expected_price = fields.Float(required=True, readonly=False)
     selling_price = fields.Float(copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer('Garden Area (sqm)')
     active = fields.Boolean(default=True)
     state = fields.Selection([
         ('new', 'New'),
