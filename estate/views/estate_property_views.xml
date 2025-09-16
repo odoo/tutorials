@@ -68,9 +68,11 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
                     <div class="row p-3">
                         <group class="col">
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -90,6 +92,15 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                        <page class="p-3" string="Offers">
+                            <field name="offer_ids" />
+                        </page>
+                        <page class="p-3" string="Other Info">
+                            <group>
+                                <field name="seller_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>

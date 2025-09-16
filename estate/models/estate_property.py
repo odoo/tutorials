@@ -3,7 +3,7 @@ from datetime import date, timedelta
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
+    _name = 'estate.property'
     _description = "Estate Property"
 
     name = fields.Char("Estate name", required=True, translate=True)
@@ -23,11 +23,11 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
         copy=False,
         default="new",
@@ -35,13 +35,15 @@ class EstateProperty(models.Model):
     )
     garden_orientation = fields.Selection(
         [
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West"),
         ],
         help="Orientation of the estate property",
     )
-    property_type = fields.Selection(
-        selection=[("apartment", "Apartment"), ("house", "House")]
-    )
+    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    buyer_id = fields.Many2one('res.partner', string="Buyer")
+    seller_id = fields.Many2one('res.users', string="Salesman")
+    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
