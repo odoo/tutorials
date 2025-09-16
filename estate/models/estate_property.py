@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from datetime import date, timedelta
 
 class Property(models.Model):
@@ -22,6 +22,16 @@ class Property(models.Model):
     facades            = fields.Integer()
     garage             = fields.Boolean()
     garden             = fields.Boolean()
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
+
     garden_area        = fields.Integer()
     garden_orientation = fields.Selection(
         string='Orientation',
@@ -33,3 +43,17 @@ class Property(models.Model):
 
     tags_ids           = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids          = fields.One2many("estate.property.offer", "property_id", string="Offers")
+
+    total_area         = fields.Float(compute="_compute_total_area")
+
+    @api.depends("garden_area", "living_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+    
+    best_price         = fields.Float(compute="_compute_best_price")
+
+    @api.depends("offer_ids")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(map(lambda o: o.price, record.offer_ids)) if len(record.offer_ids) > 0 else 0
