@@ -1,5 +1,7 @@
 from datetime import timedelta
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -72,10 +74,22 @@ class EstateProperty(models.Model):
     selling_price = fields.Float(
         string="Selling Price",
     )
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price IS NULL OR selling_price > 0)',
-        "Selling price must be positive.",
+
+    _check_selling_price_nonnegative = models.Constraint(
+        'CHECK(selling_price IS NULL OR selling_price >= 0)',
+        "Selling price cannot be negative.",
     )
+    
+    @api.constrains('selling_price')
+    def _check_selling_price_not_too_low(self):
+        for record in self:
+            if (
+                record.selling_price
+                and not float_is_zero(record.selling_price, 2)
+                and float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 0
+            ):
+                raise ValidationError("Property selling price cannot be lower than 90% of the expected price.")
+
 
     best_price = fields.Float(
         string="Best Offer",
@@ -132,7 +146,7 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError("Can't cancel a property that's already sold")
+                raise UserError("Can't cancel a property that's already sold")
             else:
                 record.state = 'cancelled'
         return True
@@ -141,7 +155,7 @@ class EstateProperty(models.Model):
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise exceptions.UserError("Can't sell a cancelled property")
+                raise UserError("Can't sell a cancelled property")
             else:
                 record.state = 'sold'
         return True
