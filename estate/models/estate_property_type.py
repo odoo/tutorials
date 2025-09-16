@@ -5,12 +5,13 @@ class EstatePropertyType(models.Model):
     _description = "Property Type"
     _order = 'sequence, name'
     
-    name = fields.Char("Property Type", required=True)
     _unique_name = models.Constraint(
         'unique(name)',
         "Property type name must be unique.",
     )
 
+    name = fields.Char("Property Type", required=True)
+    
     property_ids = fields.One2many(
         comodel_name='estate.property',
         inverse_name='property_type_id',
