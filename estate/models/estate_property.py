@@ -1,4 +1,4 @@
-from odoo import models, fields, api  # type: ignore
+from odoo import api, fields, models
 from datetime import timedelta
 
 
