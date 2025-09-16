@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Action Handler -->
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- List -->
+    <record id="estate_property_type_list" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="list">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/> 
+            </list>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="estate_property_type_form" model="ir.ui.view">
+        <field name="name">estate.property.type.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <h1> <field name="name"/> </h1> <!-- Title -->
+                    <div class="oe_button_box" name="button_box"> <!-- Stat button -->
+                        <button type="object"
+                                name="action_view_offers"
+                                class="oe_stat_button"
+                                icon="fa-money">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </div>
+                    <notebook> <!-- NoteBook -->
+                        <page string="Properties">  <!-- Tab -->
+                            <field name="property_ids">   <!-- render ListView for Property with Override -->
+                                <list>
+                                    <field name="name"></field>
+                                    <field name="expected_price"></field>
+                                    <field name="estate_state"></field>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record id="estate_property_type_search" model="ir.ui.view">
+        <field name="name">estate.property.type.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <!-- Search fields -->
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+</odoo>
