@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-
 {
-    "author" : "Léopold Cantraine",
-    "license" : "LGPL-3",
+    "author": "Léopold Cantraine",
+    "license": "LGPL-3",
     "name": "Estate",
     "depends": ["base"],
     "application": True,
