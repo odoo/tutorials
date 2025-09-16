@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -68,6 +68,16 @@ class EstateProperty(models.Model):
         string="Selling Price",
     )
 
+    best_price = fields.Float(
+        string="Best Offer",
+        compute='_compute_best_price',
+    )
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max((offer.price for offer in record.offer_ids), default=None)
+
     # Address fields:
     postcode = fields.Char("Postcode")
 
@@ -88,3 +98,13 @@ class EstateProperty(models.Model):
         ],
         help="Direction the garden faces",
     )
+
+    total_area = fields.Integer(string="Total Area (sqm)", compute="_compute_total_area")
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            if record.living_area is None or record.garden_area is None:
+                record.total_area = None
+            else:
+                record.total_area = record.living_area + record.garden_area
