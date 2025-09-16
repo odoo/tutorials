@@ -1,5 +1,5 @@
 from datetime import timedelta
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -122,11 +122,17 @@ class EstateProperty(models.Model):
 
     def action_cancel(self):
         for record in self:
-            record.state = 'cancelled'
+            if record.state == 'sold':
+                raise exceptions.UserError("Can't cancel a property that's already sold")
+            else:
+                record.state = 'cancelled'
         return True
 
 
     def action_sold(self):
         for record in self:
-            record.state = 'sold'
+            if record.state == 'cancelled':
+                raise exceptions.UserError("Can't sell a cancelled property")
+            else:
+                record.state = 'sold'
         return True
