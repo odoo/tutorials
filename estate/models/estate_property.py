@@ -108,3 +108,12 @@ class EstateProperty(models.Model):
                 record.total_area = None
             else:
                 record.total_area = record.living_area + record.garden_area
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'n'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None

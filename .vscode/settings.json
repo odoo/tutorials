@@ -1,3 +1,7 @@
 {
-    "python.useEnvironmentsExtension": true
+    "python.useEnvironmentsExtension": true,
+    "python.languageServer": "Default",
+    "python.analysis.typeCheckingMode": "off",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.analysis.extraPaths": ["../odoo"],
 }
