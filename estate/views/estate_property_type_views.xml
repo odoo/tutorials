@@ -7,6 +7,17 @@
             <form string="Property Type">
                 <sheet>
                     <h1><field name="name" placeholder="Property Type name..."/></h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

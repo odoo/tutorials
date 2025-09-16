@@ -10,3 +10,9 @@ class EstatePropertyType(models.Model):
         'unique(name)',
         "Property type name must be unique.",
     )
+
+    property_ids = fields.One2many(
+        comodel_name='estate.property',
+        inverse_name='property_type_id',
+        string="Properties",
+    )
