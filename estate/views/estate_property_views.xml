@@ -29,6 +29,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property form test string?">
+                <header>
+                    <button name="action_property_cancel" type="object" string="Cancel" />
+                    <button name="action_property_sold" type="object" string="Sold" />
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <div class="oe_edit_only">
@@ -44,6 +48,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>

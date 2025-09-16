@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 from datetime import date, timedelta
 
 class Property(models.Model):
@@ -7,6 +7,12 @@ class Property(models.Model):
 
     name               = fields.Char(required=True)
     expected_price     = fields.Float(required=True)
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive"
+    )
+
     property_type_id   = fields.Many2one("estate.property.type", string="Property Type")
     state              = fields.Selection(
         string='State',
@@ -16,6 +22,12 @@ class Property(models.Model):
     description        = fields.Text()
     postcode           = fields.Char()
     selling_price      = fields.Float(copy=False, readonly=True)
+
+    _check_selling_price = models.Constraint(
+        "CHECK (selling_price >= 0)",
+        "The selling price must be positive"
+    )
+
     date_availability  = fields.Date(copy=False, default=date.today() + timedelta(days=90))
     bedrooms           = fields.Integer(default=2)
     living_area        = fields.Integer()
@@ -56,4 +68,20 @@ class Property(models.Model):
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(map(lambda o: o.price, record.offer_ids)) if len(record.offer_ids) > 0 else 0
+            record.best_price = max([o.price for o in record.offer_ids]) if len(record.offer_ids) > 0 else 0
+
+    def action_property_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise exceptions.UserError("A sold property cannot be cancelled.")
+            else:
+                record.state = "cancelled"
+        return True
+
+    def action_property_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise exceptions.UserError("A cancelled property cannot be sold.")
+            else:
+                record.state = "sold"
+        return True

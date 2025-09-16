@@ -1,4 +1,5 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
+from odoo.tools.float_utils import float_compare
 from datetime import datetime, timedelta
 
 class PropertyOffer(models.Model):
@@ -6,13 +7,25 @@ class PropertyOffer(models.Model):
     _description = "Test description for estate.property.offer model"
 
     price         = fields.Float()
+
+    _check_price = models.Constraint(
+        "CHECK (price > 0)",
+        "The price must be strictly positive"
+    )
+
+    @api.constrains("price")
+    def _check_price_2(self):
+        for record in self:
+            if float_compare(record.price, 0.90*record.property_id.expected_price, precision_digits=2) == -1:
+                raise exceptions.UserError("The selling price cannot be lower than 90% of the expected price")
+
     status        = fields.Selection(
         string="Offer Status",
         copy=False,
         selection=[("accepted","Accepted"), ("refused", "Refused")])
     partner_id    = fields.Many2one("res.partner", required=True)
     property_id   = fields.Many2one("estate.property", required=True)
-    validity      = fields.Integer(default=7, compute="_inverse_date_deadline", inverse="_computed_date_deadline")
+    validity      = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_computed_date_deadline", inverse="_inverse_date_deadline")
 
     @api.depends("validity")
@@ -21,7 +34,23 @@ class PropertyOffer(models.Model):
             # record.create_date is "falsy" so if checking with `record.create_date if hasattr(record.create_date) else datetime.today()` then it's true because it hasattr but it's None so it's converted to false
             record.date_deadline = ((record.create_date or datetime.today()) + timedelta(days=record.validity)).date()
 
-    @api.depends("date_deadline")
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    @api.depends("property_id", "property_id.offer_ids")
+    def action_offer_accept(self):
+        for record in self:
+            if any(o.status == "accepted" for o in record.property_id.offer_ids):
+                raise exceptions.UserError("Cannot accept more than one offer")
+            elif float_compare(record.price, 0.90*record.property_id.expected_price, precision_digits=2) == -1:
+                raise exceptions.UserError("The selling price cannot be lower than 90% of the expected price")
+            else:
+                record.status = "accepted"
+                record.property_id.buyer_id = record.partner_id
+                record.property_id.selling_price = record.price
+                
+   
+    def action_offer_refuse(self):
+        for record in self:
+            record.status = "refused"
