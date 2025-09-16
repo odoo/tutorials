@@ -46,8 +46,6 @@ class RealEstateProperty(models.Model):
     total_area = fields.Float(compute='_compute_area', string="Total Area (sqm)")
     best_offer = fields.Float(compute='_compute_offer', string="Best Offer (EUR)")
 
-    
-
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
         for record in self:
