@@ -21,7 +21,7 @@ class Property(models.Model):
         string='Orientation',
         selection=[("north","North"), ("south", "South"), ("east","East"), ("west", "West")])
 
-    active             = fields.Boolean(default=False)
+    active             = fields.Boolean(default=True)
     state              = fields.Selection(
         string='State',
         selection=[("new", "New"), ("offerreceived", "Offer Received"), ("offeraccepted", "Offer accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
