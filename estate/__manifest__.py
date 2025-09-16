@@ -7,11 +7,15 @@
     'depends': [
         'base',
     ],
+    'version': '19.0.0.0',
     'installable': True,
     'application': True,
     'data': [
-        'security/ir.model.access.csv',
+        'views/estate_property_offer_views.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_property_type_views.xml',
         'views/estate_property_views.xml',
-        'views/estate_menus.xml', # depends on estate_property_views.xml
+        'views/estate_menus.xml', # depends on estate_property_views.xml, estate_property_type_views.xml
+        'security/ir.model.access.csv',
     ]
 }
