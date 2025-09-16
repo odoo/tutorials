@@ -29,10 +29,10 @@
                 </header>
                 <sheet>
                     <h1><field name="name" placeholder="Title"/></h1>
-                    <field name="tag_ids" widget="many2many_tags" placeholder="Tags..."/>
+                    <field name="tag_ids" widget="many2many_tags" placeholder="Tags..." options="{'color_field': 'color'}"/>
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'can_create': false, 'can_write': false}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
