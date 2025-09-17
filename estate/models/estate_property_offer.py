@@ -1,4 +1,4 @@
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api, exceptions, tools
 from datetime import timedelta
 
 
@@ -50,3 +50,25 @@ class estate_property_offer(models.Model):
         for offer in self:
             offer.status = "refused"
         return True
+
+    _check_offer_price = models.Constraint(
+        "CHECK(price > 0)",
+        "The price of an offer needs to be strictly positive",
+    )
+
+    @api.constrains("status", "price")
+    def _check_selling_price(self):
+        print("B")
+        for offer in self:
+            if offer.status != "accepted":
+                return True
+
+            if (
+                tools.float_compare(
+                    (offer.property_id.expected_price * 0.9), offer.price, 2
+                )
+                >= 0
+            ):
+                raise exceptions.ValidationError(
+                    "The selling price cant be lower than 90 percent of the expected price"
+                )

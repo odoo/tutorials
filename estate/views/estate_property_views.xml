@@ -71,6 +71,7 @@
                         </page>
                         <page string="Offers">
                         <group>
+                            <field name ="has_accepted_offer"/>
                             <field name="offer_ids"/>                            
                         </group>
                         </page>

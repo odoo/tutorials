@@ -1,4 +1,4 @@
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api, exceptions, tools
 from datetime import timedelta
 
 
@@ -85,7 +85,7 @@ class estate_property(models.Model):
             if not len(record.offer_ids):
                 record.selling_price = 0
             else:
-                if len(set(record.mapped("offer_ids.status"))) == 1:
+                if "accepted" not in set(record.mapped("offer_ids.status")):
                     record.selling_price = 0
                     record.has_accepted_offer = False
                 else:
@@ -120,3 +120,35 @@ class estate_property(models.Model):
                     )
                 )
         return True
+
+    # ---------------------------------------------------------------------------------------------------------
+    #   Constraints
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price of a propriety needs to be strictly positive",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "The selling price of a propriety needs to be positive",
+    )
+
+    @api.constrains(
+        "expected_price",
+    )
+    def _check_selling_price(self):
+        print("A")
+        for record in self:
+            if not record.has_accepted_offer:
+                return True
+
+            if (
+                tools.float_compare(
+                    (record.expected_price * 0.9), record.selling_price, 2
+                )
+                >= 0
+            ):
+                raise exceptions.ValidationError(
+                    "The selling price cant be lower than 90 percent of the expected price"
+                )
