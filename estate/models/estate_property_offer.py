@@ -22,3 +22,8 @@ class EstatePropertyOffer(models.Model):
         self.property_id.buyer_id = self.buyer_id
     def action_reject_offer(self):
         self.offer_status = 'offer_rejected'
+
+    _check_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price should be strictly positive'
+    )
