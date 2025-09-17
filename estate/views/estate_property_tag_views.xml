@@ -8,11 +8,11 @@
     </record>
 
 
-    <record id="estate_property_tag_view_tree" model="ir.ui.view">
+    <record id="estate_property_tag_view_list" model="ir.ui.view">
         <field name="name">estate.property.tag.view.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Property tag tree test string?">
+            <list string="Property tag list test string?" editable="bottom">
                 <field name="name"/>
             </list>
         </field>
