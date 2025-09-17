@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="mrp.clean_forecast_view_line" t-inherit="mrp.BomOverviewLine" t-inherit-mode="extension">
+
+        <!-- Remove the Availability State / Forecast column -->
+        <xpath expr="//td[@t-if='showAvailabilities' and contains(@class, 'text-center')]" position="replace"/>
+
+    </t>
+</templates>
