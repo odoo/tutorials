@@ -30,6 +30,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property form test string?">
+                <field name="active" invisible="1"/>
                 <header>
                     <button name="action_property_cancel" type="object" string="Cancel" invisible="state == 'cancelled' or state == 'sold'"/>
                     <button name="action_property_sold" type="object" string="Sold" invisible="state == 'cancelled' or state == 'sold'"/>
@@ -45,9 +46,6 @@
                         </h1>
                         <field name="tags_ids" widget="form.many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
-                    <group>
-                        <field name="active" invisible="1"/>
-                    </group>
                     <group>
                         <group>
                             <field name="property_type_id" options="{'no_create_edit':True}"/>
