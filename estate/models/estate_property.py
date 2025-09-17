@@ -41,7 +41,7 @@ class RealEstateProperty(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    salesperson = fields.Many2one(
+    salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -96,3 +96,10 @@ class RealEstateProperty(models.Model):
             if record.state == 'sold':
                 raise UserError(_("Sold properties cannot be canceled."))
             record.state = 'canceled'
+
+    @api.ondelete(at_uninstall=False)
+    def delete(self):
+        for record in self:
+            if record.state not in ['new', 'canceled']:
+                raise UserError(_("Only new or canceled properties can be deleted."))
+            

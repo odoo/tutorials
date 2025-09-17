@@ -1,7 +1,7 @@
 from odoo import api, exceptions, fields, models, _
 from datetime import timedelta
 from odoo.tools.float_utils import float_compare
-from odoo.exceptions import ValidationError 
+from odoo.exceptions import ValidationError, UserError
 
 class RealEstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -58,3 +58,17 @@ class RealEstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         self.status = 'refused'
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            if property:
+                if property.state == 'new':
+                    property.state = 'offer_received'
+
+                if vals['price'] < property.best_offer:
+                    raise UserError(self.env._("Offer must be higher or equal than %d", property.best_offer))
+
+        return super().create(vals_list)
+    
