@@ -1,12 +1,13 @@
 from odoo import api, fields, models, _
 from datetime import timedelta
-from odoo.tools.float_utils import float_compare
-from odoo.exceptions import UserError, ValidationError 
+
+from odoo.exceptions import UserError
 
 
 class RealEstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -53,14 +54,9 @@ class RealEstateProperty(models.Model):
     'The expected price of a property should be strictly positive.')
 
     _check_selling_price = models.Constraint(
-    'CHECK(selling_price => 0)',
+    'CHECK(selling_price >= 0)',
     'The selling price of a property should be positive.')
 
-    @api.constrains('expected_price', 'selling_price')
-    def _check_selling_price(self):
-        for record in self:
-            if record.selling_price and float_compare(record.selling_price, (record.expected_price*0.9) , 2) <= 0:
-                    raise ValidationError("The best offer must be at least 90% of the expected price to accept an offer.")
 
     @api.depends('living_area', 'garden_area')
     def _compute_area(self):
@@ -71,6 +67,14 @@ class RealEstateProperty(models.Model):
     def _compute_offer(self):
         for record in self:
             record.best_offer = max(record.offers_ids.mapped("price")) if record.offers_ids else 0
+
+    @api.depends('offers_ids')
+    def _compute_state(self):
+        for record in self:
+            if record.offer_ids:
+                record.state = 'offer_received'
+            else:
+                record.state = 'new'
 
     @api.onchange('garden')
     def _onchange_garden(self):

@@ -1,9 +1,12 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, exceptions, fields, models, _
 from datetime import timedelta
+from odoo.tools.float_utils import float_compare
+from odoo.exceptions import ValidationError 
 
 class RealEstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -13,10 +16,20 @@ class RealEstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_set_deadline")
+    property_type_id = fields.Many2one(
+        "estate.property.type", related="property_id.property_type_id", store=True
+    )
 
     _check_offer_price = models.Constraint(
     'CHECK(price > 0)',
-    'The offer price should be strictly positive.')
+    "The offer price should be strictly positive.")
+
+
+    @api.constrains('price')
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.price, (record.property_id.expected_price*0.9) , 2) < 0:
+                    raise ValidationError(_("The best offer must be at least 90% of the expected price to accept an offer."))
 
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
