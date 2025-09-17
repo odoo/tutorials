@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from odoo import api, exceptions, fields, models
+from odoo import _, api, exceptions, fields, models
 from odoo.tools.float_utils import float_compare
 
 
@@ -39,15 +39,15 @@ class PropertyOffer(models.Model):
     def _check_selling_price_90_percent(self):
         for record in self:
             if float_compare(record.price, 0.9 * record.property_id.expected_price, precision_digits=2) == -1:
-                raise exceptions.UserError("The selling price cannot be lower than 90% of the expected price")
+                raise exceptions.UserError(_("The selling price cannot be lower than 90% of the expected price"))
 
     @api.depends("property_id", "property_id.offer_ids")
     def action_offer_accept(self):
         for record in self:
             if any(o.status == "accepted" for o in record.property_id.offer_ids):
-                raise exceptions.UserError("Cannot accept more than one offer")
+                raise exceptions.UserError(_("Cannot accept more than one offer"))
             if float_compare(record.price, 0.9 * record.property_id.expected_price, precision_digits=2) == -1:
-                raise exceptions.UserError("The selling price cannot be lower than 90% of the expected price")
+                raise exceptions.UserError(_("The selling price cannot be lower than 90% of the expected price"))
             record.status = "accepted"
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
