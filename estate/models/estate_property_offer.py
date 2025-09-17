@@ -1,5 +1,10 @@
 from datetime import date, timedelta
-from odoo import api, exceptions, fields, models
+from typing import TYPE_CHECKING
+from odoo import api, fields, models
+from odoo.exceptions import UserError
+
+if TYPE_CHECKING:
+    from estate.models.estate_property import EstateProperty
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -28,17 +33,25 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.validity = (offer.date_deadline - offer._create_date).days
 
+    @api.model
+    def create(self, vals_list):
+        property: "EstateProperty" = self.env['estate.property'].browse(vals_list[0]['property_id'])
+        if vals_list[0]['price'] < property.best_price:
+            raise UserError("Can't create an Offer with price lower than the Property's best price")
+        property.state = 'offer_received'
+        return super().create(vals_list)
+
     def action_accept(self):
         property_offer_to_accept_dict = dict() # maps each property to the offer we are going to accept for it
         for offer in self:
             if offer.property_id in property_offer_to_accept_dict:
-                raise exceptions.UserError("Can't accept multiple offers for the same property")
+                raise UserError("Can't accept multiple offers for the same property")
             else:
                 property_offer_to_accept_dict[offer.property_id] = offer
 
         for property_id, offer in property_offer_to_accept_dict.items():
             if property_id.buyer_id:
-                raise exceptions.UserError("Property already has a buyer")
+                raise UserError("Property already has a buyer")
             else:
                 offer.status = 'accepted'
                 property_id.buyer_id = offer.partner_id
