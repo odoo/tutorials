@@ -67,7 +67,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold','cancelled')"/>
+                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -92,7 +92,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
-                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
