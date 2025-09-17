@@ -1,10 +1,10 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 from datetime import timedelta
 
 
 class estate_property(models.Model):
     _name = "estate.property"
-    _description = "estate thingie"
+    _description = "estate.property"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -15,7 +15,9 @@ class estate_property(models.Model):
         default=lambda self: fields.Date.today() + timedelta(days=90),
     )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
+    selling_price = fields.Float(
+        readonly=True, copy=False, compute="_set_selling_price"
+    )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -52,6 +54,10 @@ class estate_property(models.Model):
     tags_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(compute="_get_highest_price")
+    has_accepted_offer = fields.Boolean(default=False)
+
+    # ---------------------------------------------------------------------------------------------------------
+    #   Compute Functions
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -72,3 +78,45 @@ class estate_property(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = ""
+
+    @api.depends("offer_ids.status", "has_accepted_offer")
+    def _set_selling_price(self):
+        for record in self:
+            if not len(record.offer_ids):
+                record.selling_price = 0
+            else:
+                if len(set(record.mapped("offer_ids.status"))) == 1:
+                    record.selling_price = 0
+                    record.has_accepted_offer = False
+                else:
+                    id = record.mapped("offer_ids.status").index("accepted")
+                    record.selling_price = record.mapped("offer_ids.price")[id]
+                    record.has_accepted_offer = True
+
+    # ---------------------------------------------------------------------------------------------------------
+    #   Public Functions
+
+    def set_state_cancelled(self):
+        for record in self:
+            if record.state != "sold":
+                record.state = "cancelled"
+            else:
+                raise exceptions.UserError(
+                    (
+                        "You can't change the offer's state to Cancelled after the offer has been sold"
+                    )
+                )
+
+        return True
+
+    def set_state_sold(self):
+        for record in self:
+            if record.state != "cancelled":
+                record.state = "sold"
+            else:
+                raise exceptions.UserError(
+                    (
+                        "You can't change the offer's state to Sold after the offer has been cancelled"
+                    )
+                )
+        return True
