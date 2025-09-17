@@ -35,7 +35,6 @@ class PropertyOffer(models.Model):
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
-            print(vals)
             property = self.env['estate.property'].browse(vals['property_id'])
             if property.state == 'new':
                 property.state = 'offer_received'
