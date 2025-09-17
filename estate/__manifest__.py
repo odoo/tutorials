@@ -9,6 +9,7 @@
     'installable': True,
     'application': True,
     'data': [
+        'views/res_users_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_type_views.xml',

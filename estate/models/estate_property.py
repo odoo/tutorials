@@ -15,9 +15,6 @@ class Property(models.Model):
     state = fields.Selection(
         selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")],
         default="new",
-        compute="_compute_state",
-        store=True,
-        readonly=False,
     )
     description = fields.Text()
     postcode = fields.Char()
@@ -49,17 +46,6 @@ class Property(models.Model):
         "The selling price must be positive",
     )
 
-    @api.depends("offer_ids")
-    def _compute_state(self):
-        for record in self:
-            if record.state:
-                if record.state == "new":
-                    record.state = "offer_received" if record.offer_ids else "new"
-                if record.state == "offer_received":
-                    record.state = "offer_accepted" if [1 for o in record.offer_ids if o.status == "accepted"] else "offer_received"
-            else:
-                record.state = "new"
-
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -78,6 +64,12 @@ class Property(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_deletion_unless_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(_("A property can only be deleted if its state is 'New' or 'Cancelled'"))
 
     def action_property_cancel(self):
         for record in self:

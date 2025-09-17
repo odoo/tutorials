@@ -53,5 +53,12 @@ class PropertyOffer(models.Model):
             record.property_id.state = 'offer_accepted'
             record.property_id.selling_price = record.price
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for record in vals_list:
+            property = self.env['estate.property'].browse(record['property_id'])
+            property.state = 'offer_received'
+        return super().create(vals_list)
+
     def action_offer_refuse(self):
         self.status = "refused"  # assigns the same value to all the records
