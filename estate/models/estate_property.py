@@ -1,6 +1,7 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models, _
 from datetime import timedelta
-from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools.float_utils import float_compare
+from odoo.exceptions import UserError, ValidationError 
 
 
 class RealEstateProperty(models.Model):
@@ -38,7 +39,7 @@ class RealEstateProperty(models.Model):
         [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
@@ -59,7 +60,7 @@ class RealEstateProperty(models.Model):
     def _check_selling_price(self):
         for record in self:
             if record.selling_price and float_compare(record.selling_price, (record.expected_price*0.9) , 2) <= 0:
-                    raise exceptions.ValidationError("The best offer must be at least 90% of the expected price to accept an offer.")
+                    raise ValidationError("The best offer must be at least 90% of the expected price to accept an offer.")
 
     @api.depends('living_area', 'garden_area')
     def _compute_area(self):
@@ -83,11 +84,11 @@ class RealEstateProperty(models.Model):
     def sold_property(self):
         for record in self:
             if record.state in ['canceled', 'new']:
-                raise exceptions.UserError("Only properties with an accepted offer can be sold.")
+                raise UserError(_("Only properties with an accepted offer can be sold."))
             record.state = 'sold'
     
     def cancel_property(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError("Sold properties cannot be canceled.")
+                raise UserError(_("Sold properties cannot be canceled."))
             record.state = 'canceled'

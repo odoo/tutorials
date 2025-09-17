@@ -1,4 +1,4 @@
-from odoo import fields, models  # type: ignore
+from odoo import fields, models 
 
 
 class RealEstatePropertyType(models.Model):
@@ -10,3 +10,4 @@ class RealEstatePropertyType(models.Model):
     _check_tag_name = models.Constraint(
     'UNIQUE(name)',
     'The type name must be unique.')
+    

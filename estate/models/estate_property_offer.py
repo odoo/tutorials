@@ -1,4 +1,4 @@
-from odoo import api, exceptions, fields, models  # type: ignore
+from odoo import api, exceptions, fields, models
 from datetime import timedelta
 
 class RealEstatePropertyOffer(models.Model):
@@ -39,7 +39,7 @@ class RealEstatePropertyOffer(models.Model):
                 raise exceptions.UserError("You cannot accept an offer on a sold or canceled property.")
             record.status = 'accepted'
             record.property_id.selling_price = record.price
-            record.property_id.buyer = record.partner_id
+            record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
 
 
