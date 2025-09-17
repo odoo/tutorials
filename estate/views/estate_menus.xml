@@ -31,4 +31,11 @@
         action="estate_property_type_action"
         sequence="1"
     />
+    <menuitem
+        id="estate_property_menu_property_tag"
+        name="Property Tags"
+        parent="estate.estate_property_menu_settings"
+        action="estate_property_tag_action"
+        sequence="2"
+    />
 </odoo>

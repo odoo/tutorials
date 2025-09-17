@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     "name": "Real Estate",
     "version": "0.1",
@@ -11,9 +10,13 @@
     "installable": True,
     "application": True,
     "data": [
+        "data/auto_reject_offer_cron.xml",
         "security/ir.model.access.csv",
+        "security/demo_group.xml",
+        "security/salesperson_own_records_rule.xml",
         "views/estate_property_view.xml",
         "views/estate_property_type_view.xml",
+        "views/estate_property_tag_view.xml",
         "views/estate_menus.xml",
     ],
     "demo": [],
