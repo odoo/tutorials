@@ -1,0 +1,77 @@
+[33m72593547b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmojem[m[33m)[m HEAD@{0}: rebase (finish): returning to refs/heads/mojem
+[33m72593547b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmojem[m[33m)[m HEAD@{1}: rebase (start): checkout HEAD~3
+[33m72593547b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmojem[m[33m)[m HEAD@{2}: rebase (finish): returning to refs/heads/mojem
+[33m72593547b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmojem[m[33m)[m HEAD@{3}: rebase (start): checkout HEAD~2
+[33m72593547b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmojem[m[33m)[m HEAD@{4}: commit: space fix
+[33m5e4e56086[m HEAD@{5}: rebase (finish): returning to refs/heads/mojem
+[33m5e4e56086[m HEAD@{6}: rebase (squash): [ADD] Onboarding chapter 1-7 mojem
+[33m43c239762[m HEAD@{7}: rebase (start): checkout HEAD~2
+[33m7ae8e84c7[m[33m ([m[1;31mdev/mojem[m[33m)[m HEAD@{8}: commit: [ADD] Chapter 8
+[33m43c239762[m HEAD@{9}: commit (amend): [ADD] Onboarding chapter 1-7 mojem
+[33m148422bce[m HEAD@{10}: rebase (finish): returning to refs/heads/mojem
+[33m148422bce[m HEAD@{11}: rebase (squash): meow
+[33m9ad393926[m HEAD@{12}: rebase (squash): # This is a combination of 19 commits.
+[33m030f98448[m HEAD@{13}: rebase (squash): # This is a combination of 18 commits.
+[33m58d90eb84[m HEAD@{14}: rebase (squash): # This is a combination of 17 commits.
+[33m048289dd0[m HEAD@{15}: rebase (squash): # This is a combination of 16 commits.
+[33m2f10148f9[m HEAD@{16}: rebase (squash): # This is a combination of 15 commits.
+[33mac85c0463[m HEAD@{17}: rebase (squash): # This is a combination of 14 commits.
+[33m6b110a2bc[m HEAD@{18}: rebase (squash): # This is a combination of 13 commits.
+[33mec3d6354a[m HEAD@{19}: rebase (squash): # This is a combination of 12 commits.
+[33m915f148d4[m HEAD@{20}: rebase (squash): # This is a combination of 11 commits.
+[33m4f0a0f843[m HEAD@{21}: rebase (squash): # This is a combination of 10 commits.
+[33m47f240bf2[m HEAD@{22}: rebase (squash): # This is a combination of 9 commits.
+[33m067fbaaa8[m HEAD@{23}: rebase (squash): # This is a combination of 8 commits.
+[33m3d2a53954[m HEAD@{24}: rebase (squash): # This is a combination of 7 commits.
+[33m2943813f6[m HEAD@{25}: rebase (squash): # This is a combination of 6 commits.
+[33m22c82d7e6[m HEAD@{26}: rebase (squash): # This is a combination of 5 commits.
+[33m944d074e3[m HEAD@{27}: rebase (squash): # This is a combination of 4 commits.
+[33mc91a3f28e[m HEAD@{28}: rebase (squash): # This is a combination of 3 commits.
+[33m475492ffc[m HEAD@{29}: rebase (squash): # This is a combination of 2 commits.
+[33mc463f2075[m HEAD@{30}: rebase (start): checkout HEAD~20
+[33m8b3b7c8ea[m HEAD@{31}: rebase (finish): returning to refs/heads/mojem
+[33m8b3b7c8ea[m HEAD@{32}: rebase (start): checkout HEAD~20
+[33m8b3b7c8ea[m HEAD@{33}: rebase (finish): returning to refs/heads/mojem
+[33m8b3b7c8ea[m HEAD@{34}: rebase (start): checkout HEAD~15
+[33m8b3b7c8ea[m HEAD@{35}: rebase (finish): returning to refs/heads/mojem
+[33m8b3b7c8ea[m HEAD@{36}: rebase (start): checkout HEAD~10
+[33m8b3b7c8ea[m HEAD@{37}: rebase (finish): returning to refs/heads/mojem
+[33m8b3b7c8ea[m HEAD@{38}: rebase: fast-forward
+[33mdc5118e23[m HEAD@{39}: rebase: fast-forward
+[33m8811bd22d[m HEAD@{40}: rebase: fast-forward
+[33m75bdae493[m HEAD@{41}: rebase: fast-forward
+[33ma3f35d317[m HEAD@{42}: rebase: fast-forward
+[33mc4a5a23d3[m HEAD@{43}: rebase: fast-forward
+[33m52476ce87[m HEAD@{44}: rebase: fast-forward
+[33m81ec2c9c5[m HEAD@{45}: rebase: fast-forward
+[33mfd791bd29[m HEAD@{46}: rebase: fast-forward
+[33mf8d009c33[m HEAD@{47}: rebase: fast-forward
+[33m00f756a8e[m HEAD@{48}: rebase: fast-forward
+[33mea48e96ce[m HEAD@{49}: rebase: fast-forward
+[33m0784b298e[m HEAD@{50}: rebase: fast-forward
+[33m01985cd4c[m HEAD@{51}: rebase: fast-forward
+[33mb2e935812[m HEAD@{52}: rebase: fast-forward
+[33m14510746c[m HEAD@{53}: rebase: fast-forward
+[33m7c8f3b61d[m HEAD@{54}: rebase: fast-forward
+[33m7c919c17e[m HEAD@{55}: rebase: fast-forward
+[33ma03d6dd43[m HEAD@{56}: rebase: fast-forward
+[33mc463f2075[m HEAD@{57}: rebase: fast-forward
+[33m696a0cc06[m[33m ([m[1;31morigin/tmp.master[m[33m, [m[1;31morigin/staging.master[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/19.0[m[33m, [m[1;32m19.0[m[33m)[m HEAD@{58}: rebase: fast-forward
+[33m71773aa06[m HEAD@{59}: rebase: fast-forward
+[33m4c008ea91[m HEAD@{60}: rebase: fast-forward
+[33m640326335[m HEAD@{61}: rebase: fast-forward
+[33mf5f213be0[m HEAD@{62}: rebase: fast-forward
+[33mc3457ab35[m HEAD@{63}: rebase: fast-forward
+[33m0e7619c46[m HEAD@{64}: rebase: fast-forward
+[33m632625576[m HEAD@{65}: rebase: fast-forward
+[33m47ba656f6[m HEAD@{66}: rebase (start): checkout 47ba656f67a56dfb4cfb0b46127cd9125f222b25
+[33m8b3b7c8ea[m HEAD@{67}: commit: comment fixes
+[33mdc5118e23[m HEAD@{68}: pull --tags: Fast-forward
+[33m8811bd22d[m HEAD@{69}: pull --tags dev mojem: Fast-forward
+[33ma03d6dd43[m HEAD@{70}: commit: Chapter 1-7
+[33mc463f2075[m HEAD@{71}: commit: meow
+[33m696a0cc06[m[33m ([m[1;31morigin/tmp.master[m[33m, [m[1;31morigin/staging.master[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/19.0[m[33m, [m[1;32m19.0[m[33m)[m HEAD@{72}: checkout: moving from 19.0 to mojem
+[33m696a0cc06[m[33m ([m[1;31morigin/tmp.master[m[33m, [m[1;31morigin/staging.master[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/19.0[m[33m, [m[1;32m19.0[m[33m)[m HEAD@{73}: checkout: moving from 18.0-fix-invoices-xyz to 19.0
+[33mdd3161987[m[33m ([m[1;31morigin/tmp.18.0[m[33m, [m[1;31morigin/staging.18.0[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/18.0[m[33m, [m[1;32m19.0-fix-invoices[m[33m, [m[1;32m18.0-fix-invoices-xyz[m[33m, [m[1;32m18.0[m[33m)[m HEAD@{74}: checkout: moving from 19.0-fix-invoices to 18.0-fix-invoices-xyz
+[33mdd3161987[m[33m ([m[1;31morigin/tmp.18.0[m[33m, [m[1;31morigin/staging.18.0[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/18.0[m[33m, [m[1;32m19.0-fix-invoices[m[33m, [m[1;32m18.0-fix-invoices-xyz[m[33m, [m[1;32m18.0[m[33m)[m HEAD@{75}: checkout: moving from 18.0 to 19.0-fix-invoices
+[33mdd3161987[m[33m ([m[1;31morigin/tmp.18.0[m[33m, [m[1;31morigin/staging.18.0[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/18.0[m[33m, [m[1;32m19.0-fix-invoices[m[33m, [m[1;32m18.0-fix-invoices-xyz[m[33m, [m[1;32m18.0[m[33m)[m HEAD@{76}: clone: from github.com:odoo/tutorials.git

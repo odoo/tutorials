@@ -11,7 +11,7 @@
     'website': 'https://www.odoo.com/page/estate',
     'installable': True,
     'application': True,
-    'auto_install': False,
+    'auto_install': True,
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
