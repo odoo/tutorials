@@ -44,5 +44,4 @@ class RealEstatePropertyOffer(models.Model):
 
 
     def action_refuse(self):
-        for record in self:
-            record.status = 'refused'
+        self.status = 'refused'
