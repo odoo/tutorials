@@ -1,5 +1,6 @@
 from odoo import api, exceptions, fields, models
 from datetime import timedelta
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class RealEstateProperty(models.Model):
@@ -46,17 +47,31 @@ class RealEstateProperty(models.Model):
     total_area = fields.Float(compute='_compute_area', string="Total Area (sqm)")
     best_offer = fields.Float(compute='_compute_offer', string="Best Offer (EUR)")
 
-    @api.depends("living_area", "garden_area")
+    _check_expected_price = models.Constraint(
+    'CHECK(expected_price > 0)',
+    'The expected price of a property should be strictly positive.')
+
+    _check_selling_price = models.Constraint(
+    'CHECK(selling_price => 0)',
+    'The selling price of a property should be positive.')
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price and float_compare(record.selling_price, (record.expected_price*0.9) , 2) <= 0:
+                    raise exceptions.ValidationError("The best offer must be at least 90% of the expected price to accept an offer.")
+
+    @api.depends('living_area', 'garden_area')
     def _compute_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends("offers_ids.price")
+    @api.depends('offers_ids.price')
     def _compute_offer(self):
         for record in self:
             record.best_offer = max(record.offers_ids.mapped("price")) if record.offers_ids else 0
 
-    @api.onchange("garden")
+    @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
@@ -76,4 +91,3 @@ class RealEstateProperty(models.Model):
             if record.state == 'sold':
                 raise exceptions.UserError("Sold properties cannot be canceled.")
             record.state = 'canceled'
-            

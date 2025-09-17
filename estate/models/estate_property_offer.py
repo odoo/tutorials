@@ -14,6 +14,10 @@ class RealEstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_set_deadline")
 
+    _check_offer_price = models.Constraint(
+    'CHECK(price > 0)',
+    'The offer price should be strictly positive.')
+
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for record in self:
@@ -42,4 +46,3 @@ class RealEstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
-            
