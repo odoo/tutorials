@@ -1,6 +1,8 @@
 from odoo import api, models, fields
 from datetime import date, timedelta
 
+from odoo.exceptions import UserError
+
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
@@ -43,11 +45,11 @@ class EstateProperty(models.Model):
         ],
         help="Orientation of the estate property",
     )
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
-    buyer_id = fields.Many2one('res.partner', string="Buyer")
-    seller_id = fields.Many2one('res.users', string="Salesman")
-    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
-    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+    property_type_id = fields.Many2one('estate.property.type')
+    buyer_id = fields.Many2one('res.partner')
+    seller_id = fields.Many2one('res.users')
+    tag_ids = fields.Many2many('estate.property.tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
 
     best_price = fields.Float(compute="_compute_best_offer")
 
@@ -72,3 +74,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cannot sell a cancelled property")
+            record.state = 'sold'
+        return True
+
+    def action_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Cannot cancel a sold property")
+            record.state = 'cancelled'
+        return True
