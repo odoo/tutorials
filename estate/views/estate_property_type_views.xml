@@ -6,6 +6,22 @@
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            name="%(estate.estate_property_offer_action)d"
+                            type="action"
+                            class="oe_stat_button"
+                        >
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count"/>
+                                </span>
+                                <span class="o_stat_text">
+                                    Offers
+                                </span>
+                            </div>
+                        </button>
+                    </div>
                     <h1><field name="name" placeholder="Property Type name..."/></h1>
                     <notebook>
                         <page string="Properties">
