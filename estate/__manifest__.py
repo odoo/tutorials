@@ -5,7 +5,6 @@
     'category': 'Tutorials',
     'version': '0.1',
     'application': True,
-    'installable': True,
     'depends': ['base'],
     'license': 'AGPL-3',
     'data': [

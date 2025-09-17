@@ -63,18 +63,18 @@ class Property(models.Model):
     def _check_selling_price(self):
         for record in self:
             if record.selling_price and float_compare(record.selling_price, (0.9 * record.expected_price), 2) < 0:
-                raise ValidationError("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
+                raise ValidationError(self.env._("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer."))
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
-                raise UserError("Only new and cancelled properties can be deleted.")
+                raise UserError(self.env._("Only new and cancelled properties can be deleted."))
 
     def action_set_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cannot sell a cancelled property")
+                raise UserError(self.env._("Cannot sell a cancelled property"))
 
             record.state = 'sold'
         return True
@@ -82,6 +82,6 @@ class Property(models.Model):
     def action_set_cancelled(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Cannot cancel a sold property")
+                raise UserError(self.env._("Cannot cancel a sold property"))
             record.state = 'cancelled'
         return True

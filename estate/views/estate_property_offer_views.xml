@@ -16,8 +16,8 @@
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <button name="action_accept" type="object" icon="fa-check" title="Accept Offer" invisible="status != False or property_id.state not in ('new', 'offer_received')"/>
-                <button name="action_refuse" type="object" icon="fa-times" title="Refuse Offer" invisible="status != False or property_id.state not in ('new', 'offer_received')"/>
+                <button name="action_accept" type="object" icon="fa-check" title="Accept Offer" invisible="status"/>
+                <button name="action_refuse" type="object" icon="fa-times" title="Refuse Offer" invisible="status"/>
             </list>
         </field>
     </record>
