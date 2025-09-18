@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_purchase_order_form_inherited" model="ir.ui.view">
+        <field name="name">view.purchase.order.form.inherited</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//*[contains(@class, 'oe_subtotal_footer')]" position="replace">
+                <div class="d-flex flex-column align-items-end">
+                    <button name="action_discount" class="oe_highlight mb-2" type="object" string="Discount"/>
+
+                    <group class="oe_subtotal_footer">
+                        <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" readonly="1"/>
+                    </group>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_purchase_global_discount_form" model="ir.ui.view">
+        <field name="name">purchase_global_discount_form</field>
+        <field name="model">purchase.order</field>
+        <field name="arch" type="xml">
+            <form string="Discount">
+                <sheet>
+                    <div class="d-flex align-items-center gap-2">
+                        <label class="fw-bold mb-0" for="global_discount">Discount</label>
+                        <field name="global_discount" />
+                        <field name="global_discount_type" widget="selection" class="flex-shrink-0"/>
+                        <span class="text-muted" invisible="global_discount_type == 'percent'">
+                            (<field name="computed_percentage"/>%)
+                        </span>
+                    </div>
+
+                </sheet>
+                <footer>
+                    <button name="action_apply" string="Apply" class="oe_highlight" type="object" data-hotkey="S" />
+                    <button special="cancel" data-hotkey="J" string="Discard" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
