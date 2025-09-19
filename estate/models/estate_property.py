@@ -19,7 +19,7 @@ class Property(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     selling_price = fields.Float(copy=False, readonly=True)
-    date_availability = fields.Date(copy=False, default=date.today() + timedelta(days=90))
+    date_availability = fields.Date(copy=False, default=lambda: date.today() + timedelta(days=90))
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()

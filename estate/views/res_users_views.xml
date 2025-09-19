@@ -6,16 +6,16 @@
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <!-- both are correct -->
-            <!-- <xpath expr="//notebook" position="inside">
+            <xpath expr="//notebook" position="inside">
                 <page name="Estate">
                     <field name="property_ids" />
                 </page>
-            </xpath> -->
-            <notebook position="inside">
+            </xpath>
+            <!-- <notebook position="inside">
                 <page name="Estate">
                     <field name="property_ids" />
                 </page>
-            </notebook>
+            </notebook> -->
         </field>
     </record>
 </odoo>
