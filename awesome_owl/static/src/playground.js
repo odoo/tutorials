@@ -13,8 +13,13 @@ export class Playground extends Component {
         this.content2 = markup("<b>hello content2</b>");
     }
 
-    incrementSum() {
-        this.state.value++;
+    onChange(operator) {
+        if (operator === '+') {
+            this.state.value++;    
+        }
+        else {
+            this.state.value--;
+        }
     }
 
 }

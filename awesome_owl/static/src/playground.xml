@@ -4,18 +4,18 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
-            <Counter onChange.bind="incrementSum"/>  
-            <Counter onChange.bind="incrementSum"/>       
+            <Counter onChange.bind="onChange" increment="true"/>  
+            <Counter onChange.bind="onChange" increment="true"/>       
         </div>
         <div>
             <span>Sum of the two counter: <t t-esc="this.state.value;"/></span>
         </div>
         <div>
             <Card title="'card 1'">
-                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="onChange" increment="false"/>
             </Card>
             <Card title="'card 2'">
-                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="onChange" increment="false"/>
             </Card>
         </div>
         <TodoList/>

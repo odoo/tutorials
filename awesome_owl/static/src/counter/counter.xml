@@ -4,7 +4,10 @@
     <t t-name="awesome_owl.Counter">
         <div class="m-2 p-2 border d-inline-block">
             <span class="me-2">Counter: <t t-esc="counter.value"/></span>
-            <button class="btn btn-primary" t-on-click="increment" style="background-color: purple; color: white;">Increment</button>
+            <button class="btn btn-primary" t-on-click="() => this.onCalculate('+')" style="background-color: purple; color: white;">Increment</button>
+            <t t-if="props.increment">
+                <button class="btn btn-primary" t-on-click="() => this.onCalculate('+')" style="background-color: purple; color: white;">Decrement</button>
+            </t>
         </div>         
     </t>
 
