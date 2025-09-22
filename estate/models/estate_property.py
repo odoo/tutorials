@@ -1,8 +1,7 @@
-from odoo import api, models, fields
+from odoo import api, fields, models
 from datetime import date, timedelta
-
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_compare, float_is_zero
+from odoo.tools import _, float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -101,23 +100,26 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
 
+    @api.ondelete(at_uninstall=False)
+    def _delete_check(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(_("""Cannot delete a property that received offers
+                                Please first cancel the property"""))
+
     def action_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cannot sell a cancelled property")
+                raise UserError(_("Cannot sell a cancelled property"))
+            if not record.buyer_id:
+                raise UserError(_("Please select a buyer before selling property"))
             record.state = 'sold'
         return True
 
     def action_cancelled(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Cannot cancel a sold property")
+                raise UserError(_("Cannot cancel a sold property"))
             record.state = 'cancelled'
         return True
 
-    @api.ondelete(at_uninstall=False)
-    def _delete_check(self):
-        for record in self:
-            if record.state != 'new' and record.state != 'cancelled':
-                raise UserError("Cannot delete a property that received offers"
-                                "Please first cancel the property")

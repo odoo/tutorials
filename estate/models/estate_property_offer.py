@@ -1,5 +1,6 @@
 from datetime import date
-from odoo import api, models, fields
+from odoo import api, fields, models
+from odoo.tools import _
 from odoo.exceptions import UserError
 
 from odoo.orm.domains import timedelta
@@ -55,13 +56,13 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
-        for val in vals_list:
-            if 'property_id' in val:
-                property_id = val['property_id']
-                property = self.env['estate.property'].browse(property_id)
+        property_ids = [vals['property_id'] for vals in vals_list]
+        properties = self.env['estate.property'].browse(property_ids)
+        for property in properties:
+            if property.state == 'new':
                 property.state = 'offer_received'
-                for offer in property.offer_ids:
-                    if offer.price > self.price:
-                        raise UserError("Cannot create new offer when other "
-                                        "higher offers exist")
+            for offer in property.offer_ids:
+                if offer.price > self.price:
+                    raise UserError(_("""Cannot create new offer when other
+                                    higher offers exist"""))
         return super().create(vals_list)
