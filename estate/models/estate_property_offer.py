@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
 from datetime import timedelta
@@ -25,7 +25,7 @@ class EstatePropertyOffer(models.Model):
         for val in vals:
             property = self.env['estate.property'].browse(val['property_id'])
             if float_compare(property.best_offer, val.get('price', 0.0), precision_rounding=0.01) == 1:
-                raise UserError("The offer price must be higher than the current best offer.")
+                raise UserError(_("The offer price must be higher than the current best offer."))
         return super().create(vals)
 
     @api.depends('validity', 'create_date')
@@ -43,7 +43,7 @@ class EstatePropertyOffer(models.Model):
         self.ensure_one()
         for offer in self:
             if any(offer.property_id.offer_ids.mapped('status')):
-                raise UserError("An offer has already been accepted or refused for this property.")
+                raise UserError(_("An offer has already been accepted or refused for this property."))
             offer.status = 'accepted'
             offer.property_id.state = 'offer_accepted'
             offer.property_id.selling_price = offer.price

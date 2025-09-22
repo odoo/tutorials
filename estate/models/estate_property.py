@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -63,7 +63,7 @@ class EstateProperty(models.Model):
     def _delete_only_new_and_canceled(self):
         for record in self:
             if record.state not in ('new', 'cancelled'):
-                raise UserError("Only properties in 'New' or 'Cancelled' state can be deleted.")
+                raise UserError(_("Only properties in 'New' or 'Cancelled' state can be deleted."))
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -87,13 +87,13 @@ class EstateProperty(models.Model):
     def action_set_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
+                raise UserError(_("Cancelled properties cannot be sold."))
             record.state = 'sold'
         return True
 
     def action_set_cancelled(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold properties cannot be cancelled.")
+                raise UserError(_("Sold properties cannot be cancelled."))
             record.state = 'cancelled'
         return True
