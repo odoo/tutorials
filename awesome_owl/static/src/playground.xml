@@ -5,9 +5,13 @@
         <div class="p-3">
             hello world
         </div>
-        <Counter/>
+        <Counter value="this.state.val1" side_effect.bind="() => this.state.val1++"/>
+        <Counter value="this.state.val2" side_effect.bind="() => this.state.val2++"/>
+        <div>The sum is: <t t-esc="sum"/></div>
         <Counter/>
         <Card title="'card title'" content="'card content'"/>
+        <Card title="'card title'" content="str1"/>
+        <Card title="'card title'" content="str2"/>
     </t>
 
 </templates>

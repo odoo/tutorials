@@ -5,6 +5,7 @@ export class Card extends Component {
     static props = { title: {type: String}, content: {type: String}}
 
     setup() {
-        this.state = { title: this.props.title, content: this.props.content };
+        this.title = this.props.title; 
+        this.content = this.props.content;
     }
 }
