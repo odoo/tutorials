@@ -52,3 +52,16 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
+
+    @api.model
+    def create(self, vals_list):
+        for val in vals_list:
+            if 'property_id' in val:
+                property_id = val['property_id']
+                property = self.env['estate.property'].browse(property_id)
+                property.state = 'offer_received'
+                for offer in property.offer_ids:
+                    if offer.price > self.price:
+                        raise UserError("Cannot create new offer when other "
+                                        "higher offers exist")
+        return super().create(vals_list)
