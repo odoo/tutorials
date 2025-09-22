@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.TodoList">
+        <div class="container mt-4">
+            <div class="row mb-3">
+                <div class="col">
+                    <input t-ref="new-todo" t-on-keyup="addTodo" class="form-control" placeholder="Add a new todo"/>
+                </div>
+            </div>
+            <ul class="list-group">
+                <t t-foreach="this.todos" t-as="todo" t-key="todo.id">
+                    <li class="list-group-item">
+                        <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
+                    </li>
+                </t>
+            </ul>
+        </div>
+    </t>
+
+</templates>
