@@ -31,13 +31,13 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for offer in self:
-            date = offer.create_date.date() if offer.create_date else fields.Date.today()
-            offer.date_deadline = date + timedelta(days=offer.validity)
+            base_date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.date_deadline = base_date + timedelta(days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
-            date = offer.create_date.date() if offer.create_date else fields.Date.today()
-            offer.validity = (offer.date_deadline - date).days
+            base_date = offer.create_date.date() if offer.create_date else fields.Date.today()
+            offer.validity = (offer.date_deadline - base_date).days
     
     def action_accept_offer(self):
         self.ensure_one()

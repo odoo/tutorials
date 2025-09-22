@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(string="Available From")
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    property_type_id = fields.Many2one('estate.property.type')
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
@@ -50,6 +50,13 @@ class EstateProperty(models.Model):
         'CHECK(selling_price > 0)',
         "The selling amout should be strictly positive"
     )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price_difference(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
+                raise ValidationError("The selling price must be at least 90% of the expected price.")
+        return True
 
     @api.ondelete(at_uninstall=False)
     def _delete_only_new_and_canceled(self):
@@ -88,11 +95,4 @@ class EstateProperty(models.Model):
             if record.state == 'sold':
                 raise UserError("Sold properties cannot be cancelled.")
             record.state = 'cancelled'
-        return True
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_price_difference(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
-                raise ValidationError("The selling price must be at least 90% of the expected price.")
         return True
