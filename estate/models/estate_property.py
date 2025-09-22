@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from datetime import timedelta
 
 from odoo.exceptions import UserError
@@ -46,37 +46,37 @@ class RealEstateProperty(models.Model):
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offers_ids = fields.One2many("estate.property.offer", "property_id")
-    total_area = fields.Float(compute='_compute_area', string="Total Area (sqm)")
-    best_offer = fields.Float(compute='_compute_offer', string="Best Offer (EUR)")
+    total_area = fields.Float(compute="_compute_area", string="Total Area (sqm)")
+    best_offer = fields.Float(compute="_compute_offer", string="Best Offer (EUR)")
 
     _check_expected_price = models.Constraint(
-    'CHECK(expected_price > 0)',
-    'The expected price of a property should be strictly positive.')
+        "CHECK(expected_price > 0)",
+        "The expected price of a property should be strictly positive.",
+    )
 
     _check_selling_price = models.Constraint(
-    'CHECK(selling_price >= 0)',
-    'The selling price of a property should be positive.')
+        "CHECK(selling_price >= 0)",
+        "The selling price of a property should be positive.",
+    )
 
-
-    @api.depends('living_area', 'garden_area')
+    @api.depends("living_area", "garden_area")
     def _compute_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends('offers_ids.price')
+    @api.depends("offers_ids.price")
     def _compute_offer(self):
         for record in self:
-            record.best_offer = max(record.offers_ids.mapped("price")) if record.offers_ids else 0
+            record.best_offer = (
+                max(record.offers_ids.mapped("price")) if record.offers_ids else 0
+            )
 
-    @api.depends('offers_ids')
+    @api.depends("offers_ids")
     def _compute_state(self):
         for record in self:
-            if record.offer_ids:
-                record.state = 'offer_received'
-            else:
-                record.state = 'new'
+            record.state = "offer_received" if record.offer_ids else "new"
 
-    @api.onchange('garden')
+    @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
@@ -84,22 +84,23 @@ class RealEstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
-            
+
     def sold_property(self):
         for record in self:
-            if record.state in ['canceled', 'new']:
-                raise UserError(_("Only properties with an accepted offer can be sold."))
-            record.state = 'sold'
-    
+            if record.state in ["canceled", "new"]:
+                raise UserError(
+                    _("Only properties with an accepted offer can be sold.")
+                )
+            record.state = "sold"
+
     def cancel_property(self):
         for record in self:
-            if record.state == 'sold':
+            if record.state == "sold":
                 raise UserError(_("Sold properties cannot be canceled."))
-            record.state = 'canceled'
+            record.state = "canceled"
 
     @api.ondelete(at_uninstall=False)
     def delete(self):
         for record in self:
-            if record.state not in ['new', 'canceled']:
+            if record.state not in ["new", "canceled"]:
                 raise UserError(_("Only new or canceled properties can be deleted."))
-            

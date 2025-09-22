@@ -1,7 +1,8 @@
-from odoo import api, exceptions, fields, models, _
+from odoo import _, api, exceptions, fields, models
 from datetime import timedelta
 from odoo.tools.float_utils import float_compare
 from odoo.exceptions import ValidationError, UserError
+
 
 class RealEstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -21,54 +22,70 @@ class RealEstatePropertyOffer(models.Model):
     )
 
     _check_offer_price = models.Constraint(
-    'CHECK(price > 0)',
-    "The offer price should be strictly positive.")
-
-
-    @api.constrains('price')
-    def _check_selling_price(self):
-        for record in self:
-            if float_compare(record.price, (record.property_id.expected_price*0.9) , 2) < 0:
-                    raise ValidationError(_("The best offer must be at least 90% of the expected price to accept an offer."))
-
-    @api.depends("create_date", "validity")
-    def _compute_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date.date() + timedelta(days=record.validity)
-            else:
-                record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
+        "CHECK(price > 0)", "The offer price should be strictly positive."
+    )
 
     def _set_deadline(self):
         for record in self:
             if record.create_date:
-                record.validity = (record.date_deadline - record.create_date.date()).days
+                record.validity = (
+                    record.date_deadline - record.create_date.date()
+                ).days
             else:
                 record.validity = (record.date_deadline - fields.Date.today()).days
 
     def action_accept(self):
         for record in self:
-            if record.property_id.state in ['sold', 'canceled']:
-                raise exceptions.UserError("You cannot accept an offer on a sold or canceled property.")
-            record.status = 'accepted'
+            if record.property_id.state in ["sold", "canceled"]:
+                raise exceptions.UserError(
+                    "You cannot accept an offer on a sold or canceled property."
+                )
+            record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
-            record.property_id.state = 'offer_accepted'
-
+            record.property_id.state = "offer_accepted"
 
     def action_refuse(self):
-        self.status = 'refused'
+        self.status = "refused"
 
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
-            property = self.env['estate.property'].browse(vals['property_id'])
+            property = self.env["estate.property"].browse(vals["property_id"])
             if property:
-                if property.state == 'new':
-                    property.state = 'offer_received'
+                if property.state == "new":
+                    property.state = "offer_received"
 
-                if vals['price'] < property.best_offer:
-                    raise UserError(self.env._("Offer must be higher or equal than %d", property.best_offer))
+                if vals["price"] < property.best_offer:
+                    raise UserError(
+                        _("Offer must be higher or equal than %d", property.best_offer)
+                    )
 
         return super().create(vals_list)
-    
+
+    @api.constrains("price")
+    def _check_selling_price(self):
+        for record in self:
+            if (
+                float_compare(
+                    record.price, (record.property_id.expected_price * 0.9), 2
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    _(
+                        "The best offer must be at least 90% of the expected price to accept an offer."
+                    )
+                )
+
+    @api.depends("create_date", "validity")
+    def _compute_deadline(self):
+        for record in self:
+            if record.create_date:
+                record.date_deadline = record.create_date.date() + timedelta(
+                    days=record.validity
+                )
+            else:
+                record.date_deadline = fields.Date.today() + timedelta(
+                    days=record.validity
+                )
