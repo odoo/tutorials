@@ -5,6 +5,7 @@ from datetime import timedelta
 class estate_property_offer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Offer Price")
     status = fields.Selection(
@@ -14,6 +15,9 @@ class estate_property_offer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_deadline", inverse="_inverse_deadline"
@@ -42,6 +46,12 @@ class estate_property_offer(models.Model):
         for offer in self:
             if not offer.property_id.has_accepted_offer:
                 offer.status = "accepted"
+                if offer.property_id.state not in [
+                    "offer Accepted",
+                    "sold",
+                    "cancelled",
+                ]:
+                    offer.property_id.state = "offer Accepted"
             else:
                 raise exceptions.UserError(("You can't accept multiple offers"))
         return True
@@ -58,7 +68,6 @@ class estate_property_offer(models.Model):
 
     @api.constrains("status", "price")
     def _check_selling_price(self):
-        print("B")
         for offer in self:
             if offer.status != "accepted":
                 return True

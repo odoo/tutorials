@@ -17,11 +17,29 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <sheet>
+                    <button name="button_box" position="after">
+                        <button class="oe_stat_button" name="action_open_offers" type="object"
+                            groups=""
+                            invisible="" icon="fa-money">
+                            <field string="Offers" name="offer_count" widget="statinfo" />
+                        </button>
+                    </button>
                     <div class="oe_title">
                         <h1>
                             <field name="name" placeholder="Name"/>
                         </h1>
                     </div>
+                    <notebook>
+                    <page string="Properties">
+                                <field name="property_ids">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

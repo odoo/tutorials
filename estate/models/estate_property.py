@@ -5,8 +5,10 @@ from datetime import timedelta
 class estate_property(models.Model):
     _name = "estate.property"
     _description = "estate.property"
+    _order = "sequence desc"
 
     name = fields.Char(required=True)
+    sequence = fields.Integer("Sequence", default=1)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -24,7 +26,7 @@ class estate_property(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    total_area = fields.Float(compute="_compute_total_area")
+    total_area = fields.Float(compute="_compute_total_area", store=True)
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),
@@ -54,7 +56,7 @@ class estate_property(models.Model):
     tags_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_price = fields.Float(compute="_get_highest_price")
-    has_accepted_offer = fields.Boolean(default=False)
+    has_accepted_offer = fields.Boolean(default=False, help="for testing purpouse")
 
     # ---------------------------------------------------------------------------------------------------------
     #   Compute Functions
@@ -138,7 +140,6 @@ class estate_property(models.Model):
         "expected_price",
     )
     def _check_selling_price(self):
-        print("A")
         for record in self:
             if not record.has_accepted_offer:
                 return True
