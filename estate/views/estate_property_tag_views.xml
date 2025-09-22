@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_tag_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.tag.list</field>
+    <record id="estate_property_tag_view_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.view.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list string="Property Tags">
+            <list string="Property Tags" editable="bottom">
                 <field name="name"/>
             </list>
         </field>
@@ -17,8 +17,9 @@
             <form string="Property Tag">
                 <sheet>
                     <h1>
-                        <field name="name" placeholder="e.g. House"/>
+                        <field name="name" placeholder="e.g. Cozy"/>
                     </h1>
+                    <field name="color" widget="color_index"/>
                 </sheet>
             </form>
         </field>
@@ -27,10 +28,6 @@
     <record id="estate_property_tag_action" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tag</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create a new property tag
-            </p>
-        </field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>
