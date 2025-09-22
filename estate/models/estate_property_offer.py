@@ -62,6 +62,18 @@ class RealEstatePropertyOffer(models.Model):
                     )
 
         return super().create(vals_list)
+    
+    @api.depends("create_date", "validity")
+    def _compute_deadline(self):
+        for record in self:
+            if record.create_date:
+                record.date_deadline = record.create_date.date() + timedelta(
+                    days=record.validity
+                )
+            else:
+                record.date_deadline = fields.Date.today() + timedelta(
+                    days=record.validity
+                )
 
     @api.constrains("price")
     def _check_selling_price(self):
@@ -78,14 +90,3 @@ class RealEstatePropertyOffer(models.Model):
                     )
                 )
 
-    @api.depends("create_date", "validity")
-    def _compute_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date.date() + timedelta(
-                    days=record.validity
-                )
-            else:
-                record.date_deadline = fields.Date.today() + timedelta(
-                    days=record.validity
-                )
