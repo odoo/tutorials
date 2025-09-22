@@ -50,7 +50,13 @@ class EstateProperty(models.Model):
         'CHECK(selling_price > 0)',
         "The selling amout should be strictly positive"
     )
-    
+
+    @api.ondelete(at_uninstall=False)
+    def _delete_only_new_and_canceled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("Only properties in 'New' or 'Cancelled' state can be deleted.")
+            
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:

@@ -1,5 +1,7 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
+
 from datetime import timedelta
 
 class EstatePropertyOffer(models.Model):
@@ -18,6 +20,14 @@ class EstatePropertyOffer(models.Model):
     ], copy=False)
     property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
 
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            property = self.env['estate.property'].browse(val['property_id'])
+            if float_compare(property.best_offer, val.get('price', 0.0), precision_rounding=0.01) == 1:
+                raise UserError("The offer price must be higher than the current best offer.")
+        return super().create(vals)
+        
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for offer in self:
