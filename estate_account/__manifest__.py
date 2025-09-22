@@ -10,4 +10,6 @@
     'version': '19.0.0.0',
     'installable': True,
     'application': True,
+    'author': "Odoo S.A.",
+    'license': "LGPL-3",
 }

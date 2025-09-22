@@ -6,6 +6,8 @@
         'base',
     ],
     'version': '19.0.0.0',
+    'author': "Odoo S.A.",
+    'license': "LGPL-3",
     'installable': True,
     'application': True,
     'data': [
