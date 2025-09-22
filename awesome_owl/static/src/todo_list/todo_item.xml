@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="todo_item-body">
+            <p class="todo_item-text">
+                <t t-esc="this.todo.id"/>. <t t-out="this.todo.description"/>
+            </p>
+        </div>
+    </t>
+
+</templates>
