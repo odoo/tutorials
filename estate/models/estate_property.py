@@ -59,6 +59,19 @@ class estate_property(models.Model):
     has_accepted_offer = fields.Boolean(default=False, help="for testing purpouse")
 
     # ---------------------------------------------------------------------------------------------------------
+    #   Crud Functions
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_user_new(self):
+        if any(
+            property.state in ["offer Received", "offer Accepted", "sold"]
+            for property in self
+        ):
+            raise exceptions.UserError(
+                "Only new and cancelled properties can be deleted !"
+            )
+
+    # ---------------------------------------------------------------------------------------------------------
     #   Compute Functions
 
     @api.depends("living_area", "garden_area")
@@ -122,6 +135,14 @@ class estate_property(models.Model):
                     )
                 )
         return True
+
+    def update_state(self):
+        ret = []
+        for record in self:
+            ret.append(record.best_price)
+            if record.state == "new":
+                record.state = "offer Received"
+        return ret
 
     # ---------------------------------------------------------------------------------------------------------
     #   Constraints

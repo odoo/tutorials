@@ -23,6 +23,19 @@ class estate_property_offer(models.Model):
         compute="_compute_deadline", inverse="_inverse_deadline"
     )
 
+    @api.model
+    def create(self, vals_list):
+        for values in vals_list:
+            prices = (
+                self.env["estate.property"].browse(values["property_id"]).update_state()
+            )
+            if any((p := price) > values["price"] for price in prices):
+                raise exceptions.UserError(
+                    ("You can't create an offer that is lower than " + str(p))
+                )
+
+        return super().create(vals_list)
+
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for offer in self:
