@@ -27,7 +27,6 @@
                     <div class="oe_button_box" name="button_box">
                         <button type="action"
                             class="oe_stat_button"
-                            name="%(estate.action_estate_property_offer_model)d" 
                             icon="fa-bars"
                             invisible="offer_count == 0"
                             string="Offers"/>
