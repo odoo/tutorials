@@ -19,7 +19,7 @@ class EstateProperty(models.Model):
                             0,
                             0,
                             {
-                                "name": _("Property Sale: %s") % rec.name,
+                                "name": f"Property Sale: {rec.name}",
                                 "quantity": 1,
                                 "price_unit": (rec.selling_price * 6) / 100,
                             },
