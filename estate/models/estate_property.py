@@ -36,6 +36,7 @@ class Property(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Integer(compute='_compute_total_area')
     best_price = fields.Float("Best Offer", compute='_compute_best_price')
+    currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)
 
     _check_expected_price_positive = models.Constraint('CHECK(expected_price >= 0)', "The expected price must be positive.")
     _check_selling_price_positive = models.Constraint('CHECK(selling_price >= 0)', "The selling price must be positive.")

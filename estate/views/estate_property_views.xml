@@ -47,6 +47,7 @@
                             <field name="date_availability"/>
                         </group>
                         <group>
+                            <field name="currency_id"/>
                             <field name="expected_price"/>
                             <field name="best_price"/>
                             <field name="selling_price"/>
@@ -104,6 +105,7 @@
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" groups_draggable="false">
                 <field name="state"/>
+                <field name="currency_id"/>
                 <templates>
                     <t t-name="card">
                         <div class="fw-bold col">
@@ -114,15 +116,15 @@
                         <div>
                             <div class="text-muted">
                                 Expected Price:
-                                <field name="expected_price"/>
+                                <field name="expected_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </div>
                             <div t-if="record.state.raw_value == 'offer_received'" class="text-muted">
                                 Best Offer:
-                                <field name="best_price" widget="monetary"/>
+                                <field name="best_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </div>
                             <div t-if="record.state.raw_value == 'offer_accepted'" class="text-muted">
                                 Selling Price:
-                                <field name="selling_price" widget="monetary"/>
+                                <field name="selling_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                             </div>
                         </div>
                         <div>
