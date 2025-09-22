@@ -2,9 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'estate',
-    'version': '0.1',
-    'category': 'estate',
+    'name': 'Estate',
     'summary': 'Sell real estate properties',
     'depends': ['base'],
     'application': True,
