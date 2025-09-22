@@ -1,4 +1,6 @@
 {
+    "author": "Odoo",
+    "license": "LGPL-3",
     "name": "Estate",
     "depends": ["base"],
     "application": "true",

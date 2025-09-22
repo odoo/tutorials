@@ -58,11 +58,13 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         property_ids = [vals['property_id'] for vals in vals_list]
         properties = self.env['estate.property'].browse(property_ids)
-        for property in properties:
+        for vals in vals_list:
+            property = next(filter(
+                    lambda p: p.id == vals['property_id'],
+                    properties), None)
             if property.state == 'new':
                 property.state = 'offer_received'
             for offer in property.offer_ids:
-                if offer.price > self.price:
-                    raise UserError(_("""Cannot create new offer when other
-                                    higher offers exist"""))
+                if offer.price > vals['price']:
+                    raise UserError(_("""Cannot create new offer when other higher offers exist"""))
         return super().create(vals_list)

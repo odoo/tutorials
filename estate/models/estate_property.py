@@ -101,7 +101,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = ''
 
     @api.ondelete(at_uninstall=False)
-    def _delete_check(self):
+    def _unlink_check_status(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError(_("""Cannot delete a property that received offers
@@ -122,4 +122,3 @@ class EstateProperty(models.Model):
                 raise UserError(_("Cannot cancel a sold property"))
             record.state = 'cancelled'
         return True
-
