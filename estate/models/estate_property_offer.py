@@ -1,7 +1,8 @@
-from odoo import _, api, exceptions, fields, models
 from datetime import timedelta
+
+from odoo import _, api, exceptions, fields, models
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
-from odoo.exceptions import ValidationError, UserError
 
 
 class RealEstatePropertyOffer(models.Model):
@@ -11,18 +12,18 @@ class RealEstatePropertyOffer(models.Model):
 
     price = fields.Float()
     status = fields.Selection(
-        [("accepted", "Accepted"), ("refused", "Refused")], copy=False
+        [("accepted", "Accepted"), ("refused", "Refused")], copy=False,
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_set_deadline")
     property_type_id = fields.Many2one(
-        "estate.property.type", related="property_id.property_type_id", store=True
+        "estate.property.type", related="property_id.property_type_id", store=True,
     )
 
     _check_offer_price = models.Constraint(
-        "CHECK(price > 0)", "The offer price should be strictly positive."
+        "CHECK(price > 0)", "The offer price should be strictly positive.",
     )
 
     def _set_deadline(self):
@@ -38,7 +39,7 @@ class RealEstatePropertyOffer(models.Model):
         for record in self:
             if record.property_id.state in ["sold", "canceled"]:
                 raise exceptions.UserError(
-                    "You cannot accept an offer on a sold or canceled property."
+                    _("You cannot accept an offer on a sold or canceled property."),
                 )
             record.status = "accepted"
             record.property_id.selling_price = record.price
@@ -58,21 +59,21 @@ class RealEstatePropertyOffer(models.Model):
 
                 if vals["price"] < property.best_offer:
                     raise UserError(
-                        _("Offer must be higher or equal than %d", property.best_offer)
+                        _("Offer must be higher or equal than %d", property.best_offer),
                     )
 
         return super().create(vals_list)
-    
+
     @api.depends("create_date", "validity")
     def _compute_deadline(self):
         for record in self:
             if record.create_date:
                 record.date_deadline = record.create_date.date() + timedelta(
-                    days=record.validity
+                    days=record.validity,
                 )
             else:
                 record.date_deadline = fields.Date.today() + timedelta(
-                    days=record.validity
+                    days=record.validity,
                 )
 
     @api.constrains("price")
@@ -80,13 +81,12 @@ class RealEstatePropertyOffer(models.Model):
         for record in self:
             if (
                 float_compare(
-                    record.price, (record.property_id.expected_price * 0.9), 2
+                    record.price, (record.property_id.expected_price * 0.9), 2,
                 )
                 < 0
             ):
                 raise ValidationError(
                     _(
-                        "The best offer must be at least 90% of the expected price to accept an offer."
-                    )
+                        "The best offer must be at least 90% of the expected price to accept an offer.",
+                    ),
                 )
-

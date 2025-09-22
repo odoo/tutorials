@@ -1,6 +1,6 @@
-from odoo import _, api, fields, models
 from datetime import timedelta
 
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -13,7 +13,7 @@ class RealEstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=(lambda x: fields.Date.today() + timedelta(days=90))
+        copy=False, default=(lambda x: fields.Date.today() + timedelta(days=90)),
     )
     expected_price = fields.Float(required=True, readonly=False)
     selling_price = fields.Float(copy=False)
@@ -37,12 +37,12 @@ class RealEstateProperty(models.Model):
         copy=False,
     )
     garden_orientation = fields.Selection(
-        [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
+        [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")],
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        "res.users", string="Salesperson", default=lambda self: self.env.user,
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offers_ids = fields.One2many("estate.property.offer", "property_id")
@@ -89,7 +89,7 @@ class RealEstateProperty(models.Model):
         for record in self:
             if record.state in ["canceled", "new"]:
                 raise UserError(
-                    _("Only properties with an accepted offer can be sold.")
+                    _("Only properties with an accepted offer can be sold."),
                 )
             record.state = "sold"
 

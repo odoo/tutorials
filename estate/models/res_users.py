@@ -1,4 +1,4 @@
-from odoo import api, fields, models, modules
+from odoo import fields, models
 
 
 class ResUsers(models.Model):
