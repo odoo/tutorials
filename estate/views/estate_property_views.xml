@@ -116,15 +116,15 @@
                         <div>
                             <div class="text-muted">
                                 Expected Price:
-                                <field name="expected_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="expected_price" widget="monetary"/>
                             </div>
                             <div t-if="record.state.raw_value == 'offer_received'" class="text-muted">
                                 Best Offer:
-                                <field name="best_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="best_price" widget="monetary"/>
                             </div>
                             <div t-if="record.state.raw_value == 'offer_accepted'" class="text-muted">
                                 Selling Price:
-                                <field name="selling_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                                <field name="selling_price" widget="monetary"/>
                             </div>
                         </div>
                         <div>
