@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <p>
+                <Counter/>
+                <Counter/>
+            </p>
+        </div>
+        <div class="p-3">
+            <Card title="'Card 1'" content="html_value1"/>
+            <Card title="'Card 2'" content="html_value2"/>
         </div>
     </t>
 
