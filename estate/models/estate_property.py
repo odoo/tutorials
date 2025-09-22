@@ -66,7 +66,7 @@ class Property(models.Model):
             self.garden_orientation = None
 
     @api.ondelete(at_uninstall=False)
-    def _prevent_deletion_unless_new_or_cancelled(self):
+    def _unlink_prevent_deletion_unless_new_or_cancelled(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError(_("A property can only be deleted if its state is 'New' or 'Cancelled'"))
