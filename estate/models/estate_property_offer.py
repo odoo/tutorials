@@ -1,8 +1,8 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
-
 from datetime import timedelta
+
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -27,7 +27,7 @@ class EstatePropertyOffer(models.Model):
             if float_compare(property.best_offer, val.get('price', 0.0), precision_rounding=0.01) == 1:
                 raise UserError("The offer price must be higher than the current best offer.")
         return super().create(vals)
-        
+
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for offer in self:
@@ -38,7 +38,7 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             base_date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.validity = (offer.date_deadline - base_date).days
-    
+
     def action_accept_offer(self):
         self.ensure_one()
         for offer in self:
