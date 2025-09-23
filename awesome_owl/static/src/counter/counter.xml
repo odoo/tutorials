@@ -3,7 +3,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.counter">
-        <div class="m-2 p-2 border d-inline-block">
+        <div class="m-2 p-2 border d-flex flex-row align-items-center">
             <span class="me-2">Counter: <t t-esc="state.value"/></span>
             <button class="btn btn-primary" t-on-click="increment">Increment</button>
         </div>

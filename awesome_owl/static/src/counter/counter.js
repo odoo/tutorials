@@ -12,9 +12,7 @@ export class Counter extends Component {
 
     increment() {
         this.state.value++;
-        console.log("Incremented to", this.state.value);
         if ("onChange" in this.props) {
-            console.log("Calling onChange callback");
             this.props.onChange();
         }
     }

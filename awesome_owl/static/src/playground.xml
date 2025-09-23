@@ -5,7 +5,7 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             <div class="d-inline-block border p-3">
-                <div>
+                <div class="d-flex flex-row">
                     <Counter onChange.bind="incrementSum"/>
                     <Counter onChange.bind="incrementSum"/>
                 </div>
@@ -13,11 +13,22 @@
             </div>
         </div>
         <div class="p-3">
-            <Card title="'Card 1'" content="html_value1"/>
-            <Card title="'Card 2'" content="html_value2"/>
+            <div class="d-inline-block border p-3">
+                <Card title="'Card 1'">
+                    <t t-out="html_value1"/>
+                </Card>
+                <Card title="'Card 2'">
+                    <t t-out="html_value2"/>
+                </Card>
+                <Card title="'Card 3'">
+                    <Counter onChange.bind="incrementSum"/>
+                </Card>
+            </div>
         </div>
         <div class="p-3">
-            <TodoList/>
+            <div class="d-inline-block border p-3">
+                <TodoList/>
+            </div>
         </div>
     </t>
 

@@ -5,6 +5,7 @@ import { useAutofocus } from "../utils";
 export class TodoList extends Component {
     static template = "awesome_owl.todo_list";
     static components = { TodoItem };
+    static props = {};
 
     setup() {
         this.todos = useState([]);

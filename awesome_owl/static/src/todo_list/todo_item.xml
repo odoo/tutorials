@@ -6,7 +6,7 @@
         <div class="d-flex flex-row" t-att-class="{'text-muted text-decoration-line-through' : props.todo.isCompleted}">
             <input type="checkbox" class="form-check-input me-2" t-att-checked="props.todo.isCompleted" t-on-change="(ev) => props.toggleState(props.todo, ev)"/>
             <t t-esc="props.todo.id"/>. <t t-esc="props.todo.description"/>
-            <span class="fa fa-remove text-danger align-self-center ms-3" t-on-click="(ev) => props.removeTodo(props.todo, ev)"/>
+            <span class="fa fa-remove text-danger align-self-center ms-3 cursor-pointer" t-on-click="(ev) => props.removeTodo(props.todo, ev)"/>
         </div>
     </t>
 
