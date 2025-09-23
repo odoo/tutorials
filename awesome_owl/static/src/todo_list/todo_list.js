@@ -9,10 +9,10 @@ export class TodoList extends Component {
     setup() {
         useAutoFocus("todo-input");
         this.state = useState({todos: {
-                2: { description: "buy milk", isCompleted: false }, 
-                3: { description: "buy tomatoes", isCompleted: true }
+                1: { description: "buy milk", isCompleted: false }, 
+                2: { description: "buy tomatoes", isCompleted: true }
             },
-            lastId: 3
+            lastId: 2
         });
     }
 
