@@ -8,17 +8,21 @@ export class TodoList extends Component {
 
     setup() {
         useAutoFocus("todo-input")
-        this.state = useState({todos: [
-                { id: 2, description: "penser à acheter du lait", isCompleted: false }, 
-                { id: 3, description: "penser à acheter des tomates cerises", isCompleted: true }
-            ],
+        this.state = useState({todos: {
+                2: { description: "penser à acheter du lait", isCompleted: false }, 
+                3: { description: "penser à acheter des tomates cerises", isCompleted: true }
+            },
             lastId: 3
         });
     }
 
+    toggleState(id) {
+        this.state.todos[id].isCompleted = !this.state.todos[id].isCompleted
+    }
+
     addTodo(ev) {
         if (ev.keyCode === 13 && ev.target.value != "") {
-            this.state.todos.push({id: ++this.state.lastId, description: ev.target.value, isCompleted: false});
+            this.state.todos[++this.state.lastId] = {description: ev.target.value, isCompleted: false};
             ev.target.value = ""
         }
     }

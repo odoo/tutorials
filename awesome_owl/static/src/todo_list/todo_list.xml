@@ -10,8 +10,8 @@
                     placeholder="Enter something to do..."
                     t-ref="todo-input"
                 />
-                <t t-foreach="this.state.todos" t-as="i" t-key="i.id">
-                    <TodoItem todo="i"/>
+                <t t-foreach="Object.keys(this.state.todos)" t-as="id" t-key="id">
+                    <TodoItem id="id" todo="this.state.todos[id]" toggleState.bind="() => this.toggleState(id)"/>
                 </t>
             </div>
         </div>
