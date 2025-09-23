@@ -9,16 +9,34 @@
             </t>
             <t t-set-slot="default">
                 <DashboardItem>
-                    <h5 class="card-title">Size 1</h5>
+                    <t t-set-slot="header">
+                        Number of new orders this month
+                    </t>
+                    <h1 class="text-success" t-esc="statistics.nb_new_orders"></h1>
                 </DashboardItem>
-                <DashboardItem size="1">
-                    <h5 class="card-title">Size 1</h5>
+                <DashboardItem>
+                    <t t-set-slot="header">
+                        Total amount of new orders this month
+                    </t>
+                    <h1 class="text-success" t-esc="statistics.total_amount"></h1>
                 </DashboardItem>
                 <DashboardItem size="2">
-                    <h5 class="card-title">Size 2</h5>
+                    <t t-set-slot="header">
+                        Average amount of t-shirt by order this month
+                    </t>
+                    <h1 class="text-success" t-esc="statistics.average_quantity"></h1>
                 </DashboardItem>
-                <DashboardItem size="3">
-                    <h5 class="card-title">Size 3</h5>
+                <DashboardItem>
+                    <t t-set-slot="header">
+                        Number of cancelled orders this month
+                    </t>
+                    <h1 class="text-success" t-esc="statistics.nb_cancelled_orders"></h1>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <t t-set-slot="header">
+                        Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                    </t>
+                    <h1 class="text-success" t-esc="statistics.average_time"></h1>
                 </DashboardItem>
             </t>
         </Layout>
