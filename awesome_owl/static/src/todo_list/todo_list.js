@@ -21,4 +21,10 @@ export class TodoList extends Component {
             ev.target.value = "";
         }
     }
+
+    setTodoCompletion(todo, ev) {
+        if (ev.target.checked != todo.isCompleted) {
+            todo.isCompleted = ev.target.checked;
+        }
+    }
 }

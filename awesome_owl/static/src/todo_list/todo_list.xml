@@ -6,9 +6,9 @@
         <div class="p-2 border d-inline-block">
             <input type="text" placeholder="Enter a new task." class="form-control mb-2" t-on-keyup="addTodo" t-ref="todoInput"/>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <p>
-                    <TodoItem todo="todo"/>
-                </p>
+                <div class="d-flex flex-row">
+                    <TodoItem todo="todo" toggleState.bind="setTodoCompletion"/>
+                </div>
             </t>
         </div>
     </t>
