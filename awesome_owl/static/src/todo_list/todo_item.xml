@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todo_item">
-        <div class="todo_item-body">
+        <div class="todo_item-body" t-att-class="{'text-muted text-decoration-line-through': this.todo.isCompleted}">
             <p class="todo_item-text">
                 <t t-esc="this.todo.id"/>. <t t-out="this.todo.description"/>
             </p>

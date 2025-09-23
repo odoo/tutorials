@@ -3,8 +3,14 @@
 
     <t t-name="awesome_owl.todo_list">
         <div class="card d-inline-block m-2">
-            <div class="todo_list-body">
-                <t t-foreach="this.todos" t-as="i" t-key="i">
+            <div class="todo_list-body border p-2 m-2">
+                <input
+                    type="text"
+                    t-on-keyup="addTodo"
+                    placeholder="Enter something to do..."
+                    t-ref="todo-input"
+                />
+                <t t-foreach="this.state.todos" t-as="i" t-key="i.id">
                     <TodoItem todo="i"/>
                 </t>
             </div>
