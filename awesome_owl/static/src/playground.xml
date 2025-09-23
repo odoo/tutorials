@@ -9,9 +9,16 @@
         <Counter value="this.state.val2" side_effect.bind="() => this.state.val2++"/>
         <div>The sum is: <t t-esc="sum"/></div>
         <Counter/>
-        <Card title="'card title'" content="'card content'"/>
-        <Card title="'card title'" content="str1"/>
-        <Card title="'card title'" content="str2"/>
+        <Card title="'epic card title'">
+            New content for the new card
+        </Card>
+        <Card title="'cute card title'">
+            this should work with arbitrary html content
+        </Card>
+        <Card title="'scary card title'">
+            Here is a cool counter for you
+            <Counter/>
+        </Card>
 
         <TodoList/>
     </t>
