@@ -3,7 +3,7 @@
     <t t-name="awesome_owl.todo_list">
         <div class="d-flex flex-column card p-2 w-25">
         <h5> Todos </h5>
-        <input type="text" t-on-keyup="keyup" />
+        <input type="text" t-on-keyup="keyup" t-ref="todo_input" />
         <t t-foreach="this.state.todos" t-as="todo" t-key="todo.id">
             <TodoItem todo="todo" />
         </t>
