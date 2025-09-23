@@ -3,11 +3,11 @@
     'name': "Awesome Owl",
 
     'summary': """
-        Companion addon for the Odoo JS Framework Training
+        Starting module for "Discover the JS framework, chapter 1: Owl components"
     """,
 
     'description': """
-        Companion addon for the Odoo JS Framework Training
+        Starting module for "Discover the JS framework, chapter 1: Owl components"
     """,
 
     'author': "Odoo",
@@ -16,8 +16,8 @@
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/15.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
-    'category': 'Tutorials',
-    'version': '0.2',
+    'category': 'Tutorials/AwesomeOwl',
+    'version': '0.1',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'web'],
@@ -29,7 +29,6 @@
     'assets': {
         'awesome_owl.assets_playground': [
             ('include', 'web._assets_helpers'),
-            ('include', 'web._assets_backend_helpers'),
             'web/static/src/scss/pre_variables.scss',
             'web/static/lib/bootstrap/scss/_variables.scss',
             'web/static/lib/bootstrap/scss/_maps.scss',

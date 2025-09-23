@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<!-- HEADER -->
+    <!-- Add option header -->
+    <template id="template_header_opt" inherit_id="website.snippet_options" name="Airproof Header Template - Option">
+        <xpath expr="//we-select[@data-variable='header-template']" position="inside">
+            <we-button title="Airproof"
+                data-customize-website-views="website_airproof.header"
+                data-customize-website-variable="'airproof'"
+                data-img="/website_airproof/static/src/img/wbuilder/template-header-opt.svg"/>
+        </xpath>
+        <xpath expr="//*[@data-name='mega_menu_template_opt']/*" position="before">
+            <t t-set="_label">Airproof</t>
+            <we-button t-att-data-select-label="_label"
+                data-select-template="website_airproof.s_mega_menu_airproof"
+                data-img="/website_airproof/static/src/img/wbuilder/template-header-opt.svg"
+                t-out="_label"/>
+        </xpath>
+    </template>
+    <!-- Custom header -->
+    <record id="header" model="ir.ui.view">
+        <field name="name">Airproof header</field>
+        <field name="type">qweb</field>
+        <field name="key">website_airproof.header</field>
+        <field name="inherit_id" ref="website.layout"/>
+        <field name="mode">extension</field>
+        <field name="arch" type="xml">
+            <xpath expr="//header//nav" position="replace">
+                <t t-call="website.navbar">
+                    <t t-set="_navbar_classes" t-valuef="d-none d-lg-block p-0"/>
+                    <div id="o_main_nav" class="o_main_nav flex-wrap">
+                        <div aria-label="Top" class="o_header_hide_on_scroll">
+                            <div class="container d-flex justify-content-between flex-wrap w-100 pt-2">
+                                <ul class="o_header_search_left_col navbar-nav flex-wrap">
+                                    <!-- Text element -->
+                                    <t t-call="website.placeholder_header_text_element">
+                                        <t t-set="_txt_elt_content" t-valuef="sentence"/>
+                                        <t t-set="_div_class" t-valuef="d-flex align-items-center h-100 px-2 text-muted"/>
+                                    </t>
+                                </ul>
+                                <ul class="navbar-nav flex-wrap">
+                                    <!-- Search bar -->
+                                    <t t-call="website.placeholder_header_search_box" t-nocache="The searchbox should not cache previous searches.">
+                                        <t t-set="_input_classes" t-valuef="ps-3 pb-0 o_small bg-white border-bottom rounded-0"/>
+                                        <t t-set="_submit_classes" t-valuef="pe-3 me-3"/>
+                                    </t>
+                                    <!-- Social Links -->
+                                    <t t-call="website.placeholder_header_social_links">
+                                        <t t-set="_div_class" t-valuef="d-flex align-items-center h-100 px-1"/>
+                                    </t>
+                                </ul>
+                            </div>
+                        </div>
+                        <div  aria-label="Bottom" class="container d-grid align-items-center w-100 py-2 o_grid_header_3_cols">
+                            <!-- Navbar -->
+                            <t t-call="website.navbar_nav">
+                                <t t-set="_nav_class" t-valuef="me-4"/>
+                                <!-- Menu -->
+                                <t t-foreach="website.menu_id.child_id" t-as="submenu">
+                                    <t t-call="website.submenu">
+                                        <t t-set="item_class" t-valuef="nav-item"/>
+                                        <t t-set="link_class" t-valuef="nav-link"/>
+                                    </t>
+                                </t>
+                            </t>
+                            <!-- Brand -->
+                            <t t-call="website.placeholder_header_brand">
+                                <t t-set="_link_class" t-valuef="mw-100 mx-auto"/>
+                            </t>
+                            <ul class="o_header_search_right_col navbar-nav align-items-center gap-2 ms-auto ps-3">
+                                <!-- Language Selector -->
+                                <t t-call="website.placeholder_header_language_selector">
+                                    <t t-set="_div_classes" t-valuef="h-100"/>
+                                    <t t-set="_btn_class" t-valuef="btn-sm d-flex align-items-center h-100 rounded-sm p-2"/>
+                                </t>
+                                <!-- Shopping cart -->
+                                <t t-call="website_sale.header_cart_link">
+                                    <t t-set="_icon" t-value="True" />
+                                    <t t-set="_item_class" t-valuef="nav-item" />
+                                    <t t-set="_link_class" t-valuef="nav-link py-3" />
+                                </t>
+                                <!-- Wishlist icon -->
+                                <t t-call="website_sale_wishlist.header_wishlist_link">
+                                    <t t-set="_icon" t-value="True"/>
+                                    <t t-set="_item_class" t-valuef="nav-item me-lg-3"/>
+                                    <t t-set="_link_class" t-valuef="nav-link py-3"/>
+                                </t>
+                                <!-- Sign In -->
+                                <t t-call="portal.placeholder_user_sign_in">
+                                    <t t-set="_link_class" t-valuef="btn btn-primary d-flex align-items-center h-100 rounded-sm px-3"/>
+                                </t>
+                                <!-- User Dropdown -->
+                                <t t-call="portal.user_dropdown">
+                                    <t t-set="_user_name" t-value="true"/>
+                                    <t t-set="_icon" t-value="true"/>
+                                    <t t-set="_item_class" t-valuef="dropdown"/>
+                                    <t t-set="_link_class" t-valuef="btn btn-primary d-flex align-items-center h-100 rounded-sm"/>
+                                    <t t-set="_dropdown_menu_class" t-valuef="dropdown-menu-start"/>
+                                </t>
+                                <!-- Call To Action -->
+                                <t t-call="website.placeholder_header_call_to_action"/>
+                            </ul>
+                        </div>
+                    </div>
+                </t>
+                <t t-call="website.template_header_mobile"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Mega menu template -->
+    <template id="s_mega_menu_airproof" name="Airproof" groups="base.group_user">
+        <section class="s_mega_menu_airproof pt24 pb24" style="background-color: #F4F4F4 !important;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-mini-1" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_mini" alt="Drone Airproof Mini" class="img-fluid img"/>
+                            <div class="p-2">
+                                <font class="fw-bold">Airproof Mini</font>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-pro-2" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_pro" alt="Drone Airproof Pro" class="img-fluid img"/>
+                            <div class="p-2">
+                                <font class="fw-bold">Airproof Pro</font>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-robin-3" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_robin" alt="Drone Airproof Robin" class="img-fluid img"/>
+                            <div class="d-block p-2">
+                                <font class="fw-bold">Airproof Robin</font>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-falcon-4" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_falcon" alt="Drone Airproof Falcon" class="img-fluid img"/>
+                            <div class="d-block p-2">
+                                <font class="fw-bold">Airproof Falcon</font>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-6 col-sm text-center pt8 pb8 o_colored_level">
+                        <a href="/shop/airproof-eagle-5" class="nav-link p-0" data-name="Menu Item">
+                            <img src="/web/image/website_airproof.img_eagle" alt="Drone Airproof Eagle" class="img-fluid img"/>
+                            <div class="d-block p-2">
+                                <font class="fw-bold">Airproof Eagle</font>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </template>
+
+<!-- FOOTER -->
+    <!-- Add option footer -->
+    <template id="template_footer_opt" inherit_id="website.snippet_options" name="Airproof Footer Template - Option">
+        <xpath expr="//we-select[@data-variable='footer-template']" position="inside">
+            <we-button title="Airproof" data-customize-website-views="website_airproof.footer" data-customize-website-variable="'airproof'" data-img="/website_airproof/static/src/img/wbuilder/template-footer-opt.svg" />
+        </xpath>
+    </template>
+    <!-- Custom Footer -->
+    <record id="footer" model="ir.ui.view">
+        <field name="name">Airproof Footer</field>
+        <field name="type">qweb</field>
+        <field name="key">website_airproof.footer</field>
+        <field name="inherit_id" ref="website.layout"/>
+        <field name="mode">extension</field>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='footer']" position="replace">
+                <div id="footer" class="oe_structure" t-ignore="true" t-if="not no_footer">
+                    <!-- Newsletter block -->
+                    <section class="s_newsletter_block s_newsletter_list o_colored_level o_cc o_cc4 pt48 pb48" data-list-id="1" data-snippet="s_newsletter_block" data-name="Newsletter Block">
+                        <div class="container">
+                            <div class="row">
+                                <div class="pt8 pb8 o_colored_level col-lg-6">
+                                    <h2>Sign up for our newsletter </h2>
+                                    <p>Don't miss the newsletter with news and special offers !</p>
+                                </div>
+                                <div class="pt40 pb8 o_colored_level col-lg-6">
+                                    <div class="s_newsletter_subscribe_form s_newsletter_list js_subscribe" data-vxml="001" data-list-id="0" data-name="Newsletter Form" data-snippet="s_newsletter_subscribe_form">
+                                        <div class="js_subscribed_wrap d-none">
+                                            <p class="text-end text-success"><i class="fa fa-check-circle-o" role="img"/> Thanks for registering!</p>
+                                        </div>
+                                        <div class="js_subscribe_wrap">
+                                            <div class="input-group">
+                                                <input type="email" name="email" class="js_subscribe_value form-control border-0 me-3" placeholder="Your email..."/>
+                                                <a role="button" href="#" class="btn btn-primary o_cc o_cc3 js_subscribe_btn o_submit">Subscribe</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Footer -->
+                    <section class="s_text_block pt80 pb24" data-snippet="s_text_block" data-name="Text">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col col-lg-6 pb40 pe-md-5">
+                                  <p class="small">
+                                    Creativity is at the heart of every dream. Every idea, every groundbreaking leap that changes our world starts with the vision of talented creators. At Airproof, we give these creators the tools they need to bring their ideas to life.
+                                  </p>
+                                </div>
+                                <div class="col-6 col-md-4 col-lg-2 pb24">
+                                    <p class="mb-4 text-muted small">Our drones</p>
+                                    <ul class="list-unstyled small">
+                                        <li class="mb-2"><a href="/">Airproof Mini</a></li>
+                                        <li class="mb-2"><a href="/">Airproof Pro</a></li>
+                                        <li class="mb-2"><a href="/">Airproof Robin</a></li>
+                                        <li class="mb-2"><a href="/">Airproof Falcon</a></li>
+                                        <li class="mb-2"><a href="/">Airproof Eagle</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col-6 col-md-4 col-lg-2 pb24">
+                                    <p class="mb-4 text-muted small">Our accessories</p>
+                                    <ul class="list-unstyled small">
+                                        <li class="mb-2"><a href="/">Drones cases</a></li>
+                                        <li class="mb-2"><a href="/">Float kit</a></li>
+                                        <li class="mb-2"><a href="/">Controllers</a></li>
+                                        <li class="mb-2"><a href="/">Cameras</a></li>
+                                        <li class="mb-2"><a href="/">Stickers</a></li>
+                                    </ul>
+                                </div>
+                                <div class="col col-md-4 col-lg-2 pb24">
+                                    <p class="mb-4 text-muted small">Contact us</p>
+                                    <p class="mb-4 small">Airproof<br/>10 Rue Van Hove<br/>1000 Brussel</p>
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <img src="/web/image/website_airproof.img_phone" alt="Phone number" class="me-2 img img-fluid opacity-50"/>
+                                            <a href="tel:+3222903490​" class="o_force_ltr small">+32 2 290 34 90​</a>
+                                        </li>
+                                        <li>
+                                            <img src="/web/image/website_airproof.img_envelop" alt="Contact email" class="me-2 img img-fluid opacity-50 o_we_force_no_transition"/>
+                                            <a href="mailto:contact@airproof.com" class="small" rel="nofollow noopener" target="_blank">contact@airproof.com</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Copyright -->
+    <template id="copyright" inherit_id="website.layout">
+        <xpath expr="//div[hasclass('o_footer_copyright')]/div[hasclass('container')]" position="replace">
+            <div class="container pt24 pb24">
+                <div class="row d-flex flex-row align-items-center justify-content-between">
+                    <div class="col-12 col-md-6 col-lg-6 s_social_media text-start o_not_editable no_icon_color" data-snippet="s_social_media" data-name="Social Media">
+                        <h4 class="s_social_media_title d-none">Social Media</h4>
+                        <a target="_blank" href="/website/social/facebook" class="s_social_media_facebook">
+                            <i class="fa rounded-circle shadow-sm fa-facebook text-o-color-5"/>
+                        </a>
+                        <a target="_blank" href="/website/social/youtube" class="s_social_media_youtube">
+                            <i class="fa rounded-circle shadow-sm fa-youtube text-o-color-5"/>
+                        </a>
+                        <a target="_blank" href="/website/social/instagram" class="s_social_media_instagram">
+                            <i class="fa rounded-circle shadow-sm fa-instagram text-o-color-5"/>
+                        </a>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-6">
+                        <span class="o_footer_copyright_name me-2 small">© Airproof. All rights reserved.</span>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>

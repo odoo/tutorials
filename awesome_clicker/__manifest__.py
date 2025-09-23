@@ -3,16 +3,16 @@
     'name': "Awesome Clicker",
 
     'summary': """
-        Companion addon for the Odoo JS Framework Training
+        Starting module for "Master the Odoo web framework, chapter 1: Build a Clicker game"
     """,
 
     'description': """
-        Companion addon for the Odoo JS Framework Training
+        Starting module for "Master the Odoo web framework, chapter 1: Build a Clicker game"
     """,
 
     'author': "Odoo",
     'website': "https://www.odoo.com/",
-    'category': 'Tutorials',
+    'category': 'Tutorials/AwesomeClicker',
     'version': '0.1',
     'application': True,
     'installable': True,
