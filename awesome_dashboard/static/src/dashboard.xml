@@ -7,6 +7,20 @@
                 <button class="btn btn-primary" t-on-click="() => openCustomers()">Customers</button>
                 <button class="btn btn-primary" t-on-click="() => openLeads()">Leads</button>
             </t>
+            <t t-set-slot="default">
+                <DashboardItem>
+                    <h5 class="card-title">Size 1</h5>
+                </DashboardItem>
+                <DashboardItem size="1">
+                    <h5 class="card-title">Size 1</h5>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <h5 class="card-title">Size 2</h5>
+                </DashboardItem>
+                <DashboardItem size="3">
+                    <h5 class="card-title">Size 3</h5>
+                </DashboardItem>
+            </t>
         </Layout>
     </t>
 
