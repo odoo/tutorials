@@ -6,7 +6,6 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 import { DashboardItem } from "./dashboard_item";
-import { rpc } from "@web/core/network/rpc";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -14,11 +13,7 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        onWillStart(async () => {
-            const stats = await rpc("/awesome_dashboard/statistics");
-            this.stats = stats
-            console.log(stats)
-        })
+        this.stats = useService("awesome_dashboard.statistics").getStatistics()
     }
     openPartners() {
         this.action.doAction("base.action_partner_form");
