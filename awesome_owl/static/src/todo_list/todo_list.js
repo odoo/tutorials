@@ -7,7 +7,7 @@ export class TodoList extends Component {
     static components = { TodoItem }
 
     setup() {
-        useAutoFocus("todo-input")
+        useAutoFocus("todo-input");
         this.state = useState({todos: {
                 2: { description: "penser à acheter du lait", isCompleted: false }, 
                 3: { description: "penser à acheter des tomates cerises", isCompleted: true }
