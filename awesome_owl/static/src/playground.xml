@@ -5,6 +5,8 @@
         <div class="p-3">
             hello world
         </div>
+        <Counter/>
+        <Counter/>
     </t>
 
 </templates>
