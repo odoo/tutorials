@@ -6,11 +6,27 @@
             <t t-set-slot="control-panel-create-button">
                 <button t-on-click="openCustomers" type="button" class="btn btn-primary">Customers</button>
                 <button t-on-click="openLeads" type="button" class="btn btn-primary">Leads</button>
-                <button></button>
             </t>
-            <DashboardItem>some content</DashboardItem>
-            <DashboardItem size="2">I love milk</DashboardItem>
-            <DashboardItem>some content</DashboardItem>
+            <DashboardItem>
+                <p class="stats-name">Average amount of t-shirt by order this month</p>
+                <p class="stats-number"><t t-esc="state.statistics.average_quantity"/></p>
+            </DashboardItem>
+            <DashboardItem>
+                <p class="stats-name">Average time for an order to go from 'new' to 'sent' or 'cancelled'</p>
+                <p class="stats-number"><t t-esc="state.statistics.average_time"/></p>
+            </DashboardItem>
+            <DashboardItem>
+                <p class="stats-name">Number of new orders this month</p>
+                <p class="stats-number"><t t-esc="state.statistics.nb_new_orders"/></p>
+            </DashboardItem>
+            <DashboardItem>
+                <p class="stats-name">Number of cancelled orders this month</p>
+                <p class="stats-number"><t t-esc="state.statistics.nb_cancelled_orders"/></p>
+            </DashboardItem>
+            <DashboardItem>
+                <p class="stats-name">Total amount of new orders this month</p>
+                <p class="stats-number"><t t-esc="state.statistics.total_amount"/></p>
+            </DashboardItem>
         </Layout>
     </t>
 
