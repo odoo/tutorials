@@ -9,7 +9,19 @@
             Leads
         </button>
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
-            some content
+            <DashboardItem>
+                no size
+            </DashboardItem>
+            <DashboardItem size="2">
+                size of 2
+            </DashboardItem>
+            <t t-foreach="Object.keys(this.stats)" t-as="s" t-key="s">
+                <!-- please don't make me use css -->
+                <DashboardItem>
+                    <t t-esc="s"/> 
+                    <t t-esc="this.stats[s]"/>
+                </DashboardItem>
+            </t>
         </Layout>
     </t>
 
