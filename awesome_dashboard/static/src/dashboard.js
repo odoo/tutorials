@@ -5,10 +5,11 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
+import { PieChart } from "./dashboard_pie_chart/dashboard_pie_chart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, PieChart };
     static props = {};
 
     setup() {
@@ -19,7 +20,6 @@ class AwesomeDashboard extends Component {
         onWillStart(async () => {
             this.statistics = await this.statisticsService.loadStatistics();
         });
-        console.log(this.statistics)
     }
 
     openCustomers = () => {
