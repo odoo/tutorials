@@ -2,17 +2,17 @@
 
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-         <div class="o_counter_container" style="display: flex; align-items: center;">
-            <span class="mr-2" style="margin-right: 10px;">hello world</span>
+         <div class="o_counter_container" style="display: flex; flex-direction: column; align-items: center;">
              <div style="display: flex; gap: 10px;">
-                <Counter/>
-                <Counter/>
+                <Counter onChange="incrementSum"/>
+                <Counter onChange="incrementSum"/>
             </div>
+            <p>Sum: <t t-esc="state.sum"/></p>
         </div>
         <div class="o_counter_container" style="display: flex; flex-wrap: wrap;">
-            <Card title="'Card 1'" content="'This is the first card.'"/>
-            <Card title="'Card 2'" content="'This is the second card.'"/>
-            <Card title="'Card 3'" content="'Another card example.'"/>
+             <t t-foreach="cards" t-as="card" t-key="card.title">
+                <Card title="card.title" content="card.content"/>
+            </t>
         </div>
 
     </t>
