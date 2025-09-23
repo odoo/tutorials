@@ -27,4 +27,11 @@ export class TodoList extends Component {
             todo.isCompleted = ev.target.checked;
         }
     }
+
+    deleteTodo(todo, ev) {
+        const index = this.todos.findIndex((elem) => elem.id === todo.id);
+        if (index >= 0) {
+            this.todos.splice(index, 1);
+        }
+    }
 }
