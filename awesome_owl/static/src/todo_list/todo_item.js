@@ -5,12 +5,14 @@ export class TodoItem extends Component {
     static props = {
         id: String,
         todo: {type: {description: String, isCompleted: Boolean}},
-        toggleState: Function 
+        toggleState: Function,
+        removeTodo: Function
     }
 
     setup() {
-        this.id = this.props.id
-        this.todo = useState(this.props.todo)
-        this.toggleState = this.props.toggleState
+        this.id = this.props.id;
+        this.todo = useState(this.props.todo);
+        this.toggleState = this.props.toggleState;
+        this.removeTodo = this.props.removeTodo;
     }
 }

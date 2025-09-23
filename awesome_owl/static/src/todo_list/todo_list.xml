@@ -11,7 +11,12 @@
                     t-ref="todo-input"
                 />
                 <t t-foreach="Object.keys(this.state.todos)" t-as="id" t-key="id">
-                    <TodoItem id="id" todo="this.state.todos[id]" toggleState.bind="() => this.toggleState(id)"/>
+                    <TodoItem 
+                        id="id" 
+                        todo="this.state.todos[id]" 
+                        toggleState.bind="() => this.toggleState(id)"
+                        removeTodo.bind="() => this.removeTodo(id)"
+                    />
                 </t>
             </div>
         </div>

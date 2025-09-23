@@ -14,7 +14,7 @@ export class Playground extends Component {
     }
 
     get sum() {
-        return this.state.val1 + this.state.val2
+        return this.state.val1 + this.state.val2;
     }
 
 }

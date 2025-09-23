@@ -5,7 +5,7 @@ export class Counter extends Component {
     static props = { 
         value: {optional: true},
         side_effect: {type: Function, optional: true}
-    }
+    };
 
     setup() {
         this.state = useState({ value: this.props.value || 0});
