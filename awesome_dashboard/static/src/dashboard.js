@@ -14,6 +14,20 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.title = "Awesome Dashboard";
     }
+
+    openCustomers = () => {
+        this.action.doAction("base.action_partner_form");
+    }
+
+    openLeads = () => {
+        this.action.doAction({
+            type: 'ir.actions.act_window',
+            name: 'Leads',
+            res_model: 'crm.lead',
+            views: [[false, 'list'], [false, 'form']],
+            target: 'current',
+        })
+    }
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
