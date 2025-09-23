@@ -12,7 +12,9 @@ export class Counter extends Component {
     }
 
     increment() {
-        this.props.side_effect ? this.props.side_effect() : true;
+        if (this.props.side_effect) {
+            this.props.side_effect();
+        }
         this.state.value++;
     }
 }
