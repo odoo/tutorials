@@ -9,11 +9,19 @@
             <Counter onChange.bind="incrementSum"/>
         </div>
         <div class="m-2 d-inline-flex border border-1 border-dark">
-            <Card title="'card 1'" body="'content of card 1'" />
-            <Card title="'card 2'" body="card_body" />
+            <Card title="'card 1'">
+                <p>Content of card 1</p>
+            </Card>
+            <Card title="'card 2'" >
+                <span class="text-secondary">
+                    content of card <b>2</b>
+                </span>
+            </Card>
         </div>
         <p>Sum: <t t-esc="state.sum"/> </p>
-        <TodoList />
+        <Card title="'Todos'">
+            <TodoList />
+        </Card>
     </div>
     </t>
 </templates>

@@ -7,9 +7,8 @@
                 <h5 class="card-title">
                     <t t-esc="props.title"/>
                 </h5>
-                <p class="card-text">
-                    <t t-out="props.body" />
-                </p>
+                <t t-slot="default">
+                </t>
             </div>
         </div>
     </t>
