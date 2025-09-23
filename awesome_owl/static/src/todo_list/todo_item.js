@@ -10,6 +10,11 @@ export class TodoItem extends Component {
                 description: String,
                 isCompleted: Boolean,
             },
-        }
+        },
+        toggleState: Function,
+    }
+
+    toggleCheckbox() {
+        this.props.toggleState(this.props.todo.id);
     }
 }

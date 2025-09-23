@@ -19,4 +19,9 @@ export class TodoList extends Component {
         this.todos.push({ "id": this.todo_idx.value++, "description": ev.target.value, "isCompleted": false });
         ev.target.value = "";
     }
+
+    toggleTodo(id) {
+        const todo = this.todos.find((todo) => todo.id === id);
+        todo.isCompleted = !todo.isCompleted;
+    }
 }
