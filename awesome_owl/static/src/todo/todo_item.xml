@@ -4,14 +4,16 @@
     <t t-name="awesome_owl.todo_item">
         <div class="d-inline-flex" t-on-click="toggle">
             <p
+            class="me-4"
             t-esc="this.props.todo.description"
             t-att-class="{'text-muted text-decoration-line-through': this.props.todo.isCompleted}" />
-            <t t-if="this.props.todo.isCompleted">
+            <t t-if="this.props.todo.isCompleted" class="mx-2">
                 ✅
             </t>
-            <t t-if="!this.props.todo.isCompleted">
+            <t t-if="!this.props.todo.isCompleted" class="mx-2">
                 🔄
             </t>
+            <span class="fa fa-remove mx-4" t-on-click="remove"/>
         </div> 
     </t>
 </templates>

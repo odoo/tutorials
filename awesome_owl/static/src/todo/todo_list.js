@@ -20,5 +20,12 @@ export class TodoList extends Component {
             this.state.todos.push(new Todo(this.ids++, event.srcElement.value, false))
         }
     }
+
+    remove(id) {
+        const index = this.state.todos.findIndex((elem) => elem.id === id)
+        if (index >= 0) {
+            this.state.todos.splice(index, 1)
+        }
+    }
 }
 
