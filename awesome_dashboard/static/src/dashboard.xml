@@ -8,11 +8,38 @@
             <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
         </t>
         <div class="d-inline-flex p-4">
-            <DashboardItem>some content</DashboardItem>
-            <DashboardItem size="2">I love milk</DashboardItem>
-            <DashboardItem>some content</DashboardItem>
+            <DashboardItem>
+                Average amount of t-shirt by order this month
+                <h1><b><t t-esc="state.stats.average_quantity"/></b></h1>
+            </DashboardItem>
+            <DashboardItem>
+                Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                <h1><b><t t-esc="state.stats.average_time"/></b></h1>
+            </DashboardItem>
+            <DashboardItem>
+                Number of new orders this month
+                <h1><b><t t-esc="state.stats.nb_new_orders"/></b></h1>
+            </DashboardItem>
+            <DashboardItem>
+                Number of cancelled orders this month
+                <h1><b><t t-esc="state.stats.nb_cancelled_orders"/></b></h1>
+            </DashboardItem>
+            <DashboardItem>
+                Total amount of new orders this month
+                <h1><b><t t-esc="state.stats.total_amount"/></b></h1>
+            </DashboardItem>
         </div>
     </Layout>
     </t>
 
 </templates>
+
+<!-- 
+average_quantity 9
+average_time	77
+nb_cancelled_orders	4
+nb_new_orders	75
+orders_by_size	{ m: 104, s: 109, xl: 137 }
+total_amount	319
+-->
+
