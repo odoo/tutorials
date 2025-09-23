@@ -9,8 +9,13 @@
         </div>
         <p>The sum is: <t t-esc="this.sum.value"/></p>
         <div>
-            <Card title="'Card 1'" content="normal_string"/>
-            <Card title="'Card 2'" content="markup_string"/>
+            <Card title="'Card 1'">
+                <t t-out="normal_string"/>
+            </Card>
+            <Card title="'Card 2'">
+                <t t-out="markup_string"/>
+                <Counter/>
+            </Card>
         </div>
         <div>
             <TodoList/>
