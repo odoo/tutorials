@@ -22,6 +22,9 @@
                     <t t-esc="this.stats[s]"/>
                 </DashboardItem>
             </t>
+            <DashboardItem>
+                <PieChart data="this.stats"/>
+            </DashboardItem>
         </Layout>
     </t>
 
