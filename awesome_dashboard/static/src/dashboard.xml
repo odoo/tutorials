@@ -3,7 +3,14 @@
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {}}">
-            hello dashboard
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="openCustomers" type="button" class="btn btn-primary">Customers</button>
+                <button t-on-click="openLeads" type="button" class="btn btn-primary">Leads</button>
+                <button></button>
+            </t>
+            <DashboardItem>some content</DashboardItem>
+            <DashboardItem size="2">I love milk</DashboardItem>
+            <DashboardItem>some content</DashboardItem>
         </Layout>
     </t>
 
