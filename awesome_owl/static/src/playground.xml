@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
-
+   <t t-name="awesome_owl.playground">
+      <div class="p-3">
+         <h1><t t-esc="welcomeTxt" /></h1>
+         <p><t t-esc="content" /></p>
+         <div>
+            <p>Give me a banana <Counter value="counters[0].value" onIncrement.bind="() => this.increment(0)"/></p>
+            <p>Give me an orange <Counter value="counters[1].value" onIncrement.bind="() => this.increment(1)"/></p>
+         </div>
+         <p class="mt-2">Total donations: <t t-esc="total()"/></p>
+      </div>
+      <div>
+         <Card title="'Monkey 1 card'">
+            <p>Thank you for the <t t-esc="counters[0].value"/> 🍌s</p>
+            <img src="/awesome_owl/static/src/img/monkey1.jpg" style="width: 100px; height: 100px;"/>
+         </Card>
+         <Card title="'Monkey 2 card'">
+            <p>Thank you for the <t t-esc="counters[1].value"/> 🍊s</p>
+            <img src="/awesome_owl/static/src/img/monkey2.jpg" style="width: 100px; height: 100px;"/>
+         </Card>
+      </div>
+      <div>
+         <Card title="'Crook level 1'">
+            <t t-slot="default"/>
+            <t t-out="rawHtml"/>
+         </Card> 
+         <Card title="'Mafia boss level 99'">
+            <t t-slot="default"/>
+            <t t-out="safeHtml"/>
+         </Card>        
+      </div>
+      <TodoList/>
+   </t>
 </templates>
