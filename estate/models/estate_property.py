@@ -16,7 +16,7 @@ class estate_property(models.Model):
         string="Available From",
         default=lambda self: fields.Date.today() + timedelta(days=90),
     )
-    expected_price = fields.Float(required=True, string="Expected Price")
+    expected_price = fields.Float(required=True)
     selling_price = fields.Float(
         readonly=True, copy=False, compute="_set_selling_price"
     )
@@ -42,8 +42,8 @@ class estate_property(models.Model):
         copy=False,
         selection=[
             ("new", "New"),
-            ("offer Received", "Offer Received"),
-            ("offer Accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
@@ -64,7 +64,7 @@ class estate_property(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_if_user_new(self):
         if any(
-            property.state in ["offer Received", "offer Accepted", "sold"]
+            property.state in ["offer_received", "offer_accepted", "sold"]
             for property in self
         ):
             raise exceptions.UserError(
@@ -136,12 +136,12 @@ class estate_property(models.Model):
                 )
         return True
 
-    def update_state(self):
+    def _update_state(self):
         ret = []
         for record in self:
             ret.append(record.best_price)
             if record.state == "new":
-                record.state = "offer Received"
+                record.state = "offer_received"
         return ret
 
     # ---------------------------------------------------------------------------------------------------------

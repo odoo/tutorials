@@ -23,19 +23,6 @@ class estate_property_offer(models.Model):
         compute="_compute_deadline", inverse="_inverse_deadline"
     )
 
-    @api.model
-    def create(self, vals_list):
-        for values in vals_list:
-            prices = (
-                self.env["estate.property"].browse(values["property_id"]).update_state()
-            )
-            if any((p := price) > values["price"] for price in prices):
-                raise exceptions.UserError(
-                    ("You can't create an offer that is lower than " + str(p))
-                )
-
-        return super().create(vals_list)
-
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for offer in self:
@@ -55,16 +42,31 @@ class estate_property_offer(models.Model):
             else:
                 offer.validity = (offer.date_deadline - fields.Date.today()).days
 
+    @api.model
+    def create(self, vals_list):
+        for values in vals_list:
+            prices = (
+                self.env["estate.property"]
+                .browse(values["property_id"])
+                ._update_state()
+            )
+            if any((p := price) > values["price"] for price in prices):
+                raise exceptions.UserError(
+                    ("You can't create an offer that is lower than " + str(p))
+                )
+
+        return super().create(vals_list)
+
     def set_status_accepted(self):
         for offer in self:
             if not offer.property_id.has_accepted_offer:
                 offer.status = "accepted"
                 if offer.property_id.state not in [
-                    "offer Accepted",
+                    "offer_accepted",
                     "sold",
                     "cancelled",
                 ]:
-                    offer.property_id.state = "offer Accepted"
+                    offer.property_id.state = "offer_accepted"
             else:
                 raise exceptions.UserError(("You can't accept multiple offers"))
         return True

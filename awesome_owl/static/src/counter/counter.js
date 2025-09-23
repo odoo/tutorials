@@ -8,6 +8,6 @@ export class Counter extends Component {
     }
 
     increment() {
-        this.state.value = this.state.value + 1;
+        this.state.value++;
     }
 }
