@@ -13,6 +13,7 @@ export class Card extends Component {
     }
 
     setup() {
+        this.state = useState({open: true});
         this.title = this.props.title;
     }
 }

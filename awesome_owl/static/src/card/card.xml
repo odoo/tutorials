@@ -5,9 +5,12 @@
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
                 <h5 class="card-title"><t t-esc="this.title"/></h5>
-                <p class="card-text">
-                    <t t-slot="default"/>
-                </p>
+                <button class="btn btn-primary" t-on-click="() => this.state.open = !this.state.open">Toggle</button>
+                <t t-if="this.state.open">
+                    <p class="card-text">
+                        <t t-slot="default"/>
+                    </p>
+                </t>
             </div>
         </div>
     </t>
