@@ -8,13 +8,13 @@ export class Playground extends Component {
     static components = { Card , Counter, TodoList };
     setup() {
         this.htmlContent = markup("<div class='text-primary'>some content</div>");
-        this.state = useState({ sum : 2 });
+        this.state = useState({ sum : 0 });
         this.incrementSum = this.incrementSum.bind(this);
     }
 
     incrementSum() {
-        console.log("hamza");
         this.state.sum ++;
     }
     
 }
+

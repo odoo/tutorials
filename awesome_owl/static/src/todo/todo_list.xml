@@ -5,6 +5,9 @@
         <div class="card d-inline-block m-2">
             <div class="card d-inline-block m-2">
                 <div class="o_todo_list">
+                    <input placeholder="Add a Task"
+                        t-on-keyup="addTodo"
+                        />
                     <t t-foreach="todos" t-as="todo" t-key="todo.id">
                         <TodoItem todo="todo"/>
                     </t>
