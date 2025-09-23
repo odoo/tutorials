@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+	<template id="website_calendar_index_topbar" inherit_id="website_appointment.website_calendar_index_topbar" name="Appointment Filters">
+	    <xpath expr="//h4" position="after">
+	        <div class="dropdown d-none d-lg-block">
+	            <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" title="Filter by Resources">
+	                <t t-if="selected_schedule" t-out="availability_on_dict[selected_schedule]"/>
+                    <t t-else="">Resources</t>
+	            </a>
+	            <div class="dropdown-menu">
+	            	<span t-att-data-post="'/appointment?%s' % keep_query('*', schedule_based_on='', prevent_redirect=True)"
+                       t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if not selected_schedule else ''}">
+                       All
+                    </span>
+                    <t t-foreach="availability_on_dict.items()" t-as="item">
+					    <span t-att-data-post="'/appointment?%s' % keep_query('*', schedule_based_on=item[0])"
+					          t-attf-class="post_link dropdown-item #{'active' if selected_schedule == item[0] else ''}">
+					        <t t-out="item[1]"/>
+					    </span>
+					</t>
+	            </div>
+	            <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" title="Filter by Type">
+	                <t t-if="selected_location_type" t-out="selected_location_type"/>
+                    <t t-else="">Type</t>
+	            </a>
+	            <div class="dropdown-menu">
+	            	<span t-att-data-post="'/appointment?%s' % keep_query('*', location_type='', prevent_redirect=True)"
+                       t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if not selected_location_type else ''}">
+                       All
+                    </span>
+                    <t t-foreach="location_type" t-as="type">
+					    <span t-att-data-post="'/appointment?%s' % keep_query('*', location_type=type)"
+					        t-attf-class="post_link dropdown-item #{'active' if selected_location_type == type else ''}">
+					        <t t-out="type"/>
+					    </span>
+					</t>
+	            </div>
+	            <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" title="Filter by Payment">
+	                <t t-if="selected_payment_type" t-out="selected_payment_type"/>
+                    <t t-else="">Payment</t>
+	            </a>
+	            <div class="dropdown-menu">
+	            	<span t-att-data-post="'/appointment?%s' % keep_query('*', payment_type='', prevent_redirect=True)"
+	                   t-attf-class="post_link cursor-pointer dropdown-item d-flex align-items-center justify-content-between #{'active' if not selected_payment_type else ''}">
+	                   All
+	                </span>
+                    <t t-foreach="payment_type" t-as="payment">
+					    <span t-att-data-post="'/appointment?%s' % keep_query('*', payment_type=payment)"
+					          t-attf-class="post_link dropdown-item #{'active' if selected_payment_type == payment else ''}">
+					        <t t-out="payment"/>
+					    </span>
+					</t>
+	            </div>
+	        </div>
+	    </xpath>
+	</template>
+</odoo>
