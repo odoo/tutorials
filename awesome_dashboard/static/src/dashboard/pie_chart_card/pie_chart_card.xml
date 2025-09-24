@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.PieChartCard">
+        <div class="card-header">
+            <h6 t-esc="props.title || 'No title'"></h6>
+        </div>
+        <div class="card-body d-flex align-items-center justify-content-center">
+            <PieChart data="props.value || {}"/>
+        </div>
+    </t>
+
+</templates>

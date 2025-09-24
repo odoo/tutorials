@@ -3,12 +3,7 @@
 
     <t t-name="awesome_dashboard.DashboardItem">
         <div class="card m-2 d-inline-block" t-att-style="'width: ' + (18 * (props.size || 1)) + 'rem;'">
-            <div class="card-header">
-                <h6><t t-slot="header"/></h6>
-            </div>
-            <div class="card-body d-flex align-items-center justify-content-center">
-                <t t-slot="default"/>
-            </div>
+            <t t-slot="default"/>
         </div>
     </t>
 
