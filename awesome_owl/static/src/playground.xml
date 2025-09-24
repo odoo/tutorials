@@ -4,7 +4,9 @@
    <t t-name="awesome_owl.playground" owl="1">
         <Counter  onChange="incrementSum"/>
         <Counter  onChange="incrementSum"/>
-        <Card title="'hamza'" content="htmlContent"/>
+        <Card title="'hamza'">
+            <Counter/>
+        </Card>
         <div>
                 <p>The Sum is: <t t-esc="state.sum"/></p>
         </div>
@@ -12,3 +14,4 @@
    </t>
 
 </templates>
+

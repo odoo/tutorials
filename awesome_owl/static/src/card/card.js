@@ -9,7 +9,9 @@ export class Card extends Component {
             type: String,
             optional: true,
         },
-        
+        slots:Object, // I added this to allow slots inside cards
+   
     };
   
 }
+
