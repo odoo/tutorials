@@ -7,6 +7,9 @@ import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 import { DashboardItem } from "./dashboard_item";
 import { PieChart } from "./pie_chart/pie_chart";
+import { browser } from "@web/core/browser/browser";
+import { Dialog } from "@web/core/dialog/dialog";
+import { CheckBox } from "@web/core/checkbox/checkbox";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -16,6 +19,8 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.stats = useState(useService("awesome_dashboard.statistics"));
         this.items = registry.category("awesome_dashboard").getAll();
+        this.dialog = useService("dialog");
+        this.state = useState({ itemsNotShown: browser.localStorage.getItem("itemsNotShown")?.split(",") || []});
     }
 
     openPartners() {
@@ -34,6 +39,36 @@ class AwesomeDashboard extends Component {
         });
     }
 
+    openSettingsDialog() {
+        this.dialog.add(SettingsDialog, {
+            items: this.items,
+            itemsNotShown: this.state.itemsNotShown,
+            dashboard: this
+        });
+    }
 }
 
 registry.category("lazy_components").add("awesome_dashboard.dashboard", AwesomeDashboard);
+
+class SettingsDialog extends Component {
+    static template = "awesome_dashboard.SettingsDialog";
+    static components = { Dialog, CheckBox };
+    static props = ["dashboard", "items", "itemsNotShown"];
+
+    setup() {
+        this.items = useState(this.props.items);
+        this.items.forEach((item) => { item.shown = !this.props.itemsNotShown.includes(item.id)});
+    }
+
+    toggleItem (ev, item) {
+        item.shown = ev;
+
+        const newItemsNotShown = Object.values(this.items)
+            .filter((i) => !i.shown)
+            .map((i) => i.id)
+
+        browser.localStorage.setItem("itemsNotShown", newItemsNotShown);
+
+        this.props.dashboard.state.itemsNotShown = newItemsNotShown;
+    }
+}

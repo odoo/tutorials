@@ -13,18 +13,29 @@
             </t>
 
             <t t-set-slot="control-panel-additional-actions">
-                <button t-on-click="() => {}" class="">
+                <button t-on-click="() => this.openSettingsDialog()" class="">
                     <i class="fa fa-cog"/>
                 </button>
             </t>
 
             <t t-foreach="items" t-as="item" t-key="item.id">
-                <DashboardItem size="item.size">
+                <DashboardItem size="item.size" t-if="!this.state.itemsNotShown.includes(item.id)">
                     <t t-set="itemProp" t-value="item.props ? item.props(this.stats) : {'data': this.stats}"/>
                     <t t-component="item.Component" t-props="itemProp" />
                 </DashboardItem>
             </t>
         </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.SettingsDialog">
+        <Dialog title="'Configure your dashboard'">
+            Choose which items you want to display
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.shown" onChange="(ev) => this.toggleItem(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+        </Dialog>
     </t>
 
 </templates>
