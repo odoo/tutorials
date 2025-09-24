@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.pie_chart" owl='1'>
+        <div t-att-class="'h-100 ' + props.class">
+            <div class="h-100 position-relative">
+                <canvas t-ref="canvas_pie" />
+            </div>
+        </div>
+    </t>
+
+</templates>
+
