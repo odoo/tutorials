@@ -10,7 +10,7 @@ import { PieChart } from "./pie_chart/pie_chart";
 import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
-    static template = "awesome_dashboard.awesome_dashboard";
+    static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, DashboardItem, PieChart }
 
     setup() {

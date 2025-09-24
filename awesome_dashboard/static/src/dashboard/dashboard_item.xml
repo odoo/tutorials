@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_dashboard.dashboard_item">
+    <t t-name="awesome_dashboard.DashboardItem">
         <div class="dashboard_item d-inline-block m-2" t-att-style="'width: ' + this.width + '; border: 1px solid black; border-radius: 5px'">
             <div class="dashboard_item-body">
                 <h5 class="dashboard_item-title"><t t-esc="this.title"/></h5>

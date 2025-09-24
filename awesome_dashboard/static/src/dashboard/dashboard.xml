@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_dashboard.awesome_dashboard">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
             <t t-set-slot="layout-buttons">
                 <button class="btn btn-primary" t-on-click="() => this.openPartners()">
@@ -11,6 +11,13 @@
                     Leads
                 </button>
             </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="() => {}" class="">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
+
             <t t-foreach="items" t-as="item" t-key="item.id">
                 <DashboardItem size="item.size">
                     <t t-set="itemProp" t-value="item.props ? item.props(this.stats) : {'data': this.stats}"/>
