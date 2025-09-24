@@ -11,10 +11,34 @@
             <div class="o-awesome-dashboard-content">
                 
                 <DashboardItem>
-                    <p> Here lies the dark </p>
+                    Average amount of t-shirt by order this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result.average_quantity"/>
+                    </div>
                 </DashboardItem>
-                <DashboardItem size='2'>
-                    <p> Ilove milk </p>
+                <DashboardItem>
+                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result.average_time"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of new orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result.nb_new_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Number of cancelled orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result.nb_cancelled_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    Total amount of new orders this month
+                    <div class="fs-1 fw-bold text-success text-center">
+                        <t t-esc="result.total_amount"/>
+                    </div>
                 </DashboardItem>
             </div>
         </t>
