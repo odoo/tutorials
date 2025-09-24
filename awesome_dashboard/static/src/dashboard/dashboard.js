@@ -14,9 +14,9 @@ class AwesomeDashboard extends Component {
     static components = { Layout, DashboardItem, PieChart }
 
     setup() {
-        this.action = useService("action");
+        this.action = useService("action")
         this.stats = useState(useService("awesome_dashboard.statistics"))
-        this.items = items
+        this.items = registry.category("awesome_dashboard").getAll()
     }
 
     openPartners() {
