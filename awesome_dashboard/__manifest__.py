@@ -3,16 +3,16 @@
     'name': "Awesome Dashboard",
 
     'summary': """
-        Starting module for "Discover the JS framework, chapter 2: Build a dashboard"
+        Companion addon for the Odoo JS Framework Training
     """,
 
     'description': """
-        Starting module for "Discover the JS framework, chapter 2: Build a dashboard"
+        Companion addon for the Odoo JS Framework Training
     """,
 
     'author': "Odoo",
     'website': "https://www.odoo.com/",
-    'category': 'Tutorials/AwesomeDashboard',
+    'category': 'Tutorials',
     'version': '0.1',
     'application': True,
     'installable': True,
@@ -24,6 +24,9 @@
     'assets': {
         'web.assets_backend': [
             'awesome_dashboard/static/src/**/*',
+        ],
+        'awesome_dashboard.dashboard': [
+            'awesome_dashboard/static/src/dashboard/**/*',
         ],
     },
     'license': 'AGPL-3'
