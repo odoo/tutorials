@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.DashboardConfig">
+        <Dialog size="'md'" title.translate="Dashboard items configuration" modalRef="modalRef">
+            <div>
+                <p>Which cards do you wish to see ?</p>
+                <t t-foreach="props.items" t-as="item" t-key="item.id">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" t-att-id="item.id" t-att-checked="!props.disabledItems.includes(item.id)" t-on-change="(ev) => {this.onChange(ev, item.id)}"/>
+                        <t t-esc="item.description"/>
+                    </div>
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onApply">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
