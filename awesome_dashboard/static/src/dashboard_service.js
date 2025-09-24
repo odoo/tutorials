@@ -1,16 +1,28 @@
 import { registry } from "@web/core/registry";
 import { memoize } from "@web/core/utils/functions";
 import { rpc } from "@web/core/network/rpc";
+import { reactive } from "@odoo/owl";
 
 const dashboardService = {
     start() {
-        let stats = {}
+        let stats = reactive({
+            average_quantity: 0, 
+            average_time: 0, 
+            nb_cancelled_orders: 0,
+            nb_new_orders: 0,
+            orders_by_size: {},
+            total_amount: 0 
+        });
         async function loadData() {
-            stats = await rpc("/awesome_dashboard/statistics");
+            console.log("slt")
+            const newStats = await rpc("/awesome_dashboard/statistics");
+            Object.keys(newStats).forEach((k) => stats[k] = newStats[k])
+            console.log(newStats)
         }
+        setInterval(loadData, 2*1000);
         loadData();
 
-        return { getStatistics: memoize(() => stats)}
+        return stats;
     },
 };
 
