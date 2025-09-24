@@ -3,7 +3,6 @@ import { registry } from "@web/core/registry";
 import { PieChartCard } from "./pie_chart_card";
 import { _t } from "@web/core/l10n/translation";
 
-
 const items = [
     {
         id: "average_quantity",
@@ -12,8 +11,8 @@ const items = [
         size: 1,
         props: (data) => ({
             title: _t("Average amount of t-shirt by order this month"),
-            value: data.average_quantity
-        })
+            value: data.average_quantity,
+        }),
     },
     {
         id: "average_time",
@@ -21,9 +20,11 @@ const items = [
         Component: NumberCard,
         size: 1,
         props: (data) => ({
-            title: _t("Average time for an order to go from 'new' to 'sent' or 'cancelled'"),
-            value: data.average_time
-        })
+            title: _t(
+                "Average time for an order to go from 'new' to 'sent' or 'cancelled'",
+            ),
+            value: data.average_time,
+        }),
     },
     {
         id: "nb_new_orders",
@@ -32,8 +33,8 @@ const items = [
         size: 1,
         props: (data) => ({
             title: _t("Number of new orders this month"),
-            value: data.nb_new_orders
-        })
+            value: data.nb_new_orders,
+        }),
     },
     {
         id: "nb_cancelled_orders",
@@ -42,8 +43,8 @@ const items = [
         size: 1,
         props: (data) => ({
             title: _t("Number of cancelled orders this month"),
-            value: data.nb_cancelled_orders
-        })
+            value: data.nb_cancelled_orders,
+        }),
     },
     {
         id: "total_amount",
@@ -52,8 +53,8 @@ const items = [
         size: 1,
         props: (data) => ({
             title: _t("Total amount of new orders this month"),
-            value: data.total_amount
-        })
+            value: data.total_amount,
+        }),
     },
     {
         id: "orders_by_size",
@@ -62,11 +63,11 @@ const items = [
         size: 2,
         props: (data) => ({
             title: _t("Shirt orders by size"),
-            value: data.orders_by_size
-        })
+            value: data.orders_by_size,
+        }),
     },
-]
+];
 
-for(let item of items) {
+for (let item of items) {
     registry.category("awesome_dashboard").add(item.id, item);
 }

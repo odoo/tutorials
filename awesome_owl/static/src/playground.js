@@ -7,14 +7,14 @@ import { TodoList } from "./todo/todo_list";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
-    static components = { TodoList, Counter, Card }
+    static components = { TodoList, Counter, Card };
 
     setup() {
-        this.state = useState({sum: 2})
+        this.state = useState({ sum: 2 });
     }
 
     incrementSum() {
-        this.state.sum++
+        this.state.sum++;
     }
 
     card_body = markup(`
@@ -23,4 +23,3 @@ export class Playground extends Component {
         </span>
         `);
 }
-

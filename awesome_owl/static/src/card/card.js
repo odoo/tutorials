@@ -3,13 +3,13 @@ import { Component, useState } from "@odoo/owl";
 export class Card extends Component {
     static template = "awesome_owl.card";
 
-    static props = ['title', 'slots']
+    static props = ["title", "slots"];
 
     setup() {
-        this.state = useState({ hidden: false })
+        this.state = useState({ hidden: false });
     }
 
-    hide() {
-        this.state.hidden = !this.state.hidden
+    toggle_visibility() {
+        this.state.hidden = !this.state.hidden;
     }
 }

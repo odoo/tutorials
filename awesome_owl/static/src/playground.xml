@@ -19,7 +19,7 @@
             </Card>
         </div>
         <p>Sum: <t t-esc="state.sum"/> </p>
-        <Card title="'Todos'">
+        <Card title="'Todo List'">
             <TodoList />
         </Card>
     </div>

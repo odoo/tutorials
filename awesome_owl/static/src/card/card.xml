@@ -6,7 +6,7 @@
             <div class="card-body">
                 <h5 class="card-title d-inline-flex justify-content-between w-100">
                     <t t-esc="props.title"/>
-                    <span class="fa fa-remove" t-on-click="hide"/>
+                    <span class="fa fa-remove" t-on-click="toggle_visibility"/>
                 </h5>
                 <t t-slot="default" t-if="!this.state.hidden">
                 </t>

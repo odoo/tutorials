@@ -6,13 +6,13 @@ export class TodoItem extends Component {
     static template = "awesome_owl.todo_item";
     static components = { Card };
 
-    static props = { todo: { type: Todo }, onRemove: { type: Function } }
+    static props = { todo: { type: Todo }, onRemove: { type: Function } };
 
     toggle() {
         this.props.todo.isCompleted = !this.props.todo.isCompleted;
     }
 
     remove() {
-        this.props.onRemove(this.props.todo.id)
+        this.props.onRemove(this.props.todo.id);
     }
 }

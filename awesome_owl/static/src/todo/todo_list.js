@@ -8,24 +8,24 @@ export class TodoList extends Component {
     static template = "awesome_owl.todo_list";
     static components = { Card, TodoItem };
 
-    ids = 0
-
     setup() {
-        this.state = useState({ todos: [], input: '' })
-        useAutofocus('todo_input')
+        this.ids = 0;
+        this.state = useState({ todo_list: [], input: "" });
+        useAutofocus("todo_input");
     }
 
     keyup(event) {
         if (event.keyCode === 13) {
-            this.state.todos.push(new Todo(this.ids++, event.srcElement.value, false))
+            this.state.todo_list.push(
+                new Todo(this.ids++, event.target.value, false),
+            );
         }
     }
 
     remove(id) {
-        const index = this.state.todos.findIndex((elem) => elem.id === id)
+        const index = this.state.todo_list.findIndex((elem) => elem.id === id);
         if (index >= 0) {
-            this.state.todos.splice(index, 1)
+            this.state.todo_list.splice(index, 1);
         }
     }
 }
-

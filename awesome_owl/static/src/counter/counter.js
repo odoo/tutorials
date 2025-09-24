@@ -5,16 +5,17 @@ export class Counter extends Component {
     static props = {
         onChange: {
             type: Function,
-            optional: true}
-    }
+            optional: true,
+        },
+    };
 
     setup() {
-        this.state = useState({ value: 1 })
+        this.state = useState({ value: 1 });
     }
 
     increment() {
         this.state.value++;
-        if(this.props.onChange){
+        if (this.props.onChange) {
             this.props.onChange();
         }
     }
