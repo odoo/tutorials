@@ -2,17 +2,32 @@
 
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
+        <h1>Playground</h1>
+        <p>This is a simple playground to test Owl features.</p>
+        <hr/>
          <div class="o_counter_container" style="display: flex; flex-direction: column; align-items: center;">
+            <h3>Counters</h3>
              <div style="display: flex; gap: 10px;">
-                <Counter onChange="incrementSum"/>
-                <Counter onChange="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
             </div>
             <p>Sum: <t t-esc="state.sum"/></p>
         </div>
-        <div class="o_counter_container" style="display: flex; flex-wrap: wrap;">
-             <t t-foreach="cards" t-as="card" t-key="card.title">
-                <Card title="card.title" content="card.content"/>
-            </t>
+        <hr/>
+        <div class="o_counter_container" style="display: flex; flex-direction: column; align-items: center;">
+            <h3>Cards</h3>
+            <div style="display: flex; gap: 10px;">
+                <t t-foreach="cards" t-as="card" t-key="card.title">
+                    <Card title="card.title">        
+                        <Counter/>
+                    </Card>
+                </t>
+            </div>
+        </div>
+        <hr/>
+        <div class="o_counter_container" style="display: flex; flex-direction: column; align-items: center;">
+            <h3>Todo List</h3>
+            <TodoList/>
         </div>
     </t>
 </templates>
