@@ -6,6 +6,7 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
+import { items } from "./dashboard_items";
 import { PieChart } from "./pie_chart/pie_chart";
 
 
@@ -17,6 +18,8 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.statistics = useService("awesome_dashboard.statistics");
         this.state = useState({stats: this.statistics});
+
+        this.items = items
     }
 
     openCustomers() {
