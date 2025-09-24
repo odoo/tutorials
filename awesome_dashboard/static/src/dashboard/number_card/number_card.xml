@@ -6,7 +6,7 @@
             <h6 t-esc="props.title"></h6>
         </div>
         <div class="card-body d-flex align-items-center justify-content-center">
-            <h1 class="text-success" t-esc="props.value || 0"></h1>
+            <h1 class="text-success" t-esc="props.value"></h1>
         </div>
     </t>
 

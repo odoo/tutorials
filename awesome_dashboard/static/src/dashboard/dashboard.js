@@ -32,7 +32,7 @@ class AwesomeDashboard extends Component {
     openLeads = () => {
         this.action.doAction({
             type: 'ir.actions.act_window',
-            name: 'Leads',
+            name: _t('Leads'),
             res_model: 'crm.lead',
             views: [[false, 'list'], [false, 'form']],
             target: 'current',

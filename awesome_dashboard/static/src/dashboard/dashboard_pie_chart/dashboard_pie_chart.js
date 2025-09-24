@@ -1,4 +1,6 @@
+import { _t } from "@web/core/l10n/translation";
 import { Component, onWillStart, useEffect, onWillUnmount, useRef } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
@@ -8,6 +10,7 @@ export class PieChart extends Component {
     };
 
     setup() {
+        this.action = useService("action");
         this.canvasRef = useRef('canvas');
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         useEffect(() => this.renderChart());
@@ -29,6 +32,24 @@ export class PieChart extends Component {
         this.chart = new Chart(ctx, this.getChartConfig());
     }
 
+    onGraphClicked(ev) {
+        const points = this.chart.getElementsAtEventForMode(ev, 'nearest', { intersect: true }, false);
+
+        if (points.length) {
+            const index = points[0].index;
+            const label = this.chart.data.labels[index];
+
+            this.action.doAction({
+                type: 'ir.actions.act_window',
+                name: _t('Sales'),
+                res_model: 'sale.order',
+                views: [[false, 'list'], [false, 'form']],
+                target: 'current',
+                domain: [['order_line.product_id', 'ilike', '' + label]]
+            })
+        }
+    }
+
     /**
      * @returns {object} Chart config for the current data
      */
@@ -40,6 +61,9 @@ export class PieChart extends Component {
                 datasets: [{
                     data: Object.values(this.props.data)
                 }]
+            },
+            options: {
+                onClick: this.onGraphClicked.bind(this)
             }
         };
     }
