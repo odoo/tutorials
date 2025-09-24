@@ -20,7 +20,6 @@ export class PieChart extends Component {
             const dataset = {
                 labels: Object.keys(this.props.data),
                 datasets: [{
-                    label: 'T-Shirt Size Distribution',
                     data: Object.values(this.props.data)
                 }]
             }
