@@ -7,6 +7,9 @@
     'license': 'LGPL-3',
     'depends': ['website_sale', 'website_sale_wishlist', 'website_blog', 'website_mass_mailing'],
     'data': [
+        # Snippets
+        'views/snippets/options.xml',
+        'views/snippets/s_airproof_carousel.xml',
         # Options
         'data/presets.xml',
         'data/website.xml',
@@ -24,9 +27,6 @@
         'views/website_templates.xml',
         'views/website_sale_templates.xml',
         'views/website_sale_wishlist_templates.xml',
-        # Snippets
-        'views/snippets/options.xml',
-        'views/snippets/s_airproof_carousel.xml',
         # Images
         'data/images.xml',
     ],
