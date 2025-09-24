@@ -1,5 +1,8 @@
+import { registry } from "@web/core/registry";
 import { NumberCard } from "./number_card/number_card";
 import { PieChartCard } from "./pie_chart_card/pie_chart_card";
+
+export const dashboardItemRegistry = registry.category("dashboard_items");
 
 export const items = [
     {
@@ -58,3 +61,7 @@ export const items = [
         }),
     },
 ];
+
+for (const item of items) {
+    dashboardItemRegistry.add(item.id, item);
+}

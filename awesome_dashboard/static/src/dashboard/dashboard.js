@@ -3,9 +3,9 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
-import { items } from "./dashboard_items";
 import { NumberCard } from "./number_card/number_card";
 import { PieChartCard } from "./pie_chart_card/pie_chart_card";
+import { dashboardItemRegistry } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -15,7 +15,7 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.statisticsService = useService("statistics");
         this.state = useState(this.statisticsService);
-        this.items = items;
+        this.items = dashboardItemRegistry.getAll();
     }
 
     openCustomers() {
