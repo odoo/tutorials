@@ -2,7 +2,16 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <p> HAMZAAAAAAAAAAAAAAAAA </p>
+            <div class="o-awesome-dashboard-content">
+                <span>
+                    <button t-on-click="openCustomers">Customer</button>
+                    <button t-on-click="openLeads">Leads</button>
+                </span>
+            </div>
+        </Layout>
     </t>
 
 </templates>
+
