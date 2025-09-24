@@ -15,8 +15,27 @@
                 </div>
 
                 <h3 style="margin-left: 20px;">Dashboard</h3>
-
             </div>
+            <DashboardItem size="2">
+                <h4>Average amount</h4>
+                <p t-esc="result.average_quantity"/>
+            </DashboardItem>
+            <DashboardItem size="2">
+            <h4>Average Time</h4>
+                <p t-esc="result.average_time"/>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <h4>Number of new orders</h4>
+                <p t-esc="result.nb_new_orders"/>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <h4>Number of cancelled orders</h4>
+                <p t-esc="result.nb_cancelled_orders"/>
+            </DashboardItem>
+            <DashboardItem size="2">
+                <h4>Total amount</h4>
+                <p t-esc="result.total_amount"/>
+            </DashboardItem>
         </Layout>
     </t>
 
