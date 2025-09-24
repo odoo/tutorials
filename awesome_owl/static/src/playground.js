@@ -3,11 +3,11 @@
 import { Component, markup, useState } from "@odoo/owl";
 import { Counter } from "./counter/counter";
 import { Card } from "./card/card";
-import { TodoList } from "./todo/todo_list";
+import { TodoListView } from "./todo/todo_list";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
-    static components = {Counter, Card, TodoList};
+    static components = {Counter, Card, TodoListView};
 
     setup() {
         this.welcomeTxt = "Welcome to Monkey Town"
@@ -25,6 +25,6 @@ export class Playground extends Component {
     }
 
     total() {
-        return this.counters.reduce((a, b) => a + b.value, 0)
+        return this.counters[0].value + this.counters[1].value
     }
 }

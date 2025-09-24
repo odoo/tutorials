@@ -5,12 +5,7 @@ export class Card extends Component {
     static props = {
         title: String,
         content: { optional: true },
-        slots: {
-            type: Object,
-            shape: {
-                default: true
-            },
-        }
+        slots: Object,
     };
 
     setup() {
@@ -18,6 +13,6 @@ export class Card extends Component {
     }
 
     toggleContent() {
-        this.state.isOpen = !this.state.isOpen;
+        this.state.isOpen ^= 1;
     }
 }

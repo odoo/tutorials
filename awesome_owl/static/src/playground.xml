@@ -30,6 +30,6 @@
             <t t-out="safeHtml"/>
          </Card>        
       </div>
-      <TodoList/>
+      <TodoListView/>
    </t>
 </templates>

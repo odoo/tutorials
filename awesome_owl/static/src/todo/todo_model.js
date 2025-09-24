@@ -7,26 +7,21 @@ export class Todo {
     }
 
     toggle() {
-        this.done = !this.done;
-    }
-
-    remove() {
-        this._model.removeTodo(this);
+        this.done ^= 1;
     }
 }
 
-export class TodoModel {
+export class TodoList {
     constructor() {
         this.todos = [];
         this._nextId = 1;
     }
 
     addTodo(title) {
-        const todo = new Todo(this, this._nextId++, title);
-        this.todos.push(todo);
+        this.todos.push(new Todo(this, this._nextId++, title));
     }
 
-    removeTodo(todo) {
-        this.todos = this.todos.filter((t) => t !== todo);
+    removeTodo(index) {
+        this.todos.splice(index, 1);
     }
 }

@@ -6,5 +6,7 @@ export class TodoItem extends Component {
     static template = "awesome_owl.TodoItem";
     static props = {
         todo: Todo,
+        index: Number,
+        onRemove: Function,
     };
 }

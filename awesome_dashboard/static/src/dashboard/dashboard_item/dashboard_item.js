@@ -7,9 +7,6 @@ export class DashboardItem extends Component {
     static props = {
         title: { type: String, optional: true },
         size: { type: Number, optional: true },
-        slots: { type: Object, shape: { default: true } },
-    };
-    static defaultProps = {
-        size: 1,
+        slots: Object
     };
 }
