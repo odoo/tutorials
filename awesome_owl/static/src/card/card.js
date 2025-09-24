@@ -1,4 +1,4 @@
-import { Component, markup } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 
 export class Card extends Component {
    static template = "awesome_owl.Card"
@@ -10,8 +10,15 @@ export class Card extends Component {
             optional: true,
         },
         slots:Object, // I added this to allow slots inside cards
-   
     };
+
+    setup(){
+        this.state = useState({open : true});
+    }
+
+    ontoggleVisibility() {
+        this.state.open = !this.state.open;
+    }
   
 }
 

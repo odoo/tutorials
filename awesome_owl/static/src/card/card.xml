@@ -2,14 +2,19 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.Card" owl="1">
-        <div class="card d-inline-block m-2">
-            <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text">
-                    <t t-slot="default"/>
-                </p>
+        <header>
+            <button t-on-click="ontoggleVisibility"/>
+        </header>
+        <t t-if="state.open">
+            <div class="card d-inline-block m-2">
+                <div class="card-body">
+                    <h5 class="card-title"><t t-esc="props.title"/></h5>
+                    <p class="card-text">
+                        <t t-slot="default"/>
+                    </p>
+                </div>
             </div>
-        </div>
+        </t>
     </t>
 
 </templates>
