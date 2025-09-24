@@ -1,5 +1,6 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
 import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
@@ -11,11 +12,11 @@ import { DashboardConfig } from "./dashboard_config/dashboard_config";
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
     static components = { Layout, DashboardItem, PieChart };
-    static props = {};
+    static props = ['*'];
 
     setup() {
         this.action = useService("action");
-        this.title = "Awesome Dashboard";
+        this.title = _t("Awesome Dashboard");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
         this.items = registry.category("awesome_dashboard.items").getAll();
         this.dialog = useService("dialog");

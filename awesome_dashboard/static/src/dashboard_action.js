@@ -4,6 +4,7 @@ import { LazyComponent } from "@web/core/assets"
 
 export class DashboardLoader extends Component {
     static components = { LazyComponent }
+    static props = ['*'];
     static template = xml`
         <LazyComponent bundle="'awesome_dashboard.dashboard'" Component="'AwesomeDashboard'" props="props"/>
     `;
