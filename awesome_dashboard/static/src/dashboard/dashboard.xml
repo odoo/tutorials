@@ -6,9 +6,12 @@
         <t t-set-slot='layout-buttons'>
             <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
             <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            <button class="btn" t-on-click="customizeDashboard">
+                <span class="fa fa-gear" />
+            </button>
         </t>
         <div class="d-flex p-4 flex-wrap">
-            <t t-foreach="items" t-as="item" t-key="item.id">
+            <t t-foreach="state.items" t-as="item" t-key="item.id">
                 <DashboardItem size="item.size || 1">
                     <t t-set="itemProp" t-value="item.props
                            ? item.props(state.stats)

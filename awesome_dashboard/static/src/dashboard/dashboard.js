@@ -6,8 +6,8 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
-import { items } from "./dashboard_items";
 import { PieChart } from "./pie_chart/pie_chart";
+import { ConfigurationDialog } from "./configuration_dialog";
 
 
 class AwesomeDashboard extends Component {
@@ -17,12 +17,22 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.statistics = useService("awesome_dashboard.statistics");
-        this.state = useState({stats: this.statistics});
+        this.state = useState({items: [], stats: this.statistics});
+        this.dialog = useService("dialog");
+        this.updateDashboard()
+    }
 
-        for(let item of items) {
-            registry.category("awesome_dashboard").add(item.id, item);
+    updateDashboard() {
+        let disabledElements = localStorage.getItem('disabledElements') || '';
+        if(disabledElements.includes(',')) {
+            disabledElements = disabledElements.split(',')
         }
-        this.items = registry.category("awesome_dashboard").getAll();
+        else{
+            disabledElements = [disabledElements]
+        }
+        this.state.items = registry.category("awesome_dashboard")
+            .getAll()
+            .filter(el => !disabledElements.some((e) => e == el.id ))
     }
 
     openCustomers() {
@@ -35,6 +45,23 @@ class AwesomeDashboard extends Component {
             name: _t('Leads'),
             res_model: 'crm.lead',
             views: [[false, 'list'], [false, 'form']]
+        })
+    }
+
+    customizeDashboard() {
+        let items = []
+        let all = registry.category("awesome_dashboard").getAll();
+        all.forEach(el => {
+            const enabled = this.state.items.some(item => item.id == el.id)
+            items.push({
+                element: el,
+                enabled: enabled
+            })
+        })
+
+        this.dialog.add(ConfigurationDialog, {
+            items: items,
+            onApply: this.updateDashboard.bind(this)
         })
     }
 }
