@@ -9,7 +9,7 @@ import { DashboardItem } from "./dashboard_item";
 import { PieChart } from "./pie_chart/pie_chart";
 
 class AwesomeDashboard extends Component {
-    static template = "awesome_dashboard.AwesomeDashboard";
+    static template = "awesome_dashboard.awesome_dashboard";
     static components = { Layout, DashboardItem, PieChart }
 
     setup() {
@@ -33,4 +33,4 @@ class AwesomeDashboard extends Component {
 
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("awesome_dashboard.dashboard", AwesomeDashboard);
