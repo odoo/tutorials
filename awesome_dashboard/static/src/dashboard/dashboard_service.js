@@ -14,10 +14,8 @@ const dashboardService = {
             total_amount: 0 
         });
         async function loadData() {
-            console.log("slt")
             const newStats = await rpc("/awesome_dashboard/statistics");
             Object.keys(newStats).forEach((k) => stats[k] = newStats[k])
-            console.log(newStats)
         }
         setInterval(loadData, 2*1000);
         loadData();
