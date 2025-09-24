@@ -1,0 +1,37 @@
+.o_dashboard {
+  background-color: gray;
+  height: auto;
+  min-height: 100%;
+  overflow-y: auto;
+}
+
+.o_dashboard_content {
+  gap: 0.5rem;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100vh - 80px);
+}
+
+@media (max-width: 768px) {
+  .o_dashboard_content {
+    display: block;
+  }
+  .o_dashboard_item {
+    width: 100% !important;
+  }
+}
+
+.o_dashboard .o_content {
+  overflow-y: scroll !important;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+  height: auto;
+  max-height: none;
+  flex: 1 1 auto;
+}
+
+.o_dashboard .o_action {
+  min-height: 0 !important;
+  display: flex;
+  flex-direction: column;
+}

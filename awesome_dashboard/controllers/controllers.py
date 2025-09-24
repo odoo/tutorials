@@ -2,6 +2,7 @@
 
 import logging
 import random
+import json
 
 from odoo import http
 from odoo.http import request
@@ -34,3 +35,24 @@ class AwesomeDashboard(http.Controller):
             'total_amount': random.randint(100, 1000)
         }
 
+    @http.route('/awesome_dashboard/config/get', type='json', auth='user')
+    def get_config(self):
+        key = f"awesome_dashboard.removed_items.user_{request.env.user.id}"
+        value = request.env['ir.config_parameter'].sudo().get_param(key)
+        removed = []
+        if value:
+            try:
+                data = json.loads(value)
+                if isinstance(data, list):
+                    removed = data
+            except Exception:
+                removed = []
+        return {"removed": removed}
+
+    @http.route('/awesome_dashboard/config/set', type='json', auth='user')
+    def set_config(self, removed=None):
+        key = f"awesome_dashboard.removed_items.user_{request.env.user.id}"
+        if not isinstance(removed, list):
+            removed = []
+        request.env['ir.config_parameter'].sudo().set_param(key, json.dumps(removed))
+        return {"ok": True}
