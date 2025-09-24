@@ -9,14 +9,19 @@
             Leads
         </button>
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
-            <DashboardItem>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size">
+                    <t t-set="itemProp" t-value="item.props ? item.props(this.stats) : {'data': this.stats}"/>
+                    <t t-component="item.Component" t-props="itemProp" />
+                </DashboardItem>
+            </t>
+            <!-- <DashboardItem>
                 no size
             </DashboardItem>
             <DashboardItem size="2">
                 size of 2
             </DashboardItem>
             <t t-foreach="Object.keys(this.stats)" t-as="s" t-key="s">
-                <!-- please don't make me use css -->
                 <DashboardItem>
                     <t t-esc="s"/> 
                     <t t-esc="this.stats[s]"/>
@@ -24,7 +29,7 @@
             </t>
             <DashboardItem>
                 <PieChart data="this.stats"/>
-            </DashboardItem>
+            </DashboardItem> -->
         </Layout>
     </t>
 

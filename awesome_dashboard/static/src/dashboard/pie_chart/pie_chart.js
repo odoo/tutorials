@@ -14,13 +14,13 @@ export class PieChart extends Component {
             if (this.pieChart) {
                 this.pieChart.destroy()
             }
-            this.data = Object.values(this.props.data.orders_by_size)
-            this.labels = Object.keys(this.props.data.orders_by_size)
+            this.data = Object.values(this.props.data)
+            this.labels = Object.keys(this.props.data)
 
             this.buildChart()
         });
 
-        onWillUnmount(() => this.pieChart.destroy());
+        onWillUnmount(() => { if (this.pieChart) {this.pieChart.destroy()} });
     }
 
     buildChart() {

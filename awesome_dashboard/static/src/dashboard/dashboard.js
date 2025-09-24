@@ -7,6 +7,7 @@ import { useService } from "@web/core/utils/hooks";
 import { _t } from "@web/core/l10n/translation";
 import { DashboardItem } from "./dashboard_item";
 import { PieChart } from "./pie_chart/pie_chart";
+import { items } from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.awesome_dashboard";
@@ -15,10 +16,13 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.stats = useState(useService("awesome_dashboard.statistics"))
+        this.items = items
     }
+
     openPartners() {
         this.action.doAction("base.action_partner_form");
     }
+
     async openLeads() {
         this.action.doAction({
             type: 'ir.actions.act_window',
