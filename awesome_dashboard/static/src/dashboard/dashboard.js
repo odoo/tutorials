@@ -19,7 +19,10 @@ class AwesomeDashboard extends Component {
         this.statistics = useService("awesome_dashboard.statistics");
         this.state = useState({stats: this.statistics});
 
-        this.items = items
+        for(let item of items) {
+            registry.category("awesome_dashboard").add(item.id, item);
+        }
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     openCustomers() {
