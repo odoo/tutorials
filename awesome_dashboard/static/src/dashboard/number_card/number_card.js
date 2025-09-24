@@ -5,5 +5,5 @@ export class NumberCard extends Component {
     static props = {
         title: String,
         value: Number,
-    }
+    };
 }

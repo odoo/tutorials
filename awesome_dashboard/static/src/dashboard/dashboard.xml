@@ -24,21 +24,6 @@
                     <t t-component="item.Component" t-props="itemProp" />
                 </DashboardItem>
             </t>
-            <!-- <DashboardItem>
-                no size
-            </DashboardItem>
-            <DashboardItem size="2">
-                size of 2
-            </DashboardItem>
-            <t t-foreach="Object.keys(this.stats)" t-as="s" t-key="s">
-                <DashboardItem>
-                    <t t-esc="s"/> 
-                    <t t-esc="this.stats[s]"/>
-                </DashboardItem>
-            </t>
-            <DashboardItem>
-                <PieChart data="this.stats"/>
-            </DashboardItem> -->
         </Layout>
     </t>
 
