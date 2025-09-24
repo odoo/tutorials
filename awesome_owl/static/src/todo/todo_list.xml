@@ -10,7 +10,7 @@
                         t-ref="newTodoInput"
                         />
                     <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                        <TodoItem todo="todo"/>
+                        <TodoItem todo="todo" toggleState.bind="toggleTodoState"/>
                     </t>
                 </div>      
             </div>
