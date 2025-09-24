@@ -1,6 +1,6 @@
 import { rpc } from "@web/core/network/rpc";
 import { registry } from "@web/core/registry";
-import { memoize } from "@web/core/utils/functions";
+import { reactive } from "@odoo/owl";
 
 export function loadStatistics() {
     return rpc("/awesome_dashboard/statistics")
@@ -8,7 +8,17 @@ export function loadStatistics() {
 
 export const awesomeDashboardStatisticsService = {
     start() {
-        return { loadStatistics: memoize(loadStatistics) };
+        let stats = reactive({})
+        const getStats = async () => {
+            let newStats = await loadStatistics()
+            Object.assign(stats, newStats)
+        }
+
+        setInterval(getStats, 1000 * 60 * 10)
+        
+        getStats()
+
+        return stats
     }
 }
 
