@@ -2,13 +2,15 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.awesome_dashboard">
-        <button class="btn btn-primary" t-on-click="() => this.openPartners()">
-            Customers
-        </button>
-        <button class="btn btn-primary" t-on-click="() => this.openLeads()">
-            Leads
-        </button>
         <Layout className="'o_dashboard h-100'" display="{controlPanel: {} }">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="() => this.openPartners()">
+                    Customers
+                </button>
+                <button class="btn btn-primary" t-on-click="() => this.openLeads()">
+                    Leads
+                </button>
+            </t>
             <t t-foreach="items" t-as="item" t-key="item.id">
                 <DashboardItem size="item.size">
                     <t t-set="itemProp" t-value="item.props ? item.props(this.stats) : {'data': this.stats}"/>
