@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "@odoo/owl";
+import { useRef, useEffect, onMounted } from "@odoo/owl";
 
 export function useAutofocus(name) {
     let ref = useRef(name);

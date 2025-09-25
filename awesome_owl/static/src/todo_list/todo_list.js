@@ -24,9 +24,7 @@ export class TodoList extends Component {
     }
 
     setTodoCompletion(todo, ev) {
-        if (ev.target.checked != todo.isCompleted) {
-            todo.isCompleted = ev.target.checked;
-        }
+        todo.isCompleted = ev.target.checked;
     }
 
     deleteTodo(todo, ev) {
