@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_dashboard.DashboardItem">
-        <div class="card m-2" t-attf-style="width:{{18 * props.size}}rem;">
+        <div
+            class="card m-0 m-md-2"
+            t-attf-style="--desktop-card-width:{{18 * props.size}}rem;">
             <div class="card-body">
                 <t t-slot="default">
                 </t>

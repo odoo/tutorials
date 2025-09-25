@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-    <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+    <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100 overflow-scroll'">
         <t t-set-slot='layout-buttons'>
             <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
             <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
@@ -10,7 +10,7 @@
                 <span class="fa fa-gear" />
             </button>
         </t>
-        <div class="d-flex p-4 flex-wrap">
+        <div class="d-flex p-0 p-md-4 flex-wrap ">
             <t t-foreach="state.items" t-as="item" t-key="item.id">
                 <DashboardItem size="item.size || 1">
                     <t t-set="itemProp" t-value="item.props
