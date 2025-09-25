@@ -3,15 +3,21 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
-import { PieChart } from "./piechart";
+import { Dialog } from "@web/core/dialog/dialog"
+import { CheckBox } from "@web/core/checkbox/checkbox";
+import { browser } from "@web/core/browser/browser";
+import { _t } from "@web/core/l10n/translation";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
+    static components = { Layout, DashboardItem };
 
     setup() {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
+        this.items = registry.category("awesome_dashboard.items").getAll(); 
+        this.dialog = useService("dialog");
+        this.state = useState({disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || []});
     }
 
     openCustomerView() {
@@ -21,11 +27,57 @@ class AwesomeDashboard extends Component {
     openLeads() {
         this.action.doAction({
             type: "ir.actions.act_window",
-            name: "All leads",
+            name: _t("All leads"),
             res_model: "crm.lead",
             views: [[false, "list"], [false, "form"]],
         });
     }
+
+    openDialog() {
+        this.dialog.add(ConfigurationDialog, {
+            items: this.items,
+            disabledItems: this.state.disabledItems,
+            onUpdateConfiguration: this.updateConfiguration.bind(this),
+        })
+    }
+
+    updateConfiguration(newDisabledItems) {
+        this.state.disabledItems = newDisabledItems;
+    }
 }
 
-registry.category("lazy_components").add("awesome_dashboard.dashboard", AwesomeDashboard);
+
+class ConfigurationDialog extends Component {
+    static template = "awesome_dashboard.ConfigurationDialog";
+    static components = { Dialog, CheckBox };
+    static props = ["close", "items", "disabledItems", "onUpdateConfiguration"];
+
+    setup() {
+        this.items = useState(this.props.items.map((item) => {
+            return {
+                ...item,
+                enabled: !this.props.disabledItems.includes(item.id),
+            }
+        }));
+    }
+
+    done() {
+        this.props.close();
+    }
+
+    onChange(checked, changedItem) {
+        changedItem.enabled = checked;
+        const newDisabledItems = Object.values(this.items).filter(
+            (item) => !item.enabled
+        ).map((item) => item.id)
+
+        browser.localStorage.setItem(
+            "disabledDashboardItems",
+            newDisabledItems,
+        );
+
+        this.props.onUpdateConfiguration(newDisabledItems);
+    }
+}
+
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
