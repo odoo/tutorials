@@ -1,4 +1,4 @@
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase
 from odoo.tests import Form
 
@@ -8,8 +8,6 @@ class EstatePropertyTestCase(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.property_model = cls.env['estate.property']
-        cls.offer_model = cls.env['estate.property.offer']
         cls.partner = cls.env['res.partner'].create({
             'name': 'Test Buyer',
             'email': 'buyer@example.com',
@@ -21,13 +19,13 @@ class EstatePropertyTestCase(TransactionCase):
             'expected_price': 200000,
         }
         vals.update(extra_vals)
-        return self.property_model.create(vals)
+        return self.env['estate.property'].create(vals)
 
     def test_offer_not_allowed_on_sold_property(self):
         property_record = self._create_property(state='sold')
 
         with self.assertRaises(UserError):
-            self.offer_model.create({
+            self.env['estate.property.offer'].create({
                 'price': 210000,
                 'property_id': property_record.id,
                 'partner_id': self.partner.id,
@@ -41,7 +39,7 @@ class EstatePropertyTestCase(TransactionCase):
 
     def test_property_marked_sold_when_allowed(self):
         property_record = self._create_property()
-        offer = self.offer_model.create({
+        offer = self.env['estate.property.offer'].create({
             'price': 210000,
             'property_id': property_record.id,
             'partner_id': self.partner.id,
@@ -50,6 +48,19 @@ class EstatePropertyTestCase(TransactionCase):
 
         property_record.action_set_sold()
         self.assertEqual(property_record.state, 'sold')
+
+    def test_offer_below_ninety_percent_cannot_be_accepted(self):
+        property_record = self._create_property()
+        low_offer = self.env['estate.property.offer'].create({
+            'price': 150000,
+            'property_id': property_record.id,
+            'partner_id': self.partner.id,
+        })
+
+        with self.assertRaises(ValidationError):
+            low_offer.action_accept_offer()
+
+        self.assertEqual(property_record.state, 'new')
 
     def test_garden_reset_on_form_toggle(self):
         with Form(self.env["estate.property"]) as property_form:
