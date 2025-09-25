@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -59,12 +59,6 @@ class EstateProperty(models.Model):
                 raise ValidationError("The selling price must be at least 90% of the expected price.")
         return True
 
-    @api.ondelete(at_uninstall=False)
-    def _delete_only_new_and_canceled(self):
-        for record in self:
-            if record.state not in ('new', 'cancelled'):
-                raise UserError(_("Only properties in 'New' or 'Cancelled' state can be deleted."))
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -74,6 +68,12 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped('price'), default=0)
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_only_new_and_canceled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError(_("Only properties in 'New' or 'Cancelled' state can be deleted."))
 
     @api.onchange('garden')
     def _onchange_garden(self):
