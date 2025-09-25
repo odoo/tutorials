@@ -39,6 +39,9 @@ export class PieChart extends Component {
                             { intersect: true },
                             true
                         );
+                        if (!canvasPosition[0]) {
+                            return
+                        }
                         const variant = Object.keys(this.props.data)[
                             canvasPosition[0].index
                         ]

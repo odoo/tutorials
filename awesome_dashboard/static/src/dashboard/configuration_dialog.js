@@ -1,3 +1,4 @@
+import { useService } from "@web/core/utils/hooks";
 import { Component } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { CheckBox } from "@web/core/checkbox/checkbox";
@@ -12,6 +13,7 @@ export class ConfigurationDialog extends Component {
     };
 
     setup() {
+        this.orm = useService("orm");
         this.disabledElements = this.props.items
             .filter((item) => !item.enabled)
             .map((item) => item.element.id);
@@ -26,8 +28,12 @@ export class ConfigurationDialog extends Component {
         this.disabledElements.splice(index, 1);
     }
 
-    apply() {
-        localStorage.setItem("disabledElements", this.disabledElements);
+    async apply() {
+        await this.orm.call(
+            "ir.config_parameter",
+            "set_param",
+            ["awesome_dashboard_config", JSON.stringify(this.disabledElements)]
+        )
         this.props.onApply();
         this.props.close();
     }

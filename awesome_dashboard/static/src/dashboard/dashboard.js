@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { _t } from "@web/core/l10n/translation";
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
@@ -15,24 +15,24 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
+        this.orm = useService("orm");
         this.statistics = useService("awesome_dashboard.statistics");
         this.state = useState({ items: [], stats: this.statistics });
         this.dialog = useService("dialog");
-        this.updateDashboard();
+
+        onWillStart(async () => await this.updateDashboard())
     }
 
-    updateDashboard() {
-        const disabledElementsString = localStorage.getItem("disabledElements") || "";
-        let disabledElementsList
-        if (disabledElementsString.includes(",")) {
-            disabledElementsList = disabledElementsString.split(",");
-        } else {
-            disabledElementsList = [disabledElementsString];
-        }
+    async updateDashboard() {
+        const config = await this.orm.call(
+            "ir.config_parameter",
+            "get_param",
+            ["awesome_dashboard_config"]);
+        const disabledElements = JSON.parse(config)
         this.state.items = registry
             .category("awesome_dashboard")
             .getAll()
-            .filter((el) => !disabledElementsList.some((e) => e == el.id));
+            .filter((el) => !disabledElements.some((e) => e == el.id));
     }
 
     openCustomers() {
