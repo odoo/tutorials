@@ -41,6 +41,13 @@ class PropertyOffer(models.Model):
             if float_compare(record.price, 0.9 * record.property_id.expected_price, precision_digits=2) == -1:
                 raise exceptions.UserError(_("The selling price cannot be lower than 90% of the expected price"))
 
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env['estate.property'].browse(vals['property_id'])
+            property.state = 'offer_received'
+        return super().create(vals_list)
+
     @api.depends('property_id', 'property_id.offer_ids')
     def action_offer_accept(self):
         for record in self:
@@ -52,13 +59,6 @@ class PropertyOffer(models.Model):
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = 'offer_accepted'
             record.property_id.selling_price = record.price
-
-    @api.model_create_multi
-    def create(self, vals_list):
-        for vals in vals_list:
-            property = self.env['estate.property'].browse(vals['property_id'])
-            property.state = 'offer_received'
-        return super().create(vals_list)
 
     def action_offer_refuse(self):
         self.status = 'refused'  # assigns the same value to all the records

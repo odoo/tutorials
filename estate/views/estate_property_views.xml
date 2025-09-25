@@ -29,7 +29,7 @@
                                 Best offer: <field name="best_price"/>
                             </div>
                             <div>
-                                <field name="tags_ids"/>
+                                <field name="tag_ids"/>
                             </div>
                         </div>
                     </t>
@@ -61,8 +61,8 @@
             <form string="Property form test string?">
                 <field name="active" invisible="1"/>
                 <header>
-                    <button name="action_property_cancel" type="object" string="Cancel" invisible="state == 'cancelled' or state == 'sold'"/>
-                    <button name="action_property_sold" type="object" string="Sold" invisible="state == 'cancelled' or state == 'sold'"/>
+                    <button name="action_property_cancel" type="object" string="Cancel" invisible="state in ['cancelled', 'sold']"/>
+                    <button name="action_property_sold" type="object" string="Sold" invisible="state in ['cancelled', 'sold']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -73,7 +73,7 @@
                         <h1>
                             <field name="name" class="mb16"/>
                         </h1>
-                        <field name="tags_ids" widget="form.many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="tag_ids" widget="form.many2many_tags" options="{'color_field': 'color'}"/>
                     </div>
                     <group>
                         <group>

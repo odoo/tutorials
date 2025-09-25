@@ -30,10 +30,10 @@ class Property(models.Model):
         string='Orientation',
         selection=[('north', "North"), ('south', "South"), ('east', "East"), ('west', "West")])
     active = fields.Boolean(default=True)
-    buyer_id = fields.Many2one('res.partner', string="Buyer")
-    salesperson_id = fields.Many2one('res.users', string="Salesperson", copy=False, default=lambda self: self.env.user)
-    tags_ids = fields.Many2many('estate.property.tag', string="Tags")
-    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+    buyer_id = fields.Many2one('res.partner')
+    salesperson_id = fields.Many2one('res.users', copy=False, default=lambda self: self.env.user)
+    tag_ids = fields.Many2many('estate.property.tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price')
 
@@ -66,7 +66,7 @@ class Property(models.Model):
             self.garden_orientation = None
 
     @api.ondelete(at_uninstall=False)
-    def _unlink_prevent_deletion_unless_new_or_cancelled(self):
+    def _unlink_check_status(self):
         for record in self:
             if record.state not in ['new', 'cancelled']:
                 raise UserError(_("A property can only be deleted if its state is 'New' or 'Cancelled'"))

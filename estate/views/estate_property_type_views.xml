@@ -52,7 +52,7 @@
                     <field name="property_ids" string="Title">
                         <list>
                             <field name="name" string="Title"/>
-                            <field name="expected_price" string="Expected Price"/>
+                            <field name="expected_price"/>
                             <field name="state" string="Status"/>
                         </list>
                     </field>
