@@ -1,9 +1,8 @@
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
-import { PieChart } from "./pie_chart";
+import { PieChart } from "./pie_chart/pie_chart";
 import { DashboardItem } from "./dashboard_item";
-
 import { Component, onWillStart, useState } from "@odoo/owl";
     
 class AwesomeDashboard extends Component {
@@ -12,7 +11,7 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.statistics = useState(useService("awesome_dashboard.statistics")); // useState because it's reactive
+        this.statistics = useState(useService("awesome_dashboard.statistics")); // useState() because it's reactive
     }   
 
     openCustomers() {
@@ -31,5 +30,4 @@ class AwesomeDashboard extends Component {
         });
     }
 }
-
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
