@@ -8,7 +8,7 @@
             <button class="btn btn-secondary" t-on-click="openLeads">Leads</button>
         </t>
         <t t-set-slot="default">
-            <div class="o-awesome-dashboard-content">
+            <div class="o-awesome-dashboard-content" t-if="statistics.isReady">
                 
                 <DashboardItem>
                     Average amount of t-shirt by order this month
