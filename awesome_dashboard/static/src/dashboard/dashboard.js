@@ -42,8 +42,7 @@ class AwesomeDashboard extends Component {
     openSettingsDialog() {
         this.dialog.add(SettingsDialog, {
             items: this.items,
-            itemsNotShown: this.state.itemsNotShown,
-            dashboard: this
+            dashboard: this,
         });
     }
 }
@@ -53,11 +52,11 @@ registry.category("lazy_components").add("awesome_dashboard.dashboard", AwesomeD
 class SettingsDialog extends Component {
     static template = "awesome_dashboard.SettingsDialog";
     static components = { Dialog, CheckBox };
-    static props = ["dashboard", "items", "itemsNotShown"];
+    static props = ["dashboard", "items"];
 
     setup() {
         this.items = useState(this.props.items);
-        this.items.forEach((item) => { item.shown = !this.props.itemsNotShown.includes(item.id)});
+        this.items.forEach((item) => { item.shown = !this.props.dashboard.state.itemsNotShown.includes(item.id)});
     }
 
     toggleItem (ev, item) {
