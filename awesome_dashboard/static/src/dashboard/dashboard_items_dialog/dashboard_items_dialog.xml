@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.DashboardItemsDialog">
+        <Dialog>
+            <t t-set-slot="header">
+                <h1 class="modal-title fs-5" id="dashboardItemsDialogTitle">Dashboard items configuration</h1>
+                <button type="button" class="btn-close" aria-label="Close" t-on-click="props.close"></button>
+            </t>
+            <p>Which cards do you wish to see?</p>
+            <p t-foreach="state" t-as="item" t-key="item.id">
+                <input t-att-name="item.id" type="checkbox" t-on-change="toggle" t-att-checked="item.checked"/>
+                <label><t t-esc="item.description"/></label>
+            </p>
+            <t t-set-slot="footer">
+                <button type="button" class="btn btn-primary" t-on-click="apply">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

@@ -62,6 +62,8 @@ export const items = [
     },
 ];
 
+console.log('dashboard_items');
+
 for (const item of items) {
     dashboardItemRegistry.add(item.id, item);
 }

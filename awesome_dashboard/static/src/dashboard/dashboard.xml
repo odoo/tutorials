@@ -6,10 +6,11 @@
             <t t-set-slot="control-panel-create-button">
                 <button t-on-click="openCustomers" type="button" class="btn btn-primary">Customers</button>
                 <button t-on-click="openLeads" type="button" class="btn btn-primary">Leads</button>
+                <button t-on-click="openSettings" type="button" class="fa fa-gear"></button>
             </t>
 
             <t t-foreach="items" t-as="item" t-key="item.id">
-                <DashboardItem size="item.size || 1">
+                <DashboardItem t-if="!storedState.excludedItems.includes(item.id)" size="item.size || 1">
                     <t t-set="itemProp" t-value="item.props ? item.props(state.statistics) : {'data': state.statistics}"/>
                     <t t-component="item.Component" t-props="itemProp"/>
                 </DashboardItem>
