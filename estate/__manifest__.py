@@ -1,7 +1,7 @@
 {
     'name': 'Estate',
     'summary': 'Sell real estate properties',
-    'depends': ['base'],
+    'depends': ['base', 'web'],
     'application': True,
     'auto_install': True,
     'data': [

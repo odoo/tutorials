@@ -22,10 +22,22 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        for val in vals:
-            property = self.env['estate.property'].browse(val['property_id'])
-            if float_compare(property.best_offer, val.get('price', 0.0), precision_rounding=0.01) == 1:
+        vals_list = vals if isinstance(vals, list) else [vals]
+        properties = self.env['estate.property']
+
+        for offer_vals in vals_list:
+            property_id = offer_vals.get('property_id')
+            property = properties.browse(property_id)
+
+            if not property:
+                continue
+
+            if property.state == 'sold':
+                raise UserError(_("You cannot create an offer on a property that has been sold."))
+
+            if float_compare(property.best_offer, offer_vals.get('price', 0.0), precision_rounding=0.01) >= 0:
                 raise UserError(_("The offer price must be higher than the current best offer."))
+
         return super().create(vals)
 
     @api.depends('validity', 'create_date')
