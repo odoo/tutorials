@@ -59,8 +59,8 @@ class SettingsDialog extends Component {
         this.items.forEach((item) => { item.shown = !this.props.dashboard.state.itemsNotShown.includes(item.id)});
     }
 
-    toggleItem (ev, item) {
-        item.shown = ev;
+    toggleItem (isChecked, item) {
+        item.shown = isChecked;
 
         const newItemsNotShown = Object.values(this.items)
             .filter((i) => !i.shown)
