@@ -1,25 +1,9 @@
 import { Component } from "@odoo/owl"
+import { Todo } from "./todo_model";
 
 export class TodoItem extends Component {
     static template = "awesome_owl.todo_item";
     static props = {
-        todo: {
-            type: Object,
-            shape: {
-                id: Number,
-                description: String,
-                isCompleted: Boolean,
-            },
-        },
-        toggleState: Function,
-        removeTodo: Function
-    }
-
-    toggleCheckbox() {
-        this.props.toggleState(this.props.todo.id);
-    }
-
-    delete() {
-        this.props.removeTodo(this.props.todo.id);
+        todo: Todo,
     }
 }

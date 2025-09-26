@@ -6,8 +6,8 @@
             <input placeholder="Enter a new task" t-on-keyup="addTodo" t-ref="todo_input"/>
         </div>
         <div>
-            <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo" toggleState.bind="toggleTodo" removeTodo.bind="deleteTodo"/>
+            <t t-foreach="model.todoList" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo" />
             </t>
         </div>
     </t>
