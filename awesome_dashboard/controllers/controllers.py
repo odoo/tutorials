@@ -2,6 +2,7 @@
 
 import logging
 import random
+from typing import Required
 
 from odoo import http
 from odoo.http import request
@@ -33,4 +34,15 @@ class AwesomeDashboard(http.Controller):
             },
             'total_amount': random.randint(100, 1000)
         }
+
+    @http.route('/awesome_dashboard/set_config/<int:record_id>', type='json', auth='user')
+    def save_config(self, record_id, **kwargs):
+        request.env['ir.config_parameter'].sudo().set_param(
+                'awesome_dashboard_config:' + str(record_id), kwargs['config']
+        )
+
+    @http.route('/awesome_dashboard/get_config/<int:record_id>', type='json', auth='user')
+    def get_config(self, record_id):
+        return request.env['ir.config_parameter'].sudo().get_param(
+                'awesome_dashboard_config:' + str(record_id))
 

@@ -2,6 +2,8 @@ import { useService } from "@web/core/utils/hooks";
 import { Component } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
 import { CheckBox } from "@web/core/checkbox/checkbox";
+import { session } from "@web/session";
+import { rpc } from "@web/core/network/rpc";
 
 export class ConfigurationDialog extends Component {
     static template = "awesome_dashboard.ConfigurationDialog";
@@ -14,6 +16,7 @@ export class ConfigurationDialog extends Component {
 
     setup() {
         this.orm = useService("orm");
+        this.userId = session.storeData['res.partner'][1].userId;
         this.disabledElements = this.props.items
             .filter((item) => !item.enabled)
             .map((item) => item.element.id);
@@ -29,11 +32,9 @@ export class ConfigurationDialog extends Component {
     }
 
     async apply() {
-        await this.orm.call(
-            "ir.config_parameter",
-            "set_param",
-            ["awesome_dashboard_config", JSON.stringify(this.disabledElements)]
-        )
+        await rpc("/awesome_dashboard/set_config/" + this.userId, {
+            config: JSON.stringify(this.disabledElements)
+        })
         this.props.onApply();
         this.props.close();
     }

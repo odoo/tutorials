@@ -8,6 +8,8 @@ import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
 import { PieChart } from "./pie_chart/pie_chart";
 import { ConfigurationDialog } from "./configuration_dialog";
+import { rpc } from "@web/core/network/rpc";
+import { session } from "@web/session";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -16,19 +18,20 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.orm = useService("orm");
+        this.userId = session.storeData['res.partner'][1].userId;
         this.statistics = useService("awesome_dashboard.statistics");
         this.state = useState({ items: [], stats: this.statistics });
         this.dialog = useService("dialog");
 
-        onWillStart(async () => await this.updateDashboard())
+        onWillStart(async () => {
+            await this.updateDashboard()
+        })
     }
 
     async updateDashboard() {
-        const config = await this.orm.call(
-            "ir.config_parameter",
-            "get_param",
-            ["awesome_dashboard_config"]);
-        const disabledElements = JSON.parse(config)
+        const config = JSON.parse(
+            await rpc("/awesome_dashboard/get_config/" + this.userId))
+        const disabledElements = config || []
         this.state.items = registry
             .category("awesome_dashboard")
             .getAll()
@@ -52,10 +55,10 @@ class AwesomeDashboard extends Component {
     }
 
     customizeDashboard() {
-        let all = registry.category("awesome_dashboard").getAll();
+        const all_dashboard_items = registry.category("awesome_dashboard").getAll();
 
         this.dialog.add(ConfigurationDialog, {
-            items: all.map(item => ({
+            items: all_dashboard_items.map(item => ({
                 element: item,
                 enabled: this.state.items.some((element) => item.id == element.id)
             }))
