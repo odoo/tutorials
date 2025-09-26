@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <template id="rental_product_details_inherited" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+                <t t-if="combination_info['required_deposit']">
+                    <p class="fs-5 pt-2 fw-bold">Deposit Required : $ <span id="total_amount" t-out="combination_info['amount']"/></p>
+                </t>
+        </xpath>
+
+    </template>
+</odoo>
