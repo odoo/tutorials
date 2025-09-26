@@ -77,6 +77,9 @@ class Property(models.Model):
             if record.state == 'cancelled':
                 raise UserError(self.env._("Cannot sell a cancelled property"))
 
+            if len(record.offer_ids) == 0:
+                raise UserError(self.env._("Cannot sell a property without an offer"))
+
             record.state = 'sold'
         return True
 

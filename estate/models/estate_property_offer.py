@@ -39,11 +39,14 @@ class PropertyOffer(models.Model):
             if not property:
                 raise UserError(self.env._("The property does not exist"))
 
-            if property.state == 'new':
-                property.state = 'offer_received'
+            if property.state == 'sold':
+                raise UserError(self.env._("The property is already sold"))
 
             if vals['price'] < property.best_price:
                 raise UserError(self.env._("Offer must be higher than or equal to %d", property.best_price))
+
+            if property.state == 'new':
+                property.state = 'offer_received'
 
         return super().create(vals_list)
 
