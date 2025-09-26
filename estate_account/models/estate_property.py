@@ -5,9 +5,10 @@ class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
     def action_set_sold(self):
-        res = super().action_set_sold()
+        self.env['estate.property'].check_access('write')
 
-        self.env['account.move'].create({
+        res = super().action_set_sold()
+        self.env['account.move'].sudo().create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
             'invoice_line_ids': [
