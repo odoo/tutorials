@@ -13,7 +13,8 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.result = useState(useService("awesome_dashboard.statistics"));
-        this.items = items;
+        this.items = registry.category("awesome_dashboard").getAll();
+
     }
     openCustomers() {
         this.action.doAction("base.action_partner_form");
