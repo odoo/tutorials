@@ -1,6 +1,7 @@
 from odoo.tests import tagged
 from odoo.addons.point_of_sale.tests.test_frontend import TestPointOfSaleHttpCommon
 
+
 @tagged('post_install', '-at_install')
 class TestPOS(TestPointOfSaleHttpCommon):
 
@@ -35,9 +36,8 @@ class TestPOS(TestPointOfSaleHttpCommon):
             'available_in_pos': True,
             'list_price': 12.0,
         })
-        
-        # self.main_pos_config.x = [(4, self.letter_tray.id)]
 
     def test_pos_uom_conversion_tour(self):
         self.main_pos_config.with_user(self.pos_user).open_ui()
-        self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id, 'pos_uom_conversion', login="pos_user", watch=True)
+        self.start_tour("/pos/ui?config_id=%d" % self.main_pos_config.id,
+                        'pos_uom_conversion', login="pos_user", watch=True)
