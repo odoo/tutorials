@@ -1,0 +1,44 @@
+import { Component, useState } from "@odoo/owl";
+import { Dialog } from "@web/core/dialog/dialog";
+import { items } from "./dashboard_items";
+import { registry } from "@web/core/registry";
+import { CheckBox } from "@web/core/checkbox/checkbox";
+import { browser } from "@web/core/browser/browser";
+
+
+export class ConfigDialog extends Component {
+    static template = "awesome_dashboard.ConfigDialog";
+    static components = { Dialog, CheckBox }; 
+    static props = ["close", "items", "disabledItems", "onUpdateConfigs"];
+    setup() {
+        // create object for each item with an enabled property
+        this.items = useState(this.props.items.map((item) => {
+            return {
+                ...item,
+                enabled: !this.props.disabledItems.includes(item.id),
+            }
+        }));
+        
+    }
+    
+    // adds the unchecked item to the disabled list
+    onChange(checkedItems, Item) {
+        Item.enabled = checkedItems;
+      
+        const updatedDisabledItems = Object.values(this.items).filter(
+            (item) => !item.enabled
+        ).map((item) => item.id);
+
+        browser.localStorage.setItem(
+            "disabledItems", updatedDisabledItems,
+        );
+
+        this.props.onUpdateConfigs(updatedDisabledItems);
+    }
+
+    done() {
+        this.props.close();
+    }
+    
+}
+
