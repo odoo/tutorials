@@ -22,11 +22,13 @@ export class TodoList extends Component {
 
     toggleTodo(id) {
         const todo = this.todos.find((todo) => todo.id === id);
+        if (!todo) return;
         todo.isCompleted = !todo.isCompleted;
     }
 
     deleteTodo(id) {
         const index = this.todos.findIndex((todo) => todo.id === id);
+        if (index == -1) return;
         this.todos.splice(index, 1);
     }
 }
