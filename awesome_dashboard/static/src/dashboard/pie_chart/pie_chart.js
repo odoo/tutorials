@@ -22,8 +22,8 @@ export class PieChart extends Component {
             this.renderPieChart();
         });
         onWillUnmount(() => {
-            if (this) {
-                this.destroy();
+            if (this.pieChart) {
+                this.pieChart.destroy();
             }
         });
     }

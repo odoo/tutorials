@@ -1,8 +1,10 @@
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
+import { browser } from "@web/core/browser/browser";
 import { PieChart } from "./pie_chart/pie_chart";
 import { DashboardItem } from "./dashboard_item";
+import { ConfigurationDialog } from "./configuration_dialog/configuration_dialog";
 import { Component, useState } from "@odoo/owl";
 
     
@@ -12,8 +14,12 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
+        this.dialog = useService("dialog");
         this.statistics = useState(useService("awesome_dashboard.statistics")); // useState() because it's reactive
         this.items = registry.category("awesome_dashboard.items").getAll();
+        this.state = useState({ // useState() because it's reactive
+            disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || []
+        });
     }   
 
     openCustomers() {
@@ -30,6 +36,18 @@ class AwesomeDashboard extends Component {
                 [false, 'form'],
                 [false, 'list']],
         });
+    }
+
+    openConfiguration(){
+        this.dialog.add(ConfigurationDialog, {
+            items: this.items,
+            disabledItems: this.state.disabledItems,
+            onUpdateConfiguration: this.updateConfiguration.bind(this),
+        });
+    }
+
+    updateConfiguration(newDisabledItems){
+        this.state.disabledItems = newDisabledItems // update the state
     }
 }
 registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

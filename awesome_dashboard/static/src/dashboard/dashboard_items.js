@@ -2,7 +2,6 @@ import { NumberCard } from "./number_card/number_card";
 import { PieChartCard } from "./pie_chart_card/pie_chart_card";
 import { registry } from "@web/core/registry";
 
-
 const items = [
     {
         id: "average_quantity",
@@ -36,7 +35,7 @@ const items = [
         description: "Number of cancelled orders",
         Component: NumberCard,
         props: (data) => ({
-            title: "ANumber of cancelled orders",
+            title: "Number of cancelled orders",
             value: data.nb_cancelled_orders
         }),
     },
