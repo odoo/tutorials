@@ -4,7 +4,7 @@ import { LazyComponent } from "@web/core/assets";
 
 export class DashboardLoader extends Component {
     static components = { LazyComponent };
-    static template = "awesome_dashboard.loader";
+    static template = "awesome_dashboard.Loader";
 }
 
 registry.category("actions").add("awesome_dashboard.dashboard", DashboardLoader);

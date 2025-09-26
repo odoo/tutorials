@@ -2,7 +2,7 @@ import { Component, onWillStart, useRef, useEffect, onWillUnmount } from "@odoo/
 import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
-    static template = "awesome_dashboard.pie_chart"
+    static template = "awesome_dashboard.PieChart"
     static props = {
         label: String,
         data: Object,
@@ -15,33 +15,12 @@ export class PieChart extends Component {
         })
         useEffect(() => this.renderChart());
         onWillUnmount(() => {
-            if (this.chart) {
-                this.chart.destroy();
-            }
+            this.chart?.destroy();
         })
     }
 
-    getChartConfig() {
-        const { mode } = this.model.metaData;
-        let data;
-        switch (mode) {
-            case "bar":
-                data = this.getBarChartData();
-                break;
-            case "line":
-                data = this.getLineChartData();
-                break;
-            case "pie":
-                data = this.getPieChartData();
-        }
-        const options = this.prepareOptions();
-        return { data, options, type: mode };
-    }
-
     renderChart() {
-        if (this.chart) {
-            this.chart.destroy();
-        }
+        this.chart?.destroy();
         const config = {
             type: "pie",
             data: {

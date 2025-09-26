@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_dashboard.loader">
+    <t t-name="awesome_dashboard.Loader">
         <LazyComponent bundle="'awesome_dashboard.dashboard'" Component="'AwesomeDashboard'"/>
     </t>
 
