@@ -5,6 +5,8 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
+import { ConfigurationDialog } from "./configuration_dialog/configuration_dialog";
+import { browser } from "@web/core/browser/browser";
 
 
 class AwesomeDashboard extends Component {
@@ -15,6 +17,10 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.statistics = useState(useService("statistics_service"));
         this.items = registry.category("awesome_dashboard").getAll();
+        this.dialog = useService("dialog");
+        this.disabledItems = useState(
+            { values: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || [] }
+        );
     }
 
     openCustomers() {
@@ -31,6 +37,19 @@ class AwesomeDashboard extends Component {
                 [false, 'list'],
                 [false, 'form'],
             ],
+        });
+    }
+
+    updateConfig(newDisabledItems) {
+        this.disabledItems.values = newDisabledItems;
+        browser.localStorage.setItem("disabledDashboardItems", newDisabledItems);
+    }
+
+    openConfig() {
+        this.dialog.add(ConfigurationDialog, {
+            items: this.items,
+            disabledItems: this.disabledItems.values,
+            onUpdateConfig: this.updateConfig.bind(this),
         });
     }
 }
