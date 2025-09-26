@@ -9,7 +9,7 @@ class TestEstate(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(TestEstate, cls).setUpClass()
+        super().setUpClass()
         cls.property_new = cls.env['estate.property'].create({
             'name': 'Property 1',
             'expected_price': 100,
