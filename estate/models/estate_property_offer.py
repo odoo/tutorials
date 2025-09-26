@@ -15,6 +15,8 @@ class EstatePropertyOffer(models.Model):
                 max_price = max((offer.price for offer in property.offer_ids), default=0.0)
                 if vals['price'] < max_price:
                     raise UserError(_("The offer must be higher than %d.", max_price))
+                if property.state == 'sold':
+                    raise UserError(_("You cannot make an offer on a sold property."))
                 if property.state not in ['offer_received', 'offer_accepted', 'sold', 'cancelled']:
                     property.state = 'offer_received'
         return super().create(vals_list)
