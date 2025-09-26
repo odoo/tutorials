@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="pos_uom.NumberInputPopup" owl="1">
+        <Dialog title="props.title">
+            <div class="mb-3">
+                <label class="form-label fw-bold">Quantity</label>
+                <input type="number"
+                       step="0.01"
+                       min="0" t-ref="input" class="o_input"/>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary btn-lg lh-lg o-default-button" t-on-click="confirm">Confirm</button>
+                <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="close">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

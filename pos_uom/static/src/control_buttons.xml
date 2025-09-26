@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_uom.ControlButtons" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//button[@class='more-btn btn btn-light btn-lg flex-shrink-0']" position="before">
+            <t t-if="!props.showRemainingButtons">
+                <button
+                    class="more-btn btn btn-light btn-lg flex-shrink-0 o_pos_add_qty"
+                    t-on-click="() => this.clickAddQuantity()" t-if="!currentOrder?.is_empty() and pos.get_order()?.uiState.selected_orderline_uuid" name="add-qty">
+                    Add Quantity
+                </button>
+            </t>
+        </xpath>
+    </t>
+</templates>
