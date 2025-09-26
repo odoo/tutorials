@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="res_groups_privilege_brokerage" model="res.groups.privilege">
+        <field name="name">Brokerage</field>
+        <field name="category_id" ref="base.module_category_real_estate"/>
+    </record>
+
+    <record id="estate_group_brokerage_agent" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="privilege_id" ref="res_groups_privilege_brokerage"/>
+    </record>
+
+    <record id="estate_group_brokerage_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="privilege_id" ref="res_groups_privilege_brokerage"/>
+    </record>
+
+    <record id="estate_property_access_rule" model="ir.rule">
+        <field name="name">Only give access to property managed by the user</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate_group_brokerage_agent'))]"/>
+        <field name="domain_force">[
+            '|', ('salesman_id', '=', user.id),
+                ('salesman_id', '=', False)
+        ]</field>
+    </record>
+
+</odoo>

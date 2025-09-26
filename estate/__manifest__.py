@@ -2,7 +2,7 @@
     'name': "Real Estate",
     'author': "Odoo",
     'website': "https://www.odoo.com/",
-    'category': 'Tutorials',
+    'category': 'Real Estate',
     'version': '0.1',
     'application': True,
     'depends': ['base'],
@@ -14,6 +14,7 @@
         'views/estate_property_tag_views.xml',
         'views/estate_menus.xml',
         'views/res_users_view.xml',
+        'security/estate_security.xml',
         'security/ir.model.access.csv',
     ]
 }
