@@ -9,14 +9,14 @@ export class Card extends Component {
             type: String,
             optional: true,
         },
-        slots:Object, // I added this to allow slots inside cards
+        slots: Object, // I added this to allow slots inside cards
     };
 
     setup(){
         this.state = useState({open : true});
     }
 
-    ontoggleVisibility() {
+    onToggleVisibility() {
         this.state.open = !this.state.open;
     }
   

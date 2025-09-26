@@ -23,15 +23,11 @@ export class TodoItem extends Component {
     };
     
     onToggleState() {
-        if (this.props.toggleState){
-            this.props.toggleState(this.props.todo.id)
-        }
+        this.props.toggleState?.(this.props.todo.id);
     }
 
     onDeleteTodo() {
-        if (this.props.removeTodo) {
-            this.props.removeTodo(this.props.todo.id)
-        }
+        this.props.removeTodo?.(this.props.todo.id);
     }
 }
 

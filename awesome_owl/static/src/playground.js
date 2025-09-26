@@ -1,5 +1,5 @@
 import { Component, markup , useState} from "@odoo/owl";
-import { Card } from "./card/card"; // Import the Card component
+import { Card } from "./card/card";
 import { Counter } from "./counter/counter";
 import { TodoList } from "./todo/todo_list";
 
@@ -13,7 +13,7 @@ export class Playground extends Component {
     }
 
     incrementSum() {
-        this.state.sum ++;
+        this.state.sum++;
     }
     
 }

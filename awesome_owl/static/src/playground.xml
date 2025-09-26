@@ -4,7 +4,7 @@
    <t t-name="awesome_owl.playground" owl="1">
         <Counter  onChange="incrementSum"/>
         <Counter  onChange="incrementSum"/>
-        <Card title="'hamza'">
+        <Card title="'counter card'">
             <Counter/>
         </Card>
         <div>

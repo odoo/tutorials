@@ -23,21 +23,21 @@ export class TodoList extends Component {
                 description : ev.target.value,
                 isCompleted : false,
             }
-            this.state.counter_id ++;
+            this.state.counter_id++;
             this.todos.push(newTodo);
             ev.target.value = "";
         };
         
     }
 
-    toggleTodoState(todoId){
+    toggleTodoState(todoId) {
         const todo = this.todos.find(t=>t.id === todoId);
         if (todo) {
             todo.isCompleted = !todo.isCompleted;
         }
     }
 
-    DeleteTodo(todoId){
+    DeleteTodo(todoId) {
         const todoIndex = this.todos.findIndex(t=>t.id === todoId);
         if (todoIndex !== -1){
             this.todos.splice(todoIndex, 1)

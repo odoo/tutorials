@@ -13,12 +13,11 @@ export class PieChart extends Component {
         onWillStart(async () => loadJS("/web/static/lib/Chart/Chart.js"));
         onMounted(()=> {
             this.renderChart();
-            }   
-        );
+        });  
+            
         onWillUnmount(()=> {
-            this.chart.destroy();
+            this.chart?.destroy();
         });
-
 
     }
 

@@ -10,13 +10,11 @@ export class Counter extends Component {
    };
 
    setup() {
-       this.state =useState({ value: 0 });
+       this.state = useState({ value: 0 });
    }
 
    increment() {
-       this.state.value ++;
-       if (this.props.onChange){
-            this.props.onChange();
-       }
+       this.state.value++;
+       this.props.onChange?.();
    }
 }
