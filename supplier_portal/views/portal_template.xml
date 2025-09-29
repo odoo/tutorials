@@ -1,0 +1,57 @@
+<odoo>
+    <data>
+        <template id="portal_my_bills" name="Bills" inherit_id="portal.portal_my_home">
+            <div id="portal_common_category" position="after">
+                <div class="o_portal_category row g-2 mt-3" id="portal_my_bills">
+                    <t t-call="portal.portal_docs_entry">
+                        <t t-set="icon" t-value="'/supplier_portal/static/src/img/upload_logo.png'"/>
+                        <t t-set="text">Upload your bills here.</t>
+                        <t t-set="title">Bills</t>
+                        <t t-set="url" t-value="'/upload/bill'"/>
+                        <t t-set="config_card" t-value="True"/>
+                    </t>
+                </div>
+            </div>
+        </template>
+
+        <template id="portal_my_bills_form">
+            <t t-call="portal.portal_layout">
+                <t t-set="additional_title">Bill Form</t>
+                <div class="o_portal_security_body w-md-75 w-lg-50 pb-5">
+                    <t t-set="no_breadcrumbs" t-value="1"/>
+                    <div class="d-flex gap-2 my-3">
+                        <a href="/my/" title="Go Back" class="btn btn-light px-2"><i class="oi oi-chevron-left"/></a>
+                        <h3 class="my-0">Bills</h3>
+                    </div>
+                    <section name="upload_bill">
+                        <h4>Bill Details</h4>
+                        <div class="alert alert-success" role="alert" t-if="message_success">
+                            <t t-esc="message_success"/>
+                        </div>
+                        <div class="alert alert-danger" role="alert" t-if="message_error">
+                            <t t-esc="message_error"/>
+                        </div>
+                        <form action="/upload/bill" method="post" class="upload_bill_form" enctype="multipart/form-data">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="mb-3">
+                                <label for="organization">Organization</label>
+                                <select t-if="organization" name="organization">
+                                    <option t-att-value="organization.id" t-esc="organization.name" selected="selected"/>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="pdf">Upload PDF:</label>
+                                <input type="file" accept=".pdf" id="pdf" name="pdf"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="xml">Upload xml file:</label>
+                                <input type="file" accept=".xml" id="xml" name="xml"/>
+                            </div>
+                            <button type="submit" class="btn btn-light">Submit</button>
+                        </form>
+                    </section>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
