@@ -5,7 +5,7 @@
         <Dialog>
             <t t-set-slot="header">
                 <h1 class="modal-title fs-5" id="dashboardItemsDialogTitle">Dashboard items configuration</h1>
-                <button type="button" class="btn-close" aria-label="Close" t-on-click="props.close"></button>
+                <button type="button" class="btn-close" aria-label="Close" t-on-click="props.close"/>
             </t>
             <p>Which cards do you wish to see?</p>
             <p t-foreach="state" t-as="item" t-key="item.id">
