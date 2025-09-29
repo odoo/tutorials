@@ -1,6 +1,6 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
-from odoo.tests import tagged
+from odoo.tests import tagged, Form
 
 
 @tagged('post_install', '-at_install')
@@ -33,3 +33,15 @@ class EstatePropertiesTestCase(TransactionCase):
         })
         self.properties[1].action_set_sold()
         self.assertEqual(self.properties[1].state, 'sold')
+
+    def test_form_garden_defaults(self):
+        property_form = Form(self.properties[0])
+        property_form.garden = False
+        self.assertEqual(property_form.garden_area, 0)
+        self.assertEqual(property_form.garden_orientation, False)
+        property_form.garden = True
+        self.assertEqual(property_form.garden_area, 10)
+        self.assertEqual(property_form.garden_orientation, 'north')
+        property_form.garden = False
+        self.assertEqual(property_form.garden_area, 0)
+        self.assertEqual(property_form.garden_orientation, False)
