@@ -12,6 +12,7 @@ class EstateProperty(models.Model):
 
         moves_vals = []
         for property in sold_properties:
+            property.check_access('write')
             moves_vals.append({
                 'partner_id': property.buyer_id.id,
                 'move_type': 'out_invoice',
@@ -29,5 +30,5 @@ class EstateProperty(models.Model):
                 ],
             })
 
-        self.env['account.move'].create(moves_vals)
+        self.env['account.move'].sudo().create(moves_vals)
         return res

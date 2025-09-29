@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Properties"
     _order = 'id desc'
+    _check_company_auto = True
 
     name = fields.Char(required=True)
     active = fields.Boolean(default=True)
@@ -35,8 +36,13 @@ class EstateProperty(models.Model):
         ('sold', "Sold"),
         ('cancelled', "Cancelled"),
     ], required=True, default='new', copy=False)
+    company_id = fields.Many2one(
+        'res.company',
+        required=True,
+        default=lambda self: self.env.company,
+    )
     tag_ids = fields.Many2many('estate.property.tag')
-    salesman_id = fields.Many2one('res.users', default=lambda self: self.env.user)
+    salesman_id = fields.Many2one('res.users', check_company=True)
     buyer_id = fields.Many2one('res.partner', copy=False)
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Integer(compute="_compute_total_area", store=True)
