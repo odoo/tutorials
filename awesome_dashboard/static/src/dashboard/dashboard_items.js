@@ -1,5 +1,5 @@
 import { NumberCard } from "./number_card/number_card";
-import { PieChartCard } from "./pie_chart_card/pie_chart_card";
+import { ChartCard } from "./chart_card/chart_card";
 import { registry } from "@web/core/registry";
 
 export const items = [
@@ -51,11 +51,12 @@ export const items = [
     {
         id: "orders_by_size",
         description: "Shirt orders by size",
-        Component: PieChartCard,
+        Component: ChartCard,
         size: 2,
         props: (data) => ({
             title: "Shirt orders by size",
             value: data['orders_by_size'],
+            type: "pie"
         }),
     },
 ]

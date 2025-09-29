@@ -1,11 +1,12 @@
 import { Component, onWillStart, useRef, useEffect, onWillUnmount } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 
-export class PieChart extends Component {
-    static template = "awesome_dashboard.PieChart"
+export class DashboardChart extends Component {
+    static template = "awesome_dashboard.DashboardChart"
     static props = {
         label: String,
         data: Object,
+        type: { validate: t => ["pie", "bar", "line"].includes(t) },
     }
 
     setup() {
@@ -22,7 +23,7 @@ export class PieChart extends Component {
     renderChart() {
         this.chart?.destroy();
         const config = {
-            type: "pie",
+            type: this.props.type,
             data: {
                 labels: Object.keys(this.props.data),
                 datasets: [{
