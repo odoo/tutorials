@@ -5,14 +5,14 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def get_sold_property_invoice_values(self):
-        invoice_vals = {
-            'partner_id': self.buyer_id,
+        return [{
+            'partner_id': record.buyer_id.id,
             'move_type': 'out_invoice',
             'invoice_line_ids': [
                 Command.create({
                     'name': "6% of the selling price",
                     'quantity': 1,
-                    'price_unit': 0.06 * self.selling_price,
+                    'price_unit': 0.06 * record.selling_price,
                 }),
                 Command.create({
                     'name': "Administrative fees",
@@ -20,8 +20,7 @@ class EstateProperty(models.Model):
                     'price_unit': 100,
                 }),
             ],
-        }
-        return invoice_vals
+        } for record in self]
 
     def action_property_sold(self):
         invoice_vals = self.get_sold_property_invoice_values()

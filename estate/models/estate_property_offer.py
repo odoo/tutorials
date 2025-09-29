@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from odoo import _, api, exceptions, fields, models
+from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
 
 
@@ -45,6 +46,8 @@ class PropertyOffer(models.Model):
     def create(self, vals_list):
         for vals in vals_list:
             property = self.env['estate.property'].browse(vals['property_id'])
+            if property.state == 'sold':
+                raise UserError(_("Cannot create an offer for a sold property"))
             property.state = 'offer_received'
         return super().create(vals_list)
 
