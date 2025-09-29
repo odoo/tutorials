@@ -1,13 +1,13 @@
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged
 
-from .common import EstateTestCommon
+from .common import TestEstateCommon
 
 
 # The CI will run these tests after all the modules are installed,
 # not right after installing the one defining it.
 @tagged('post_install', '-at_install')
-class EstateTestProperty(EstateTestCommon):
+class TestEstateProperty(TestEstateCommon):
     def test_action_property_sold(self):
         """Test that everything behaves like it should when selling a property."""
 

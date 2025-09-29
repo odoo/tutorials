@@ -1,13 +1,13 @@
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 
-from .common import EstateTestCommon
+from .common import TestEstateCommon
 
 
 # The CI will run these tests after all the modules are installed,
 # not right after installing the one defining it.
 @tagged('post_install', '-at_install')
-class EstateTestPropertyOffer(EstateTestCommon):
+class TestEstatePropertyOffer(TestEstateCommon):
     def test_create(self):
         """Test that an offer cannot be created for a sold property."""
 

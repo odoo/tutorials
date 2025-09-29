@@ -1,7 +1,7 @@
 from odoo.tests.common import TransactionCase
 
 
-class EstateTestCommon(TransactionCase):
+class TestEstateCommon(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
