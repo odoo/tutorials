@@ -16,9 +16,7 @@ export class TodoItem extends Component {
     };
     
     onChange() {
-        if (this.props.toggleState) {
-            this.props.toggleState(this.props.todo.id);
-        }
+        this.props.toggleState?.(this.props.todo.id);
     }
 
     onDelete() {
