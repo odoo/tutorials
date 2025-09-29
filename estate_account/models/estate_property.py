@@ -29,6 +29,8 @@ class EstateProperty(models.Model):
         return invoice_vals
 
     def action_set_sold(self):
+        self.check_access('write')
+
         invoice_vals_list = []
         for property in self:
             invoice_vals = property._prepare_invoice()
