@@ -1,0 +1,58 @@
+import { registry } from "@web/core/registry";
+import { Layout } from "@web/search/layout";
+import { useService } from "@web/core/utils/hooks";
+import { browser } from "@web/core/browser/browser";
+import { PieChart } from "./pie_chart/pie_chart";
+import { DashboardItem } from "./dashboard_item";
+import { ConfigurationDialog } from "./configuration_dialog/configuration_dialog";
+import { Component, useState, onWillStart } from "@odoo/owl";
+import { rpc } from "@web/core/network/rpc";
+
+    
+class AwesomeDashboard extends Component {
+    static template = "awesome_dashboard.AwesomeDashboard";
+    static components = { Layout, DashboardItem, PieChart };
+
+    setup() {
+        this.action = useService("action");
+        this.dialog = useService("dialog");
+        this.statistics = useState(useService("awesome_dashboard.statistics")); // useState() because it's reactive
+        this.items = registry.category("awesome_dashboard.items").getAll();
+        this.state = useState({
+            disabledItems: [], // useState() because it's reactive
+        });
+
+        onWillStart(async () => {
+            this.state.disabledItems = await rpc("/awesome_dashboard/get_settings");
+        });
+    }   
+
+    openCustomers() {
+        this.action.doAction('base.action_partner_form');
+    }
+
+    openLeads(){
+        this.action.doAction({ // define the action inline
+            type: 'ir.actions.act_window',
+            name: 'Leads',
+            target: 'current',
+            res_model: 'crm.lead',
+            views: [
+                [false, 'form'],
+                [false, 'list']],
+        });
+    }
+
+    openConfiguration(){
+        this.dialog.add(ConfigurationDialog, {
+            items: this.items,
+            disabledItems: this.state.disabledItems,
+            onUpdateConfiguration: this.updateConfiguration.bind(this),
+        });
+    }
+
+    updateConfiguration(newDisabledItems){
+        this.state.disabledItems = newDisabledItems // update the state
+    }
+}
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);

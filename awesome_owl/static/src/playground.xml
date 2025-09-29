@@ -2,18 +2,32 @@
 
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-         <div class="o_counter_container" style="display: flex; align-items: center;">
-            <span class="mr-2" style="margin-right: 10px;">hello world</span>
+        <h1>Playground</h1>
+        <p>This is a simple playground to test Owl features.</p>
+        <hr/>
+         <div class="o_counter_container" style="display: flex; flex-direction: column; align-items: center;">
+            <h3>Counters</h3>
              <div style="display: flex; gap: 10px;">
-                <Counter/>
-                <Counter/>
+                <Counter onChange.bind="incrementSum"/>
+                <Counter onChange.bind="incrementSum"/>
+            </div>
+            <p>Sum: <t t-esc="state.sum"/></p>
+        </div>
+        <hr/>
+        <div class="o_counter_container" style="display: flex; flex-direction: column; align-items: center;">
+            <h3>Cards</h3>
+            <div style="display: flex; gap: 10px;">
+                <t t-foreach="cards" t-as="card" t-key="card.title">
+                    <Card title="card.title">        
+                        <Counter/>
+                    </Card>
+                </t>
             </div>
         </div>
-        <div class="o_counter_container" style="display: flex; flex-wrap: wrap;">
-            <Card title="'Card 1'" content="'This is the first card.'"/>
-            <Card title="'Card 2'" content="'This is the second card.'"/>
-            <Card title="'Card 3'" content="'Another card example.'"/>
+        <hr/>
+        <div class="o_counter_container" style="display: flex; flex-direction: column; align-items: center;">
+            <h3>Todo List</h3>
+            <TodoList/>
         </div>
-
     </t>
 </templates>
