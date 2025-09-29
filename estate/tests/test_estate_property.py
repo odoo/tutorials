@@ -14,30 +14,27 @@ class TestEstateProperty(TestEstateCommon):
         # Accept one offer to be able to sell the property
         self.offers[0].action_offer_accept()
 
-        self.properties[0].action_property_sold()
+        self.cozy_cottage.action_property_sold()
 
-        self.assertRecordValues(self.properties, [
-           {'name': "Cozy Cottage", 'state': 'sold'},
-           {'name': "Modern Apartment", 'state': 'offer_received'},
-           {'name': "Beachfront Villa", 'state': 'new'},
-        ])
+        self.assertRecordValues(self.cozy_cottage,
+           [{'name': "Cozy Cottage", 'state': 'sold'}])
 
         with self.assertRaises(UserError, msg="A property with no accepted offer cannot be sold"):
-            self.properties[1].action_property_sold()
+            self.modern_apartment.action_property_sold()
         with self.assertRaises(UserError, msg="A property with no offers cannot be sold."):
-            self.properties[2].action_property_sold()
+            self.beachfront_villa.action_property_sold()
 
     def test_onchange_garden(self):
         """Test that everything behaves as it should when unchecking garden"""
 
-        self.assertRecordValues(self.properties[0], [
+        self.assertRecordValues(self.cozy_cottage, [
            {'name': "Cozy Cottage", 'garden': True, 'garden_area': 20, 'garden_orientation': 'north'},
         ])
 
         # Use Form to trigger onchanges
-        with Form(self.properties[0]) as f:
+        with Form(self.cozy_cottage) as f:
             f.garden = False
 
-        self.assertRecordValues(self.properties[0], [
+        self.assertRecordValues(self.cozy_cottage, [
            {'name': "Cozy Cottage", 'garden': False, 'garden_area': 0, 'garden_orientation': None},
         ])

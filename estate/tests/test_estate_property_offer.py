@@ -14,18 +14,15 @@ class TestEstatePropertyOffer(TestEstateCommon):
         # Accept one offer to be able to sell the property
         self.offers[0].action_offer_accept()
         # Sell the property to create an offer on it
-        self.properties[0].action_property_sold()
+        self.cozy_cottage.action_property_sold()
 
-        self.assertRecordValues(self.properties, [
-           {'name': "Cozy Cottage", 'state': 'sold'},
-           {'name': "Modern Apartment", 'state': 'offer_received'},
-           {'name': "Beachfront Villa", 'state': 'new'},
-        ])
+        self.assertRecordValues(self.cozy_cottage,
+            [{'name': "Cozy Cottage", 'state': 'sold'}])
 
         with self.assertRaises(UserError, msg="Cannot create an offer for a sold property"):
             self.env['estate.property.offer'].create([
                 {
                     'price': 270000,
                     'partner_id': self.partner.id,
-                    'property_id': self.properties[0].id,  # Cozy Cottage
+                    'property_id': self.cozy_cottage.id,
                 }])

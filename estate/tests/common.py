@@ -17,8 +17,7 @@ class TestEstateCommon(TransactionCase):
         cls.tag1 = cls.env['estate.property.tag'].create({'name': 'Luxury'})
         cls.tag2 = cls.env['estate.property.tag'].create({'name': 'Garden'})
 
-        cls.properties = cls.env['estate.property'].create([
-            {
+        cls.cozy_cottage = cls.env['estate.property'].create({
                 'name': 'Cozy Cottage',
                 'expected_price': 250000,
                 'property_type_id': cls.property_type.id,
@@ -33,8 +32,8 @@ class TestEstateCommon(TransactionCase):
                 'bedrooms': 3,
                 'buyer_id': cls.partner.id,
                 'tag_ids': [(6, 0, [cls.tag1.id, cls.tag2.id])],
-            },
-            {
+            })
+        cls.modern_apartment = cls.env['estate.property'].create({
                 'name': 'Modern Apartment',
                 'expected_price': 180000,
                 'property_type_id': cls.property_type.id,
@@ -46,8 +45,8 @@ class TestEstateCommon(TransactionCase):
                 'garden': False,
                 'bedrooms': 2,
                 'tag_ids': [(6, 0, [cls.tag1.id])],
-            },
-            {
+            })
+        cls.beachfront_villa = cls.env['estate.property'].create({
                 'name': 'Beachfront Villa',
                 'expected_price': 750000,
                 'property_type_id': cls.property_type.id,
@@ -60,20 +59,19 @@ class TestEstateCommon(TransactionCase):
                 'garden_area': 100,
                 'bedrooms': 5,
                 'tag_ids': [(6, 0, [cls.tag2.id])],
-            },
-        ])
+            })
 
         # Create offers for only 2 properties (leave one without offers)
         cls.offers = cls.env['estate.property.offer'].create([
             {
                 'price': 260000,
                 'partner_id': cls.partner.id,
-                'property_id': cls.properties[0].id,  # Cozy Cottage
+                'property_id': cls.cozy_cottage.id,
             },
             {
                 'price': 185000,
                 'partner_id': cls.partner.id,
-                'property_id': cls.properties[1].id,  # Modern Apartment
+                'property_id': cls.modern_apartment.id,
             },
             # No offer for Beachfront Villa -> will trigger UserError when trying to sell
         ])
