@@ -4,7 +4,6 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
 import { ConfigurationDialog } from "./configuration_dialog/configuration_dialog";
-import { browser } from "@web/core/browser/browser";
 
 
 class AwesomeDashboard extends Component {
@@ -17,7 +16,7 @@ class AwesomeDashboard extends Component {
         this.items = registry.category("awesome_dashboard").getAll();
         this.dialog = useService("dialog");
         this.disabledItems = useState(
-            { values: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || [] }
+            { values: localStorage.getItem("disabledDashboardItems")?.split(",") || [] }
         );
     }
 
@@ -40,7 +39,7 @@ class AwesomeDashboard extends Component {
 
     updateConfig(newDisabledItems) {
         this.disabledItems.values = newDisabledItems;
-        browser.localStorage.setItem("disabledDashboardItems", newDisabledItems);
+        localStorage.setItem("disabledDashboardItems", newDisabledItems);
     }
 
     openConfig() {
