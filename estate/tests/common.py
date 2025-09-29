@@ -75,3 +75,7 @@ class TestEstateCommon(TransactionCase):
             },
             # No offer for Beachfront Villa -> will trigger UserError when trying to sell
         ])
+
+    def _sell_cozy_cottage(self):
+        self.offers[0].action_offer_accept()
+        self.cozy_cottage.action_property_sold()

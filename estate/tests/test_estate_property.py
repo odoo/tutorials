@@ -12,9 +12,7 @@ class TestEstateProperty(TestEstateCommon):
         """Test that everything behaves like it should when selling a property."""
 
         # Accept one offer to be able to sell the property
-        self.offers[0].action_offer_accept()
-
-        self.cozy_cottage.action_property_sold()
+        self._sell_cozy_cottage()
 
         self.assertRecordValues(self.cozy_cottage,
            [{'name': "Cozy Cottage", 'state': 'sold'}])

@@ -11,10 +11,8 @@ class TestEstatePropertyOffer(TestEstateCommon):
     def test_create(self):
         """Test that an offer cannot be created for a sold property."""
 
-        # Accept one offer to be able to sell the property
-        self.offers[0].action_offer_accept()
         # Sell the property, so we have a sold property to create a new offer on
-        self.cozy_cottage.action_property_sold()
+        self._sell_cozy_cottage()
 
         self.assertRecordValues(self.cozy_cottage,
             [{'name': "Cozy Cottage", 'state': 'sold'}])
