@@ -34,6 +34,6 @@ class EstateProperty(models.Model):
             invoice_vals = property._prepare_invoice()
             invoice_vals_list.append(invoice_vals)
 
-        self.env['account.move'].create(invoice_vals_list)
+        self.env['account.move'].sudo().create(invoice_vals_list)
 
         return super().action_set_sold()
