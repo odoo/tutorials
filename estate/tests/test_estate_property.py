@@ -50,9 +50,10 @@ class EstatePropertyTestCase(TransactionCase):
         self.assertEqual(property_record.state, 'sold')
 
     def test_offer_below_ninety_percent_cannot_be_accepted(self):
-        property_record = self._create_property()
+        property_record = self._create_property(expected_price=200000)
+        threshold = int(property_record.expected_price * 0.9)
         low_offer = self.env['estate.property.offer'].create({
-            'price': 150000,
+            'price': threshold - 1,
             'property_id': property_record.id,
             'partner_id': self.partner.id,
         })
