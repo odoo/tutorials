@@ -30,6 +30,7 @@ class EstatePropertiesTestCase(TransactionCase):
             'property_id': self.properties[1].id,
             'price': 210000,
             'partner_id': self.env['res.partner'].create({'name': 'Test Partner'}).id,
+            'status': 'accepted',
         })
         self.properties[1].action_set_sold()
         self.assertEqual(self.properties[1].state, 'sold')
