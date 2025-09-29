@@ -9,10 +9,11 @@ export class DashboardItemsDialog extends Component {
             type: Array,
             element: {
                 type: Object,
-                // shape: {
-                //     id: String,
-                //     description: String,
-                // },
+                shape: {
+                    id: String,
+                    description: String,
+                    "*": true,
+                },
             },
         },
         excludedItems: {
