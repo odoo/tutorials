@@ -50,12 +50,10 @@ class AwesomeDashboard extends Component {
     }
 
     handleDashboardItemsConfigChange(excludedItems) {
-        // localStorage.setItem(EXCLUDED_DASHBOARD_ITEMS_LS_KEY, JSON.stringify(excludedItems));
         this.storedState.excludedItems = excludedItems;
     }
 
     openSettings() {
-        console.log("open settings")
         this.removeSettingsDialog = this.dialog.add(DashboardItemsDialog, {
             items: this.items,
             excludedItems: this.storedState.excludedItems,

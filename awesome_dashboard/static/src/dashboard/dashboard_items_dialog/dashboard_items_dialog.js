@@ -24,7 +24,6 @@ export class DashboardItemsDialog extends Component {
     };
 
     setup() {
-        console.log("setup dialog");
         this.state = useState(
             this.props.items.map(
                 item => ({
