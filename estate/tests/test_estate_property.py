@@ -1,5 +1,5 @@
 from odoo.exceptions import UserError
-from odoo.tests import tagged
+from odoo.tests import Form, tagged
 
 from .common import EstateTestCommon
 
@@ -26,3 +26,18 @@ class EstateTestProperty(EstateTestCommon):
             self.properties[1].action_property_sold()
         with self.assertRaises(UserError, msg="A property with no offers cannot be sold."):
             self.properties[2].action_property_sold()
+
+    def test_onchange_garden(self):
+        """Test that everything behaves as it should when unchecking garden"""
+
+        self.assertRecordValues(self.properties[0], [
+           {'name': "Cozy Cottage", 'garden': True, 'garden_area': 20, 'garden_orientation': 'north'},
+        ])
+
+        # Use Form to trigger onchanges
+        with Form(self.properties[0]) as f:
+            f.garden = False
+
+        self.assertRecordValues(self.properties[0], [
+           {'name': "Cozy Cottage", 'garden': False, 'garden_area': 0, 'garden_orientation': None},
+        ])

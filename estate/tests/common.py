@@ -1,4 +1,3 @@
-from odoo.exceptions import UserError
 from odoo.tests.common import TransactionCase
 
 
@@ -30,6 +29,7 @@ class EstateTestCommon(TransactionCase):
                 'garage': True,
                 'garden': True,
                 'garden_area': 20,
+                'garden_orientation': "north",
                 'bedrooms': 3,
                 'buyer_id': cls.partner.id,
                 'tag_ids': [(6, 0, [cls.tag1.id, cls.tag2.id])],
