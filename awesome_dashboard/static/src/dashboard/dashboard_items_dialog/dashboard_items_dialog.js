@@ -25,25 +25,25 @@ export class DashboardItemsDialog extends Component {
     };
 
     setup() {
-        this.state = useState(
-            this.props.items.map(
+        this.state = useState({
+            items: this.props.items.map(
                 item => ({
                     ...item,
                     checked: !this.props.excludedItems.includes(item.id),
                 }),
             ),
-        );
+        });
     }
 
     toggle(event) {
-        const index = this.state.findIndex(item => item.id === event.target.name);
+        const index = this.state.items.findIndex(item => item.id === event.target.name);
         if (index !== -1) {
-            this.state[index].checked = !this.state[index].checked;
+            this.state.items[index].checked = !this.state.items[index].checked;
         }
     }
 
     apply() {
-        const newExcludedItems = this.state.filter(item => !item.checked).map(item => item.id);
+        const newExcludedItems = this.state.items.filter(item => !item.checked).map(item => item.id);
         this.props.onApply(newExcludedItems);
         this.props.close();
     }

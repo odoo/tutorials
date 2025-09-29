@@ -8,7 +8,7 @@
                 <button type="button" class="btn-close" aria-label="Close" t-on-click="props.close"/>
             </t>
             <p>Which cards do you wish to see?</p>
-            <p t-foreach="state" t-as="item" t-key="item.id">
+            <p t-foreach="state.items" t-as="item" t-key="item.id">
                 <input t-att-name="item.id" type="checkbox" t-on-change="toggle" t-att-checked="item.checked"/>
                 <label><t t-esc="item.description"/></label>
             </p>
