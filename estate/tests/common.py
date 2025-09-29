@@ -12,7 +12,7 @@ class TestEstateCommon(TransactionCase):
             'email': 'buyer@example.com',
         })
 
-        cls.property_type = cls.env['estate.property.type'].search([('name', '=', "House")])
+        cls.property_type = cls.env['estate.property.type'].create({'name': 'test_property_type'})
 
         cls.tag1 = cls.env['estate.property.tag'].create({'name': 'Luxury'})
         cls.tag2 = cls.env['estate.property.tag'].create({'name': 'Garden'})

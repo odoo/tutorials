@@ -13,7 +13,7 @@ class TestEstatePropertyOffer(TestEstateCommon):
 
         # Accept one offer to be able to sell the property
         self.offers[0].action_offer_accept()
-        # Sell the property to create an offer on it
+        # Sell the property, so we have a sold property to create a new offer on
         self.cozy_cottage.action_property_sold()
 
         self.assertRecordValues(self.cozy_cottage,
