@@ -5,7 +5,8 @@ import { browser } from "@web/core/browser/browser";
 import { PieChart } from "./pie_chart/pie_chart";
 import { DashboardItem } from "./dashboard_item";
 import { ConfigurationDialog } from "./configuration_dialog/configuration_dialog";
-import { Component, useState } from "@odoo/owl";
+import { Component, useState, onWillStart } from "@odoo/owl";
+import { rpc } from "@web/core/network/rpc";
 
     
 class AwesomeDashboard extends Component {
@@ -17,8 +18,12 @@ class AwesomeDashboard extends Component {
         this.dialog = useService("dialog");
         this.statistics = useState(useService("awesome_dashboard.statistics")); // useState() because it's reactive
         this.items = registry.category("awesome_dashboard.items").getAll();
-        this.state = useState({ // useState() because it's reactive
-            disabledItems: browser.localStorage.getItem("disabledDashboardItems")?.split(",") || []
+        this.state = useState({
+            disabledItems: [], // useState() because it's reactive
+        });
+
+        onWillStart(async () => {
+            this.state.disabledItems = await rpc("/awesome_dashboard/get_settings");
         });
     }   
 

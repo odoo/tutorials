@@ -1,5 +1,6 @@
 import { loadJS } from "@web/core/assets";
-import { Component, onWillStart, onMounted, onWillUnmount, useEffect, useRef } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
+import { Component, onWillStart, onWillUnmount, useEffect, useRef } from "@odoo/owl";
     
 export class PieChart extends Component {
     static template = "awesome_dashboard.pie_chart";
@@ -10,6 +11,7 @@ export class PieChart extends Component {
 
     setup() {        
         this.canvasRef = useRef("canvas")
+        this.action = useService("action");
 
         onWillStart(async () => {
             await loadJS("/web/static/lib/Chart/Chart.js");
@@ -32,7 +34,6 @@ export class PieChart extends Component {
         if (!this.canvasRef.el || !this.props.data) {
             return;
         }
-
         const key = Object.keys(this.props.data);
         const value = Object.values(this.props.data);
         const backgroundColor = [
@@ -64,6 +65,25 @@ export class PieChart extends Component {
                     borderWidth: 1
                 }]
             },
+            options: {
+                onClick: (event, elements) => {
+                    if(elements.length > 0){
+                        const index = elements[0].index;
+                        const size = Object.keys(this.props.data)[index];
+                        this.action.doAction({
+                            type: "ir.actions.act_window",
+                            name: "Orders List",
+                            res_model: "sale.order",
+                            views: [
+                                [false, 'list'],
+                                [false, 'form']],
+                            domain: [
+                                ['order_line.name', 'ilike', size]
+                            ],
+                        });
+                    }
+                }
+            }
         });
     }
 }

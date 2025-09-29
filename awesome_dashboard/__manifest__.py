@@ -19,6 +19,7 @@
     'depends': ['base', 'web', 'mail', 'crm'],
 
     'data': [
+        'security/ir.model.access.csv',
         'views/views.xml',
     ],
     'assets': {

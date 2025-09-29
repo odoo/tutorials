@@ -7,3 +7,11 @@
     display: flex;
     gap: 0.5rem;
 }
+
+@media (max-width: 767.98px) {
+  .o_dashboard .card {
+    width: 100% !important;     
+    max-width: 100% !important;
+    display: block !important;
+  }
+}
