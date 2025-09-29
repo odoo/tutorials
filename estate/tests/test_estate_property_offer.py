@@ -1,7 +1,7 @@
 from odoo.exceptions import UserError
 from odoo.tests import tagged
 
-from .common import TestEstateCommon
+from odoo.addons.estate.tests.common import TestEstateCommon
 
 
 # The CI will run these tests after all the modules are installed,
