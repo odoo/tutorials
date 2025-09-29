@@ -11,7 +11,7 @@ export class ConfigurationDialog extends Component {
         disabledItems: {
             type: Array,
             element: {
-                type: { String },
+                type: String,
             }
         },
         onUpdateConfig: Function,
