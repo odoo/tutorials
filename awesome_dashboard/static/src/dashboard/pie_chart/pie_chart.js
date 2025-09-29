@@ -3,9 +3,12 @@ import { loadJS } from "@web/core/assets";
 
 
 export class PieChart extends Component {
-    static template = "awesome_dashboard.pie_chart";
+    static template = "awesome_dashboard.PieChart";
     static props = {
-        label: String,
+        label: {
+            type: String,
+            optional: true,
+        },
         data : Object,
     }
     setup(){

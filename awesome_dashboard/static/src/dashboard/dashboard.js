@@ -39,7 +39,7 @@ class AwesomeDashboard extends Component {
        
         this.action.doAction({
             type: 'ir.actions.act_window',
-            name: _t('CRM Leads'),
+            name: _t("CRM Leads"),
             target: 'current',
             res_model: 'crm.lead',
             views: [[false,'list'],[false, 'form']],

@@ -3,7 +3,7 @@ import { PieChart } from "../pie_chart/pie_chart";
 
 export class PieChartCard extends Component {
     static components = { PieChart }
-    static template = "awesome_dashboard.piechartcard";
+    static template = "awesome_dashboard.PieChartCard";
     static props = {
         title: {
             type: String,
