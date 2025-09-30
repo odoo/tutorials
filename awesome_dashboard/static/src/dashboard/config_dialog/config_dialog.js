@@ -8,7 +8,7 @@ export class ConfigDialog extends Component {
     static components = { Dialog, CheckBox }; 
     static props = ["close", "items", "disabledItems", "onUpdateConfigs"];
     setup() {
-        // create object for each item with an enabled property
+        
         this.items = useState(this.props.items.map((item) => {
             return {
                 ...item,
@@ -18,7 +18,6 @@ export class ConfigDialog extends Component {
         
     }
     
-    // adds the unchecked item to the disabled list
     onChange(checkedItems, Item) {
         Item.enabled = checkedItems;
       

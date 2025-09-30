@@ -30,7 +30,7 @@ class AwesomeDashboard extends Component {
             onUpdateConfigs: this.updateConfigs.bind(this),
         });
     }
-    // update the list of disabeled items
+    
     updateConfigs(newDisabledItems) {
         this.state.disabledItems = newDisabledItems;
         user.setUserSettings("disabled_items", this.state.disabledItems)
