@@ -1,11 +1,11 @@
-import { Component, onWillStart,useState } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item";
-import { ConfigDialog } from "./config_dialog";
-import { browser } from "@web/core/browser/browser";
+import { ConfigDialog } from "./config_dialog/config_dialog";
 import { _t } from "@web/core/l10n/translation";
+import { user } from "@web/core/user";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -15,9 +15,9 @@ class AwesomeDashboard extends Component {
         this.result = useState(useService("awesome_dashboard.statistics"));
         this.items = registry.category("awesome_dashboard").getAll();
         this.dialog = useService("dialog");
-        // retreive disabled items
+        
         this.state = useState({
-            disabledItems: browser.localStorage.getItem("disabledItems")?.split(",") || []
+            disabledItems: user.settings.disabled_items || [],
         });
     }
     openCustomers() {
@@ -33,6 +33,7 @@ class AwesomeDashboard extends Component {
     // update the list of disabeled items
     updateConfigs(newDisabledItems) {
         this.state.disabledItems = newDisabledItems;
+        user.setUserSettings("disabled_items", this.state.disabledItems)
     }
 
     openLeads() {

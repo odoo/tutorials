@@ -60,7 +60,7 @@ export const items = [
         Component: PieChartCard,
         props: (data) => ({
             title: _t("Shirt order by size"),
-            data: data.orders_by_size,
+            data: data.orders_by_size, 
         })
     },
 

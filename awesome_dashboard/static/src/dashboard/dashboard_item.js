@@ -12,7 +12,7 @@ export class DashboardItem extends Component {
             type: Object,
         },
     };
-    get Width() {
+    get itemWidth() {
         return 18*this.props.size
     }
 }

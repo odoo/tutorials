@@ -1,9 +1,6 @@
 import { Component, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
-import { items } from "./dashboard_items";
-import { registry } from "@web/core/registry";
 import { CheckBox } from "@web/core/checkbox/checkbox";
-import { browser } from "@web/core/browser/browser";
 
 
 export class ConfigDialog extends Component {
@@ -28,10 +25,6 @@ export class ConfigDialog extends Component {
         const updatedDisabledItems = Object.values(this.items).filter(
             (item) => !item.enabled
         ).map((item) => item.id);
-
-        browser.localStorage.setItem(
-            "disabledItems", updatedDisabledItems,
-        );
 
         this.props.onUpdateConfigs(updatedDisabledItems);
     }
