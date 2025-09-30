@@ -31,9 +31,6 @@ class EstateProperty(models.Model):
         store=True,
     )
 
-    is_cancelled = fields.Boolean(default=False)
-    is_sold = fields.Boolean(default=False)
-
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -79,14 +76,10 @@ class EstateProperty(models.Model):
         for property in self:
             property.best_price = max(property.offer_ids.mapped('price'), default=0.0)
 
-    @api.depends('offer_ids.status', 'is_cancelled', 'is_sold')
+    @api.depends('offer_ids.status')
     def _compute_state(self):
         for property in self:
-            if property.is_cancelled:
-                property.state = 'cancelled'
-            elif property.is_sold:
-                property.state = 'sold'
-            elif property.offer_ids:
+            if property.offer_ids:
                 accepted_offer = property.offer_ids.filtered(lambda offer: offer.status == 'accepted')
                 property.state = 'offer_accepted' if accepted_offer else 'offer_received'
             else:
@@ -103,18 +96,18 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for property in self:
-            if property.is_cancelled or property.state == 'cancelled':
+            if property.state == 'cancelled':
                 raise UserError(_("Cancelled properties cannot be sold."))
             if not (property.offer_ids and property.offer_ids.filtered(lambda offer: offer.status == 'accepted')):
                 raise UserError(_("You cannot sell a property which has no accepted offer."))
-            property.is_sold = True
+            property.state = 'sold'
         return True
 
     def action_set_cancelled(self):
         for property in self:
-            if property.is_sold or property.state == 'sold':
+            if property.state == 'sold':
                 raise UserError(_("Sold properties cannot be cancelled."))
-            property.is_cancelled = True
+            property.state = 'cancelled'
         return True
 
     _check_expected_price = models.Constraint(
@@ -131,11 +124,4 @@ class EstateProperty(models.Model):
         for property in self:
             if not float_is_zero(property.selling_price, precision_digits=2) and float_compare(property.selling_price, 0.9 * property.expected_price, precision_digits=2) < 0:
                 raise UserError(_("The selling price must be at least 90% of the expected price."))
-        return True
-
-    @api.constrains('is_cancelled', 'is_sold')
-    def _check_cancel_sold(self):
-        for property in self:
-            if property.is_cancelled and property.is_sold:
-                raise UserError(_("A property cannot be both cancelled and sold."))
         return True
