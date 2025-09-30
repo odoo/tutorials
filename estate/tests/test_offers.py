@@ -14,14 +14,20 @@ class EstatePropertyOfferTestCase(TransactionCase):
             {
                 'name': 'Test Property 1',
                 'expected_price': 100000,
-                'state': 'sold',
             },
         ])
 
     def test_offer_on_sold_property(self):
+        self.env['estate.property.offer'].create({
+            'property_id': self.properties[0].id,
+            'price': 110000,
+            'partner_id': self.env['res.partner'].create({'name': 'Test Partner1'}).id,
+            'status': 'accepted',
+        })
+        self.properties[0].action_set_sold()
         with self.assertRaises(UserError):
             self.env['estate.property.offer'].create({
                 'property_id': self.properties[0].id,
-                'price': 100000,
-                'partner_id': self.env['res.partner'].create({'name': 'Test Partner'}).id,
+                'price': 120000,
+                'partner_id': self.env['res.partner'].create({'name': 'Test Partner2'}).id,
             })

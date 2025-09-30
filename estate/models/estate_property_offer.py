@@ -17,8 +17,8 @@ class EstatePropertyOffer(models.Model):
                     raise UserError(_("The offer must be higher than %d.", max_price))
                 if property.state == 'sold':
                     raise UserError(_("You cannot make an offer on a sold property."))
-                if property.state not in ['offer_received', 'offer_accepted', 'sold', 'cancelled']:
-                    property.state = 'offer_received'
+                if property.state == 'cancelled':
+                    raise UserError(_("You cannot make an offer on a cancelled property."))
         return super().create(vals_list)
 
     price = fields.Float()
@@ -60,7 +60,6 @@ class EstatePropertyOffer(models.Model):
 
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.state = 'offer_accepted'
 
             other_offers = offer.property_id.offer_ids - offer
             other_offers.action_refuse_offer()
