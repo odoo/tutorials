@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.ClientAction">
+        <div class="d-flex flex-row align-items-center p-2">
+            <span>Clicks: </span>
+            <ClickValue clicks="this.clicker.clicks"/>
+            <button class="btn btn-primary ms-2" t-on-click="() => this.clicker.increment(9)">Increment</button>
+        </div>
+
+        <Notebook>
+            <t t-set-slot="clicks" title="'Clicks'" isVisible="this.clicker.level >= 1">
+                <div t-if="this.clicker.level >= 1" class="p-2">
+                    <h1>Bots</h1>
+                    <div class="d-flex flex-row">
+                        <t t-foreach="this.clicker.bots" t-as="bot" t-key="bot.name">
+                            <div class="card ms-1">
+                                <div class="card-header">
+                                    <t t-esc="bot.amount + 'x ' + bot.name + ' (' + (this.clicker.power * bot.clicks) + ' clicks/ 10 seconds)'"/>
+                                    <i class="fa fa-android ms-2"/>
+                                </div>
+                                <div class="card-body">
+                                    <button class="btn btn-primary" t-on-click="() => this.clicker.buyBot(bot)" t-att-disabled="this.clicker.clicks &lt; bot.price" t-esc="'Buy ' + bot.name + ' (' + bot.price + ' clicks)'"/>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <div t-if="this.clicker.level >= 3" class="p-2">
+                    <h1>Power multiplier</h1>
+                    <div class="d-flex flex-row">
+                        <div class="card ms-1">
+                            <div class="card-header">
+                                <t t-esc="this.clicker.power + 'x power multipliers'"/>
+                                <i class="fa fa-superpowers ms-2"/>
+                            </div>
+                            <div class="card-body">
+                                <button class="btn btn-primary" t-on-click="() => this.clicker.buyPower()" t-att-disabled="this.clicker.clicks &lt; 50000">Buy Power multiplier (50000 clicks)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+
+            <t t-set-slot="trees_fruits" title="'Trees and Fruits'" isVisible="this.clicker.level >= 4">
+                <div t-if="this.clicker.level >= 4" class="p-2">
+                    <h1>Trees</h1>
+                    <div class="d-flex flex-row">
+                        <t t-foreach="this.clicker.trees" t-as="tree" t-key="tree.fruit">
+                            <div class="card ms-1">
+                                <div class="card-header">
+                                    <t t-esc="tree.amount + 'x ' + tree.fruit + ' Tree (1x ' + tree.fruit + ' / 30 seconds'"/>
+                                    <i class="fa fa-tree ms-2"/>
+                                </div>
+                                <div class="card-body">
+                                    <button class="btn btn-primary" t-on-click="() => this.clicker.buyTree(tree)" t-att-disabled="this.clicker.clicks &lt; 1000000" t-esc="'Buy ' + tree.fruit + ' Tree (' + tree.price + ' clicks)'"/>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+
+                <div t-if="this.clicker.level >= 4" class="p-2">
+                    <h1>Fruits</h1>
+                    <div class="d-flex flex-row">
+                        <t t-foreach="this.clicker.trees" t-as="tree" t-key="tree.fruit">
+                            <div class="card ms-1">
+                                <div class="card-header">
+                                    <t t-esc="tree.fruit_number + 'x ' + tree.fruit"/>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </Notebook>
+    </t>
+
+</templates>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.ClickerSystray">
+        <Dropdown>
+            <button>
+                <ClickValue clicks="this.clicker.clicks"/> <i class="fa fa-mouse-pointer fa-fw"></i>,
+                <t t-esc="this.clicker.getTotalTrees()"/> <i class="fa fa-tree fa-fw"></i>,
+                <t t-esc="this.clicker.getTotalFruits()"/> <i class="fa fa-apple fa-fw"></i>
+            </button>
+
+            <t t-set-slot="content">
+                <DropdownItem>
+                    <button class="btn btn-secondary" t-on-click="openClicker">Open the clicker game</button>
+                </DropdownItem>
+                <DropdownItem>
+                    <button class="btn btn-secondary" t-on-click="this.clicker.buyClickBot">Buy a Click Bot</button>
+                </DropdownItem>
+                <t t-foreach="this.clicker.trees" t-as="tree" t-key="tree.fruit">
+                    <DropdownItem>
+                        <t t-esc="tree.amount + 'x ' + tree.fruit + ' Tree'"/>
+                    </DropdownItem>
+                </t>
+                <t t-foreach="this.clicker.trees" t-as="tree" t-key="tree.fruit">
+                    <DropdownItem>
+                        <t t-esc="tree.fruit_number + 'x ' + tree.fruit"/>
+                    </DropdownItem>
+                </t>
+            </t>
+        </Dropdown>
+    </t>
+
+</templates>
