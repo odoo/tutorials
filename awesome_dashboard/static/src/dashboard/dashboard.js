@@ -24,8 +24,7 @@ class AwesomeDashboard extends Component {
 
     getDisabledItems() {
         const disabled_items = user.settings.disabled_dashboard_items;
-        if (!disabled_items) return [];
-        return disabled_items.split(",");
+        return disabled_items ? disabled_items.split(",") : [];
     }
 
     openCustomers() {
