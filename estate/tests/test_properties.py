@@ -8,7 +8,7 @@ class EstatePropertiesTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EstatePropertiesTestCase, cls).setUpClass()
+        super().setUpClass()
 
         cls.properties = cls.env['estate.property'].create([
             {
