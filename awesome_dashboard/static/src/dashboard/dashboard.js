@@ -15,11 +15,7 @@ class AwesomeDashboard extends Component {
         this.statistics = useState(useService("statistics_service"));
         this.items = registry.category("awesome_dashboard").getAll();
         this.dialog = useService("dialog");
-        this.disabledItems = useState(
-            {
-                values: this.getDisabledItems()
-            }
-        )
+        this.state = useState({ disabledItems: this.getDisabledItems() })
     }
 
     getDisabledItems() {
@@ -45,14 +41,14 @@ class AwesomeDashboard extends Component {
     }
 
     updateConfig(newDisabledItems) {
-        this.disabledItems.values = newDisabledItems;
-        user.setUserSettings("disabled_dashboard_items", this.disabledItems.values.join(","));
+        this.state.disabledItems = newDisabledItems;
+        user.setUserSettings("disabled_dashboard_items", this.state.disabledItems.join(","));
     }
 
     openConfig() {
         this.dialog.add(ConfigurationDialog, {
             items: this.items,
-            disabledItems: this.disabledItems.values,
+            disabledItems: this.state.disabledItems,
             onUpdateConfig: this.updateConfig.bind(this),
         });
     }
