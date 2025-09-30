@@ -11,7 +11,13 @@ class TestEstateAccountProperty(TestEstateProperty):
         self._sell_cozy_cottage()
 
         self.invoice = self.env['account.move'].search(Domain('partner_id', '=', self.cozy_cottage.buyer_id.id) & Domain('move_type', '=', 'out_invoice'))
-
         self.assertTrue(self.invoice)
-        self.assertEqual(float_compare(self.invoice.invoice_line_ids[0].price_unit, 0.06 * self.cozy_cottage.selling_price, precision_digits=2), 0)
-        self.assertEqual(self.invoice.invoice_line_ids[1].price_unit, 100)
+
+        sorted_invoice_lines = self.invoice.invoice_line_ids.sorted(key=lambda r: r.price_unit)
+        self.assertEqual(sorted_invoice_lines[0].price_unit, 100)
+        self.assertEqual(
+            float_compare(
+                sorted_invoice_lines[1].price_unit,
+                0.06 * self.cozy_cottage.selling_price,
+                precision_digits=2),
+            0)
