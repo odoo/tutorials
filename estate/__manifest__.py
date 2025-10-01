@@ -19,5 +19,6 @@
         'views/estate_menus.xml',
         'security/ir.model.access.csv',
         'data/estate.property.type.csv',
+        'data/estate_property_data.xml',
     ],
 }
