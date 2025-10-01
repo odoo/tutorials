@@ -20,5 +20,6 @@
         'security/ir.model.access.csv',
         'data/estate.property.type.csv',
         'data/estate_property_data.xml',
+        'data/estate_property_offer_data.xml',
     ],
 }
