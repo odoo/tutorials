@@ -40,10 +40,7 @@ class PropertyOffer(models.Model):
     def _check_selling_price_90_percent(self):
         for record in self:
             if float_compare(record.price, 0.9 * record.property_id.expected_price, precision_digits=2) == -1:
-                raise exceptions.UserError(
-                    _("The selling price (%s) cannot be lower than 90%% of the expected price (%s)")
-                    % (record.price, record.property_id.expected_price),
-                )
+                raise exceptions.UserError(_("The selling price (%s) cannot be lower than 90%% of the expected price (%s)", record.price, record.property_id.expected_price))
 
     @api.model_create_multi
     def create(self, vals_list):
