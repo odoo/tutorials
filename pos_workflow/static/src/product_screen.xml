@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_restaurant.ProductScreen" t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension">
+        <xpath expr="//ActionpadWidget" position="before">
+            <button t-if="!currentOrder?.is_empty()" t-on-click="() => this.createOrderPosted()">
+                <span class="d-block">Place Order</span>
+            </button>
+        </xpath>
+    </t>
+</templates>
