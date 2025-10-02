@@ -7,6 +7,7 @@
         </menuitem>
         <menuitem id="x_estate_settings_menu" name="Settings">
             <menuitem id="x_estate_proprty_type_model_menu_action" action="x_estate_property_type_model_action"/>
+            <menuitem id="x_estate_proprty_tag_model_menu_action" action="x_estate_property_tag_model_action"/>
         </menuitem>
     </menuitem>
 </odoo>

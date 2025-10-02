@@ -35,6 +35,7 @@
                         <h1>
                             <field name="x_name" class="mb16"/>
                         </h1>
+                        <field name="x_property_tag_ids" widget="form.many2many_tags"/>
                     </div>
                     <group>
                         <group>
