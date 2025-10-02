@@ -38,10 +38,13 @@
                     </div>
                     <group>
                         <group>
+                            <field name="x_property_type_id"/>
                             <field name="x_date_availability"/>
+                            <field name="x_user_id"/>
                         </group>
                         <group>
                             <field name="x_expected_price"/>
+                            <field name="x_partner_id"/>
                         </group>
                     </group>
                     <notebook>
