@@ -60,10 +60,12 @@
                                 <field name="x_garden_orientation" invisible="not x_garden"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="x_property_offer_ids"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-
 </odoo>

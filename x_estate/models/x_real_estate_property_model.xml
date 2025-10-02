@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="real_estate_property_model" model="ir.model">
+        <field name="name">Real Estate Property</field>
+        <field name="model">x_estate.property</field>
+    </record>
+</odoo>
