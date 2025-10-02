@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="real_estate_property_model" model="ir.model">
+        <field name="name">Real Estate Property</field>
+        <field name="model">x_estate.property</field>
+    </record>
+
+    <!-- fields -->
+
+    <record id="field_real_estate_property_name" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_name</field>
+        <field name="field_description">Name</field>
+        <field name="ttype">char</field>
+        <field name="required">True</field>
+    </record>
+
+    <record id="field_real_estate_property_date_availability" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_date_availability</field>
+        <field name="field_description">Date availability</field>
+        <field name="ttype">date</field>
+    </record>
+
+    <record id="field_real_estate_property_expected_price" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_expected_price</field>
+        <field name="field_description">Expected Price</field>
+        <field name="ttype">float</field>
+    </record>
+
+    <record id="field_real_estate_property_bedrooms" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_bedrooms</field>
+        <field name="field_description">Bedrooms</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="field_real_estate_property_living_area" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_living_area</field>
+        <field name="field_description">Living Area</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="field_real_estate_property_facades" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_facades</field>
+        <field name="field_description">Facades</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="field_real_estate_property_garage" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_garage</field>
+        <field name="field_description">Garage</field>
+        <field name="ttype">boolean</field>
+    </record>
+
+    <record id="field_real_estate_property_garden" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_garden</field>
+        <field name="field_description">Garden</field>
+        <field name="ttype">boolean</field>
+    </record>
+
+    <record id="field_real_estate_property_garden_area" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_garden_area</field>
+        <field name="field_description">Garden Area</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="field_real_estate_property_garden_orientation" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_garden_orientation</field>
+        <field name="field_description">Garden Orientation</field>
+        <field name="ttype">selection</field>
+        <field name="selection">[('x_north', "North"), ('x_south', "South"), ('x_east', "East"), ('x_west', "West")]</field>
+    </record>
+
+</odoo>

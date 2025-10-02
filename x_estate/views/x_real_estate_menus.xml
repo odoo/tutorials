@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- the root elements of the data file -->
+<odoo>
+    <menuitem id="estate_menu_root" name="Real Estate (imported)">
+        <menuitem id="estate_first_level_menu" name="Advertisements">
+            <menuitem id="estate_model_menu_action" action="x_estate_property_model_action"/>
+        </menuitem>
+        <!-- <menuitem id="estate_settings_menu" name="Settings">
+            <menuitem id="estate_proprty_type_model_menu_action" action="estate_property_type_model_action"/>
+            <menuitem id="estate_proprty_tag_model_menu_action" action="estate_property_tag_model_action"/>
+        </menuitem> -->
+    </menuitem>
+</odoo>

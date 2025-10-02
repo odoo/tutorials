@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="x_estate_property_model_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">x_estate.property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+
+    <record id="x_estate_property_view_list" model="ir.ui.view">
+        <field name="name">x_estate.property.view.list</field>
+        <field name="model">x_estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Property list test string?">
+                <field name="x_name"/>
+                <field name="x_bedrooms"/>
+                <field name="x_living_area"/>
+                <field name="x_expected_price"/>
+                <field name="x_date_availability" optional="disabled"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="x_estate_property_view_form" model="ir.ui.view">
+        <field name="name">x_estate.property.view.form</field>
+        <field name="model">x_estate.property</field>
+        <field name="arch" type="xml">
+            <form string="Property form test string?">
+                <sheet>
+                    <div class="oe_title">
+                        <div class="oe_edit_only">
+                            <label for="x_name"/>
+                        </div>
+                        <h1>
+                            <field name="x_name" class="mb16"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="x_date_availability"/>
+                        </group>
+                        <group>
+                            <field name="x_expected_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="x_bedrooms"/>
+                                <field name="x_living_area"/>
+                                <field name="x_facades"/>
+                                <field name="x_garage"/>
+                                <field name="x_garden"/>
+                                <field name="x_garden_area" invisible="not x_garden"/>
+                                <field name="x_garden_orientation" invisible="not x_garden"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
