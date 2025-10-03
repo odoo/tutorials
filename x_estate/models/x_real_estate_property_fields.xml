@@ -178,15 +178,11 @@ for property in self: property['x_total_area'] = property.x_living_area + proper
         <field name="website_path">estate</field>
         <field name="state">code</field>
         <field name="code"><![CDATA[
-records = request.env['x_estate.property'].search([('x_api_published', '=', True)])
 data = []
 # only these fields because the others are 403
-fields = ['x_name', 'x_expected_price', 'x_selling_price', 'x_bedrooms', 'x_living_area', 'x_facades', 'x_garage', 'x_garden', 'x_garden_area', 'x_garden_orientation', 'x_total_area']
-for record in records:
-    datum = {}
-    for field in fields:
-        datum[field] = record[field]
-    data.append(datum)
+FIELDS = {'x_name', 'x_expected_price', 'x_selling_price', 'x_bedrooms', 'x_living_area', 'x_facades', 'x_garage', 'x_garden', 'x_garden_area', 'x_garden_orientation', 'x_total_area'}
+for record in request.env['x_estate.property'].search([('x_api_published', '=', True)]):
+    data.append({field: value for field, value in record if field in FIELDS})
 response = request.make_json_response(data, headers=None, cookies=None, status=200)
         ]]></field>
     </record>
