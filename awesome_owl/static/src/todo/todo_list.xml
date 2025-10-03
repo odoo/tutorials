@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_list">
+        <div class="p-3 border">
+            <h1>Todo List</h1>
+            <input type="text" placeholder="Enter a new task" t-on-keyup="ev => this.addTodo(ev)" t-ref="input_task"/>
+            <ul class="list-group">
+                <li t-foreach="this.todos" t-as="todo" t-key="todo.id" class="list-group-item">
+                    <div class="d-flex justify-content-between">
+                        <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </t>
+</templates>
