@@ -18,7 +18,6 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(
         "estate.property.type",
         related="property_id.property_type_ids",
-        required=True,
         store=True,
     )
     validity = fields.Integer(default=7)
