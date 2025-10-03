@@ -87,8 +87,7 @@
         <field name="ttype">float</field>
         <field name="depends">x_living_area,x_garden_area</field>
         <field name="compute"><![CDATA[
-for property in self:
-    property['x_total_area'] = property.x_living_area + property.x_garden_area
+for property in self: property['x_total_area'] = property.x_living_area + property.x_garden_area
         ]]></field>
     </record>
 
