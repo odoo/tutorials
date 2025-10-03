@@ -1,5 +1,17 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="x_estate_property_action_accept_offer" model="ir.actions.server">
+        <field name="name">Accept offer</field>
+        <field name="model_id" ref="real_estate_property_offer_model"/>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+for offer in records:
+    offer.x_property_id.x_property_offer_ids.write({'x_status': 'x_refused'})
+    offer.x_property_id.write({'x_partner_id': offer.x_partner_id.id, 'x_selling_price': offer.x_price})
+    offer.write({'x_status': 'x_accepted'})
+        ]]></field>
+    </record>
+
     <record id="x_estate_property_offer_view_list" model="ir.ui.view">
         <field name="name">x_estate.property.offer.view.list</field>
         <field name="model">x_estate.property.offer</field>
@@ -7,6 +19,7 @@
             <list string="Property offer list test string?">
                 <field name="x_price"/>
                 <field name="x_partner_id"/>
+                <button name="%(x_estate_property_action_accept_offer)d" string="Accept" type="action" icon="fa-check" invisible="x_status"/>
                 <field name="x_status"/>
             </list>
         </field>
