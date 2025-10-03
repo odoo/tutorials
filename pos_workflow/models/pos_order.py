@@ -7,7 +7,7 @@ import psycopg2
 
 from odoo import api, fields, models, tools, _
 from odoo.tools import float_is_zero
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 import base64
 
 _logger = logging.getLogger(__name__)
