@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="True">
+
+        <record model="estate.property.type" id="aga">
+            <field name="name">Appartment</field>
+        </record>
+        <record model="estate.property.type" id="agb">
+            <field name="name">Flat</field>
+        </record>
+        <record model="estate.property.type" id="agc">
+            <field name="name">Shop</field>
+        </record>
+        <record model="estate.property.type" id="agd">
+            <field name="name">Farm House</field>
+        </record>
+        <record model="estate.property.type" id="agg">
+            <field name="name">Office</field>
+        </record>
+    </data>
+</odoo>

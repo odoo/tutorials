@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="True">
+        <record model="estate.property" id="bga">
+            <field name="name">Sun Mall</field>
+            <field name="expected_price">10000</field>
+        </record>
+
+        <record model="estate.property" id="bgb">
+            <field name="name">Sun Mall 2</field>
+            <field name="expected_price">20000</field>
+        </record>
+
+        <record model="estate.property.offers" id="cga">
+            <field name="price">100000</field>
+            <field name="partner_id" ref="base.res_partner_1"></field>
+            <field name="property_id" ref="bga"></field>
+            <field name="property_type_id" ref="estate.aga" />
+        </record>
+
+        <record model="estate.property.offers" id="cgb">
+            <field name="price">200000</field>
+            <field name="partner_id" ref="base.res_partner_1"></field>
+            <field name="property_id" ref="bgb"></field>
+            <field name="property_type_id" ref="estate.agb" />
+        </record>
+
+
+    </data>
+</odoo>
