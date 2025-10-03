@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_hr_employee_form_inherit_signature_seal" model="ir.ui.view">
+        <field name="name">hr.employee.form.inherit.signature.seal</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="inside">
+                <group string="Signature/Seal">
+                    <field name="x_signature_seal_image" widget="image" class="oe_avatar"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

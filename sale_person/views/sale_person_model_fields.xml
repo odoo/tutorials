@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--This file defines model, fields and other logic similar to model's .py file-->
+
+    <!--Sale person model-->
+    <record id="model_x_sale_person" model="ir.model"> <!--Use syntax model_x_modelname-->
+        <field name="name">Sale Person</field>
+        <field name="model">x_sale_person</field>
+        <field name="state">manual</field>
+    </record>
+
+    <!--Fields for Sale Person model-->
+    
+    <!-- Sales Person (related to res.users, auto-filled, readonly) -->
+    <record id="field_x_sale_person_user_id" model="ir.model.fields">  <!--Use syntax model_x_fieldname-->
+        <field name="name">x_user_id</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.users</field>
+        <field name="required">1</field>
+        <field name="on_delete">restrict</field>
+    </record>
+
+    <!-- Check-in (datetime, auto-filled using automation) -->
+    <record id="field_x_sale_person_check_in" model="ir.model.fields">
+        <field name="name">x_check_in</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">datetime</field>
+        <field name="field_description">Check-in Time</field>
+    </record>
+
+    <!-- Check-out (datetime, set by button) -->
+    <record id="field_x_sale_person_check_out" model="ir.model.fields">
+        <field name="name">x_check_out</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">datetime</field>
+        <field name="field_description">Check-out Time</field>
+    </record>
+
+    <!-- Customer (many2one, required) -->
+    <record id="field_x_sale_person_customer_id" model="ir.model.fields">
+        <field name="name">x_customer_id</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">many2one</field>
+        <field name="relation">x_contact</field>
+        <field name="required">1</field>
+        <field name="on_delete">restrict</field>
+        <field name="field_description">Customer</field>
+    </record>
+
+    <!-- Related fields for Customer details t display in sale person form-->
+    <record id="field_x_sale_person_city" model="ir.model.fields">
+        <field name="name">x_city</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">char</field>
+        <field name="field_description">City</field>
+        <field name="related">x_customer_id.x_city</field>
+        <field name="readonly">1</field>
+    </record>
+
+    <record id="field_x_sale_person_area" model="ir.model.fields">
+        <field name="name">x_area</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">char</field>
+        <field name="field_description">Area</field>
+        <field name="related">x_customer_id.x_area</field>
+        <field name="readonly">1</field>
+    </record>
+
+    <record id="field_x_sale_person_pin_code" model="ir.model.fields">
+        <field name="name">x_pin_code</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">char</field>
+        <field name="field_description">Pin Code</field>
+        <field name="related">x_customer_id.x_pin_code</field>
+        <field name="readonly">1</field>
+    </record>
+
+    <!-- Agenda (char) -->
+    <record id="field_x_sale_person_agenda" model="ir.model.fields">
+        <field name="name">x_agenda</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">char</field>
+        <field name="field_description">Agenda</field>
+    </record>
+
+    <!-- Conversion Possibilities (selection) -->
+    <record id="field_x_sale_person_conversion_possibility" model="ir.model.fields">
+        <field name="name">x_conversion_possibility</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">selection</field>
+        <field name="selection">[('high','High'),('moderate','Moderate'),('low','Low')]</field>
+        <field name="field_description">Conversion Possibility</field>
+    </record>
+
+    <!-- Worked hours (float, computed) -->
+    <record id="field_x_sale_person_worked_hours" model="ir.model.fields">
+        <field name="name">x_worked_hours</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">float</field>
+        <field name="field_description">Worked Hours</field>    
+    </record>
+
+    <!-- Tags Field (many2many) -->
+    <record id="field_x_sale_person_tag_ids" model="ir.model.fields">
+        <field name="name">x_tag_ids</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">many2many</field>
+        <field name="relation">x_sale_person_tag</field>
+        <field name="field_description">Tags</field>
+    </record>
+
+    <!-- Check-in Location Field (readonly, admin only) -->
+    <record id="field_x_sale_person_checkin_location" model="ir.model.fields">
+        <field name="name">x_checkin_location</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">char</field>
+        <field name="field_description">Check-in Location</field>
+    </record>
+
+    <!-- Check-out Location Field (readonly, admin only) -->
+    <record id="field_x_sale_person_checkout_location" model="ir.model.fields">
+        <field name="name">x_checkout_location</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="ttype">char</field>
+        <field name="field_description">Check-out Location</field>
+    </record>
+
+    <!-- Server Action for Check Out Button -->
+    <record id="action_checkout" model="ir.actions.server">
+        <field name="name">Check Out</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="state">code</field>
+        <field name="code">
+for record in records:
+    if not record.x_check_out:
+        checkout_time = datetime.datetime.now()
+        vals = {
+            'x_check_out': checkout_time,
+            'x_checkout_location': 'Auto-detected location (Checkout)'
+        }
+        if record.x_check_in:
+            delta = checkout_time - record.x_check_in
+            vals['x_worked_hours'] = delta.total_seconds() / 3600.0
+        record.write(vals)
+        </field>
+    </record>
+
+    <!--Server action to get checkin time i.e current time-->
+    <record id="automate_check_in_time" model="ir.actions.server">
+        <field name="name">Auto Set Check In Time</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="state">code</field>
+        <field name="code">
+record.write(
+    {
+        'x_check_in': datetime.datetime.now(),
+        'x_checkin_location': 'Auto-detected location (checkin)'
+    }
+)       
+        </field>
+    </record>
+
+    <!-- Automation rule to set check-in time on change by triggering server action-->
+    <record id="automate_check_in_time_rule" model="base.automation">
+        <field name="name">Set Check In Time on Create</field>
+        <field name="model_id" ref="model_x_sale_person"/>
+        <field name="trigger">on_change</field>
+        <field name="action_server_ids" eval="[(4, ref('automate_check_in_time'))]"/>
+        <field name="on_change_field_ids" eval="[(6,0,[ref('sale_person.field_x_sale_person_user_id')])]"/>        
+        <field name="active">1</field>
+    </record>
+</odoo>

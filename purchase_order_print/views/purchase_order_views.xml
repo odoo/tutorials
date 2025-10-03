@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_order_form_custom" model="ir.ui.view">
+            <field name="name">purchase.order.form.inherit.employee</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+            <xpath expr="//div[@name='date_planned_div']" position="after">
+                <field name="x_employee_id"/>
+            </xpath>
+
+            <xpath expr="//page[@name='products']//field[@name='notes']" position="replace"/>
+
+            <xpath expr="//page[@name='purchase_delivery_invoice']/group/group[@name='other_info']" position="inside">
+                <field colspan="2" name="notes" nolabel="1" placeholder="Define your terms and conditions ..."/>
+            </xpath>
+
+            <xpath expr="//page[@name='purchase_delivery_invoice']" position="after">
+                <page name="purchase_annexure_terms" string="Annexure Terms">
+                    <group>
+                        <field colspan="2" name="x_annexure_terms" nolabel="1" placeholder="Define your annexure terms ..."/>
+                    </group>
+                </page>
+            </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

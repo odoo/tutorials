@@ -1,0 +1,31 @@
+<odoo>
+    <data noupdate="0">
+        <!-- Part No. -->
+        <record id="field_product_template_x_part_no" model="ir.model.fields">
+            <field name="name">x_part_no</field>
+            <field name="model">product.template</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="ttype">char</field>
+            <field name="field_description">Part No.</field>
+            <field name="state">manual</field>
+        </record>
+        <!-- Packing -->
+        <record id="field_product_template_x_packing" model="ir.model.fields">
+            <field name="name">x_packing</field>
+            <field name="model">product.template</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="ttype">float</field>
+            <field name="field_description">Packing</field>
+            <field name="state">manual</field>
+        </record>
+        <!-- Freight -->
+        <record id="field_product_template_x_freight" model="ir.model.fields">
+            <field name="name">x_freight</field>
+            <field name="model">product.template</field>
+            <field name="model_id" ref="product.model_product_template"/>
+            <field name="ttype">float</field>
+            <field name="field_description">Freight</field>
+            <field name="state">manual</field>
+        </record>
+    </data>
+</odoo>

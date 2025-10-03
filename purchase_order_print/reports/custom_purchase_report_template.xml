@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Override the entire purchase order document template -->
+    <template id="report_purchaseorder_document_custom" inherit_id="purchase.report_purchaseorder_document">
+        <xpath expr="//t[@t-call='web.external_layout']" position="replace">
+            <t t-call="web.basic_layout">
+                <t t-set="o" t-value="o.with_context(lang=o.partner_id.lang)"/>
+
+                <div class="page" style="font-size: 12px; page-break-inside: avoid;">
+                    <h2 class="text-center mt-3">PURCHASE ORDER</h2>
+                    <div class="d-flex justify-content-end" style="margin-top:-36px;">
+                        <strong>F-Admin-002</strong>
+                    </div>
+
+                    <table class="table table-sm table-bordered" style="width: 100%; margin-top: 20px;">
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <img t-if="o.company_id.logo" t-att-src="image_data_uri(o.company_id.logo)" style="height: 70px;" />
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column justify-content-center p-2">
+                                    <span><strong>Purchase Order No.:</strong> <t t-esc="o.name"/></span>
+                                    <span class="mt-3"><strong>Date:</strong> <span t-field="o.date_order" t-options="{'date_only': 'true'}"/></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="p-3">
+                                <strong>Billing/Shipping Address:</strong><br/>
+                                <t t-esc="o.company_id.name"/><br/>
+                                <t t-esc="o.company_id.street"/><br/>
+                                <t t-esc="o.company_id.city"/>, 
+                                <t t-esc="o.company_id.state_id.name"/>, 
+                                <t t-esc="o.company_id.zip"/><br/>
+                                <span class="d-block mt-2"><strong>Phone:</strong> <t t-esc="o.company_id.phone"/></span>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column justify-content-center p-2">
+                                    <span class="d-block"><strong>GSTIN No :</strong> <t t-esc="o.company_id.vat or '--'"/></span>
+                                    <span class="d-block mt-2"><strong>CIN :</strong> <t t-esc="o.company_id.company_registry or '--'"/></span>
+                                    <span class="d-block mt-2"><strong>PAN No. :</strong> <t t-esc="'--'"/></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <div class="d-flex p-3 gap-3 align-items-center">     
+                                    <strong>Name of Vendor:</strong>
+                                    <h5 class="mb-0"><t t-esc="o.partner_id.name"/></h5>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="d-flex flex-column justify-content-center p-2">
+                                    <span><strong>Vendor address :</strong><br/><t t-esc="o.partner_id.contact_address"/></span>
+                                    <span class="d-block mt-2"><strong>GSTIN No :</strong> <t t-esc="o.partner_id.vat or '--'"/></span>
+                                    <span class="d-block mt-2"><strong>PAN No. :</strong> <t t-esc="'--'"/></span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column justify-content-center p-2">
+                                    <span class="d-block"><strong>Quotation Ref No. :</strong> <t t-esc="o.partner_ref or '--'"/></span>
+                                    <span class="d-block mt-2"><strong>Contact Person :</strong> <t t-esc="o.partner_id.child_ids and o.partner_id.child_ids[0].name"/></span>
+                                    <span class="d-block mt-2"><strong>Contact No. :</strong> <t t-esc="o.partner_id.phone"/></span>
+                                    <span class="d-block mt-2"><strong>Email Id :</strong> <t t-esc="o.partner_id.email"/></span>
+                                </div>     
+                            </td>
+                        </tr>
+                    </table>
+
+                    <!-- Product Table -->
+                    <table class="table table-sm table-bordered mt-4">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Sr. No.</th>
+                                <th>MPN &amp; Description</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">UOM</th>
+                                <th class="text-end">Rate/Unit</th>
+                                <th class="text-end">Amount in INR</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="line_num" t-value="1"/>
+                            <t t-set="basic_total" t-value="0"/>
+                            <t t-foreach="o.order_line.filtered(lambda line: not line.display_type)" t-as="line">
+                                <t t-set="basic_total" t-value="basic_total + line.price_subtotal"/>
+                                <tr>
+                                    <td class="text-center"><span t-esc="line_num"/><t t-set="line_num" t-value="line_num + 1"/></td>
+                                    <td>
+                                        <span t-field="line.product_id.default_code"/> - <span t-field="line.name"/>
+                                    </td>
+                                    <td class="text-center"><span t-field="line.product_qty"/></td>
+                                    <td class="text-center"><span t-field="line.product_uom.name"/></td>
+                                    <td class="text-end"><span t-field="line.price_unit" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                    <td class="text-end"><span t-field="line.price_subtotal" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/></td>
+                                </tr>
+                            </t>
+                            <!--next table row will display total and taxes details-->
+                            <tr class="fw-bold">
+                                <td colspan="5" class="text-end">Basic Total</td>
+                                <td class="text-end">
+                                    <span t-esc="basic_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="text-end">IGST</td>
+                                <td class="text-end">
+                                    <span t-esc="o.amount_tax or 0.0" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                            <!-- Packing (static) -->
+                            <tr>
+                                <td colspan="5" class="text-end">Packing</td>
+                                <td class="text-end">
+                                    <span>--</span>
+                                </td>
+                            </tr>
+                            <!-- Freight (static) -->
+                            <tr>
+                                <td colspan="5" class="text-end">Freight</td>
+                                <td class="text-end">
+                                    <span>--</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="5" class="text-center align-middle" style="bold;">
+                                    <strong>Total PO Value in INR</strong>
+                                    <br/>
+                                    <span style="display: inline-block; text-align: center; width: 100%;">
+                                        <strong><span t-esc="o.currency_id.amount_to_text(o.amount_total)"/></strong>
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <span t-field="o.amount_total" t-options='{"widget": "monetary", "display_currency": o.currency_id}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Terms and Conditions -->
+                    <div class="mt-4 no-page-break">
+                        <strong>Commercial terms &amp; Conditions:</strong> 
+                        <br/>
+                        <strong>Payment Terms:</strong> <span t-field="o.payment_term_id.name"/><br/>
+                        <strong>Delivery Schedules:</strong> Expected arrival date <span t-field="o.date_planned" t-options='{"widget": "date"}'/><br/>
+                        <strong>Other terms &amp; conditions:</strong>
+
+                        <div class="text-left"> <strong>General Terms</strong></div>
+                            <p t-field="o.notes"/>
+
+                        <div class="text-left mt-4">
+                            <img t-if="o.x_employee_id.x_signature_seal_image"
+                                t-att-src="image_data_uri(o.x_employee_id.x_signature_seal_image)"
+                                style="height: 50px;"/>
+                        </div>
+                        <div class="text-left mt-2">
+                            <strong><t t-esc="o.x_employee_id.name"/></strong><br/>
+                            <strong> <t t-esc="o.x_employee_id.job_id.name"/></strong>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="page" style="font-size: 12px; page-break-before: always;">
+                    <h4 class="text-center"><u>Annexure I</u></h4>
+                    
+                    <!-- Company Information -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <strong>Authorised Distributor / OEM Name and Address:</strong>
+                            <div style="border-bottom: 0px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                            <div style="border-bottom: 0px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Customer Information -->
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <strong>Customer's Name and Address:</strong>
+                            <div style="border-bottom: 0px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                            <div style="border-bottom: 0px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate of Conformance -->
+                    <div class="mt-4">
+                        <div class="text-right">
+                            <strong>Date: ................................</strong>
+                        </div>
+                        <div class="text-center mt-2">
+                            <strong><u>CERTIFICATE OF CONFORMANCE</u></strong>
+                        </div>
+                        <div class="mt-4">
+                            <div style="border-bottom: 1px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                            <div style="border-bottom: 1px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                            <div style="border-bottom: 1px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                            <div style="border-bottom: 1px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                            <div style="border-bottom: 1px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                            <div style="border-bottom: 1px dotted #000; height: 20px; margin-bottom: 10px;"></div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-6">
+                                <strong>PO No.</strong> .................................... <strong>Date:</strong> .................................
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-6">
+                                <strong>INVOICE NO.</strong> ................................ <strong>Date:</strong> ................................
+                            </div>
+                        </div>
+                        <table class="table table-sm table-bordered mt-4">
+                            <thead>
+                                <tr>
+                                    <th>Sr. No.</th>
+                                    <th>Make</th>
+                                    <th>MPN (Part Number)</th>
+                                    <th>Device type / Components / Description</th>
+                                    <th>Quantity</th>
+                                    <th>Lot No./Batch / Code *</th>
+                                    <th>Date Code *</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="line_num" t-value="1"/>
+                                <t t-foreach="o.order_line.filtered(lambda line: not line.display_type)" t-as="line">
+                                </t>
+                                <tr t-foreach="range(5)" t-as="empty_row">
+                                    <td style="height: 30px;"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                            <!-- Add Annexure Terms here -->
+                        <div class="mt-4">
+                            <p t-field="o.x_annexure_terms"/>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="row">
+                            <div class="text-end">
+                                <strong>Authorised Signature (with date) and seal</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>

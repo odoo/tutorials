@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--This file defines model, fields and other logic similar to model's .py file-->
+
+    <!--sale person tags model-->
+    <record id="model_x_sale_person_tag" model="ir.model">
+        <field name="name">x_Sale Person Tag</field>
+        <field name="model">x_sale_person_tag</field>
+        <field name="state">manual</field>
+    </record>
+
+    <!--Fields for sale person tag model-->
+
+    <!--Tag name-->
+    <record id="field_x_sale_person_tag_name" model="ir.model.fields">
+        <field name="name">x_name</field>
+        <field name="model_id" ref="model_x_sale_person_tag"/>
+        <field name="ttype">char</field>
+        <field name="field_description">Tag Name</field>
+        <field name="required">1</field>
+    </record>
+
+    <!--Tag color-->
+    <record id="field_x_sale_person_tag_color" model="ir.model.fields">
+        <field name="name">x_color</field>
+        <field name="model_id" ref="model_x_sale_person_tag"/>
+        <field name="ttype">char</field>
+        <field name="field_description">Color</field>
+    </record>
+</odoo>

@@ -1,0 +1,20 @@
+{
+    "name": "Sale Person Attendance",
+    "version": "1.0",
+    "summary": "Track salesperson attendance and customer visits.",
+    "author": "Ayush Patel",
+    "depends": ["base", "base_automation"],
+    "license": "LGPL-3",
+    "data": [
+        "views/tag_model_fields.xml",
+        "views/contact_model_fields.xml",
+        "views/sale_person_model_fields.xml",
+        "views/tag_views.xml",
+        "views/contact_views.xml",
+        "views/sale_person_views.xml",
+        "views/sale_person_menu.xml",
+        "security/ir.model.access.csv",
+    ],
+    "installable": True,
+    "application": True,
+}
