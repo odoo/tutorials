@@ -17,7 +17,7 @@
                 <field name="x_bedrooms"/>
                 <field name="x_living_area"/>
                 <field name="x_expected_price"/>
-                <field name="x_date_availability" optional="disabled"/>
+                <field name="x_date_availability"/>
             </list>
         </field>
     </record>
