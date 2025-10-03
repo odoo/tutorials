@@ -1,5 +1,7 @@
 import logging
 from datetime import datetime
+from random import randrange
+from pprint import pformat
 
 import psycopg2
 
@@ -27,6 +29,62 @@ class PosOrder(models.Model):
                           session.config_id.default_fiscal_position_id.id)
         values.setdefault('company_id', session.config_id.company_id.id)
         return values
+
+    @api.model
+    def sync_from_ui(self, orders):
+        """ Create and update Orders from the frontend PoS application.
+
+        Create new orders and update orders that are in draft status. If an order already exists with a status
+        different from 'draft' it will be discarded, otherwise it will be saved to the database. If saved with
+        'draft' status the order can be overwritten later by this function.
+
+        :param orders: dictionary with the orders to be created.
+        :type orders: dict.
+        :param draft: Indicate if the orders are meant to be finalized or temporarily saved.
+        :type draft: bool.
+        :Returns: list -- list of db-ids for the created and updated orders.
+        """
+        sync_token = randrange(100_000_000)  # Use to differentiate 2 parallels calls to this function in the logs
+        _logger.info("PoS synchronisation #%d started for PoS orders references: %s", sync_token, [
+                     self._get_order_log_representation(order) for order in orders])
+        order_ids = []
+        for order in orders:
+            order_log_name = self._get_order_log_representation(order)
+            _logger.debug("PoS synchronisation #%d processing order %s order full data: %s",
+                          sync_token, order_log_name, pformat(order))
+
+            if len(self._get_refunded_orders(order)) > 1:
+                raise ValidationError(
+                    _('You can only refund products from the same order.'))
+
+            existing_order = self._get_open_order(order)
+            if existing_order and existing_order.state in ('draft', 'pay_later'):
+                order_ids.append(self._process_order(order, existing_order))
+                _logger.info("PoS synchronisation #%d order %s updated pos.order #%d",
+                             sync_token, order_log_name, order_ids[-1])
+            elif not existing_order:
+                order_ids.append(self._process_order(order, False))
+                _logger.info("PoS synchronisation #%d order %s created pos.order #%d",
+                             sync_token, order_log_name, order_ids[-1])
+            else:
+                # In theory, this situation is unintended
+                # In practice it can happen when "Tip later" option is used
+                order_ids.append(existing_order.id)
+                _logger.info("PoS synchronisation #%d order %s sync ignored for existing PoS order %s (state: %s)",
+                             sync_token, order_log_name, existing_order, existing_order.state)
+
+        # Sometime pos_orders_ids can be empty.
+        pos_order_ids = self.env['pos.order'].browse(order_ids)
+        config_id = pos_order_ids.config_id.ids[0] if pos_order_ids else False
+
+        for order in pos_order_ids:
+            order._ensure_access_token()
+            if not self.env.context.get('preparation'):
+                order.config_id.notify_synchronisation(
+                    order.config_id.current_session_id.id, self.env.context.get('login_number', 0))
+
+        _logger.info("PoS synchronisation #%d finished", sync_token)
+        return pos_order_ids.read_pos_data(orders, config_id)
 
     @api.model
     def _process_order(self, order, existing_order):
@@ -149,19 +207,27 @@ class PosOrder(models.Model):
 
     def _create_order_picking(self, done):
         self.ensure_one()
+        ready_pickings = self.picking_ids.filtered(
+            lambda l: l.state not in ['cancel', 'done'])
+        picking_type = self.config_id.picking_type_id
+        if self.partner_id.property_stock_customer:
+            destination_id = self.partner_id.property_stock_customer.id
+        elif not picking_type or not picking_type.default_location_dest_id:
+            destination_id = self.env['stock.warehouse']._get_partner_locations()[
+                0].id
+        else:
+            destination_id = picking_type.default_location_dest_id.id
         if self.shipping_date:
             self.sudo().lines._launch_stock_rule_from_pos_order_lines()
+        elif self.picking_ids and ready_pickings:
+            pickings = self.env['stock.picking']._update_picking_from_pos_order_lines(
+                destination_id, self.lines, picking_type, ready_pickings[0], self.partner_id)
+            pickings.write({'pos_session_id': self.session_id.id,
+                            'pos_order_id': self.id, 'origin': self.name})
         else:
+            if self.picking_ids:
+                self.picking_ids.write({'state': 'cancel'})
             if self._should_create_picking_real_time():
-                picking_type = self.config_id.picking_type_id
-                if self.partner_id.property_stock_customer:
-                    destination_id = self.partner_id.property_stock_customer.id
-                elif not picking_type or not picking_type.default_location_dest_id:
-                    destination_id = self.env['stock.warehouse']._get_partner_locations()[
-                        0].id
-                else:
-                    destination_id = picking_type.default_location_dest_id.id
-
                 pickings = self.env['stock.picking']._create_picking_from_pos_order_lines(
                     destination_id, self.lines, picking_type, self.partner_id, done)
                 pickings.write({'pos_session_id': self.session_id.id,

@@ -57,3 +57,40 @@ class StockPicking(models.Model):
                 pass
             pickings |= negative_picking
         return pickings
+
+    @api.model
+    def _update_picking_from_pos_order_lines(self, location_dest_id, lines, picking_type, pickings, partner=False):
+        """We'll update some picking based on order_lines"""
+
+        stockable_lines = lines.filtered(lambda l: l.product_id.type == 'consu' and not float_is_zero(
+            l.qty, precision_rounding=l.product_id.uom_id.rounding))
+        if not stockable_lines:
+            return pickings
+        positive_lines = stockable_lines.filtered(lambda l: l.qty > 0)
+        negative_lines = stockable_lines - positive_lines
+        if positive_lines:
+            location_id = picking_type.default_location_src_id.id
+            pickings.move_ids.unlink()
+            pickings.write(self._prepare_picking_vals(
+                partner, picking_type, location_id, location_dest_id))
+
+            pickings._create_move_from_pos_order_lines(positive_lines)
+            self.env.flush_all()
+            pickings |= pickings
+        if negative_lines:
+            if picking_type.return_picking_type_id:
+                return_picking_type = picking_type.return_picking_type_id
+                return_location_id = return_picking_type.default_location_dest_id.id
+            else:
+                return_picking_type = picking_type
+                return_location_id = picking_type.default_location_src_id.id
+
+            pickings.move_ids.unlink()
+            pickings.write(
+                self._prepare_picking_vals(
+                    partner, return_picking_type, location_dest_id, return_location_id)
+            )
+            pickings._create_move_from_pos_order_lines(negative_lines)
+            self.env.flush_all()
+            pickings |= pickings
+        return pickings
