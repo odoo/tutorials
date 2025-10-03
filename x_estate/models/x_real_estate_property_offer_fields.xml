@@ -22,7 +22,7 @@
         <field name="name">x_partner_id</field>
         <field name="field_description">Partner</field>
         <field name="ttype">many2one</field>
-        <field name="relation">res.users</field>
+        <field name="relation">res.partner</field>
         <field name="required">True</field>
         <field name="on_delete">cascade</field>
     </record>
