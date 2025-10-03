@@ -22,6 +22,13 @@
         <field name="ttype">float</field>
     </record>
 
+    <record id="field_real_estate_property_selling_price" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_selling_price</field>
+        <field name="field_description">Selling Price</field>
+        <field name="ttype">float</field>
+    </record>
+
     <record id="field_real_estate_property_bedrooms" model="ir.model.fields">
         <field name="model_id" ref="real_estate_property_model"/>
         <field name="name">x_bedrooms</field>
@@ -85,7 +92,7 @@
     <record id="field_real_estate_property_partner_id" model="ir.model.fields">
         <field name="model_id" ref="real_estate_property_model" />
         <field name="name">x_partner_id</field>
-        <field name="field_description">Partner</field>
+        <field name="field_description">Buyer</field>
         <field name="ttype">many2one</field>
         <field name="relation">res.partner</field>
     </record>

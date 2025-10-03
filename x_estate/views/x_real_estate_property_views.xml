@@ -45,6 +45,7 @@
                         </group>
                         <group>
                             <field name="x_expected_price"/>
+                            <field name="x_selling_price"/>
                             <field name="x_partner_id"/>
                         </group>
                     </group>
