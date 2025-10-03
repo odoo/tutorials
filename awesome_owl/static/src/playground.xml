@@ -1,9 +1,34 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="p-3 border w-75 d-flex flex-column mt-4 gap-2 ms-4">
+            <span>hello world</span>
+            <Counter onChange="incrementSum" />
+            <Counter onChange="incrementSum"/>
+            <div>Total Sum: <t t-esc="state.sum" /></div>
+        </div>
+
+         <div class="p-3 border w-75 d-flex mt-4 gap-2 ms-4">
+            <Card title.translate="Odoo" > 
+                <t t-set-slot="content">
+                    <p class="card-text">Odoo Developer</p> 
+                </t>  
+            </Card>
+            <Card title="'Card 2'"> 
+                <t t-set-slot="content"> 
+                    <t t-out="content" />
+                </t>
+            </Card>
+            <Card title.translate="Card 3">
+                <t t-set-slot="content">
+                    <Counter />
+                </t>
+            </Card>
+        </div>
+
+         <div class="p-3 border w-75 mt-4 gap-2 ms-4">
+            <TodoList />
         </div>
     </t>
 
