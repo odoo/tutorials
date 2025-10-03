@@ -134,4 +134,61 @@ for property in self:
         <field name="relation">x_estate.property.offer</field>
         <field name="relation_field">x_property_id</field>
     </record>
+
+    <record id="field_real_estate_property_api_published" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_api_published</field>
+        <field name="field_description">API published</field>
+        <field name="ttype">boolean</field>
+        <field name="required">True</field>
+    </record>
+    
+    <record id="default_real_estate_property_api_published" model="ir.default">
+        <field name="field_id" ref="field_real_estate_property_api_published"/>
+        <field name="json_value">true</field>
+    </record>
+    
+    <!-- Actions -->
+
+    <record id="api_public_write_rule" model="ir.rule">
+        <field name="name">Public users can't write</field>
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="domain_force">[(0, '=', 1)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_public'))]"/>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="api_public_write_rule" model="ir.rule">
+        <field name="name">Public users can read x_api_published properties</field>
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="domain_force">[('x_api_published', '=', True)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_public'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="server_action_estate_list" model="ir.actions.server">
+        <field name="name">Estate List Controller</field>
+        <field name="model_id" ref="real_estate_property_model" />
+        <field name="website_published">True</field>
+        <field name="website_path">estate</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+records = request.env['x_estate.property'].search([('x_api_published', '=', True)])
+data = []
+# only these fields because the others are 403
+fields = ['x_name', 'x_expected_price', 'x_selling_price', 'x_bedrooms', 'x_living_area', 'x_facades', 'x_garage', 'x_garden', 'x_garden_area', 'x_garden_orientation', 'x_total_area']
+for record in records:
+    datum = {}
+    for field in fields:
+        datum[field] = record[field]
+    data.append(datum)
+response = request.make_json_response(data, headers=None, cookies=None, status=200)
+        ]]></field>
+    </record>
 </odoo>

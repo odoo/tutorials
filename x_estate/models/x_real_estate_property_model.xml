@@ -4,4 +4,14 @@
         <field name="name">Real Estate Property</field>
         <field name="model">x_estate.property</field>
     </record>
+
+    <record model="ir.model.access" id="access_real_estate_property_public">
+        <field name="name">Estate: deny create/unlink for public (need write for server action)</field>
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="group_id" ref="base.group_public"/>
+        <field name="perm_read">1</field>
+        <field name="perm_write">1</field>
+        <field name="perm_create">0</field>
+        <field name="perm_unlink">0</field>
+    </record>
 </odoo>

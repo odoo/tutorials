@@ -5,6 +5,7 @@
     'depends': [
         'base',
         'base_import_module',
+        'website',
     ],
     'version': '19.0.0.0',
     'author': "Odoo S.A.",
