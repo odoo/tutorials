@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="ImageDialog">
+        <Dialog t-props="props">
+            <t t-set-slot="default">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-body text-center">
+                        <img t-att-src="props.imageUrl ? props.imageUrl : ''" class="o_image_viewer img-fluid" t-att-style="'transform: scale('+state.zoomLevel+');'"/>
+                    </div>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-primary" t-on-click="zoomIn">Zoom In</button>
+                    <button class="btn btn-secondary" t-on-click="zoomOut">Zoom Out</button>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
