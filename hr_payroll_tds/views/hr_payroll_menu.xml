@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem
+        id="menu_contracts_l10n_in"
+        name="Tax Declaration"
+        sequence="40"
+        action="action_hr_tds_declaration"
+        parent="hr_payroll.menu_hr_payroll_employees_root"
+        groups="hr_payroll_tds.group_hr_tds_user"  />
+
+</odoo>

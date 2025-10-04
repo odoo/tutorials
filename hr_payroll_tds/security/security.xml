@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="group_hr_tds_user" model="res.groups">
+        <field name="name">Officer: Manage all tds</field>
+        <field name="category_id" ref="base.module_category_human_resources_payroll"/>
+    </record>
+
+    <record id="hr_tds_declaration_rule" model="ir.rule">
+        <field name="name">Record rule according to current company</field>
+        <field name="model_id" ref="model_hr_tds_declaration"/>
+        <field name="domain_force">[('company_id', '=', company_id)]</field>
+        <field name="groups" eval="[(4, ref('group_hr_tds_user'))]"/>
+    </record>
+
+</odoo>

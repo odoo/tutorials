@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="hr_tds_declaration_wizard_form_view" model="ir.ui.view">
+        <field name="name">hr.tds.declaration.wizard.form.view</field>
+        <field name="model">hr.tds.declaration.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <span>Generate Declaration</span>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="selection_mode"/>
+                    </group>
+                    <group>
+                        <field name="employee_id" invisible="selection_mode not in ('by_employee')"/>
+                        <field name="structure_id" invisible="selection_mode not in ('by_salary_structure')"/>
+                        <field name="department_id" invisible="selection_mode not in ('by_department')"/>
+                        <field name="job_id" invisible="selection_mode not in ('by_job_position')"/>
+                    </group>
+                    <notebook>
+                        <page string="Employees">
+                            <field name="employee_ids" widget="employee_line_many2many">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="work_email"/>
+                                    <field name="department_id"/>
+                                    <field name="job_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button string="Generate" name="generate_tds_declaration" type="object" class="btn-primary" invisible="not employee_ids"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_genreate_wizard" model="ir.actions.act_window">
+        <field name="name">Wizard</field>
+        <field name="res_model">hr.tds.declaration.wizard</field>
+        <field name="view_mode">form,list</field>
+        <field name="view_id" ref="hr_payroll_tds.hr_tds_declaration_wizard_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
