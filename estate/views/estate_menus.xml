@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Basic menu items -->
+    <menuitem id="estate_property_menu_root" name="Real Estate">
+        <menuitem id="estate_property_advertisement_menu" name="Advertisements">
+            <menuitem id="estate_property_advertisement_action" action="estate_property_action"/>
+        </menuitem>
+        <!-- Settings Menu -->
+        <menuitem id="estate_property_settings_menu" name="Settings" groups="estate_group_manager">
+            <!-- Property Type-->
+            <menuitem id="estate_property_settings_types_action" action="estate_property_type_action"/>
+            <!-- Property Tags-->
+            <menuitem id="estate_property_settings_tags_action" action="estate_property_tag_action"/>
+        </menuitem>
+    </menuitem>
+
+    <record id="menu_estate_property" model="website.menu">
+        <field name="name">Estate Property</field>
+        <field name="url">/properties/</field>
+        <field name="parent_id" ref="website.main_menu"/>
+        <field name="sequence">10</field>
+    </record>
+
+</odoo>

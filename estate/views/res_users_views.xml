@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_users_form_view" model="ir.ui.view">
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <!-- Find the Notebook element and add a new Page -->
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Real Estate Properties">
+                    <field name="property_ids">
+                        <list string="Properties" decoration-success="state in ['offer_received', 'offer_accepted']" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                            <field name="name" string="Title"/>
+                            <field name="postcode"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="bedrooms"/>
+                            <field name="living_area"/>
+                            <field name="expected_price"/>
+                            <field name="selling_price"/>
+                            <field name="date_availability" optional="hide"/>
+                            <field name="property_type_id" options="{'no_create_edit': True}"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
