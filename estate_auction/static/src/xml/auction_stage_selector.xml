@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="estate.AuctionStageSelector" owl="1">
+        <div class="auction-stage-selector">
+            <button type="button" id="auction_stage_button"
+                class="btn btn-primary"
+                t-on-click.prevent="state.showDropdown = !state.showDropdown">
+                <t t-esc="buttonText"/>
+            </button>
+
+            <div t-if="state.showDropdown" class="dropdown-menu show">
+                <a href="#" class="dropdown-item text-primary"
+                   t-on-click.prevent="setAuctionStage('template')">
+                    <i class="fa fa-file-alt"></i> Template
+                </a>
+                <a href="#" class="dropdown-item text-warning"
+                   t-on-click.prevent="setAuctionStage('in_progress')">
+                    <i class="fa fa-gavel"></i> In Progress
+                </a>
+                <a href="#" class="dropdown-item text-success"
+                   t-on-click.prevent="setAuctionStage('sold')">
+                    <i class="fa fa-check-circle"></i> Sold
+                </a>
+            </div>
+        </div>
+    </t>
+</templates>

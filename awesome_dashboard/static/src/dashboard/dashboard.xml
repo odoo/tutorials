@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="display" className="'o_dashboard h-100 p-3'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary me-2" t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="d-flex flex-wrap p-3 rounded justify-content-around" t-if="statistics.isReady">
+                <DashboardItem>
+                    <h3>Average Quantity per Order</h3>
+                    <p class="display-3 text-success fw-bold" t-esc="statistics.averageQuantity"></p>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>Average Processing Time (hrs)</h3>
+                    <p class="display-3 text-info fw-bold" t-esc="statistics.averageTime"></p>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>Cancelled Orders This Month</h3>
+                    <p class="display-3 text-danger fw-bold" t-esc="statistics.nbCancelledOrders"></p>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>New Orders This Month</h3>
+                    <p class="display-3 text-success fw-bold" t-esc="statistics.nbNewOrders"></p>
+                </DashboardItem>
+                <DashboardItem>
+                    <h3>Total Order Amount (This Month)</h3>
+                    <p class="display-3 text-primary fw-bold" t-esc="statistics.totalAmount"></p>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <p class="text-muted text-center mb-2">
+                        Shirt orders by size
+                    </p>
+                    <div class="d-flex justify-content-center">
+                        <PieChart t-props='{"data": statistics.ordersBySize, "label": "Shirt orders by size"}'/>
+                    </div>
+                </DashboardItem>
+            </div>
+        </Layout>
+    </t>
+</templates>

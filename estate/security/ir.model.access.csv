@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+estate_property_manager,estate.property.manager,estate.model_estate_property,estate.estate_group_manager,1,1,1,0
+estate_property_user,estate.property.user,estate.model_estate_property,estate.estate_group_user,1,1,1,0
+estate_tag_manager,estate.property.tag.manager,estate.model_estate_property_tag,estate.estate_group_manager,1,1,1,1
+estate_tag_user,estate.property.tag.user,estate.model_estate_property_tag,estate.estate_group_user,1,0,0,0
+estate_type_manager,estate.property.type.manager,estate.model_estate_property_type,estate.estate_group_manager,1,1,1,1
+estate_type_user,estate.property.type.user,estate.model_estate_property_type,estate.estate_group_user,1,0,0,0
+estate_offer_manager,estate.property.offer.manager,estate.model_estate_property_offer,estate.estate_group_manager,1,1,1,1
+estate_offer_user,estate.property.offer.user,estate.model_estate_property_offer,estate.estate_group_user,1,1,1,0
+"id_estate_property_admin","Estate Property: Admin Access","model_estate_property","base.group_system",1,1,1,1
+"id_estate_property_offer_admin","Estate Property Offer: Admin Access","model_estate_property_offer","base.group_system",1,1,1,1
+"id_estate_property_tag_admin","Estate Property Tag: Admin Access","model_estate_property_tag","base.group_system",1,1,1,1
+"id_estate_property_type_admin","Estate Property Type: Admin Access","model_estate_property_type","base.group_system",1,1,1,1

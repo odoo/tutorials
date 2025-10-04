@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="website_menu_properties" model="website.menu">
+            <field name="name">Properties</field>
+            <field name="url">/properties</field>
+            <!-- Reference your actual website (if it's the default) -->
+            <field name="website_id" ref="website.default_website" />
+
+            <!-- Search for the parent by name + website instead of using a direct external ID -->
+            <field name="parent_id"
+                search="[('name', '=', 'Top Menu for Website 1'),
+                         ('website_id', '=', ref('website.default_website'))]" />
+
+            <!-- Adjust the sequence to place it after 'Home' -->
+            <field name="sequence">15</field>
+        </record>
+    </data>
+</odoo>

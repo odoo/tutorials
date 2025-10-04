@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="inherit_website_navbar" inherit_id="website.layout">
+        <xpath expr="//ul[contains(@class, 'navbar-nav')]" position="inside">
+            <li class="nav-item">
+                <a class="nav-link" href="/properties">Properties</a>
+            </li>
+        </xpath>
+    </template>
+</odoo>
