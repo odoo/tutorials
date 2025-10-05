@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="estate_property_demo_0" model="estate.property">
+    <field name="name">Big Villa</field>
+    <field name="description">A nice and big villa</field>
+    <field name="postcode">12345</field>
+    <field name="date_availability">2020-02-02</field>
+    <field name="expected_price">1600000</field>
+    <field name="bedrooms">6</field>
+    <field name="living_area">100</field>
+    <field name="facades">4</field>
+    <field name="garage">true</field>
+    <field name="garden">true</field>
+    <field name="garden_area">100000</field>
+    <field name="garden_orientation">south</field>
+    <field name="property_type_id" ref="estate_property_type_0"/>
+  </record>
+  <record id="estate_property_demo_1" model="estate.property">
+    <field name="name">Trailer home</field>
+    <field name="description">Home in a trailer park</field>
+    <field name="postcode">54321</field>
+    <field name="date_availability">1970-01-01</field>
+    <field name="expected_price">100000</field>
+    <field name="bedrooms">1</field>
+    <field name="living_area">10</field>
+    <field name="facades">4</field>
+    <field name="garage">false</field>
+    <field name="garden">false</field>
+    <field name="property_type_id" ref="estate_property_type_0"/>
+    <field name="state">cancelled</field>
+    <field name="selling_price">120000</field>
+  </record>
+  <record id="estate_property_demo_2" model="estate.property">
+    <field name="name">Trailer home 2</field>
+    <field name="description">Home in another trailer park</field>
+    <field name="postcode">54322</field>
+    <field name="date_availability">1970-01-01</field>
+    <field name="expected_price">100000</field>
+    <field name="bedrooms">1</field>
+    <field name="living_area">10</field>
+    <field name="facades">4</field>
+    <field name="garage">false</field>
+    <field name="garden">false</field>
+    <field name="property_type_id" ref="estate_property_type_0"/>
+    <field name="offer_ids" eval="[
+      Command.create({
+          'partner_id': ref('base.res_partner_12'),
+          'price': 99900,
+          'validity': 7,
+      }),]"/>
+  </record>
+  <record id="estate_property_offer_demo_0" model="estate.property.offer">
+    <field name="property_id" ref="estate_property_demo_0"/>
+    <field name="partner_id" ref="base.res_partner_12"/>
+    <field name="price">10000</field>
+    <field name="date_deadline" eval="datetime.now().date() + timedelta(days=14)"/>
+  </record>
+  <function model="estate.property.offer" name="action_refuse" eval="[ref('estate_property_offer_demo_0')]"/>
+  <record id="estate_property_offer_demo_1" model="estate.property.offer">
+    <field name="property_id" ref="estate_property_demo_0"/>
+    <field name="partner_id" ref="base.res_partner_12"/>
+    <field name="price">1500000</field>
+    <field name="date_deadline" eval="datetime.now().date() + timedelta(days=14)"/>
+  </record>
+  <function model="estate.property.offer" name="action_accept" eval="[ref('estate_property_offer_demo_1')]"/>
+  <record id="estate_property_offer_demo_2" model="estate.property.offer">
+    <field name="property_id" ref="estate_property_demo_0"/>
+    <field name="partner_id" ref="base.res_partner_2"/>
+    <field name="price">1500001</field>
+    <field name="date_deadline" eval="datetime.now().date() + timedelta(days=14)"/>
+  </record>
+  <function model="estate.property.offer" name="action_refuse" eval="[ref('estate_property_offer_demo_2')]"/>
+</odoo>

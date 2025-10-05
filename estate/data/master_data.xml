@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record id="estate_property_type_0" model="estate.property.type">
+    <field name="name">Residential</field>
+    <field name="sequence">1</field>
+    <field name="description">Residential property type</field>
+  </record>
+  <record id="estate_property_type_1" model="estate.property.type">
+    <field name="name">Commercial</field>
+    <field name="sequence">2</field>
+    <field name="description">Commercial property type</field>
+  </record>
+  <record id="estate_property_type_2" model="estate.property.type">
+    <field name="name">Industrial</field>
+    <field name="sequence">3</field>
+    <field name="description">Industrial property type</field>
+  </record>
+  <record id="estate_property_type_3" model="estate.property.type">
+    <field name="name">Land</field>
+    <field name="sequence">4</field>
+    <field name="description">Land property type</field>
+  </record>
+</odoo>
