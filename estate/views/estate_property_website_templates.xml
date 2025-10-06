@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_listing_template" name="Property Listings">
+        <t t-call="website.layout">
+            <div class="container">
+                <h1 class="mt-4 mb-4">Available Properties</h1>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-esc="property.name"/>
+                                    </h5>
+                                    <p class="card-text">
+                                        Price: <t t-esc="property.expected_price"/>
+Rs.
+                                    </p>
+                                    <p class="card-text">
+                                        Type: <t t-esc="property.property_type_id.name"/>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

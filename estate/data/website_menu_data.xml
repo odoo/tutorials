@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="website_menu_properties" model="website.menu">
+            <field name="name">Properties</field>
+            <field name="url">/properties</field>
+            <field name="parent_id" eval="ref('website.menu_contactus')"/>
+            <field name="sequence" eval="10"/>
+        </record>
+    </data>
+</odoo>
