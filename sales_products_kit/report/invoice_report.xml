@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <template id="invoice_document_report_inherited" inherit_id="account.report_invoice_document">
+        <xpath expr="//tbody/t/tr" position="attributes">
+            <attribute name="t-if">line.sale_line_ids.order_id.print_in_report or (not line.sale_line_ids.parent_line_id)</attribute>
+        </xpath>
+    </template>
+    
+</odoo>
