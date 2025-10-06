@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="hr_in_employee_demo_payroll_config" model="hr.employee">
+        <field name="name">Jayprakash Reddy</field>
+        <field name="job_title">Software Engineer</field>
+        <field name="company_id" ref="base.demo_company_in"/>
+    </record>
+
+    <record id="hr_contract_demo" model="hr.contract">
+        <field name="name">Demo Contract</field>
+        <field name="employee_id" ref="hr_in_employee_demo_payroll_config"/>
+        <field name="wage">75000</field>
+        <field name="state">open</field>
+        <field name="date_start">2025-03-03</field>
+        <field name="l10n_in_gratuity_percent">4.81</field>
+        <field name="company_id" ref="base.demo_company_in"/>
+    </record>
+</odoo>

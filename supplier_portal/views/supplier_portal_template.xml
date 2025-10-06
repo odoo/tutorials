@@ -1,0 +1,71 @@
+<odoo>
+    <template id="supplier_portal_form_template" name="Supplier Portal">
+            <t t-call="web.frontend_layout">
+                <div class="container h-100 d-flex justify-content-center align-items-center">
+                    <div class="card shadow-lg p-4 my-5" style="max-width: 500px; width: 100%;">
+                        <form action="/suppliers/submit" method="post" enctype="multipart/form-data" class="oe_upload_form">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="mb-4">
+                                <label for="company_id" class="form-label fw-bold">Select Company</label>
+                                <select name="company_id" id="company_id" class="form-select" required="required">
+                                    <t t-foreach="request.env.user.company_ids" t-as="company">
+                                        <option t-att-value="company.id" t-att-selected="company.id == request.env.user.company_id.id">
+                                            <t t-esc="company.name"/>
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="xml_file" class="form-label fw-bold">Upload XML File</label>
+                                <input type="file" name="xml_file" id="xml_file" class="form-control" accept=".xml" required="required"/>
+                            </div>
+                            <div class="mb-4">
+                                <label for="pdf_file" class="form-label fw-bold">Upload PDF File</label>
+                                <input type="file" name="pdf_file" id="pdf_file" class="form-control" accept=".pdf" required="required"/>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </t>
+    </template>
+
+    <template id="response_page" name="Supplier Portal">
+        <t t-call="web.frontend_layout">
+            <div class="container h-100 d-flex justify-content-center align-items-center">
+                <div class="card shadow-lg p-5 my-5 text-center" style="max-width: 600px; width: 100%;">
+                    <div class="card-body">
+                        <h2 t-att-class="message_type == 'success' and 'fw-bold text-success' or 'fw-bold text-danger'">
+                            <t t-if="message_type == 'success'">Thank You!</t>
+                            <t t-if="message_type == 'fail'">Oops!</t>
+                        </h2>
+                        <p class="mb-4">
+                            <t t-if="message_type == 'success'">
+                                Your submission has been successfully received.
+                            </t>
+                            <t t-if="message_type == 'fail'">
+                                Something went wrong. Please try again later.
+                            </t>
+                        </p>
+                        <p class="lead">
+                            <t t-if="message_type == 'success'">
+                                Thank you. We will process your request shortly.
+                            </t>
+                            <t t-if="message_type == 'fail'">
+                                We encountered an issue with your submission. Please check your files and try again.
+                            </t>
+                        </p>
+                        <div class="mt-4">
+                            <a href="/suppliers" class="btn btn-outline-primary btn-lg">
+                                <t t-if="message_type == 'success'">Go Back to Home</t>
+                                <t t-if="message_type == 'fail'">Try Again</t>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
