@@ -1,0 +1,14 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Card">
+        <div class="card d-inline-block m-2 p-3" style="width: content-fit;">
+            <div class="card-header d-flex gap-3">
+                <p class="fs-4 fw-bolder d-inline-block" t-esc="props.title"></p>
+                <button class="btn btn-primary border" t-on-click="this.toggleBodyOpen">Toggle</button>
+            </div>
+            <div class="card-body" t-if="this.isBodyOpen.value">
+                <t t-slot="default" />
+            </div>
+        </div>
+    </t>
+</templates>
