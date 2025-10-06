@@ -1,0 +1,40 @@
+<t t-name="salesperson_pos.SelectSalespersonDialog">
+    <Dialog bodyClass="'partner-list overflow-y-auto'" contentClass="'h-100'">
+        <t t-set-slot="header">
+            <h1 t-esc="props.title"></h1>
+        </t>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="py-2">Name</th>
+                    <th class="py-2">Job ID</th>
+                    <th class="partner-line-email py-2">Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                <t t-foreach="props.employees" t-as="salesperson" t-key="salesperson.id">
+                    <tr class="partner-line partner-info"
+                        t-on-click="selectSalesperson.bind(self, salesperson)" id="salesperson.id">
+                        <td class="text-truncate">
+                            <t t-esc="salesperson.name"/>
+                        </td>
+                        <td>
+                            <t t-esc="salesperson.role"/>
+                        </td>
+                        <td class="partner-line-email">
+                            <i class="fa fa-fw fa-paper-plane-o me-2"></i>
+                            <t t-esc="salesperson.email"/>
+                        </td>
+                    </tr>
+                </t>
+            </tbody>
+        </table>
+
+        <t t-set-slot="footer">
+            <div class="d-flex justify-content-start flex-wrap gap-2 w-100">
+                <button class="btn btn-secondary btn-lg lh-lg o-default-button"
+                    t-on-click="() => this.cancelSelection()">Discard</button>
+            </div>
+        </t>
+    </Dialog>
+</t>
