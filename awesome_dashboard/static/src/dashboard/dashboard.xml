@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard" owl="1">
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomersKanbanView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeadView">Leads</button>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
+            <div class="d-flex flex-wrap">
+                <!-- <DashboardItem>
+                    <t t-set-slot="content">
+                        this is no size provided card
+                    </t>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <t t-set-slot="content">
+                        this is size 2 provided card
+                    </t>
+                </DashboardItem> -->
+
+                <div class="d-flex flex-wrap" t-if="statistics.flag">
+                    <!-- <DashboardItem t-if="statistics.average_quantity">
+                        <t t-set-slot="content">
+                            Average amount of t-shirt by order this month
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.average_quantity"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
+                    <DashboardItem t-if="statistics.average_time">
+                        <t t-set-slot="content">
+                            Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.average_time"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
+                    <DashboardItem t-if="statistics.nb_new_orders">
+                        <t t-set-slot="content">
+                            Number of new orders this month
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.nb_new_orders"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
+                    <DashboardItem t-if="statistics.nb_cancelled_orders">
+                        <t t-set-slot="content">
+                            Number of cancelled orders this month
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.nb_cancelled_orders"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
+                    <DashboardItem t-if="statistics.total_amount">
+                        <t t-set-slot="content">
+                            Total amount of new orders this month
+                            <h2 class="fw-bold text-center">
+                                <t t-esc="statistics.total_amount"/>
+                            </h2>
+                        </t>
+                    </DashboardItem>
+
+                    <DashboardItem size="2">
+                        <t t-set-slot="content">
+                            Shirt orders by size
+                            <PieChart data="statistics.orders_by_size || {}" label="'Shirt orders by size'"/>
+                        </t>
+                    </DashboardItem> -->
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                            <t t-set-slot="content">
+                                <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                                <t t-component="item.Component" t-props="itemProp" />
+                            </t>
+                        </DashboardItem>
+                    </t>
+                </div>
+            </div>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigurationDialog">
+        <Dialog title="'Dashboard configuration'">
+            Which cards do you whish to see ?
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.enabled" onChange="(ev) => this.onChange(ev, item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="done">
+                    Done
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
