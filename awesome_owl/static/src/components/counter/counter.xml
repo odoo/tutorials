@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="component_counter">
+      <div class="d-inline-block border border-2 border-dark p-4 text-center mt-2 shadow-lg bg-white rounded-3">
+        <div class="mb-3 pb-2 border-bottom border-2 border-black">
+            <h2 class="fw-bold"><t t-esc="props.title"/></h2>
+        </div>
+        <h3 class="mb-4">
+            <span class="text-muted">Value:</span> 
+            <span class="badge bg-secondary fs-3"><t t-esc="state.value"/></span>
+        </h3>
+        <div class="mt-3 d-flex justify-content-center gap-4">
+            <button type="button" 
+                    class="btn btn-danger border-dark px-4 py-2 fw-bold" 
+                    t-on-click="decrement">
+                <i class="fa fa-minus me-2"/> Decrement
+            </button>
+            <button type="button" 
+                    class="btn btn-success border-dark px-4 py-2 fw-bold" 
+                    t-on-click="increment">
+                <i class="fa fa-plus me-2"/> Increment
+            </button>
+        </div>
+      </div>
+    </t>
+</templates>

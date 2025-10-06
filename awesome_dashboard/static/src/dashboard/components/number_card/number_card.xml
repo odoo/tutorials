@@ -1,0 +1,10 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.NumberCard">
+        <h4 class="text-nowrap">
+            <t t-out="props.label"/>
+        </h4>
+        <p class="fs-2 fw-bold">
+            <t t-out="props.value"/>
+        </p>
+    </t>
+</templates>
