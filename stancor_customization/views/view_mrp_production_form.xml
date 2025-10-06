@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_mrp_production_form_inherit_stancor_customization" model="ir.ui.view">
+        <field name="name">view.mrp.production.form.inherit.stancor.customization</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_description_variants']" position="after">
+                <field name="s_unit"/>
+                <field name="s_quantity" invisible="s_unit in (False, '')"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
