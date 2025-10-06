@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+product_warranty.access_product_warranty,access_product_warranty,product_warranty.model_product_warranty,base.group_user,1,1,1,1
+product_warranty.access_add_warranty_wizard,access_add_warranty_wizard,product_warranty.model_add_warranty_wizard,base.group_user,1,1,1,1
+product_warranty.access_add_warranty_line,access_add_warranty_line,product_warranty.model_add_warranty_line,base.group_user,1,1,1,1
