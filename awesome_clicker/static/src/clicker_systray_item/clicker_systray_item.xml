@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="clicker_systray_item.ClickerSystrayItem">
+        <div class="o_menu_systray d-flex align-items-center justify-content-between gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <Dropdown>
+                    <button class="d-flex gap-2">
+                        <span class="d-flex align-items-center gap-1">
+                            <ClickerValue/>
+                            <i class="fa fa-mouse-pointer" aria-hidden="true"></i>
+                        </span>
+                        <span class="d-flex align-items-center gap-1">
+                            <t t-out="clicker.totalTrees()" />
+                            <i class="fa fa-tree" aria-hidden="true"></i>
+                        </span>
+                        <span class="d-flex align-items-center gap-1">
+                            <t t-out="clicker.totalFruits()" />
+                            <i class="fa fa-apple" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                    <t t-set-slot="content">
+                        <DropdownItem>
+                            <button class="btn btn-secondary" t-on-click="this.openClickerClientAction"> Open the clicker game </button>
+                        </DropdownItem>
+                        <DropdownItem>
+                            <button class="btn btn-secondary" t-on-click="() => this.clicker.buyBot('click')"> Buy a ClickBot </button>
+                        </DropdownItem>
+                        <DropdownItem t-foreach="this.clicker.trees" t-as="tree" t-key="tree">
+                            <t t-out="tree_value.count"/> x
+                            <t t-out="tree"/> Tree
+                        </DropdownItem>
+                        <DropdownItem t-foreach="this.clicker.trees" t-as="tree" t-key="tree">
+                            <t t-out="tree_value.fruits"/> x
+                            <t t-out="tree"/>
+                        </DropdownItem>
+                    </t>
+                </Dropdown>
+            </div>
+        </div>
+    </t>
+</templates>

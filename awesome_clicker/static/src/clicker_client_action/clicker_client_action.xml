@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="clicker_client_action.ClickerClientAction">
+        <div class="d-flex flex-col p-2 gap-1">
+            <span class="d-flex align-items-center">
+                Clicks: <ClickerValue />
+            </span>
+            <button t-on-click="" class="btn btn-primary">
+                increment
+            </button>
+        </div>
+        <div>
+            <Notebook>
+                <t t-set-slot="clicks" title="'Clicks'" isVisible="this.clicker.level >= 1">
+                    <div class="p-3">
+                        <h2 class="mb-2">Bots</h2>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 shadow-sm bg-light">
+                                    <div class="fw-semibold mb-2">
+                                        <span class="text-muted small d-block">
+                                            <t t-out="this.clicker.clickBots" />
+ × ClickBots (10 clicks / 10 seconds)
+                                        </span>
+                                    </div>
+                                    <button t-att-disabled="!this.clicker.clicks >= 1000" t-on-click="()=> this.clicker.buyBot('click')" t-attf-class="btn btn-sm w-100 {{ this.clicker.clicks >= 1000 ? 'btn-primary' : 'btn-outline-secondary' }}">
+                            Buy ClickBot (1000 clicks)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 shadow-sm bg-light">
+                                    <div class="fw-semibold mb-2">
+                                        <span class="text-muted small d-block">
+                                            <t t-out="this.clicker.bigBots" />
+ × BigBots (100 clicks / 10 seconds)
+                                        </span>
+                                    </div>
+                                    <button t-att-disabled="!this.clicker.clicks >= 5000" t-on-click="()=> this.clicker.buyBot('big')" t-attf-class="btn btn-sm w-100 {{ this.clicker.clicks >= 5000 ? 'btn-primary' : 'btn-outline-secondary' }}">
+                            Buy BigBot (5000 clicks)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h2 class="mt-3 mb-3">Power Multiplier</h2>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 shadow-sm bg-light">
+                                    <div class="fw-semibold mb-2">
+                                        <span class="text-muted small d-block">
+                                            <t t-out="this.clicker.powerBots - 1" />
+ × PowerBots Multiplies bot output
+                                        </span>
+                                    </div>
+                                    <button t-att-disabled="!this.clicker.clicks >= 50000" t-on-click="()=> this.clicker.buyBot('power')" t-attf-class="btn btn-sm w-100 {{ this.clicker.clicks >= 50000 ? 'btn-primary' : 'btn-outline-secondary' }}">
+                            Buy PowerBot (50000 clicks)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+                <t t-set-slot="trees" title="'Trees and Fruits'" isVisible="this.clicker.level >=4">
+                    <div class="p-3">
+
+                        <h2 class="mt-3 mb-3">Trees</h2>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 shadow-sm bg-light">
+                                    <div class="fw-semibold mb-2">
+                                        <span class="text-muted small d-block">
+                                            <t t-out="this.clicker.trees.pear.count" />
+ × PearTree (1 pear / 30 seconds)
+                                        </span>
+                                    </div>
+                                    <button t-att-disabled="!this.clicker.clicks >= 1000000" t-on-click="()=> this.clicker.buyTree('pear')" t-attf-class="btn btn-sm w-100 {{ this.clicker.clicks >= 1000000 ? 'btn-success' : 'btn-outline-secondary' }}">
+                            Buy PearTree (1,000,000 clicks)
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 shadow-sm bg-light">
+                                    <div class="fw-semibold mb-2">
+                                        <span class="text-muted small d-block">
+                                            <t t-out="this.clicker.trees.cherries.count" />
+ × CherryTree (1 cherry / 30 seconds)
+                                        </span>
+                                    </div>
+                                    <button t-att-disabled="!this.clicker.clicks >= 1000000" t-on-click="()=> this.clicker.buyTree('cherries')" t-attf-class="btn btn-sm w-100 {{ this.clicker.clicks >= 1000000 ? 'btn-success' : 'btn-outline-secondary' }}">
+                            Buy CherryTree (1,000,000 clicks)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <h2 class="mt-3 mb-3">Fruits</h2>
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 shadow-sm bg-light">
+                                    <div class="fw-semibold mb-2">
+                                        <t t-out="this.clicker.trees.pear.fruits" />
+ × pear
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="border rounded p-3 shadow-sm bg-light">
+                                    <div class="fw-semibold mb-2">
+                                        <t t-out="this.clicker.trees.cherries.fruits" />
+ × cherry
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </Notebook>
+        </div>
+    </t>
+</templates>
