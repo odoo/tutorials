@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="order_line_template" xml:space="preserve">
+    <t t-name="pos_orderline_employee.order_line" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
+        <xpath expr="//li[@t-if]" position="after">
+            <li t-if="line.employeeName" class="employee-note w-50 p-2 mt-2 rounded-pill d-flex align-items-center bg-primary text-white">
+                <i class="fa fa-user me-1" role="img" aria-label="Employee Name" title="Employee Name" />
+                <t t-esc="line.employeeName" class="text-uppercase fw-bold"/>
+            </li>
+        </xpath>
+    </t>
+</templates>
