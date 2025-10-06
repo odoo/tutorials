@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<template xml:space="preserve">
+    <t t-name="todo_item.todo_item">
+        <div t-att-class="{'text-muted text-decoration-line-through': props.todo.is_completed}">
+            <input class="me-1" type="checkbox" t-on-click="this.props.clickOnCheckBox"/>
+            <t t-out="props.todo.id"/>
+            <t t-out="props.todo.description"/>
+            <t t-out="props.todo.is_completed"/>
+            <span class="fa fa-remove ms-1" t-on-click="this.props.clickOnCross"/>
+        </div>
+    </t>
+</template>

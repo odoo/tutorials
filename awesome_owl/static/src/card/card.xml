@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<template xml:space="preserve">
+    <t t-name="card.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <t class="card-title" t-out="props.title"/>
+                <t t-out="props.content"/>
+            </div>
+        </div>
+    </t>
+</template>
