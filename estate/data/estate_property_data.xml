@@ -7,7 +7,7 @@
         <field name="state">new</field>
         <field name="description">A nice and big villa</field>
         <field name="postcode">12345</field>
-        <field name="date_availability">2020-12-02</field>
+        <field name="date_availability" eval="datetime.today().date() - relativedelta(days=1)"/>
         <field name="expected_price">1600000</field>
         <field name="bedrooms">6</field>
         <field name="living_area">100</field>
@@ -24,7 +24,7 @@
         <field name="state">cancelled</field>
         <field name="description">Home in a trailer park</field>
         <field name="postcode">54321</field>
-        <field name="date_availability">1970-01-01</field>
+        <field name="date_availability" eval="datetime.today().date() - relativedelta(days=2)"/>
         <field name="expected_price">100000</field>
         <field name="selling_price">120000</field>
         <field name="bedrooms">1</field>
@@ -39,7 +39,7 @@
         <field name="state">new</field>
         <field name="description">A cozy cottage in the forest</field>
         <field name="postcode">98765</field>
-        <field name="date_availability">2025-09-30</field>
+        <field name="date_availability" eval="datetime.today().date() - relativedelta(days=3)"/>
         <field name="expected_price">50000</field>
         <field name="bedrooms">1</field>
         <field name="living_area">30</field>
