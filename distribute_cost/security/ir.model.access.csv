@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_distribute_cost_wizard,sale.order.distribute.cost.wizard,model_sale_order_distribute_cost_wizard,,1,1,1,1
+access_sale_order_distribute_cost_line_wizard,sale.order.distribute.cost.line.wizard,model_sale_order_distribute_cost_line_wizard,,1,1,1,1
+access_sale_order_line_distribution_tag,sale.order.line.distribution.tag,model_sale_order_line_distribution_tag,,1,0,1,0
