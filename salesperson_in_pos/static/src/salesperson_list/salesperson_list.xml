@@ -1,0 +1,32 @@
+<templates id="template" xml:space="preserve">
+  <t t-name="POS_Salesperson.SalespersonList">
+    <Dialog bodyClass="'overflow-y-auto'" contentClass="'h-100'">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <t t-foreach="getSalesPerson()" t-as="salesperson" t-key="salesperson.id">
+            <tr 
+              t-att-class="salesperson.id == props.salesperson?.id ? 'active' : ''" 
+              t-on-click="() => this.clickSalesPerson(salesperson)">
+              <td t-out="salesperson.name"/>
+            </tr>
+          </t>
+        </tbody>
+      </table>
+
+      <t t-set-slot="footer">
+        <div class="d-flex justify-content-start flex-wrap gap-2 w-100">
+          <button 
+            class="btn btn-secondary btn-lg lh-lg o-default-button" 
+            t-on-click="() => this.clickSalesPerson(salesperson)">
+            Discard
+          </button>
+        </div>
+      </t>
+    </Dialog>
+  </t>
+</templates>
