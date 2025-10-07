@@ -1,0 +1,47 @@
+@include media-breakpoint-down(lg) {
+
+    .salesperson-line {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        padding: 12px 24px;
+        border-bottom: 1px solid $o-gray-300;
+
+        td {
+            border: 0;
+            flex-basis: 100%;
+            padding: 5px;
+            background-color: transparent;
+        }
+    }
+
+    .salesperson-line .pos-right-align {
+        text-align: left;
+    }
+
+    .edit-salesperson-button-cell {
+        order: 4;
+    }
+}
+
+.salesperson-line {
+    &:hover i.oi-chevron-right {
+        transition: $transition-base;
+        transform: translateX(.5rem);
+        color: $o-main-link-color;
+    }
+
+    &.selected {
+        background-color: $o-component-active-bg;
+        border: $border-width solid $o-component-active-border;
+    }
+
+    &.selected .btn.btn-link:hover .fa-check {
+        display: none;
+    }
+
+    &.selected .btn.btn-link:hover::after {
+        content: "\e852";
+        font-family: 'odoo_ui_icons';
+    }
+}
