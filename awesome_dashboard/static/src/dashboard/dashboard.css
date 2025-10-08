@@ -1,0 +1,11 @@
+.o_dashboard {
+    background-color: #f0f0f0;
+}
+@media (max-width: 767.98px) {
+  .o_dashboard .card {
+    width: 100% !important;      /* force full width */
+    max-width: 100% !important;
+    display: block !important;   /* no inline-block on mobile */
+  }
+}
+
