@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+
+  <t t-name="awesome_owl.card">
+    <div class="card d-inline-block m-2" style="width: 20rem">
+      <div class="card-body">
+
+        <div class="d-flex justify-content-between">
+          <h5 class="card-title">
+            <t t-esc="props.title" />
+          </h5>
+          <span class="text-sm text-primary cursor-pointer" t-on-click="this.handleToggle">Toggle</span>
+        </div>
+
+        <t t-if="this.state.toggle == false">
+          <t t-slot="default" />
+        </t>
+
+      </div>
+
+    </div>
+  </t>
+
+</templates>

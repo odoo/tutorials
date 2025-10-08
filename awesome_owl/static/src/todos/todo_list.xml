@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_list">
+        <div class="card d-inline-block m-2 p-2">
+            <input placeholder="Enter a new task" class="form-control" type="text" t-on-keyup="addTodo" t-ref="inputRef" />
+            <div class="card-body">
+                <t t-foreach="state" t-as="todo" t-key="todo.id">
+                    <TodoItem data="todo" toggleState="toggleState" removeTodo="removeTodo" />
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>

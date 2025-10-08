@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<odoo>
+
+    <record id="ir_cron_estate_property_offer_expire_scheduler" model="ir.cron">
+        <field name="name">Auto Refused Expired Scheduler</field>
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="state">code</field>
+        <field name="code">model._cron_refuse_expired_offer_scheduler()</field>
+        <field name="interval_type">days</field>
+        <field name="interval_number">1</field>
+    </record>
+
+</odoo>
