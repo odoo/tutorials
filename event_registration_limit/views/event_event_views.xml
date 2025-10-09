@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Inherit Event form to add default_tickets_per_registration -->
+    <record id="event_event_view_form_from_event_inherited" model="ir.ui.view">
+        <field name="name">event.event.view.form.from.event.inherit</field>
+        <field name="model">event.event</field>
+        <field name="inherit_id" ref="event.view_event_form"/>
+        <field name="arch" type="xml">
+            <!-- Insert after the address field -->
+            <xpath expr="//group[@name='right_event_details']/field[@name='address_id']" position="after">
+                <field name="default_tickets_per_registration"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
