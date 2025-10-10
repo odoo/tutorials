@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="report_real_estate_offer" model="ir.actions.report">
+        <field name="name">Download Offer List</field>
+        <field name="model">real.estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">real_estate.real_estate_property_report_template_offer</field>
+        <field name="report_file">real_estate.real_estate_property_report_template_offer</field>
+        <field name="print_report_name">'Property Offers - %s' %(object.name or 'name').replace('/','')</field>
+        <field name="binding_model_id" ref="model_real_estate_property" />
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

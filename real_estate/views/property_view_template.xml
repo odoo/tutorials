@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="property_view_template">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="row mt-5 mb-5">
+                    <t t-call="real_estate.property_view_image_template" />
+                    <div class="col-lg-6 col-md-12 col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <t t-call="real_estate.property_offer_submitted_success_template" />
+                                    <div class="col-lg-8 col-md-8 col-sm-8 col-8">
+                                        <h4 class="card-title">
+                                            <t t-out="property['name']" /><span class="ms-2 fs-6 badge bg-warning"><t t-out="property['status']" /></span>
+                                        </h4>
+                                    </div>
+                                    <div class="col-lg-4 col-md-4 col-sm-4 col-4 d-flex justify-content-end"><a t-att-href="'/offer/' + str(property['id'])" class="btn btn-warning">Make Offer</a></div>
+                                </div>
+                                
+                                <div class="mb-2">
+                                    <span t-foreach="property['tags']" t-as="tag">
+                                        <span t-attf-class="badge {{ 'text-bg-primary' if tag_index % 2 == 0 else 'text-bg-info' }}" t-out="tag" />
+                                    </span>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        Description
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text">
+                                            <t t-out="property['description']" />
+                                        </p>
+                                    </div>
+                                    <ul class="w-100 list-group list-group-horizontal">
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Type <span class="badge text-bg-primary rounded-pill"><t t-out="property['type']" /></span></li>
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Price <span class="badge text-bg-primary rounded-pill"><t t-out="property['expected_price']" /></span></li>
+                                    </ul>
+                                    <ul class="w-100 list-group list-group-horizontal">
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Availability Date: <span class="badge text-bg-primary rounded-pill"><t t-out="property['date_availability']" /></span></li>
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Bedrooms <span class="badge text-bg-primary rounded-pill"><t t-out="property['bedrooms']" /></span></li>
+                                    </ul>
+                                    <ul class="w-100 list-group list-group-horizontal">
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Living Area: <span class="badge text-bg-primary rounded-pill"><t t-out="property['living_area']" /> sq.m</span></li>
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Facades <span class="badge text-bg-primary rounded-pill"><t t-out="property['facades']" /></span></li>
+                                    </ul>
+                                    <ul class="w-100 list-group list-group-horizontal">
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Garage <span class="badge text-bg-primary rounded-pill"><t t-out="'Available' if property['garage'] else 'Not Available'" /></span></li>
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Garden: <span class="badge text-bg-primary rounded-pill"><t t-out="'Available' if property['garden'] else 'Not Available'" /></span></li>
+                                    </ul>
+                                    <ul t-if="property['garden']" class="w-100 list-group list-group-horizontal">
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Garden Area: <span class="badge text-bg-primary rounded-pill"><t t-out="property['garden_area']" /></span></li>
+                                        <li class="w-50 list-group-item d-flex justify-content-between align-items-center">Garden Orientation: <span class="badge text-bg-primary rounded-pill"><t t-out="property['garden_orientation']" /></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mt-3">
+                        <table t-if="property['offers']" class="table border table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="3" class="text-center">OFFERS</th>
+                                </tr>
+                                <tr>
+                                    <th>S.No.</th>
+                                    <th>Partners</th>
+                                    <th>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="property['offers']" t-as="offer">
+                                    <tr>
+                                        <td><t t-out="offer_index + 1" /></td>
+                                        <td><t t-out="offer['partner']" /></td>
+                                        <td><t t-out="offer['price']" /></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <table t-else="" class="table border table-striped">
+                            <thead>
+                                <tr>
+                                    <th colspan="3" class="text-center">No offers made yet!!!</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_view_image_template">
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <img t-if="property['image']" class="card-img-top img-thumbnail" t-att-src="image_data_uri(property['image'])" alt="Property Image" />
+            <img t-else="" class="card-img-top img-thumbnail" src="../real_estate/static/src/images/card-default.svg" alt="Property Image" />
+        </div>
+    </template>
+    <template id="property_offer_submitted_success_template">
+        <t t-if="request.params.get('offer_submitted')">
+            <div class="alert alert-success alert-dismissible fade show col-12" role="alert">
+                Your offer has been submitted successfully!
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </t>
+    </template>
+    <template id="property_offer_submitted_error_template">
+        <t t-if="request.params.get('error')">
+            <div class="alert alert-danger alert-dismissible fade show col-12" role="alert">
+                <t t-out="request.params.get('error')"/>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </t>
+    </template>
+</odoo>
