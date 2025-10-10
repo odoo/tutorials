@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <t t-esc="props.title or 'Title'"/>
+                </h5>
+                <div t-if="props.toggle">
+                    <button class="btn btn-sm btn-primary" t-on-click="toggleContent">
+                        <t t-if="state.isOpen">off</t>
+                        <t t-else="">on</t>
+                    </button>
+               </div>
+                <t t-if="state.isOpen">
+                    <t t-slot="default"/>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

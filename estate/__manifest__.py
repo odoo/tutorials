@@ -1,0 +1,31 @@
+{
+    'name': 'estate',
+    'version': '1.0',
+    'summary': "A comprehensive real estate management solution.",
+    'description': """The Estate Management module provides an efficient way to manage properties, offers, property types, and tags.
+        It includes user access control, property status tracking, and an intuitive interface for managing real estate operations.""",
+    'category': 'Real Estate/Brokerage',
+    'author': 'Abhishek Patel',
+    'license': 'LGPL-3',
+    'depends': ['base', 'mail', 'website'],
+    'data': [
+        'security/estate_security.xml',
+        'security/ir.model.access.csv',
+        'wizard/estate_property_offer_wizard.xml',
+        'views/estate_property_views.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_property_offer_views.xml',
+        'views/res_user_views.xml',
+        'views/estate_menus.xml',
+        'views/website_views.xml',
+        'views/website_properties_list.xml',
+        'report/estate_template_reports.xml',
+        'report/estate_property_report_views.xml',
+    ],
+    'demo': [
+        'data/demo_estate_property.xml',
+    ],
+    'installable': True,
+    'application': True,
+}

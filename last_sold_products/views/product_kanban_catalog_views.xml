@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_template_kanban_view" model="ir.ui.view">
+        <field name="name">product.view.kanban.catalog.inherit.stock</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='o_kanban_qty_available']" position="inside">
+                <field name="virtual_available" invisible="1"/>
+                <t t-set="diff" t-value="record.virtual_available.raw_value - record.qty_available.raw_value"/>
+                    <t t-if="diff &gt; 0">
+                       |<span class="text-success">+<t t-esc="diff"/></span>|
+                    </t>
+                    <t t-elif="diff &lt; 0">
+                        |<span class="text-danger"><t t-esc="diff"/></span>|
+                    </t>
+                    <t t-else="">
+                        |<t t-esc="diff"/>|
+                    </t>
+                    <field name="uom_id"/>
+            </xpath>
+            <xpath expr="//div/field[@name='product_template_attribute_value_ids']" position="after">
+                <span>
+                    <field name="last_invoice_time"/>
+                </span>
+            </xpath>
+        </field>
+    </record>
+</odoo>
