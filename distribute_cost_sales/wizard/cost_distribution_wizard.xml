@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="cost_distribution_wizard_view" model="ir.ui.view">
+            <field name="name">cost.distribution.wizard.form</field>
+            <field name="model">cost.distribution.wizard</field>
+            <field name="arch" type="xml">
+                <form name="Distributed Cost">
+                    <group>
+                        <field name="target_line_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="sale_order_line_id"/>
+                                <field name="is_selected"/>
+                                <field name="amount"/>
+                            </list>
+                        </field>
+                    </group>
+                    <footer>
+                        <button string="Divide" class="btn btn-primary" type="object" name="distribute_cost_wizard_action"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="distribute_cost_wizard_action" model="ir.actions.act_window">
+            <field name="name">Distributed Cost</field>
+            <field name="res_model">cost.distribution.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="cost_distribution_wizard_view"/>
+        </record>
+    </data>
+</odoo>
