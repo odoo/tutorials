@@ -37,6 +37,12 @@
             'web/static/src/libs/fontawesome/css/font-awesome.css',
             'awesome_owl/static/src/**/*',
         ],
+        'awesome_owl.assets_counter': [
+                    'awesome_owl/static/src/**/*',
+                ],
+        'awesome_owl.assets_card': [
+                            'awesome_owl/static/src/**/*',
+                        ],
     },
     'license': 'AGPL-3'
 }
