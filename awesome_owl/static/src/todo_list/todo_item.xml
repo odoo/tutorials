@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="todo_item-body" t-att-class="{'text-muted text-decoration-line-through': this.todo.isCompleted}">
+            <p class="todo_item-text">
+                <input type="checkbox" t-att-checked="this.todo.isCompleted" t-on-change="this.toggleState"/>
+                <t t-esc="this.id"/>. <t t-out="this.todo.description"/> <span class="fa fa-remove" t-on-click="this.removeTodo"/>
+            </p>
+        </div>
+    </t>
+
+</templates>

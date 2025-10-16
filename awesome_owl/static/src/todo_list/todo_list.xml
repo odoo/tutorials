@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_list">
+        <div class="card d-inline-block m-2">
+            <div class="todo_list-body border p-2 m-2">
+                <input
+                    type="text"
+                    t-on-keyup="addTodo"
+                    placeholder="Enter something to do..."
+                    t-ref="todo-input"
+                />
+                <t t-foreach="Object.keys(this.state.todos)" t-as="id" t-key="id">
+                    <TodoItem 
+                        id="id" 
+                        todo="this.state.todos[id]" 
+                        toggleState.bind="() => this.toggleState(id)"
+                        removeTodo.bind="() => this.removeTodo(id)"
+                    />
+                </t>
+            </div>
+        </div>
+    </t>
+
+</templates>
