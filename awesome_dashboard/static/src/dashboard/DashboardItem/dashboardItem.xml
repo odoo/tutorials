@@ -1,0 +1,11 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div class="dashboard-item" t-att-style="widthStyle">
+            <div class="card">
+                <div class="card-body">
+                    <t t-slot="default"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

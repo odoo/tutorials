@@ -1,0 +1,30 @@
+<odoo noupdate="1">
+    <record id="whatsapp_template_property_sold" model="whatsapp.template">
+        <field name="name">Property Sold Notification</field>
+        <field name="template_name">property_sold</field>
+        <field name="lang_code">en</field>
+        <field name="template_type">utility</field>
+        <field name="header_type">none</field>
+        <field name="footer_text">Reply 'stop' to unsubscribe</field>
+        <field name="phone_field">buyer_id.mobile</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="body">Hello {{1}}, Congratulations! Your property *{{2}}* has been successfully sold. Thank you for trusting us!</field>
+        <field name="variable_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {
+                'name': '{{1}}',
+                'demo_value': 'John Doe',
+                'line_type': 'body',
+                'field_type': 'field',
+                'field_name': 'buyer_id.name'
+            }),
+            (0, 0, {
+                'name': '{{2}}',
+                'demo_value': 'Luxury Villa',
+                'line_type': 'body',
+                'field_type': 'field',
+                'field_name': 'name'
+            })
+        ]"/>
+    </record>
+</odoo>
