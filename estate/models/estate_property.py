@@ -20,3 +20,4 @@ class EstateProperty(models.Model):
         string='Orientation',
         selection=[('North', 'North'), ('West', 'West'), ('East', 'East'), ('South', 'South')]
     )
+    
