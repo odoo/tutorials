@@ -6,13 +6,6 @@ class EstateProperty(models.Model):
 
 
     #Adding fields
-    """
-    id = fields.Integer(required=True,default=nextval('estate_property_id_seq'::regclass))
-    create_uid = fields.Integer()
-    create_date = fields.Datetime()
-    write_uid = fields.Integer()
-    write_date = fields.Datetime()
-    """
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
