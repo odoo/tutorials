@@ -16,7 +16,9 @@
     'application': True,
     'depends': ['base'],
 
-    'data': [],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'assets': {
 
     },
