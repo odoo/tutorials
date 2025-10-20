@@ -1,16 +1,32 @@
 from odoo import models, fields
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Create a new table"
 
-    name = fields.Char(string='Name', required=True)
+    # FIELDS DECLARATION #
+    name = fields.Char(
+        string='Name', 
+        required=True
+    )
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Post code')
-    date_availability = fields.Date(string='Availability date')
+    date_availability = fields.Date(
+        string='Availability date',
+        default=fields.Date.add(fields.Date.today(), months=3),
+        copy=False 
+    )
     expected_price = fields.Float(string='Expected price', required=True)
-    selling_price = fields.Float(string='Selling price')
-    bedrooms = fields.Integer(string='Bedrooms')
+    selling_price = fields.Float(
+        string='Selling price',
+        readonly=True,
+        copy=False
+    )
+    bedrooms = fields.Integer(
+        string='Bedrooms',
+        default=2
+    )
     living_area = fields.Integer(string='Living area')
     facades = fields.Integer(string='Facades')
     garage = fields.Boolean(string='Garage')
@@ -19,4 +35,13 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection( 
         string='Garden orientation',
         selection= [('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+    )
+    active = fields.Boolean(
+        string='Active',
+        default=True
+    )
+    state = fields.Selection(
+        string='State',
+        selection= [('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        default='new'
     )
