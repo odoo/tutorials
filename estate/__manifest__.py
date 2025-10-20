@@ -6,5 +6,7 @@
     'category': 'Tutorials',
     'description': "Soon to be the best module ever",
     'application': True,
-    'installable': True,
+    'data': [
+        'security/ir.model.access.csv',
+    ],
 }
