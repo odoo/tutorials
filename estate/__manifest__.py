@@ -3,5 +3,5 @@
     'depends': [
         'base',
     ],
-    'application': 'true',
+    'application': 'True',
 }
