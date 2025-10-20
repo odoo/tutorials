@@ -1,4 +1,4 @@
-from odoo import models, fields 
+from odoo import models, fields
 
 
 class EstateProperty(models.Model):
@@ -21,4 +21,3 @@ class EstateProperty(models.Model):
         string='Selection',
         selection=[('north', 'North'), ('south', 'South'),
         ('east', 'East'), ('west', 'West')])
-

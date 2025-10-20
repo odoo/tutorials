@@ -1,8 +1,10 @@
 {
-    'name' : 'Odoo Tutorial Real Estate',
-    'category':'Real Estate',
+    'name': 'Odoo Tutorial Real Estate',
+    'category': 'Real Estate',
     'version': '19.0.1.0',
-    'summary' : 'Real Estate Management Tutorial',
+    'summary': 'Real Estate Management Tutorial',
     'application': True,
-    
+    'data': [
+        'security/ir.model.access.csv'
+    ]
 }
