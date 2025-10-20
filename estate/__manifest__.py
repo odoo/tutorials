@@ -7,7 +7,7 @@
     'application': True,
     'installable': True,
     'license': "LGPL-3",
-    'data':[
+    'data': [
         'security/ir.model.access.csv',
     ]
 }
