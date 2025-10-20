@@ -1,9 +1,9 @@
 from odoo import fields, models
 
+
 class EstateProprety(models.Model):
     _name = "estate.proprety"
     _description = "Estate Proprety"
-
 
     name = fields.Char('Estate Name', required=True)
     description = fields.Text('Estate Description', required=True)
@@ -21,4 +21,3 @@ class EstateProprety(models.Model):
         selection=[('north', 'North'), ('south', 'South'), ('west', 'West'), ('east', 'East')],
         help="Garden orientation selection"
     )
-    
