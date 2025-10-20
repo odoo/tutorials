@@ -8,5 +8,4 @@
         'views/estate_menus.xml',
     ],
     'application': True,
-    'installable': True,
 }
