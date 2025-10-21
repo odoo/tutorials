@@ -32,7 +32,6 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
     best_price = fields.Float(compute="_compute_best_offer", string="Best Offer")
 
-
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -44,7 +43,8 @@ class EstateProperty(models.Model):
             prices = record.offer_ids.mapped("price")
             if len(prices) > 0:
                 record.best_price = max(prices)
-            else:record.best_price = 0
+            else:
+                record.best_price = 0
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -66,5 +66,5 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "sold":
                 raise UserError("Error - You cannot cancel a sold property !")
-            record.state="cancelled"
+            record.state = "cancelled"
         return True

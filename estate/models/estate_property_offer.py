@@ -28,12 +28,12 @@ class EstatePropertyOffer(models.Model):
     def accept_offer(self):
         for offer in self:
             for other_offer in offer.property_id.offer_ids:
-                    if other_offer.status == "accepted" and offer.id != other_offer.id:
-                        raise UserError("An offer is already accepted...")
+                if other_offer.status == "accepted" and offer.id != other_offer.id:
+                    raise UserError("An offer is already accepted...")
             offer.status = "accepted"
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
-        
+
     def refuse_offer(self):
         for offer in self:
             offer.status = "refused"
