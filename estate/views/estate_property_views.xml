@@ -24,7 +24,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
-                <sheet>       
+                <sheet>
+                    <div>
+                        <h1>
+                            <field name="name" string="Title" />
+                        </h1>
+                    </div>       
                     <group>
                         <group>
                             <field name="postcode" string="Postcode" />
