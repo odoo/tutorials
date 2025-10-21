@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 
 class EstateProperty(models.Model):
@@ -37,7 +37,7 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('canceled', 'Canceled')],
         default='new'
     )
     property_type_id = fields.Many2one("estate.property.type")
@@ -58,6 +58,22 @@ class EstateProperty(models.Model):
     ####################################################
     # FUNCTIONS DECLARATION
     ####################################################
+
+    def cancel_property_button(self):
+        for record in self:
+            if record.state != "sold":
+                record.state = "canceled"
+            else:
+                raise exceptions.UserError("Sold properties cannot be canceled")
+        return True
+
+    def sold_property_button(self):
+        for record in self:
+            if record.state != "canceled":
+                record.state = "sold"
+            else:
+                raise exceptions.UserError("Canceled properties cannot be sold")
+        return True
 
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
