@@ -73,5 +73,5 @@
                     <filter string="bedrooms" name="group_bedrooms" context="{'group_by':'bedrooms'}"/>
             </search>
         </field>
-    </record>  
+    </record>   
 </odoo>
