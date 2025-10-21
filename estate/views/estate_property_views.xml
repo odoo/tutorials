@@ -37,6 +37,9 @@
                                 <field name="state"/>
                             </group>
                         </page>
+                        <page name="notes" string="Notes">
+                            <field name="notes"/>
+                        </page>
                         <page string="Offers">
                             <field name="offer_ids"/>
                         </page>
