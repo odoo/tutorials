@@ -6,7 +6,12 @@
     'license': 'LGPL-3',
     'summary': 'Real Estate Management Tutorial',
     'application': True,
+    'depends': [
+        'base',
+    ],
     'data': [
-        'security/ir.model.access.csv'
-    ]
+        'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+        'views/menu_views.xml',
+    ],
 }
