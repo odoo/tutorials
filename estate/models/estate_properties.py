@@ -1,4 +1,7 @@
-from odoo import fields, models
+from odoo import api, fields, models
+
+DEFAULT_GARDEN_AREA = 10
+DEFAULT_GARDEN_ORIENTATION = "north"
 
 
 class PropertyModel(models.Model):
@@ -10,6 +13,7 @@ class PropertyModel(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(default=fields.Date.add(fields.Date.today(), months=3), copy=False)
     expected_price = fields.Float(required=True)
+    best_offer = fields.Float(compute="_get_highest_price")
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -18,13 +22,9 @@ class PropertyModel(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        selection=[
-            ('north', 'North'),
-            ('south', 'South'),
-            ('east', 'East'),
-            ('west', 'West')
-        ]
+        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
     )
+    total_living_area = fields.Integer(compute="_compute_total_area")
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
@@ -43,3 +43,23 @@ class PropertyModel(models.Model):
     salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_living_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids")
+    def _get_highest_price(self):
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped("price")) if record.offer_ids else 0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        for record in self:
+            if record.garden:
+                record.garden_area = DEFAULT_GARDEN_AREA
+                record.garden_orientation = DEFAULT_GARDEN_ORIENTATION
+            else:
+                record.garden_area = 0
+                record.garden_orientation = None
