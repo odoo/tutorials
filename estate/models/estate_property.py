@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     notes = fields.Html()
-    date_availability = fields.Date(copy=False, default=datetime.date.today()+relativedelta(months=+3))
+    date_availability = fields.Date(copy=False, default=datetime.date.today() + relativedelta(months=+3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -29,9 +29,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
-    best_price = fields.Float(compute = "_compute_best_offer", string="Best Offer")
-
-
+    best_price = fields.Float(compute="_compute_best_offer", string="Best Offer")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -45,7 +43,7 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        if self.garden == True:
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
