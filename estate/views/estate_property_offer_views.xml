@@ -6,7 +6,9 @@
         <field name="arch" type="xml">
             <list>
                 <field name="price"/>
-                <field name="partner_id"/>
+                <field name="partner_id" width="200"/>
+                <field name="validity" string="Validity (days)" width="100%"/>
+                <field name="date_deadline"/>
                 <field name="status"/>
             </list>
         </field>
@@ -21,6 +23,8 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
+                        <field name="validity" string="Validity (days)"/>
+                        <field name="date_deadline"/>
                         <field name="status"/>
                     </group>
                 </sheet>
