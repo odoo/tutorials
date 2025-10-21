@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 DEFAULT_GARDEN_AREA = 10
 DEFAULT_GARDEN_ORIENTATION = "north"
@@ -63,3 +64,17 @@ class PropertyModel(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = None
+
+    def mark_as_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("A cancelled property cannot be set as sold.")
+            record.state = "sold"
+        return True
+
+    def mark_as_cancelled(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("A sold property cannot be set as cancelled.")
+            record.state = "cancelled"
+        return True
