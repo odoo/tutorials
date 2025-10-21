@@ -12,12 +12,14 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" string="Title" width="200"/>
+                <field name="property_type_id" width="100"/>
                 <field name="postcode" width="100"/>
                 <field name="bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability" string="Available From"/>
+                <field name="tag_ids" widget="many2many_tags" width="100%"/>
             </list>
         </field>
     </record>
@@ -32,9 +34,12 @@
                         <h1>
                             <field name="name"/>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
+                    <separator/>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -56,6 +61,15 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -68,6 +82,7 @@
         <field name="arch" type="xml">
             <search string="Property Search">
                 <field name="name" string="Title"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
