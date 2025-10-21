@@ -7,6 +7,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Text()
+    notes = fields.Html()
     postcode = fields.Char()
 
     date_availability = fields.Date(

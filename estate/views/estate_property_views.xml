@@ -51,6 +51,9 @@
                             <group> <field name="garden_area"/> </group>
                             <group> <field name="garden_orientation"/> </group>
                         </page>
+                        <page name="notes" string="Notes">
+                            <field name="notes"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
