@@ -39,3 +39,15 @@ class PropertyOffer(models.Model):
             elif offer.date_deadline:
                 delta = (offer.date_deadline - fields.Date.today()).days
                 offer.validity = delta
+
+    def action_accept_offer(self):
+        for offer in self:
+            offer.status = "accepted"
+
+        return True
+
+    def action_refuse_offer(self):
+        for offer in self:
+            offer.status = "refused"
+
+        return True
