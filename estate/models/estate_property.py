@@ -7,11 +7,19 @@ class EstateProperty(models.Model):
 
     name = fields.Char('Property Name', required=True)
     description = fields.Text()
+    type_id = fields.Many2one('estate.property.type', 'Property Type')
     active = fields.Boolean(default=True)
-    postcode = fields.Char()
-    date_availability = fields.Datetime("Available From", copy=False, default=fields.Datetime.add(fields.Datetime.today(), months=3))
+
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    salesperson_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
+
+    date_available = fields.Datetime("Available From", copy=False, default=fields.Datetime.add(fields.Datetime.today(), months=3))
     expected_price = fields.Float()
     selling_price = fields.Float(readonly=True, copy=False)
+
+    postcode = fields.Char()
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer()
