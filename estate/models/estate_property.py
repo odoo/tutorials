@@ -7,7 +7,7 @@ class EstateProperty(models.Model):
     _description = "property data"
 
     name = fields.Char('name', required=True)
-    description = fields.Text('desc')
+    description = fields.Text('description')
     postcode = fields.Char('postcode')
     date_availability = fields.Date(copy=False,default=date.today() + relativedelta(months=3))
     expected_price = fields.Float()
@@ -17,7 +17,7 @@ class EstateProperty(models.Model):
     facades = fields.Integer('# Facades')
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer('garden.size')
+    garden_area = fields.Integer('garden size')
     garden_orientation = fields.Selection(
         string='Orientation',
         selection=[('North', 'North'), ('West', 'West'), ('East', 'East'), ('South', 'South')]
