@@ -1,11 +1,14 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Properties"
 
-    # FIELDS DECLARATION #
+    ####################################################
+    # FIELDS DECLARATION
+    ####################################################
+
     name = fields.Char(
         string='Title',
         required=True,
@@ -47,5 +50,26 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many(
         "estate.property.offer",
-        "poperty_id"
+        "property_id"
     )
+    total_area = fields.Float(compute="_compute_total_area")
+    best_offer = fields.Float(compute="_compute_best_price")
+
+    ####################################################
+    # FUNCTIONS DECLARATION
+    ####################################################
+
+    @api.depends("garden_area", "living_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        self.garden_orientation = "%s" % ("north" if self.garden else "")
+        self.garden_area = "%s" % (10 if self.garden else "")
