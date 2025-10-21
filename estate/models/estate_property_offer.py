@@ -1,5 +1,4 @@
 from odoo import api, models, fields
-import datetime
 
 
 class EstatePropertyOffer(models.Model):
@@ -20,7 +19,7 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity')
     def _compute_deadline(self):
         for records in self:
-            records.date_deadline = fields.Datetime.add(fields.Date.today(), days=records.validity) 
+            records.date_deadline = fields.Datetime.add(fields.Date.today(), days=records.validity)
 
     def inverse_deadline(self):
         for records in self:
