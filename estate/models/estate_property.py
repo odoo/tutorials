@@ -8,6 +8,7 @@ class Property(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Text()
+    notes = fields.Html()
     postcode = fields.Char()
     date_availability = fields.Date(default=fields.Date.today() + relativedelta(months=3), copy=False)
     expected_price = fields.Float(required=True)
