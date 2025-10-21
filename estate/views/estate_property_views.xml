@@ -62,6 +62,9 @@
                                 <field name="buyer_id"/>
                             </group>
                         </page>
+                        <page name="notes" string="Notes">
+                            <field name="notes"/>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
