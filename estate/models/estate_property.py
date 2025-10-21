@@ -1,9 +1,19 @@
 from odoo import models, fields, api, exceptions
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Properties"
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.',
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive.',
+    )
 
     ####################################################
     # FIELDS DECLARATION
@@ -15,6 +25,7 @@ class EstateProperty(models.Model):
         default="My new house"
     )
     description = fields.Text()
+    notes = fields.Html()
     postcode = fields.Char()
     date_availability = fields.Date(
         string='Available From',
@@ -89,3 +100,9 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         self.garden_orientation = "%s" % ("north" if self.garden else "")
         self.garden_area = "%s" % (10 if self.garden else "")
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_date_end(self):
+        for record in self:
+            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0 and record.selling_price > 0:
+                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
