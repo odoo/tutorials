@@ -2,6 +2,7 @@ from odoo import models, fields
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
@@ -27,3 +28,4 @@ class EstateProperty(models.Model):
         string='status',
         selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
     )
+    
