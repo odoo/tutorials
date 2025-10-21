@@ -29,3 +29,6 @@ class Estateproperty(models.Model):
         help="Estate state",
         default=('new')
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
+    salesperson = fields.Many2one('salesperson', string='Salesperson')
+    buyer = fields.Many2one('buyer', string='Buyer')
