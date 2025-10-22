@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 from datetime import date
 from dateutil.relativedelta import relativedelta
-
+from odoo.exceptions import UserError
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -11,6 +11,7 @@ class EstateProperty(models.Model):
     Property_Type = fields.Text()
     description = fields.Text()
     postcode = fields.Char()
+    state = fields.Text()  
     date_availability = fields.Date(copy=False, readonly=True, default=lambda self: date.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -25,10 +26,33 @@ class EstateProperty(models.Model):
         selection=[('north', 'North'), ('south', 'South'),
         ('east', 'East'), ('west', 'West')])
     active = fields.Boolean(default=True)
-    status = fields.Selection(copy=False, readonly=True, default='new',
-        string='status',
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+    status = fields.Selection(
+    copy=False,
+    readonly=True,
+    default='new',
+    string='Status',
+    selection=[
+        ('new', 'New'),
+        ('offer_received', 'Offer Received'),
+        ('offer_accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('cancelled', 'Cancelled')]  
     )
+
+    def action_set_sold(self):
+        if (self.state != "Cancelled"):
+            self.state = "Sold"
+        else:
+            raise UserError("A cancelled property can not be sold")
+        return True
+
+    def action_set_cancelled(self):
+        if (self.state != "Sold"):
+            self.state = "Cancelled"
+        else:
+            raise UserError("A sold property can not be cancelled")
+        return True
+      
     Property_Type_id = fields.Many2one('estate.property.type', string='Type')
     Buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     Salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
