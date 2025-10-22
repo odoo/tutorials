@@ -89,9 +89,6 @@
                             <page string="Offers">
                                     <field name="offer_ids"/>
                             </page>
-                            <page name="notes" string="Notes">
-                                <field name="notes"/>
-                            </page>
                             <page string="Other info">
                                 <group>
                                     <field name="buyer_id"/>
