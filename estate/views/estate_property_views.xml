@@ -27,10 +27,17 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate property">
+                <header>
+                    <button name="action_set_sold" type="object" string="Sold"/>
+                    <button name="action_set_canceled" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1> <field name="name"/> </h1>
                     <group>
                         <group>
+                            <field name="status" />
+                            <field name="property_type_id" />
+
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -44,14 +51,15 @@
                     <notebook>
                         <page string="Description">
                             <group> <field name="description"/> </group>
-                            <group> <field name="bedrooms"/> </group>
-                            <group> <field name="living_area"/> </group>
-                            <group> <field name="facades"/> </group>
-                            <group> <field name="garage"/> </group>
-                            <group> <field name="garden"/> </group>
-                            <group> <field name="garden_area"/> </group>
-                            <group> <field name="garden_orientation"/> </group>
-                            <group> <field name="total_area"/> </group>
+                                <field name="bedrooms"/> 
+                                <field name="living_area"/> 
+                                <field name="facades"/> 
+                                <field name="garage"/> 
+                                <field name="garden"/> 
+                                <field name="garden_area"/> 
+                                <field name="garden_orientation"/> 
+                                <field name="total_area"/> 
+                            </group>
                         </page>
                         <page name="notes" string="Notes">
                             <group>
@@ -63,13 +71,19 @@
                                  <list string="Estate offers">
                                     <field name="price"/>
                                     <field name="partner_id"/>
+                                    <button name="action_accept" string="Accept" type="object" icon="fa-check"/>
+                                    <button name="action_refuse" string="Refuse" type="object" icon="fa-times"/>
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
                                     <field name="status"/>
                                 </list>
                             </field>
                         </page>
                         <page string="Other infos">
-                            <group> <field name="salesman_id"/> </group>
-                            <group> <field name="buyer_id"/> </group>
+                            <group> 
+                                <field name="salesman_id"/>
+                                <field name="buyer_id"/> 
+                            </group>
                         </page>
                     </notebook>
                 </sheet>

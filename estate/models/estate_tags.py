@@ -1,8 +1,8 @@
 from odoo import models, fields
 
-class EstateProperty(models.Model):
-    _name = "estate.property.tag"
-    _description = "Estate property tags"
 
+class EstatePropertyTag(models.Model):
+    _name = "estate.property.tag"
+    _description = "Estate tags"
 
     name = fields.Char(required=True)
