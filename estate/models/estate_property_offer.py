@@ -32,10 +32,10 @@ class EstatePropertyOffer(models.Model):
             if not record.property_id.buyer_id:
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
-            else: 
+            else:
                 raise UserError('An offer has already been accepted')
         return True
-    
+
     def action_decline(self):
         for record in self:
             if record.status == 'accepted':
