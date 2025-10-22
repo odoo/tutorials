@@ -32,6 +32,7 @@
         <seperator/>
         <group>
             <group>
+                <field name="Property_Type"/>
                 <field name="postcode"/>
                 <field name="date_availability"/>
             </group>
@@ -51,7 +52,29 @@
                     <field name="garden"/>
                     <field name="garden_area"/>
                     <field name="garden_orientation"/>
+                    <field name="active"/>
+                    <field name="tags_ids" widget="many2many_tags"/>
                 </group>
+            </page>
+            <page string="Other Info">
+                <group>
+                <field name="Salesman_id"/>
+                <field name="Buyer_id"/>
+                </group>
+            </page>
+            <page string="Offers"> 
+                <field name ="offer_ids">
+                    <list>
+                        <field name="partner_id"/>
+                        <field name="price"/>
+                        <field name="status"/>
+                    </list>
+                    <form>
+                        <field name="partner_id"/>
+                        <field name="price"/>
+                        <field name="status"/>
+                    </form>
+                </field>
             </page>
         </notebook>
     </sheet>
