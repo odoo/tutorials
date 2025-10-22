@@ -12,7 +12,6 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, readonly=True, default=lambda self: date.today() + relativedelta(months=3))
-    #date_availability = fields.Date(copy=False, readonly=True, default=date.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -30,8 +29,8 @@ class EstateProperty(models.Model):
         string='status',
         selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
     )
-    Property_Type_id = fields.Many2one('estate.property.type',string='Type'),
+    Property_Type_id = fields.Many2one('estate.property.type', string='Type')
     Buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
-    Salesman_id= fields.Many2one('res.users', string='Salesman', default=lambda self:self.env.user)
+    Salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self:self.env.user)
     tags_ids = fields.Many2many('estate.property.tags', string='Tags')
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="offer")

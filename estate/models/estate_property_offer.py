@@ -4,9 +4,9 @@ from odoo import models, fields
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
-    
-    price = fields.Float(sting='price', required=True)
-    status = fields.Selection( selection=[('accepted', 'Accepted'), 
+
+    price = fields.Float(string='price', required=True)
+    status = fields.Selection(selection=[('accepted', 'Accepted'),
         ('refused', 'Refused')],
         string="Status",
         copy=False,
