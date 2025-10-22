@@ -6,3 +6,8 @@ class EstatePropertyTag(models.Model):
     _description = "property tags"
 
     name = fields.Char(required=True)
+
+    _unique_name = models.Constraint(
+        'unique(name)',
+        'A tag must have a unique name.',
+    )
