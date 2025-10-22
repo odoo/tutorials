@@ -4,6 +4,7 @@
     'depends': ['base'],
     'author': "GACI Jugurtha (jugac)",
     'application': True,
+    'licence': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',

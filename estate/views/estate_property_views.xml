@@ -37,6 +37,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_offer"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
@@ -50,29 +51,24 @@
                             <group> <field name="garden"/> </group>
                             <group> <field name="garden_area"/> </group>
                             <group> <field name="garden_orientation"/> </group>
+                            <group> <field name="total_area"/> </group>
                         </page>
                         <page name="notes" string="Notes">
-                            <field name="notes"/>
+                            <group>
+                                <field name="notes"/>
+                            </group>
                         </page>
-
                         <page string="Offers">
                             <field name="offer_ids">
                                  <list string="Estate offers">
-                                    <group>
-                                        <field name="price"/>
-                                    </group>
-                                     <group>
-                                        <field name="partner_id"/>
-                                    </group>
-                                    <group>
-                                        <field name="status"/>
-                                    </group>
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
                                 </list>
                             </field>
                         </page>
                         <page string="Other infos">
                             <group> <field name="salesman_id"/> </group>
-                            <group> <field name="buyer_id"/> </group>
                             <group> <field name="buyer_id"/> </group>
                         </page>
                     </notebook>

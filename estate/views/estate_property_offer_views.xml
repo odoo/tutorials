@@ -18,9 +18,13 @@
             <field name="model">estate.property.offer</field>
             <field name="arch" type="xml">
                 <form string="Estate offer">
-                    <field name="price"/>
-                    <field name="partner_id"/>
-                    <field name="status"/>
+                    <group>
+                        <field name="price"/>
+                        <field name="partner_id"/>
+                        <field name="status"/>
+                        <field name="validity"/>
+                        <field name="date_deadline"/>
+                    </group>
                 </form>
             </field>
         </record>
