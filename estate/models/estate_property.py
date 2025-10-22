@@ -1,11 +1,21 @@
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools.date_utils import add
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate propreties"
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'Expected price must be strictly positive.',
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'Selling price must be positive.',
+    )
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -46,6 +56,7 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
+        self.ensure_one()
         if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
@@ -54,14 +65,16 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     def action_set_sold(self):
+        self.ensure_one()
         if self.state == 'cancelled':
-            raise exceptions.UserError("Cancelled property cannot be set as sold")
+            raise UserError("Cancelled property cannot be set as sold")
         self.state = 'sold'
         return 1
 
     def action_set_cancelled(self):
+        self.ensure_one()
         if self.state == 'sold':
-            raise exceptions.UserError("Sold property cannot be cancelled")
+            raise UserError("Sold property cannot be cancelled")
         self.state = 'cancelled'
         return 1
 
@@ -69,3 +82,9 @@ class EstateProperty(models.Model):
     def _compute_is_available(self):
         for record in self:
             record.is_available = not any(s == 'accepted' for s in record.offer_ids.mapped('status'))
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        self.ensure_one()
+        if len(self.offer_ids) > 0 and float_compare(self.expected_price, 0.9 * self.selling_price, 0) > 0:
+            raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
