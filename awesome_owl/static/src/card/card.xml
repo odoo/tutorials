@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.card">
+        <div class="card m-2">
+            <div class="card-body">
+                <h5 class="card-title d-inline-flex justify-content-between w-100">
+                    <t t-esc="props.title"/>
+                    <span class="fa fa-remove" t-on-click="toggle_visibility"/>
+                </h5>
+                <t t-slot="default" t-if="!this.state.hidden">
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
