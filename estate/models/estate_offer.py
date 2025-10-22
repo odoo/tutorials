@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
 
     # relations
     partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True)
+    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
@@ -42,3 +42,8 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
+
+    _check_selling_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price should be strictly postitive',
+    )
