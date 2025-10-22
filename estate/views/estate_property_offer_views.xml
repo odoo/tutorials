@@ -1,27 +1,17 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_offer_search" model="ir.ui.view">
-        <field name="name">estate.property.offer.search</field>
-        <field name="model">estate.property.offer</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="status" string="Title" />
-            </search>
-        </field>
-    </record>
-
-    <record id="estate_property_offer_view_menu" model="ir.ui.view">
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
         <field name="name">estate.property.offer.menu</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <form string="Property offers">
                 <sheet>
                     <group>
-                        <field name="price" string="Price" />
-                        <field name="partner_id" string="Partner" />
-                        <field name="validity" string="Validity (days)" />
-                <field name="date_deadline" string="Deadline" />
-                        <field name="status" string="Status" />
+                        <field name="price"/>
+                        <field name="partner_id" string="Partner"/>
+                        <field name="validity" string="Validity (days)"/>
+                        <field name="date_deadline" string="Deadline"/>
+                        <field name="status"/>
                     </group>
                 </sheet>
             </form>
@@ -33,13 +23,13 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Property offers">
-                <field name="price" string="Price" />
-                <field name="partner_id" string="Partner" />
-                <field name="validity" string="Validity (days)" />
-                <field name="date_deadline" string="Deadline" />
-                <button name="accept_offer" type="object" icon="fa-check" />
-                <button name="refuse_offer" type="object" icon="fa-close" />
-                <field name="status" string="Status" />
+                <field name="price"/>
+                <field name="partner_id" string="Partner"/>
+                <field name="validity" string="Validity (days)"/>
+                <field name="date_deadline" string="Deadline"/>
+                <button name="accept_offer" type="object" icon="fa-check"/>
+                <button name="refuse_offer" type="object" icon="fa-close"/>
+                <field name="status" string="Status"/>
             </list>
         </field>
     </record>

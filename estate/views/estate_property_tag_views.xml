@@ -1,16 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_tag_search" model="ir.ui.view">
-        <field name="name">estate.property.tag.search</field>
-        <field name="model">estate.property.tag</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="name" string="Title" />
-            </search>
-        </field>
-    </record>
-
-    <record id="estate_property_tag_view_menu" model="ir.ui.view">
+    <record id="estate_property_tag_view_form" model="ir.ui.view">
         <field name="name">estate.property.tag.menu</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
@@ -18,7 +8,7 @@
                 <sheet>
                     <div>
                         <h1>
-                            <field name="name" string="Title" />
+                            <field name="name" string="Title"/>
                         </h1>
                     </div>
                 </sheet>
@@ -31,7 +21,7 @@
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
             <list string="Property tags">
-                <field name="name" string="Title" />
+                <field name="name" string="Title"/>
             </list>
         </field>
     </record>

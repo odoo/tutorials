@@ -1,5 +1,5 @@
-from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta
+from odoo import api, models, fields
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -59,7 +59,8 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for property in self:
             percentage = property.selling_price / property.expected_price
-            if not float_is_zero(property.selling_price, precision_digits=2) and float_compare(percentage, 0.9, precision_digits=2) == -1:
+            if not float_is_zero(property.selling_price, precision_digits=2) \
+                and float_compare(percentage, 0.9, precision_digits=2) == -1:
                 raise UserError("selling price cannot be lower than 90% of the expected price")
 
     @api.depends('living_area', 'garden_area')

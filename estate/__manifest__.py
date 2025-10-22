@@ -14,6 +14,6 @@
         'views/estate_menus.xml'
     ],
     'application': True,
-    'author': 'Mohamed (moaln)',
+    'author': 'Odoo Sa',
     'license': 'LGPL-3',
 }
