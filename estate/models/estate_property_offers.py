@@ -4,6 +4,7 @@ from odoo import api, fields, models
 class PropertyOfferModel(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer model"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -15,6 +16,7 @@ class PropertyOfferModel(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
     _check_price = models.Constraint(
@@ -32,11 +34,18 @@ class PropertyOfferModel(models.Model):
             record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days if record.date_deadline else record.validity
 
     def action_accept_offer(self):
-        for record in self:
-            record.status = "accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.buyer = record.partner_id
+        self.ensure_one()
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.buyer = self.partner_id
+        self.property_id.state = "accepted"
+        self.refuse_all_other_offers()
+
+    def refuse_all_other_offers(self):
+        for offer in self.property_id.offer_ids:
+            if offer != self:
+                offer.status = "refused"
 
     def action_refuse_offer(self):
-        for record in self:
-            record.status = "refused"
+        self.ensure_one()
+        self.status = "refused"

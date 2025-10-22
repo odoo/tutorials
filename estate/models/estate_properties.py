@@ -9,6 +9,7 @@ DEFAULT_GARDEN_ORIENTATION = "north"
 class PropertyModel(models.Model):
     _name = "estate.property"
     _description = "Estate Property model"
+    _order = "id desc"
     _check_positive_expected_price = models.Constraint(
         "CHECK(expected_price >= 0)",
         "The expected price must be positive."
@@ -18,7 +19,7 @@ class PropertyModel(models.Model):
         "The selling price must be positive"
     )
 
-    name = fields.Char(required=True)
+    name = fields.Char("Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(default=fields.Date.add(fields.Date.today(), months=3), copy=False)
@@ -26,15 +27,15 @@ class PropertyModel(models.Model):
     best_offer = fields.Float(compute="_get_highest_price")
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
+    living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer()
+    garden_area = fields.Integer("Garden Area (sqm)")
     garden_orientation = fields.Selection(
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
     )
-    total_living_area = fields.Integer(compute="_compute_total_area")
+    total_living_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
@@ -44,6 +45,7 @@ class PropertyModel(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled")
         ],
+        string="Status",
         required=True,
         copy=False,
         default="new"
@@ -66,26 +68,25 @@ class PropertyModel(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        for record in self:
-            if record.garden:
-                record.garden_area = DEFAULT_GARDEN_AREA
-                record.garden_orientation = DEFAULT_GARDEN_ORIENTATION
-            else:
-                record.garden_area = 0
-                record.garden_orientation = None
+        if self.garden:
+            self.garden_area = DEFAULT_GARDEN_AREA
+            self.garden_orientation = DEFAULT_GARDEN_ORIENTATION
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
 
     def mark_as_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("A cancelled property cannot be set as sold.")
-            record.state = "sold"
+        self.ensure_one()
+        if self.state == "cancelled":
+            raise UserError("A cancelled property cannot be set as sold.")
+        self.state = "sold"
         return True
 
     def mark_as_cancelled(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("A sold property cannot be set as cancelled.")
-            record.state = "cancelled"
+        self.ensure_one()
+        if self.state == "sold":
+            raise UserError("A sold property cannot be set as cancelled.")
+        self.state = "cancelled"
         return True
 
     @api.constrains("selling_price", "expected_price")
