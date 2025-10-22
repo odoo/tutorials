@@ -21,6 +21,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_cancel" type="object" string="Cancel"
+                            invisible="state not in ('new', 'offer_received')"/>
+                    <button name="action_sell" type="object" string="Sold"/>
+                </header>
                 <sheet>
                     <div class="oe_title">
                         <h1 class="mb32">
