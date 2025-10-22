@@ -94,3 +94,8 @@ class PropertyModel(models.Model):
         for record in self:
             if record.selling_price and float_compare(record.selling_price, record.expected_price * .9, 0) == -1:
                 raise ValidationError(r"The selling price cannot be lower than 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        if any(record.state not in ('new', 'cancelled') for record in self):
+            raise UserError("Only 'New' and 'Cancelled' properties can be deleted.")
