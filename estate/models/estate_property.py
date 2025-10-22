@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -13,12 +13,14 @@ class EstateProperty(models.Model):
     date_availability = fields.Date(copy=False, default=date.today() + relativedelta(months=3))
     expected_price = fields.Float()
     selling_price = fields.Float(readonly=True, copy=False)
+    best_offer = fields.Float(compute='_compute_best_offer', readonly=True)
     bedrooms = fields.Integer('# Bedrooms', default=2)
     living_area = fields.Integer('living area size')
     facades = fields.Integer('# Facades')
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer('garden size')
+    total_area = fields.Integer(readonly=True, compute='_compute_area')
     garden_orientation = fields.Selection(
         string='Orientation',
         selection=[('North', 'North'), ('West', 'West'), ('East', 'East'), ('South', 'South')]
@@ -36,3 +38,23 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="offer")
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_area(self):
+        for property in self:
+            property.total_area = property.living_area + property.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_offer(self):
+        for property in self:
+            prices = property.offer_ids.mapped('price')
+            property.best_offer = max(prices, default=0.0)
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if (self.garden):
+            self.garden_area = 10
+            self.garden_orientation = 'North'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''

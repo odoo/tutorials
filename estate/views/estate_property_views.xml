@@ -61,6 +61,7 @@
                             </group>
                             <group>
                                 <field name="expected_price"/>
+                                <field name="best_offer"/>
                                 <field name="selling_price"/>
                             </group>
                         </group>
@@ -78,6 +79,7 @@
                                     <field name="state"/>
                                     <field name="type_id"/>
                                     <field name="tag_ids" widget="many2many_tags"/>
+                                    <field name="total_area"/>
                                 </group>
                             </page>
                             <page string="Offers">
