@@ -20,6 +20,15 @@ class PropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
+    property_state = fields.Selection(
+        related="property_id.state",
+        store=False,
+        string="Property State"
+    )
+
+    _check_price = models.Constraint(
+        'CHECK(price > 0)', 'The offer price must be strictly positive.'
+    )
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
@@ -43,6 +52,7 @@ class PropertyOffer(models.Model):
     def action_accept_offer(self):
         for offer in self:
             offer.status = "accepted"
+            offer.property_id.state = "offer_accepted"
 
         return True
 

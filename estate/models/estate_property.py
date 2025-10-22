@@ -1,5 +1,7 @@
 from dateutil.relativedelta import relativedelta
-from odoo import api, models, fields, exceptions
+from odoo import api, models, fields
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 
 class Property(models.Model):
@@ -11,10 +13,10 @@ class Property(models.Model):
     notes = fields.Html()
     postcode = fields.Char()
     date_availability = fields.Date(
-        default=fields.Date.today() + relativedelta(months=3), copy=False)
+        default=lambda self: fields.Date.today() + relativedelta(months=3), copy=False)
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(
-        readonly=True, copy=False, compute="_compute_selling_price_and_buyer")
+        compute="_compute_selling_price", copy=False, readonly=True, store=True)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -38,7 +40,7 @@ class Property(models.Model):
     property_type_id = fields.Many2one(
         "estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer",
-                               copy=False, compute="_compute_selling_price_and_buyer")
+                               copy=False, compute="_compute_buyer")
     salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.uid)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
@@ -47,7 +49,34 @@ class Property(models.Model):
     total_area = fields.Integer(
         compute="_compute_total_area", string="Total Area (sqm)")
     best_offer = fields.Float(
-        compute="_compute_best_offer", string="Best Offer")
+        compute="_compute_best_offer")
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)', 'The expected price must be strictly positive.'
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)', 'The selling price must be non-negative.'
+    )
+
+    @api.depends('offer_ids.status', 'offer_ids.price')
+    def _compute_selling_price(self):
+        for property in self:
+            accepted_offer = property.offer_ids.filtered(
+                lambda o: o.status == 'accepted')
+            if accepted_offer:
+                property.selling_price = accepted_offer.price
+            else:
+                property.selling_price = 0.0
+
+    @api.depends('offer_ids.status', 'offer_ids.partner_id')
+    def _compute_buyer(self):
+        for property in self:
+            accepted_offer = property.offer_ids.filtered(
+                lambda o: o.status == 'accepted')
+            if accepted_offer:
+                property.buyer_id = accepted_offer.partner_id
+            else:
+                property.buyer_id = None
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -61,6 +90,18 @@ class Property(models.Model):
                 property.best_offer = max(property.offer_ids.mapped('price'))
             else:
                 property.best_offer = 0.0
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price_is_acceptable(self):
+        for property in self:
+            if not float_is_zero(property.selling_price, precision_rounding=0.01) and float_compare(
+                property.selling_price,
+                0.9 * property.expected_price,
+                precision_rounding=0.01,
+            ) < 0:
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price. You must reduce the expected price if you want to accept this offer."
+                )
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -76,7 +117,7 @@ class Property(models.Model):
             if property.state != 'cancelled':
                 property.state = 'sold'
             else:
-                raise exceptions.UserError(
+                raise UserError(
                     "Cancelled properties cannot be sold.")
 
     def action_set_cancelled(self):
@@ -84,18 +125,5 @@ class Property(models.Model):
             if property.state != 'sold':
                 property.state = 'cancelled'
             else:
-                raise exceptions.UserError(
+                raise UserError(
                     "Sold properties cannot be cancelled.")
-
-    @api.depends('offer_ids')
-    def _compute_selling_price_and_buyer(self):
-        for property in self:
-            accepted_offers = property.offer_ids.filtered(
-                lambda o: o.status == 'accepted')
-            if accepted_offers:
-                best_offer = max(accepted_offers, key=lambda o: o.price)
-                property.selling_price = best_offer.price
-                property.buyer_id = best_offer.partner_id
-            else:
-                property.selling_price = 0.0
-                property.buyer_id = None

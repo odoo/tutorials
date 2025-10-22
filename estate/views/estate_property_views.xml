@@ -35,6 +35,7 @@
                 </header>
                 <sheet>
                     <div class="oe_title">
+                        <label for="name"/>
                         <h1>
                             <field name="name"/>
                         </h1>
@@ -75,8 +76,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="salesperson_id"/>
-                                <field name="buyer_id"/>
+                                <field name="salesperson_id" widget="many2one_avatar_user"/>
+                                <field name="buyer_id" widget="many2one_avatar_user"/>
                             </group>
                         </page>
                     </notebook>
