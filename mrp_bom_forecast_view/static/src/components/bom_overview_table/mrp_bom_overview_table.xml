@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="mrp.clean_forecast_view" t-inherit="mrp.BomOverviewTable" t-inherit-mode="extension">
+
+        <!-- Remove py-lg-5 class -->
+        <xpath expr="//div[contains(@class, 'o_mrp_bom_report_page')]" position="attributes">
+            <attribute name="class">o_mrp_bom_report_page py-3 px-0 overflow-auto border-bottom bg-view</attribute>
+        </xpath>
+
+        <!-- Completely remove d-flex mb-5 div -->
+        <xpath expr="//div[@class='d-flex mb-5']" position="replace"/>
+        
+        <!-- Completely remove availabilities column -->
+        <xpath expr="//th[@t-if='showAvailabilities'][@title='Reception time estimation.']" position="replace"/>
+        <xpath expr="//td[@t-if='showAvailabilities'][position()=3]" position="replace"/>
+
+    </t>
+</templates>
