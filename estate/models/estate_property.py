@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import date
 from dateutil.relativedelta import relativedelta
 
 
@@ -35,7 +36,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="offer")
     total_area = fields.Integer(string='Total Area(m2)', compute='_compute_total_area', store=True)
     best_price = fields.Float(string='Best Offer', compute='_compute_best_price', store=True)
-  
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for property in self:
