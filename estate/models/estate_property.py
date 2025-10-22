@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "test description"
+    _order = "id desc"
 
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
@@ -90,3 +91,5 @@ class EstateProperty(models.Model):
             expected_minimum = record.expected_price * 0.9
             if float_compare(record.selling_price, expected_minimum, precision_digits=2) < 0:
                 raise UserError(r'The selling price should be at least 90% of the expexted price')
+            else:
+                record.state = "offeraccepted"
