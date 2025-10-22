@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Property Offer'
+    _order = 'price desc'
 
     _check_expected_price = models.Constraint(
         'CHECK(price >= 0)',
@@ -19,6 +20,7 @@ class EstatePropertyOffer(models.Model):
 
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
+    property_type_id = fields.Many2one(related='property_id.type_id', string="Property Type", store=True)
 
     create_date = fields.Datetime(readonly=True, default=fields.Datetime.now)
     validity = fields.Integer(default=7)
@@ -41,7 +43,8 @@ class EstatePropertyOffer(models.Model):
     def action_confirm(self):
         for offer in self:
             offer.status = 'accepted'
-            offer.property_id.write({'selling_price': offer.price, 'buyer_id': offer.partner_id, 'state': 'sold'})
+            offer.property_id.write(
+                {'selling_price': offer.price, 'buyer_id': offer.partner_id, 'state': 'offer_accepted'})
 
     def action_cancel(self):
         for offer in self:

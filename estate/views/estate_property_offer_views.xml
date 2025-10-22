@@ -4,14 +4,15 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offers">
+            <list string="Offers" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
                 <field name="partner_id"/>
                 <field name="price"/>
+                <field name="status" invisible="True"/> <!-- Needed for decorators and to determine the visibility of the following buttons -->
                 <button name="action_confirm" string="Confirm" type="object" icon="fa-check"
                         invisible="status != 'pending'"/>
                 <button name="action_cancel" string="Cancel" type="object" icon="fa-times"
                         invisible="status != 'pending'"/>
-                <field name="status"/>
+                <field name="property_type_id"/>
             </list>
         </field>
     </record>
@@ -37,6 +38,7 @@
     <record id="estate_property_offer_action" model="ir.actions.act_window">
         <field name="name">Offers</field>
         <field name="res_model">estate.property.offer</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
         <field name="view_mode">list,form</field>
     </record>
 </odoo>
