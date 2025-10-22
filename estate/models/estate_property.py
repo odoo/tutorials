@@ -92,4 +92,3 @@ class EstateProperty(models.Model):
             else:
                 record.status = 'canceled'
         return True
-        
