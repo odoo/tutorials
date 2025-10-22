@@ -12,7 +12,7 @@
 
     'author': "Odoo",
     'website': "https://www.odoo.com/",
-    'category': 'Tutorials/AwesomeDashboard',
+    'category': 'Tutorials',
     'version': '0.1',
     'application': True,
     'installable': True,
@@ -22,8 +22,13 @@
         'views/views.xml',
     ],
     'assets': {
+        'awesome_dashboard.dashboard': [
+            'awesome_dashboard/static/src/dashboard/*',
+            'awesome_dashboard/static/src/dashboard/**/*',
+        ],
         'web.assets_backend': [
-            'awesome_dashboard/static/src/**/*',
+            'awesome_dashboard/static/src/dashboard_action.js',
+            'awesome_dashboard/static/src/statistics_service.js',
         ],
     },
     'license': 'AGPL-3'
