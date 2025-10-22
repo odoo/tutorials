@@ -1,0 +1,10 @@
+@media (max-width: 768px) {
+    .o_product_image {
+        div {
+            img {
+                max-width: 164px !important;
+                max-height: 164px !important;
+            }
+        }
+    }
+}

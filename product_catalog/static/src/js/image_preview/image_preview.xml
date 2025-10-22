@@ -1,0 +1,8 @@
+<templates>
+
+    <t t-name="product_kanban_inherit.image_preview" t-inherit="web.ImageField" t-inherit-mode="primary">
+        <xpath expr="//img[@loading='lazy']" position="attributes">
+            <attribute name="t-on-click.stop">openImageFullScreen</attribute>
+        </xpath>
+    </t>
+</templates>
