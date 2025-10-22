@@ -89,4 +89,4 @@ class EstateProperty(models.Model):
         for record in self:
             expected_minimum = record.expected_price * 0.9
             if float_compare(record.selling_price, expected_minimum, precision_digits=2) < 0:
-                raise UserError(f'The selling price should be at least 90% of the expexted price')
+                raise UserError(r'The selling price should be at least 90% of the expexted price')
