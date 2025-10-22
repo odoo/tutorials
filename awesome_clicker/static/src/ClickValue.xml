@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.ClickValue">
+        <div class="d-flex flex-row align-items-center">
+            <span t-att-data-tooltip="props.clicks">
+                <t t-esc="humanize(props.clicks)"/>
+            </span>
+        </div>
+    </t>
+
+</templates>

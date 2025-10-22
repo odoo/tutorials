@@ -1,0 +1,9 @@
+.o_dashboard {
+    background-color: gray;
+}
+
+.o_mobile_card {
+    @media (max-width: 768px) {
+        width: 100% !important;
+    }
+}
