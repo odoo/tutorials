@@ -10,4 +10,7 @@
     Manage efficiently real estate properties for sale and match them with potential buyers.",
     """,
     'application': True,
+    'data': [
+        'security/ir.model.access.csv',
+    ],
 }
