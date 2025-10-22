@@ -33,6 +33,10 @@
                 <sheet>
                     <group>
                         <group>
+                            <button name="action_set_cancelled" string="Cancel" type="object" class="oe_highlight"/>
+                            <button name="action_set_sold" string="Sold" type="object" class="oe_highlight"/>
+                        </group>
+                        <group>
                             <field name="name"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                         </group>
