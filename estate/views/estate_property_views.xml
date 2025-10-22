@@ -5,11 +5,10 @@
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form</field>
-            <field name="search_view_id" ref="perso_recherche"/>
         </record>
 
-        <record id="perso_colonnes" model="ir.ui.view">
-           <field name="name">estate.property.view.list</field>
+        <record id="estate_property_view_form" model="ir.ui.view">
+            <field name="name">estate.property.view.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
             <list string="Channel" >
@@ -21,18 +20,21 @@
                 <field name="selling_price"/>
                 <field name="date_availability"/>
             </list>
-        </field>
+            </field>
         </record>
 
         <record id="perso_tab1" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-         <form string="Test">
+        <form string="Test">
             <sheet>
                 <h1>
                     <field name="name"/>
                 </h1>
+                <group>
+                    <field name="tag_ids" widget="many2many_tags"/>
+                </group>
                 <group>
                     <group>
                         <field name="postcode"/>
@@ -54,15 +56,32 @@
                             <field name="garden"/>
                             <field name="garden_area"/>
                             <field name="garden_orientation"/>
+                            <field name="state"/>
                         </group>
                     </page>
+                    <page string="Offers">
+                        <field name="offer_ids">
+                            <list string="Channel" >
+                                <field name="price"/>
+                                <field name="partner_id"/>
+                                <field name="status"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page string="Other Info">
+                        <group>
+                            <field name="salesman"/>
+                            <field name="buyer"/>
+                        </group>
+                    </page>
+
                 </notebook>
             </sheet>
         </form>
         </field>
     </record>
 
-    <record id="perso_recherche" model="ir.ui.view">
+    <record id="estate_property_search" model="ir.ui.view">
         <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -73,6 +92,9 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <filter name="group_by_postcode" context="{'group_by': 'postcode'}"/>
+                <filter name="availibility" string="Available" domain="['|', ('state', '=', 'New'),('state', '=', 'Offer Received')]"/>
+
             </search>
         </field>
     </record>
