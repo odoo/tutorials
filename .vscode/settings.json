@@ -1,0 +1,7 @@
+{
+    "python.analysis.extrapaths": [
+        "/home/odoo/Documents/odoo"
+    ],
+
+    "files.insertFinalNewline": true
+}

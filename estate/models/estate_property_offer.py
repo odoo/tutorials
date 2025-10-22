@@ -4,6 +4,7 @@ from odoo import models, fields, api, exceptions
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     _check_offer_price = models.Constraint(
         'CHECK(price > 0)',
@@ -17,7 +18,7 @@ class EstatePropertyOffer(models.Model):
     price = fields.Float()
     status = fields.Selection(
         copy=False,
-        selection=[("accepted", "Acepted"), ("refused", "Refused")]
+        selection=[("accepted", "Accepted"), ("refused", "Refused")]
     )
     partner_id = fields.Many2one(
         "res.partner",
@@ -36,6 +37,7 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         string="Deadline"
     )
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     ####################################################
     # FUNCTIONS DECLARATION
@@ -50,6 +52,7 @@ class EstatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.partner_id = record.partner_id
             record.property_id.selling_price = record.price
+            record.property_id.state = "offer_accepted"
         return True
 
     def refuse_offer_button(self):
