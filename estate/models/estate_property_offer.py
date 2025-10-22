@@ -15,7 +15,7 @@ class EstatePropertyOffer(models.Model):
     # FIELDS DECLARATION
     ####################################################
 
-    price = fields.Float()
+    price = fields.Float(required=True)
     status = fields.Selection(
         copy=False,
         selection=[("accepted", "Accepted"), ("refused", "Refused")]
@@ -73,3 +73,21 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (fields.Date.to_date(record.date_deadline) - fields.Date.to_date(record.create_date)).days
+
+    ####################################################
+    # CRUD
+    ####################################################
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            property_id = self.env['estate.property'].browse(val['property_id'])
+            if property_id.state == 'sold':
+                raise exceptions.UserError("Can't add an offer to an already sold property!")
+            for offer in property_id.offer_ids:
+                if offer.price > val['price']:
+                    raise exceptions.UserError("Can't add an offer with smaller price than a previous one!")
+        offers = super().create(vals)
+        offers.property_id.state = "offer_received"
+
+        return offers

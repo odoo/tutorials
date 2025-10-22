@@ -101,7 +101,7 @@ class EstateProperty(models.Model):
     def _onchange_garden(self):
         self.garden_orientation = "%s" % ("north" if self.garden else "")
         self.garden_area = "%s" % (10 if self.garden else "")
-
+    '''
     @api.onchange("offer_ids")
     def _onchange_offers(self):
         if self.offer_ids and self.state != "offer_accepted":
@@ -110,6 +110,7 @@ class EstateProperty(models.Model):
             self.state = "offer_accepted"
         else:
             self.state = "new"
+    '''
 
     @api.constrains('selling_price', 'expected_price')
     def _check_date_end(self):
@@ -118,3 +119,12 @@ class EstateProperty(models.Model):
                 raise exceptions.ValidationError(
                     r"The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer."
                 )
+
+    ####################################################
+    # CRUD
+    ####################################################
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_offer_unavailable(self):
+        if self.state not in ['new', 'canceled']:
+            raise exceptions.UserError("Can't delete an active property!")
