@@ -28,6 +28,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
         <form string="Test">
+            <header>
+                <button name="action_mark_as_sold" type="object" string="Sold"/>
+                <button name="action_mark_as_cancelled" type="object" string="Cancelled"/>
+            </header>
             <sheet>
                 <h1>
                     <field name="name"/>
@@ -66,6 +70,8 @@
                             <list string="Channel" >
                                 <field name="price"/>
                                 <field name="partner_id"/>
+                                <button name="action_accept" type="object" icon="fa-check"/>
+                                <button name="action_refuse" type="object" icon="oi-close"/>
                                 <field name="status"/>
                             </list>
                         </field>

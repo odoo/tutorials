@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -37,15 +38,25 @@ class EstateProperty(models.Model):
     def _compute_total(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-    
+  
     @api.depends("offer_ids")
     def _compute_highest_price(self):
         for record in self:
-            record.best_price=max(record.offer_ids.mapped("price")) if record.offer_ids else 0
-    
+            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0
+
     @api.onchange("garden")
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = "North" if self.garden else None
-        
 
+    def action_mark_as_sold(self):
+        if self.state == "Cancelled":
+            raise UserError("Cette vente a été annulée")
+        self.state = "Sold"
+        return True
+
+    def action_mark_as_cancelled(self):
+        if self.state == "Sold":
+            raise UserError("Cette maison a déjà été vendue")
+        self.state = "Cancelled"
+        return True
