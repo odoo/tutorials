@@ -6,12 +6,12 @@
         <field name="arch" type="xml">
             <list string="List View">
             <field name="price" width="200px"/>
-            <field name="partner_id" width="400px"/>
-            <field name="validity" width="200px"/>
-            <field name="date_deadline" width="150px"/>
-            <button name="accept_offer" type="object" string="Accept" icon="fa-check"/>
-            <button name="refuse_offer" type="object" string="Refuse" icon="fa-times"/>
-            <field name="status"/>
+            <field name="partner_id" width="300px"/>
+            <field name="validity" width="100px"/>
+            <field name="date_deadline" width="100px"/>
+            <button name="accept_offer" type="object" string="Accept" icon="fa-check" width="50px"/>
+            <button name="refuse_offer" type="object" string="Refuse" icon="fa-times" width="50px"/>
+            <field name="status" width="100px"/>
             </list>
         </field>
     </record>
