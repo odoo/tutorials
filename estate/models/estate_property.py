@@ -1,5 +1,4 @@
 from odoo import models, fields, api
-from datetime import date
 from dateutil.relativedelta import relativedelta
 
 
@@ -42,7 +41,6 @@ class EstateProperty(models.Model):
         for property in self:
             property.total_area = property.living_area + (property.garden_area or 0)
 
-   
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
