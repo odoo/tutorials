@@ -21,9 +21,6 @@
         <field name="arch" type="xml">
             <form string="Property Offer">
                 <sheet>
-                    <h1>
-                        <field name="property_id"/>
-                    </h1>
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
