@@ -8,12 +8,13 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property for the Real Estate app"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
     notes = fields.Html()
-    date_availability = fields.Date(copy=False, default=datetime.date.today() + relativedelta(months=+3))
+    date_availability = fields.Date(copy=False, default=lambda self: datetime.date.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -83,5 +84,5 @@ class EstateProperty(models.Model):
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=3):
-                if float_compare(record.selling_price, record.expected_price*0.9, precision_digits=3) < 0:
+                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=3) < 0:
                     raise UserError(r"The selling price must be at least 90% of the expected price !")
