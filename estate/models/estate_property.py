@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "property data"
+    notes = fields.Html()
 
     name = fields.Char(required=True)
     description = fields.Text()
