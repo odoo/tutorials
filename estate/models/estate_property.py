@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 from odoo.tools.date_utils import add
 
 
@@ -29,6 +29,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Float(compute="_compute_total_area", readonly=True, copy=False)
     best_price = fields.Float(compute="_get_best_price", readonly=True, copy=False)
+    is_available = fields.Boolean(compute='_compute_is_available')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -51,3 +52,20 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def action_set_sold(self):
+        if self.state == 'cancelled':
+            raise exceptions.UserError("Cancelled property cannot be set as sold")
+        self.state = 'sold'
+        return 1
+
+    def action_set_cancelled(self):
+        if self.state == 'sold':
+            raise exceptions.UserError("Sold property cannot be cancelled")
+        self.state = 'cancelled'
+        return 1
+
+    @api.depends('offer_ids.status')
+    def _compute_is_available(self):
+        for record in self:
+            record.is_available = not any(s == 'accepted' for s in record.offer_ids.mapped('status'))
