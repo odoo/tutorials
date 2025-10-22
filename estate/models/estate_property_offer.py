@@ -1,13 +1,14 @@
 from odoo import api, fields, models
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "property offer"
 
-    price = fields.Float('price')
+    price = fields.Float()
     status = fields.Selection(
         string='status',
         selection=[('Accepted', 'Accepted'), ('Refused', 'Refused')],
@@ -31,3 +32,16 @@ class EstatePropertyOffer(models.Model):
             offer.validity = (offer.date_deadline - date.today()).days
             if offer.validity < 0:
                 offer.validity = 0
+
+    def action_accept(self):
+        if (self.property_id.selling_price != 0.0):
+            raise UserError("Property already sold")
+        else:
+            self.property_id.selling_price = self.price
+            self.property_id.buyer_id = self.partner_id
+            self.status = 'Accepted'
+        return True
+
+    def action_refuse(self):
+        self.status = 'Refused'
+        return True

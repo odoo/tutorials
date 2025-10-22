@@ -5,4 +5,4 @@ class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "property tags"
 
-    name = fields.Char('name', required=True)
+    name = fields.Char(required=True)
