@@ -9,7 +9,6 @@ class EstateProperty(models.Model):
     description = fields.Text()
     notes = fields.Html()
     postcode = fields.Char()
-    
     date_availability = fields.Date(
         string="Available From",
         copy=False,
@@ -70,7 +69,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max((offer.price for offer in record.offer_ids), default=0)         
+            record.best_offer = max((offer.price for offer in record.offer_ids), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -93,4 +92,4 @@ class EstateProperty(models.Model):
             else:
                 record.status = 'canceled'
         return True
-
+        

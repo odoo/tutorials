@@ -50,7 +50,8 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                            <group> <field name="description"/> </group>
+                            <group> 
+                                <field name="description"/>
                                 <field name="bedrooms"/> 
                                 <field name="living_area"/> 
                                 <field name="facades"/> 
