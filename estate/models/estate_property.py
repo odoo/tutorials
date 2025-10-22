@@ -56,7 +56,7 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
-    
+
     def action_set_cancelled(self):
         for record in self:
             if record.state == 'sold':
@@ -64,7 +64,7 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'cancelled'
         return True
-    
+
     def action_set_sold(self):
         for record in self:
             if record.state == 'cancelled':
