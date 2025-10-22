@@ -127,3 +127,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# JetBrains specific folders
+.idea/
+*/.idea/
+
+# Odoo specific folders
+.run
+*/.run/
+.odev
+*/.odev/
