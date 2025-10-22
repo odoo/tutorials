@@ -1,6 +1,7 @@
 from odoo import api, models, fields
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -24,7 +25,13 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
         required=True,
         copy=False,
         default='new'
@@ -37,6 +44,23 @@ class EstateProperty(models.Model):
 
     total_area = fields.Float(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+
+    _positive_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The Expected Price of a Property must be strictly positive'
+    )
+
+    _positive_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'The Selling Price of a Property must be strictly positive'
+    )
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for property in self:
+            percentage = property.selling_price / property.expected_price
+            if not float_is_zero(property.selling_price, precision_digits=2) and float_compare(percentage, 0.9, precision_digits=2) == -1:
+                raise UserError("selling price cannot be lower than 90% of the expected price")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -63,7 +87,7 @@ class EstateProperty(models.Model):
                 raise UserError("You cann't sell a cancelled property")
             property.state = "sold"
         return True
-    
+
     def action_mark_cancel(self):
         for property in self:
             if property.state == "sold":
