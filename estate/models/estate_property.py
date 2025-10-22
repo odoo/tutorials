@@ -1,5 +1,6 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_is_zero, float_compare
 from dateutil.relativedelta import relativedelta
 
 
@@ -39,6 +40,14 @@ class Estateproperty(models.Model):
     best_offer = fields.Float(compute="_compute_best_offer")
     offer_accepted = fields.Boolean()
 
+    _expected_property_price_strictly_positive = models.Constraint(
+        'CHECK(expected_price > 0)',
+    )
+
+    _property_selling_price_positive = models.Constraint(
+        'CHECK(selling_price) >= 0',
+    )
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -71,3 +80,10 @@ class Estateproperty(models.Model):
                 record.state = 'cancelled'
             else:
                 raise(UserError("Can not cancel sold property"))
+
+    @api.onchange('selling_price', 'expected_price')
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not(float_is_zero(record.selling_price,2)) and record.selling_price < 0.9 * record.expected_price:
+                raise(UserError("Selling price can not be less than 90'%' of Excpected price"))
