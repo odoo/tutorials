@@ -1,0 +1,26 @@
+<t t-name="awesome_dashboard.DashboardDialog" owl="1">
+
+    <Dialog>
+        <div class="o_dialog">
+            <h3>
+                <t t-esc="title"/>
+            </h3>
+
+            <div class="o_checkbox_list">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <div>
+                        <label>
+                            <input type="checkbox" t-att-checked="state.displayedItems.has(item.id)" t-on-click="ev => this.toggleItem(item.id)"/>
+                            <t t-esc="item.description"/>
+                        </label>
+                    </div>
+                </t>
+            </div>
+
+            <div class="o_dialog_footer">
+                <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+                <button class="btn btn-primary" t-on-click="confirm">Confirm</button>
+            </div>
+        </div>
+    </Dialog>
+</t>
