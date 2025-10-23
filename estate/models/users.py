@@ -1,7 +1,7 @@
 from odoo import models, fields
 
 
-class EstatePropertyOffer(models.Model):
+class UsersExtension(models.Model):
     _inherit = 'res.users'
 
-    property_ids = fields.One2many("estate.property", "user_id")
+    property_ids = fields.One2many("estate.property", "user_id", domain=[('state', 'in', ['new', 'offer_received'])])

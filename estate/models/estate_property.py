@@ -72,19 +72,19 @@ class EstateProperty(models.Model):
     ####################################################
 
     def cancel_property_button(self):
-        for record in self:
-            if record.state != "sold":
-                record.state = "canceled"
-            else:
-                raise exceptions.UserError("Sold properties cannot be canceled")
+        self.ensure_one()
+        if self.state != "sold":
+            self.state = "canceled"
+        else:
+            raise exceptions.UserError("Sold properties cannot be canceled")
         return True
 
     def sold_property_button(self):
-        for record in self:
-            if record.state != "canceled":
-                record.state = "sold"
-            else:
-                raise exceptions.UserError("Canceled properties cannot be sold")
+        self.ensure_one()
+        if self.state != "canceled":
+            self.state = "sold"
+        else:
+            raise exceptions.UserError("Canceled properties cannot be sold")
         return True
 
     @api.depends("garden_area", "living_area")
