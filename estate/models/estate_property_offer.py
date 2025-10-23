@@ -4,6 +4,7 @@ from odoo import api, models, fields
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -22,8 +23,10 @@ class PropertyOffer(models.Model):
         compute="_compute_date_deadline", inverse="_inverse_date_deadline", string="Deadline")
     property_state = fields.Selection(
         related="property_id.state",
-        store=False,
-        string="Property State"
+    )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        store=True,
     )
 
     _check_price = models.Constraint(
@@ -53,6 +56,13 @@ class PropertyOffer(models.Model):
         for offer in self:
             offer.status = "accepted"
             offer.property_id.state = "offer_accepted"
+
+        other_offers = self.env['estate.property.offer'].search([
+            ('property_id', '=', offer.property_id.id),
+            ('id', '!=', offer.id),
+            ('status', '!=', 'refused')
+        ])
+        other_offers.action_refuse_offer()
 
         return True
 
