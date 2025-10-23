@@ -68,7 +68,6 @@ class EstateProperty(models.Model):
 
     def sell_property(self):
         self.ensure_one()
-        print("CHILD METHOD")
         for record in self:
             if record.state == "cancelled":
                 raise UserError("Error - You cannot sell a cancelled property !")
