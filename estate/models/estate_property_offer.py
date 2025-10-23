@@ -14,7 +14,7 @@ class EstatePropertyOffer(models.Model):
         copy=False
     )
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
-    property_id = fields.Many2one('estate.property', string="Property", required=True)
+    property_id = fields.Many2one('estate.property', string="Property", required=True, ondelete="cascade")
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_state = fields.Selection(related="property_id.state")
@@ -33,6 +33,15 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for offer in self:
             offer.validity = (offer.date_deadline - (offer.create_date or fields.Date.today()).date()).days
+
+    @api.model
+    def create(self, vals):
+        for offer in vals:
+            property = self.env['estate.property'].browse(offer['property_id'])
+            property.state = "offer_received"
+            if offer['price'] < property.best_price:
+                raise UserError(f"The offer must be higher than {property.best_price}")
+        return super().create(vals)
 
     def accept_offer(self):
         for offer in self:

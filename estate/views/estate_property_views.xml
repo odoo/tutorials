@@ -13,7 +13,8 @@
                     filter_domain="['!', ('living_area', '&lt;' , self)]"/>
                 <field name="facades"/>
                 <field name="property_type_id" string="Property Type"/>
-                <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter name="available" string="Available" 
+                    domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
                 <filter name="postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
@@ -95,7 +96,8 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" string="Available From" optional="1" invisible="1"/>
+                <field name="date_availability" string="Available From" optional="1" 
+                    invisible="1" help="this field is invisible for the sake of this tutorial"/>
             </list>
         </field>
     </record>
