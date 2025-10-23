@@ -37,10 +37,10 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         for offer in vals:
-            property = self.env['estate.property'].browse(offer['property_id'])
-            property.state = "offer_received"
-            if offer['price'] < property.best_price:
-                raise UserError(f"The offer must be higher than {property.best_price}")
+            prop = self.env['estate.property'].browse(offer['property_id'])
+            prop.state = "offer_received"
+            if offer['price'] < prop.best_price:
+                raise UserError(f"The offer must be higher than {prop.best_price}")
         return super().create(vals)
 
     def accept_offer(self):
@@ -58,6 +58,6 @@ class EstatePropertyOffer(models.Model):
     def refuse_offer(self):
         for offer in self:
             if offer.status == 'accepted':
-                raise UserError("You cann't refuse an accepted offer")
+                raise UserError("You cannot refuse an accepted offer")
             offer.status = "refused"
         return True

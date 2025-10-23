@@ -58,25 +58,25 @@ class EstateProperty(models.Model):
 
     @api.constrains('expected_price', 'selling_price')
     def _check_selling_price(self):
-        for property in self:
-            percentage = property.selling_price / property.expected_price
-            if not float_is_zero(property.selling_price, precision_digits=2) \
-                and float_compare(percentage, 0.9, precision_digits=2) == -1:
+        for prop in self:
+            percentage = prop.selling_price / prop.expected_price
+            if not float_is_zero(prop.selling_price, precision_digits=2) \
+                    and float_compare(percentage, 0.9, precision_digits=2) == -1:
                 raise UserError("selling price cannot be lower than 90% of the expected price")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
-        for property in self:
-            property.total_area = property.living_area + property.garden_area
+        for prop in self:
+            prop.total_area = prop.living_area + prop.garden_area
 
     @api.depends('offer_ids')
     def _compute_best_price(self):
-        for property in self:
-            property.best_price = max(property.offer_ids.mapped('price') or [0])
+        for prop in self:
+            prop.best_price = max(prop.offer_ids.mapped('price') or [0])
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if (self.garden):
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
@@ -89,15 +89,15 @@ class EstateProperty(models.Model):
             raise UserError("You can only delete new or cancelled properties")
 
     def action_mark_sold(self):
-        for property in self:
-            if property.state == "cancelled":
+        for prop in self:
+            if prop.state == "cancelled":
                 raise UserError("You cann't sell a cancelled property")
-            property.state = "sold"
+            prop.state = "sold"
         return True
 
     def action_mark_cancel(self):
-        for property in self:
-            if property.state == "sold":
+        for prop in self:
+            if prop.state == "sold":
                 raise UserError("You cann't cancell a sold property")
-            property.state = "cancelled"
+            prop.state = "cancelled"
         return True
