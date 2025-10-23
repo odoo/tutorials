@@ -1,4 +1,5 @@
 from odoo import api, models, fields
+from odoo.exceptions import ValidationError
 
 
 class PropertyOffer(models.Model):
@@ -52,17 +53,34 @@ class PropertyOffer(models.Model):
                 delta = (offer.date_deadline - fields.Date.today()).days
                 offer.validity = delta
 
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            property_obj = self.env['estate.property'].browse(
+                val.get('property_id'))
+            property_offers = self.env['estate.property.offer'].search([
+                ('property_id', '=', property_obj.id),
+            ])
+            if property_offers:
+                lowest_offer = min(property_offers.mapped('price'))
+                if val.get('price', 0) <= lowest_offer:
+                    raise ValidationError(
+                        "The offer price must be higher than existing offers."
+                    )
+            property_obj.state = 'offer_received'
+        return super().create(vals)
+
     def action_accept_offer(self):
         for offer in self:
             offer.status = "accepted"
             offer.property_id.state = "offer_accepted"
 
-        other_offers = self.env['estate.property.offer'].search([
-            ('property_id', '=', offer.property_id.id),
-            ('id', '!=', offer.id),
-            ('status', '!=', 'refused')
-        ])
-        other_offers.action_refuse_offer()
+            other_offers = self.env['estate.property.offer'].search([
+                ('property_id', '=', offer.property_id.id),
+                ('id', '!=', offer.id),
+                ('status', '!=', 'refused')
+            ])
+            other_offers.action_refuse_offer()
 
         return True
 

@@ -113,6 +113,13 @@ class Property(models.Model):
             self.garden_area = 10
             self.garden_orientation = 'north'
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_property_new_or_cancelled(self):
+        for property in self:
+            if property.state not in ['new', 'cancelled']:
+                raise UserError(
+                    f"You cannot delete a property in the '{property.state}' state.")
+
     def action_set_sold(self):
         for property in self:
             if property.state != 'cancelled':
