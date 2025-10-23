@@ -5,7 +5,7 @@
                 <menuitem id="test_model_menu_action" action="mon_action"/>
             </menuitem>
             <menuitem id="settings_menu" name="Settings">
-                <menuitem id="test_model_menu_action2" action="mon_action2"/>
+                <menuitem id="test_model_menu_action2" action="estate_property_type_action"/>
                 <menuitem id="test_model_menu_action3" action="mon_action3"/>
             </menuitem>
         </menuitem>

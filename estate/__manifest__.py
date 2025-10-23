@@ -1,6 +1,7 @@
 {
     'name': 'Estate',
     'version': '0.1',
+    'license': 'LGPL-3',
     'application': True,
     'author': 'matho',
     'depends': [
