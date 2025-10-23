@@ -26,11 +26,11 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
     active = fields.Boolean(default=True)
     state = fields.Selection(selection=[
-        ("new", "New"), 
-        ("offer_received", "Offer Received"), 
-        ("offer_accepted", "Offer Accepted"), 
-        ("sold", "Sold"), 
-        ("cancelled", "Cancelled")], 
+        ("new", "New"),
+        ("offer_received", "Offer Received"),
+        ("offer_accepted", "Offer Accepted"),
+        ("sold", "Sold"),
+        ("cancelled", "Cancelled")],
         copy=False, required=True, default="new")
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
@@ -38,7 +38,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area", string="Total Area (sqm)")
-    best_price = fields.Float(compute="_compute_best_offer", string="Best Offer")
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
 
     _positive_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
