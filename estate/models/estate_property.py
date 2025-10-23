@@ -7,6 +7,7 @@ from dateutil.relativedelta import relativedelta
 class Estateproperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+    _order = "id desc"
 
     name = fields.Char('Title', required=True)
     description = fields.Text('Description', required=True)
@@ -46,7 +47,7 @@ class Estateproperty(models.Model):
     )
 
     _property_selling_price_positive = models.Constraint(
-        'CHECK(selling_price) >= 0',
+        'CHECK(selling_price >= 0)',
     )
 
     @api.depends("garden_area", "living_area")

@@ -49,6 +49,7 @@
                 <header>
                     <button name="set_property_sold" type="object" string="SOLD"/>
                     <button name="set_property_cancelled" type="object" string="CANCEL"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new, offer received, offer accepted, sold"/>
                 </header>
                 <sheet>
                     <group>
