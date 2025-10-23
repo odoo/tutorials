@@ -6,7 +6,7 @@ from odoo import models, Command
 class EstateAccountPropertyModel(models.Model):
     _inherit = "estate.property"
 
-    def mark_as_sold(self):
+    def action_mark_as_sold(self):
         self.ensure_one()
         self.env["account.move"].create({
             "name": self._generate_invoice_name(),
@@ -30,7 +30,7 @@ class EstateAccountPropertyModel(models.Model):
                 })
             ]
         })
-        return super().mark_as_sold()
+        return super().action_mark_as_sold()
 
     def _generate_invoice_name(self):
         invoice = self.env["account.move"].search([("name", "like", "Invoice %")], order="id desc", limit=1)

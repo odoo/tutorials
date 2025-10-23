@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
@@ -10,21 +10,13 @@ class PropertyModel(models.Model):
     _name = "estate.property"
     _description = "Estate Property model"
     _order = "id desc"
-    _check_positive_expected_price = models.Constraint(
-        "CHECK(expected_price >= 0)",
-        "The expected price must be positive."
-    )
-    _check_positive_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        "The selling price must be positive"
-    )
 
     name = fields.Char("Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(default=fields.Date.add(fields.Date.today(), months=3), copy=False)
     expected_price = fields.Float(required=True)
-    best_offer = fields.Float(compute="_get_highest_price")
+    best_offer = fields.Float(compute="_compute_highest_price")
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer("Living Area (sqm)")
@@ -56,13 +48,22 @@ class PropertyModel(models.Model):
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
 
+    _check_positive_expected_price = models.Constraint(
+        "CHECK(expected_price >= 0)",
+        "The expected price must be positive."
+    )
+    _check_positive_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "The selling price must be positive"
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_living_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids")
-    def _get_highest_price(self):
+    def _compute_highest_price(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped("price")) if record.offer_ids else 0
 
@@ -75,27 +76,27 @@ class PropertyModel(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    def mark_as_sold(self):
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price and float_compare(record.selling_price, record.expected_price * .9, 0) == -1:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        if any(record.state not in ('new', 'cancelled') for record in self):
+            raise UserError(_("Only 'New' and 'Cancelled' properties can be deleted."))
+
+    def action_mark_as_sold(self):
         self.ensure_one()
         if self.state == "cancelled":
             raise UserError("A cancelled property cannot be set as sold.")
         self.state = "sold"
         return True
 
-    def mark_as_cancelled(self):
+    def action_mark_as_cancelled(self):
         self.ensure_one()
         if self.state == "sold":
-            raise UserError("A sold property cannot be set as cancelled.")
+            raise UserError(_("A sold property cannot be set as cancelled."))
         self.state = "cancelled"
         return True
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
-        for record in self:
-            if record.selling_price and float_compare(record.selling_price, record.expected_price * .9, 0) == -1:
-                raise ValidationError(r"The selling price cannot be lower than 90% of the expected price.")
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_new_or_cancelled(self):
-        if any(record.state not in ('new', 'cancelled') for record in self):
-            raise UserError("Only 'New' and 'Cancelled' properties can be deleted.")

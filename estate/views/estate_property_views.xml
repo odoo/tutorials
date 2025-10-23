@@ -6,7 +6,7 @@
         <field name="context">{'search_default_available': True}</field>
     </record>
 
-    <record id="estate_property_action_list_view" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -25,15 +25,15 @@
         </field>
     </record>
 
-    <record id="estate_property_action_form_view" model="ir.ui.view">
+    <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="mark_as_sold" type="object" string="Sold" class="btn-primary" invisible="state != 'accepted'"/>
-                    <button name="mark_as_sold" type="object" string="Sold" invisible="state in ('sold', 'accepted', 'cancelled')"/>
-                    <button name="mark_as_cancelled" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_mark_as_sold" type="object" string="Sold" class="btn-primary" invisible="state != 'accepted'"/>
+                    <button name="action_mark_as_sold" type="object" string="Sold" invisible="state in ('sold', 'accepted', 'cancelled')"/>
+                    <button name="action_mark_as_cancelled" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
                 </header>
                 <field name="state" widget="statusbar" statusbar_visible="new,received,accepted,sold"/>
                 <sheet>
