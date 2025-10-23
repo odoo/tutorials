@@ -2,12 +2,13 @@ from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 
+
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
 
     price = fields.Float(string='price', required=True)
-    status = fields.Selection(selection=[('accepted', 'Accepted'),
+    state = fields.Selection(selection=[('accepted', 'Accepted'),
         ('refused', 'Refused')],
         string="Status",
         copy=False,
@@ -30,16 +31,16 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for offer in self:
-            if offer.state != 'Refused':
-                offer.state = 'Accepted'
+            if offer.state != 'refused':
+                offer.state = 'accepted'
             else:
                 raise UserError("A refused offer cannot be accepted.")
         return True
 
     def action_refuse(self):
         for offer in self:
-            if offer.state != 'Accepted':
-                offer.state = 'Refused'
+            if offer.state != 'accepted':
+                offer.state = 'refused'
             else:
                 raise UserError("An accepted offer cannot be refused.")
         return True
