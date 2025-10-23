@@ -19,6 +19,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
     _offer_price_strictly_positive = models.Constraint(
         'CHECK(price > 0)',
@@ -40,6 +41,7 @@ class EstatePropertyOffer(models.Model):
                 record.status = 'accepted'
                 record.property_id.selling_price = record.price
                 record.property_id.buyer = record.partner_id
+                record.property_id.state = 'offer accepted'
                 record.property_id.offer_accepted = True 
             else:
                 raise(UserError("Can not accept more than one offer"))

@@ -8,6 +8,7 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char('Tag', required=True)
     description = fields.Char('Description')
+    color = fields.Integer()
 
     _unique_tag = models.Constraint(
         'UNIQUE(name)',

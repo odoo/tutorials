@@ -1,25 +1,24 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Estate Property Type"
-    _order = 'name'
+    _order = 'sequence, name, id'
 
     name = fields.Char('Type', required=True)
     description = fields.Text()
-    property_type_line_ids = fields.One2many('estate.property.type.line', 'name')
+    property_ids = fields.One2many('estate.property', 'property_type_id')
+    sequence = fields.Integer('Sequence', default=1)
+    offer_ids = fields.One2many('estate.property.offer', 'property_type_id')
+    offer_count = fields.Integer(compute="_computer_offers_count")
 
     _unique_type = models.Constraint(
         'UNIQUE(name)',
         'Property type name exists'
     )
 
-class EstatePropertyTypeLine(models.Model):
-    _name = 'estate.property.type.line'
-    _description = 'estate property view per type'
-
-    name = fields.Many2one('estate.property.type')
-    title = fields.Char()
-    expected_price = fields.Char()
-    state = fields.Char()
+    @api.depends("offer_ids")
+    def _compute_offers_count(self):
+        for record in self:
+            record.offer_count = len(record.offer_ids)

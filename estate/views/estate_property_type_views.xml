@@ -12,6 +12,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list>
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="description"/>
             </list>
@@ -24,6 +25,10 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate.estate_property_offer_action)d" class="oe_stat_button" 
+                        icon="fa-money" string="offers" type="action" context="{'search_default_property_type_id': id}"/>
+                    </div>
                     <group>
                         <h1>
                             <field name="name"/>
@@ -31,9 +36,9 @@
                     </group>
                     <notebook>
                         <page string="Properties">
-                            <field name="property_type_line_ids">
+                            <field name="property_ids">
                                 <list>
-                                    <field name="title"/>
+                                    <field name="name"/>
                                     <field name="expected_price"/>
                                     <field name="state"/>
                                 </list>
