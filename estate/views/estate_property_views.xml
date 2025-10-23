@@ -26,7 +26,7 @@
                     <button name="action_cancel" type="object" string="Cancel"
                             invisible="state not in ('new', 'offer_received')"/>
                     <button name="action_sell" type="object" string="Sold"
-                            invisible="state not in ('new', 'offer_received')"/>
+                            invisible="state not in ('new', 'offer_received', 'offer_accepted')"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>

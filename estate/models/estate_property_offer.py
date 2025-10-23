@@ -32,7 +32,7 @@ class EstatePropertyOffer(models.Model):
         inverse='_inverse_deadline',
         string="Deadline")
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         if len(vals_list) == 0:
             return super().create(vals_list)
