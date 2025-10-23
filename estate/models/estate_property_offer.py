@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,6 +22,8 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one('res.partner', string="Partner", required=True)
     property_id = fields.Many2one('estate.property', string="Property", required=True)
     property_type_id = fields.Many2one(related='property_id.type_id', string="Property Type", store=True)
+    property_state = fields.Selection(related='property_id.state', string="Property State")
+    property_expected_price = fields.Float(related='property_id.expected_price', string="Expected Price")
 
     create_date = fields.Datetime(readonly=True, default=fields.Datetime.now)
     validity = fields.Integer(default=7)
@@ -28,6 +31,19 @@ class EstatePropertyOffer(models.Model):
         compute='_compute_deadline',
         inverse='_inverse_deadline',
         string="Deadline")
+
+    @api.model
+    def create(self, vals_list):
+        if len(vals_list) == 0:
+            return super().create(vals_list)
+
+        property_reference = self.env['estate.property'].browse(vals_list[0]['property_id'])
+
+        if vals_list[0]['price'] <= property_reference.best_price:
+            raise UserError(f"The offer needs to be higher than {property_reference.best_price}")
+
+        property_reference.write({'state': 'offer_received'})
+        return super().create(vals_list)
 
     @api.depends('validity')
     def _compute_deadline(self):

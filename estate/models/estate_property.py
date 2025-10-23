@@ -57,6 +57,11 @@ class EstateProperty(models.Model):
         copy=False
     )
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        if self.state not in ('new', 'cancelled'):
+            raise UserError("Only new or cancelled properties can be deleted")
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
