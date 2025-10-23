@@ -5,7 +5,7 @@ import datetime
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "Offers for properties"
+    _description = "Estate Property Offer"
     _order = "price desc"
 
     price = fields.Float()
@@ -49,9 +49,8 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         for val in vals_list:
             offers = self.env['estate.property.offer'].search([('property_id', '=', val['property_id'])])
-            if len(offers) > 0:
-                if val['price'] < max(offers.mapped('price')):
-                    raise UserError("You cannot create an offer with a lower amount than an existing offer !")
+            if offers and val['price'] < max(offers.mapped('price')):
+                raise UserError("You cannot create an offer with a lower amount than an existing offer !")
         offers = super().create(vals_list)
         offers.property_id.state = 'offer_received'
         return offers

@@ -7,7 +7,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 
 class EstateProperty(models.Model):
     _name = "estate.property"
-    _description = "Property for the Real Estate app"
+    _description = "Estate Property"
     _order = "id desc"
 
     name = fields.Char(required=True)
@@ -25,7 +25,13 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")])
     active = fields.Boolean(default=True)
-    state = fields.Selection(selection=[("new", "New"), ("offer_received", "Offer Received"), ("offer_accepted", "Offer Accepted"), ("sold", "Sold"), ("cancelled", "Cancelled")], copy=False, required=True, default="new")
+    state = fields.Selection(selection=[
+        ("new", "New"), 
+        ("offer_received", "Offer Received"), 
+        ("offer_accepted", "Offer Accepted"), 
+        ("sold", "Sold"), 
+        ("cancelled", "Cancelled")], 
+        copy=False, required=True, default="new")
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
@@ -49,7 +55,7 @@ class EstateProperty(models.Model):
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
-    def _compute_best_offer(self):
+    def _compute_best_price(self):
         for record in self:
             prices = record.offer_ids.mapped("price")
             if len(prices) > 0:
