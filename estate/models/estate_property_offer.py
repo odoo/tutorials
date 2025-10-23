@@ -56,3 +56,17 @@ class EstatePropertyOffer(models.Model):
         min_amount = self.property_id.expected_price * 0.9
         if (float_compare(self.price, min_amount, 2) < 0):
             raise ValidationError("Offered price must be at least 90% of the expected price")
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        property_ids = [property['property_id'] for property in vals_list]
+        property_objs = self.env['estate.property'].browse(property_ids)
+        for property_obj in property_objs:
+            if (property_obj.offer_ids):
+                curr_lowest_offer = min(property_obj.offer_ids.mapped('price'))
+                if float_compare(vals_list[0]['price'], curr_lowest_offer, 2) < 0:
+                    raise ValidationError("Offered price must be higher than already existing offers")
+
+            if not property_obj.offer_ids:
+                property_obj.state = 'Offer Received'
+        return super().create(vals_list)
