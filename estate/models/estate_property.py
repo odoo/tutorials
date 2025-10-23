@@ -3,6 +3,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
@@ -11,7 +12,7 @@ class EstateProperty(models.Model):
     Property_Type = fields.Text()
     description = fields.Text()
     postcode = fields.Char()
-    state = fields.Text()  
+    state = fields.Text()
     date_availability = fields.Date(copy=False, readonly=True, default=lambda self: date.today() + relativedelta(months=3))
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -36,7 +37,7 @@ class EstateProperty(models.Model):
         ('offer_received', 'Offer Received'),
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
-        ('cancelled', 'Cancelled')]  
+        ('cancelled', 'Cancelled')]
     )
 
     def action_set_sold(self):
@@ -52,7 +53,7 @@ class EstateProperty(models.Model):
         else:
             raise UserError("A sold property can not be cancelled")
         return True
-      
+
     Property_Type_id = fields.Many2one('estate.property.type', string='Type')
     Buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     Salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
