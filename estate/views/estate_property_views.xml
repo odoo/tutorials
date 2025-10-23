@@ -5,13 +5,14 @@
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_availibility': True}</field>
         </record>
 
         <record id="estate_property_view_list" model="ir.ui.view">
             <field name="name">estate.property.view.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-            <list editable="bottom">
+            <list decoration-success="state in ['Offer Received', 'Offer Accepted']" decoration-bf="state == 'Offer Accepted'" decoration-muted="state == 'Sold'">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -67,12 +68,12 @@
                     </page>
                     <page string="Offers">
                         <field name="offer_ids" readonly="state in ['Offer Accepted', 'Sold', 'Cancelled']">
-                            <list editable="bottom">
+                            <list editable="bottom" decoration-success="status == 'Accepted'" decoration-danger="status == 'Refused'">
                                 <field name="price"/>
                                 <field name="partner_id"/>
-                                <button name="action_accept" type="object" icon="fa-check" string="accept"/>
-                                <button name="action_refuse" type="object" icon="oi-close" string="refuse"/>
-                                <field name="status"/>
+                                <field name="property_type_id"/>         
+                                <button name="action_accept" type="object" icon="fa-check" string="accept" invisible="status in ['Accepted', 'Refused']"/>
+                                <button name="action_refuse" type="object" icon="oi-close" string="refuse" invisible="status in ['Accepted', 'Refused']"/>
                             </list>
                         </field>
                     </page>
@@ -98,11 +99,10 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <filter name="group_by_postcode" context="{'group_by': 'postcode'}"/>
                 <filter name="availibility" string="Available" domain="['|', ('state', '=', 'New'),('state', '=', 'Offer Received')]"/>
-
             </search>
         </field>
     </record>
