@@ -35,7 +35,7 @@ class EstateProperty(models.Model):
         selection=[('new', 'New'), ('received', 'Offer Received'), ('accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
         default='new', copy=False, required=True)
     seller_id = fields.Many2one('res.users', default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner')
+    buyer_id = fields.Many2one('res.partner', readonly=True)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     type_id = fields.Many2one('estate.property.type', string="Type")
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
@@ -82,5 +82,10 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         self.ensure_one()
-        if len(self.offer_ids) > 0 and float_compare(self.expected_price, 0.9 * self.selling_price, 0) > 0:
+        if self.buyer_id and float_compare(self.expected_price, 0.9 * self.selling_price, 0) > 0:
             raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        if any(record.state in ['new', 'cancelled'] for record in self):
+            raise UserError("Can't delete a property which has a state of new or cancelled!")

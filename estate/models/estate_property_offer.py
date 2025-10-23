@@ -1,5 +1,7 @@
 from odoo import fields, models, api
 from odoo.tools.date_utils import add
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -40,3 +42,13 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return 1
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            created_property = self.env['estate.property'].browse(val['property_id'])
+            if any(float_compare(val['price'], offer.price, 0) < 0 for offer in created_property.offer_ids):
+                raise ValidationError("A bigger offer already exists")
+            if created_property.state == 'new':
+                created_property.state = 'received'
+        return super().create(vals)
