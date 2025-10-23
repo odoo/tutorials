@@ -1,5 +1,3 @@
-from calendar import month
-
 from odoo import fields, models
 
 class EstateProperty(models.Model):
