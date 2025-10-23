@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "property offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -18,6 +19,7 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     partner_id = fields.Many2one("res.partner", string="partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(related="property_id.type_id", store=True)
 
     @api.depends('validity')
     def _compute_date_deadline(self):

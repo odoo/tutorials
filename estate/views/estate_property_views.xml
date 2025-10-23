@@ -5,6 +5,7 @@
             <field name="name">estate property</field>
             <field name="res_model">estate.property</field>
             <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_state': True}</field>
         </record>
 
         <record id="estate_property_new_view_search" model="ir.ui.view">
@@ -16,7 +17,7 @@
                     <field name="postcode"/>
                     <field name="expected_price"/>
                     <field name="bedrooms"/>
-                    <field name="living_area"/>
+                    <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                     <field name="facades"/>
                     <field name="type_id"/>
                     <separator/>
@@ -26,18 +27,18 @@
             </field>
         </record>
 
-        <record id="estate_property_view_tree" model="ir.ui.view">
+        <record id="estate_property_view_list" model="ir.ui.view">
             <field name="name">estate.property.list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <list string="Channel">
+                <list string="Channel" decoration-success="state in ['Offer Received', 'Offer Accepted']" decoration-bf="state in ['Offer Accepted']" decoration-muted="state in ['Sold']">
                     <field name="name"/>
                     <field name="postcode"/>
                     <field name="bedrooms"/>
                     <field name="living_area"/>
                     <field name="expected_price"/>
                     <field name="selling_price"/>
-                    <field name="date_availability"/>
+                    <field name="date_availability" optional="false"/>
                     <field name="type_id"/>
                     <field name="tag_ids"/>
                 </list>
@@ -49,10 +50,11 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form string="Test">
-                <header>
-                    <button name="action_sold" type="object" string="Sold"/>
-                    <button name="action_cancel" type="object" string="Cancel"/>
-                </header>
+                    <header>
+                        <button name="action_sold" type="object" string="Sold" invisible="state in ['Sold', 'Cancelled']"/>
+                        <button name="action_cancel" type="object" string="Cancel" invisible="state in ['Sold', 'Cancelled']"/>
+                        <field name="state" widget="statusbar" statusbar_visible="New, Offer Received, Offer Accepted, Sold" options="{'clickable': 1}"/>
+                    </header>
                     <sheet>
                         <h1>
                             <field name="name"/>
@@ -78,16 +80,15 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
-                                    <field name="state"/>
-                                    <field name="type_id"/>
-                                    <field name="tag_ids" widget="many2many_tags"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                    <field name="type_id" options="{'no_create': true}"/>
+                                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                                     <field name="total_area"/>
                                 </group>
                             </page>
                             <page string="Offers">
-                                    <field name="offer_ids"/>
+                                    <field name="offer_ids" readonly="state in ['Sold', 'Cancelled', 'Offer Accepted']"/>
                             </page>
                             <page string="Other info">
                                 <group>
