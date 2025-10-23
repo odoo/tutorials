@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">property action</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_inactive': True}</field>
         <field name="help" type="html">
             <p>Hello</p>
@@ -104,6 +104,35 @@
                 <filter string="Available" name="inactive" domain="['|', ('state', '=', 'new'), ('state', '=', 'offerreceived')]"/>
                 <filter name="postcode" context="{'group_by':'postcode'}"/>
             </search>
+        </field>
+    </record>
+    
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" records_draggable="False">
+                <templates>
+                    <field name="state"/>
+                    <t t-name="card">
+                        <div>
+                            <group>    
+                                <h3>
+                                    <field name="name"/>
+                                </h3>
+                                Expected Price: <field name="expected_price"/>
+                                <div t-if="record.state.raw_value == 'offerreceived'">
+                                    Best Offer: <field name="best_offer"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offeraccepted'">
+                                    Selling Price: <field name="selling_price"/>
+                                </div>
+                                <field name="tag_ids" options="{'color_field': 'color'}"/>
+                            </group>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>
