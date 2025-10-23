@@ -99,18 +99,9 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        self.garden_orientation = "%s" % ("north" if self.garden else "")
-        self.garden_area = "%s" % (10 if self.garden else "")
-    '''
-    @api.onchange("offer_ids")
-    def _onchange_offers(self):
-        if self.offer_ids and self.state != "offer_accepted":
-            self.state = "offer_received"
-        elif self.offer_ids:
-            self.state = "offer_accepted"
-        else:
-            self.state = "new"
-    '''
+        if not self.garden:
+            self.garden_orientation = "north"
+            self.garden_area = 10
 
     @api.constrains('selling_price', 'expected_price')
     def _check_date_end(self):
