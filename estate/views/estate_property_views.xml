@@ -35,8 +35,8 @@
                 <header>
                     <group>
                         <button name="action_set_cancelled" string="Cancel" type="object" class="oe_highlight"
-                        invisible="state in ('sold')"/>
-                        <button name="action_set_sold" string="Sold" type="object" class="oe_highlight" invisible="state in ('new', 'offerreceived', 'cancelled')"/>
+                        invisible="state in ('sold', 'cancelled')"/>
+                        <button name="action_set_sold" string="Sold" type="object" class="oe_highlight" invisible="state in ('new', 'offerreceived', 'cancelled', 'sold')"/>
                     </group>
                     <field name="state" widget="statusbar" statusbar_visible="new, offerreceived, offeraccepted, sold"/>
                 </header>
