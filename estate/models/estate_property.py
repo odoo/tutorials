@@ -34,7 +34,7 @@ class Estateproperty(models.Model):
         default=('new')
     )
     property_type_id = fields.Many2one("estate.property.type", string="Type")
-    salesperson = fields.Many2one('res.partner', string='Salesperson')
+    salesperson = fields.Many2one('res.users', string='Salesperson')
     buyer = fields.Many2one('res.users', string='Buyer')
     tag_ids = fields.Many2many('estate.property.tag', string='Tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
@@ -89,3 +89,10 @@ class Estateproperty(models.Model):
         for record in self:
             if not(float_is_zero(record.selling_price,2)) and record.selling_price < 0.9 * record.expected_price:
                 raise(UserError("Selling price can not be less than 90'%' of Excpected price"))
+
+    @api.ondelete(at_uninstall=False)
+    def unlink(self):
+        for record in self:
+            if record.state not in {'new', 'cancelled'}:
+                raise(UserError("Can not delete properties at this state"))
+        return super.unlink()

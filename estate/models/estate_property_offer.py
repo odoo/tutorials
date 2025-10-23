@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-    property_type_id = fields.Many2one(related="property_id.property_type_id")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     _offer_price_strictly_positive = models.Constraint(
         'CHECK(price > 0)',
@@ -49,3 +49,10 @@ class EstatePropertyOffer(models.Model):
     def reject_offer(self):
         for record in self:
             record.status = 'refused'
+    
+    @api.model
+    def create(self, vals_list):
+        if vals_list[0].get('price') < min(self.env['estate.property'].browse(vals_list[0].get('property_id')).offer_ids.mapped('price')):
+            raise(UserError("Can not have an offer that is less the minimum offer"))
+        self.env['estate.property'].browse(vals_list[0]['property_id']).state = 'offer received'
+        return super().create(vals_list)
