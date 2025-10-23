@@ -1,4 +1,4 @@
-from odoo import models, fields, Command
+from odoo import models, Command
 
 
 class InheritedEstateProperty(models.Model):
@@ -7,7 +7,7 @@ class InheritedEstateProperty(models.Model):
     def action_set_sold(self):
         self.env['account.move'].create(
             {
-                'partner_id': self.buyer_id.id, 
+                'partner_id': self.buyer_id.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
                     Command.create({
