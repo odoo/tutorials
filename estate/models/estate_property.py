@@ -88,7 +88,6 @@ class EstateProperty(models.Model):
         if any(not (property.state == 'new' or property.state == 'cancelled') for property in self):
             raise UserError("You can only delete new or cancelled properties")
 
-
     def action_mark_sold(self):
         for property in self:
             if property.state == "cancelled":

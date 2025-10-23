@@ -96,8 +96,8 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability" string="Available From" optional="1" 
-                    invisible="1" help="this field is invisible for the sake of this tutorial"/>
+                <!-- This field is invisible for testing purposes -->
+                <field name="date_availability" string="Available From" optional="1" invisible="1"/>
             </list>
         </field>
     </record>
