@@ -5,6 +5,7 @@ from odoo.tools.date_utils import add
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offers for propreties"
+    _order = "price desc"
 
     _check_price = models.Constraint(
         'CHECK(price > 0)',
@@ -17,7 +18,7 @@ class EstatePropertyOffer(models.Model):
     create_date = fields.Date(default=fields.Date.today(), readonly=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
-    is_available = fields.Boolean(related="property_id.is_available")
+    property_type_id = fields.Many2one(related="property_id.type_id")
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
@@ -29,10 +30,10 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - record.create_date).days
 
     def action_accept_offer(self):
-        for record in self:
-            record.status = 'accepted'
-            record.property_id.buyer_id = record.partner_id
-            record.property_id.selling_price = record.price
+        self.ensure_one()
+        self.status = 'accepted'
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
         return 1
 
     def action_refuse_offer(self):

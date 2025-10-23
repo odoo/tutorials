@@ -7,6 +7,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate propreties"
+    _order = "id desc"
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -36,10 +37,10 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one('res.users', default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner')
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
+    type_id = fields.Many2one('estate.property.type', string="Type")
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Float(compute="_compute_total_area", readonly=True, copy=False)
     best_price = fields.Float(compute="_get_best_price", readonly=True, copy=False)
-    is_available = fields.Boolean(compute='_compute_is_available')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -77,11 +78,6 @@ class EstateProperty(models.Model):
             raise UserError("Sold property cannot be cancelled")
         self.state = 'cancelled'
         return 1
-
-    @api.depends('offer_ids.status')
-    def _compute_is_available(self):
-        for record in self:
-            record.is_available = not any(s == 'accepted' for s in record.offer_ids.mapped('status'))
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
