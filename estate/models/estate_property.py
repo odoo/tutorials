@@ -93,3 +93,9 @@ class EstateProperty(models.Model):
                 raise UserError(r'The selling price should be at least 90% of the expexted price')
             else:
                 record.state = "offeraccepted"
+
+    @api.ondelete(at_uninstall=False)
+    def unlink_property(self):
+        for record in self:
+            if record.state != 'new' and record.state != 'canceled':
+                raise UserError("Only new and canceled properties can be deleted")

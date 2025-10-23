@@ -50,3 +50,15 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'The offer price must be strictly positive'
     )
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            property_id = self.env['estate.property'].browse(val['property_id'])
+            for offer in property_id.offer_ids:
+                if offer.price > val['price']:
+                    raise UserError("You can't create a lower offer than the highest one")
+        offers = super().create(vals)
+        offers.property_id.state = 'offerreceived'
+
+        return offers
