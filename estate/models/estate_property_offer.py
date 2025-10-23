@@ -1,6 +1,6 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
-
+from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -27,3 +27,19 @@ class EstatePropertyOffer(models.Model):
             else:
                 create_date = fields.Date.today()
                 offer.date_deadline = create_date + relativedelta(days=offer.validity)
+
+    def action_accept(self):
+        for offer in self:
+            if offer.state != 'Refused':
+                offer.state = 'Accepted'
+            else:
+                raise UserError("A refused offer cannot be accepted.")
+        return True
+
+    def action_refuse(self):
+        for offer in self:
+            if offer.state != 'Accepted':
+                offer.state = 'Refused'
+            else:
+                raise UserError("An accepted offer cannot be refused.")
+        return True
