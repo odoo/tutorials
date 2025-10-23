@@ -6,6 +6,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "estate property offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -16,6 +17,8 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', string="Property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_state = fields.Selection(related="property_id.state")
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     _positive_offer_price = models.Constraint(
         'CHECK(price > 0)',
@@ -39,6 +42,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Only one offer can be accepted")
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
+            offer.property_id.state = "offer_accepted"
             offer.status = "accepted"
         return True
 
