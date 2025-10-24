@@ -91,13 +91,13 @@ class EstateProperty(models.Model):
     def action_mark_sold(self):
         for prop in self:
             if prop.state == "cancelled":
-                raise UserError("You cann't sell a cancelled property")
+                raise UserError("You cannot sell a cancelled property")
             prop.state = "sold"
         return True
 
     def action_mark_cancel(self):
         for prop in self:
             if prop.state == "sold":
-                raise UserError("You cann't cancell a sold property")
+                raise UserError("You cannot cancel a sold property")
             prop.state = "cancelled"
         return True
