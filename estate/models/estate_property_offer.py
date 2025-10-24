@@ -4,7 +4,7 @@ from odoo.exceptions import UserError
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
-    _description = "estate.property.offer"
+    _description = "Estate Property Offer"
 
     price = fields.Float()
     status = fields.Selection(
@@ -38,9 +38,14 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         for record in self:
-            if record.property_id.state == "accepted":
+            if record.status == "accepted":
                 record.property_id.state = "new"
                 record.status = "refused"
                 record.property_id.selling_price = 0.0
                 record.property_id.buyer_id = ""
         return True
+
+    _positive_offer_price = models.Constraint(
+        "CHECK(price > 0)",
+        "The offer price must be strictly positive.",
+    )
