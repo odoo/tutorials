@@ -2,7 +2,7 @@ from odoo import models, Command
 from odoo.exceptions import UserError
 
 
-class estatePropertyChild(models.Model):
+class EstatePropertyChild(models.Model):
     _inherit = 'estate.property'
 
     def _get_default_journal(self):

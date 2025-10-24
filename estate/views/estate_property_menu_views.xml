@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="test_menu_root" name="Estate">
-        <menuitem id="test_first_level_menu" name="ADs">
+    <menuitem id="estate_property_menu_root" name="Estate">
+        <menuitem id="estate_property_menu_properties" name="ADs">
             <menuitem id="estate_property_menu_action" action="estate_property_action"/>
         </menuitem>
-        <menuitem id="test_first_level_menu2" name="Settings">
-            <menuitem id="estate_property_menu_action_3" action="estate_property_type_action"/>
+        <menuitem id="estate_property_menu_settings" name="Settings">
+            <menuitem id="estate_property_type_menu_action" action="estate_property_type_action"/>
             <menuitem id="estate_property_tag_menu_action" action="estate_property_tag_action"/>
         </menuitem>
     </menuitem>

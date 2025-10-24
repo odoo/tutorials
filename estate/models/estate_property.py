@@ -57,15 +57,6 @@ class EstateProperty(models.Model):
             prices = property.offer_ids.mapped('price')
             property.best_offer = max(prices, default=0.0)
 
-    @api.onchange('garden')
-    def _onchange_garden(self):
-        if (self.garden):
-            self.garden_area = 10
-            self.garden_orientation = 'North'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = ''
-
     def action_sold(self):
         if (self.state != "Cancelled"):
             self.state = "Sold"
@@ -79,6 +70,15 @@ class EstateProperty(models.Model):
         else:
             raise UserError("A sold property can not be cancelled")
         return True
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if (self.garden):
+            self.garden_area = 10
+            self.garden_orientation = 'North'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = ''
 
     @api.ondelete(at_uninstall=False)
     def _unlink_property(self):

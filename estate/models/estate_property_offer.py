@@ -14,7 +14,8 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         string='status',
         selection=[('Accepted', 'Accepted'), ('Refused', 'Refused')],
-        copy=False)
+        copy=False
+    )
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     partner_id = fields.Many2one("res.partner", string="partner", required=True)
@@ -60,13 +61,13 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         property_ids = [property['property_id'] for property in vals_list]
-        property_objs = self.env['estate.property'].browse(property_ids)
-        for property_obj in property_objs:
-            if (property_obj.offer_ids):
-                curr_lowest_offer = min(property_obj.offer_ids.mapped('price'))
+        Properties = self.env['estate.property'].browse(property_ids)
+        for Property in Properties:
+            if (Property.offer_ids):
+                curr_lowest_offer = min(Property.offer_ids.mapped('price'))
                 if float_compare(vals_list[0]['price'], curr_lowest_offer, 2) < 0:
                     raise ValidationError("Offered price must be higher than already existing offers")
 
-            if not property_obj.offer_ids:
-                property_obj.state = 'Offer Received'
+            if not Property.offer_ids:
+                Property.state = 'Offer Received'
         return super().create(vals_list)
