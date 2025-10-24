@@ -76,26 +76,22 @@ class EstateProperty(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = False
-            self.garden_orientation = ""
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north' if self.garden else ''
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled_state(self):
-        if any(not (property.state == 'new' or property.state == 'cancelled') for property in self):
+        if any(not (prop.state == 'new' or prop.state == 'cancelled') for prop in self):
             raise UserError("You can only delete new or cancelled properties")
 
-    def action_mark_sold(self):
+    def action_sold(self):
         for prop in self:
             if prop.state == "cancelled":
                 raise UserError("You cannot sell a cancelled property")
             prop.state = "sold"
         return True
 
-    def action_mark_cancel(self):
+    def action_cancel(self):
         for prop in self:
             if prop.state == "sold":
                 raise UserError("You cannot cancel a sold property")

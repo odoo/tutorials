@@ -4,7 +4,8 @@ from odoo import models, Command
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-    def action_mark_sold(self):
+    def action_sold(self):
+        super().action_sold()
         for prop in self:
             self.env['account.move'].sudo().create(
                 {
@@ -24,4 +25,3 @@ class EstateProperty(models.Model):
                     ]
                 }
             )
-        return super().action_mark_sold()

@@ -7,7 +7,7 @@
             <form string="Property types">
                 <header>
                     <button type="action" name="%(estate_property_offer_action)d" string="Offers"
-                        class="oe_stat_button" icon="fa-star"></button>
+                            class="oe_stat_button" icon="fa-star"/>
                 </header>
                 <sheet>
                     <div>

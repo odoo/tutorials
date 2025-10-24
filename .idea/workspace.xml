@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ae3b326a-5e2d-4307-a8dd-78d5ce10400b" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/estate/__manifest__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/__manifest__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/models/estate_property.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/estate_property.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/models/user_with_properties.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate/models/res_users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_menus.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_menus.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_type_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_type_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/estate_property_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/estate_property_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate/views/user_with_properties_views.xml" beforeDir="false" afterPath="$PROJECT_DIR$/estate/views/res_users_views.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/estate_account/models/estate_property.py" beforeDir="false" afterPath="$PROJECT_DIR$/estate_account/models/estate_property.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;git-widget-placeholder&quot;: &quot;19.0-onboarding-moaln&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
+  }
+}</component>
+  <component name="TaskManager">
+    <servers />
+  </component>
+</project>
