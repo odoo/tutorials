@@ -116,7 +116,6 @@
                     context="{'group_by':'postcode'}"
                 />
 
-
             </search>
         </field>
     </record>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
         <record id="res_users_view_form_inherit_estate_property" model="ir.ui.view">
             <field name="name">res.users.view.form.inherit.estate.property</field>
             <field name="model">res.users</field>
