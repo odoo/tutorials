@@ -75,7 +75,7 @@ class Estateproperty(models.Model):
                 record.state = 'sold'
             else:
                 raise UserError("Can not cancel sold property")
-    
+
     def set_property_cancelled(self):
         for record in self:
             if record.state != 'sold':
