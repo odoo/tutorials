@@ -111,7 +111,7 @@ class EstateProperty(models.Model):
             if float_is_zero(record.selling_price, 2):
                 raise ValidationError("The selling price should be positive")
 
-    @api.ondelete
+    @api.ondelete(at_uninstall=False)
     def _unlink_property(self):
         if self.state not in ('new', 'canceled'):
             raise UserError("This property can't be deleted")
