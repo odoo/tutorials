@@ -1,6 +1,8 @@
-from odoo import models, fields, api
 from datetime import date
+
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
 
@@ -8,9 +10,12 @@ from odoo.tools import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Title", required=True)
-    Property_Type = fields.Text()
+    property_type = fields.Selection(
+        string='Property Type',
+        selection=[('house', 'House'), ('apartment', 'Apartment')])
     description = fields.Text()
     postcode = fields.Char()
     state = fields.Text()
@@ -28,11 +33,11 @@ class EstateProperty(models.Model):
         selection=[('north', 'North'), ('south', 'South'),
         ('east', 'East'), ('west', 'West')])
     active = fields.Boolean(default=True)
-    status = fields.Selection(
+    state = fields.Selection(
     copy=False,
     readonly=True,
     default='new',
-    string='Status',
+    string='States',
     selection=[
         ('new', 'New'),
         ('offer_received', 'Offer Received'),
@@ -42,22 +47,22 @@ class EstateProperty(models.Model):
     )
 
     def action_set_sold(self):
-        if (self.state != "Cancelled"):
-            self.state = "Sold"
+        if self.state != "cancelled":
+            self.state = "sold"
         else:
             raise UserError("A cancelled property can not be sold")
         return True
 
     def action_set_cancelled(self):
-        if (self.state != "Sold"):
-            self.state = "Cancelled"
+        if (self.state != "sold"):
+            self.state = "cancelled"
         else:
             raise UserError("A sold property can not be cancelled")
         return True
 
-    Property_Type_id = fields.Many2one('estate.property.type', string='Type')
-    Buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
-    Salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
+    property_type_id = fields.Many2one('estate.property.type', string='Type')
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    salesman_id = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
     tags_ids = fields.Many2many('estate.property.tags', string='Tags')
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="offer")
     total_area = fields.Integer(string='Total Area(m2)', compute='_compute_total_area', store=True)
@@ -72,10 +77,11 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_price = 0.0
-
+                record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
+            # if record.offer_ids:
+            #     record.best_price = max(record.offer_ids.mapped('price'))
+            # else:
+            #     record.best_price = 0.0
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
