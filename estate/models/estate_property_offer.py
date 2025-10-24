@@ -42,6 +42,8 @@ class PropertyOfferModel(models.Model):
         )
         for val in vals_list:
             estate_property = EstateProperties.browse(val["property_id"])
+            if estate_property.state == "sold":
+                raise UserError(_("Cannot create a new offer for a sold property."))
             if estate_property.offer_ids and val["price"] < min(estate_property.offer_ids.mapped("price")):
                 raise UserError(_("Cannot create a new offer with a lower price than an existing offer."))
             if estate_property.state == 'new':

@@ -90,7 +90,9 @@ class PropertyModel(models.Model):
     def action_mark_as_sold(self):
         self.ensure_one()
         if self.state == "cancelled":
-            raise UserError("A cancelled property cannot be set as sold.")
+            raise UserError(_("A cancelled property cannot be set as sold."))
+        if not any(offer.status == "accepted" for offer in self.offer_ids):
+            raise UserError(_("A property must have an accepted offer to be marked as sold."))
         self.state = "sold"
         return True
 
