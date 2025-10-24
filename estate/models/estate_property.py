@@ -91,7 +91,7 @@ class Estateproperty(models.Model):
                 raise UserError("Selling price can not be less than 90'%' of Excpected price")
 
     @api.ondelete(at_uninstall=False)
-    def unlink(self):
+    def unlink_if_not_set(self):
         for record in self:
             if record.state not in {'new', 'cancelled'}:
                 raise UserError("Can not delete properties at this state")
