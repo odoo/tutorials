@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -27,7 +28,7 @@ class EstatePropertyOffer(models.Model):
         related="property_id.property_type_id",
         store=True,
     )
-    
+
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for record in self:
@@ -51,7 +52,7 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
-    
+
     @api.model
     def create(self, vals_list):
 
