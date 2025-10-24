@@ -17,9 +17,9 @@ class EstatePropertySoldTestCase(TransactionCase):
                 'expected_price': 100000,
             }]
         )
-    
+
     def test_sell_offer(self):
-        
+
         # (1) Try to sell a property with no offer.
         with self.assertRaises(UserError):
             self.property.sell_property()
