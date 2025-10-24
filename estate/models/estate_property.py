@@ -87,12 +87,12 @@ class Estateproperty(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if not float_is_zero(record.selling_price,2) and record.selling_price < 0.9 * record.expected_price:
+            if not float_is_zero(record.selling_price, 2) and record.selling_price < 0.9 * record.expected_price:
                 raise UserError("Selling price can not be less than 90'%' of Excpected price")
 
     @api.ondelete(at_uninstall=False)
     def unlink(self):
         for record in self:
             if record.state not in {'new', 'cancelled'}:
-                raise(UserError("Can not delete properties at this state"))
+                raise UserError("Can not delete properties at this state")
         return super().unlink()

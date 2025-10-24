@@ -42,7 +42,7 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = record.price
                 record.property_id.buyer = record.partner_id
                 record.property_id.state = 'offer accepted'
-                record.property_id.offer_accepted = True 
+                record.property_id.offer_accepted = True
             else:
                 raise UserError("Can not accept more than one offer")
 
