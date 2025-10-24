@@ -2,12 +2,13 @@ from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 from odoo.tests import Form, tagged
 
+
 @tagged('post_install', '-at_install')
 class EstateTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EstateTestCase, cls).setUpClass()
+        super().setUpClass()
 
         cls.properties = cls.env['estate.property'].create({'name': 'testAdd', 'expected_price': '190000'})
         cls.partner = cls.env['res.partner'].create({'name': 'eric'})
@@ -30,7 +31,7 @@ class EstateTestCase(TransactionCase):
         property_form.garden = True
         property_form.garden_area = 20
         property_form.garden_orientation = 'east'
-        
+
         property_form.garden = False
         property_form.garden = True
 
