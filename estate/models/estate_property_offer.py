@@ -48,6 +48,8 @@ class EstatePropertyOffer(models.Model):
     @api.model_create_multi
     def create(self, vals_list):
         for val in vals_list:
+            if self.env['estate.property'].browse(val['property_id']).state == 'sold':
+                raise UserError("You cannot create an offer for a sold property !")
             offers = self.env['estate.property.offer'].search([('property_id', '=', val['property_id'])])
             if offers and val['price'] < max(offers.mapped('price')):
                 raise UserError("You cannot create an offer with a lower amount than an existing offer !")

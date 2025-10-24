@@ -74,18 +74,19 @@ class EstateProperty(models.Model):
 
     def sell_property(self):
         self.ensure_one()
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("Error - You cannot sell a cancelled property !")
-            record.state = "sold"
+        if self.state == "cancelled":
+            raise UserError("Error - You cannot sell a cancelled property !")
+        offers = self.offer_ids.search([('property_id', '=', self.id)])
+        if len(offers.filtered(lambda offer: offer.status == 'accepted')) == 0:
+            raise UserError("Error - No offer created for this property !")
+        self.state = "sold"
         return True
 
     def cancel_property(self):
         self.ensure_one()
-        for record in self:
-            if record.state == "sold":
-                raise UserError("Error - You cannot cancel a sold property !")
-            record.state = "cancelled"
+        if self.state == "sold":
+            raise UserError("Error - You cannot cancel a sold property !")
+        self.state = "cancelled"
         return True
 
     @api.constrains('expected_price', 'selling_price')
