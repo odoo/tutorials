@@ -5,5 +5,5 @@ class UserWithProperties(models.Model):
     _inherit = 'res.users'
     _description = 'user with properties model'
 
-    property_ids = fields.One2many('estate.property', 'salesperson_id', string='Properties',
+    property_ids = fields.One2many('estate.property', 'salesperson_id', string='Estate Properties',
                                    domain=['|', ('state', '=', 'new'), ('state', '=', 'offer_received')])
