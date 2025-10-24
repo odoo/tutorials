@@ -35,7 +35,7 @@ class Estateproperty(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     salesperson = fields.Many2one('res.users', string='Salesperson')
-    buyer = fields.Many2one('res.users', string='Buyer')
+    buyer = fields.Many2one('res.partner', string='Buyer')
     tag_ids = fields.Many2many('estate.property.tag', string='Tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
     total_area = fields.Float(compute="_compute_total_area")

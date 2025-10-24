@@ -15,7 +15,7 @@ class EstatePropertyOffer(models.Model):
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         copy=False
     )
-    partner_id = fields.Many2one('res.users', required=True, default=lambda self: self.env.user)
+    partner_id = fields.Many2one('res.partner', required=True, default=lambda self: self.env.user)
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
