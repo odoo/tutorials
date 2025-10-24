@@ -9,14 +9,6 @@ class EstateProperty(models.Model):
     _description = "Real estate propreties"
     _order = "id desc"
 
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'Expected price must be strictly positive.',
-    )
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'Selling price must be positive.',
-    )
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -42,6 +34,15 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area", readonly=True, copy=False)
     best_price = fields.Float(compute="_get_best_price", readonly=True, copy=False)
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'Expected price must be strictly positive.',
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'Selling price must be positive.',
+    )
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -55,6 +56,12 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        self.ensure_one()
+        if self.buyer_id and float_compare(self.expected_price, 0.9 * self.selling_price, 0) > 0:
+            raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
     @api.onchange('garden')
     def _onchange_garden(self):
         self.ensure_one()
@@ -64,6 +71,11 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        if any(record.state in ['new', 'cancelled'] for record in self):
+            raise UserError("Can't delete a property which has a state of new or cancelled!")
 
     def action_set_sold(self):
         self.ensure_one()
@@ -78,14 +90,3 @@ class EstateProperty(models.Model):
             raise UserError("Sold property cannot be cancelled")
         self.state = 'cancelled'
         return 1
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        self.ensure_one()
-        if self.buyer_id and float_compare(self.expected_price, 0.9 * self.selling_price, 0) > 0:
-            raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
-
-    @api.ondelete(at_uninstall=False)
-    def _unlink_if_not_new_or_cancelled(self):
-        if any(record.state in ['new', 'cancelled'] for record in self):
-            raise UserError("Can't delete a property which has a state of new or cancelled!")

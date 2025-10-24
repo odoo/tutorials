@@ -6,10 +6,6 @@ class EstatePropertyType(models.Model):
     _description = "Define the type of the property"
     _order = "sequence, name"
 
-    _check_unique_type = models.Constraint(
-        'UNIQUE(name)',
-        'Type already exists.',
-    )
     name = fields.Char(required=True)
     sequence = fields.Integer('Sequence', default=1, help="Used to order stages. Lower is better.")
     property_ids = fields.One2many("estate.property", "type_id")
@@ -20,3 +16,8 @@ class EstatePropertyType(models.Model):
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
+
+    _check_unique_type = models.Constraint(
+        'UNIQUE(name)',
+        'Type already exists.',
+    )

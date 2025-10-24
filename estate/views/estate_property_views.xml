@@ -3,7 +3,7 @@
     <record id="estate_property_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
 
@@ -77,6 +77,38 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="type_id" records_draggable="false">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <h2>
+                            <field name="name"/>
+                        </h2>
+                        <div>
+                            Expected price: 
+                            <field name="expected_price"/>
+                        </div>
+                        <div t-if="record.state.raw_value == 'received'">
+                            Offer received: 
+                            <field name="best_price"/>
+                        </div>
+                        <div t-if="record.state.raw_value == 'accepted'">
+                            Selled for:
+                            <field name="selling_price"/>
+                        </div>
+                        <div>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': true}"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 

@@ -9,10 +9,6 @@ class EstatePropertyOffer(models.Model):
     _description = "Offers for propreties"
     _order = "price desc"
 
-    _check_price = models.Constraint(
-        'CHECK(price > 0)',
-        'Offer price must be strictly positive.',
-    )
     price = fields.Float(required=True)
     status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one('res.partner', required=True)
@@ -22,6 +18,11 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_type_id = fields.Many2one(related="property_id.type_id")
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer price must be strictly positive.',
+    )
+
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
@@ -30,6 +31,16 @@ class EstatePropertyOffer(models.Model):
     def _inverse_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date).days
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            created_property = self.env['estate.property'].browse(val['property_id'])
+            if any(float_compare(val['price'], offer.price, 0) < 0 for offer in created_property.offer_ids):
+                raise ValidationError("A bigger offer already exists")
+            if created_property.state == 'new':
+                created_property.state = 'received'
+        return super().create(vals)
 
     def action_accept_offer(self):
         self.ensure_one()
@@ -42,13 +53,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return 1
-
-    @api.model
-    def create(self, vals):
-        for val in vals:
-            created_property = self.env['estate.property'].browse(val['property_id'])
-            if any(float_compare(val['price'], offer.price, 0) < 0 for offer in created_property.offer_ids):
-                raise ValidationError("A bigger offer already exists")
-            if created_property.state == 'new':
-                created_property.state = 'received'
-        return super().create(vals)

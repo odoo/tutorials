@@ -22,3 +22,4 @@ class EstatePropertyInherited(models.Model):
                 })
             ],
         })
+        return 1
