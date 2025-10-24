@@ -14,7 +14,7 @@
     'category': 'Tutorials',
     'version': '0.1',
     'application': True,
-    'depends': ['estate','account'],
+    'depends': ['estate','account'], 
 
     'data': [
         'security/ir.model.access.csv',
