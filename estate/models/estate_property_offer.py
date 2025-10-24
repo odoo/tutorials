@@ -39,6 +39,9 @@ class EstatePropertyOffer(models.Model):
 
         property_reference = self.env['estate.property'].browse(vals_list[0]['property_id'])
 
+        if property_reference.state in ('sold', 'cancelled'):
+            raise UserError("Cannot create an offer on a sold or cancelled property")
+
         if vals_list[0]['price'] <= property_reference.best_price:
             raise UserError(f"The offer needs to be higher than {property_reference.best_price}")
 
