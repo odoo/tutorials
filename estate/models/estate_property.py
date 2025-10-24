@@ -18,7 +18,6 @@ class EstateProperty(models.Model):
         selection=[('house', 'House'), ('apartment', 'Apartment')])
     description = fields.Text()
     postcode = fields.Char()
-    state = fields.Text()
     date_availability = fields.Date(copy=False, readonly=True, default=lambda self: date.today() + relativedelta(months=3))
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
@@ -78,10 +77,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.offer_ids:
                 record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
-            # if record.offer_ids:
-            #     record.best_price = max(record.offer_ids.mapped('price'))
-            # else:
-            #     record.best_price = 0.0
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -96,11 +92,11 @@ class EstateProperty(models.Model):
 
     _check_selling_price = models.Constraint(
          'CHECK(selling_price > 0)', 'The selling price must be positive.')
-    
+
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price_expected_price(self):
         for record in self:
             if record.selling_price == 0:
-                continue    
+                continue
             if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1:
                 raise UserError("The selling price must be at least 90% of the expected price.")
