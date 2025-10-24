@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="res_users_view_form_inherit_estate_property" model="ir.ui.view">
+            <field name="name">res.users.view.form.inherit.estate.property</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='device_ids']" position="after">
+                    <field name="property_ids" />
+                </xpath>
+
+                <notebook>
+                    <page string="Estate Properties">
+                        <field name="property_ids">
+                            <list>
+                                <field name="name"></field>
+                                <field name="property_type_id"></field>
+                                <field name="postcode"></field>
+                                <field name="tag_ids"></field>
+                                <field name="bedrooms"></field>
+                                <field name="living_area"></field>
+                                <field name="expected_price"></field>
+                                <field name="selling_price"></field>
+                            </list>
+                        </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+
+    </data>
+</odoo>

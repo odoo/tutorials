@@ -6,6 +6,7 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -46,13 +47,11 @@ class EstateProperty(models.Model):
     state = fields.Selection(
         selection=[
             ('new', 'New'),
-            ('received', 'Received'),
-            ('accepted', 'Accepted')
+            ('received', 'Offer Received'),
+            ('accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled')
         ],
-        default="new"
-    )
-    status = fields.Selection(
-        selection=[('new', 'New'), ('sold', 'Sold'), ('canceled', 'Canceled')],
         default="new"
     )
 
@@ -81,18 +80,18 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for record in self:
-            if record.status == 'canceled':
+            if record.state == 'canceled':
                 raise UserError('A canceled property cannot be sold')
             else:
-                record.status = 'sold'
+                record.state = 'sold'
         return True
 
     def action_set_canceled(self):
         for record in self:
-            if record.status == 'sold':
+            if record.state == 'sold':
                 raise UserError('A sold property cannot be canceled')
             else:
-                record.status = 'canceled'
+                record.state = 'canceled'
         return True
 
     _check_expected_price = models.Constraint(
@@ -103,8 +102,17 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
+            if record.state in ("new", "received"):
+                return
+            
             if float_compare(record.selling_price, (record.expected_price * 0.9), 2) < 0:
                 raise ValidationError("The selling price cannot be lower than 90%% of the expected price")
 
             if float_is_zero(record.selling_price, 2):
                 raise ValidationError("The selling price should be positive")
+
+    def unlink(self):
+        if self.state not in ('new', 'canceled'):
+            raise UserError("This property can't be deleted")
+
+        return super().unlink()
