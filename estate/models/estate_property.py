@@ -1,6 +1,6 @@
 from odoo import fields, models, api
 from odoo.exceptions import UserError
-from odoo.tools.float_utils import float_is_zero, float_compare
+from odoo.tools.float_utils import float_is_zero
 from dateutil.relativedelta import relativedelta
 
 
@@ -74,25 +74,25 @@ class Estateproperty(models.Model):
             if record.state != 'cancelled':
                 record.state = 'sold'
             else:
-                raise(UserError("Can not cancel sold property"))
+                raise UserError("Can not cancel sold property")
     
     def set_property_cancelled(self):
         for record in self:
             if record.state != 'sold':
                 record.state = 'cancelled'
             else:
-                raise(UserError("Can not cancel sold property"))
+                raise UserError("Can not cancel sold property")
 
     @api.onchange('selling_price', 'expected_price')
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if not(float_is_zero(record.selling_price,2)) and record.selling_price < 0.9 * record.expected_price:
-                raise(UserError("Selling price can not be less than 90'%' of Excpected price"))
+            if not float_is_zero(record.selling_price,2) and record.selling_price < 0.9 * record.expected_price:
+                raise UserError("Selling price can not be less than 90'%' of Excpected price")
 
     @api.ondelete(at_uninstall=False)
     def unlink(self):
         for record in self:
             if record.state not in {'new', 'cancelled'}:
                 raise(UserError("Can not delete properties at this state"))
-        return super.unlink()
+        return super().unlink()

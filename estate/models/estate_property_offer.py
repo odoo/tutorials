@@ -44,15 +44,15 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.state = 'offer accepted'
                 record.property_id.offer_accepted = True 
             else:
-                raise(UserError("Can not accept more than one offer"))
-    
+                raise UserError("Can not accept more than one offer")
+
     def reject_offer(self):
         for record in self:
             record.status = 'refused'
-    
+
     @api.model
     def create(self, vals_list):
         if len(self.env['estate.property'].browse(vals_list[0].get('property_id')).offer_ids.mapped('price')) and vals_list[0].get('price') < min(self.env['estate.property'].browse(vals_list[0].get('property_id')).offer_ids.mapped('price')):
-            raise(UserError("Can not have an offer that is less the minimum offer"))
+            raise UserError("Can not have an offer that is less the minimum offer")
         self.env['estate.property'].browse(vals_list[0]['property_id']).state = 'offer received'
         return super().create(vals_list)
