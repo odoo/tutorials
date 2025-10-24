@@ -103,6 +103,12 @@ class EstateProperty(models.Model):
             self.garden_orientation = "north"
             self.garden_area = 10
 
+    @api.constrains("state")
+    def _check_offers_state(self):
+        self.ensure_one()
+        if self.state == 'sold' and not [offer for offer in self.offer_ids if offer.status == 'accepted']:
+            raise exceptions.UserError("You cannot sold a property without accepted offer")
+
     @api.constrains('selling_price', 'expected_price')
     def _check_date_end(self):
         for record in self:
