@@ -1,7 +1,7 @@
 {
     'name': "Estate",
     'version': '1.0',
-    'depends': ['base', 'estate_account'],
+    'depends': ['base'],
     'author': "GACI Jugurtha (jugac)",
     'application': True,
     'license': 'LGPL-3',

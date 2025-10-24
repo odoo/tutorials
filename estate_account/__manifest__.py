@@ -1,9 +1,8 @@
 {
-    'name': "Invoicing",
+    'name': "Estate account",
     'version': '1.0',
-    'depends': ['base'],
+    'depends': ['estate', 'account'],
     'author': "GACI Jugurtha (jugac)",
-    'application': True,
     'license': 'LGPL-3',
     'data': []
 }
