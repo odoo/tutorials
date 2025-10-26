@@ -1,0 +1,28 @@
+<odoo>
+    <record id="estate_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.estate</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Estate" string="Estate" name="estate">
+                    <block title="Estate">
+                        <setting help="Define the default value for a property's garden area.">
+                            <field name="garden_area" string="Default Garden Area"/>
+                            <span>sqm</span>
+                        </setting>
+                        <setting help="Define the default value for a property's garden orientation.">
+                            <field name="garden_orientation" string="Default Garden Orientation"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>

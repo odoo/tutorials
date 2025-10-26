@@ -2,9 +2,6 @@ from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 
-DEFAULT_GARDEN_AREA = 10
-DEFAULT_GARDEN_ORIENTATION = "north"
-
 
 class PropertyModel(models.Model):
     _name = "estate.property"
@@ -70,8 +67,8 @@ class PropertyModel(models.Model):
     @api.onchange("garden")
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area = DEFAULT_GARDEN_AREA
-            self.garden_orientation = DEFAULT_GARDEN_ORIENTATION
+            self.garden_area = self.env["ir.config_parameter"].get_param("estate.default_garden_area")
+            self.garden_orientation = self.env["ir.config_parameter"].get_param("estate.default_garden_orientation")
         else:
             self.garden_area = 0
             self.garden_orientation = None

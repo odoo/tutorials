@@ -1,0 +1,12 @@
+<odoo>
+    <data noupdate="1">
+        <record id="ir_config_parameter_estate_garden_area" model="ir.config_parameter" forcecreate="False">
+            <field name="key">estate.default_garden_area</field>
+            <field name="value">10</field>
+        </record>
+        <record id="ir_config_parameter_estate_garden_orientation" model="ir.config_parameter" forcecreate="False">
+            <field name="key">estate.default_garden_orientation</field>
+            <field name="value">north</field>
+        </record>
+    </data>
+</odoo>
