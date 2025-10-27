@@ -96,7 +96,12 @@ class EstateProperty(models.Model):
             if not has_offers and not any(offer.status == 'accepted' for offer in record.offer_ids) and record.state in ('offer_received',):
                 record.state = 'offer_receive'
 
-    def action_set_sold(self): 
+    @api.ondelete(at_uninstall=False)
+    def _if_new_or_canceled(self):
+        if not set(self.mapped("state")) <= {"new", "canceled"}:
+            raise UserError("Only new and canceled properties can be deleted.")
+
+    def action_set_sold(self):
         print(self.state)
         if self.state == "cancelled":
             raise UserError("A cancelled property can not be sold")
