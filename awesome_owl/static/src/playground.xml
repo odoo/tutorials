@@ -2,9 +2,7 @@
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
         <div class="p-3 flex">
-            <Counter onChange.bind="incrementSum"/>
-            <Counter onChange.bind="incrementSum"/>
-            <Card title="'Counter value:'" content="'{state.sum}'"/>
+            <TodoList/>
         </div>
     </t>
 </templates>
