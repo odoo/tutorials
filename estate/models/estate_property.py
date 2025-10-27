@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, api
+from odoo.fields import Char, Text, Html, Float, Integer, Date, Boolean, Selection, Many2many, Many2one, One2many
 from odoo.tools import float_compare, float_is_zero
 from odoo.exceptions import UserError, ValidationError
 
@@ -8,33 +9,33 @@ class EstateProperty(models.Model):
     _description = "Estate Property"
     _order = "id desc"
 
-    name = fields.Char(required=True)
-    description = fields.Text()
-    notes = fields.Html()
-    postcode = fields.Char()
-    date_availability = fields.Date(
+    name = Char(required=True)
+    description = Text()
+    notes = Html()
+    postcode = Char()
+    date_availability = Date(
         string="Available From",
         copy=False,
-        default=lambda self: fields.Date.add(fields.Date.today(), months=3)
+        default=lambda self: Date.add(Date.today(), months=3)
     )
 
-    expected_price = fields.Float(required=True)
-    selling_price = fields.Float(copy=False)
-    best_offer = fields.Float(copy=False, compute="_compute_best_offer")
+    expected_price = Float(required=True)
+    selling_price = Float(copy=False)
+    best_offer = Float(copy=False, compute="_compute_best_offer")
 
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer(string="Living Area (sqm)")
-    total_area = fields.Integer(
+    bedrooms = Integer(default=2)
+    living_area = Integer(string="Living Area (sqm)")
+    total_area = Integer(
         compute="_compute_total_area",
         store=True,
         string="Total Area (sqm)",
     )
-    facades = fields.Integer()
-    garage = fields.Boolean()
+    facades = Integer()
+    garage = Boolean()
 
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
-    garden_orientation = fields.Selection(
+    garden = Boolean()
+    garden_area = Integer()
+    garden_orientation = Selection(
         selection=[
             ('north', 'North'),
             ('south', 'South'),
@@ -43,8 +44,8 @@ class EstateProperty(models.Model):
         ]
     )
 
-    active = fields.Boolean(default=True)
-    state = fields.Selection(
+    active = Boolean(default=True)
+    state = Selection(
         selection=[
             ('new', 'New'),
             ('received', 'Offer Received'),
@@ -56,11 +57,11 @@ class EstateProperty(models.Model):
     )
 
     # relations
-    property_type_id = fields.Many2one("estate.property.type")
-    buyer_id = fields.Many2one("res.partner")
-    salesman_id = fields.Many2one("res.users", default=lambda self: self.env.user)
-    tag_ids = fields.Many2many("estate.property.tag")
-    offer_ids = fields.One2many("estate.property.offer", "property_id")
+    property_type_id = Many2one("estate.property.type")
+    buyer_id = Many2one("res.partner")
+    salesman_id = Many2one("res.users", default=lambda self: self.env.user)
+    tag_ids = Many2many("estate.property.tag")
+    offer_ids = One2many("estate.property.offer", "property_id")
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -82,16 +83,14 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'canceled':
                 raise UserError('A canceled property cannot be sold')
-            else:
-                record.state = 'sold'
+            record.state = 'sold'
         return True
 
     def action_set_canceled(self):
         for record in self:
             if record.state == 'sold':
                 raise UserError('A sold property cannot be canceled')
-            else:
-                record.state = 'canceled'
+            record.state = 'canceled'
         return True
 
     _check_expected_price = models.Constraint(
@@ -101,9 +100,7 @@ class EstateProperty(models.Model):
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
-        for record in self:
-            if record.state in ("new", "received"):
-                return
+        for record in self.filtered(lambda p: p.state not in ("new", "received")):
 
             if float_compare(record.selling_price, (record.expected_price * 0.9), 2) < 0:
                 raise ValidationError("The selling price cannot be lower than 90%% of the expected price")

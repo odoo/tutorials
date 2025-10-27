@@ -1,4 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, api
+from odoo.fields import Float, Selection, Integer, Date, Many2one
 from odoo.exceptions import UserError
 
 
@@ -7,8 +8,8 @@ class EstatePropertyOffer(models.Model):
     _description = "Estate offers"
     _order = "price desc"
 
-    price = fields.Float(required=True)
-    status = fields.Selection(
+    price = Float(required=True)
+    status = Selection(
         selection=[
             ('new', 'New'),
             ('refused', 'Refused'),
@@ -17,14 +18,14 @@ class EstatePropertyOffer(models.Model):
         default="new",
         copy=False
     )
-    validity = fields.Integer(default=7)
-    create_date = fields.Date(default=lambda self: fields.Date.today(), readonly=True)
-    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_validity")
+    validity = Integer(default=7)
+    create_date = Date(default=lambda self: Date.today(), readonly=True)
+    date_deadline = Date(compute="_compute_date_deadline", inverse="_inverse_validity")
 
     # relations
-    partner_id = fields.Many2one("res.partner", required=True)
-    property_id = fields.Many2one("estate.property", required=True, ondelete="cascade")
-    property_type_id = fields.Many2one(
+    partner_id = Many2one("res.partner", required=True)
+    property_id = Many2one("estate.property", required=True, ondelete="cascade")
+    property_type_id = Many2one(
         related="property_id.property_type_id",
         store=True,
     )
@@ -32,12 +33,13 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for record in self:
-            record.date_deadline = fields.Date.add(record.create_date, days=record.validity)
+            record.date_deadline = Date.add(record.create_date, days=record.validity)
 
     @api.depends("date_deadline")
     def _inverse_validity(self):
         for record in self:
-            record.validity = (record.date_deadline - record.create_date).days
+            if record.date_deadline:
+                record.validity = (record.date_deadline - record.create_date).days
 
     def action_accept(self):
         for record in self:
@@ -49,11 +51,10 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_refuse(self):
-        for record in self:
-            record.status = 'refused'
+        self.status = 'refused'
         return True
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
 
         for offer in self:

@@ -21,6 +21,4 @@ class InheritedEstateProperty(models.Model):
             ]
         })
 
-        if created_invoice:
-            res = super().action_set_sold()
-            return res
+        return super().action_set_sold()
