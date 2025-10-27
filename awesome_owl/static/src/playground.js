@@ -10,8 +10,14 @@ export class Playground extends Component {
 
     setup() {
         this.state = useState({
+            sum: 2,
             value: "Awesome text",
             htmlValue: markup('<h1 class="font-italic">Hello</h1>')
         })
+    }
+
+    incrementSum() {
+        this.state.sum++;
+        console.log(this.state.sum)
     }
 }
