@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.Counter">
-        <p>Counter: <t t-esc="state.value"/></p>
-        <button class="btn btn-primary" t-on-click="increment">Increment</button>
+    <t t-name="awesome_owl.playground">
+        <div>
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+        </div>
+        <div>
+            The sum is: <t t-esc="state.sum"/>
+        </div>
+        <div>
+            <Card title="'card 1'" content="value1"/>
+            <Card title="'card 2'" content="value2"/>
+        </div>
     </t>
 
 </templates>
