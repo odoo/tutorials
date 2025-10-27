@@ -36,7 +36,7 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         self.status = "Refused"
         return True
-    
+
     @api.constrains("price")
     def _check_offer_price_is_ok(self):
         for record in self:
