@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -51,23 +51,32 @@ class EstateProperty(models.Model):
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        self.garden_area = 10 if self.garden else 0
-        self.garden_orientation = "North" if self.garden else None
+        for record in self:
+            record.garden_area = 10 if record.garden else 0
+            record.garden_orientation = "North" if record.garden else None
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['New', 'Cancelled']:
+                raise UserError(_("Seules les propriétés 'New' ou 'Cancelled' peuvent être supprimées."))
 
     def action_mark_as_sold(self):
-        if self.state == "Cancelled":
-            raise UserError("Cette vente a été annulée")
-        self.state = "Sold"
-        return True
+        for record in self:
+            if record.state == "Cancelled":
+                raise UserError(_("Cette vente a été annulée"))
+            record.state = "Sold"
+            return True
 
     def action_mark_as_cancelled(self):
-        if self.state == "Sold":
-            raise UserError("Cette maison a déjà été vendue")
-        self.state = "Cancelled"
-        return True
+        for record in self:
+            if record.state == "Sold":
+                raise UserError(_("Cette maison a déjà été vendue"))
+            record.state = "Cancelled"
+            return True
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_is_ok(self):
         for record in self:
-            if self.selling_price and float_compare(self.selling_price, 0.9 * self.expected_price, 2) == -1:
+            if record.selling_price and float_compare(record.selling_price, 0.9 * record.expected_price, 2) == -1:
                 raise ValidationError("Le prix de vente doit valoir au moins 90 pourcents du prix attendu.")
