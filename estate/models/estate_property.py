@@ -65,7 +65,7 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
-            if record.selling_price == 0:
+            if record.state not in ('offer_accepted', 'sold'):
                 continue
             if float_compare(record.selling_price, record.expected_price * 0.9, 1) < 0:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price")
@@ -95,12 +95,11 @@ class EstateProperty(models.Model):
                 raise UserError("A cancelled property cannot be sold")
             if len(record.offer_ids.filtered(lambda offer: offer.status == 'accepted')) == 0:
                 raise UserError("A property without any accepted offers cannot be sold")
-            record.state = 'sold'
+        self.state = 'sold'
         return True
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise UserError("A sold property cannot be cancelled")
-            record.state = 'cancelled'
+        if any(record.state == 'sold' for record in self):
+            raise UserError("A sold property cannot be cancelled")
+        self.state = 'cancelled'
         return True

@@ -12,6 +12,10 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price >= 0)',
         'An offer price must be strictly positive',
     )
+    _check_validity = models.Constraint(
+        'CHECK(validity >= 0)',
+        'Validity must be positive',
+    )
 
     price = fields.Float(required=True)
     status = fields.Selection(
@@ -34,27 +38,37 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        if len(vals_list) == 0:
-            return super().create(vals_list)
+        properties = self.env['estate.property'].search([
+            ('id', 'in', [vals['property_id'] for vals in vals_list]),
+            ('state', 'not in', ('sold', 'cancelled')),
+        ])
 
-        property_reference = self.env['estate.property'].browse(vals_list[0]['property_id'])
+        print("\nVals:")
+        print(vals_list)
 
-        if property_reference.state in ('sold', 'cancelled'):
-            raise UserError("Cannot create an offer on a sold or cancelled property")
+        print("\nProperties:")
+        print(properties)
 
-        if vals_list[0]['price'] <= property_reference.best_price:
-            raise UserError(f"The offer needs to be higher than {property_reference.best_price}")
+        for values in vals_list:
+            property_reference = properties.filtered(lambda r: r.id == values['property_id'])
+            print("\nProperty References:")
+            print(property_reference)
 
-        property_reference.write({'state': 'offer_received'})
+            if len(property_reference) != 1:
+                return UserError("Cannot create an offer on a sold or cancelled property")
+
+            if values['price'] <= property_reference.best_price:
+                raise UserError(f"The offer needs to be higher than {property_reference.best_price}")
+
+            property_reference.write({'state': 'offer_received'})
         return super().create(vals_list)
 
-    @api.depends('validity')
+    @api.depends('validity', 'create_date')
     def _compute_deadline(self):
         for offer in self:
             offer.date_deadline = (offer.create_date or fields.Datetime.now()) + relativedelta(days=offer.validity)
 
-    # Despite what the docs say, I couldn't get this to update without `onchange`
-    @api.onchange('date_deadline')
+    @api.depends('validity', 'create_date')
     def _inverse_deadline(self):
         for offer in self:
             offer.validity = (offer.date_deadline - offer.create_date.date()).days

@@ -4,7 +4,7 @@
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Offers" decoration-success="status=='accepted'" decoration-danger="status=='refused'" editable="bottom">
+            <list string="Offers" decoration-success="status=='accepted'" decoration-danger="status=='refused'">
                 <field name="partner_id"/>
                 <field name="price"/>
                 <field name="status" invisible="True"/> <!-- Needed for decorators and to determine the visibility of the following buttons -->
