@@ -43,16 +43,8 @@ class EstatePropertyOffer(models.Model):
             ('state', 'not in', ('sold', 'cancelled')),
         ])
 
-        print("\nVals:")
-        print(vals_list)
-
-        print("\nProperties:")
-        print(properties)
-
         for values in vals_list:
             property_reference = properties.filtered(lambda r: r.id == values['property_id'])
-            print("\nProperty References:")
-            print(property_reference)
 
             if len(property_reference) != 1:
                 return UserError("Cannot create an offer on a sold or cancelled property")
