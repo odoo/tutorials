@@ -23,4 +23,3 @@ class EstateProperty (models.Model):
             'move_type': 'out_invoice',
         })
         return res
-    
