@@ -63,6 +63,8 @@ class EstatePropertyOffer(models.Model):
         property_ids = [property['property_id'] for property in vals_list]
         Properties = self.env['estate.property'].browse(property_ids)
         for Property in Properties:
+            if Property.state in ['Sold']:
+                raise UserError("Can't create offers for an already sold property")
             if (Property.offer_ids):
                 curr_lowest_offer = min(Property.offer_ids.mapped('price'))
                 if float_compare(vals_list[0]['price'], curr_lowest_offer, 2) < 0:
