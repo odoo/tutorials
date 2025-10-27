@@ -3,7 +3,9 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            hello world <br/>
+            This is my counter component : <br/>
+            <counter />
         </div>
     </t>
 

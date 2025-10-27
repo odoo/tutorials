@@ -8,7 +8,7 @@ class InheritedEstateProperty(models.Model):
 
         journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
 
-        created_invoice = self.env["account.move"].create({
+        self.env["account.move"].create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
             'journal_id': journal.id,
