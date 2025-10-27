@@ -46,8 +46,8 @@ class EstatePropertyOffer(models.Model):
         for values in vals_list:
             property_reference = properties.filtered(lambda r: r.id == values['property_id'])
 
-            if len(property_reference) != 1:
-                return UserError("Cannot create an offer on a sold or cancelled property")
+            if not property_reference:
+                raise UserError("Cannot create an offer on a sold or cancelled property")
 
             if values['price'] <= property_reference.best_price:
                 raise UserError(f"The offer needs to be higher than {property_reference.best_price}")
