@@ -29,6 +29,9 @@ class PropertyOffer(models.Model):
         related="property_id.property_type_id",
         store=True,
     )
+    buttons_invisibility = fields.Boolean(
+        compute="_compute_buttons_invisibility",
+    )
 
     _check_price = models.Constraint(
         'CHECK(price > 0)', 'The offer price must be strictly positive.'
@@ -37,55 +40,47 @@ class PropertyOffer(models.Model):
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for offer in self:
-            if offer.create_date:
-                offer.date_deadline = fields.Date.add(
-                    offer.create_date.date(), days=offer.validity)
-            else:
-                offer.date_deadline = fields.Date.add(
-                    fields.Date.today(), days=offer.validity)
+            offer.date_deadline = fields.Date.add((
+                offer.create_date.date() if offer.create_date else fields.Date.today()), days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:
-            if offer.create_date and offer.date_deadline:
-                delta = (offer.date_deadline - offer.create_date.date()).days
-                offer.validity = delta
-            elif offer.date_deadline:
-                delta = (offer.date_deadline - fields.Date.today()).days
-                offer.validity = delta
+            offer.validity = (offer.date_deadline - (offer.create_date.date()
+                              if offer.create_date else fields.Date.today())).days
 
-    @api.model
+    @api.depends('property_state', 'status')
+    def _compute_buttons_invisibility(self):
+        for offer in self:
+            offer.buttons_invisibility = (
+                offer.property_state not in [
+                    'new', 'offer_received'] or offer.status
+            )
+
+    @api.model_create_multi
     def create(self, vals):
         for val in vals:
-            property_obj = self.env['estate.property'].browse(
-                val.get('property_id'))
             property_offers = self.env['estate.property.offer'].search([
-                ('property_id', '=', property_obj.id),
+                ('property_id', '=', val.get('property_id')),
             ])
-            if property_offers:
-                lowest_offer = min(property_offers.mapped('price'))
-                if val.get('price', 0) <= lowest_offer:
-                    raise ValidationError(
-                        "The offer price must be higher than existing offers."
-                    )
-            property_obj.state = 'offer_received'
-        return super().create(vals)
+            if property_offers and val.get('price') <= min(property_offers.mapped('price')):
+                raise ValidationError(
+                    "The offer price must be higher than existing offers."
+                )
+        offers = super().create(vals)
+        offers.property_id.state = "offer_received"
+        return offers
 
     def action_accept_offer(self):
-        for offer in self:
-            offer.status = "accepted"
-            offer.property_id.state = "offer_accepted"
+        self.status = "accepted"
+        self.property_id.state = "offer_accepted"
 
-            other_offers = self.env['estate.property.offer'].search([
-                ('property_id', '=', offer.property_id.id),
-                ('id', '!=', offer.id),
-                ('status', '!=', 'refused')
-            ])
-            other_offers.action_refuse_offer()
+        self.env['estate.property.offer'].search([
+            ('property_id', 'in', self.property_id.ids),
+            ('id', '!=', self.id),
+        ]).action_refuse_offer()
 
         return True
 
     def action_refuse_offer(self):
-        for offer in self:
-            offer.status = "refused"
-
+        self.status = "refused"
         return True

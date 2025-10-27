@@ -64,20 +64,14 @@ class Property(models.Model):
         for property in self:
             accepted_offer = property.offer_ids.filtered(
                 lambda o: o.status == 'accepted')
-            if accepted_offer:
-                property.selling_price = accepted_offer.price
-            else:
-                property.selling_price = 0.0
+            property.selling_price = accepted_offer.price if accepted_offer else 0.0
 
     @api.depends('offer_ids.status', 'offer_ids.partner_id')
     def _compute_buyer(self):
         for property in self:
             accepted_offer = property.offer_ids.filtered(
                 lambda o: o.status == 'accepted')
-            if accepted_offer:
-                property.buyer_id = accepted_offer.partner_id
-            else:
-                property.buyer_id = None
+            property.buyer_id = accepted_offer.partner_id if accepted_offer else None
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -87,10 +81,8 @@ class Property(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for property in self:
-            if property.offer_ids:
-                property.best_offer = max(property.offer_ids.mapped('price'))
-            else:
-                property.best_offer = 0.0
+            property.best_offer = max(property.offer_ids.mapped(
+                'price')) if property.offer_ids else 0.0
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price_is_acceptable(self):
@@ -106,12 +98,12 @@ class Property(models.Model):
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if not self.garden:
-            self.garden_area = 0
-            self.garden_orientation = None
-        else:
+        if self.garden:
             self.garden_area = 10
             self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_property_new_or_cancelled(self):
@@ -122,16 +114,14 @@ class Property(models.Model):
 
     def action_set_sold(self):
         for property in self:
-            if property.state != 'cancelled':
-                property.state = 'sold'
-            else:
+            if property.state == 'cancelled':
                 raise UserError(
                     "Cancelled properties cannot be sold.")
+            property.state = 'sold'
 
     def action_set_cancelled(self):
         for property in self:
-            if property.state != 'sold':
-                property.state = 'cancelled'
-            else:
+            if property.state == 'sold':
                 raise UserError(
                     "Sold properties cannot be cancelled.")
+            property.state = 'cancelled'

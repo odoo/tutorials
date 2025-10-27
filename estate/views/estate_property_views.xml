@@ -31,8 +31,8 @@
         <field name="arch" type="xml">
             <form string="Property Form">
                 <header>
-                    <button name="action_set_sold" type="object" string="SOLD" class="oe_highlight" invisible="state in ['sold', 'cancelled']"/>
-                    <button name="action_set_cancelled" type="object" string="CANCEL" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_set_sold" type="object" string="Sell" class="oe_highlight" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_set_cancelled" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -100,7 +100,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
-                <filter name="available_properties" string="Available Properties" domain="['&amp;', ('active', '=', True), ('state', 'in', ['new', 'offer_received'])]"/>
+                <filter name="available_properties" string="Available Properties" domain="[('active', '=', True), ('state', 'in', ['new', 'offer_received'])]"/>
                 <filter name="Postcode" string="Postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>
