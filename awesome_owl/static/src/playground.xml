@@ -9,6 +9,7 @@
             <Card title="'card 1'" content="card1_content"/>
             <Card title="'card 2'" content="card2_content"/>
             <p>The sum is: <t t-esc="state.sum"/></p>
+            <TodoList/>
         </div>
     </t>
 
