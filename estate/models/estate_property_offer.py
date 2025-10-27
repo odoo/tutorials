@@ -36,7 +36,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("A refused offer cannot be accepted.")
             else:
                 offer.status = 'accepted'
-                offer.property_id.status = 'offer_accepted'
+                offer.property_id.state = 'offer_accepted'
         return True
 
     def action_refuse(self):
