@@ -19,4 +19,17 @@ export class TodoList extends Component {
             e.target.value = "";
         }
     }
+
+    toggleState = (id) => {
+        const todo = this.todos.filter(t => t.id === id)[0];
+        todo.isCompleted = !todo.isCompleted;
+        console.log(todo);
+    }
+
+    removeTodo = (id) => {
+        const index = this.todos.findIndex(t => t.id === id)
+        if (index >= 0) {
+            this.todos.splice(index, 1);
+        }
+    }
 }

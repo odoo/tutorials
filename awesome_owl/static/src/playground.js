@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import {Component, markup, useState} from "@odoo/owl";
+import {Component, useState} from "@odoo/owl";
 import {Counter} from "./counter/counter";
 import {Card} from "./card/card";
 import {TodoList} from "./TodoList/todo_list";
@@ -13,8 +13,6 @@ export class Playground extends Component {
     setup() {
         this.state = useState({
             sum: 2,
-            value: "Awesome text",
-            htmlValue: markup('<h1 class="font-italic">Hello</h1>')
         })
     }
 
