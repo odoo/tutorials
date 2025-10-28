@@ -5,7 +5,8 @@
             <div class="card-body">
                 <div class="d-flex flex-row align-items-center">
                     <h5 class="card-title"><t t-out="props.title" /></h5>
-                    <button class="border border-0 shadow-sm p-1 mb-2 ms-2 bg-body rounded" t-on-click="() => { state.isOpen = !state.isOpen }">toggle</button>
+                    <button class="border border-0 shadow-sm p-1 mb-2 ms-2 bg-body rounded"
+                            t-on-click="() => { state.isOpen = !state.isOpen }">toggle</button>
                 </div>
                 <p class="card-text" t-if="state.isOpen">
                     <t t-slot="default"/>
