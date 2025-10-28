@@ -2,12 +2,14 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.TodoItem">
-        <span>
-            <t t-esc="props.item.id" />. 
-        </span>
-        <span>
-            <t t-esc="props.item.description" />
-        </span>
+        <div  t-att-class="{'text-decoration-line-through': props.item.isCompleted, 'text-muted': props.item.isCompleted}">
+            <span>
+                <t t-esc="props.item.id" />. 
+            </span>
+            <span>
+                <t t-esc="props.item.description" />
+            </span>
+        </div>
     </t>
 
 </templates>
