@@ -2,6 +2,7 @@ from odoo import Command, models
 
 
 class EstateProperty (models.Model):
+    _name="estate.property"
     _inherit = ["estate.property"]
 
     def action_mark_as_sold(self):
@@ -12,11 +13,11 @@ class EstateProperty (models.Model):
                     "name": "Accompte",
                     "quantity": "1",
                     "price_unit": self.selling_price * 0.06
-                }), 
+                }),
                  Command.create({
                    "name": "Frais administratifs",
                     "quantity": "1",
-                    "price_unit": 100 
+                    "price_unit": 100
                 })
             ],
             'partner_id': self.buyer.id,

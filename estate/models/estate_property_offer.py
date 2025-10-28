@@ -40,12 +40,11 @@ class EstatePropertyOffer(models.Model):
     @api.constrains("price")
     def _check_offer_price_is_ok(self):
         for record in self:
-            if float_compare(self.price, self.property_id.best_price, 2) == -1:
-                raise ValidationError(_("Le prix de vente doit être supérieur à %d", self.property_id.best_price))
+            if float_compare(record.price, record.property_id.best_price, 2) == -1:
+                raise ValidationError(_("Le prix de vente doit être supérieur à %d", record.property_id.best_price))
 
     @api.model_create_multi
     def create(self, vals_list):
         offers = super().create(vals_list)
         offers.property_id.state = 'Offer Received'
         return offers
-    
