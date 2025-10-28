@@ -1,7 +1,9 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl"
+
 
 export class Counter extends Component {
-    static template = "awesome_owl.counter.counter";
+    static template = "awesome_owl.counter.counter"
+    static props = ['onchange?']
 
     setup() {
         this.counter = useState({ value: 0 });
@@ -9,5 +11,7 @@ export class Counter extends Component {
 
     increment() {
         this.counter.value++;
+        if(this.props.onchange != null && this.props.onchange != undefined)
+            this.props.onchange()
     }
 }

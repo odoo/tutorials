@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world <br/>
-            This is my counter component : <br/>
-            <counter />
+            <div>
+                <Counter onchange.bind="incrementSum" />
+                <Counter onchange.bind="incrementSum" />
+                <h2> SUM is <t t-esc="sum.value"></t> </h2>
+            </div>
+
+            <div style="margin: 15px 0; display : flex">
+                <Card  title="'this is the card 1'">
+                    <Counter />
+                </Card>
+                <Card title="'this is the card 2'">
+                    <p>hello</p>
+                </Card>
+            </div>
+
+            <div style="margin: 15px 0">
+                <h2>  My todo list for this week  </h2>
+                <TodoList />
+            </div>
         </div>
     </t>
 

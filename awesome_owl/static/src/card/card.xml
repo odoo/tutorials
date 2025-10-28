@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+   <t t-name="awesome_owl.card.card">
+        <button t-on-click="() => this.state.visible = !this.state.visible">toggle visibility</button>
+        <t t-if="this.state.visible">
+            <div
+                class="card d-inline-block m-2"
+                style="display: block; border: 1px solid #ccc; padding: 20px;">
+
+                <div class="card-body">
+                    <h2 class="card-title" t-esc="props.title"></h2>
+                    <t t-slot="default" />
+                </div>
+            </div>
+        </t>
+   </t>
+</templates>

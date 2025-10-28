@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo.list">
+        <input t-ref="todoInputRef" placeholder="Add a todo" t-on-keyup="addTodo" style="padding: 13px; border-radius: 5px; min-width: 200px"/>
+        <ol>
+            <li t-foreach="todos" t-as="todo" t-key="todo.id">
+                <TodoItem
+                    todo="todo"
+                    toggleState.bind="() => this.toggleState(todo.id)"
+                    deleteTodo.bind="() => this.deleteTodo(todo.id)"
+                />
+            </li>
+        </ol>
+        <p>
+            You have <t t-esc="todos.length" /> tasks to do
+        </p>
+    </t>
+
+</templates>
