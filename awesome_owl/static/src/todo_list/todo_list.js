@@ -13,6 +13,7 @@ export class TodoList extends Component {
         });
         this.addTodo = this.addTodo.bind(this);
         this.toggleTodo = this.toggleTodo.bind(this);
+        this.removeTodo = this.removeTodo.bind(this);
         useAutofocus("input");
     }
 
@@ -32,10 +33,16 @@ export class TodoList extends Component {
     }
 
     toggleTodo(todoId) {
-        console.log("Toggling todo with ID:", todoId);
         const todo = this.state.todos.find((todo) => todo.id === todoId);
         if (todo) {
             todo.isCompleted = !todo.isCompleted;
+        }
+    }
+
+    removeTodo(todoId) {
+        const index = this.state.todos.findIndex((todo) => todo.id === todoId);
+        if (index >= 0) {
+            this.state.todos.splice(index, 1);
         }
     }
 }
