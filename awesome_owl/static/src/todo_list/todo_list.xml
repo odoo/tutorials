@@ -2,6 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todo_list">
+        <input type="text" placeholder="Enter a new task." t-on-keyup="ev => addTodo(ev)"/>
         <div>
             <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
                 <TodoItem todo="todo"/>

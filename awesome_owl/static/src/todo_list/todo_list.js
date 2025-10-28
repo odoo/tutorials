@@ -8,10 +8,23 @@ export class TodoList extends Component {
 
     setup() {
         this.state = useState({
-            todos: [
-                { id: 2, description: "write tutorial", isCompleted: true },
-                { id: 3, description: "buy milk", isCompleted: false },
-            ],
+            todos: [],
         });
+        this.addTodo = this.addTodo.bind(this);
+    }
+
+    addTodo(ev) {
+        if (ev.keyCode === 13 && ev.target.value.trim() !== "") {
+            const newId =
+                this.state.todos.length > 0
+                    ? Math.max(...this.state.todos.map((todo) => todo.id)) + 1
+                    : 1;
+            this.state.todos.push({
+                id: newId,
+                description: ev.target.value,
+                isCompleted: false,
+            });
+            ev.target.value = "";
+        }
     }
 }
