@@ -10,7 +10,10 @@
             <button type="button" class="btn btn-primary" t-on-click="openLeads">
                 Leads
             </button>
-            <div>hello dashboard</div>
+            <div>
+                <DashboardItem>some content</DashboardItem>
+                <DashboardItem size="2">I love milk</DashboardItem>
+            </div>
         </Layout>
     </t>
 
