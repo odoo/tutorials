@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class EstatePropertyTag(models.Model):
@@ -8,8 +8,7 @@ class EstatePropertyTag(models.Model):
 
     name = fields.Char(required=True)
     color = fields.Integer()
-
-    _unique_name = models.Constraint(
-        'UNIQUE(name)',
-        'The name must be unique',
+    _check_unique_name = models.Constraint(
+        "UNIQUE(name)",
+        "The name must be unique",
     )

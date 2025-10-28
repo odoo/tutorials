@@ -4,14 +4,12 @@
             id="estate_property_menu_root"
             name="Real Estate"
     />
-
     <menuitem
             id="estate_property_menu_advertisements"
             name="Advertisements"
             parent="estate_property_menu_root"
             sequence="1"
     />
-
     <menuitem
             id="estate_property_menu_properties"
             name="Properties"
@@ -19,14 +17,12 @@
             action="estate_property_action"
             sequence="1"
     />
-
     <menuitem
             id="estate_property_menu_settings"
             name="Settings"
             parent="estate_property_menu_root"
             sequence="2"
     />
-
     <menuitem
             id="estate_property_menu_property_type"
             name="Property Types"
@@ -34,7 +30,6 @@
             action="estate_property_type_action"
             sequence="1"
     />
-
     <menuitem
             id="estate_property_menu_property_tag"
             name="Property Tags"
