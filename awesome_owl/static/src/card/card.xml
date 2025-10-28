@@ -6,9 +6,10 @@
             <div class="card-body">
                 <h5 class="card-title">
                     <t t-out="props.title" />
+                    <span class="fa" t-on-click="() => this.onToggleOpen()" style="margin-left: 9rem"> toggle </span>
                 </h5>
                 <p class="card-text">
-                    <t t-out="props.content" />
+                    <t t-if="state.isOpen" t-slot="default" />
                 </p>
             </div>
         </div>

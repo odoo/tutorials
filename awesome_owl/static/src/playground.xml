@@ -7,8 +7,8 @@
         <div class="p-3">
             Total is : <t t-esc="state.sum" />
         </div>
-        <Card title="'title 1'" content="value1" />
-        <Card title="'title 2'" content="value2"/>
+        <Card title="'title 1'" isOpen='true' > <Counter incrementSum.bind="incrementSum" /> </Card>
+        <Card title="'title 2'" isOpen='true' > <Counter incrementSum.bind="incrementSum" /> </Card>
         <TodoList />
     </t>
 
