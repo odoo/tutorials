@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="test_model_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate_property</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{"search_default_available":1}</field>
+    </record>
+</odoo>
