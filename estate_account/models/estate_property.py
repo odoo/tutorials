@@ -1,19 +1,17 @@
 from odoo import models, Command
-from odoo.exceptions import UserError
 import logging
 
 _logger = logging.getLogger(__name__)
 
-class EstateProperty(models.Model):
-    
-    # ---------------------------------------- Private Attributes ---------------------------------
 
+class EstateProperty(models.Model):
+
+    # ---------------------------------------- Private Attributes ---------------------------------
     _inherit = "estate.property"
 
     # ---------------------------------------- Action Methods -------------------------------------
 
     def action_set_sold(self):
-        print("top")
         res = super().action_set_sold()
         journal = self.env["account.journal"].search([("type", "=", "sale")], limit=1)
         for prop in self:
@@ -36,5 +34,4 @@ class EstateProperty(models.Model):
                     ],
                 }
             )
-        print("bottom")
         return res

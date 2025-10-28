@@ -15,10 +15,10 @@ class EstateProperty(models.Model):
     _order = "id desc"
 
     _check_expected_price = models.Constraint(
-         'CHECK(expected_price >= 0)', 'The expected price must be strictly positive.')
+        'CHECK(expected_price >= 0)', 'The expected price must be strictly positive.')
 
     _check_selling_price = models.Constraint(
-         'CHECK(selling_price > 0)', 'The selling price must be positive.')
+        'CHECK(selling_price > 0)', 'The selling price must be positive.')
 
     # ---------------------------------------- Fields Declaration ---------------------------------
 
@@ -66,12 +66,12 @@ class EstateProperty(models.Model):
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for property in self:
-             property.total_area = property.living_area + property.garden_area
+            property.total_area = property.living_area + property.garden_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-                record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
+            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
 
     # ----------------------------------- Constrains and Onchanges --------------------------------
 
@@ -82,7 +82,6 @@ class EstateProperty(models.Model):
                 continue
             if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1:
                 raise UserError("The selling price must be at least 90% of the expected price.")
-
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -102,7 +101,6 @@ class EstateProperty(models.Model):
 
             if not has_offers and not any(offer.status == 'accepted' for offer in record.offer_ids) and record.state in ('offer_received',):
                 record.state = 'offer_receive'
-
     # ------------------------------------------ CRUD Methods -------------------------------------
 
     @api.ondelete(at_uninstall=False)
@@ -113,7 +111,6 @@ class EstateProperty(models.Model):
     # ---------------------------------------- Action Methods -------------------------------------
 
     def action_set_sold(self):
-        print(self.state)
         if self.state == "cancelled":
             raise UserError("A cancelled property can not be sold")
         self.state = "sold"
