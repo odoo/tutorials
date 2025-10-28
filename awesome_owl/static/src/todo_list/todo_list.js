@@ -12,6 +12,7 @@ export class TodoList extends Component {
             todos: [],
         });
         this.addTodo = this.addTodo.bind(this);
+        this.toggleTodo = this.toggleTodo.bind(this);
         useAutofocus("input");
     }
 
@@ -27,6 +28,14 @@ export class TodoList extends Component {
                 isCompleted: false,
             });
             ev.target.value = "";
+        }
+    }
+
+    toggleTodo(todoId) {
+        console.log("Toggling todo with ID:", todoId);
+        const todo = this.state.todos.find((todo) => todo.id === todoId);
+        if (todo) {
+            todo.isCompleted = !todo.isCompleted;
         }
     }
 }
