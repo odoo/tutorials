@@ -2,13 +2,15 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.TodoItem">
-        <div  t-att-class="{'text-decoration-line-through': props.item.isCompleted, 'text-muted': props.item.isCompleted}">
+        <div  class="p-3" t-att-class="{'text-decoration-line-through': props.item.isCompleted, 'text-muted': props.item.isCompleted}">
             <span>
+                <input type="checkbox" t-on-change="() => this.onChangeCheck(props.item.id)" />
                 <t t-esc="props.item.id" />. 
             </span>
             <span>
                 <t t-esc="props.item.description" />
             </span>
+            <span class="fa fa-remove" t-on-click="() => this.onClickDelete(props.item.id)"/>
         </div>
     </t>
 

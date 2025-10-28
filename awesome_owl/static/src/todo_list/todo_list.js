@@ -13,7 +13,6 @@ export class TodoList extends Component {
     setup() {
         this.myRef = useRef('myInput');
         onMounted(() => {
-            console.log(this.myRef.el);
             this.myRef.el.focus()
         });
     }
@@ -29,5 +28,15 @@ export class TodoList extends Component {
             this.ids++
             ev.target.value = ""
         }
+    }
+
+    toggleState(id){
+        let todo = this.todos.filter((todo) => todo.id == id)
+        todo[0].isCompleted = !todo[0].isCompleted
+    }
+
+    deleteTodo(id){
+        const index = this.todos.findIndex((elem) => elem.id === id);
+        if (index >= 0) this.todos.splice(index, 1);
     }
 }
