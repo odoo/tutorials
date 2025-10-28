@@ -23,7 +23,7 @@ export class TodoList extends Component {
     }
     toggleState(id) {
         const [res] = this.todos.filter(todo => todo.id == id)
-        res.isCompleted = true
+        res.isCompleted = !res.isCompleted
         
     }
     deleteTodo(id) {

@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todo.item">
-        <input type="checkbox" t-on-change="() => props.toggleState(props.todo.id)" />
+        <input type="checkbox" t-on-change="props.toggleState" />
         <span t-esc="props.todo.description" t-att-style="props.todo.isCompleted ? 'text-decoration: line-through' : ''"></span>
         <button t-on-click="() => props.deleteTodo(props.todo.id)" style="color: red; margin-left: 15px; font-weight: bold">x</button>
     </t>
