@@ -3,8 +3,10 @@
 
     <t t-name="awesome_owl.todo.item">
         <p t-att-class="{'text-muted': isCompleted, 'text-decoration-line-through': isCompleted}">
+            <input type="checkbox" t-att-checked="isCompleted" t-on-change="() => props.toggleState(id)"/>
             <t t-esc="id"/>.
             <t t-esc="description"/>
+            <span class="fa fa-remove" t-on-click="() => props.deleteTodo(id)"/>
         </p>
     </t>
 </templates>
