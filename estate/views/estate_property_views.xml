@@ -93,7 +93,38 @@
             </form>
         </field>
     </record>
-
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+    <field name="name">estate.property.kanban</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+        <kanban default_group_by="property_type_id" records_draggable="false">
+            <field name="state"/>
+            <field name="offer_ids"/>
+            <field name="selling_price"/>
+            <field name="tags_ids"/>
+            <field name="name"/>
+            <field name="expected_price"/>
+            <field name="best_price"/>
+            <templates>
+                <t t-name="card">
+                    <div class="oe_kanban_global_click">
+                        <div class="col-12">
+                            <field name="name"/>
+                        </div>
+                        <div class="col-12">
+                            <span>Expected price: </span>
+                            <field name="expected_price"/>
+                        </div>
+                        <div t-if="record.offer_ids" class="col-12">
+                            <span>Best Price: </span>
+                            <field name="best_price"/>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
     <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.views.search</field>
         <field name="model">estate.property</field>

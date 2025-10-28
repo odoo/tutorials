@@ -8,9 +8,19 @@ from odoo.tools import float_compare
 
 
 class EstateProperty(models.Model):
+    # ---------------------------------------- Private Attributes ---------------------------------
+
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
+
+    _check_expected_price = models.Constraint(
+         'CHECK(expected_price >= 0)', 'The expected price must be strictly positive.')
+
+    _check_selling_price = models.Constraint(
+         'CHECK(selling_price > 0)', 'The selling price must be positive.')
+
+    # ---------------------------------------- Fields Declaration ---------------------------------
 
     name = fields.Char(string="Title", required=True)
     property_type = fields.Selection(
@@ -53,20 +63,6 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(string='Total Area(m2)', compute='_compute_total_area', store=True)
     best_price = fields.Float(string='Best Offer', compute='_compute_best_price', store=True)
 
-    _check_expected_price = models.Constraint(
-         'CHECK(expected_price >= 0)', 'The expected price must be strictly positive.')
-
-    _check_selling_price = models.Constraint(
-         'CHECK(selling_price > 0)', 'The selling price must be positive.')
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price_expected_price(self):
-        for record in self:
-            if record.selling_price == 0:
-                continue
-            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1:
-                raise UserError("The selling price must be at least 90% of the expected price.")
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for property in self:
@@ -76,6 +72,17 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
                 record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0
+
+    # ----------------------------------- Constrains and Onchanges --------------------------------
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price_expected_price(self):
+        for record in self:
+            if record.selling_price == 0:
+                continue
+            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1:
+                raise UserError("The selling price must be at least 90% of the expected price.")
+
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -96,10 +103,14 @@ class EstateProperty(models.Model):
             if not has_offers and not any(offer.status == 'accepted' for offer in record.offer_ids) and record.state in ('offer_received',):
                 record.state = 'offer_receive'
 
+    # ------------------------------------------ CRUD Methods -------------------------------------
+
     @api.ondelete(at_uninstall=False)
     def _if_new_or_canceled(self):
         if not set(self.mapped("state")) <= {"new", "canceled"}:
             raise UserError("Only new and canceled properties can be deleted.")
+
+    # ---------------------------------------- Action Methods -------------------------------------
 
     def action_set_sold(self):
         print(self.state)

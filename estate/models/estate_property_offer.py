@@ -6,9 +6,14 @@ from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
+
+    # ---------------------------------------- Private Attributes ---------------------------------
+
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
     _order = 'price desc'
+
+    # --------------------------------------- Fields Declaration ----------------------------------
 
     price = fields.Float(string='price', required=True)
     status = fields.Selection(selection=[('accepted', 'Accepted'),
@@ -23,11 +28,15 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(string='Deadline', compute='_compute_date_deadline', store=True)
     property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", store=True, string="Property Type")
 
+    # ---------------------------------------- Compute methods ------------------------------------
+
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for offer in self:
             if not offer.create_date:
                 offer.date_deadline = fields.Date.today() + relativedelta(days=offer.validity)
+
+    # ------------------------------------------ CRUD Methods -------------------------------------
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -49,6 +58,8 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.state = "offer_received"
         
         return new_offers
+
+    # ---------------------------------------- Action Methods -------------------------------------
 
     def action_accept(self):
         print("Accepting offer...")
