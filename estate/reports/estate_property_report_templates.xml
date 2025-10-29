@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_estate_property_offer_document">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="property">
+                <t t-call="web.external_layout">
+                    <div class="page">
+
+                        <h2>
+                            <t t-esc="property.name" />
+                        </h2>
+
+                        <p>
+                            <strong>Salesman:</strong>
+                            <t t-esc="property.salesperson_id.name or 'System'" />
+                        </p>
+                        <p>
+                            <strong>Expected Price:</strong>
+                            <t t-esc="property.expected_price" />
+                        </p>
+                        <p>
+                            <strong>Status:</strong>
+                            <t t-esc="(property.state or '').replace('_', ' ').title()" />
+                        </p>
+
+                        <t t-if="property.offer_ids">
+                            <t t-call="estate.report_offer_table_template">
+                                <t t-set="property" t-value="property" />
+                            </t>
+                        </t>
+                        <t t-if="not property.offer_ids">
+                            <p>
+                                <em>No offers have been made for this property yet.</em>
+                            </p>
+                        </t>
+
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

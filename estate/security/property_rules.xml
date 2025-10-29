@@ -1,0 +1,26 @@
+<odoo>
+    <record id="estate_property_rule_user" model="ir.rule">
+        <field name="name">Estate: agent can only access their own properties</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
+        <field name="domain_force">[
+            '|', ('salesperson_id', '=', user.id),
+                 ('salesperson_id', '=', False)
+        ]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+
+    <record id="estate_property_company_rule" model="ir.rule">
+    <field name="name">Estate: company access</field>
+    <field name="model_id" ref="estate.model_estate_property"/>
+    <field name="global" eval="True"/>
+    <field name="domain_force">[
+        ('company_id', 'in', company_ids)
+    ]</field>
+    </record>
+
+</odoo>

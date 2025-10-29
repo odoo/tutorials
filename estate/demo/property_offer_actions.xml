@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <function model="estate.property.offer" name="action_accept_offer">
+    <value eval="[ref('estate.offer_demo_2')]"/>
+  </function>
+
+  <function model="estate.property.offer" name="action_refuse_offer">
+    <value eval="[ref('estate.offer_demo_1')]"/>
+  </function>
+
+  <function model="estate.property.offer" name="action_refuse_offer">
+    <value eval="[ref('estate.offer_demo_3')]"/>
+  </function>
+</odoo>
