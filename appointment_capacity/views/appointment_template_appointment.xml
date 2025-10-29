@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="appointment_info_inherit" inherit_id="appointment.appointment_info">
+        <xpath expr="//div[div[input[@name='max_capacity']]]" position="attributes">
+            <attribute name="t-if">
+                    appointment_type.capacity_type == 'multiple_seats'
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
