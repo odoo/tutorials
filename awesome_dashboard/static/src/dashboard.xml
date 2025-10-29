@@ -2,7 +2,15 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <div t-ref="root" class="h-100 d-flex flex-column">
+            <Layout className="'o_dashboard h-100'" display="props.display">
+                <button class="btn btn-primary myBtnChange" t-on-click="openCustomerKanban"> Open customer kanban </button>
+                <button class="btn btn-primary myBtnChange" t-on-click="openActivity"> Leads </button>
+                <DashboardItem > long content </DashboardItem>
+                <DashboardItem size="2"> very very very very long content </DashboardItem>
+            </Layout>
+
+        </div>
     </t>
 
 </templates>
