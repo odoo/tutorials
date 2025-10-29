@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_res_config_settings_view" model="ir.ui.view">
+        <field name="name">res.config.settings.inherit.view.form</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block//setting[@id='total_amount_words']" position="after">
+                <setting id="automatic_send_invoice">
+                    <label for="send_invoice_by_email" />
+                    <div>
+                        <field name="send_invoice_by_email" class="oe_inline" />
+                        <span>hours</span>
+                    </div>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
