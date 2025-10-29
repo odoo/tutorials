@@ -51,7 +51,7 @@
             <header>
                 <button name="action_mark_as_sold" type="object" string="Sold" invisible="state in ['Offer Accepted', 'Sold', 'Cancelled']"/>
                 <button name="action_mark_as_sold" type="object" string="Sold" class="btn-primary" invisible="state != 'Offer Accepted'"/>
-                <button name="action_mark_as_cancelled" type="object" string="Cancelled" invisible="state == 'Sold' or state == 'Cancelled'"/>
+                <button name="action_mark_as_cancelled" type="object" string="Cancelled" invisible="state in ['Sold', 'Cancelled']"/>
                 <field name="state" widget="statusbar" statusbar_visible="New,Offer Received,Offer Accepted,Sold"/>
             </header>
             <sheet>
@@ -86,7 +86,8 @@
                         </group>
                     </page>
                     <page string="Offers">
-                        <field name="offer_ids" readonly="state in ['Offer Accepted', 'Sold', 'Cancelled']">
+                        <!--<field name="offer_ids" readonly="state in ['Offer Accepted', 'Sold', 'Cancelled']">-->
+                        <field name="offer_ids">
                             <list editable="bottom" decoration-success="status == 'Accepted'" decoration-danger="status == 'Refused'">
                                 <field name="price"/>
                                 <field name="partner_id"/>
@@ -98,8 +99,8 @@
                     </page>
                     <page string="Other Info">
                         <group>
-                            <field name="salesman"/>
-                            <field name="buyer"/>
+                            <field name="salesman_id"/>
+                            <field name="buyer_id"/>
                         </group>
                     </page>
 
@@ -118,7 +119,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
+                <field name="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <field name="facades"/>
                 <filter name="group_by_postcode" context="{'group_by': 'postcode'}"/>
                 <filter name="availibility" string="Available" domain="['|', ('state', '=', 'New'),('state', '=', 'Offer Received')]"/>

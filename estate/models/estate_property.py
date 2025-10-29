@@ -31,21 +31,21 @@ class EstateProperty(models.Model):
         default='New'
     )
     active = fields.Boolean(default=True)
-    salesman = fields.Many2one("res.users")
-    buyer = fields.Many2one("res.partner", copy=False)
+    salesman_id = fields.Many2one("res.users")
+    buyer_id = fields.Many2one("res.partner", copy=False)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     property_type_id = fields.Many2one("estate.property.type")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
-    total_area = fields.Float(compute="_compute_total")
-    best_price = fields.Float(compute="_compute_highest_price")
+    total_area = fields.Float(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
 
     @api.depends("living_area", "garden_area")
-    def _compute_total(self):
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids")
-    def _compute_highest_price(self):
+    def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0
 
@@ -62,18 +62,18 @@ class EstateProperty(models.Model):
                 raise UserError(_("Seules les propriétés 'New' ou 'Cancelled' peuvent être supprimées."))
 
     def action_mark_as_sold(self):
-        for record in self:
-            if record.state == "Cancelled":
-                raise UserError(_("Cette vente a été annulée"))
-            record.state = "Sold"
-            return True
+        self.ensure_one()
+        if self.state == "Cancelled":
+            raise UserError(_("Cette vente a été annulée"))
+        self.state = "Sold"
+        return True
 
     def action_mark_as_cancelled(self):
-        for record in self:
-            if record.state == "Sold":
-                raise UserError(_("Cette maison a déjà été vendue"))
-            record.state = "Cancelled"
-            return True
+        self.ensure_one()
+        if self.state == "Sold":
+            raise UserError(_("Cette maison a déjà été vendue"))
+        self.state = "Cancelled"
+        return True
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_is_ok(self):

@@ -6,6 +6,7 @@ class EstateProperty (models.Model):
     _inherit = ["estate.property"]
 
     def action_mark_as_sold(self):
+        self.ensure_one()
         res = super().action_mark_as_sold()
         self.env["account.move"].create({
             "line_ids": [
