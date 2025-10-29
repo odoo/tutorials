@@ -1,4 +1,4 @@
-import {Component} from "@odoo/owl"
+import { Component } from "@odoo/owl"
 
 
 export class TodoItem extends Component {

@@ -1,12 +1,12 @@
-import {Component, useState} from "@odoo/owl"
-import {TodoItem} from "./todo_item";
-import {useAutofocus} from "../utils";
+import { Component, useState } from "@odoo/owl"
+import { TodoItem } from "./todo_item";
+import { useAutofocus } from "../utils";
 
 
 export class TodoList extends Component {
     static template = "awesome_owl.todo.list";
 
-    static components = {TodoItem};
+    static components = { TodoItem };
 
     static idGen = 0;
 
@@ -36,14 +36,14 @@ export class TodoList extends Component {
 
     toggleTodo(id) {
         const idx = this.todos.findIndex((elem) => elem.id === id);
-        if(idx !== -1) {
+        if (idx !== -1) {
             this.todos[idx].isCompleted = !this.todos[idx].isCompleted;
         }
     }
 
     deleteTodo(id) {
         const idx = this.todos.findIndex((elem) => elem.id === id);
-        if(idx !== -1) {
+        if (idx !== -1) {
             this.todos.splice(idx, 1);
         }
     }

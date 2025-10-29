@@ -1,4 +1,4 @@
-import {onMounted, useRef} from "@odoo/owl";
+import { onMounted, useRef } from "@odoo/owl";
 
 
 export function useAutofocus(name) {
