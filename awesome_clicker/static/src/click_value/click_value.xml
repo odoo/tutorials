@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.ClickValue">
+        
+        <span t-att-data-tooltip="this.props.value"><t t-esc="display"/></span>
+        
+    </t>
+
+</templates>
