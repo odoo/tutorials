@@ -1,0 +1,12 @@
+/* Apply only inside this specific list view */
+/* Left-align the price column cells */
+.o_list_view.price-left-align td.o_list_number[name="price"] {
+    text-align: left !important;
+}
+
+/* Left-align the price column header */
+.o_list_view.price-left-align th[data-name="price"],
+.o_list_view.price-left-align th[data-name="price"] .o_list_number_th {
+    text-align: left !important;
+    justify-content: flex-start !important; /* override flex alignment */
+}

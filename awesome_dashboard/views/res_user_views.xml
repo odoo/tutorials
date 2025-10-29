@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_users_form_dashboard" model="ir.ui.view">
+        <field name="name">res.users.form.dashboard</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/notebook/page[@name='preferences']" position="inside">
+                <group string="Dashboard Preferences">
+                    <field name="disabled_dashboard_items"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

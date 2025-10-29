@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList">
+        <!-- Card wrapper for nice layout -->
+        <div class="card shadow-sm m-3">
+            <!-- Header -->
+            <div class="card-header bg-primary text-white fw-bold">
+                Todo List
+            </div>  
+
+            <!-- Body -->
+            <div class="card-body p-3">
+                <!-- Input for adding a new task -->
+                <div class="mb-3">
+                    <input type="text"
+                           class="form-control"
+                           placeholder="Enter a new task"
+                           t-ref="taskInput"
+                           t-on-keyup="addTodo"/>
+                </div>
+
+                <!-- List of tasks -->
+                <ul class="list-group list-group-flush">
+                    <!-- If there are todos -->
+                    <t t-if="todos.length != 0">
+                        <t t-foreach="todos" t-as="todo" t-key="todo.id">
+                            <!-- Conditional class for completed vs pending -->
+                            <li t-att-class="todo.isCompleted ? 'list-group-item list-group-item-success text-decoration-line-through' : 'list-group-item'"
+                                aria-disabled="true">
+                                <TodoItem id="todo.id"
+                                          description="todo.description"
+                                          isCompleted="todo.isCompleted"
+                                          toggleState.bind="toggleState"
+                                          removeTodo.bind="removeTodo"/>
+                            </li>
+                        </t>
+                    </t>
+                    <!-- If empty -->
+                    <t t-else="">
+                        <li class="list-group-item text-muted fst-italic text-center">
+                            No tasks yet.
+                        </li>
+                    </t>
+                </ul>
+            </div>
+        </div> 
+    </t>
+</templates>
