@@ -9,14 +9,24 @@ export class ToDoItem extends Component{
             type: Object, 
             shape : {id: Number, description: String, isComplete: Boolean}
         },
-        toggleState: {
+        deleteToDo: {
             type: Function,
-            optional: true
+            optional: true,
         }
     }
+
+    setup(){
+        this.toggleState = this.toggleState.bind(this);
+    }
     
-    setState(todo) {
-        this.props.toggleState(todo);
+    toggleState() {
+        this.props.todo.isComplete = !this.props.todo.isComplete
+    }
+
+    removeToDo() {
+        if(this.props.todo){
+            this.props.deleteToDo(this.props.todo.id)
+        }
     }
     
 }

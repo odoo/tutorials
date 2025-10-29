@@ -7,7 +7,7 @@
             </div>
             <p>To Do List</p>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <ToDoItem todo="todo"/>
+                <ToDoItem todo="todo" deleteToDo='deleteToDo'/>
             </t>
         </div>
     </t>

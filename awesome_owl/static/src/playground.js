@@ -18,5 +18,4 @@ export class Playground extends Component {
     }
 
     static components = { Counter, Card, ToDoList };
-    state = useState({title: "title from js", content: markup("<div class='primary-text'>title from js</div>")})
 }

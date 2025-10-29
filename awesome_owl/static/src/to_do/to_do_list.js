@@ -6,12 +6,17 @@ import { useAutoFocus } from '../utils'
 
 export class ToDoList extends Component {
     static template = "awesome_owl.to_do_list"
-    static props = {}
+    static props = {
+        removeTodo: {
+            type: Function,
+            optional: true
+        }
+    }
     setup(){
         this.state = useState({value: 1});
         this.todos = useState([]);
         useAutoFocus('task');
-        this.toggleState = this.toggleState.bind(this);
+        this.deleteToDo = this.deleteToDo.bind(this);
     }
 
     addToDo(event) {
@@ -22,8 +27,11 @@ export class ToDoList extends Component {
         }
     }
 
-    toggleState(todo) {
-        console.log("state toggled", todo.isComplete)
+    deleteToDo(id){
+        const index = this.todos.findIndex((elem) => elem.id === id)
+        if(index >= 0){
+            this.todos.splice(index,1)
+        }
     }
 
     static components = { ToDoItem };
