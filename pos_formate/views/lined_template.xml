@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_receipt_lined" t-name="pos_formate.custom_receipt_lined">
+        <div
+            style="width: 350px; margin: auto; border: 2px solid black; padding: 10px; text-align: center;">
+            <img t-if="logo" t-att-src="image_data_uri(logo)" alt="Logo"
+                style="max-width: 100%; height: auto; display: block; margin: 0 auto;" />
+
+            <div style="font-size: 12px; line-height: 1.5;">
+                <t t-out="company_name" />
+                <br />
+                <t t-out="company_address" />
+                <br />
+                <strong t-if="tax_id">Tax Id: <t t-out="tax_id" /></strong>
+            </div>
+
+            <t t-esc="header" />
+
+            <h1 style="margin: 10px 0; font-size: 22px; font-weight: bold;">
+                <t t-out="order_number" />
+            </h1>
+
+            <t t-if="is_restaurant">Served by <t t-out="cashier" /> <br /> Table <t t-out="table" />
+                Guest <t t-out="guest" /></t>
+
+            <table
+                style="width: 100%; font-size: 12px; text-align: left; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid black; border-top: 1px solid black;">
+                        <th>No</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="orderlines" t-as="l">
+                        <tr>
+                            <td>
+                                <t t-out="l['no']" />
+                            </td>
+                            <td>
+                                <t t-out="l['name']" />
+                            </td>
+                            <td>
+                                <t t-out="l['qty']" />
+                            </td>
+                            <td>
+                                <t t-out="l['price']" />
+                            </td>
+                            <td>
+                                <t t-out="l['qty'] * l['price']" />
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+
+            <div
+                style="border-top: 2px solid black; margin-top: 10px; padding-top: 5px; font-size: 12px;">
+                <span>Total Qty <t t-out="total_qty" /></span> | <span>Sub Total $<t
+                        t-out="sub_total" /></span>
+            </div>
+
+            <div style="text-align: right; font-size: 12px; font-weight: bold; margin-top: 5px;">
+                <t t-out="payment_method" /> : <t t-out="paid_amount" />
+            </div>
+
+            <table
+                style="width: 100%; font-size: 12px; text-align: left; border-collapse: collapse; margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <th>Tax</th>
+                        <th>Amount</th>
+                        <th>Base</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="taxes" t-as="t">
+                        <tr>
+                            <td>
+                                <i>
+                                    <t t-out="t['name']" />
+                                </i>
+                            </td>
+                            <td>
+                                <t t-out="t['amount']" />
+                            </td>
+                            <td>
+                                <t t-out="t['base']" />
+                            </td>
+                            <td>
+                                <t t-out="t['total']" />
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+
+            <t t-esc="footer" />
+
+            <div style="text-align: center; font-size: 12px; margin-top: 10px;">
+                <strong>Odoo Point of Sale</strong><br /> Order <t t-out="order_number" /><br />
+                <t
+                    t-out="date" />
+            </div>
+        </div>
+    </template>
+</odoo>

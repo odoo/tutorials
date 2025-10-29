@@ -1,0 +1,35 @@
+<odoo>
+    <record id="action_open_receipt_configuration" model="ir.actions.act_window">
+        <field name="name">Configure Receipt</field>
+        <field name="res_model">pos.configure.receipt</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_pos_configure_receipt_form" model="ir.ui.view">
+        <field name="name">pos.configure.receipt.form</field>
+        <field name="model">pos.configure.receipt</field>
+        <field name="arch" type="xml">
+            <form string="Configure POS Receipt">
+                <group>
+                    <field name="layout" widget="selection_badge"
+                        options="{'size': 'sm'}" />
+                    <field name="logo" string="Logo" widget="image"
+                        options="{'size': [0, 50]}" />
+                    <field name="header" string="Header"
+                        placeholder="e.g. Shop Name, Location" />
+                    <field name="footer" string="Footer"
+                        placeholder="Thanks, visit again ..." />
+                </group>
+                <div class="o_preview">
+                    <field name="receipt_preview" />
+                </div>
+                <footer>
+                    <button string="Continue" type="object" name="action_apply_configuration"
+                        class="btn-primary" />
+                    <button string="Discard" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
