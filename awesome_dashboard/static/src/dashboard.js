@@ -1,16 +1,19 @@
 /** @odoo-module **/
 import { useService } from "@web/core/utils/hooks";
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from '@web/search/layout'
 import { DashboardItem } from "./dashboard_item/dashboard_item";
+import {PieChart} from "./pie_chart/pie_chart";
+import {DashboardItemContent} from "./dashboard_item_content/dashboard_item_content";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = {Layout, DashboardItem}
+    static components = {Layout, DashboardItem, PieChart, DashboardItemContent}
 
     setup() {
         this.action = useService("action");
+        this.stats = useState(useService("statistics"));
     }
 
     openCustomerView() {
