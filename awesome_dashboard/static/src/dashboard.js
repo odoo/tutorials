@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
@@ -20,7 +20,12 @@ class AwesomeDashboard extends Component {
     }
 
     setup() {
-      this.action = useService("action");
+        this.action = useService("action");
+        const statsService = useService("awesome_dashboard.getStats");
+
+        onWillStart(async () => {
+            this.result = await statsService.loadStatistics();
+        });
     }
 
     openCustomerKanban() {

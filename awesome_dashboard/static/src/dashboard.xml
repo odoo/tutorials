@@ -6,8 +6,33 @@
             <Layout className="'o_dashboard h-100'" display="props.display">
                 <button class="btn btn-primary myBtnChange" t-on-click="openCustomerKanban"> Open customer kanban </button>
                 <button class="btn btn-primary myBtnChange" t-on-click="openActivity"> Leads </button>
-                <DashboardItem > long content </DashboardItem>
-                <DashboardItem size="2"> very very very very long content </DashboardItem>
+                <div style="margin-left: 1rem;">
+                    <DashboardItem size="2"> Average quantity sold is : 
+                        <span style="color: green; font-weight: bolder; font-size: 27px;"> 
+                            <t t-esc="result.average_quantity"/>
+                        </span>
+                    </DashboardItem>
+                    <DashboardItem size="2"> Number of new orders this month : 
+                        <span style="color: green; font-weight: bolder; font-size: 27px;"> 
+                            <t t-esc="result.nb_new_orders"/>
+                        </span>
+                    </DashboardItem>
+                    <DashboardItem size="2"> Total amount of new orders this month : 
+                        <span style="color: green; font-weight: bolder; font-size: 27px;"> 
+                            <t t-esc="result.total_amount"/>
+                        </span>
+                    </DashboardItem>
+                    <DashboardItem size="2"> Number of cancelled orders this month : 
+                        <span style="color: green; font-weight: bolder; font-size: 27px;"> 
+                            <t t-esc="result.nb_cancelled_orders"/>
+                        </span>
+                    </DashboardItem>
+                    <DashboardItem size="2"> Average time for an order : 
+                        <span style="color: green; font-weight: bolder; font-size: 27px;"> 
+                            <t t-esc="result.average_time"/>
+                        </span>
+                    </DashboardItem>
+                </div>
             </Layout>
 
         </div>
