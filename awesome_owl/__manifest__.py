@@ -27,6 +27,9 @@
         'views/templates.xml',
     ],
     'assets': {
+        'web.assets_qweb': [
+            'awesome_owl/static/src/**/*.xml',
+        ],
         'awesome_owl.assets_playground': [
             ('include', 'web._assets_helpers'),
             'web/static/src/scss/pre_variables.scss',

@@ -1,0 +1,27 @@
+{
+    'name': "Real Estate",
+    'version': '1.0',
+    'author': "prbo",
+    'license': 'LGPL-3',
+    'category': 'Real Estate/Brokerage',
+    'sequence': 1,
+    'application': True,
+    'depends': ['base'],
+    'data': [
+        'security/estate_security.xml',
+        'security/ir.model.access.csv',
+        'security/estate_property_rules.xml',
+        'data/estate.property.type.csv',
+        'views/estate_property_offer_view.xml',
+        'views/estate_property_type_view.xml',
+        'views/estate_property_views.xml',
+        'views/estate_property_tag_view.xml',
+        'views/res_users_views.xml',
+        'views/estate_menus.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
+    ],
+    'demo': [
+        'demo/demo_data.xml',
+    ],
+}
