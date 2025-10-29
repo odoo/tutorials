@@ -1,4 +1,4 @@
-import {useState, Component} from "@odoo/owl"
+import {Component, useState} from "@odoo/owl"
 
 
 export class Card extends Component {
@@ -6,7 +6,7 @@ export class Card extends Component {
 
     static props = {
         title: String,
-        slots: Object,
+        slots: {type: Object, optional: true},
     };
 
     setup() {
@@ -20,7 +20,6 @@ export class Card extends Component {
     }
 
     toggle() {
-        console.log(this.isOpened);
         this.state.isOpened = !this.isOpened;
     }
 }

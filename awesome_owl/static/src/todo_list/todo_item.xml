@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.todo.item">
         <p t-att-class="{'text-muted': isCompleted, 'text-decoration-line-through': isCompleted}">
             <input type="checkbox" t-att-checked="isCompleted" t-on-change="() => props.toggleState(id)"/>
