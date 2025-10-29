@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Demo Data For Property Type -->
+    <record id="demo_property_type_1" model="estate.property.type">
+        <field name="name">Residential</field>
+    </record>
+
+    <!-- Demo Data For Propeties -->
+    <record id="property_id_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="property_type_id" ref="demo_property_type_1"/>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">1600000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+    </record>
+    <record id="property_id_2" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="property_type_id" ref="demo_property_type_1"/>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">100000</field>
+        <field name="selling_price">120000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+    </record>
+
+    <!-- Reference Data For Partner -->
+    <record id="property_partner_1" model="res.partner">
+        <field name="name">Azure Interior</field>
+    </record>
+    <record id="property_partner_2" model="res.partner">
+        <field name="name">Deco Addict</field>
+    </record>
+
+    <!-- Demo Data For Property -->
+    <record id="property_id_3" model="estate.property">
+        <field name="name">Modern Apartment</field>
+        <field name="state">new</field>
+        <field name="description">A stylish and modern apartment</field>
+        <field name="expected_price">800000</field>
+        <field name="living_area">85</field>
+        <field name="bedrooms">3</field>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'price': 750000,
+                'validity': 14,
+                'partner_id': ref('property_partner_1')
+            }),
+            Command.create({
+                'price': 780000,
+                'validity': 14,
+                'partner_id': ref('property_partner_2')
+            })
+        ]"/>
+    </record>
+
+    <!-- Demo Data For Property Offer -->
+    <record id="property_offer_id_1" model="estate.property.offer">
+        <field name="property_id" ref="property_id_1"/>
+        <field name="partner_id" ref="property_partner_1"/>
+        <field name="price">10000</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="property_offer_id_2" model="estate.property.offer">
+        <field name="property_id" ref="property_id_1"/>
+        <field name="partner_id" ref="property_partner_1"/>
+        <field name="price">1500000</field>
+        <field name="validity">14</field>
+    </record>
+    <record id="property_offer_id_3" model="estate.property.offer">
+        <field name="property_id" ref="property_id_1"/>
+        <field name="partner_id" ref="property_partner_2"/>
+        <field name="price">1500001</field>
+        <field name="validity">14</field>
+    </record>
+</odoo>

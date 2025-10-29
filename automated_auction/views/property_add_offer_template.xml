@@ -1,0 +1,53 @@
+<odoo>
+    <template id="property_offer_added">
+        <t t-call="website.layout">
+            <div class="container text-center mt-5">
+                <div class="card shadow-lg p-4">
+                    <h1 class="text-success">
+                        🎉 Congratulations!
+                    </h1>
+                    <p class="fs-5">
+                        Your offer has been successfully placed. We will notify you of the results as soon as the auction concludes.
+                    </p>
+                    <a t-attf-href="/properties" class="btn btn-primary mt-3">
+                        Return to Properties
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_add_offer_template">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h2 class="mb-3" name="property_name">Add Offer For <t t-esc="property_details.name"/></h2>
+                <form t-attf-action="/properties/#{property_details.id}/submit_offer" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="mb-3">
+                        <label class="form-label">Name:</label>
+                        <input class="form-control" name="bidder_name" type="text" t-att-value="request.env.user.name" readonly="True"/>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Amount:</label>
+                        <input class="form-control" name="offer_amount" type="number"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a t-attf-href="/properties/#{property_details.id}/" class="btn btn-primary">Cancel</a>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="interested_template">
+        <t t-call="website.layout">
+            <div class="p-4 d-flex justify-content-center align-items-center min-vh-100 bg-light">
+                <div class="text-center p-5 shadow-lg bg-white rounded-4">
+                    <i class="fa fa-check-circle text-success display-1 mb-4"></i>
+                    <h2 class="mb-3">Thank You!</h2>
+                    <p class="mb-4">We’ve received your interest.<br/>Our team will contact you shortly.</p>
+                    <a t-attf-href="/properties" class="btn btn-primary">Return to Properties</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

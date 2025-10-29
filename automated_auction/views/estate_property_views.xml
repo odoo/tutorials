@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="action_property_invoice" model="ir.actions.act_window">
+        <field name="name">Invoices</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[("property_id", "=", active_id)]</field>
+        <field name="context">{'create': False, 'edit': False, 'delete': False}</field>
+    </record>
+
+    <record id="estate_property_views_auction_inherit_form" model="ir.ui.view">
+        <field name="name">estate.property.views.auction.inherit.form</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="%(action_property_invoice)d" type="action" class="oe_stat_button" string="Invoices" icon="fa-pencil-square-o" help="Invoices related to this Property" invisible="state != 'sold'"></button>
+                </div>
+            </xpath>
+            <xpath expr="//h1" position="after">
+                <field name="property_auction_type" widget="radio" options="{'horizontal': true}" invisible="is_rent_property"/>
+            </xpath>
+            <xpath expr="//group[@name='property_details']" position="after">
+                <group name="auction_details" string="Auction Details" invisible="property_auction_type == 'regular' or is_rent_property">
+                    <field name="end_time" string="Auction End Time"/>
+                    <field name="best_price" string="Highest Amount"/>
+                    <field name="highest_offer_bidder" string="Highest Bidder"/>
+                </group>
+            </xpath>
+            <xpath expr="//button[@name='action_sold']" position="before">
+                <button name="action_start_auction" string="Start Auction" type="object" invisible="property_auction_type == 'regular'  or auction_state != 'in_template'"/>
+            </xpath>
+            <xpath expr="//field[@name='image_1920']" position="before">
+                <field name="auction_state" widget="property_auction_state_selection" options="{'fold_field': 'fold'}" nolabel="1" invisible="property_auction_type == 'regular'"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_views_auction_inherit_kanban" model="ir.ui.view">
+        <field name="name">estate.property.views.auction.inherit.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//t[@t-name='card']" position="inside">
+                <footer class="pt-1">
+                    <div class="d-flex ms-auto">
+                        <field name="auction_state" class="ms-1" widget="property_auction_state_selection" options="{'is_toggle_mode': true}"/>
+                    </div>
+                </footer>
+            </xpath>
+        </field>
+    </record>
+</odoo>

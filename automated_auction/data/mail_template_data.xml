@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<odoo>
+    <data noupdate="1">
+        <!-- Offer Accepted Email Template -->
+        <record id="email_template_for_offer_accepted" model="mail.template">
+            <field name="name">Offer Accepted Notification</field>
+            <field name="model_id" ref="automated_auction.model_estate_property"/>
+            <field name="subject">Congratulations! Your Offer for {{ object.name }} is Accepted</field>
+            <field name="email_to">{{ object.highest_offer_bidder.email }}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Dear <t t-out="object.highest_offer_bidder.name"/>,</p>
+                    <p>Congratulations! Your offer for the property <strong><t t-out="object.name"/></strong> has been accepted.</p>
+                    <p>Here are the details of your purchase:</p>
+                    <ul>
+                        <li><strong>Property:</strong> <t t-out="object.name"/></li>
+                        <li><strong>Final Selling Price:</strong> <t t-out="object.selling_price"/> <t t-out="object.company_id.currency_id.symbol"/></li>
+                    </ul>
+                    <p>Our team will contact you soon with further steps.</p>
+                    <p>Thank you for your participation!</p>
+                    <p>Best regards,</p>
+                    <p><strong><t t-out="object.company_id.name"/></strong></p>
+                </div>
+            </field>
+        </record>
+
+        <!-- Offer Refused Email Template -->
+        <record id="email_template_for_offer_refused" model="mail.template">
+            <field name="name">Offer Refused Notification</field>
+            <field name="model_id" ref="automated_auction.model_estate_property_offer"/>
+            <field name="subject">Your Offer for {{ object.property_id.name }} Was Not Accepted</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="auto_delete" eval="True"/>
+            <field name="body_html" type="html">
+                <div>
+                    <p>Dear <t t-out="object.partner_id.name"/>,</p>
+                    <p>We regret to inform you that your offer for the property <strong><t t-out="object.property_id.name"/></strong> was not accepted.</p>
+                    <p>We appreciate your participation and hope you find another great property with us.</p>
+                    <p>If you have any questions, feel free to reach out.</p>
+                    <p>Best regards,</p>
+                    <p><strong><t t-out="object.property_id.company_id.name"/></strong></p>
+                </div>
+            </field>
+        </record>
+    </data>
+</odoo>
