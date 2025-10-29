@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="view_order_line_form_inherit_module" model="ir.ui.view">
+        <field name="name">sale.order.line.form.module.button</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <button 
+                    name="%(action_modular_types_wizard)d"
+                    type="action"
+                    icon="fa-flask"
+                    invisible="have_module_types == False"
+                />
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

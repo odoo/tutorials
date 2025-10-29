@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+module_types.access_module_types,access_module_types,module_types.model_module_types,base.group_user,1,1,1,1
+module_types.access_sale_module_type_wizard,access_sale_module_type_wizard,module_types.model_sale_module_type_wizard,base.group_user,1,1,1,1
+module_types.access_sale_module_type_wizard_line,access_sale_module_type_wizard_line,module_types.model_sale_module_type_wizard_line,base.group_user,1,1,1,1
