@@ -10,7 +10,7 @@
             <button type="button" class="btn btn-primary" t-on-click="openLeads">
                 Leads
             </button>
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap" t-if="stats.isLoaded">
                 <DashboardItem>
                     Average amount of t-shirt by order this month
                     <div class="fs-1 fw-bold text-success text-center">
