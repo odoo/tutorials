@@ -12,6 +12,7 @@
     'version': '0.1',
     'application': True,
     'category': 'Tutorials/AwesomeGallery',
+    'author': 'arkp',
     'installable': True,
     'depends': ['web', 'contacts'],
     'data': [
