@@ -3,7 +3,7 @@ from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
-    _name = 'estate_property'
+    _name = 'estate.property'
     _description = "Real Estate Property"
 
     name = fields.Char(required=True)
@@ -18,22 +18,26 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
-    garden_orientation=fields.Selection(
-        string='Garden Orientation',
+    garden_orientation = fields.Selection(
+        string="Garden Orientation",
         selection=[('north', 'North'),
         ('south', 'South'), 
-        ('east','East'), 
-        ('west','West')
+        ('east', 'East'), 
+        ('west', 'West')
         ]
     )
-    active=fields.Boolean(default=False)
-    state=fields.Selection(
+    active = fields.Boolean(default=False)
+    state = fields.Selection(
         selection=[
-            ('new','New'),
-            ('offer_received','Offer Received'),
-            ('offer_accepted','Offer Accepted'),
-            ('sold','Sold'),
-            ('cancelled','Cancelled')
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
         ]
     )
-        
+    property_type_id = fields.Many2one("estate.property.type")
+    buyer = fields.Many2one("res.partner", copy=False)
+    salesperson = fields.Many2one("res.users")
+    tag_ids = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
