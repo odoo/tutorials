@@ -13,7 +13,7 @@ export const migrations = [
         apply: (state) => {
             console.log("New tree available: peach tree!");
             state.trees.peachTree = {
-                price: 1000000,
+                price: 1500000,
                 number: 0,
                 level: 4,
                 fruit: "peaches"
