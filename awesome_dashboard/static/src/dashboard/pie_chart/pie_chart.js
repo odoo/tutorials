@@ -33,5 +33,4 @@ export class PieChart extends Component {
             },
         });
     }
-
 }

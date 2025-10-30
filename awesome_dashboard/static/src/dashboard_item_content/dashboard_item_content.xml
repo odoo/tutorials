@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<templates xml:space="preserve">
-    <t t-name="awesome_dashboard.dashboard_item_content">
-        <div class="h-100 d-flex justify-content-center align-items-center">
-            <p class="fs-1 fw-bold text-success"><t t-esc="props.text"/></p>
-        </div>
-    </t>
-</templates>

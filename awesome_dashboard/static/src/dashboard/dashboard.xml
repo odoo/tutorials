@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeadView">Leads</button>
+                <i class="fa fa-gear" data-bs-toggle="modal" data-bs-target="#settingsModal">
+                </i>
+            </t>
+            <div class="d-flex flex-wrap" t-if="stats.isReady">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem t-if="enabled.includes(item.id)" size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
+                        <t t-component="item.Component" t-props="itemProp"/>
+                    </DashboardItem>
+                </t>
+            </div>
+            <div t-else="">Loading</div>
+            <!-- Modal -->
+            <div class="modal fade" id="settingsModal" tabindex="-1" role="dialog" aria-labelledby="settingsModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document"><div class="modal-content">
+                    <div class="modal-header"><h5 class="modal-title" id="settingsModalLabel">Dashboard items configuration</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex flex-column align-items-start gap-2">
+                            <p>Which cards do you wish to see?</p>
+                            <t t-foreach="items" t-as="item" t-key="item.id">
+                                <div class="d-flex gap-1 align-items-center">
+                                    <input type="checkbox" t-att-id="`checkbox-${item.id}`" t-att-checked="enabled.includes(item.id)"/>
+                                    <span><t t-esc="item.description"/></span>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" t-on-click="apply">Close</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </Layout>
+    </t>
+</templates>
