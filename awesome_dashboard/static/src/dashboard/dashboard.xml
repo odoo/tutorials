@@ -17,7 +17,7 @@
             </t>
             <div class="d-flex flex-wrap" t-if="stats.isLoaded">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem  t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
+                    <DashboardItem  t-if="!state.disabledItems.includes(item.id)" size="item.size">
                         <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
                         <t t-component="item.component" t-props="itemProp"/>
                     </DashboardItem>

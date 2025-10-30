@@ -5,7 +5,6 @@ export class DashboardItem extends Component {
     static props = {
         size: {
             type: Number,
-            default: 1,
             optional: true,
         },
         slots: {
@@ -13,4 +12,11 @@ export class DashboardItem extends Component {
             optional: true,
         },
     };
+    static defaultProps = {
+        size: 1,
+    };
+
+    setup() {
+        console.log("size: ", this.props.size);
+    }
 }
