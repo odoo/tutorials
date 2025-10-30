@@ -1,0 +1,9 @@
+<t t-name="awesome_dashboard.DashboardItem">
+    <t t-set="itemSize" t-value="props.size or 1"/>
+    <div class="card shadow-sm rounded border-secondary m-2"
+        t-attf-style="width: #{18 * itemSize}rem;">
+        <div class="card-body">
+            <t t-slot="default"/>
+        </div>
+    </div>
+</t>
