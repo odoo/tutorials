@@ -119,7 +119,7 @@
                 <field name="living_area" filter_domain="[('living_area', '>', self)]"/>
                 <field name="facades"/>
                 <separator/>
-                <filter string="Available" name="state" domain="['|',('state', '=', 'new'),('state', '=', 'received')]"/>
+                <filter string="Available" name="state" domain="[('state', 'in', '[new, received]')]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>

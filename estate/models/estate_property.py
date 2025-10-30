@@ -40,6 +40,11 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(string="Best offer", compute="_compute_best_price")
 
+    _positive_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price must be strictly positive.",
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -73,11 +78,6 @@ class EstateProperty(models.Model):
             raise UserError(_("Sold properties cannot be cancelled."))
         self.state = "cancelled"
         return True
-
-    _positive_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "The expected price must be strictly positive.",
-    )
 
     @api.constrains("selling_price", "expected_price")
     @api.onchange("selling_price", "expected_price")

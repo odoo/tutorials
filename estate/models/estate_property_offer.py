@@ -47,10 +47,12 @@ class EstatePropertyOffer(models.Model):
         "The offer price must be strictly positive.",
     )
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
+        properties = self.env["estate.property"].browse([vals["property_id"] for vals in vals_list])
         for vals in vals_list:
-            if vals["price"] <= self.env["estate.property"].browse(vals["property_id"]).best_price:
+            filtered_properties = properties.filtered(lambda p: p.id == vals["property_id"])
+            if vals["price"] <= filtered_properties.best_price:
                 raise UserError(_("The offer price must be strictly greater than the current best offer."))
-            self.env["estate.property"].browse(vals["property_id"]).state = "received"
+            filtered_properties.state = "received"
         return super().create(vals_list)
