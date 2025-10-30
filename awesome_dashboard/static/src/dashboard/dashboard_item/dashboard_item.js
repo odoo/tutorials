@@ -15,8 +15,4 @@ export class DashboardItem extends Component {
     static defaultProps = {
         size: 1,
     };
-
-    setup() {
-        console.log("size: ", this.props.size);
-    }
 }
