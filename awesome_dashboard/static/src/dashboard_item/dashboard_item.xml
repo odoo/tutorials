@@ -2,9 +2,9 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.DashboardItem">
-        <span  class="p-3 box" t-att-style="'width: ' + 18 * props.size + 'rem;'">
+        <div  class="p-3 box" t-att-style="'width: ' + 18 * props.size + 'rem;'">
             <t t-slot="default" />
-        </span>
+        </div>
     </t>
 
 </templates>
