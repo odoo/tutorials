@@ -7,6 +7,7 @@ import { TodoList } from "./todo/todo_list";
 
 export class Playground extends Component {
     static template = "awesome_owl.playground";
+    static components = { Counter, Card, TodoList };
 
     value = markup("<a>lien giga bienveillant</div>");
     value2 = "<a href='enfer.com'>lien giga malfaisant</a>";
@@ -19,5 +20,4 @@ export class Playground extends Component {
         this.state.sum++;
     }
 
-    static components = { Counter, Card, TodoList };
 }
