@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClientAction">
+        <div class="ms-1 mt-1">
+            Clicks: <ClickerValue/>
+            <button class="btn btn-secondary" t-on-click="() => this.clicker.increment(50000)">
+                <i class="fa fa-lg fa-plus"></i>
+            </button>
+            <Notebook>
+                <t t-set-slot="clicks" title="'Clicks'" isVisible="this.clicker.level >= 1">
+                    <div class="ms-1 mt-1">
+                        <h2>Bots</h2>
+                        <div class="d-flex flex-wrap">
+                            <t t-foreach="this.clicker.bots" t-as="bot" t-key="bot">
+                                <div class="d-flex flex-row">
+                                    <div class="card me-3" t-if="bot_value.level lte this.clicker.level">
+                                        <div class="card-header">
+                                            <t t-esc="bot_value.purchased"/>x <t t-esc="bot"/> (<t t-esc="bot_value.increment"/> clicks/10 seconds) <i class="fa fa-android"></i>
+                                        </div>
+                                        <div class="card-body">
+                                            <button t-att-disabled="this.clicker.clicks lt bot_value.price" class="btn btn-primary" t-on-click="() => this.clicker.buyBot(bot)">
+                                                Buy <t t-esc="bot"/> (<t t-esc="bot_value.price"/> clicks)
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                    <div t-if="this.clicker.level >= 3" class="ms-1 mt-1">
+                        <h2>Power multiplier</h2>
+                        <div class="d-flex flex-wrap">
+                            <div class="card me-3">
+                                <div class="card-header">
+                                    <t t-esc="this.clicker.power"/>x <i class="fa fa-superpowers"></i>
+                                </div>
+                                <div class="card-body">
+                                    <button t-att-disabled="this.clicker.clicks lt 50000" class="btn btn-primary" t-on-click="() => this.clicker.buyPower()">
+                                        Buy Power Multiplier (50000 clicks)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+                <t t-set-slot="trees" title="'Trees and Fruits'" isVisible="this.clicker.level >=4">
+                    <div class="ms-1 mt-1">
+                        <h2>Trees</h2>
+                        <div class="d-flex flex-wrap">
+                            <t t-foreach="this.clicker.trees" t-as="tree" t-key="tree">
+                                <div class="d-flex flex-row">
+                                    <div class="card me-3">
+                                        <div class="card-header">
+                                            <t t-esc="tree_value.purchased"/>x <t t-esc="tree"/> (1x <t t-esc="tree_value.fruit"/> /30 seconds) <i class="fa fa-tree"></i>
+                                        </div>
+                                        <div class="card-body">
+                                            <button t-att-disabled="this.clicker.clicks lt tree_value.price" class="btn btn-primary" t-on-click="() => this.clicker.buyTree(tree)">
+                                                Buy <t t-esc="tree"/> (<t t-esc="tree_value.price"/> clicks)
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="ms-1 mt-1">
+                        <h2>Fruits</h2>
+                        <div class="d-flex flex-wrap">
+                            <t t-foreach="this.clicker.fruits" t-as="fruit" t-key="fruit">
+                                <div class="d-flex flex-row">
+                                    <div class="card me-3">
+                                        <div class="card-header">
+                                            <t t-esc="fruit_value"/>x <t t-esc="fruit"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </t>
+            </Notebook>
+        </div>
+    </t>
+</templates>
