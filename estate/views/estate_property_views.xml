@@ -22,6 +22,8 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" />
+                <field name="property_type_id" />
+                <field name="tag_ids" widget="many2many_tags" />
             </list>
         </field>
     </record>
@@ -37,6 +39,8 @@
                             <field name="name" />
                             <field name="postcode" />
                             <field name="date_availability" />
+                            <field name="property_type_id" />
+                            <field name="tag_ids" widget="many2many_tags" />
                         </group>
                         <group>
                             <field name="expected_price" />
@@ -54,6 +58,30 @@
                         <page string="Discription">
                             <field name="description"></field>
                         </page>
+
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="status" />
+                                </list>
+                                <form>
+                                    <group>
+                                        <field name="price" />
+                                        <field name="partner_id" />
+                                        <field name="status" />
+                                    </group>
+                                </form>
+                            </field>
+                        </page>
+
+                        <page string="Other Info">
+                            <group>
+                                <field name="buyer_id" />
+                                <field name="salesperson_id" />
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -68,6 +96,7 @@
                 <field name="name" />
                 <field name="postcode" />
                 <field name="expected_price" />
+                <field name="property_type_id" />
                 <filter
                     string="Available"
                     name="available_properties"
