@@ -1,21 +1,23 @@
 import { registry } from "@web/core/registry";
-import { Component, useState, useExternalListener } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
 export class ClickerSystray extends Component {
     static template = "awesome_clicker.ClickerSystray";
     static props = {};
 
     setup() {
-        this.state = useState({ counter: 0 });
-        useExternalListener(window, "click", this.incrementBody, { capture: true });
+        this.action = useService("action");
+        this.clickService = useState(useService("awesome_clicker.clicker"))
     }
 
-    increment() {
-        this.state.counter+=9;
-    }
-
-    incrementBody() {
-        this.state.counter++;
+    openClientAction() {
+        this.action.doAction({
+            type: "ir.actions.client",
+            tag: "awesome_clicker.client_action",
+            target: "new",
+            name: "Clicker Game"
+        });
     }
 
 }
