@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="res_users_view_form_awesome_dashboard" model="ir.ui.view">
+        <field name="name">res.users.view.form.inherit.awesome_dashboard</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='other_preferences']" position="inside">
+                <group>
+                    <field name="average_quantity"/>
+                    <field name="average_time"/>
+                    <field name="nb_new_orders"/>
+                    <field name="nb_cancelled_orders"/>
+                    <field name="total_amount"/>
+                    <field name="orders_by_size"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    </data>
+</odoo>
