@@ -1,15 +1,6 @@
-#always check for odoo import from venv  due to which errors in psql might arise 
-#structure module name 
-
-#Models
-# init
-# module property - this consist of all files u wanna add and substract 
-#init 
-#manifest
-
-
 
 from odoo import models, fields
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
