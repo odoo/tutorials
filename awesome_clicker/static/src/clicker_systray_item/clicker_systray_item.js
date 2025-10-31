@@ -12,7 +12,6 @@ export class ClickerSystrayItem extends Component {
     setup() {
         this.actionService = useService('action')
         this.clicker = useClicker()
-        useExternalListener(window.document.body, "click", () => this.clicker.increment(1), true)
     }
 
     openDialog() {

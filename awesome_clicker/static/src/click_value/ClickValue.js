@@ -9,6 +9,6 @@ export class ClickValue extends Component {
     setup() {}
 
     humanizedValue() {
-        return humanNumber(this.props.value);
+        return humanNumber(this.props.value, { minDigits: 2 });
     }
 }

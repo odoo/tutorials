@@ -11,6 +11,18 @@ export class ClientAction extends Component {
     setup() {
         this.clicker = useClicker();
     }
+
+    canBuyClickBot() {
+        return this.clicker.level > 0 && this.clicker.clicks >= 1000
+    }
+
+    canBuyBigBot() {
+        return this.clicker.level > 1 && this.clicker.clicks >= 5000
+    }
+
+    canBuyPower() {
+        return this.clicker.level > 2 && this.clicker.clicks >= 100000
+    }
 }
 
 registry.category("actions").add("awesome_clicker.client_action", ClientAction);

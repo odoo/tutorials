@@ -3,17 +3,40 @@
     <t t-name="awesome_clicker.action">
         <div class="m-1 p-2">
             <div class="d-flex align-items-center gap-2">
-                <ClickValue value="clicker.state.clicks"/>
-                <button class="btn btn-secondary" t-on-click="() => clicker.increment(9)">
+                <ClickValue value="clicker.clicks"/>
+                <button class="btn btn-secondary" t-on-click="() => clicker.increment(300)">
                     CLICK!
                 </button>
             </div>
             <h2 class="mt-2">Bots</h2>
-            <div class="d-flex border bg-light mt-1 ms-1 p-3 align-items-center">
-                <span><t t-esc="clicker.state.clickBots"/>x ClickBots (<t t-esc="clicker.state.clickBots * 10"/> clicks/10seconds)</span>
+            <div class="d-flex gap-2">
+                <div>
+                    <div class="d-flex border bg-light mt-1 ms-1 p-3 align-items-center">
+                        <span><t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10seconds)</span>
+                    </div>
+                    <div class="d-flex border ms-1 p-3">
+                        <button class="btn btn-primary" t-on-click="() => clicker.buyClickBot()" t-att-disabled="!canBuyClickBot()">Buy ClickBot (1000) clicks</button>
+                    </div>
+                </div>
+                <div> <!--refactor into separate BuyClickBot component later-->
+                    <div class="d-flex border bg-light mt-1 ms-1 p-3 align-items-center">
+                        <span><t t-esc="clicker.bigBots"/>x BigBots (100 clicks/10seconds)</span>
+                    </div>
+                    <div class="d-flex border ms-1 p-3">
+                        <button class="btn btn-primary" t-on-click="() => clicker.buyBigBot()" t-att-disabled="!canBuyBigBot()">Buy BigBot (5000) clicks</button>
+                    </div>
+                </div>
             </div>
-            <div class="d-flex border ms-1 p-3">
-                <button class="btn btn-primary" t-on-click="" t-att-disabled="clicker.state.level &lt; 1">Buy ClickBot (1000) clicks</button>
+            <h2 class="mt-2">Power multiplier</h2>
+            <div class="d-flex gap-2">
+                <div>
+                    <div class="d-flex border bg-light mt-1 ms-1 p-3 align-items-center">
+                        <span><t t-esc="clicker.power"/>x POWER!!!!</span>
+                    </div>
+                    <div class="d-flex border ms-1 p-3">
+                        <button class="btn btn-primary" t-on-click="() => clicker.buyPower()" t-att-disabled="!canBuyPower()">Buy Power (100k) clicks</button>
+                    </div>
+                </div>
             </div>
         </div>
     </t>
