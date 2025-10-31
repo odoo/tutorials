@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardSettingsDialog">
+        <Dialog title="'Dashboard Settings'">
+            <div class="modal-body">
+                <div t-foreach="props.items" t-as="item" t-key="item.id" class="form-check mb-2">
+                    <input 
+                        type="checkbox" 
+                        t-att-id="item.id"
+                        t-att-checked="!props.hiddenItems.includes(item.id)"
+                        class="form-check-input"
+                    />
+                    <label t-att-for="item.id" class="form-check-label">
+                        <t t-esc="item.description"/>
+                    </label>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onApply">Apply</button>
+                <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
