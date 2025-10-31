@@ -6,7 +6,7 @@
             <search string="Search Properties">
                 <field name="postcode"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="total_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="facades"/>
@@ -23,7 +23,7 @@
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="total_area"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
                 <field name="property_type_id"/>      
@@ -34,18 +34,24 @@
     <record id="estate_property_form" model="ir.ui.view">
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="test">
+            <form>
+                <header>
+                    <button name="cancel_property" type="object" string="Cancel"/>
+                    <button name="sold_property" type="object" string="Sold"/>
+                </header>
                 <sheet>
                    <group>
                         <group>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <field name="name"/>
+                            <field name="state"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
 
                             <field name="expected_price"/>
                             <field name="selling_price"/>
+                            <field name="best_offer"/>
                         </group>
                     </group>
                     <notebook>
@@ -58,7 +64,7 @@
                                     <field name="bedrooms"/>
                                     <field name="facades"/>
                                     <field name="state"/>
-                                    
+                                    <field name="active"/>
                                 </group>
                                 <group>
                                     <field name="living_area"/>
@@ -66,24 +72,12 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                    <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
-                        <page string="Offers">
-                            <field name="offer_ids">
-                                <list>
-                                    <field name="price" />
-                                    <field name="partner_id" />
-                                    <field name="status" />
-                                </list>
-                                <form>
-                                    <group>
-                                        <field name="price" />
-                                        <field name="partner_id" />
-                                        <field name="status" />
-                                    </group>
-                                </form>
-                            </field>
+                        <page string="Offers">                     
+                            <field name="offer_ids"/>
                         </page>
                         <page string="Other Info">
                             <group>
