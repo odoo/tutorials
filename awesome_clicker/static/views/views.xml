@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+    <record model="ir.actions.client" id="my_client_action">
+        <field name="name">Clicker Action</field>
+        <field name="tag">awesome_clicker.client_action</field>
+    </record>
+</data>
+</odoo>

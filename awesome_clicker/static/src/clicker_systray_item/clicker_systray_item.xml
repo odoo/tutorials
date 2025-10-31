@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.systray_item">
+        <div class="o_nav_entry gap-1">
+            <ClickValue value="clicker.state.clicks"/>
+            <button class="btn btn-secondary" t-on-click="openDialog">
+                Open
+            </button>
+        </div>
+    </t>
+</templates>
