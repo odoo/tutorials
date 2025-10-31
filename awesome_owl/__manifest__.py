@@ -26,6 +26,7 @@
     'data': [
         'views/templates.xml',
     ],
+    
     'assets': {
         'awesome_owl.assets_playground': [
             ('include', 'web._assets_helpers'),
@@ -36,6 +37,12 @@
             ('include', 'web._assets_core'),
             'web/static/src/libs/fontawesome/css/font-awesome.css',
             'awesome_owl/static/src/**/*',
+            'awesome_owl/static/src/playground.js',
+            'awesome_owl/static/src/playground.xml',
+            'awesome_owl/static/src/counter/counter.js', 
+            'awesome_owl/static/src/counter/counter.xml', 
+            'awesome_owl/static/src/card/utils.js',
+
         ],
     },
     'license': 'AGPL-3'
