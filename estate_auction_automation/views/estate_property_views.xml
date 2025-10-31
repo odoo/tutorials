@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View Inheritance -->
+    <record id="estate_property_view_form_inherit_real_estate_auction_automation" model="ir.ui.view">
+        <field name="name">estate.property.view.form.inherit.real.estate.auction.automation</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_form_view" />
+        <field name="arch" type="xml">
+            <!-- Add 'Start Auction' Button Before 'Sold' Button -->
+            <xpath expr="//button[@name='action_sold']" position="before">
+                <button name="action_start_auction" string="Start Auction" class="oe_highlight"
+                    type="object"
+                    invisible="state in ['02_auction', '03_offer_accepted'] or sale_method != 'auction' or 
+                    status in ['offer_accepted', 'sold', 'cancelled']" />
+            </xpath>
+
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_open_invoice" type="object"
+                        string="View Invoices" class="oe_highlight" icon="fa-pencil-square-o">
+                        <div class="o_stat_info">
+                            <span class="o_stat_text">
+                                Invoices
+                            </span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+
+            <xpath expr="//group" position="before">
+                <div class="row w-100 m-0">
+                    <div class="col-11 d-flex align-items-center">
+                        <div class="w-150">
+                           
+                            <div>
+                                <field name="sale_method" widget="radio"
+                                    options="{'horizontal': true}" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1 pe-0 d-flex flex-column align-items-end">
+                        <div>
+                            <field name="state" widget="estate_property_state_selection"
+                                class="o_task_state_widget"
+                                invisible="sale_method != 'auction'"
+                                readonly="state == '03_offer_accepted' or status == 'offer_accepted'" />
+                        </div>
+    
+                    </div>
+                </div>
+            </xpath>
+            
+            <xpath expr="//notebook/page[1]/group" position="inside">
+                <div class="row g-3 px-3 py-2">
+                    <div class="col-md-6" invisible="sale_method != 'auction'">
+                        <group>
+                            <separator string="Auction Details" />
+                            <field name="auction_deadline" string="End Time"
+                                readonly="state in ['02_auction', '03_offer_accepted']" />
+                            <field name="best_prices" string="Highest Offer" />
+                            <field name="top_bidder" string="Highest Bidder" />
+                        </group>
+                    </div>
+                </div>
+            </xpath>
+
+        </field>
+    </record>
+
+    <!-- Kanban View Inheritance -->
+    <record id="estate_property_view_kanban_inherit_real_estate_auction_automation"
+        model="ir.ui.view">
+        <field name="name">estate.property.view.kanban.inherit.real.estate.auction.automation</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban" />
+        <field name="arch" type="xml">
+            <!-- Modify Property Name in Kanban View -->
+            <xpath expr="//h3/field[@name='name']" position="before">
+                <h3 class="text-truncate d-block fs-4 fw-bold">
+                    <div class="w-100 d-flex justify-content-end">
+                        <field name="state" class="ms-1" widget="estate_property_state_selection"
+                            invisible="sale_method != 'auction'"
+                            readonly="state == '03_offer_accepted' or status in ['offer_accepted', 'sold']" />
+                    </div>
+                </h3>
+            </xpath>
+        </field>
+    </record>
+</odoo>

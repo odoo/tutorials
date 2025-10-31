@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template
+        id="website_property_listing_template_inherit_estate_auction_automation"
+        inherit_id="estate.listing_page">
+        <xpath expr="//form" position="inside">
+            <form method="get" action="/properties" class="row mb-4">
+                <t t-set="query_params" t-value="request.httprequest.args" />
+                <div class="w-full d-flex justify-content-between gap-3">
+                    <div class="w-100">
+                        <label>Min Price:</label>
+                        <input type="number" name="min_price" class="form-control"
+                            t-att-value="query_params.get('min_price')" />
+                    </div>
+                    <div class="w-100">
+                        <label>Max Price:</label>
+                        <input type="number" name="max_price" class="form-control"
+                            t-att-value="query_params.get('max_price')" />
+                    </div>
+                    <div class="w-100">
+                        <label>Property Type:</label>
+                        <select name="property_type" class="form-control">
+                            <option value="">All</option>
+                            <t t-foreach="request.env['estate.property.type'].sudo().search([])"
+                                t-as="ptype">
+                                <option t-att-value="ptype.name"
+                                    t-att-selected="ptype.name == query_params.get('property_type')">
+                                    <t t-esc="ptype.name" />
+                                </option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="w-100">
+                        <label>Sell Type:</label>
+                        <select name="sale_method" class="form-control">
+                            <option value="">All</option>
+                            <option
+                                value="auction"
+                                t-att-selected="request.httprequest.args.get('sale_method') == 'auction'">
+                                Auction
+                            </option>
+                            <option
+                                value="regular"
+                                t-att-selected="request.httprequest.args.get('sale_method') == 'regular'">
+                                Regular
+                            </option>
+                        </select>
+                    </div>
+                    <div class="w-100 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    </div>
+                </div>
+            </form>
+        </xpath>
+    </template>
+
+    <template id="website_property_details_template_inherit_estate_auction_automation" inherit_id="estate.property_detail_page">
+        <!-- Property Details Section -->
+        <xpath expr="//t/div/div" position="inside">
+            <div class="col-md-7 p-4">
+                <t t-if="property.auction_deadline and property.state == '02_auction'">
+                    <div class="alert alert-info text-center fw-bold mb-4">
+                        Auction Ends In: 
+                        <span id="auction_timer" class="fw-normal text-dark" t-att-data-end-time="property.auction_deadline">
+                            Loading...
+                        </span>
+                    </div>
+                </t>
+            </div>
+        </xpath>
+
+        <!-- Create Offer Button -->
+        <xpath expr="//t/div/div" position="before">
+            <t t-if="property.auction_deadline and property.state == '02_auction'">
+                <a id="create_offer_button" t-att-href="'/make-offer/' + str(property.id)" class="btn btn-primary btn-lg px-5">
+                    Create Offer
+                </a>
+            </t>
+        </xpath>
+    </template>
+
+    <!-- Make Offer Template -->
+    <template id="website_make_offer_template">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card shadow-lg border-0">
+                            <div class="card-header bg-primary text-white text-center py-3">
+                                <h4 class="card-title mb-0">Add Offer for <t t-esc="property.name" /></h4>
+                            </div>
+                            <form action="/submit-offer" method="POST" class="card-body">
+                                <input type="hidden" name="property_id" t-att-value="property.id" />
+                                <div class="mb-3">
+                                    <label for="name" class="form-label fw-bold">Name</label>
+                                    <input type="text" class="form-control" t-att-value="user_name"
+                                        id="name" readonly="true" />
+                                </div>
+                                <div class="mb-3">
+                                    <label for="amount" class="form-label fw-bold">Amount</label>
+                                    <input type="number" class="form-control" name="offer_price"
+                                        id="amount" placeholder="Enter amount to bid" />
+                                </div>
+                                <div class="d-flex justify-content-center gap-3 mt-4">
+                                    <button type="submit" class="btn btn-primary btn-lg px-5">Submit</button>
+                                    <a t-att-href="'/property-details/' + str(property.id)"
+                                        class="btn btn-outline-secondary btn-lg px-5">
+                                        Cancel
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="website_view_offer_template" name="View Offer Page">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+                <h2 class="text-center">Your Offer</h2>
+                <div class="card shadow-sm p-4 mt-3">
+                    <p><strong>Property:</strong> <t t-esc="offer.property_id.name"/></p>
+                    <p><strong>Offered Amount:</strong> <t t-esc="offer.price"/> $</p>
+                    <p><strong>Status:</strong> 
+                        <t t-if="offer.status == 'accepted'" class="text-success">Accepted</t>
+                        <t t-elif="offer.status == 'rejected'" class="text-danger">Rejected</t>
+                        <t t-else="" class="text-warning">Pending</t>
+                    </p>
+                    <a href="/properties" class="btn btn-secondary mt-3">Back to Properties</a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+
+    <!-- Generic Message Template -->
+    <template id="website_generic_message_template">
+        <t t-call="website.layout">
+            <div
+                class="container d-flex flex-column align-items-center justify-content-center min-vh-100">
+                <div class="card shadow-lg p-5 text-center rounded-4"
+                    style="max-width: 600px; width: 100%;">
+                    <div
+                        t-att-class="'alert ' + ('alert-success' if message_type == 'success' else 'alert-danger') + ' fade show mb-4'"
+                        role="alert">
+                        <h2 class="fw-bold">
+                            <t t-if="message_type == 'success'"> Congratulations, <t
+                                    t-esc="request.env.user.name" />! </t>
+                            <t t-elif="message_type == 'error'"> ⚠️ Oops, <t
+                                    t-esc="request.env.user.name" />! </t>
+                        </h2>
+                        <hr />
+                        <p class="lead" t-if="message" t-esc="message"></p>
+                        <p class="text-muted" t-else="">Something went wrong. Please try again.</p>
+                    </div>
+
+                    <t t-if="message_type == 'success'">
+                        <div class="mt-4">
+                            <h4 class="text-primary fw-bold">
+                                <t t-esc="property_name" />
+                            </h4>
+                            <p class="fs-5 text-success mt-2"> Offer Amount: <span
+                                    class="fw-bold fs-4 text-dark">$<t t-esc="offer_price" /></span>
+                            </p>
+                        </div>
+                    </t>
+
+                    <div class="mt-4 d-flex justify-content-start align-items-center gap-3">
+                        <a href="/properties"
+                            class="btn btn-primary btn-lg d-flex align-items-center">
+                            <i class="fa fa-home me-2"></i> View More Properties </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

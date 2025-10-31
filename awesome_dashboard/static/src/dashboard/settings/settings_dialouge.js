@@ -1,0 +1,38 @@
+/** @odoo-module **/
+import { Component, useState } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
+import { Dialog } from "@web/core/dialog/dialog";
+import { dashboardRegistry } from "../dashboardItem/dashboard_items";
+
+export class SettingsDialog extends Component {
+    setup() {
+        this.dialogService = useService("dialog");
+        this.items = Object.values(dashboardRegistry.getAll());
+
+        const savedHiddenItems = JSON.parse(localStorage.getItem("hidden_dashboard_items")) || [];
+        this.state = useState({
+            hiddenItems: new Set(savedHiddenItems),
+        });
+    }
+
+    toggleItem(event) {
+        if (this.state.hiddenItems.has(event.target.id)) {
+            this.state.hiddenItems.delete(event.target.id);
+        } else {
+            this.state.hiddenItems.add(event.target.id);
+        }
+    }
+
+    applySettings() {
+        // Convert Set to Array and save in localStorage
+        localStorage.setItem("hidden_dashboard_items", JSON.stringify([...this.state.hiddenItems]));
+        // Pass updated hiddenItems to the parent component
+        this.props.onApply([...this.state.hiddenItems]);
+
+        // Close the dialog
+        this.dialogService.closeAll();
+    }
+}
+
+SettingsDialog.template = "awesome_dashboard.SettingsDialog";
+SettingsDialog.components = { Dialog };

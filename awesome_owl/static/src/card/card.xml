@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card shadow-lg">
+            <div class="card-header bg-secondary text-white text-center">
+                <button class="btn btn-light btn-sm border" t-on-click="()=>{state.isOpen = !state.isOpen}">Toggle</button>
+            </div>
+            <div class="card-body" t-if="state.isOpen">
+                <h5 class="card-title text-primary">
+                    <t t-slot="title"/>
+                </h5>
+                <p class="card-text">
+                    <t t-slot="content"/>
+                </p>
+            </div>
+            <div class="card-body text-center text-muted" t-else="">
+                Click the button above to see content.
+            </div>
+        </div>
+    </t>
+</templates>

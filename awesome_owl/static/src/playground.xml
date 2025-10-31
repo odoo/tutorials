@@ -1,10 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="container py-5">
+
+            <div class="row justify-content-center mb-5">
+                <div class="col-12 col-md-6">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-header bg-gradient bg-primary text-white text-center py-3">
+                            <h2 class="mb-0">Playground 1: Todo List</h2>
+                        </div>
+                        <div class="card-body bg-light">
+                            <Card class="border-0">
+                                <t t-set-slot="title">
+                                    <TodoList />
+                                </t>
+                            </Card>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-6">
+                    <div class="card shadow-lg border-0">
+                        <div class="card-header bg-gradient bg-success text-white text-center py-3">
+                            <h2 class="mb-0">Playground 2: Counter</h2>
+                        </div>
+                        <div class="card-body bg-light text-center">
+                            <div class="d-flex justify-content-center gap-3">
+                                <Counter increment="incrementSum" decrement="decrementSum" />
+                                <Counter increment="incrementSum" decrement="decrementSum" />
+                            </div>
+                            <p class="mt-4 fs-4 fw-bold text-dark">
+                                Total Sum: <span class="text-success"><t t-esc="state.sum" /></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </t>
-
 </templates>
