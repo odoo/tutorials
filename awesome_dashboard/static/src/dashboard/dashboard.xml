@@ -11,7 +11,7 @@
             </t>
             <div class="d-flex flex-wrap" t-if="stats.isReady">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem t-if="enabled.includes(item.id)" size="item.size || 1">
+                    <DashboardItem t-if="state.enabled.includes(item.id)" size="item.size || 1">
                         <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
                         <t t-component="item.Component" t-props="itemProp"/>
                     </DashboardItem>
@@ -30,7 +30,7 @@
                             <p>Which cards do you wish to see?</p>
                             <t t-foreach="items" t-as="item" t-key="item.id">
                                 <div class="d-flex gap-1 align-items-center">
-                                    <input type="checkbox" t-att-id="`checkbox-${item.id}`" t-att-checked="enabled.includes(item.id)"/>
+                                    <input type="checkbox" t-att-id="`checkbox-${item.id}`" t-att-checked="state.enabled.includes(item.id)"/>
                                     <span><t t-esc="item.description"/></span>
                                 </div>
                             </t>

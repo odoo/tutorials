@@ -14,8 +14,7 @@ export class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.items = registry.category("awesome_dashboard").getAll()
         this.stats = useState(useService("statistics"));
-        this.enabled = useState(this.getEnabledItems());
-        this.state = useState({change: 0})
+        this.state = useState({ enabled: this.getEnabledItems() })
     }
 
     openCustomerView() {
@@ -39,9 +38,7 @@ export class AwesomeDashboard extends Component {
             const el = document.getElementById(`checkbox-${item.id}`)
             localStorage.setItem(item.id, el.checked);
         })
-        this.enabled = this.getEnabledItems();
-        this.state.change++; // Force rerender because the line above doesn't do it
-        console.log(this.enabled)
+        this.state.enabled = this.getEnabledItems(); // Force rerender because the line above doesn't do it
     }
 
     getEnabledItems() {
