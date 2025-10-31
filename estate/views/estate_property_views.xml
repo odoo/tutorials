@@ -33,6 +33,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="form">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" />
+                    <button name="action_cancel" type="object" string="Cancel" />
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -40,7 +44,9 @@
                             <field name="postcode" />
                             <field name="date_availability" />
                             <field name="property_type_id" />
+                            <field name="state" />
                             <field name="tag_ids" widget="many2many_tags" />
+                            <field name="best_price" />
                         </group>
                         <group>
                             <field name="expected_price" />
@@ -52,6 +58,7 @@
                             <field name="garden" />
                             <field name="garden_area" />
                             <field name="garden_orientation" />
+                            <field name="total_area" />
                         </group>
                     </group>
                     <notebook>
@@ -65,12 +72,16 @@
                                     <field name="price" />
                                     <field name="partner_id" />
                                     <field name="status" />
+                                    <field name="validity" />
+                                    <field name="date_deadline" />
                                 </list>
                                 <form>
                                     <group>
                                         <field name="price" />
                                         <field name="partner_id" />
                                         <field name="status" />
+                                        <field name="validity" />
+                                        <field name="date_deadline" />
                                     </group>
                                 </form>
                             </field>
