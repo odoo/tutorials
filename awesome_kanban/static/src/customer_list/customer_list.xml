@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_kanban.CustomerList">
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <td>
+                        <span>Customers</span>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="this.state.displayActiveCustomers" id="flexCheckDefault" t-on-change="checkboxChange"/>
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Active customers
+                            </label>
+                        </div>
+                        <input placeholder="Filter customers" t-model="state.searchString"/>
+                    </td>
+                    <Pager offset="this.pager.offset" limit="this.pager.limit" total="this.pager.total" onUpdate.bind="onUpdatePager"/>
+                </tr>
+            </thead>
+            <tbody>
+                <tr t-foreach="this.displayedCustomers" t-as="customer" t-key="customer.id">
+                    <td class="o_awesome_kanban_customer_hover" t-esc="customer.display_name" t-on-click="() => this.props.selectCustomer(customer.id, customer.display_name)"/>
+                </tr>
+            </tbody>
+        </table>
+
+    </t>
+
+</templates>
