@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_document" inherit_id="stock.report_delivery_document" primary="True">
+        <xpath expr="//table[@name='stock_move_table']/tbody/t" position="replace">
+            <t t-set="lines" t-value="o.move_ids.filtered(lambda x: x.product_uom_qty and (not x.bom_line_id or x.bom_line_id.bom_id.type != 'phantom'))" />
+        </xpath>
+    </template>
+    <template id="report_manufacturing_order">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="mo_report.report_delivery_document" t-lang="o._get_report_lang()"/>
+        </t>
+    </template>
+    <data>
+        <record id="action_report_manufacturing_order" model="ir.actions.report">
+            <field name="name">MO Delivery Note</field>
+            <field name="model">stock.picking</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">mo_report.report_manufacturing_order</field>
+            <field name="report_file">mo_report.report_manufacturing_order</field>
+            <field name="print_report_name">'MO Delivery Note -- %s - %s' % (object.partner_id.name or '', object.name)</field>
+            <field name="binding_model_id" ref="stock.model_stock_picking" />
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,33 @@
+.o_dashboard {
+    background-color: #575757;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transition: transform 0.2s;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .card {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .card {
+        grid-column: span 1;
+    }
+}
