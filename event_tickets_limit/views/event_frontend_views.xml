@@ -1,0 +1,15 @@
+<odoo>
+  <template id="event_ticket_limit_override" inherit_id="website_event.modal_ticket_registration">
+    <xpath expr="//select[contains(@t-attf-name, 'nb_register-')]" position="replace">
+      <select t-if="not ticket.is_expired and ticket.sale_available" t-attf-name="nb_register-#{ticket.id}" class="w-auto form-select">
+        <t t-set="seats_max_ticket" t-value="(not ticket.seats_limited or ticket.seats_available &gt; 9) and 10 or ticket.seats_available + 1"/>
+        <t t-set="seats_max_event" t-value="(not event.seats_limited or event.seats_available &gt; 9) and 10 or event.seats_available + 1"/>
+        <t t-set="seats_max_registration" t-value="event.max_tickets_per_registration or 9"/>
+        <t t-set="seats_max" t-value="min(min(seats_max_ticket, seats_max_event), seats_max_registration + 1)"/>
+        <t t-foreach="range(0, seats_max)" t-as="nb">
+          <option t-out="nb" t-att-selected="len(ticket) == 0 and nb == 0 and 'selected'"/>
+        </t>
+      </select>
+    </xpath>
+  </template>
+</odoo>
