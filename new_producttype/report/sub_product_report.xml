@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_sub_product_template" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//tbody[@class='sale_tbody']/t/tr" position="attributes">
+            <attribute name="t-if">(doc.print_report) or (not line.main_product_line_id)</attribute>
+        </xpath>
+    </template>
+</odoo>

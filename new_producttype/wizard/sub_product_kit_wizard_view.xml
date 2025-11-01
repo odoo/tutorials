@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="sub_product_kit_wizard_view" model="ir.ui.view">
+        <field name="name">sub.product.kit.wizard.view</field>
+        <field name="model">sub.product.kit.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sub-Products">
+                <sheet>
+                    <field name="sub_products_ids">
+                        <list create="false" editable="bottom">
+                            <field name="product_id" readonly="1"/>
+                            <field name="quantity"/>
+                            <field name="price"/>
+                        </list>
+                    </field>
+                    <footer>
+                        <button name="action_confirm" class="btn btn-primary" type="object" string="Confirm"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
