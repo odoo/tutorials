@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Awesome Dashboard",
 
@@ -20,6 +19,7 @@
 
     'data': [
         'views/views.xml',
+        'views/res_users_views.xml',
     ],
     'assets': {
         'web.assets_backend': [

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.DashboardConfiguration">
+        <Dialog title="'Dashboard items configuration'" size="'md'">
+            <div class="mb-3">
+                <p class="text-muted">Which cards do you wish to see ?</p>
+                <div class="o_dashboard_config_items">
+                    <t t-foreach="Object.entries(props.items)" t-as="entry" t-key="entry[0]">
+                        <t t-set="itemId" t-value="entry[0]"/>
+                        <t t-set="item" t-value="entry[1]"/>
+                        <div class="form-check mb-2">
+                            <input
+                                type="checkbox"
+                                class="form-check-input"
+                                t-att-id="'item_' + item.backend_attribute"
+                                t-att-checked="state.selectedItems[item.backend_attribute]"
+                                t-on-change="() => this.toggleItem(item.backend_attribute)"
+                            />
+                            <label class="form-check-label" t-att-for="'item_' + item.backend_attribute">
+                                <t t-out="getItemDescription(item)"/>
+                            </label>
+                        </div>
+                    </t>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onApply">Done</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

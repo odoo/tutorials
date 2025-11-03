@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">Properties</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">{"search_default_state": True}</field>
+    </record>
+
+    <record id="estate_property_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list string="Properties" decoration-success="state in ('received', 'accepted')" decoration-bf="state=='accepted'" decoration-muted="state=='sold'">
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability" optional="hide"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="New property">
+                <header>
+                    <button name="action_property_sold" type="object" string="Sold" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_property_cancel" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,received,accepted,sold"/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="New property"/>
+                    </h1>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                    <group>
+                        <group>
+                            <field name="property_type_id"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" placeholder="when duplicated, status and date ar not copied"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" readonly="state in ('accepted','sold','cancelled')"/>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="False">
+                <field name="state"/>
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <h2>
+                                <field name="name"/>
+                            </h2>
+                            Expected Price: <field name="expected_price"/>
+                            <div t-if="record.state.raw_value == 'received'">
+                                Best Offer: <field name="best_price"/><br/>
+                            </div>
+                            <div t-elif="record.state.raw_value == 'accepted'">
+                                Selling Price: <field name="selling_price"/><br/>
+                            </div>
+                            <field name="tag_ids" options="{'color_field': 'color'}"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="estate_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name"/>
+                <field name="property_type_id"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" filter_domain="[('living_area', '>', self)]"/>
+                <field name="facades"/>
+                <separator/>
+                <filter string="Available" name="state" domain="[('state', 'in', '[new, received]')]"/>
+                <group>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
