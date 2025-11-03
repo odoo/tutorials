@@ -4,9 +4,9 @@
     'depends': [
         'base'
     ],
-    'data': [
-        'security/ir.model.access.csv',
+    'data': [   
         'security/security.xml',
+        'security/ir.model.access.csv',
         'data/estate.property.type.csv',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
