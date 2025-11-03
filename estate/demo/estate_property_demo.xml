@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="property_demo_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability">2020-02-02</field>
+        <field name="expected_price">10</field>
+        <field name="selling_price">9.5</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">10</field>
+        <field name="garden_orientation">south</field>
+    </record>
+
+    <record id="property_demo_2" model="estate.property">
+        <field name="name">Trailer Home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability">1970-01-01</field>
+        <field name="expected_price">10</field>
+        <field name="selling_price">9.5</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage">False</field>
+        <field name="garden">True</field>
+        <field name="garden_area">10</field>
+    </record>
+
+    <record id="property_demo_3" model="estate.property">
+        <field name="name">Historic Mansion</field>
+        <field name="state">new</field>
+        <field name="description">A beautifully preserved historic mansion</field>
+        <field name="postcode">75001</field>
+        <field name="date_availability">2024-01-20</field>
+        <field name="expected_price">100</field>
+        <!--<field name="selling_price">95</field>-->
+        <field name="bedrooms">10</field>
+        <field name="living_area">500</field>
+        <field name="facades">5</field>
+        <field name="garage">True</field>   
+        <field name="garden">True</field>
+        <field name="garden_area">1000</field>
+        <field name="garden_orientation">north</field>
+        <!--<field name="offer_ids"
+            eval="[
+            Command.create({
+                'partner_id':ref('base.res_partner_12'),
+                'price':95,
+                'validity':11,
+            }),
+            Command.create({
+                'partner_id':ref('base.res_partner_2'),
+                'price':105,
+                'validity':11,
+            })
+        ]" />-->
+    </record> 
+
+    <record id="estate_property_4" model="estate.property">
+        <field name="name">Penthouse</field>
+        <field name="state">cancelled</field>
+        <field name="description">A stunning penthouse with sunrise views</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability">2023-05-10</field>
+        <field name="expected_price">250000</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">1000</field>
+        <field name="facades">4</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">40000</field>
+        <field name="garden_orientation">south</field>
+    </record>
+</odoo>
