@@ -1,0 +1,65 @@
+<odoo>
+    <template id="property_list_template" name="Property Listings">
+        <t t-call="website.layout">
+            <div class="container">
+                <br></br>
+                <h2>Available Properties</h2>
+                <br></br>
+                <form method="POST" action="/properties">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label for="listed_after">Listed After:</label>
+                            <input type="date" id="listed_after" name="listed_after"
+                                class="form-control" t-att-value="listed_after or ''" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary mt-4">Listed After</button>
+                        </div>
+                        <div class="col-md-4 offset-md-2">
+                            <label for="search">Search Property:</label>
+                            <div class="input-group">
+                                <input type="text" id="search" name="search"
+                                    class="form-control" placeholder="Enter property name"
+                                    t-att-value="search_query" />
+                                <button type="submit" class="btn btn-primary">Search</button>
+                            </div>
+                        </div>
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+                    </div>
+
+                </form>
+
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <t t-if="property.image_1920">
+                                    <img
+                                        t-att-src="'/web/image/estate.property/%s/image_1920' % property.id"
+                                        class="card-img-top img-fluid" alt="Property Image" />
+                                </t>
+                                <div class="card-body text-center">
+                                    <h5 t-esc="property.name"></h5>
+                                    <p><t t-esc="property.expected_price" /> INR</p>
+                                    <a t-att-href="'/property/%s' % property.id"
+                                        class="btn btn-primary d-flex justify-content-center mx-auto">
+                                        View</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col d-flex justify-content-center">
+                        <t t-if="pager">
+                            <t t-call="website.pager">
+                                <t t-set="pager" t-value="pager" />
+                            </t>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

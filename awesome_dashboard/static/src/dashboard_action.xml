@@ -1,0 +1,3 @@
+<t t-name="awesome_dashboard.action">
+    <LazyComponent bundle="'awesome_dashboard.dashboard'" Component="'AwesomeDashboard'" />
+</t>
