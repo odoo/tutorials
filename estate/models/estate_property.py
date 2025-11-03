@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -22,8 +23,8 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[('north', 'North'),
-        ('south', 'South'), 
-        ('east', 'East'), 
+        ('south', 'South'),
+        ('east', 'East'),
         ('west', 'West')
         ]
     )
@@ -42,14 +43,14 @@ class EstateProperty(models.Model):
     salesperson = fields.Many2one("res.users", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-
     total_area = fields.Float(compute="_compute_total_area")
+    best_offer = fields.Float(compute="_compute_best_offer")
+    
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
     
-    best_offer = fields.Float(compute="_compute_best_offer")
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self:
@@ -79,5 +80,16 @@ class EstateProperty(models.Model):
             if record.state == 'cancelled':
                 raise UserError("cancelled property cannot be sold.")
             else:
-                record.state = 'sold'
-            
+                record.state = 'sold' 
+
+    _sql_constraints = [
+        ('check_expected_price', 'CHECK(expected_price>=0)', 'expected price must be positive'),
+        ('check_selling_price', 'CHECK(selling_price>=0)', 'selling price must be positive')
+    ]
+
+    @api.constrains('selling_price',  'expected_price', 'state')
+    def _check_selling_price(self):
+        for record in self:
+            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0 and (record.state == 'sold' or record.state == 'offer_accepted'):
+                raise ValidationError("the selling price is lower")
+                
