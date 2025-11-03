@@ -3,10 +3,8 @@
 
     <t t-name="awesome_owl.counter">
         <div>
-            Counter: <t t-esc="state.value"/>
-            <button class="btn btn-primary" t-on-click="increment" style="margin-left: 5px">
-                <t t-out="props.buttonText"/>
-            </button>
+            Counter: <t t-out="state.value"/>
+            <button class="btn btn-primary" t-on-click="increment" style="margin-left: 5px" t-out="props.buttonText"/>
         </div>
     </t>
 

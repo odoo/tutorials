@@ -9,7 +9,7 @@
         <div class="chapter_tuto">
             <Counter onChange.bind="incrementSum" t-props="{'buttonText': 'Custom Incr.'}"/>
             <Counter onChange.bind="incrementSum"/>
-            <p>The sum id: <t t-esc="state.value"/></p>
+            <p>The sum id: <t t-out="state.value"/></p>
         </div>
 
         <div class="chapter_tuto">
