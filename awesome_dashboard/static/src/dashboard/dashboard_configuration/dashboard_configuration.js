@@ -1,5 +1,6 @@
 import { Component, useState } from "@odoo/owl";
 import { Dialog } from "@web/core/dialog/dialog";
+import { _t } from "@web/core/l10n/translation";
 
 
 export class DashboardConfiguration extends Component {
@@ -38,6 +39,6 @@ export class DashboardConfiguration extends Component {
     }
 
     getItemDescription(item) {
-        return item.description || "Dashboard item";
+        return item.description || _t("Dashboard item");
     }
 }

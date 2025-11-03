@@ -28,25 +28,21 @@ class AwesomeDashboard extends Component {
     }
 
     get items() {
-        const visibleItems = {};
-        Object.entries(this.allItems).forEach(([itemId, item]) => {
+        return Object.entries(this.allItems).reduce((acc, [itemId, item]) => {
             if (!this.state.hiddenItems.includes(item.backend_attribute)) {
-                visibleItems[itemId] = item;
+                acc[itemId] = item;
             }
-        });
-        return visibleItems;
+            return acc;
+        }, {});
     }
 
     async loadHiddenItems() {
         try {
             const config = await this.orm.call('res.users', 'get_dashboard_config', []);
-            const hiddenItems = [];
-            for (const [itemId, isVisible] of Object.entries(config)) {
-                if (!isVisible) {
-                    hiddenItems.push(itemId);
-                }
-            }
-            this.state.hiddenItems = hiddenItems;
+            this.state.hiddenItems = Object.entries(config)
+                .filter(([_, isVisible]) => !isVisible)
+                .map(([itemId]) => itemId);
+
         } catch (e) {
             console.error("Failed to load dashboard configuration:", e);
             this.state.hiddenItems = [];
@@ -55,10 +51,10 @@ class AwesomeDashboard extends Component {
 
     async saveHiddenItems(hiddenItems) {
         try {
-            const config = {};
-            for (const item of Object.values(this.allItems)) {
-                config[item.backend_attribute] = !hiddenItems.includes(item.backend_attribute);
-            }
+            const config = Object.values(this.allItems).reduce((acc, item) => {
+                acc[item.backend_attribute] = !hiddenItems.includes(item.backend_attribute);
+		        return acc;
+		    }, {});
             await this.orm.call('res.users', 'set_dashboard_config', [config]);
             this.state.hiddenItems = hiddenItems;
         } catch (e) {

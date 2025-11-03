@@ -18,7 +18,7 @@
                                 t-on-change="() => this.toggleItem(item.backend_attribute)"
                             />
                             <label class="form-check-label" t-att-for="'item_' + item.backend_attribute">
-                                <t t-esc="getItemDescription(item)"/>
+                                <t t-out="getItemDescription(item)"/>
                             </label>
                         </div>
                     </t>
