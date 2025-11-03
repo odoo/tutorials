@@ -6,7 +6,6 @@ class EstatePropertyExtension(models.Model):
 
     def sold_property_button(self):
         self.env['account.move'].check_access('write')
-        print(" reached ".center(100, '='))
 
         # Set the create function parameters
         values = {"partner_id": self.partner_id.id,
