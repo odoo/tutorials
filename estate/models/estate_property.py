@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
-from datetime import date
 from odoo.exceptions import UserError
 
 
@@ -51,12 +50,12 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", "Offers")
     total_area = fields.Integer("Total Area(sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Offer", compute="_compute_best_price")
-   
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
-    
+
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
@@ -64,7 +63,7 @@ class EstateProperty(models.Model):
                 record.best_price = max(record.offer_ids.mapped("price"))
             else:
                 record.best_price = 0
-    
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
