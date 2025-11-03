@@ -5,9 +5,9 @@ class EstatePropertyExtension(models.Model):
     _inherit = 'estate.property'
 
     def sold_property_button(self):
-        """ When an invoice linked to a sales order selling registrations is
-        paid confirm attendees. Attendees should indeed not be confirmed before
-        full payment. """
+        self.env['account.move'].check_access('write')
+        print(" reached ".center(100, '='))
+
         # Set the create function parameters
         values = {"partner_id": self.partner_id.id,
                   "move_type": "out_invoice",
@@ -30,5 +30,5 @@ class EstatePropertyExtension(models.Model):
                   ],
                 }
         # Create the invoice
-        self.env['account.move'].create(values)
+        self.env['account.move'].sudo().create(values)
         return super().sold_property_button()

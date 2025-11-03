@@ -1,5 +1,6 @@
 {
     'name': "Estate",
+    'category': "Real Estate/Brokerage",
     'depends': [
         'base'
     ],
@@ -11,6 +12,7 @@
         'views/res_user_view.xml',
         'views/estate_menus.xml',
         'security/ir.model.access.csv',
+        'security/security.xml',
         'data/estate.property.type.csv'
     ],
     "demo": [

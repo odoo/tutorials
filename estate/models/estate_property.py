@@ -66,6 +66,11 @@ class EstateProperty(models.Model):
     )
     total_area = fields.Float(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_price")
+    company_id = fields.Many2one(
+        "res.company",
+        required=True,
+        default=lambda self: self.env.user.company_id
+    )
 
     ####################################################
     # FUNCTIONS DECLARATION
