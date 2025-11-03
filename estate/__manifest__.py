@@ -11,6 +11,10 @@
         'views/res_user_view.xml',
         'views/estate_menus.xml',
         'security/ir.model.access.csv',
+        'data/estate.property.type.csv'
+    ],
+    "demo": [
+        'demo/demo_data.xml'
     ],
     'application': True,
     'author': "Odoo S.A.",
