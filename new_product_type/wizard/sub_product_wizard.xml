@@ -1,0 +1,26 @@
+<odoo>
+
+    <record id="view_product_wizard_form" model="ir.ui.view">
+        <field name="name">product.wizard.form</field>
+        <field name="model">sub.product.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+               <sheet>
+                    <h2>Add Sub Products</h2>
+                    <field name="existing_ids">
+                        <list editable="bottom" delete="0">
+                            <field name="product_id" readonly="0"/>
+                            <field name="quantity"/>
+                            <field name="price"/>
+                        </list>
+                    </field>
+                    <footer>
+                        <button string="Confirm" type="object" name="action_add_products" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+               </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>
