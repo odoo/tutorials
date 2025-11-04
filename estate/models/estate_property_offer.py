@@ -1,11 +1,13 @@
-from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
+
+from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -18,21 +20,17 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
-    
-    @api.depends('validity')
+
+    @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
-            if record.create_date:
-                record.date_deadline = fields.Date.to_date(record.create_date) + relativedelta(days=record.validity)
-            else:
-                record.date_deadline = 0
+            default_creation_date = record.create_date or fields.Date.today()
+            record.date_deadline = relativedelta(days=record.validity) + default_creation_date
 
     def _inverse_deadline(self):
         for record in self:
-            if record.create_date:
-                record.validity = (record.date_deadline - fields.Date.to_date(record.create_date)).days
-            else:
-                record.validity = 0
+            default_creation_date = record.create_date or fields.Date.today()
+            record.validity = (record.date_deadline - fields.Date.to_date(default_creation_date)).days
 
     def action_accept(self):
         for record in self:
@@ -48,5 +46,11 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.status == 'accepted':
                 raise UserError("Property already accepted")
-            else: 
+            else:
                 record.status = 'refused'
+
+    _check_offer_price = models.Constraint(
+    'CHECK(price>=0)',
+    'offer price must be positive',
+    )
+  

@@ -19,14 +19,14 @@
     <record id="estate_property_list" model="ir.ui.view">
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="List">
+            <list>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="total_area"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
-                <field name="property_type_id"/>      
+                <field name="property_type_id"/>    
             </list>
         </field>
     </record>
@@ -38,11 +38,13 @@
                 <header>
                     <button name="cancel_property" type="object" string="Cancel"/>
                     <button name="sold_property" type="object" string="Sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
                 <sheet>
                    <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="property_type_id" options="{'no_create': true, 'no_open': true}" />
                             <field name="name"/>
                             <field name="state"/>
                             <field name="date_availability"/>
@@ -59,7 +61,6 @@
                             <group>
                                 <group>
                                     <field name="description"/>
-                                    <field name="property_type_id"/>
                                     <field name="postcode"/>
                                     <field name="bedrooms"/>
                                     <field name="facades"/>

@@ -1,5 +1,6 @@
-from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
+
+from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -7,6 +8,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -45,7 +47,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
-    
+   
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -58,7 +60,7 @@ class EstateProperty(models.Model):
                 record.best_offer = 0
             else:
                 record.best_offer = max(record.mapped('offer_ids.price'))
-    
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -80,16 +82,21 @@ class EstateProperty(models.Model):
             if record.state == 'cancelled':
                 raise UserError("cancelled property cannot be sold.")
             else:
-                record.state = 'sold' 
+                record.state = 'sold'
 
-    _sql_constraints = [
-        ('check_expected_price', 'CHECK(expected_price>=0)', 'expected price must be positive'),
-        ('check_selling_price', 'CHECK(selling_price>=0)', 'selling price must be positive')
-    ]
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price >= 0)',
+        'expected price must be positive'
+    )
 
-    @api.constrains('selling_price',  'expected_price', 'state')
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'selling price must be positive'
+    )
+
+    @api.constrains('selling_price', 'expected_price', 'state')
     def _check_selling_price(self):
         for record in self:
-            if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0 and (record.state == 'sold' or record.state == 'offer_accepted'):
-                raise ValidationError("the selling price is lower")
-                
+            if record.state in ['sold', 'offer_accepted']:
+                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
+                    raise ValidationError("the selling price is lower")
