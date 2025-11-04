@@ -1,6 +1,9 @@
-from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
+
+from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -43,10 +46,10 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean(default=True)
     property_type_id = fields.Many2one("estate.property.type", "Property Type")
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", "Buyer", copy=False)
     salesperson_id = fields.Many2one(
         "res.users", string="Salesperson")
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    tag_ids = fields.Many2many("estate.property.tag", "Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", "Offers")
     total_area = fields.Integer("Total Area(sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Offer", compute="_compute_best_price")
@@ -86,3 +89,20 @@ class EstateProperty(models.Model):
                 raise UserError("A cancelled property cannot be set as sold")
             else:
                 self.state = 'sold'
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price of a property must be strictly positive.'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'The selling price of a property must be positive.'
+    )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                    raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
