@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="mrp_bom_line_modular_type_form_view" model="ir.ui.view">
+        <field name="name">mrp.bom.line.modular.type.form</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bom_line_ids']//field[@name='product_qty']" position="before">
+                <field name="modular_type_id" domain="[('id', 'in', allowed_modular_type_ids)]"
+                       options="{'no_open':True,'no_create':True}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
