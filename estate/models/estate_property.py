@@ -23,3 +23,4 @@ class EstateProperty(models.Model):
         ('east', 'East'),
         ('west', 'West'),
     ])
+    
