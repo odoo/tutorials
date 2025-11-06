@@ -1,12 +1,23 @@
 <odoo>
+
     <menuitem id="estate_root_menu" name="Estate"/>
 
-    <menuitem id="estate_first_menu"
-              name="Properties"
+    <menuitem id="estate_advertisement_menu"
+              name="Advertisements"
               parent="estate_root_menu"/>
 
     <menuitem id="estate_property_menu"
-              name="Estate Properties"
-              parent="estate_first_menu"
+              name="Properties"
+              parent="estate_advertisement_menu"
               action="action_estate_property"/>
+
+    <menuitem id="estate_property_list_menu"
+              name="List"
+              parent="estate_property_menu"
+              action="action_estate_property_list_only"/>
+
+    <menuitem id="estate_property_form_menu"
+              name="Form"
+              parent="estate_property_menu"
+              action="estate_property_form_action"/>
 </odoo>
