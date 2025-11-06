@@ -55,6 +55,16 @@ class EstateProperty(models.Model):
     total_area = fields.Integer("Total Area(sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Offer", compute="_compute_best_price")
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price of a property must be strictly positive.'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'The selling price of a property must be positive.'
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -91,19 +101,15 @@ class EstateProperty(models.Model):
             else:
                 self.state = 'sold'
 
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'The expected price of a property must be strictly positive.'
-    )
-
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price > 0)',
-        'The selling price of a property must be positive.'
-    )
-
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):
                 if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
                     raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("Only 'New' or 'Cancelled' property can be deleted.")
