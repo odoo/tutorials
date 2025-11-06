@@ -1,4 +1,5 @@
 from odoo import models, fields
+from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
@@ -6,31 +7,34 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
 
     name = fields.Char(required=True)
-    description = fields.Text()
-    pincode = fields.Char()
-    date_availability = fields.Date()
+    description = fields.Text("Description")
+    postcode = fields.Char("Postcode", required=True)
+    date_availability = fields.Date("Availability Date", default=fields.Date.today()+relativedelta(months=3))
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer(string="Garden Area (sqft)")
+    selling_price = fields.Float("Selling Price", readonly=True)
+    bedrooms = fields.Integer("Bedrooms", default=2)
+    living_area = fields.Integer("living_area(sqm)")
+    facades = fields.Integer("Facades")
+    garage = fields.Boolean("Garage")
+    garden = fields.Boolean("Garden")
+    garden_area = fields.Integer("Garden Area sqm")
     garden_orientation = fields.Selection([
         ('north', 'North'),
         ('south', 'South'),
         ('east', 'East'),
         ('west', 'West'),
     ])
-    active=fields.Boolean(default= False)
-    state=fields.Selection( 
-        selection=[
-            ('new', 'New'), 
-            ('offer_received', 'Offer Received'), 
-            ('offer_accepted', 'Offer Accepted'), 
-            ('sold', 'Sold'), 
-            ('cancelled', 'Cancelled') 
-     ]
-     )
-   
+    state = fields.Selection(
+        [
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('canceled', 'Canceled'),
+        ],
+        string="Status",
+        required=True,
+        copy=False,
+        default='new'
+    )
+    
