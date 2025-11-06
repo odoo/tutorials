@@ -2,8 +2,8 @@
     'name': 'Real Estate',
     'depends': ['base'],
     'license': 'AGPL-3',
-    'application':True,
-    'installable':True,
+    'application': True,
+    'installable': True,
     'author': 'Odoo S.A.',
     'category':'Tutorials',
     'data': [
@@ -12,3 +12,4 @@
         'views/estate_menus.xml',
     ],
 }
+
