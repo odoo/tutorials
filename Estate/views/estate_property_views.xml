@@ -67,4 +67,24 @@
         <field name="view_id" ref="estate_property_form_view"/>
     </record>
     
+
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name"/>
+                <field name="postcode"/>
+
+                <filter name="filter_available"
+                        string="Available"
+                        domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <separator/>
+                <filter name="group_by_postcode"
+                        string="Group by Postcode"
+                        context="{'group_by': 'postcode'}"/>
+
+            </search>
+        </field>
+    </record>
 </odoo>
