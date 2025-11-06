@@ -19,7 +19,7 @@
         <field name="arch" type="xml">
             <list string="List">
                 <field name="name"/>
-                <field name="postcode"/>
+                <field name="pincode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="selling_price"/>
