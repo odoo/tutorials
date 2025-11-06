@@ -16,6 +16,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <header>
+                        <button type="action" name="%(estate.estate_property_offer_action)d" class="oe_stat_button" icon="fa-money">
+                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        </button>
+                    </header>
                    <group>
                         <group>
                             <field name="name"/>
@@ -37,6 +42,12 @@
         <field name="name">Property type</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
-        <field name="context">{"search_default_available":1}</field>
+    </record>
+
+     <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property type Offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[("property_id.type_id", "=", active_id)]</field>
     </record>
 </odoo>

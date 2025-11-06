@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import models, fields, api
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -18,6 +18,7 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
+    property_type_id = fields.Many2one(related="property_id.type_id", store=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
 
@@ -53,4 +54,3 @@ class EstatePropertyOffer(models.Model):
     'CHECK(price>=0)',
     'offer price must be positive',
     )
-  
