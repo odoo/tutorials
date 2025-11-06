@@ -101,3 +101,21 @@ class EstateProperty(models.Model):
             if record.state in ['sold', 'offer_accepted']:
                 if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
                     raise ValidationError("the selling price is lower")
+
+    @api.ondelete(at_uninstall=True)
+    def _unlink_check_state_of_property(self):
+        for record in self:
+            if record.state in ('offer_received', 'offer_accepted', 'sold'):
+                raise UserError("You cannot delete a new or cancelled property !")
+
+    @api.model
+    def write(self, vals):
+        for record in self:
+            if 'state' in vals:
+                new_state = vals['state']
+                current_state = record.state
+                if current_state == 'sold' and new_state == 'cancelled':
+                    raise UserError("sold property cannot be cancelled.")
+                if current_state == 'cancelled' and new_state == 'sold':
+                    raise UserError("cancelled property cannot be sold.")
+        return super().write(vals)

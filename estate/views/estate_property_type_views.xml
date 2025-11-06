@@ -16,11 +16,11 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <header>
-                        <button type="action" name="%(estate.estate_property_offer_action)d" class="oe_stat_button" icon="fa-money">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(estate.estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-money">
                             <field name="offer_count" widget="statinfo" string="Offers"/>
                         </button>
-                    </header>
+                    </div>
                    <group>
                         <group>
                             <field name="name"/>
@@ -30,7 +30,7 @@
                         <page name="Properties">
                            <group>
                                 <field name="property_ids"/>
-                           </group> 
+                           </group>
                         </page>
                     </notebook>
                 </sheet>

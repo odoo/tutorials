@@ -54,3 +54,13 @@ class EstatePropertyOffer(models.Model):
     'CHECK(price>=0)',
     'offer price must be positive',
     )
+
+    @api.model
+    def create(self,value):
+        for record in value:
+            property = self.env['estate.property'].browse(record['property_id'])
+            if property.state == 'new':
+                property.state = 'offer_received'
+            if record['price'] < property.best_offer:
+                raise UserError("Offer must be higher or equal than %d" % property.best_offer)
+            return super().create(value)
