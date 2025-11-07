@@ -47,8 +47,8 @@ class EstatePropertyOffer(models.Model):
         return True
 
     @api.model
-    def create(self, vals_list):
-        for record in vals_list:
+    def create(self, value):
+        for record in value:
             property_id = record.get('property_id')
             offer_price = record.get('price')
             if property_id and offer_price is not None:
@@ -57,8 +57,8 @@ class EstatePropertyOffer(models.Model):
                 existing_offers = self.search([('property_id', '=', property_id), ('price', '>=', offer_price)])
                 if existing_offers:
                     raise UserError("You cannot create an offer with a lower amount than an existing offer for this property.")
-        return super().create(vals_list)
-
+        return super().create(value)
+    
     _check_offer_price = models.Constraint(
         'CHECK(price > 0)',
         'The price of an offer must be strictly positive.'
