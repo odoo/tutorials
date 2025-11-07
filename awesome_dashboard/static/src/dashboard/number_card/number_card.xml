@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <!-- Template for the NumberCard component -->
+    <t t-name="awesome_dashboard.NumberCard" owl="1">
+        <!-- Display the title of the number card -->
+        <t t-esc="props.title"/>
+        <!-- Display the numeric value in a bold, large, and centered style -->
+        <div class="fs-1 fw-bold text-success text-center">
+            <t t-esc="props.value"/>
+        </div>
+    </t>
+</templates>
