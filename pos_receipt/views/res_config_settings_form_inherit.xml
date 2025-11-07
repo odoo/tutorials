@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="view_pos_receipt_settings_inherited" model="ir.ui.view">
+            <field name="name">pos.reciept.settings.form.inherit</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//block[@id='pos_bills_and_receipts_section']/setting" position="replace">
+                    <setting id="document_layout_setting" string="Receipt Layout" help="Choose the layout of your receipt">
+                    <field name="receipt_layout"/>
+                    <br/>
+                    <button name="action_view_pos_receipt_layout" string="Configure receipt" type="object" class="oe_link" icon="oi-arrow-right"/>
+                    </setting>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
