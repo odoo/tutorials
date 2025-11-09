@@ -18,4 +18,17 @@
               name="Form"
               parent="estate_property_menu"
               action="estate_property_form_action"/>
+    
+    <menuitem id="menu_estate_settings"
+        name="Settings"
+        parent="estate_root_menu" />
+    <menuitem id="menu_estate_property_type_action_settings"
+        name="Property Types"
+        parent="menu_estate_settings"
+        action="estate_property_type_action" />
+
+    <menuitem id="menu_estate_property_tag_action_settings"
+        name="Property Tags"
+        parent="menu_estate_settings"
+        action="action_estate_property_tag" />
 </odoo>
