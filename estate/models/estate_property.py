@@ -95,16 +95,15 @@ class EstateProperty(models.Model):
                 raise UserError("A cancelled property cannot be set as sold")
             record.state = "sold"
 
-    _constraints = [
-        models.CheckConstraint(
-            "expected_price > 0",
-            message="The expected price must be strictly positive.",
-        ),
-        models.CheckConstraint(
-            "selling_price >= 0",
-            message="The selling price must be positive.",
-        ),
-    ]
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price of a property must be strictly positive.'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'The selling price of a property must be positive.'
+    )
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_ratio(self):
