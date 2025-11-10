@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_invoice_document_salesperson" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@id='informations']" position="after">
+            <div class="offset-col-6 col-6">
+                <strong>POS Salesperson:</strong>
+                <t t-esc="o.salesperson_id.name or 'No Salesperson Found'"/>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
