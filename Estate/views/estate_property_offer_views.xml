@@ -6,6 +6,8 @@
             <list>
                 <field name="price" />
                 <field name="partner_id" />
+                <button name="action_accept_offer" string="Accept" type="object" />
+                <button name="action_refuse_offer" string="Refuse" type="object" />
                 <field name="status" />
             </list>
         </field>
@@ -20,6 +22,8 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
+                        <button name="action_accept_offer" string="Accept" type="object" />
+                        <button name="action_refuse_offer" string="Refuse" type="object" />
                         <field name="status"/>
                     </group>
                 </sheet>

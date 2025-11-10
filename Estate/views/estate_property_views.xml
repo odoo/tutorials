@@ -39,6 +39,13 @@
                 <h1>
                     <field name="name" placeholder="Property Name"/>
                 </h1>
+                <header>
+                    <button name="action_set_next_status" string="Next" type="object"/>
+                    <button name="action_back_to_new" string="Reset to New" type="object"/>
+                    <button name="action_set_sold" string="Mark as Sold" type="object"/>
+                    <button name="action_set_canceled" string="Cancel" type="object"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
+                </header>
                 <group col="2">
                     <group string="Property Details">
                         <field name="postcode"/>
@@ -78,6 +85,8 @@
                             <list editable="bottom">
                                 <field name="partner_id"/>
                                 <field name="price"/>
+                                <button name="action_accept_offer" string="Accept" type="object" />
+                                <button name="action_refuse_offer" string="Refuse" type="object" />
                                 <field name="status"/>
                             </list>
                         </field>
