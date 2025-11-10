@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="estate_property_report" model="ir.actions.report">
+        <field name="name">Print Property</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_estate_property</field>
+        <field name="print_report_name">'Property - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="model_estate_property" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="estate_property_form_action_print" model="ir.actions.server">
+        <field name="name">Print Property</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="binding_type">action</field>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">action = env.ref('estate.estate_property_report').report_action(record)</field>
+    </record>
+
+    <record id="view_estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button name="%(estate_property_form_action_print)d"
+                    string="Print Property"
+                    type="action"
+                    class="btn-primary"
+                    icon="fa-print" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Print Offers -->
+    <record id="property_offers_reports" model="ir.actions.report">
+        <field name="name">Property Offers</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.property_offers_report</field>
+        <field name="print_report_name">'Properties Report - %s' % (object.name)</field>
+        <field name="binding_model_id" ref="base.model_res_users" />
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="estate_property_offer_form_action_print" model="ir.actions.server">
+        <field name="name">Print Property Offers</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="binding_type">action</field>
+        <field name="binding_view_types">form</field>
+        <field name="state">code</field>
+        <field name="code">action = env.ref('estate.property_offers_reports').report_action(record)</field>
+    </record>
+    
+    <record id="view_estate_property_formcng" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_reset_password']" position="before">
+                <button name="%(estate_property_offer_form_action_print)d"
+                        string="Print Property Offers"
+                        type="action"
+                        class="btn-primary"
+                        icon="fa-print"/>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
