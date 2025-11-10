@@ -69,7 +69,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = None
+            self.garden_orientation = False
 
     def cancel_property(self):
         for record in self:
@@ -107,15 +107,3 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state in ('offer_received', 'offer_accepted', 'sold'):
                 raise UserError("You cannot delete a new or cancelled property !")
-
-    @api.model
-    def write(self, vals):
-        for record in self:
-            if 'state' in vals:
-                new_state = vals['state']
-                current_state = record.state
-                if current_state == 'sold' and new_state == 'cancelled':
-                    raise UserError("sold property cannot be cancelled.")
-                if current_state == 'cancelled' and new_state == 'sold':
-                    raise UserError("cancelled property cannot be sold.")
-        return super().write(vals)

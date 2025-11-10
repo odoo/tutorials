@@ -56,7 +56,7 @@ class EstatePropertyOffer(models.Model):
     )
 
     @api.model
-    def create(self,value):
+    def create(self, value):
         for record in value:
             property = self.env['estate.property'].browse(record['property_id'])
             if property.state == 'new':
