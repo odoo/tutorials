@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from datetime import timedelta
+from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
@@ -39,11 +40,9 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="Salesperson")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-
     total_area = fields.Float(compute="_compute_total_area", string="Total Area", store=True)
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer", store=True)
-
-    validity = fields.Integer(default=7)
+    validity_days = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
@@ -60,13 +59,13 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
 
-    @api.depends("create_date", "validity")
+    @api.depends("create_date", "validity_days")
     def _compute_date_deadline(self):
         for record in self:
             create_date = record.create_date or fields.Date.today()
             if hasattr(create_date, "date"):
                 create_date = create_date.date()
-            record.date_deadline = create_date + timedelta(days=record.validity)
+            record.date_deadline = create_date + timedelta(days=record.validity_days)
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -74,7 +73,7 @@ class EstateProperty(models.Model):
             if hasattr(create_date, "date"):
                 create_date = create_date.date()
             delta = (record.date_deadline - create_date).days if record.date_deadline else 0
-            record.validity = delta
+            record.validity_days = delta
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -106,3 +105,23 @@ class EstateProperty(models.Model):
     def action_back_to_new(self):
         for record in self:
             record.state = "new"
+
+    @api.constrains("selling_price","expected_price")
+    def _check_selling_price_ratio(self):
+        for record in self:
+            if record.selling_price <= 0:
+                raise ValidationError("Selling price must be greater than or equal to 0")
+            if  record.selling_price < 0.9 * record.expected_price:
+                raise ValidationError("Selling price must be at least 90% of the expected price")
+            if record.expected_price < 0:
+                raise ValidationError("Expected price must be greater than 0")
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price < 0)',
+        'The expected price of a property must be strictly positive.'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price < 0)',
+        'The selling price of a property must be positive.'
+    )

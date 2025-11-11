@@ -71,7 +71,7 @@
                         <field name="best_price" readonly="1"/>
                         <field name="state"/>
                         <field name="validity_days"/>
-                        <field name= "deadline_date"/>
+                        <field name= "date_deadline"/>
                     </group>
 
                 </group>
