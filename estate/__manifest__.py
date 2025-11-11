@@ -10,7 +10,8 @@
     Description text
     """,
     'data': [
-        'views/estate_view.xml',
+        'views/estate_menus.xml',
+        'views/estate_property_views.xml',
         'security/ir.model.access.csv'
     ],
 }

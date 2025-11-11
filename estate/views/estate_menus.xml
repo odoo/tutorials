@@ -1,0 +1,15 @@
+<odoo>
+    <menuitem id="estate_menu_root" 
+              name="Estate Property"
+              action="action_estate"/>
+
+    <menuitem id="estate_menu_property"
+              name="Properties"
+              parent="estate_menu_root"
+              action="action_estate_property"/>
+              
+    <menuitem id="property_menu"
+              name="Configuration"
+              parent="estate_menu_root"
+              action="action_estate_configure"/>
+</odoo> 
