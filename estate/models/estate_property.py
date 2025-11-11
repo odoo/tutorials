@@ -17,18 +17,18 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True)
-    bedrooms = fields.Integer(default=2)
-    living_area = fields.Integer("Living Area (sqm)")
+    bedrooms = fields.Integer(default=3)
+    living_area = fields.Integer("Living Area (sqft)")
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer("Garden Area (sqm)")
+    garden_area = fields.Integer("Garden Area (sqft)")
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),
-            ("south", "South"),
             ("east", "East"),
             ("west", "West"),
+            ("South", "South"),
         ],
         string="Garden Orientation",
     )
@@ -51,7 +51,7 @@ class EstateProperty(models.Model):
     salesperson_id = fields.Many2one("res.users", string="Salesperson")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
+    total_area = fields.Integer("Total Area (sqft)", compute="_compute_total_area")
     best_price = fields.Float("Best Offer", compute="_compute_best_price")
 
     @api.depends("living_area", "garden_area")
@@ -71,11 +71,11 @@ class EstateProperty(models.Model):
                 if record.garden_area == 10:
                     record.garden_orientation = "north"
                 elif record.garden_area == 20:
-                    record.garden_orientation = "south"
-                elif record.garden_area == 30:
                     record.garden_orientation = "east"
-                elif record.garden_area == 40:
+                elif record.garden_area == 30:
                     record.garden_orientation = "west"
+                elif record.garden_area == 40:
+                    record.garden_orientation = "south"
                 else:
                     record.garden_area = 0
                     record.garden_orientation = False
@@ -97,12 +97,12 @@ class EstateProperty(models.Model):
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
-        'The expected price of a property must be strictly positive.'
+        'The expected price must be strictly positive.'
     )
 
     _check_selling_price = models.Constraint(
         'CHECK(selling_price > 0)',
-        'The selling price of a property must be positive.'
+        'The selling price must be positive.'
     )
 
     @api.constrains("selling_price", "expected_price")
@@ -118,5 +118,6 @@ class EstateProperty(models.Model):
                     < 0
                 ):
                     raise ValidationError(
-                        "The selling price cannot be lower than 90% of the expected price."
+                        "The selling price cannot be lower then 90% of the expected price."
                     )
+
