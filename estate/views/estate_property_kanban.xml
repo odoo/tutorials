@@ -1,0 +1,30 @@
+<odoo>
+
+    <record id="view_estate_property_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable='0'>
+                <field name="expected_price" />
+                <field name="best_price" />
+                <field name="selling_price" />
+                <field name="state" />
+                <field name="tag_ids" />
+                <templates>
+                    <t t-name="card">
+                        <div><strong><field name="name" /></strong></div>
+                        <div>Expected Price: <field name="expected_price" /></div>
+                        <div t-if="record.state.raw_value == 'offer_received'">
+                            Best Price: <field name="best_price" />
+                        </div>
+                        <div t-if="record.state.raw_value == 'offer_accepted'">
+                            Selling Price: <field name="selling_price" />
+                        </div>
+                        <div><field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" /></div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+</odoo>
