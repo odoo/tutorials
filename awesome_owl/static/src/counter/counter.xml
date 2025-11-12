@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Counter">
+        <div class="counter-container m-2 p-3 border rounded shadow-sm text-center">
+            <span class="counter-text me-2 fw-bold">Counter: <t t-esc="state.value"/></span>
+            <button class="btn btn-success counter-button" t-on-click="incrementValue">Increment</button>
+        </div>
+        <style>
+        .counter-container {
+            background-color: var(--o-gray-100);
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        .counter-container:hover {
+            transform: scale(1.05);
+        }
+        .counter-text {
+            font-size: 1.2rem;
+            color: var(--o-primary-color);
+        }
+        .counter-button {
+            padding: 5px 15px;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+        .counter-button:hover {
+            background-color: #714B67;
+        }
+        </style>
+    </t>
+</templates>
