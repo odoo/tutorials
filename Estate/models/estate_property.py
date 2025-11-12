@@ -6,7 +6,8 @@ from odoo.exceptions import ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-
+    _order = "id desc"
+    
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -106,12 +107,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.state = "new"
 
-    @api.constrains("selling_price","expected_price")
+    @api.constrains("selling_price", "expected_price")
     def _check_selling_price_ratio(self):
         for record in self:
             if record.selling_price <= 0:
                 raise ValidationError("Selling price must be greater than or equal to 0")
-            if  record.selling_price < 0.9 * record.expected_price:
+            if record.selling_price < 0.9 * record.expected_price:
                 raise ValidationError("Selling price must be at least 90% of the expected price")
             if record.expected_price < 0:
                 raise ValidationError("Expected price must be greater than 0")
@@ -125,3 +126,5 @@ class EstateProperty(models.Model):
         'CHECK(selling_price < 0)',
         'The selling price of a property must be positive.'
     )
+
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")

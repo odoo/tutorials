@@ -1,4 +1,5 @@
 <odoo>
+    
     <record id="estate_property_offer_tree_view" model="ir.ui.view">
         <field name="name">estate.property.offer.list</field>
         <field name="model">estate.property.offer</field>
@@ -6,8 +7,8 @@
             <list>
                 <field name="price" />
                 <field name="partner_id" />
-                <button name="action_accept_offer" string="Accept" type="object" />
-                <button name="action_refuse_offer" string="Refuse" type="object" />
+                <button name="action_accept_offer" string="accept" type="object" invisible="status in ['accepted', 'refused']" />
+                <button name="action_refuse_offer" string="refuse" type="object" invisible="status in ['accepted', 'refused']" />
                 <field name="status" />
             </list>
         </field>
@@ -22,9 +23,9 @@
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
-                        <button name="action_accept_offer" string="Accept" type="object" />
-                        <button name="action_refuse_offer" string="Refuse" type="object" />
                         <field name="status"/>
+                        <button name="action_accept_offer" string="accept" type="object" invisible="status in ['accepted', 'refused']" />
+                        <button name="action_refuse_offer" string="refuse" type="object" invisible="status in ['accepted', 'refused']" />
                     </group>
                 </sheet>
             </form>

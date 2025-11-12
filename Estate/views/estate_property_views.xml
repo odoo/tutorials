@@ -22,14 +22,6 @@
         </field>
     </record>
 
-    <record id="action_estate_property_list_only" model="ir.actions.act_window">
-        <field name="name">Properties (List)</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list</field>
-        <field name="view_id" ref="estate_property_list_view"/>
-    </record>
-
-
 <record id="estate_property_form_view" model="ir.ui.view">
     <field name="name">estate.property.form</field>
     <field name="model">estate.property</field>
@@ -57,8 +49,8 @@
                         <field name="facades"/>
                         <field name="garage"/>
                         <field name="garden"/>
-                        <field name="garden_area"/>
-                        <field name="garden_orientation"/>
+                        <field name="garden_area" invisible="garden == False"/>
+                        <field name="garden_orientation" invisible="garden == False"/>
                     </group>
 
                     <group string="Extra Information">
@@ -85,8 +77,8 @@
                             <list editable="bottom">
                                 <field name="partner_id"/>
                                 <field name="price"/>
-                                <button name="action_accept_offer" string="Accept" type="object" />
-                                <button name="action_refuse_offer" string="Refuse" type="object" />
+                                <button name="action_accept_offer" string="Accept" type="object"/>
+                                <button name="action_refuse_offer" string="Refuse" type="object"/>
                                 <field name="status"/>
                             </list>
                         </field>

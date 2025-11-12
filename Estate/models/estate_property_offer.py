@@ -5,6 +5,7 @@ from odoo.exceptions import ValidationError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
     price = fields.Float(required=True)
     status = fields.Selection(
         [
@@ -24,13 +25,9 @@ class EstatePropertyOffer(models.Model):
     def action_refuse_offer(self):
         for record in self:
             record.status = 'refused'
+
     @api.constrains("price")
     def _check_price_ratio(self):
         for record in self:
             if record.price <= 0.0:
                 raise ValidationError("Price must be greater than 0")
-
-    _check_price = models.Constraint(
-        'CHECK(price < 0)',
-        'The price must be strictly positive.'
-    )
