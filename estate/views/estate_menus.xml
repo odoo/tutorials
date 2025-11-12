@@ -22,7 +22,7 @@
                         name="Option 2"
                         parent="estate_menu_configuration"
                         action="action_estate_configure"/>
-            
+
               <menuitem id="configuration_menu_option_3"
                         name="Option 3"
                         parent="estate_menu_configuration"
