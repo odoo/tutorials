@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <template id="report_property_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="property">
+                    <t t-call="web.external_layout">
+                        <main>
+                            <div class="page">
+                                <h2>
+                                    <strong>Property: </strong>
+                                    <span t-field="property.name"/>
+                                </h2>
+
+                                <div class="d-flex flex-row">
+                                    <!-- Left Column -->
+                                    <div class="d-flex flex-column w-50">
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>State: </strong>
+                                            <span t-field="property.state"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Property Type: </strong>
+                                            <span t-field="property.property_type"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Postcode: </strong>
+                                            <span t-field="property.postcode"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Date Availability: </strong>
+                                            <span t-field="property.date_availability"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Bedrooms: </strong>
+                                            <span t-field="property.bedrooms"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Living Area (sqm): </strong>
+                                            <span t-field="property.living_area"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Garage: </strong>
+                                            <span t-field="property.garage"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex flex-column w-50">
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Expected Price: </strong>
+                                            <span t-field="property.expected_price"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Best Offer: </strong>
+                                            <span t-field="property.best_price"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Selling Price: </strong>
+                                            <span t-field="property.selling_price"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Company: </strong>
+                                            <span t-field="property.company_id"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Salesperson: </strong>
+                                            <span t-field="property.salesperson_id"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Buyer: </strong>
+                                            <span t-field="property.buyer_id"/>
+                                        </div>
+                                        <div style="margin-bottom: 10px; !important">
+                                            <strong>Garden Size (sqm): </strong>
+                                            <span t-field="property.garden_area"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <h3 style="margin-top: 15px; !important">Offers</h3>
+                                <table class="table" t-if="property.offer_ids">
+                                    <thead>
+                                        <tr>
+                                            <th>Offer Price</th>
+                                            <th>Partner</th>
+                                            <th>Validity (days)</th>
+                                            <th>Deadline</th>
+                                            <th>State</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="property.offer_ids" t-as="offer">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="offer.price"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.partner_id"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.validity"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.date_deadline"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.status"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                                <strong t-else="">No offers have been made yet.</strong>
+
+                                <h3 style="margin-top:15px; !important">Additional Information</h3>
+                                <div style="margin-top: 10px; !important">
+                                    <strong>Created On: </strong>
+                                    <span t-field="property.create_date"/>
+                                </div>
+                                <div style="margin-top: 10px; !important">
+                                    <strong>Last Updated: </strong>
+                                    <span t-field="property.write_date"/>
+                                </div>
+                            </div>
+                        </main>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
