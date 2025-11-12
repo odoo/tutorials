@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="report_property_bid_info">
+        <!-- Offers Table -->
+        <div>
+        <t t-if="property.offer_ids">
+         <table class="table">
+                <thead>
+                    <tr>
+                        <th>Price</th>
+                        <th>Partner</th>
+                        <th>Validity (days)</th>
+                        <th>Deadline</th>
+                        <th>State</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-set="offers" t-value="property.mapped('offer_ids')" />
+                    <tr t-foreach="offers" t-as="offer">
+                        <td>
+                            <span t-field="offer.price" />
+                        </td>
+                        <td>
+                            <span t-field="offer.partner_id.name" />
+                        </td>
+                        <td>
+                            <span t-field="offer.validity" />
+                        </td>
+                        <td>
+                            <span t-field="offer.date_deadline" />
+                        </td>
+                        <td>
+                            <span t-field="offer.status" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <p>No offers available for this property.</p>
+        </t>
+        </div>
+    </template>
+
+    <template id="report_property_offers">
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <hr />
+                        <!-- Property Name -->
+                        <h2>
+                            <span t-field="property.name" />
+                        </h2>
+
+                        <!-- Salesman -->
+                        <div>
+                            <strong>Salesman: </strong>
+                            <span t-field="property.user_id.name" />
+                        </div>
+
+                        <!-- Expected Price -->
+                        <div>
+                            <strong>Expected Price: </strong>
+                            <span t-field="property.expected_price" />
+                        </div>
+
+                        <!-- Status -->
+                        <div>
+                            <strong>Status: </strong>
+                            <span t-field="property.status" />
+                        </div>
+                        <t t-call="estate.report_property_bid_info"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
