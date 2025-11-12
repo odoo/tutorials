@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="property_template" name="Dynamic Property Grid">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+                <h1 class="text-center mb-4">Available Properties</h1>
+                <div class="row g-4">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-lg-4 col-md-6">
+                            <div class="card shadow-sm">
+                                <div class="card-img-top position-relative">
+                                    <t t-if="property.image">
+                                        <img t-att-src="image_data_uri(property.image)"
+                                                class="card-img-top img-fluid" style="height: 200px; object-fit: cover;" alt="Property Image"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="d-flex justify-content-center align-items-center bg-light" style="height: 200px; border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
+                                            <span class="text-secondary">No Image Available</span>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="card-body">
+                                    <h4 class="card-title" t-out="property.name"/>
+                                    <p class="card-text" t-out="property.description"/>
+                                    <p class="fw-bold text-primary">Price: <t t-out="property.expected_price"/> $</p>
+                                    <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary w-100">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center align-items-center mt-4 mb-2 gap-2">
+                    <t t-call="website.pager"/>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
