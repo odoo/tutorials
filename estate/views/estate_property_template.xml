@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="menu_properties" model="website.menu">
+        <field name="name">Properties</field>
+        <field name="url">/properties</field>
+    </record>
+
+    <template id="property_list_template" name="Property Listings">
+        <t t-call="website.layout">
+            <div class="container my-5">
+            <h2 class="text-center text-primary fw-bold mb-4">Find Your Dream Property</h2>
+                <div t-if="properties" class="row g-4" id="property-list">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-6 col-lg-4 property-item mb-4" t-att-data-date="property.create_date">
+                            <div class="card h-100 shadow-sm border-0">
+                                <div class="position-relative">
+                                    <img t-if="property.image" t-att-src="'/web/image/estate.property/%s/image' % property.id" class="img-fluid rounded-top w-100" style="object-fit: cover; height: 300px;" t-att-alt="property.name" />
+                                    <t t-if="property.state">
+                                        <div class="position-absolute top-0 end-0 m-3">
+                                            <span t-att-class="'badge bg-' + ('primary' if property.state == 'new' else 'warning text-dark' if property.state == 'offer received' else 'success' if property.state == 'offer accepted' else 'danger')">
+                                                <t t-esc="property.state.replace('_', ' ').title()" />
+                                            </span>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="fw-bold">
+                                        <a t-attf-href="/property/{{ property.id }}" class="text-decoration-none stretched-link text-dark">
+                                            <t t-esc="property.name" />
+                                        </a>
+                                    </h5>
+                                    <t t-if="property.tag_ids">
+                                        <p class="mb-2">
+                                            <t t-foreach="property.tag_ids" t-as="tag">
+                                                <span class="badge bg-info-subtle text-info-emphasis me-1 mb-1">
+                                                    <t t-esc="tag.name" />
+                                                </span>
+                                            </t>
+                                        </p>
+                                    </t>
+                                    <p t-if="property.property_type_id" class="text-muted mb-1">
+                                        <i class="fa fa-home me-1"></i>
+                                        <t t-esc="property.property_type_id.name" />
+                                    </p>
+                                    <div class="d-flex gap-3 mb-3 text-muted small">
+                                        <span t-if="property.bedrooms">
+                                            <i class="fa fa-bed me-1"></i>
+                                            <t t-esc="property.bedrooms"/>
+                                            bed
+                                        </span>
+                                        <span t-if="property.living_area">
+                                            <i class="fa fa-arrows-alt me-1"> </i>
+                                            <t t-esc="property.living_area"/>
+                                            sq.ft.
+                                        </span>
+                                    </div>
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h4 class="text-primary fw-bold mb-0">
+                                                ₹ <t t-esc="'{:,}'.format(int(property.expected_price))" />
+                                            </h4>
+                                            <small class="text-muted" title="Listed on">
+                                                <i class="fa fa-calendar-o me-1"></i>
+                                                <t t-esc="property.create_date.strftime('%b %d, %Y')"/>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div t-else="" class="text-center py-5">
+                    <div class="mb-3">
+                        <i class="fa fa-home fa-3x text-muted"></i>
+                    </div>
+                    <h4 class="text-muted">No properties found</h4>
+                </div>
+            </div>
+        </t>
+    </template>
+
+
+    <template id="property_details_template" name="Property Details">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="d-block d-lg-none mb-4">
+                    <h1 class="text-primary fw-bold h2">
+                        <t t-esc="property.name"/>
+                    </h1>
+                    <t t-if="property.tag_ids">
+                        <p class="mb-1">
+                            <t t-foreach="property.tag_ids" t-as="tag">
+                                <span class="badge bg-info-subtle text-info-emphasis me-1 mb-1">
+                                    <t t-esc="tag.name" />
+                                </span>
+                            </t>
+                        </p>
+                    </t>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-6">
+                        <div class="card shadow-sm border-0 overflow-hidden rounded-3 position-relative">
+                            <img t-if="property.image" t-att-src="'/web/image/estate.property/%s/image' % property.id" class="img-fluid rounded-top w-100" style="object-fit: cover; height: 400px;" t-att-alt="property.name" />
+                            <t t-if="property.state">
+                                <div class="position-absolute top-0 end-0 m-3">
+                                    <span t-att-class="'badge bg-' + ('primary' if property.state == 'new' else 'warning text-dark' if property.state == 'offer received' else 'success' if property.state == 'offer accepted' else 'dark' if property.state == 'sold' else 'canceled')">
+                                        <t t-esc="property.state.replace('_', ' ').title()" />
+                                    </span>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="d-none d-lg-block">
+                            <h1 class="text-primary fw-bold h2">
+                                <t t-esc="property.name" />
+                            </h1>
+                            <t t-if="property.tag_ids">
+                                <p class="mb-3">
+                                    <t t-foreach="property.tag_ids" t-as="tag">
+                                        <span class="badge bg-info-subtle text-info-emphasis me-1">
+                                            <t t-esc="tag.name" />
+                                        </span>
+                                    </t>
+                                </p>
+                            </t>
+                        </div>
+                        <div class="bg-light rounded-3 p-3 mb-4 shadow-sm">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 class="text-primary fw-bold mb-0">₹ <t t-esc="'{:,}'.format(int(property.expected_price))" /></h2>
+                                <t t-if="property.create_date">
+                                    <span class="badge bg-secondary">Listed <t t-esc="property.create_date.strftime('%b %d, %Y')" /></span>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="row g-2 mb-4">
+                            <t t-foreach="[('fa-home', 'Property Type', property.property_type_id.name), ('fa-bed', 'Bedrooms', property.bedrooms), ('fa-arrows-alt', 'Total Area', '%s sq.ft.' % property.total_area), ('fa-home', 'Living Area', '%s sq.ft.' % property.living_area)]" t-as="info">
+                                <t t-if="info[2]">
+                                    <div class="col-6">
+                                        <div class="card border-0 bg-light h-100">
+                                            <div class="card-body p-3 d-flex align-items-center">
+                                                <i t-att-class="'fa ' + info[0] + ' text-primary fa-2x me-3'"></i>
+                                                <div>
+                                                    <p class="text-muted mb-0 small">
+                                                        <t t-esc="info[1]" />
+                                                    </p>
+                                                    <h6 class="mb-0">
+                                                        <t t-esc="info[2]" />
+                                                    </h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </t>
+                            </t>
+                        </div>
+                        <t t-set="details" t-value="[('Facades', property.facades), ('Garage', 'Yes' if property.garage else 'No'), ('Garden', 'Yes' if property.garden else 'No'), ('Garden Area', '%s sq.ft.' % property.garden_area if property.garden_area else None), ('Salesperson', property.salesman_id.name), ('Company', property.company_id.name)]" />
+                        <div class="card border-0 shadow-sm mb-4" t-if="any(val for _, val in details)">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Additional Details</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <t t-foreach="details" t-as="detail">
+                                        <t t-if="detail[1]">
+                                            <div class="col-md-6">
+                                                <p class="text-muted mb-0 small">
+                                                    <t t-esc="detail[0]" />
+                                                </p>
+                                                <p class="mb-0">
+                                                    <t t-esc="detail[1]" />
+                                                </p>
+                                            </div>
+                                        </t>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Description</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-secondary mb-0" t-if="property.description">
+                                    <t t-esc="property.description" />
+                                </p>
+                                <p class="text-muted fst-italic mb-0" t-else="">No description
+                                    available</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="/properties" class="btn btn-outline-primary">
+                        <i class="fa fa-arrow-left me-2"></i>
+                        Back to Listings
+                    </a>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
