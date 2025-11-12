@@ -1,0 +1,22 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList">
+        <div class="card shadow-lg rounded-4 border-0 bg-light p-4">
+            <h3 class="card-title text-center fw-bold text-primary">
+                <i class="fa fa-tasks me-2"></i> My Tasks
+            </h3>
+
+            <div class="input-group mb-3">
+                <input type="text" class="form-control border-0 shadow-sm" placeholder="Enter a new task"
+                    t-on-keyup="addTodo" t-model="state.newTask" t-ref="input" />
+            </div>
+
+            <ul class="list-group list-group-flush">
+                <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+                    <li class="list-group-item bg-transparent">
+                        <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo" />
+                    </li>
+                </t>
+            </ul>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,24 @@
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.Card">
+        <div class="card shadow rounded-3 border-0">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <t t-esc="props.title"/>
+            </h5>
+            <button class="btn btn-light btn-sm rounded-pill d-flex align-items-center"
+                    t-on-click="toggleContent">
+                <i class="fa" t-att-class="state.isOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                <span class="ms-2">
+                <t t-esc="state.isOpen ? 'Expand Less' : 'Expand More'"/>
+                </span>
+            </button>
+            </div>
+
+            <div t-att-class="'card-body collapse' + (state.isOpen ? ' show' : '')">
+            <t t-slot="default"/>
+            </div>
+        </div>
+    </t>
+
+</templates>
