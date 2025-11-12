@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_accept_offer" model="ir.cron">
+        <field name="name">Accept offer after auction time end</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="active">True</field>
+        <field name="model_id" ref="estate.model_estate_property"/>
+        <field name="code">model.accept_offer_after_auction_time_end()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>
