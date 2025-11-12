@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_auction_estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit.estate.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="%(estate_property_type_action_invoices)d" type="action"
+                        icon="fa-pencil-square-o" string="Invoice" class="oe_stat_button" invisible="invoice_count == 0"/>
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='image']" position="before">
+                <field name="auction_stage" widget="estate_property_auction_state_selection" invisible="sell_type != 'auction'"/>
+            </xpath>
+            <xpath expr="//h1" position="after">
+                <field name="sell_type" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+            <xpath expr="//header/button[@name='set_sold']" position="before">
+                <button name="action_start_auction"
+                    type="object"
+                    class="btn-primary"
+                    string="Start Auction"
+                    invisible="sell_type != 'auction' or auction_stage != 'template'"/>
+            </xpath>
+            <xpath expr="//notebook/page[1]/group" position="inside">
+                <group string="Auction" invisible="sell_type != 'auction'">
+                    <field name="auction_end_time"/>
+                    <field name="best_price" string="Highest Offer"/>
+                    <field name="highest_bidder" readonly="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//notebook/page[2]//button[@name='accept_offer']" position="attributes">
+                <attribute name="invisible">sell_type == 'auction' or status == 'accepted'</attribute>
+            </xpath>
+            <xpath expr="//notebook/page[2]//button[@name='refuse_offer']" position="attributes">
+                <attribute name="invisible">sell_type == 'auction' or status == 'refused'</attribute>
+            </xpath>
+        </field>    
+    </record>  
+
+    <record id="estate_auction_estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban.inherit.estate.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@t-attf-class='oe_kanban_card']/div[1]" position="replace">
+                <div class="o_kanban_record_title d-flex justify-content-between">
+                    <strong>
+                        <field name="name"/>
+                    </strong>
+                    <field name="auction_stage" 
+                        widget="estate_property_auction_state_selection" 
+                        invisible="sell_type != 'auction'"/>
+                </div>
+            </xpath>
+        </field>
+    </record>  
+</odoo>

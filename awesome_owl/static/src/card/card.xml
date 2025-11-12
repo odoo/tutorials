@@ -1,0 +1,15 @@
+<template>
+    <t t-name="awesome_owl.Card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body">
+                <div>
+                    <h3 class="card-title"><t t-esc="props.title"/></h3>
+                    <button t-on-click="toggleCard">Toggle Content</button>
+                </div>
+                <div class="card-text" t-if="state.isOpen">
+                    <t t-slot="default"/> 
+                </div>
+            </div>
+        </div>
+    </t>
+</template>

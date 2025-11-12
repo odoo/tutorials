@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="listing_page_inherit_auction" inherit_id="estate.property_listing" name="Estate Property Listing - Auction">
+    <xpath expr="//form[@action='/properties']//div[3]" position="after">
+        <div class="col-md-2">
+            <label class="form-label">Sell Type</label>
+            <select name="sell_type" class="form-control">
+                <option value="all" t-att-selected="request.params.get('sell_type') == 'all'">All</option>
+                <option value="auction" t-att-selected="request.params.get('sell_type') == 'auction'">Auction</option>
+                <option value="regular" t-att-selected="request.params.get('sell_type') == 'regular'">Regular</option>
+            </select>
+        </div>
+    </xpath>
+    </template>
+</odoo>

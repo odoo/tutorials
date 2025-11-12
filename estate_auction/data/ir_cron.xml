@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_close_expired_auctions" model="ir.cron">
+        <field name="name">Close Expired Auctions</field>
+        <field name="model_id" ref="estate_auction.model_estate_property"/>
+        <field name="state">code</field>
+        <field name="code">model._action_close_expired_auctions()</field>
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+    </record>
+</odoo>
