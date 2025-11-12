@@ -1,8 +1,46 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+    <t t-name="awesome_dashboard.awesomedashboard">
+        <button type="object" class="btn btn-primary m-2" t-on-click="openCustomers">
+            Customers
+        </button>
+        <button type="object" class="btn btn-secondary m-2" t-on-click="openLeads">
+            Leads
+        </button>
+        <Layout className="'o_dashboard h-100'">
+            <div t-attf-style="margin:5px;">
+                <DashBoardItem>
+                    <div class="text-md fw-semibold fs-5 text-center">The number of new orders, this month</div>
+                    <div class="text-success text-center fw-bold fs-2">
+                        <t t-out="result.nb_new_orders"/>
+                    </div>
+                </DashBoardItem>
+                <DashBoardItem>
+                    <div class="text-md fw-semibold fs-5 text-center">The total amount of orders, this month</div>
+                    <div class="text-success text-center fw-bold fs-2">
+                        <t t-out="result.total_amount"/>
+                    </div>
+                </DashBoardItem>
+                <DashBoardItem>
+                    <div class="text-md fw-semibold fs-5 text-center">The average number of t-shirts by order</div>
+                    <div class="text-success text-center fw-bold fs-2">
+                        <t t-out="result.average_quantity"/>
+                    </div>
+                </DashBoardItem>
+                <DashBoardItem>
+                    <div class="text-md fw-semibold fs-5 text-center">The number of cancelled orders, this month</div>
+                    <div class="text-success text-center fw-bold fs-2">
+                        <t t-out="result.nb_cancelled_orders"/>
+                    </div>
+                </DashBoardItem>
+                <DashBoardItem>
+                    <div class="text-md fw-semibold fs-5 text-center">The average time (in hours) elapsed between the
+                    moment an order is created, and the moment is it sent</div>
+                    <div class="text-success text-center fw-bold fs-2">
+                        <t t-out="result.average_time"/>
+                    </div>
+                </DashBoardItem>
+            </div>
+        </Layout>
     </t>
-
 </templates>
