@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_list_template">
+        <t t-call="website.layout">
+            <div class="container">
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3 mt-5">
+                    <h1>Properties</h1>
+                    <form method="GET" action="/estate_properties" class="d-flex gap-2 col-md-4">
+                        <input type="date" id="filter_date" name="filter_date" class="form-control"
+                            t-att-value="filter_date" />
+                        <button type="submit" class="btn btn-primary">Listed After</button>
+                    </form>
+                </div>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <a t-att-href="'property/%s' % property.id">
+                                <div class="card">
+                                    <img t-if="property.property_img"
+                                        t-att-src="image_data_uri(property.property_img)"
+                                        class="card-img-top" alt="Property Image" />
+                                    <img t-else="" t-att-src="'/estate/static/img/default.png'"
+                                        alt="Default Image" />
+                                    <div class="card-body">
+                                        <h5 class="card-title" t-out="property.name" />
+                                        <p class="card-text">Expected Price: <t
+                                                t-out="property.expected_price" /></p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+                <!-- Pagination -->
+                <nav>
+                    <ul class="pagination justify-content-center align-items-center">
+                        <t t-if="page &gt; 1">
+                            <li class="page-item">
+                                <a class="page-link"
+                                    t-att-href="'/estate_properties?page=%s&amp;filter_date=%s' % (page-1, filter_date or '')">
+                                    Previous</a>
+                            </li>
+                        </t>
+                        <t t-out="page" />
+                        <t t-if="has_next">
+                            <li class="page-item">
+                                <a class="page-link"
+                                    t-att-href="'/estate_properties?page=%s&amp;filter_date=%s' % (page+1, filter_date or '')">
+                                    Next</a>
+                            </li>
+                        </t>
+                    </ul>
+                </nav>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_details" name="Property Details">
+        <t t-call="website.layout">
+            <t t-set="property"
+                t-value="request.env['estate.property'].sudo().browse(int(request.params.get('property_id', 0)))" />
+            <div class="container-fluid p-0">
+                <div class="position-relative" style="height: 75vh; overflow: hidden;">
+                    <img t-if="property.property_img"
+                        t-att-src="image_data_uri(property.property_img)"
+                        class="w-100 h-100 object-fit-cover" alt="Property Image" />
+                    <img t-else="" t-att-src="'/estate/static/img/default.png'"
+                        class="w-100 h-100 object-fit-cover" alt="Default Image" />
+                    <div
+                        class="position-absolute bottom-0 start-0 w-100 text-white text-center p-3 bg-dark bg-opacity-50">
+                        <h1 class="fw-bold" t-out="property.name" />
+                    </div>
+                </div>
+            </div>
+            <div class="container mt-4">
+                <h2 class="text-primary text-center fw-bold display-4">$<t
+                        t-out="property.expected_price" /></h2>
+                <div class="row justify-content-center text-center my-4">
+                    <div class="col-12 col-md-4 mb-3">
+                        <div class="p-4 border rounded shadow-sm bg-light">
+                            <i class="fa fa-bed fa-3x text-danger"></i>
+                            <p class="mb-1 mt-3 text-muted">Bedrooms</p>
+                            <p class="fw-bold fs-4" t-out="property.bedrooms or 'N/A'" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                        <div class="p-4 border rounded shadow-sm bg-light">
+                            <i class="fa fa-expand fa-3x text-success"></i>
+                            <p class="mb-1 mt-3 text-muted">Living Area</p>
+                            <p class="fw-bold fs-4" t-out="property.living_area or 'N/A'" />
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                        <div class="p-4 border rounded shadow-sm bg-light">
+                            <i class="fa fa-tree fa-3x text-primary"></i>
+                            <p class="mb-1 mt-3 text-muted">Garden Orientation</p>
+                            <p class="fw-bold fs-4" t-out="property.garden_orientation or 'N/A'" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card p-4 shadow-lg">
+                    <h3 class="text-center text-primary">Offers for this Property</h3>
+                    <t t-if="property.offer_ids">
+                        <ul class="list-group list-group-flush">
+                            <t t-foreach="property.offer_ids" t-as="offer">
+                                <li class="list-group-item d-flex justify-content-between fs-5">
+                                    <span>Offer: $<t t-out="offer.price" /></span>
+                                    <span>Status: <t t-out="offer.status" /></span>
+                                </li>
+                            </t>
+                        </ul>
+                    </t>
+                    <t t-else="">
+                        <p class="text-center text-muted fs-4">No offers available.</p>
+                    </t>
+                </div>
+                <div class="mt-4 text-center">
+                    <a href="/estate_properties" class="btn btn-secondary btn-lg">Back to Listings</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
