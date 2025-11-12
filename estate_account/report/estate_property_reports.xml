@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="estate_property_invoice_report" inherit_id="estate.report_property_offers">
+        <xpath expr="//h3" position="before">
+            <p t-if="property.state == 'sold'" style="my-2 font-weight: bold; color: green;">
+                Invoice has been created
+            </p>
+        </xpath>
+        <xpath expr="//div" position="inside">
+            <p t-if="property and property.state == 'sold'" style="my-2 font-weight: bold; color: green;">
+                <t
+                    t-set="invoice"
+                    t-value="env['account.move'].search([('invoice_origin', '=', property.name), ('move_type', '=', 'out_invoice')], limit=1)"/>
+                <t t-if="property.state == 'sold' and invoice">
+                    <div style="border: 2px solid red; padding: 10px; margin: 10px 0; color: black; font-size: 14px;">
+                        <p style="font-weight: bold; font-size: 16px; color: red;">
+                            Invoice Details:
+                        </p>
+                        <p><strong>Invoice Name:</strong> <span t-esc="invoice.name if invoice.name else 'N/A'"/></p>
+                        <p><strong>Invoice Date:</strong> <span t-esc="invoice.invoice_date.strftime('%d/%m/%Y') if invoice.invoice_date else 'N/A'"/></p>
+                        <p><strong>Total Amount:</strong> <span t-esc="invoice.amount_total"/> $</p>
+                        <p><strong>Payment Status:</strong> <span t-esc="invoice.state"/></p>
+                    </div>
+                </t>
+            </p>
+        </xpath>
+    </template>
+</odoo>

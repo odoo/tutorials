@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Porperty listing template -->
+    <template id="website_property_listing_template">
+        <t t-call="website.layout">
+            <div class="container mt-3">
+                <h1>Properties for Sale</h1>
+                <hr />
+                <!-- Filter Form -->
+                <form method="get" action="/properties" class="row mb-4">
+                    <t t-set="query_params" t-value="request.httprequest.args"/>
+                    <div class="col-md-3">
+                        <label>Min Price:</label>
+                        <input type="number" name="min_price" class="form-control" t-att-value="query_params.get('min_price')"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Max Price:</label>
+                        <input type="number" name="max_price" class="form-control" t-att-value="query_params.get('max_price')"/>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Property Type:</label>
+                        <select name="property_type" class="form-control">
+                            <option value="">All</option>
+                            <t t-foreach="request.env['estate.property.type'].sudo().search([])" t-as="ptype">
+                                <option t-att-value="ptype.name" t-att-selected="ptype.name == query_params.get('property_type')"><t t-esc="ptype.name"/></option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    </div>
+                </form>
+                <t t-if="properties">
+                    <div class="row my-5 gap-2 justify-content-center">
+                        <t t-foreach="properties" t-as="property">
+                            <div class="card w-25">
+                                <div class="mt-2">
+                                    <t t-if="property.property_image">
+                                        <img t-att-src="image_data_uri(property.property_image)" 
+                                            class="img-fluid card-img-top" alt="Property Image"/>
+                                    </t>
+                                    <t t-else="">
+                                        <img t-att-src="'/estate/static/img/no_image.jpg'" 
+                                            class="img-fluid card-img-top" alt="No Image Available"/>
+                                    </t>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title"><t t-esc="property.name"/></h5>
+                                    <p class="card-text"><t t-esc="property.description"/></p>
+                                </div>
+                                <ul class="list-group list-group-light list-group-small">
+                                    <li class="list-group-item px-4">
+                                        Expected price: <t t-esc="property.expected_price"/>
+                                    </li>
+                                    <li class="list-group-item px-4">
+                                        Property type: <t t-esc="property.property_type_id.name"/>
+                                    </li>
+                                    <li class="list-group-item px-4">
+                                        Postcode: <t t-esc="property.postcode"/>
+                                    </li>
+                                    <li class="list-group-item px-4">
+                                        Available from: <t t-esc="property.date_availability"/>
+                                    </li>
+                                    <li class="list-group-item px-4">
+                                        Bedrooms: <t t-esc="property.bedrooms"/>
+                                    </li>
+                                </ul>
+                                <div class="card-body">
+                                    <p><a t-att-href="'/property-details/' + str(property.id)">View Details</a></p>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                    <div class="d-flex justify-content-center my-3">
+                        <t t-call="website.pager"/>
+                    </div>
+
+                </t>
+                <t t-else="">
+                    <p>No properties available.</p>
+                </t>
+            </div>
+        </t>
+    </template>
+
+    <!-- Porperty details template -->
+    <template id="wesite_property_details_template">
+        <t t-call="website.layout">
+            <div class="container mt-3">
+                <h1><t t-esc="property.name"/></h1>
+                <t t-if="property">
+                    <div class="row my-5 gap-2">
+                        <div class="card w-100 my-2">
+                            <div class="mt-2">
+                                <t t-if="property.property_image">
+                                    <img t-att-src="image_data_uri(property.property_image)" 
+                                        class="img-fluid card-img-top" alt="Property Image"/>
+                                </t>
+                                <t t-else="">
+                                    <img t-att-src="'/estate/static/img/no_image.jpg'" 
+                                        class="img-fluid card-img-top" alt="No Image Available"/>
+                                </t>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text"><t t-esc="property.description"/></p>
+                                <t t-foreach="property.tag_ids" t-as="tag">
+                                    <p class="card-text"><t t-esc="tag.name"/></p>
+                                </t>
+                            </div>
+                            <h4 class="mt-2">Property Details:</h4>
+                            <hr />
+                            <ul class="list-group list-group-light list-group-small my-2">
+                                <li class="list-group-item px-4">
+                                    Expected price: <t t-esc="property.expected_price"/>
+                                </li>
+                                <li class="list-group-item px-4">
+                                    Property type: <t t-esc="property.property_type_id.name"/>
+                                </li>
+                                <li class="list-group-item px-4">
+                                    Postcode: <t t-esc="property.postcode"/>
+                                </li>
+                                <li class="list-group-item px-4">
+                                    Available from: <t t-esc="property.date_availability"/>
+                                </li>
+                                <li class="list-group-item px-4">
+                                    Bedrooms: <t t-esc="property.bedrooms"/>
+                                </li>
+                                    <li class="list-group-item px-4">
+                                    Salesman: <t t-esc="property.salesman_id.name"/>
+                                </li>
+                                <li class="list-group-item px-4">
+                                    Living Area: <t t-esc="property.living_area"/>
+                                </li>
+                                <li class="list-group-item px-4">
+                                    Garden Area: <t t-esc="property.garden_area"/>
+                                </li>
+                                <li class="list-group-item px-4">
+                                    Total Area: <t t-esc="property.total_area"/>
+                                </li>
+                                <li class="list-group-item px-4">
+                                    Garage: <t t-esc="property.garage"/>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </t>
+                <t t-else="">
+                    <p>No properties available.</p>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>
