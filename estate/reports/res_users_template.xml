@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="report_salesman_properties">
+        <t t-foreach="docs" t-as="salesman">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h2>
+                            <strong>Salesman: </strong>
+                            <span t-field="salesman.name"/>
+                        </h2>
+                        <t t-if="salesman.property_ids">
+                            <t t-set="properties" t-value="salesman.mapped('property_ids')"/>
+                            <t t-foreach="properties" t-as="property">
+                                <h3>
+                                    <span t-field="property.name"/>
+                                </h3>
+                                <t t-call="estate.report_property_bid_info"/>
+                            </t>
+                        </t>
+                        <strong t-else="">Salesman has no properties!</strong>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

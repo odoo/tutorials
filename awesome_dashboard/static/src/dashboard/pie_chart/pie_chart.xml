@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChart">
+        <div t-att-class="'pie-chart-container p-3 rounded shadow-sm bg-white ' + props.class" t-ref="chartContainer">
+            <div class="chart-wrapper d-flex justify-content-center align-items-center position-relative">
+                <canvas t-ref="canvas" class="chart-canvas"></canvas>
+            </div>
+        </div>
+    </t>
+</templates>
