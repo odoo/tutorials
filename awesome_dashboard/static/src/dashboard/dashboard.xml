@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-create-button">
+                <button type="button" class="btn btn-primary" t-on-click="openCustomersKanban">Customers</button>
+                <button type="button" class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+
+            <t t-set-slot="control-panel-additional-actions">
+                <button type="button" class="btn btn-light p-1" t-on-click="toggleModal">
+                    <i class="fa fa-fw fa-cog fs-5 text-muted"></i>
+                </button>
+            </t>
+
+            <div class="d-flex flex-wrap mb-5">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem title="item.props.title" size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>
+
+            <div class="modal fade d-block" t-att-class="( modalState.isOpen ? 'show': 'd-none')" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-between">
+                            <h5 class="modal-title">Dashboard Settings</h5>
+                            <button type="button" class="btn btn-light p-1" t-on-click="toggleModal">
+                                <i class="fa fa-fw fa-close fs-5 text-muted"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label>Select dashboard items:</label>
+                            <div>
+                                <t t-foreach="this.allItems" t-as="item" t-key="item.id">
+                                    <div>
+                                        <input type="checkbox" class='me-2'
+                                            t-att-value="item.id"
+                                            t-att-checked="!hiddenItems.ids.includes(item.id)"
+                                            t-on-change="toggleItem"/>
+                                        <t t-esc="item.description"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" t-on-click="saveSettings">Save</button>
+                            <button class="btn btn-secondary" t-on-click="toggleModal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    </t>
+
+</templates>
