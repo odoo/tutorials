@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.Counter">
+        <div class="p-3">
+            <!-- Use state.value instead of props.value -->
+            <p>Counter: <t t-esc="this.state.value"/></p>
+            <button class="" t-on-click="increment">Increment</button>
+        </div>
+    </t>
+</templates>

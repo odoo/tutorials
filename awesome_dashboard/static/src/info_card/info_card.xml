@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.InfoCard">
+        <t t-if="props.title and props.value">
+            <h2 class="text-center"><t t-esc="props.title"/></h2>
+            <span class="text-center fs-1 text-primary display-5"><t t-esc="props.value"/></span>
+        </t>
+    </t>
+
+</templates>
