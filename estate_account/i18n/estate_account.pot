@@ -1,0 +1,86 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* estate_account
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-03 02:29+0000\n"
+"PO-Revision-Date: 2025-03-03 02:29+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: estate_account
+#: model_terms:ir.ui.view,arch_db:estate_account.view_move_form
+msgid "<span class=\"o_stat_text\">Estate Property</span>"
+msgstr ""
+
+#. module: estate_account
+#: model_terms:ir.ui.view,arch_db:estate_account.estate_property_view_form
+msgid "<span class=\"o_stat_text\">Invoice</span>"
+msgstr ""
+
+#. module: estate_account
+#: model_terms:ir.ui.view,arch_db:estate_account.report_property_offers_inherit_estate_account
+msgid "<strong>An invoice has been created:</strong>"
+msgstr ""
+
+#. module: estate_account
+#. odoo-python
+#: code:addons/estate_account/models/estate_property.py:0
+msgid "Commission of 6%% for selling property %s"
+msgstr ""
+
+#. module: estate_account
+#: model:ir.actions.act_window,name:estate_account.action_view_property
+#: model:ir.model.fields,field_description:estate_account.field_account_bank_statement_line__estate_property_id
+#: model:ir.model.fields,field_description:estate_account.field_account_move__estate_property_id
+#: model_terms:ir.ui.view,arch_db:estate_account.view_move_form
+msgid "Estate Property"
+msgstr ""
+
+#. module: estate_account
+#. odoo-python
+#: code:addons/estate_account/models/estate_property.py:0
+msgid "For selling %s"
+msgstr ""
+
+#. module: estate_account
+#: model:ir.actions.act_window,name:estate_account.account_move_invoices_action
+#: model:ir.model.fields,field_description:estate_account.field_estate_property__invoice_id
+#: model_terms:ir.ui.view,arch_db:estate_account.estate_property_view_form
+msgid "Invoice"
+msgstr ""
+
+#. module: estate_account
+#: model:ir.model,name:estate_account.model_account_move
+msgid "Journal Entry"
+msgstr ""
+
+#. module: estate_account
+#. odoo-python
+#: code:addons/estate_account/models/account_move.py:0
+msgid "Open estate property of this invoice"
+msgstr ""
+
+#. module: estate_account
+#. odoo-python
+#: code:addons/estate_account/models/estate_property.py:0
+msgid "Open invoice of this estate property"
+msgstr ""
+
+#. module: estate_account
+#: model:ir.model,name:estate_account.model_estate_property
+msgid "Real Estate Property"
+msgstr ""
+
+#. module: estate_account
+#. odoo-python
+#: code:addons/estate_account/models/estate_property.py:0
+msgid "You do not have permission to change the status of this property."
+msgstr ""
