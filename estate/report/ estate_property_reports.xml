@@ -1,0 +1,11 @@
+<odoo>
+     <record id="property_offer_report_action" model="ir.actions.report">
+        <field name="name">Property Offers Report</field>
+        <field name="model">estate.property</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.report_property_offers</field>
+        <field name="report_file">estate.report_property_offers</field>
+        <field name="binding_model_id" ref="model_estate_property"/>
+    </record>       
+</odoo>
+

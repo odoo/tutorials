@@ -1,0 +1,46 @@
+<odoo>
+    <template id="report_property_offers_table">
+        <t t-set="offers" t-value="offers" />
+        <t t-if="offers">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th style="font-weight: bold;">Price</th>
+                        <th style="font-weight: bold;">Partner</th>
+                        <th style="font-weight: bold;">Validity (days)</th>
+                        <th style="font-weight: bold;">Deadline</th>
+                        <th style="font-weight: bold;">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="offers" t-as="offer">
+                        <tr>
+                            <td>
+                                <span t-field="offer.price" />
+                            </td>
+                            <td>
+                                <span t-field="offer.partner_id" />
+                            </td>
+                            <td>
+                                <span t-field="offer.validity" />
+                            </td>
+                            <td>
+                                <span t-field="offer.date_deadline" />
+                            </td>
+                            <td>
+                                <span t-field="offer.status" />
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </t>
+        <t t-else="">
+            <tr>
+                <td colspan="5" style="text-align: center; font-style: italic;">
+                    No offers has been made yet :(
+                </td>
+            </tr>
+        </t>
+    </template>
+</odoo>
