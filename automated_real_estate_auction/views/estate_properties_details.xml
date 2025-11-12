@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_details_template" inherit_id="estate.property_details_template">
+        <xpath expr="//div[@name='property_highlighted_details']" position="after">
+            <a t-att-href="'/property/%s/add_offer' % property.id" class="btn btn-primary fs-5 mb-5"
+               t-if="property.property_selling_way == 'auction' and property.auction_stages == 'auction'">
+                Create Offer
+            </a>
+        </xpath>
+
+        <xpath expr="//div[hasclass('col-lg-6')]/div[hasclass('d-none', 'd-lg-block')]/h1[@name='title_property']" position="after">
+            <div class="fs-2 mb-2" t-if="property.property_selling_way == 'auction' and property.auction_stages == 'auction'">
+                <span id="auction-timer"
+                      style="font-size: 1.5rem; font-weight: bold;"
+                      t-att-data-end-time="property.end_time">
+                    Loading...
+                </span>
+            </div>
+        </xpath>
+
+        <xpath expr="//t[@t-call='website.layout']" position="inside">
+            <script type="text/javascript">
+                document.addEventListener("DOMContentLoaded", function () {
+                    function updateAuctionTimer() {
+                        let timerElement = document.getElementById("auction-timer");
+                        let offerButton = document.querySelector("a[t-att-href*='add_offer']");
+
+                        if (!timerElement) return;
+
+                        let endTimeStr = timerElement.getAttribute("data-end-time");
+                        if (!endTimeStr) {
+                            timerElement.textContent = "Invalid End Time";
+                            return;
+                        }
+
+                        let endTime = new Date(endTimeStr + "Z").getTime();
+                        if (isNaN(endTime)) {
+                            timerElement.textContent = "Invalid End Time";
+                            return;
+                        }
+
+                        function refreshTimer() {
+                            let now = new Date().getTime();
+                            let remainingTime = endTime - now;
+
+                            if (remainingTime &lt;= 0) {
+                                timerElement.textContent = "00:00:00:00";
+                                if (offerButton) offerButton.style.display = "none"; // Hide button when auction ends
+                                return;
+                            }
+
+                            let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+                            let hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                            let minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                            let seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+                            function formatTime(unit) {
+                                return unit &lt; 10 ? "0" + unit : unit;
+                            }
+
+                            timerElement.textContent =
+                                formatTime(days) + ":" +
+                                formatTime(hours) + ":" +
+                                formatTime(minutes) + ":" +
+                                formatTime(seconds);
+                            setTimeout(refreshTimer, 1000);
+                        }
+                        refreshTimer();
+                    }
+                    updateAuctionTimer();
+                });
+            </script>
+        </xpath>
+    </template>
+</odoo>

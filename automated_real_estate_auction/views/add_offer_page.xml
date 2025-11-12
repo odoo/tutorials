@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="add_offer" name="Add Offer for Auction">
+        <t t-call="website.layout">
+            <div class="container card shadow mt-5 py-4">
+                <h1 class="text-center mb-4">Add Offer for <t t-out="property.name"/></h1>
+                <form class="p-4" t-att-action="'/estate/property/%d/offer/submit' % property.id" method="post">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <div class="mb-4 d-flex align-items-center gap-2">
+                        <label class="form-label w-3">Name:</label>
+                        <input type="text" name="offer_maker" id="offer_maker" class="form-control" placeholder="Enter your name" t-att-value="request.env.user.name"/>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <label class="form-label">Amount:</label>
+                        <input type="number" name="amount" id="offer_price" class="form-control" placeholder="Enter offer amount"/>
+                    </div>
+                    <div class="d-flex justify-content-evenly mt-5">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <a t-att-href="'/property/%s' % property.id" class="btn btn-light">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+</odoo>
