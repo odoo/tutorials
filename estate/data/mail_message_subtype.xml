@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="mt_state_accept" model="mail.message.subtype">
+            <field name="name">Offer Accepted</field>
+            <field name="res_model">estate.property</field>
+            <field name="default" eval="True"/>
+            <field name="description">Property Offer Accepted!</field>
+        </record>
+    </data>
+</odoo>
