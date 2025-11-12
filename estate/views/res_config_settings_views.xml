@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.estate</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="40"/>
+        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Real Estate" string="Real Estate" name="real_estate">
+                    <block title="Estate" name="estate">
+                        <group>
+                            <group name="invoicing" string="Invoicing">
+                                <setting id="invoicing_setting" help="Generate invoices for property sales.">
+                                    <field name="module_estate_account"/>
+                                </setting>
+                            </group>
+                            <group name="automate_auction" string="Automate Auction">
+                                <setting id="automate_auction_setting" help="Automatically manage property auctions.">
+                                    <field name="module_estate_auction"/>
+                                </setting>
+                            </group>
+                        </group>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_config_settings_action" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'estate'}</field>
+    </record>
+</odoo>
