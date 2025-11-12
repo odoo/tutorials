@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="property_tag_luxury" model="estate.property.tag">
+        <field name="name">Luxury</field>
+    </record>
+
+     <record id="property_tag_cozy" model="estate.property.tag">
+        <field name="name">Cozy</field>
+    </record>
+
+     <record id="property_tag_ocean_view" model="estate.property.tag">
+        <field name="name">Ocean View</field>
+    </record>
+
+     <record id="property_tag_wooden" model="estate.property.tag">
+        <field name="name">Wooden</field>
+    </record>
+
+    <record id="property_tag_city_view" model="estate.property.tag">
+        <field name="name">City View</field>
+    </record>
+</odoo>
