@@ -1,0 +1,10 @@
+<odoo>
+    <record id="accept_best_offer_after_deadline_cron" model="ir.cron">
+        <field name="name">Accpect best offer when pass deadline</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="code">model._cron_accept_offer()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>

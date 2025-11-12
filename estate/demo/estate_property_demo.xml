@@ -1,0 +1,124 @@
+<odoo>
+    <data noupdate="0">
+        <record id="property_1" model="estate.property">
+            <field name="name">Big Villa</field>
+            <field name="state">accepted</field>
+            <field name="description">A nice and big villa</field>
+            <field name="property_type_id" ref="estate.property_type_residential"/>
+            <field name="postcode">12345</field>
+            <field name="date_availability">2020-02-02</field>
+            <field name="expected_price">1600000</field>
+            <field name="selling_price">1600000</field>
+            <field name="bedrooms">6</field>
+            <field name="living_area">275</field>
+            <field name="facades">4</field>
+            <field name="garage">1</field>
+            <field name="garden">1</field>
+            <field name="garden_area">100</field>
+            <field name="garden_orientation">south</field>
+            <field name="is_published">1</field>
+            <field name="image" type="base64" file="estate/static/img/property_1.jpeg"/>
+        </record>
+
+        <record id="property_2" model="estate.property">
+            <field name="name">Trailer home</field>
+            <field name="state">cancelled</field>
+            <field name="description">Home in a trailer park</field>
+            <field name="property_type_id" ref="estate.property_type_residential"/>
+            <field name="postcode">54321</field>
+            <field name="date_availability">1970-01-01</field>
+            <field name="expected_price">100000</field>
+            <field name="bedrooms">1</field>
+            <field name="living_area">10</field>
+            <field name="facades">4</field>
+            <field name="is_published">1</field>
+            <field name="image" type="base64" file="estate/static/img/property_2.jpeg"/>
+        </record>
+
+        <record id="property_3" model="estate.property">
+            <field name="name">Luxury Penthouse</field>
+            <field name="state">new</field>
+            <field name="description">A stunning penthouse with a breathtaking city view.</field>
+            <field name="property_type_id" ref="estate.property_type_residential"/>
+            <field name="postcode">56789</field>
+            <field name="date_availability">2025-06-15</field>
+            <field name="expected_price">2500000</field>
+            <field name="bedrooms">4</field>
+            <field name="living_area">200</field>
+            <field name="facades">2</field>
+            <field name="garage">1</field>
+            <field name="garden">0</field>
+            <field name="is_published">1</field>
+            <field name="image" type="base64" file="estate/static/img/property_3.jpeg"/>
+        </record>
+
+        <record id="property_4" model="estate.property">
+            <field name="name">Cozy Cottage</field>
+            <field name="description">A charming countryside cottage perfect for relaxation.</field>
+            <field name="property_type_id" ref="estate.property_type_residential"/>
+            <field name="postcode">87654</field>
+            <field name="date_availability">2025-09-01</field>
+            <field name="expected_price">800000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">120</field>
+            <field name="facades">3</field>
+            <field name="garage">0</field>
+            <field name="garden">1</field>
+            <field name="garden_area">500</field>
+            <field name="garden_orientation">east</field>
+            <field name="is_published">1</field>
+            <field name="image" type="base64" file="estate/static/img/property_4.jpeg"/>
+        </record>
+
+        <record id="property_5" model="estate.property">
+            <field name="name">Modern Apartment</field>
+            <field name="description">A stylish apartment in the heart of the city.</field>
+            <field name="property_type_id" ref="estate.property_type_residential"/>
+            <field name="postcode">11223</field>
+            <field name="date_availability">2024-12-01</field>
+            <field name="expected_price">1200000</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">90</field>
+            <field name="facades">1</field>
+            <field name="garage">0</field>
+            <field name="garden">0</field>
+            <field name="is_published">1</field>
+            <field name="image" type="base64" file="estate/static/img/property_5.jpeg"/>
+        </record>
+
+        <record id="property_6" model="estate.property">
+            <field name="name">Suburban House</field>
+            <field name="description">A spacious house in a peaceful suburban area.</field>
+            <field name="property_type_id" ref="estate.property_type_residential"/>
+            <field name="postcode">33445</field>
+            <field name="date_availability">2024-07-20</field>
+            <field name="expected_price">1400000</field>
+            <field name="bedrooms">5</field>
+            <field name="living_area">180</field>
+            <field name="facades">4</field>
+            <field name="garage">1</field>
+            <field name="garden">1</field>
+            <field name="garden_area">700</field>
+            <field name="garden_orientation">west</field>
+            <field name="is_published">1</field>
+            <field name="image" type="base64" file="estate/static/img/property_6.jpeg"/>
+        </record>
+
+        <record id="property_7" model="estate.property">
+            <field name="name">Modern Penthouse</field>
+            <field name="description">A luxurious penthouse with a stunning city skyline view.</field>
+            <field name="property_type_id" ref="estate.property_type_residential"/>
+            <field name="postcode">56001</field>
+            <field name="date_availability">2024-08-15</field>
+            <field name="expected_price">2200000</field>
+            <field name="bedrooms">3</field>
+            <field name="living_area">250</field>
+            <field name="facades">2</field>
+            <field name="garage">1</field>
+            <field name="garden">0</field>
+            <field name="garden_area">0</field>
+            <field name="is_published">1</field>
+            <field name="image" type="base64" file="estate/static/img/property_7.jpg"/>
+        </record>
+    </data>
+</odoo>
