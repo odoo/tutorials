@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-name="awesome_dashboard.AwesomeDashboard">
+    <Layout display="{controlPanel: {}}" className="'o_dashboard h-100'">
+      <div class="o_content">
+        <button t-on-click="showNotification">Click Me</button>
+        <h2>Awesome Dashboard</h2>
+        <div>
+          <button t-on-click="openCustomers">Customers</button>
+          <button t-on-click="openLeads">Leads</button>
+        </div>
+        <div class="dashboard">
+          <DashboardItem size="3" value="stats.newOrders">
+            <h3>Small Card</h3>
+            <p>Average amount of t-shirt by order this month</p>
+          </DashboardItem>
+          <DashboardItem size="2" value="stats.avgTShirtOrder">
+            <h3>Large Card</h3>
+            <p>Average time for order to go from new</p>
+          </DashboardItem>
+          <DashboardItem size="2" value="stats.newOrders">
+            <h3>Large Card</h3>
+            <p>Number of new orders</p>
+          </DashboardItem>
+          <DashboardItem size="2" value="stats.cancelledOrders">
+            <h3>Large Card</h3>
+            <p>Number of cancelled orders</p>
+          </DashboardItem>
+          <DashboardItem size="2" value="stats.totalAmount">
+            <h3>Large Card</h3>
+            <p>Total amount of new orders</p>
+          </DashboardItem>
+        </div>
+      </div>
+    </Layout>
+  </t>
+</templates>
