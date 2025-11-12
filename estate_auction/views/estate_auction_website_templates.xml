@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="property_offer_form" name="Property Offer Form">
+        <t t-call="website.layout">
+            <t t-set="property" t-value="property"/>
+            <div class="container py-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card shadow border-0 rounded-4">
+                            <div class="card-body p-4">
+                                <h2 class="text-center mb-4">Submit an Offer for <span t-esc="property.name" class="text-primary"/></h2>
+                                <form action="/property/submit-offer" method="post">
+                                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="property_id" t-att-value="property.id"/>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Your Name</label>
+                                        <input type="text" class="form-control bg-light" 
+                                        t-att-value="request.env.user.partner_id.name" readonly="True"/>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Offer Amount</label>
+                                        <input type="number" name="offer_amount" class="form-control" required="True" min="1"/>
+                                    </div>
+
+                                    <t t-if="error_message">
+                                        <div class="alert alert-danger text-center fw-semibold">
+                                            <t t-esc="error_message"/>
+                                        </div>
+                                    </t>
+                                    
+                                    <div class="d-flex justify-content-between">
+                                        <button type="submit" class="btn btn-primary px-4">Submit Offer</button>
+                                        <a t-att-href="'/property/%s' % property.id" class="btn btn-secondary px-4">Cancel</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="offer_success_page" name="Offer Success">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <div class="alert alert-success text-center p-4">
+                    <h2>Congratulations!</h2>
+                    <p>Your offer has been successfully placed. We will notify you of the results as soon as the auction concludes.</p>
+                    <a href="/" class="btn btn-primary mt-3">Back to Home</a>
+                </div>
+            </div>
+        </t>
+    </template>
+    
+    <template id="offer_already_exists" name="Offer Already Exists">
+        <t t-call="website.layout">
+            <div class="container my-5 d-flex justify-content-center">
+                <div class="card shadow-lg p-4 border-0 rounded-3" style="max-width: 600px;">
+                    <div class="text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-check-circle-fill text-success fs-1"></i>
+                        </div>
+                        <h2 class="text-dark fw-bold">Your Offer Has Been Submitted!</h2>
+                        <p class="text-muted">We've received your offer for this property. Stay tuned for updates.</p>
+                    </div>
+    
+                    <div class="mt-4 p-3 bg-light rounded-3 shadow-sm">
+                        <h4 class="text-primary fw-bold text-center">Offer Details</h4>
+                        <ul class="list-unstyled mt-3">
+                            <li class="d-flex justify-content-between">
+                                <span class="text-muted">Property:</span>
+                                <span class="fw-semibold text-dark"><t t-esc="offer.property_id.name"/></span>
+                            </li>
+                            <li class="d-flex justify-content-between mt-2">
+                                <span class="text-muted">Offer Price:</span>
+                                <span class="fw-bold text-success"><t t-esc="offer.price"/> INR</span>
+                            </li>
+                            <li class="d-flex justify-content-between mt-2">
+                                <span class="text-muted">Submitted on:</span>
+                                <span class="text-dark" t-field="offer.create_date"/>
+                            </li>
+                            <li class="d-flex justify-content-between mt-2">
+                                <span class="text-muted">Bid Status:</span>
+                                <span>
+                                    <span t-if="offer.status == 'accepted'" class="badge bg-success px-3 py-2">Accepted</span>
+                                    <span t-if="offer.status == 'refused'" class="badge bg-danger px-3 py-2">Rejected</span>
+                                    <span t-if="offer.status not in ['refused', 'accepted']" class="badge bg-warning text-dark px-3 py-2">Pending</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="/" class="btn btn-primary w-50 me-2 shadow-sm rounded">
+                            Home
+                        </a>
+                        <a t-att-href="'/property/%s' % offer.property_id.id" class="btn btn-dark w-50 shadow-sm rounded">
+                            View Property
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
