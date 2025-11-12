@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
@@ -7,31 +8,37 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
+
     date_availability = fields.Date(
         "Availability Date",
-        default=lambda self: fields.Date.today() + relativedelta(months=3)
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
+
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True)
-    bedrooms = fields.Integer(default=3)
-    living_area = fields.Integer("Living Area (sqft)")
+
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer("Living Area(sqft)")
     facades = fields.Integer()
     garage = fields.Boolean()
+
     garden = fields.Boolean()
-    garden_area = fields.Integer("Garden Area (sqft)")
+    garden_area = fields.Integer("Garden Area(sqft)")
     garden_orientation = fields.Selection(
-        selection=[
+        [
             ("north", "North"),
+            ("south", "South"),
             ("east", "East"),
             ("west", "West"),
-            ("South", "South"),
         ],
         string="Garden Orientation",
     )
+
     state = fields.Selection(
         [
             ("new", "New"),
@@ -40,19 +47,34 @@ class EstateProperty(models.Model):
             ("sold", "Sold"),
             ("cancelled", "Cancelled"),
         ],
-        string="Status",
+        "Status",
         required=True,
         copy=False,
         default="new",
     )
+
     active = fields.Boolean(default=True)
+
     property_type_id = fields.Many2one("estate.property.type", "Property Type")
     buyer_id = fields.Many2one("res.partner", "Buyer", copy=False)
     salesperson_id = fields.Many2one("res.users", string="Salesperson")
+
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    total_area = fields.Integer("Total Area (sqft)", compute="_compute_total_area")
+
+    offer_ids = fields.One2many(
+        "estate.property.offer",
+        "property_id",
+        string="Offers"
+    )
+
+    total_area = fields.Integer("Total Area(sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Offer", compute="_compute_best_price")
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price of a property must be strictly positive.',
+    )
+
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -62,26 +84,16 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price") or [0])
+            record.best_price = max(record.offer_ids.mapped("price"), default=0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
-        for record in self:
-            if record.garden:
-                if record.garden_area == 10:
-                    record.garden_orientation = "north"
-                elif record.garden_area == 20:
-                    record.garden_orientation = "east"
-                elif record.garden_area == 30:
-                    record.garden_orientation = "west"
-                elif record.garden_area == 40:
-                    record.garden_orientation = "south"
-                else:
-                    record.garden_area = 0
-                    record.garden_orientation = False
-            else:
-                record.garden_area = 0
-                record.garden_orientation = False
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     def action_cancel(self):
         for record in self:
@@ -95,29 +107,18 @@ class EstateProperty(models.Model):
                 raise UserError("A cancelled property cannot be set as sold")
             record.state = "sold"
 
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'The expected price must be strictly positive.'
-    )
-
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price > 0)',
-        'The selling price must be positive.'
-    )
-
     @api.constrains("selling_price", "expected_price")
-    def _check_selling_price_ratio(self):
+    def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2):
-                if (
-                    float_compare(
-                        record.selling_price,
-                        record.expected_price * 0.9,
-                        precision_digits=2,
-                    )
-                    < 0
-                ):
+                min_price = record.expected_price * 0.9
+                if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
                     raise ValidationError(
-                        "The selling price cannot be lower then 90% of the expected price."
+                        "The selling price cannot be lower than 90% of the expected price."
                     )
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError("Only 'New' or 'Cancelled' property can be deleted.")
