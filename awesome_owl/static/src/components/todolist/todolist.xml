@@ -1,0 +1,20 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todolist">
+        <div class="container my-4 d-flex align-items-center flex-column gap-4">
+            <h1 class="text-center">Todo List</h1>
+            <div class="mb-3 d-flex gap-2 w-50">
+                <input type="text" t-ref="inref" class="form-control d-flex fs-4" style="width: 85%; height:50px;" placeholder="Enter a new task" t-model="newTask.value" t-on-keypress="keyPress" />
+                <button class="btn bg-success" style="width: 15%;" t-on-click="addTask">
+                    <span class="text-white">Add Task</span>
+                </button>
+            </div>
+            <div class="row w-100" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;">
+                <t t-foreach="todos.value" t-as="todo" t-key="todo.id">
+                    <div>
+                        <TodoItem todo="todo" doToggle="toggleIsCompleted" deleteTodo="deleteTodo"/>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>

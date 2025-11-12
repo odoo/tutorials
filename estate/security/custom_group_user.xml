@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="client_group_user" model="res.groups">
+        <field name="name">Client Group Users</field>
+    </record>
+    <record id="manager_group_user" model="res.groups">
+        <field name="name">Manager Group Users</field>
+        <field name="implied_ids" eval="[(4, ref('client_group_user'))]"/>
+    </record>
+</odoo>
