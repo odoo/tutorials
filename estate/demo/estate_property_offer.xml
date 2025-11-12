@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="offer_azure_interior_1" model="estate.property.offer">
+            <field name="buyer_id" ref="base.res_partner_12"/>
+            <field name="property_id" ref="estate_property_1"/>
+            <field name="price">101</field>
+            <field name="validity">14</field>
+        </record>
+
+        <record id="offer_azure_interior_2" model="estate.property.offer">
+            <field name="buyer_id" ref="base.res_partner_12"/>
+            <field name="property_id" ref="estate_property_1"/>
+            <field name="price">102</field>
+            <field name="validity">14</field>
+        </record>
+
+        <record id="offer_deco_addict" model="estate.property.offer">
+            <field name="buyer_id" ref="base.res_partner_2"/>
+            <field name="property_id" ref="estate_property_1"/>
+            <field name="price">103</field>
+            <field name="validity">14</field>
+        </record>
+
+        <function model="estate.property.offer" name="property_action_accept" eval="[ref('offer_azure_interior_1')]"/>
+    </data>
+</odoo>
