@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <template id="property_listing" name="Property Listing">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+               
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 text-primary">Available Properties</h1>
+                        <p class="text-muted">Find your dream property below</p>
+                    </div>
+                </div>
+
+              
+                <div class="d-flex justify-content-center mb-5">
+                    <form action="/properties" method="get" class="d-flex align-items-center">
+                        <input type="date" name="listed_after" id="listed_after_date" 
+                            class="form-control w-auto" t-att-value="listed_after or ''" />
+                        <button type="submit" class="btn btn-primary ms-3">Listed After</button>
+                   </form>
+                </div>
+
+              
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">
+                                        <t t-esc="property.name" />
+                                    </h5>
+                                    <p class="card-text text-muted">
+                                        <t t-esc="property.description" />
+                                    </p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">$<t t-esc="'{:,.2f}'.format(property.expected_price)" /></h6>
+                                        <a t-att-href="'/property/%s' % property.id" class="btn btn-outline-primary">
+                                            View Property
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-white border-top-0">
+                                    <small class="text-muted">
+                                        <i class="fa fa-bed"></i> <t t-esc="property.bedrooms" /> Beds | 
+                                        <i class="fa fa-ruler"></i> <t t-esc="property.living_area" /> m²
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+
+             
+                <div class="d-flex justify-content-center my-4">
+                    <t t-call="website.pager" t-set="pager" />
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_detail" name="Property Detail">
+        <t t-call="website.layout">
+            <div class="container mt-5">
+              
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 text-primary">
+                            <t t-esc="property.name" />
+                        </h1>
+                    </div>
+                </div>
+
+           
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                     
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Property Image</h5>
+                                <p class="text-muted">No image available</p>
+                            </div>
+                        </div>
+                    </div>
+
+                  
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Property Details</h5>
+                                <p class="card-text"><strong>Description:</strong> <t t-esc="property.description" /></p>
+                                <p class="card-text"><strong>Price:</strong> $<t t-esc="'{:,.2f}'.format(property.expected_price)" /></p>
+                                <p class="card-text"><strong>Bedrooms:</strong> <t t-esc="property.bedrooms" /></p>
+                                <p class="card-text"><strong>Living Area:</strong> <t t-esc="property.living_area" /> sqm</p>
+
+                                <t t-if="property.garden">
+                                    <p class="card-text"><strong>Garden Area:</strong> <t t-esc="property.garden_area" /> sqm</p>
+                                    <p class="card-text"><strong>Garden Orientation:</strong> <t t-esc="property.garden_orientation" /></p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
