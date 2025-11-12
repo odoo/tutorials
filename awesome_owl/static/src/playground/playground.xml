@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.playground">
+        <h3>Counter in a sub component</h3>
+        <Counter/>
+        <h3>simple Card component</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <Card title="'Card 1'" content="'This is the first card.'"/>
+            </div>
+            <div class="col">
+                <Card title="'Card 2'" content="'This is the second card.'"/>
+            </div>
+        </div>
+        <h3>Testing Escaped vs Markup Content</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <Card title="'Normal Content'" content="normalText"/>
+            </div>
+            <div class="col">
+                <Card title="'Markup Content'" content="htmlText"/>
+            </div>
+        </div>
+        <hr class='mb-4'/>
+        <h3>Counter Components</h3>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <Counter onChange.bind="incrementSum"/>
+            </div>
+            <div class="col">
+                <Counter onChange.bind="incrementSum"/>
+            </div>
+        </div>
+        <hr class='mb-4'/>
+        <h3>Sum of Counter Values</h3>
+        <p>Sum:<t t-esc="state.sum"/></p>
+        <div>
+            <card title="TodoList">
+                <hr class='mb-4'/>
+                <div>
+                    <TodoList/>
+                </div>
+            </card>
+        </div>
+        <Card title="'card 1'">
+                content of card 1
+            </Card>
+            <Card title="'card 2'">
+                <Counter />
+            </Card>
+        
+        <!-- <h3>Generic card with slots</h3>
+        <Card title="Hello World">
+            <p>This is a card with some text.</p>
+        </Card>
+        <Card>
+            <Counter/>
+        </Card> -->
+
+    </t>
+</templates>

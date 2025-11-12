@@ -37,6 +37,20 @@
             'web/static/src/libs/fontawesome/css/font-awesome.css',
             'awesome_owl/static/src/**/*',
         ],
+        'web.assets_backend': [
+            'awesome_owl/static/src/main.js',
+            'awesome_owl/static/src/counter/counter.js',
+            'awesome_owl/static/src/playground/playground.js',
+            'awesome_owl/static/src/todo/TodoList.js',
+            'awesome_owl/static/src/todo/TodoItem.js',
+        ],
+        'web.assets_qweb': [
+            'awesome_owl/static/src/todo/TodoList.xml',
+            'awesome_owl/static/src/todo/TodoItem.xml',
+        ],
+        "web.assets_frontend": [
+            "awesome_owl/static/src/todo/utils.js",
+        ],
     },
     'license': 'AGPL-3'
 }
