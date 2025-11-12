@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.ProductScreen" t-inherit-mode="extension">
+        <xpath expr="//div[contains(@t-attf-class, 'control-buttons')]" position="before">
+            <!-- PaymentScreen -->
+            <t t-if="pos.config.pos_fast_order_process and pos.mainScreen.component.name == 'ProductScreen' and !ui.isSmall">
+                <PaymentScreen orderUuid="this.pos.selectedOrderUuid" />
+                <t t-call="point_of_sale.LoyaltyPointsSummary"/>
+            </t>
+        </xpath>
+        <xpath expr="//div[contains(@t-attf-class, 'control-buttons')]" position="attributes">
+            <attribute name="t-attf-class" remove='py-2' add='pb-2 pt-1' separator=" "/>
+        </xpath>
+    </t>
+
+    <t t-name="point_of_sale.LoyaltyPointsSummary">
+    <t t-foreach="pos.get_order()?.getLoyaltyPoints() or []" t-as="_loyaltyStat" t-key="_loyaltyStat.couponId">
+        <div
+            t-if="_loyaltyStat.points.won || _loyaltyStat.points.spent"
+            class="d-flex justify-content-between mt-2 px-3 py-2 rounded-3 bg-white">
+            <div t-esc="_loyaltyStat.points.name" class="loyalty-points-title fs-4 fw-bolder"/>
+            <div class="d-flex gap-1 fw-bold">
+                <div t-if='_loyaltyStat.points.balance' class="loyalty-points loyalty-points-balance">
+                    <span class='value'><t t-esc='_loyaltyStat.points.balance'/></span>
+                </div>
+                <div t-if='_loyaltyStat.points.won' class="loyalty-points loyalty-points-won">
+                    <span class='value text-success'>+<t t-esc='_loyaltyStat.points.won'/></span>
+                </div>
+                <div t-if='_loyaltyStat.points.spent' class="loyalty-points loyalty-points-spent">
+                    <span class='value text-danger'>-<t t-esc='_loyaltyStat.points.spent'/></span>
+                </div>
+                =
+                <div class="loyalty-points loyalty-points-totaltext-end fw-bolder">
+                    <span class='value'><t t-esc='_loyaltyStat.points.total'/></span>
+                </div>
+            </div>
+        </div>
+    </t>
+</t>
+
+</templates>

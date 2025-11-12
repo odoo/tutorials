@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.PaymentScreen" t-inherit-mode="extension" primary="true">
+        <xpath expr="//t[@t-else='']/div[contains(@class, 'payment-screen')]"  position="attributes">
+            <attribute name="t-if">this.pos.mainScreen.component.name == 'PaymentScreen'</attribute>
+        </xpath>
+        <xpath expr="//t[@t-else='']/div[contains(@class, 'payment-screen')]"  position="after">
+            <div t-if="this.pos.mainScreen.component.name == 'ProductScreen' and !currentOrder?.is_empty()"
+            class="payment-screen screen d-flex flex-column ">
+                <div class="main-content gap-2 bg-200 overflow-auto">
+                    <div class="center-content d-flex flex-column flex-grow-1 gap-2">
+                        <t t-call="point_of_sale.PaymentScreenDue" />
+                        <PaymentScreenPaymentLines
+                        paymentLines="paymentLines"
+                        deleteLine.bind="deletePaymentLine"
+                        sendForceDone.bind="sendForceDone"
+                        sendPaymentReverse.bind="sendPaymentReverse"
+                        sendPaymentCancel.bind="sendPaymentCancel"
+                        sendPaymentRequest.bind="sendPaymentRequest"
+                        selectLine.bind="selectPaymentLine"
+                        updateSelectedPaymentline.bind="updateSelectedPaymentline" />
+                        <PaymentScreenStatus order="currentOrder" />
+                        <t t-if='this.paymentLines.length == 0'>
+                            <t t-call="point_of_sale.PaymentScreenMethods" />
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </t>
+    <t t-inherit="point_of_sale.PaymentScreenMethods" t-inherit-mode="extension" primary="true">
+        <xpath expr="//div[contains(@class, 'paymentmethods-container')]" position="attributes">
+            <attribute name="t-if">this.pos.mainScreen.component.name == 'PaymentScreen'</attribute>
+        </xpath>
+        <xpath expr="//div[contains(@class, 'paymentmethods-container')]" position="after">
+            <div t-if="pos.config.pos_fast_order_process and this.pos.mainScreen.component.name == 'ProductScreen' and !currentOrder?.is_empty()"
+            class="paymentmethods-container mb-3">
+                <div class="paymentmethods d-flex flex-row gap-2">
+                    <t t-set="cashMethod" t-value="payment_methods_from_config.find(p => p.type === 'cash')"/>
+                    <t t-set="otherMethod" t-value="payment_methods_from_config.find(p => p.type !== 'cash')"/>
+                    <!-- Cash Payment Button -->
+                    <t t-if="cashMethod">
+                        <div class="button paymentmethod btn btn-light lh-lg flex-fill"
+                             t-on-click="() => this.addNewPaymentLine(cashMethod)">
+                            <div class="payment-method-display d-flex align-items-center justify-content-center h-100">
+                                <img class="payment-method-icon" t-att-src="cashMethod.image ? paymentMethodImage(cashMethod.id) : ''"/>
+                                <span class="payment-name" t-esc="pos.getPaymentMethodDisplayText(cashMethod, currentOrder)"/>
+                            </div>
+                        </div>
+                    </t>
+                    <!-- First Non-Cash Payment Button -->
+                    <t t-if="otherMethod">
+                        <div class="button paymentmethod btn btn-light lh-lg flex-fill"
+                             t-on-click="() => this.addNewPaymentLine(otherMethod)">
+                            <div class="payment-method-display d-flex align-items-center justify-content-center h-100">
+                                <img class="payment-method-icon" t-att-src="otherMethod.image ? paymentMethodImage(otherMethod.id) : ''"/>
+                                <span class="payment-name" t-esc="pos.getPaymentMethodDisplayText(otherMethod, currentOrder)"/>
+                            </div>
+                        </div>
+                    </t>
+                    <div class="button paymentmethod btn btn-light lh-lg flex-fill"
+                         t-on-click="() => pos.showScreen('PaymentScreen', {others: true, orderUuid: currentOrder.uuid})">
+                        <div class="payment-method-display d-flex align-items-center justify-content-center h-100">
+                            <span>Others</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </t>
+    <t t-inherit="point_of_sale.PaymentScreenButtons" t-inherit-mode="extension" primary="true">
+        <xpath expr="//div[contains(@class, 'payment-buttons')]" position="attributes">
+            <attribute name="t-if">this.pos.mainScreen.component.name == 'PaymentScreen'</attribute>
+        </xpath>
+    </t>
+    <t t-inherit="point_of_sale.PaymentScreenDue" t-inherit-mode="extension" primary="true">
+        <xpath expr="//div[contains(@class, 'total')]" position="attributes">
+            <attribute name="t-if">this.pos.mainScreen.component.name == 'PaymentScreen'</attribute>
+        </xpath>
+    </t>
+    <t t-inherit="point_of_sale.PaymentScreenBack" t-inherit-mode="extension" primary="true">
+        <xpath expr="//t[@t-else='']" position="attributes">
+            <attribute name="t-if">this.pos.mainScreen.component.name == 'PaymentScreen'</attribute>
+        </xpath>
+    </t>
+    <t t-inherit="point_of_sale.PaymentScreenValidate" t-inherit-mode="extension" primary="true">
+        <xpath expr="//t[@t-else='']" position="attributes">
+            <attribute name="t-if">this.pos.mainScreen.component.name == 'PaymentScreen'</attribute>
+        </xpath>
+    </t>
+    <t t-inherit="point_of_sale.PaymentScreenStatus" t-inherit-mode="extension" primary="true">
+        <xpath expr="//div[contains(@class, 'text-center')]" position="attributes">
+            <attribute name="t-if">this.props.order.uiState.screen_data.value.name === 'PaymentScreen' and this.props.order.payment_ids.length == 0</attribute>
+        </xpath>
+        <xpath expr="//section" position="attributes">
+            <attribute name="t-if">this.props.order.payment_ids.some(p => p.payment_method_id.type === 'cash') or this.props.order.uiState.screen_data.value.name === 'PaymentScreen'</attribute>
+        </xpath>
+    </t>
+</templates>
