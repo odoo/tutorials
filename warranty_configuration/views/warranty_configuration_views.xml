@@ -1,0 +1,14 @@
+<odoo>
+    <record id="warranty_configuration_list_view" model="ir.ui.view">
+        <field name="name">warranty.configuration.list</field>
+        <field name="model">warranty.configuration</field>
+        <field name="arch" type="xml">
+            <list editable="top">
+                <field name="name" />
+                <field name="product_id" />
+                <field name="year" />
+                <field name="percentage" />
+            </list>
+        </field>
+    </record>
+</odoo>

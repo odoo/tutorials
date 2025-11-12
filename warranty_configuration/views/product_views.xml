@@ -1,0 +1,14 @@
+<odoo>
+    <record id="inherited_product_template_form_view_warranty_configuration" model="ir.ui.view">
+        <field name="name">product.template.form.warranty.configuration</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='description']" position="after">
+                <group name="warranty_info" string="Warranty Configuration">
+                    <field name="warranty" colspan="2"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

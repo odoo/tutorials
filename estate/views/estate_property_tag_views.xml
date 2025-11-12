@@ -1,0 +1,26 @@
+<odoo>
+
+    <!-- Define a List View for Estate Properties -->
+    <record id="view_estate_property_tag_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
+        <field name="model">estate.property.tags</field>
+        <field name="arch" type="xml">
+            <list default_order="name" editable="bottom">
+                <field name="name" />
+                <field name="color" widget="color_picker" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Define a Search, GroupBy, and Filter View for Estate Properties -->
+    <record id="view_estate_property_tag_search" model="ir.ui.view">
+        <field name="name">estate.property.tag.search</field>
+        <field name="model">estate.property.tags</field>
+        <field name="type">search</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <field name="name" />
+            </search>
+        </field>
+    </record>
+</odoo>
