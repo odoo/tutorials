@@ -1,0 +1,45 @@
+<odoo>
+    <data>
+
+    <!-- group of user -->
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
+    </record>
+
+    <!-- group of manager -->
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"></field>
+    </record>
+
+    <!-- Record rule for agent -->
+    <record id="rule_estate_group_user" model="ir.rule">
+        <field ref="model_estate_property" name="model_id"/>
+        <field name="name">Agent permissions</field>
+        <field name="perm_unlink" eval="False"/>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_user'))]"/>
+        <field name="domain_force">['|', ('selling_price', '=', user.id), ('selling_price', '=', False)]</field>
+    </record>
+        
+        <!-- Record rule for Manager -->
+    <record id="rule_estate_group_manager" model="ir.rule">
+        <field ref="model_estate_property" name="model_id"/>
+        <field name="name">Manager permissions</field>
+        <field name="perm_unlink" eval="False"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[Command.link(ref('estate.estate_group_manager'))]"/>
+    </record>
+        
+        <!-- record rule for multi company -->
+    <record id="estate_property_multi_company_rule" model="ir.rule">
+        <field name="name">Estate Property Multi-Company</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        <field name="global" eval="True" />
+    </record>
+
+
+    </data>
+</odoo>

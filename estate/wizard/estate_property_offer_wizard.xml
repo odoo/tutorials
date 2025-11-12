@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+
+        <!-- Wizard View -->
+        <record id="view_estate_property_offer_wizard" model="ir.ui.view">
+            <field name="name">estate.property.offer.wizard.form</field>
+            <field name="model">estate.property.offer.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Property Offer Wizard">
+                    <sheet>
+                        <group>
+                            <field name="price"/>
+                            <field name="buyer_id"/>
+                            <field name="date_deadline"/>
+                        </group>
+                        <footer>
+                            <button name="action_add_offer" type="object" string="Create Offer" class="oe_highlight"/>
+                            <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Action to Open the Wizard -->
+        <record id="action_estate_property_offer_wizard" model="ir.actions.act_window">
+            <field name="name">Property Offer Wizard</field>
+            <field name="res_model">estate.property.offer.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_estate_property_offer_wizard"/>
+            <field name="target">new</field>
+            <field name="binding_model_id" ref="model_estate_property"/>
+        </record>
+
+    </data>
+</odoo>
