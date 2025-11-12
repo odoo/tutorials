@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+  <t t-name="awesome_owl.TodoItem">
+    <div t-att-class="props.todo.isCompleted ? 'd-flex align-items-center completed' : 'd-flex align-items-center'">
+      <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="toggleTodo" class="form-check-input me-2"/>
+      <span><t t-out="props.todo.id"/>.</span>
+      <span t-att-class="todoClasses" class="ms-2"><t t-out="props.todo.description"/></span>  
+      <span class="ms-auto text-danger" style="cursor: pointer;" t-on-click="deleteTodo">❌</span>
+    </div>
+  </t>
+</templates>
