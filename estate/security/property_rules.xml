@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Record Rule for Property Manager -->
+    <record id="estate_record_rule_property_manager" model="ir.rule">
+        <field name="name">Property Manager: Access to offer received, accepted, and sold properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[('state', 'in', ['offer_received', 'offer_accepted', 'sold']),]</field>
+        <field name="groups" eval="[(4, ref('estate_group_property_manager'))]"/>
+    </record>
+    <record id="estate_record_rule_manager" model="ir.rule">
+        <field name="name">Manager: Full Access </field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[(1, "=", 1)]</field>
+        <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+    </record>
+    <record id="estate_record_rule_agent" model="ir.rule">
+        <field name="name">Agent: Access to own properties only</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[
+            '|', ('sales_id', '=', user.id),
+                  ('sales_id', '=', False),
+            '|', ('company_id', '=', False),
+                  ('company_id', 'in', company_ids)
+        ]</field>
+        <field name="groups" eval="[(4, ref('estate_group_agent'))]"/>
+    </record>
+</odoo>
