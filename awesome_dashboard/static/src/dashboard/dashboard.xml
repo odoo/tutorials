@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{controlPanel: {}}" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-create-button">
+                <div class="d-flex align-items-center gap-3 py-3">
+                    <button class="btn btn-primary d-flex align-items-center px-4 py-2" t-on-click="openCustomerKanban">
+                        <i class="fa fa-users me-2"></i> Customers
+                    </button>
+                    <button class="btn btn-secondary d-flex align-items-center px-4 py-2" t-on-click="openLeads">
+                        <i class="fa fa-briefcase me-2"></i> Leads
+                    </button>
+                </div>
+            </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <i class="fa fa-fw fa-cog fs-5 text-muted my-auto" style="cursor: pointer;" t-on-click="openDialog"></i>
+            </t>
+            <div t-if="statistics.isReady" class="d-flex flex-wrap gap-3 m-3">
+                <t t-if="items.some(item => item.isSelected)">
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <DashboardItem t-if="item.isSelected" size="item.size || 1">
+                            <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                            <t t-component="item.Component" t-props="itemProp" />
+                        </DashboardItem>
+                    </t>
+                </t>
+                <t t-else="">
+                    <div class="d-flex flex-column align-items-center justify-content-center text-center w-100 custom-mt">
+                        <h5 class="text-muted">Your Dashboard is Empty</h5>
+                        <p class="text-muted">Start by adding dashboard items to view insights.</p>
+                        <button class="btn btn-primary d-flex align-items-center px-4 py-2" t-on-click="openDialog">
+                            <i class="fa fa-plus me-2"></i> Add Dashboard Items
+                        </button>
+                    </div>
+                </t>
+            </div>
+        </Layout>
+    </t>
+</templates>
