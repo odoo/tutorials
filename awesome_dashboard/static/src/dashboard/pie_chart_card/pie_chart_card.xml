@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<template>
+    <t t-name="awesome_dashboard.pie_chart_card">
+        <t t-out="props.title"></t>
+        <PieChart data="props.values" label="''"></PieChart>
+    </t>
+</template>
