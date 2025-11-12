@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<odoo noupdate="1">
+    <record id="whatsapp_template_property_sold" model="whatsapp.template">
+        <field name="name">Property Sold Notification</field>
+        <field name="template_name">property_sold</field>
+        <field name="status">draft</field>
+        <field name="lang_code">en</field>
+        <field name="template_type">utility</field>
+        <field name="phone_field">property_buyer_id.mobile</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="body">Hello *{{1}}*,
+Congratulations! Your offer for *{{2}}* has been accepted. 🎉
+
+Property Details:
+- Location: *{{3}}*
+- Final Price: *{{4}}*
+
+Thank you for choosing us!
+        </field>
+        <field name="variable_ids" eval="[
+            (5, 0, 0),
+            (0, 0, {
+                'name': '{{1}}',
+                'demo_value': 'John Doe',
+                'line_type': 'body',
+                'field_type': 'field',
+                'field_name': 'property_buyer_id.name'
+            }),
+            (0, 0, {
+                'name': '{{2}}',
+                'demo_value': 'Luxury Apartment',
+                'line_type': 'body',
+                'field_type': 'field',
+                'field_name': 'name'
+            }),
+            (0, 0, {
+                'name': '{{3}}',
+                'demo_value': '12345',
+                'line_type': 'body',
+                'field_type': 'field',
+                'field_name': 'postcode'
+            }),
+            (0, 0, {
+                'name': '{{4}}',
+                'demo_value': '250,000 USD',
+                'line_type': 'body',
+                'field_type': 'field',
+                'field_name': 'selling_price'
+            })
+        ]"/>
+    </record>
+</odoo>

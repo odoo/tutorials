@@ -1,0 +1,64 @@
+<odoo>
+    <data noupdate="1">
+    <template id="property_page" name="Estate Properties">
+        <t t-call="website.layout">
+            <div class="container mt-4">
+
+                <form action="/properties" method="get" class="d-flex justify-content-between align-items-center mb-4">
+    
+        
+                    <div class="d-flex align-items-center gap-2">
+                        <input type="date" name="listed_after" class="form-control form-control-sm" 
+                            style="width: 130px; font-size: 14px; padding: 4px;" 
+                            t-att-value="request.params.get('listed_after', '')"/>
+                        <button type="submit" class="btn btn-secondary btn-sm px-2">Listed</button>
+                    </div>
+
+                    
+                    <div class="input-group" style="width: 250px;">
+                        <input type="text" name="property_name" class="form-control form-control-sm" 
+                            placeholder="Search..." t-att-value="request.params.get('property_name', '')"/>
+                        <button type="submit" class="btn btn-dark btn-sm">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                </form>
+
+
+                <div class="row">
+                    <!-- Loop through properties and display each one as a card -->
+                    <t t-foreach="properties" t-as="pro">
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm">
+                                <t t-if="pro.image">
+                                    <!-- Convert binary image data to base64 -->
+                                    <img t-att-src="'data:image/png;base64,' + pro.image.decode('utf-8')" class="card-img-top" alt="Property Image"/>
+                                </t>
+                                <div class="card-body">
+                                    <h5 class="card-title" t-esc="pro.name"/>
+                                    <p class="card-text">
+                                        <strong>Status:</strong> <t t-esc="pro.status"/>
+                                    </p>
+                                    <a t-att-href="'/properties/' + str(pro.id)" class="btn btn-primary">
+                                        View Details
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination-container mt-4">
+                    <t t-if="pager">
+                        <t t-call="website.pager">
+                            <t t-set="pager" t-value="pager"/>
+                        </t>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+    </data>
+</odoo>

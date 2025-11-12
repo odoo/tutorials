@@ -22,7 +22,7 @@ class AwesomeDashboard(http.Controller):
         """
 
         return {
-            'average_quantity': random.randint(4, 12),
+          'average_quantity': random.randint(4, 12),
             'average_time': random.randint(4, 123),
             'nb_cancelled_orders': random.randint(0, 50),
             'nb_new_orders': random.randint(10, 200),
@@ -31,6 +31,6 @@ class AwesomeDashboard(http.Controller):
                 's': random.randint(0, 150),
                 'xl': random.randint(0, 150),
             },
-            'total_amount': random.randint(100, 1000)
+            'total_amount': random.randint(100, 1000) 
         }
 

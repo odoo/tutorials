@@ -1,0 +1,42 @@
+.dashboard-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.dashboard-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1a1a1a;
+    margin-bottom: 20px;
+}
+
+.dashboard-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.dashboard-item {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 3px 3px 15px rgba(68, 65, 65, 0.15);
+    text-align: center;
+    min-width: 250px;
+    flex: 1;
+    max-width: 400px;
+}
+
+.card-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+
+.card-value {
+    font-size: 22px;
+    font-weight: bold;
+    color: #28a745;
+    margin-top: 8px;
+}
