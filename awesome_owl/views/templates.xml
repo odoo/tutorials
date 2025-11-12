@@ -11,5 +11,17 @@
                 </body>
             </html>
           </template>
+          
+          <template id="awesome_owl.todolist" name="Awesome ToDo list">
+            <html>
+                <head>
+                    <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
+                    <t t-call-assets="awesome_owl.assets_playground"/>
+                </head>
+
+                <body>
+                </body>
+            </html>
+          </template>
     </data>
 </odoo>
