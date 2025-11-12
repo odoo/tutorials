@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="properties_list" name="Properties List">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2>Estate Properties</h2>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <a t-att-href="'/property/' + str(property.id)" class="card-link">
+                                <div class="card">
+                                    <t t-if="property.image">
+                                        <img t-att-src="'data:image/png;base64,' + property.image.decode('utf-8')" class="card-img-top" style="height: 200px; object-fit: cover;" alt="Property Image"/>
+                                    </t>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-esc="property.name"/>
+                                        </h5>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center" style="margin-bottom: 20px; !important">
+                    <t t-call="website.pager" t-set="pager"/>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
