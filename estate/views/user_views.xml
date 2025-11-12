@@ -1,0 +1,16 @@
+<odoo>
+    <record id="estate.house_extension" model="ir.ui.view">
+        <field name="name">House Extensions</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='account_security']" position="after">
+                <page string="Houses">
+                    <list>
+                        <field name="property_ids" />
+                    </list>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
