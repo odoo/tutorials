@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="estate_properties_type_action" model="ir.actions.act_window">
+            <field name="res_model">estate.properties.type</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <record id="estate_properties_type_view" model="ir.ui.view">
+            <field name="name">estate.properties.type.view</field>
+            <field name="model">estate.properties.type</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="sequence" widget="handle"/>
+                    <field name="offer_count" width='200'/>
+                </list>
+            </field>
+        </record>
+        <record id="estate_properties_type_view_form" model="ir.ui.view">
+            <field name="name">estate.properties.type.view.form</field>
+            <field name="model">estate.properties.type</field>
+            <field name="arch" type="xml">
+                <form string="Types">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" name="%(estate_properties_offer_action)d" type="action" icon="fa-money">
+                                <div class="o_stat_info">
+                                    <span class="o_stat_value">
+                                        <field name="offer_count"/>
+                                    </span>
+                                    <span class="o_stat_text">
+                                        Offers
+                                    </span>
+                                </div>
+                            </button>
+                        </div>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <notebook>
+                            <page string="Properties">
+                                <field name="property_ids">
+                                    <list editable="bottom">
+                                        <field string="Title" name="name"/>
+                                        <field string="Expected Price" name="expected_price"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

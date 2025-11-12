@@ -1,15 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-          <template id="awesome_owl.playground" name="Awesome T-Shirt thank you">
+        <template id="awesome_owl.playground" name="Awesome T-Shirt thank you">
             <html>
                 <head>
                     <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
                     <t t-call-assets="awesome_owl.assets_playground"/>
                 </head>
-
                 <body>
                 </body>
             </html>
-          </template>
+        </template>
     </data>
 </odoo>

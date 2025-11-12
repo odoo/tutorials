@@ -1,0 +1,101 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
+
+
+class EstateProperties(models.Model):
+    _name = 'estate.properties'
+    _description = 'Estate Properties'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _order = 'id desc'
+    _sql_constraints = [
+        ('expected_price_constraints', 'CHECK(expected_price > 0)',
+         'Expected Price should be greater than 0'),
+        ('selling_price_constraints', 'CHECK(selling_price >= 0)',
+         'Selling Price should be greater than 0'),
+    ]
+
+    name = fields.Char(string='Name', required=True)
+    description = fields.Text(string='Description')
+    active = fields.Boolean(string='Active', default=True)
+    postcode = fields.Char(string='Postcode')
+    date_availability = fields.Date(
+        copy=False, string='Availabile Date', default=lambda self: fields.Date.add(fields.Date.today(), months=3))
+    expected_price = fields.Float(string='Expected Price', required=True)
+    selling_price = fields.Float(string='Selling Price', copy=False)
+    bedrooms = fields.Integer(string='Bedroom', default=2)
+    living_area = fields.Integer(string='Living Area')
+    facades = fields.Integer(string='Facades')
+    garage = fields.Boolean(string='Garage')
+    garden = fields.Boolean(string='Garden')
+    garden_area = fields.Integer(string='Garden Area')
+    company_id = fields.Many2one(
+        'res.company', required=True, string='Company Name', default=lambda self: self.env.company)
+    garden_orientation = fields.Selection(string='Orientation', selection=[(
+        'north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')], default='east')
+    state = fields.Selection(string='State', selection=[('new', 'New'), ('offer_recieved', 'Offer Received'), (
+        'offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')], default='new', copy=False, required=True, tracking=True)
+    property_type_id = fields.Many2one(
+        comodel_name='estate.properties.type', string='Type')
+    partner_id = fields.Many2one(
+        'res.partner', string='Buyer', index=True, copy=False)
+    users_id = fields.Many2one(
+        'res.users', string='Salesperson', index=True, default=lambda self: self.env.user)
+    tags_id = fields.Many2many('estate.properties.tags', string='Tags')
+    offer_ids = fields.One2many(
+        'estate.properties.offer', 'property_id', string='Offer')
+    total_area = fields.Float(
+        string='Total Area', compute='_compute_total_area', store=True)
+    best_offer = fields.Float(
+        string='Best OFfer', compute='_compute_best_price')
+
+    @api.depends('garden_area', 'living_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_offer = max(
+                record.offer_ids.mapped('price'), default=0.00)
+
+    @api.constrains('selling_price', 'expected_price')
+    def check_price(self):
+        for record in self:
+            if (
+                not float_is_zero(record.selling_price, precision_rounding=0.01) and float_compare(
+                    record.selling_price, record.expected_price * .9, precision_rounding=0.01) < 0
+            ):
+                raise ValidationError(
+                    _('The selling price cannot be lower than 90% of the expected price.'))
+
+    @api.onchange('garden')
+    def _trace_action(self):
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north' if self.garden else ''
+
+    @api.ondelete(at_uninstall=False)
+    def _prevent_accept_records(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise ValidationError(_('Cannot delete this property.'))
+
+    def action_property_sold(self):
+        for record in self:
+            if not record.offer_ids or record.state != 'offer_accepted':
+                raise ValidationError(
+                    _('Need at least one offer to be accepted.'))
+            elif record.state == 'cancelled':
+                raise ValidationError(_('Cancelled property cannot be sold.'))
+            record.state = 'sold'
+        template = self.env.ref('real_estate.email_template_estate_property')
+        template.send_mail(self.id, force_send=True)
+
+    def action_property_rejected(self):
+        if self.state == 'sold':
+            raise ValidationError(_('Sold property cannot be cancelled.'))
+        self.state = 'cancelled'
