@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Display all properties -->
+    <template id="estate_properties_web_page">
+        <style>
+            .card {
+                box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25);
+                translation: tranform 0.25s ease;
+            }
+            .card:hover {
+                transform: scale(1.05);
+            }
+            .img {
+                width: 100%;
+                height: 300px;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #f5f5f5;
+            }
+            .img img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+            main {
+                margin-top: 50px;
+            }
+        </style>
+        <t t-call="website.layout">
+            <t t-set="title">Properties</t>
+            <div class="container">
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col">
+                            <a t-att-href="'/property' + str(property.id)">
+                                <div class="card h-100">
+                                    <div class="img">
+                                        <t t-if="property.image">
+                                            <img t-attf-src="data:image/png;base64,{{property.image}}"
+                                                 class="card-img-top img-fluid"
+                                                 alt="Property image"/>
+                                        </t>
+                                        <t t-else="">
+                                            <img src="/estate/static/src/img/no_house.png"
+                                                 class="card-img-top img-fluid" alt="Property image"/>
+                                        </t>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <t t-out="property.name"/>
+                                        </h5>
+                                        <div class="card-text">
+                                            <strong>Type: </strong>
+                                            <t t-out="property.property_type_id.name"/>
+                                        </div>
+                                        <div class="card-text" style="height:48px; overflow: hidden;">
+                                            <strong>Description: </strong>
+                                            <t t-out="property.description"/>
+                                        </div>
+                                        <hr style="background-color: #714B67;"/>
+                                        <div class="card-text">
+                                            <strong>Price: </strong>
+                                            <t t-out="property.expected_price"/>
+                                        </div>
+                                        <div class="card-text">
+                                            <strong>Bedrooms: </strong>
+                                            <t t-out="property.bedrooms"/>
+                                        </div>
+                                        <div class="card-text">
+                                            <strong>Living Area (sqm): </strong>
+                                            <t t-out="property.living_area"/>
+                                        </div>
+                                        <div name="tag_ids" class="d-flex flex-row"
+                                             style="margin-top:10px; margin-bottom: 10px;">Tags:
+                                            <div class="ms-2 d-flex flex-row">
+                                                <div t-foreach="property.property_tag_ids"
+                                                     t-as="tag" t-out="tag.name"
+                                                     t-attf-class="badge rounded-pill
+                                                                   o_tag o_tag_color_#{tag.color}
+                                                                   d-inline-block"
+                                                     style="padding:5px 10px; margin-right:4px;"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- Pager -->
+                <div t-if="pager"
+                     class="o_portal_pager d-flex justify-content-center mb-5"
+                     style="margin-top:80px;">
+                    <t t-call="website.pager" />
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- A property details page -->
+    <template id="property_details_page">
+        <t t-call="website.layout">
+            <t t-set="title">
+                <t t-out="property.name"/>
+            </t>
+            <div class="container">
+                <div class="row border rounded p-4 mb-4"
+                     style="box-shadow: 0 10px 10px rgba(0, 0, 0, 0.25); margin-top:25px;">
+                    <div class="col-md-6">
+                        <t t-if="property.image">
+                            <img t-attf-src="data:image/png;base64,{{property.image}}"
+                                 alt="Property image" style="width:100%; height:100%;"/>
+                        </t>
+                        <t t-else="">
+                            <img src="/estate/static/src/img/no_house.png"
+                                 alt="Property image"
+                                 style="width:100%; height:100%;"/>
+                        </t>
+                    </div>
+                    <div class="col-md-6">
+                        <div >
+                            <h2 style="margin-bottom:-5px; margin-top:5px;">
+                                <t t-out="property.name"/>
+                            </h2>
+                            <i>
+                                <t t-out="property.property_type_id.name"/>
+                            </i>
+                            <p>
+                                <i>
+                                    <t t-out="property.description"/>
+                                </i>
+                            </p>
+                            <div name="tag_ids" class="d-flex flex-row" >
+                                <div class="ms-2 d-flex flex-row">
+                                    <div t-foreach="property.property_tag_ids" t-as="tag"
+                                         t-out="tag.name"
+                                         t-attf-class="badge rounded-pill
+                                                       o_tag o_tag_color_#{tag.color}
+                                                       d-inline-block"
+                                         style="padding:5px 10px; margin-right:4px;"/>
+                                </div>
+                            </div>
+                            <hr style="background-color: #714B67;"/>
+                            <div >
+                                <div>
+                                    <strong>Price:</strong>
+                                    <t t-out="property.expected_price"/>
+                                </div>
+                                <div>
+                                    <strong>Bedrooms:</strong>
+                                    <t t-out="property.bedrooms"/>
+                                </div>
+                                <div>
+                                    <strong>Living Area (sqm):</strong>
+                                    <t t-out="property.living_area"/>
+                                </div>
+                                <div t-if="property.garage">
+                                    <strong>Garage: </strong> Yes
+                                </div>
+                                <div t-if="not property.garage">
+                                    <strong>Garage: </strong> No
+                                </div>
+                                <div t-if="property.garden">
+                                    <strong>Garden: </strong> Yes
+                                    <strong>Garden Area: </strong>
+                                    <t t-out="property.garden_area"/> sqm
+                                    <strong>Garden Orientation: </strong>
+                                    <t t-out="property.garden_orientation"/>
+                                </div>
+                                <div t-if="not property.garden">
+                                    <strong>Garden: </strong> No
+                                </div>
+                                <div>
+                                    <strong>Total Area: </strong>
+                                    <t t-out="property.total_area"/> sqm
+                                </div>
+                                <div>
+                                    <strong>Facades: </strong>
+                                    <t t-out="property.facades"/>
+                                </div>
+                                <div>
+                                    <strong>Available till: </strong>
+                                    <t t-out="property.date_availability"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div t-if="property.offer_ids">
+                        <hr style=" margin-top:60px;border-top: 2px solid #714B67 ;"/>
+                        <h3 style="text-align:center;margin-top:25px;margin-bottom:25px;">
+                            Current Offers
+                        </h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Deadline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="property.offer_ids" t-as="offer">
+                                    <tr>
+                                        <td>
+                                            <t t-out="offer.partner_id.name"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="offer.price"/>
+                                        </td>
+                                        <td>
+                                            <t t-out="offer.date_deadline"/>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
