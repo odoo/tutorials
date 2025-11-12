@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <template id="estate_salesman_property_offer_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="res_user">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <h1>
+                            <b>
+                                Salesman:
+                            </b>
+                            <span t-field="res_user.name"/>
+                        </h1>
+                        <t t-if="len(res_user.property_ids) > 0">
+                            <t t-foreach="res_user.property_ids" t-as="property">
+                                <h3>
+                                    <b>
+                                        Property Name:
+                                    </b>
+                                    <span t-field="property.name"/>
+                                </h3>
+                                <h6>
+                                    <b>
+                                        Expected Price:
+                                    </b>
+                                    <span t-field="property.expected_price"/>
+                                </h6>
+                                <h6>
+                                    <b>
+                                        State:
+                                    </b>
+                                    <span t-field="property.state"/>
+                                </h6>
+                                <t t-call="estate.print_offer_table"/>
+                            </t>
+                        </t>
+                        <t t-else="">
+                            <p>No property is under this user.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
