@@ -1,5 +1,7 @@
-from odoo import models, fields
-from odoo.tools import date_utils
+#!/usr/bin/env python3
+from dateutil.relativedelta import relativedelta
+
+from odoo import api, models, fields
 
 
 class EstateProperty(models.Model):
@@ -10,8 +12,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_avaliability = fields.Date(
-        copy=False,
-        default=date_utils.add(fields.Date.today(), month=2),
+        copy=False, default=fields.Date.today() + relativedelta(month=3)
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -48,9 +49,30 @@ class EstateProperty(models.Model):
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     customer = fields.Many2one("res.users", string="Customer", copy=False)
     salesperson = fields.Many2one(
-        "res.partner",
-        string="Salesperson",
-        default =lambda self:self.env.user
+        "res.partner", string="Salesperson", default=lambda self: self.env.user
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
+    total_area = fields.Integer(compute="_compute_area")
+    best_price = fields.Integer(compute="_compute_highest")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_highest(self):
+        for record in self:
+            if not record.mapped("offer_ids.price"):
+                record.best_price = 0
+            else:
+                record.best_price = max(record.mapped("offer_ids.price"))
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0

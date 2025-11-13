@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from odoo import models, fields
 
 

@@ -1,19 +1,41 @@
+<?xml version="1.0"?>
 <odoo>
-    <menuitem id="estate_menu_root" 
-              name="Estate Property"
-              action="action_estate"/> 
+    <menuitem 
+        id="estate_menu_root" 
+        name="Estate Property"
+    /> 
 
-    <menuitem id="estate_menu_configuration"
-              name="Settings"
-              parent="estate_menu_root"/>
+    <menuitem 
+        id="estate_menu_property_advertisement"
+        name="Advertisement"
+        parent="estate_menu_root"
+        sequence="1"
+    />
 
-              <menuitem id="configuration_menu_property_types"
-                        name="Property Types"
-                        parent="estate_menu_configuration"
-                        action="action_estate_property_type"/>
+    <menuitem 
+        id="estate_menu_property_advertisement_properties"
+        name="Properties"
+        parent="estate_menu_property_advertisement"
+        action="action_estate"
+    />
 
-              <menuitem id="configuration_menu_property_tags"
-                        name="Property Tags"
-                        parent="estate_menu_configuration"
-                        action="action_estate_property_tag"/>
+    <menuitem 
+        id="estate_menu_configuration"
+        name="Settings"
+        parent="estate_menu_root"
+    />
+
+    <menuitem 
+        id="configuration_menu_property_types"
+        name="Property Types"
+        parent="estate_menu_configuration"
+        action="action_estate_property_type"
+    />
+
+    <menuitem 
+        id="configuration_menu_property_tags"
+        name="Property Tags"
+        parent="estate_menu_configuration"
+        action="action_estate_property_tag"
+    />
 </odoo> 
