@@ -18,7 +18,7 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("estate.property", required=True)
-    property_type_id = fields.Many2one(related="property_id.type_id", store=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
 
@@ -35,13 +35,13 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if record.property_id.buyer:
+            if record.property_id.buyer_id:
                 raise UserError("Property already accepted")
             else:
                 record.status = 'accepted'
                 record.property_id.selling_price = record.price
                 record.property_id.state = 'offer_accepted'
-                record.property_id.buyer = record.partner_id
+                record.property_id.buyer_id = record.partner_id
 
     def action_refuse(self):
         for record in self:

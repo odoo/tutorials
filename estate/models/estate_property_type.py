@@ -7,7 +7,7 @@ class EstatePropertyType(models.Model):
     _order = "sequence, name"
 
     name = fields.Char(required=True)
-    property_ids = fields.One2many('estate.property', 'type_id')
+    property_ids = fields.One2many('estate.property', 'property_type_id')
     sequence = fields.Integer(string="Sequence", default=1)
     offer_count = fields.Integer(compute="_compute_total_offers")
     offer_ids = fields.One2many("estate.property.offer", "property_type_id")

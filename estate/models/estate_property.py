@@ -2,7 +2,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=fields.Date.today() + relativedelta(months=3))
-    expected_price = fields.Float(required=True)
+    expected_price = fields.Float(required=True, default=0)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Float(string="Living Area (sqm)")
@@ -24,7 +24,8 @@ class EstateProperty(models.Model):
     garden_area = fields.Float(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
-        selection=[('north', 'North'),
+        selection=[
+        ('north', 'North'),
         ('south', 'South'),
         ('east', 'East'),
         ('west', 'West')
@@ -41,9 +42,9 @@ class EstateProperty(models.Model):
         ],
         default="new"
     )
-    type_id = fields.Many2one("estate.property.type")
-    buyer = fields.Many2one("res.partner", copy=False)
-    salesperson = fields.Many2one("res.users", default=lambda self: self.env.user)
+    property_type_id = fields.Many2one("estate.property.type")
+    buyer_id = fields.Many2one("res.partner", copy=False)
+    salesperson_id = fields.Many2one("res.users", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
@@ -85,22 +86,17 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'sold'
 
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price >= 0)',
-        'expected price must be positive'
-    )
-
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'selling price must be positive'
+    _check_price = models.Constraint(
+        'CHECK(selling_price >= 0 AND expected_price>=0)',
+        'selling price and expected_price must be positive'
     )
 
     @api.constrains('selling_price', 'expected_price', 'state')
     def _check_selling_price(self):
         for record in self:
-            if record.state in ['sold', 'offer_accepted']:
+            if not float_is_zero(record.selling_price, precision_digits=2):
                 if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
-                    raise ValidationError("the selling price is lower")
+                    raise ValidationError("the selling price lower")
 
     @api.ondelete(at_uninstall=True)
     def _unlink_check_state_of_property(self):

@@ -7,7 +7,7 @@ class EstateProperty(models.Model):
     def sold_property(self):
         for record in self:
             self.env['account.move'].create({
-                'partner_id': self.buyer.id,
+                'partner_id': self.buyer_id.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
                     Command.create({
