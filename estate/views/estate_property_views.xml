@@ -10,30 +10,35 @@
         </field>
     </record>
 
-    <record id="action_estate_advertisements" model="ir.actions.act_window">
-        <field name="name">Advertisements</field>
+    <record id="action_estate_property_type" model="ir.actions.act_window">
+        <field name="name">Properties Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                advertisements!
+                Create your first Property Type!
             </p>
         </field>
     </record>
 
-    <record id="action_estate_configure" model="ir.actions.act_window">
-        <field name="name">Settings</field>
+    <record id="action_estate_property_tag" model="ir.actions.act_window">
+        <field name="name">Properties Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Empty!
+                Create your first Property Tag!
             </p>
         </field>
     </record>
 
-    <record id="action_estate_view_tree" model="ir.ui.view">
+    <record id="action_estate_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Channel">
                 <field name="name" string="Title"/>
+                <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area" string="Living Area(sqm)"/>
@@ -53,10 +58,13 @@
                      <group>
                         <group>
                             <field name="name" string="Title"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="postcode"/>
                             <field name="date_avaliability" string="Avaliable From"/>
                         </group>
                         <group>
+                         <separator/>
+                            <field name="property_type_id"/>
                             <field name="expected_price"/>
                             <field name="selling_price"/>
                         </group>
@@ -80,9 +88,46 @@
                             </group>
                         </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other info">
+                            <group>
+                                <field name="customer"/>
+                                <field name="salesperson"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="action_estate_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="action_estate_offer_view_form" model="ir.ui.view">
+        <field name="name">estate.property.offer.form</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+             <form string="Property">
+                <sheet>
+                     <group>
+                     <field name="price"/>
+                     <field name="partner_id"/>
+                     <field name="status"/>
+              </group>
+              </sheet>
+              </form>
         </field>
     </record>
 
@@ -97,6 +142,7 @@
                     <field name="living_area" string="Living Area(sqm)"/>
                     <field name="expected_price"/>
                     <field name="facades"/>
+                    <field name="property_type_id"/>
                     <separator/>
                     <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
