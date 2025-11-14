@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_template_accept_offer" model="mail.template">
+        <field name="name">Offer Email Acceptance Template</field>
+        <field name="model_id" ref="estate.model_estate_property_offer" />
+        <field name="email_from">{{ object.property_id.company_id.email }}</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="subject">Congralutions! Offer Update for Property {{ object.property_id.name }}</field>
+        <field name="body_html" type="html">
+            <t t-out="object.property_id.name" />
+            <t t-out="object.property_id.selling_price" />
+        </field>
+    </record>
+    <record id="mail_template_reject_offer" model="mail.template">
+        <field name="name">Offer Email Rejection Template</field>
+        <field name="model_id" ref="estate.model_estate_property_offer" />
+        <field name="email_from">{{ object.property_id.company_id.email }}</field>
+        <field name="email_to">{{ object.partner_id.email }}</field>
+        <field name="subject">Sorry for rejection of {{ object.property_id.name }} property</field>
+        <field name="body_html" type="html">
+            <t t-out="object.property_id.name" />
+            <t t-out="object.property_id.selling_price" />
+        </field>
+    </record>
+</odoo>
