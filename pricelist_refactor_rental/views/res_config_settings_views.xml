@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_pricelist_refactor_rental" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.pricelist.refactor.sale.renting</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="sale_renting.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//app[@name='sale_renting']" position="inside">
+                <block title="Pricelist" id="sale_renting_pricelist_settings">
+                    <setting id="pricelist_configuration" documentation="/applications/sales/sales/products_prices/prices/pricing.html" help="Set multiple prices per product, automated discounts, etc.">
+                        <field name="group_product_pricelist"/>
+                        <div class="content-group" invisible="not group_product_pricelist">
+                            <div class="mt16">
+                                <button name="%(product.product_pricelist_action2)d" icon="oi-arrow-right" type="action" string="Pricelists" groups="product.group_product_pricelist" class="btn-link"/>
+                            </div>
+                        </div>
+                    </setting>
+                    <setting id="discount_sale_order_lines" title="Apply manual discounts on sales order lines or display discounts computed from pricelists (option to activate in the pricelist configuration)." help="Grant discounts on sales order lines">
+                        <field name="group_discount_per_so_line"/>
+                   </setting>
+                </block>
+            </xpath>
+        </field>
+    </record>
+</odoo>
