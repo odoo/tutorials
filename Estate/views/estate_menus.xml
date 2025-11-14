@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
     <menuitem id="estate_root_menu" name="Estate"/>
@@ -31,4 +32,9 @@
         name="Property Tags"
         parent="menu_estate_settings"
         action="action_estate_property_tag" />
+        
+    <menuitem id="menu_estate_users_action_settings"
+        name="Users"
+        parent="menu_estate_settings"
+        action="action_res_users_estate_properties" />
 </odoo>

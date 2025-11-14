@@ -27,18 +27,18 @@
     <field name="model">estate.property</field>
     <field name="arch" type="xml">
         <form string="Property">
+            <header>
+                <button name="action_set_next_status" string="Next" type="object"/>
+                <button name="action_back_to_new" string="Reset to New" type="object"/>
+                <button name="action_set_sold" string="Mark as Sold" type="object"/>
+                <button name="action_set_canceled" string="Cancel" type="object"/>
+                <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
+            </header>
             <sheet>
                 <h1>
                     <field name="name" placeholder="Property Name"/>
                 </h1>
-                <header>
-                    <button name="action_set_next_status" string="Next" type="object"/>
-                    <button name="action_back_to_new" string="Reset to New" type="object"/>
-                    <button name="action_set_sold" string="Mark as Sold" type="object"/>
-                    <button name="action_set_canceled" string="Cancel" type="object"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
-                </header>
-                <group col="2">
+                <group>
                     <group string="Property Details">
                         <field name="postcode"/>
                         <field name="create_date"/>
@@ -52,25 +52,26 @@
                         <field name="garden_area" invisible="garden == False"/>
                         <field name="garden_orientation" invisible="garden == False"/>
                     </group>
-
-                    <group string="Extra Information">
-                        <field name="buyer_id"/>
-                        <field name="salesperson_id"/>
-                        <field name="property_type_id"/>
-                        <field name="tag_ids" widget="many2many_tags"/>
-                        <separator string="Summary"/>
-                        <field name="total_area" readonly="1"/>
-                        <field name="best_price" readonly="1"/>
-                        <field name="state"/>
-                        <field name="validity_days"/>
-                        <field name= "date_deadline"/>
-                    </group>
-
                 </group>
-
                 <notebook>
                     <page string="Description">
-                        <field name="description" placeholder="Add property description..."/>
+                        <field name="description" placeholder="Add property description..."/> 
+                    </page>
+                    <page string="Details">
+                        <form>
+                            <group string="Details">
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
+                                <field name="property_type_id"/>
+                                <field name="tag_ids" widget="many2many_tags"/>
+                                <separator string="Summary"/>   
+                                <field name="total_area" readonly="1"/>
+                                <field name="best_price" readonly="1"/>
+                                <field name="state"/>
+                                <field name="validity_days"/>
+                                <field name= "date_deadline"/>
+                            </group>
+                        </form>
                     </page>
                     <page string="Offers">
                         <field name="offer_ids">

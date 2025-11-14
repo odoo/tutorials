@@ -1,5 +1,6 @@
-from odoo import models, fields, api
 from datetime import timedelta
+
+from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
@@ -7,7 +8,6 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
     _order = "id desc"
-    
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -20,22 +20,9 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection([
-        ("north", "North"),
-        ("south", "South"),
-        ("east", "East"),
-        ("west", "West"),
-    ])
+    garden_orientation = fields.Selection([("north", "North"),("south", "South"),("east", "East"),("west", "West"),])
     active = fields.Boolean(default=True)
-
-    state = fields.Selection([
-        ("new", "New"),
-        ("offer_received", "Offer Received"),
-        ("offer_accepted", "Offer Accepted"),
-        ("sold", "Sold"),
-        ("canceled", "Canceled"),
-    ], string="Status", required=True, copy=False, default="new")
-
+    state = fields.Selection([("new", "New"),("offer_received", "Offer Received"),("offer_accepted", "Offer Accepted"),("sold", "Sold"),("canceled", "Canceled")], required=True, copy=False , )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     salesperson_id = fields.Many2one("res.users", string="Salesperson")
@@ -44,10 +31,12 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area", string="Total Area", store=True)
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer", store=True)
     validity_days = fields.Integer(default=7)
-    date_deadline = fields.Date(
-        compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline",
-        store=True,
+    date_deadline = fields.Date(compute="_compute_date_deadline",inverse="_inverse_date_deadline",store=True,)
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+
+    _check_price = models.Constraint(
+        'CHECK(expected_price > 0 AND selling_price >= 0)',
+        'The expected price of a property must be strictly positive.'
     )
 
     @api.depends("living_area", "garden_area")
@@ -110,21 +99,11 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_ratio(self):
         for record in self:
-            if record.selling_price <= 0:
-                raise ValidationError("Selling price must be greater than or equal to 0")
             if record.selling_price < 0.9 * record.expected_price:
                 raise ValidationError("Selling price must be at least 90% of the expected price")
-            if record.expected_price < 0:
-                raise ValidationError("Expected price must be greater than 0")
 
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price < 0)',
-        'The expected price of a property must be strictly positive.'
-    )
-
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price < 0)',
-        'The selling price of a property must be positive.'
-    )
-
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    def _unlink(self):
+        for record in self:
+            if record.state in ["new"]:
+                raise ValidationError("You cannot delete a new or canceled property.")
+        return super().unlink()
