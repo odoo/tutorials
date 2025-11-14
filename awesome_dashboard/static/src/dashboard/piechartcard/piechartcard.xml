@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChartCard">
+        <div class="o_dashboard_stat_block">
+            <span class="o_dashboard_stat_label">
+                <strong>
+                    <t t-esc="_t(this.props.title)" />
+                </strong>
+            </span>
+            <span class="o_dashboard_stat_value">
+                <t t-if="this.props.value">
+                    <PieChart data="_t(this.props.value)" />
+                </t>
+                <t t-else="">
+                    <div>
+                        <t t-out="_t('Loading Chart...')" />
+                    </div>
+                </t>
+            </span>
+        </div>
+    </t>
+</templates>
