@@ -8,11 +8,11 @@
     "application": True,
     "license": "LGPL-3",
     "description": """
-    Description text
+    Real Estate Module to Buy and Sell Your Real Estate with Ease.
     """,
     "data": [
+        "security/ir.model.access.csv",
         "views/estate_property_views.xml",
         "views/estate_menus.xml",
-        "security/ir.model.access.csv",
     ],
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, models, fields
+from odoo import api, models, fields, exceptions
 
 
 class EstateProperty(models.Model):
@@ -47,9 +47,9 @@ class EstateProperty(models.Model):
         default="new",
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    customer = fields.Many2one("res.users", string="Customer", copy=False)
+    customer = fields.Many2one("res.partner", string="Customer", copy=False)
     salesperson = fields.Many2one(
-        "res.partner", string="Salesperson", default=lambda self: self.env.user
+        "res.users", string="Salesperson", default=lambda self: self.env.user
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
@@ -76,3 +76,19 @@ class EstateProperty(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
+
+    def action_sold_property(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise exceptions.UserError("Cancelled Property cannot be Sold")
+            else:
+                record.state = "sold"
+        return True
+
+    def action_cancel_offer(self):
+        for record in self:
+            if record.state == "sold":
+                raise exceptions.UserError("Sold Property cannot be Cancelled")
+            else:
+                record.state = "cancelled"
+        return True
