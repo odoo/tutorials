@@ -5,17 +5,18 @@ from odoo.exceptions import ValidationError
 class EstatePropertyType(models.Model):
     _name = "estate.property.type"
     _description = "Real Estate Property Type"
-    _order="name desc"
+    _order="name desc "
 
     name = fields.Char(required=True)
     property_ids = fields.One2many("estate.property", "property_type_id", string="Properties")
     sequence = fields.Integer('Sequence', default=7)
-    offer_count = fields.Integer(string="Number of Offers",compute="_compute_offer_count")
+    offer_count = fields.Integer(string="Number of Offers", compute="_compute_offer_count")
 
     _check_type_name_unique_ratio = models.Constraint(
         'CHECK(name)',
         'The property name must be unique.'
     )
+
     @api.depends('property_ids.offer_ids')
     def _compute_offer_count(self):
         for property_type in self:
@@ -23,6 +24,7 @@ class EstatePropertyType(models.Model):
             for property in property_type.property_ids:
                 offer_count += len(property.offer_ids)
             property_type.offer_count = offer_count
+            
     @api.constrains('name')
     def _check_type_name_unique(self):
         for record in self:

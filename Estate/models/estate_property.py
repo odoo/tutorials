@@ -7,7 +7,7 @@ from odoo.exceptions import ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _order = "id desc"
+    _order = "id desc "
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -20,9 +20,27 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection([("north", "North"),("south", "South"),("east", "East"),("west", "West"),])
+    garden_orientation = fields.Selection(
+        [
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West"),
+        ]
+    )
     active = fields.Boolean(default=True)
-    state = fields.Selection([("new", "New"),("offer_received", "Offer Received"),("offer_accepted", "Offer Accepted"),("sold", "Sold"),("canceled", "Canceled")], required=True, copy=False , )
+    state = fields.Selection(
+        [
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled"),
+        ],
+        required=True,
+        copy=False,
+        default="new"
+    )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     salesperson_id = fields.Many2one("res.users", string="Salesperson")
@@ -31,20 +49,19 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute="_compute_total_area", string="Total Area", store=True)
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer", store=True)
     validity_days = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_date_deadline",inverse="_inverse_date_deadline",store=True,)
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-
+    date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
+    
     _check_price = models.Constraint(
         'CHECK(expected_price > 0 AND selling_price >= 0)',
-        'The expected price of a property must be strictly positive.'
+        'The Price of a property must be strictly positive.',
     )
-
+    
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
 
-    @api.depends("offer_ids.price")
+    @api.depends("offer_ids.price" , "state")
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
@@ -74,7 +91,16 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
-
+    
+    def write(self, vals):
+        if 'offer_ids' in vals:
+            result = super().write(vals)
+            for record in self:
+                if record.offer_ids and record.state == 'new':
+                    record.state = 'offer_received'
+            return result
+        return super().write(vals)
+    
     def action_set_sold(self):
         for record in self:
             record.state = "sold"
@@ -82,15 +108,6 @@ class EstateProperty(models.Model):
     def action_set_canceled(self):
         for record in self:
             record.state = "canceled"
-
-    def action_set_next_status(self):
-        for record in self:
-            if record.state == "new":
-                record.state = "offer_received"
-            elif record.state == "offer_received":
-                record.state = "offer_accepted"
-            elif record.state == "offer_accepted":
-                record.state = "sold"
 
     def action_back_to_new(self):
         for record in self:

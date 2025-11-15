@@ -28,7 +28,6 @@
     <field name="arch" type="xml">
         <form string="Property">
             <header>
-                <button name="action_set_next_status" string="Next" type="object"/>
                 <button name="action_back_to_new" string="Reset to New" type="object"/>
                 <button name="action_set_sold" string="Mark as Sold" type="object"/>
                 <button name="action_set_canceled" string="Cancel" type="object"/>
@@ -41,7 +40,6 @@
                 <group>
                     <group string="Property Details">
                         <field name="postcode"/>
-                        <field name="create_date"/>
                         <field name="expected_price"/>
                         <field name="selling_price"/>
                         <field name="bedrooms"/>
@@ -54,12 +52,12 @@
                     </group>
                 </group>
                 <notebook>
-                    <page string="Description">
+                    <!-- <page string="Description">
                         <field name="description" placeholder="Add property description..."/> 
-                    </page>
+                    </page> -->
                     <page string="Details">
                         <form>
-                            <group string="Details">
+                            <group>
                                 <field name="buyer_id"/>
                                 <field name="salesperson_id"/>
                                 <field name="property_type_id"/>
@@ -67,7 +65,6 @@
                                 <separator string="Summary"/>   
                                 <field name="total_area" readonly="1"/>
                                 <field name="best_price" readonly="1"/>
-                                <field name="state"/>
                                 <field name="validity_days"/>
                                 <field name= "date_deadline"/>
                             </group>
@@ -90,7 +87,6 @@
     </field>
 </record>
 
-
     <record id="estate_property_form_action" model="ir.actions.act_window">
         <field name="name">Property(Form)</field>
         <field name="res_model">estate.property</field>
@@ -98,7 +94,6 @@
         <field name="view_id" ref="estate_property_form_view"/>
     </record>
     
-
     <record id="estate_property_search_view" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
@@ -118,6 +113,4 @@
             </search>
         </field>
     </record>
-
-        
 </odoo>
