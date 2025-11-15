@@ -10,7 +10,7 @@ class EstatePropertyTag(models.Model):
     property_ids = fields.Many2many('estate.property')
     color = fields.Integer()
 
-    _unique_name = models.Constraint(
-    'UNIQUE(name)',
-    'name already exists!',
+    _check_unique_name = models.Constraint(
+        'UNIQUE(name)',
+        'name already exists!',
     )

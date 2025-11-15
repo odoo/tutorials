@@ -5,6 +5,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
+                <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="total_area"/>
@@ -12,7 +13,7 @@
                 <field name="selling_price"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
-                <filter string="Available" name="available" domain="['|' ,('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
             </search>
         </field>
@@ -22,7 +23,7 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list decoration-success="state == 'offer_received' or state == 'offer_accepted'" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+            <list decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -44,16 +45,16 @@
             <form>
                 <header>
                     <button name="cancel_property" type="object" string="Cancel" invisible="state in ('sold', 'cancelled')"/>
-                    <button name="sold_property" type="object" string="Sold" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="sold_property" type="object" string="Sold" class="oe_highlight" invisible="state not in ('offer_accepted')"/>
+                    <button name="sold_property" type="object" string="Sold" invisible="state not in ('new', 'offer_received')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
                 </header>
                 <sheet>
                    <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="property_type_id" options="{'no_create': true, 'no_open': true, 'no_edit': true}"/>
                             <field name="name"/>
-                            <field name="state"/>
+                            <field name="property_type_id" options="{'no_create': true, 'no_open': true, 'no_edit': true}"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
@@ -70,7 +71,6 @@
                                     <field name="postcode"/>
                                     <field name="bedrooms"/>
                                     <field name="facades"/>
-                                    <field name="state"/>
                                     <field name="active"/>
                                 </group>
                                 <group>

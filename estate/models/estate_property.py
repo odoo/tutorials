@@ -25,10 +25,10 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
-        ('north', 'North'),
-        ('south', 'South'),
-        ('east', 'East'),
-        ('west', 'West')
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
         ]
     )
     active = fields.Boolean(default=True)
@@ -40,7 +40,8 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
         ],
-        default="new"
+        default="new",
+        readonly=True
     )
     property_type_id = fields.Many2one("estate.property.type")
     buyer_id = fields.Many2one("res.partner", copy=False)
@@ -49,6 +50,23 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total_area")
     best_offer = fields.Float(compute="_compute_best_offer")
+
+    _check_area = models.Constraint(
+        'CHECK(garden_area >= 0 AND living_area>=0)',
+        'Area must be positive'
+    )
+
+    _check_price = models.Constraint(
+        'CHECK(selling_price >= 0 AND expected_price>=0)',
+        'Price must be positive'
+    )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
+                    raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -86,20 +104,8 @@ class EstateProperty(models.Model):
             else:
                 record.state = 'sold'
 
-    _check_price = models.Constraint(
-        'CHECK(selling_price >= 0 AND expected_price>=0)',
-        'selling price and expected_price must be positive'
-    )
-
-    @api.constrains('selling_price', 'expected_price', 'state')
-    def _check_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, precision_digits=2):
-                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
-                    raise ValidationError("the selling price lower")
-
     @api.ondelete(at_uninstall=True)
     def _unlink_check_state_of_property(self):
         for record in self:
-            if record.state in ('offer_received', 'offer_accepted', 'sold'):
-                raise UserError("You cannot delete a new or cancelled property !")
+            if record.state not in ('new', 'cancelled'):
+                raise UserError("only 'New' or 'Cancelled' property can be deleted.")

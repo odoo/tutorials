@@ -12,6 +12,11 @@ class EstatePropertyType(models.Model):
     offer_count = fields.Integer(compute="_compute_total_offers")
     offer_ids = fields.One2many("estate.property.offer", "property_type_id")
 
+    _check_unique_name = models.Constraint(
+        'UNIQUE(name)',
+        'name already exists!',
+    )
+
     @api.depends("offer_ids")
     def _compute_total_offers(self):
         for record in self:

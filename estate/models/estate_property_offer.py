@@ -22,6 +22,11 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
 
+    _check_offer_price = models.Constraint(
+        'CHECK(price>=0)',
+        'offer price must be positive',
+    )
+
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
@@ -50,15 +55,11 @@ class EstatePropertyOffer(models.Model):
             else:
                 record.status = 'refused'
 
-    _check_offer_price = models.Constraint(
-    'CHECK(price>=0)',
-    'offer price must be positive',
-    )
-
     @api.model
     def create(self, vals):
+        if len(vals) > 0:
+            property = self.env['estate.property'].browse(vals[0]['property_id'])
         for record in vals:
-            property = self.env['estate.property'].browse(record['property_id'])
             if property.state == 'new':
                 property.state = 'offer_received'
             if record['price'] < property.best_offer:
