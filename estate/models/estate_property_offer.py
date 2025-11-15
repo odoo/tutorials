@@ -6,6 +6,9 @@ from odoo import api, models, fields
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _check_offer_price = models.Constraint(
+        "CHECK(price > 0)", "An offer price must be strictly positive"
+    )
 
     price = fields.Float()
     status = fields.Selection(
@@ -41,6 +44,5 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             record.status = "refused"
-            record.property_id.selling_price = 0.00
             record.property_id.customer = None
         return True

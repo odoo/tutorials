@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import ValidationError
 
 from odoo import api, models, fields, exceptions
 
@@ -7,8 +8,14 @@ from odoo import api, models, fields, exceptions
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)", "A property expected price must be strictly positive."
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)", "A property selling price must be positive."
+    )
 
-    name = fields.Char(required=True, default="Unknown")
+    name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_avaliability = fields.Date(
@@ -22,7 +29,6 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
-    last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),
@@ -54,7 +60,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
     total_area = fields.Integer(compute="_compute_area")
-    best_price = fields.Integer(compute="_compute_highest")
+    best_price = fields.Integer(compute="_compute_best_price")
 
     @api.depends("living_area", "garden_area")
     def _compute_area(self):
@@ -62,7 +68,7 @@ class EstateProperty(models.Model):
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
-    def _compute_highest(self):
+    def _compute_best_price(self):
         for record in self:
             if not record.mapped("offer_ids.price"):
                 record.best_price = 0
@@ -76,6 +82,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
+            self.garden_orientation = None
 
     def action_sold_property(self):
         for record in self:
@@ -92,3 +99,16 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price_persentage(self):
+        for record in self:
+            selling_price_persentage = (
+                record.selling_price / record.expected_price
+            ) * 100
+            if selling_price_persentage >= 90 or selling_price_persentage == 0:
+                pass
+            else:
+                raise ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price."
+                )
