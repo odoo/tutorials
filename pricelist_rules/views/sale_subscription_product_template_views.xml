@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_template_form_view_inherit_sale_subscription" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.sale.subscription</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='subscription_pricing']" position="attributes">
+                <attribute name="string">Pricing</attribute>
+                <attribute name="invisible">rent_ok or not recurring_invoice</attribute>
+            </xpath>
+            <xpath expr="//page[@name='subscription_pricing']" position="inside">
+                <div class="text-info text-center align-center" invisible="is_pricelist_on">
+                    Activate pricelist setting if you want to set specific price rules
+                </div>
+            </xpath>
+            <xpath expr="//field[@name='product_subscription_pricing_ids']" position="attributes">
+                <attribute name="invisible">not is_pricelist_on</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_subscription_pricing_ids']/list" position="attributes">
+                <attribute name="editable"></attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_subscription_pricing_ids']/list" position="inside">
+                <field name="min_quantity"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

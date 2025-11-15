@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_template_form_view_inherit" model="ir.ui.view">
+        <field name="name">product.template.form.view.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='open_pricelist_rules' and @class='oe_stat_button']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="product_template_form_view_inherit_sales_pricing" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.sales.pricing</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='sales']" position="after">
+                <page name="sales_pricing_rule" string="Pricing" invisible="recurring_invoice or rent_ok or not sale_ok">
+                    <xpath expr="//page[@name='pricing']/group" position="before">
+                        <div class="p-2">
+                            <label for="list_price" string="Sales Price"/>
+                            <field colspan="2" name="list_price" string="Sales Price"/>
+                            per unit
+                        </div>
+                    </xpath>
+                    <xpath expr="//page[@name='pricing']" position="inside">
+                        <div class="text-info text-center align-center" invisible="is_pricelist_on">
+                            Activate pricelist setting if you want to set specific price rules
+                        </div>
+                    </xpath>
+                    <field name="pricelist_item_ids" invisible="not is_pricelist_on">
+                        <list string="Pricelist Rules">
+                            <field name="pricelist_id"/>
+                            <field name="name" string="Apply on"/>
+                            <field name="product_id" optional="1"/>
+                            <field name="price" string="Price"/>
+                            <field name="min_quantity" optional="1"/>
+                            <field name="date_start" optional="1"/>
+                            <field name="date_end" optional="1"/>
+                            <field name="company_id" optional="1"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
