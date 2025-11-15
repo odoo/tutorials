@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[@class='btn btn-light btn-lg flex-shrink-0 ms-auto']" position="before">
+            <button class="btn btn-primary btn-lg" t-att-class="{'d-none': !showCustomButton?.value}" t-on-click="openConfigurationDialog">
+                <i class="fa fa-plus me-1" />
+                    Add Quantity
+            </button>
+        </xpath>
+    </t>
+
+    <t t-name="pos_second_uom.ConfigurationDialog">
+        <Dialog title="'Enter Quantity'">
+            <div class="d-flex justify-content-center align-items-center gap-3">
+                <label>Enter Quantity:</label>
+                <input type="number" t-model="state.quantity" class="form-control"/>
+                <label>Unit:</label>
+                <div class="form-control"><t t-out="secUomName"/></div>
+            </div>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="confirmSelection">Confirm</button>
+                <button class="btn btn-secondary" t-on-click="props.close">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
