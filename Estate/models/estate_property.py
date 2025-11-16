@@ -50,18 +50,18 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer", store=True)
     validity_days = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
-    
+
     _check_price = models.Constraint(
         'CHECK(expected_price > 0 AND selling_price >= 0)',
         'The Price of a property must be strictly positive.',
     )
-    
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
 
-    @api.depends("offer_ids.price" , "state")
+    @api.depends("offer_ids.price", "state")
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
@@ -91,16 +91,22 @@ class EstateProperty(models.Model):
             else:
                 record.garden_area = 0
                 record.garden_orientation = False
-    
+
+    @api.model
+    def create(self, vals):
+        record = super().create(vals)
+        if record.offer_ids:
+            record.state = 'offer_received'
+        return record
+
     def write(self, vals):
+        res = super().write(vals)
         if 'offer_ids' in vals:
-            result = super().write(vals)
             for record in self:
-                if record.offer_ids and record.state == 'new':
+                if record.offer_ids and record.state != 'offer_received':
                     record.state = 'offer_received'
-            return result
-        return super().write(vals)
-    
+        return res
+
     def action_set_sold(self):
         for record in self:
             record.state = "sold"

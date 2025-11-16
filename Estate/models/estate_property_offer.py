@@ -20,7 +20,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept_offer(self):
         for record in self:
             record.status = 'accepted'
-                
+
     def action_refuse_offer(self):
         for record in self:
             record.status = 'refused'
