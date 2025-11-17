@@ -36,10 +36,12 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             creation_date = record.create_date or fields.Date.today()
             record.date_deadline = creation_date + relativedelta(days=record.validity)
+
     def _inverse_date_deadline(self):
         for record in self:
             creation_date = record.create_date.date() or fields.Date.today()
             record.validity = (record.date_deadline - creation_date).days
+
     def action_accept(self):
         for record in self:
             if record.property_id.buyer_id:
@@ -48,10 +50,11 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.state = 'offer_accepted'
             record.property_id.buyer_id = record.partner_id
+
     def action_refuse(self):
         self.status = 'refused'
         return True
-    
+
     @api.model
     def create(self, vals):
         vals_list = vals if isinstance(vals, list) else [vals]
@@ -69,11 +72,10 @@ class EstatePropertyOffer(models.Model):
                     ("price", ">=", max_new_price),
                 ], limit=1)
                 if existing_offers:
-                    raise UserError(
-                        "You cannot create an offer with a lower amount than an existing offer for this property."
-                    )
+                    raise UserError("You cannot create an offer with a lower amount than an existing offer for this property.")
+
         records = super().create(vals)
-        if isinstance(records, models.Model):     
+        if isinstance(records, models.Model):
             for offer in records:
                 offer.property_id.state = "offer_received"
         return records

@@ -2,7 +2,7 @@ from odoo import Command, models
 
 
 class EstateProperty(models.Model):
-    _inherit="estate.property"
+    _inherit = "estate.property"
 
     def action_sold(self):
         self.env['account.move'].create({
@@ -13,7 +13,7 @@ class EstateProperty(models.Model):
                         {
                             "name": "selling price commission (6%)",
                             "quantity": 1,
-                            "price_unit": self.selling_price * 0.06 ,
+                            "price_unit": self.selling_price * 0.06,
                         }
                     ),
                     Command.create(
