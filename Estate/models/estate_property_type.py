@@ -24,10 +24,3 @@ class EstatePropertyType(models.Model):
             for property in property_type.property_ids:
                 offer_count += len(property.offer_ids)
             property_type.offer_count = offer_count
-
-    @api.constrains('name')
-    def _check_type_name_unique(self):
-        for record in self:
-            existing_type = self.search([('name', '=', record.name)])
-            if existing_type:
-                raise ValidationError(f"The property type name '{record.name}' must be unique.")

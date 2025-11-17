@@ -3,7 +3,7 @@
     <record id="action_estate_property" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new property
@@ -52,9 +52,6 @@
                     </group>
                 </group>
                 <notebook>
-                    <!-- <page string="Description">
-                        <field name="description" placeholder="Add property description..."/> 
-                    </page> -->
                     <page string="Details">
                         <form>
                             <group>
@@ -112,5 +109,53 @@
 
             </search>
         </field>
+    </record>
+    
+    <record id="estate_property_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="property_type_id" records_draggable="False" groups_draggable="False">
+                <field name="name"/>
+                <field name="expected_price"/>
+                <field name="state"/>
+                <field name="best_price"/>
+                <field name="selling_price"/>
+                <field name="tag_ids"/>
+                <templates>
+                    <t t-name="card">
+                        <div>
+                            <div>
+                                <field class="h2" name="name"/>
+                            </div>
+                            <div>
+                                Expected Price: <field name="expected_price"/>
+                            </div>
+                            <div>
+                                <p t-if="record.state.raw_value === 'offer_received'">
+                                    Best Price: <field name="best_price"/>
+                                </p>
+                            </div>
+                            <div>
+                                <p t-if="record.state.raw_value === 'sold'">
+                                    Selling Price: <field name="selling_price"/>
+                                </p>
+                            </div>
+                            <div>
+                                <field name="tag_ids"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="estate_property_action_kanban" model="ir.actions.act_window">
+        <field name="name">Properties(Kanban)</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="estate_property_kanban_view"/>
+        <field name="search_view_id" ref="estate_property_search_view"/>
     </record>
 </odoo>
