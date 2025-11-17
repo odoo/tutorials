@@ -1,0 +1,38 @@
+<odoo>
+    <!-- Main Template -->
+    <template id="s_helpdesk_tickets" name="Helpdesk Ticket">    
+        <section class="categories_section">
+            <div class="container">
+                <div class="alert alert-info">
+                    <h4>Your Helpdesk ticket Highlight Tab snippet will be displayed here...
+                        Please save to view the snippet
+                    </h4>
+                </div>
+            </div>
+        </section>
+    </template>
+    
+    <!-- Snippet Registration -->
+    <template id="snippets" inherit_id="website.snippets">
+        <xpath expr="//snippets[@id='snippet_groups']" position="inside">
+            <t t-snippet="website_helpdesk_snippet.s_helpdesk_tickets"/>
+        </xpath>
+    </template>
+
+    <template id="s_dynamic_snippet_helpdesk_options" inherit_id="website.snippet_options">
+        <xpath expr="." position="inside">
+            <div data-js="HelpdeskTickets" data-selector=".categories_section">
+                <we-row>
+                    <we-many2one string="Helpdesk Team" data-model="helpdesk.team" data-name="helpdesk_team_opt" data-no-preview="true" data-select-data-attribute=""/>
+                    <we-button data-icon="fa-times" data-select-data-attribute="" data-no-preview="true" />
+                </we-row>
+
+                <we-select string="Layout" data-option-name="view_template" data-no-preview="true" data-select-layout="">
+                    <we-button title="Card" data-select-layout="card" data-attribute-name="layout" data-name="card_opt">Card</we-button>
+                    <we-button title="List" data-select-layout="list" data-attribute-name="layout" data-name="list_opt">List</we-button>
+                </we-select>
+        </div>
+        </xpath>
+    </template> 
+
+</odoo>
