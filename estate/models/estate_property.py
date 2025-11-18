@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
 
 from odoo import api, models, fields, exceptions
 
@@ -54,9 +54,7 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    property_type_id = fields.Many2one(
-        "estate.property.type", string="Property Type"
-    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     customer = fields.Many2one("res.partner", string="Customer", copy=False)
     salesperson = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
@@ -107,8 +105,20 @@ class EstateProperty(models.Model):
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_persentage(self):
         for record in self:
-            selling_price_persentage = (record.selling_price / record.expected_price) * 100
-            if selling_price_persentage >=90 or selling_price_persentage == 0:
+            selling_price_persentage = (
+                record.selling_price / record.expected_price
+            ) * 100
+            if selling_price_persentage >= 90 or selling_price_persentage == 0:
                 pass
             else:
-                raise ValidationError("the selling price cannot be lower than 90% of the expected price.")
+                raise ValidationError(
+                    "the selling price cannot be lower than 90% of the expected price."
+                )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_prevent_property_on_state(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(
+                    "Can Delete property only on 'New' or 'Cancelled' state!"
+                )

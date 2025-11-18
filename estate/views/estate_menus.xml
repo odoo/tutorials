@@ -2,7 +2,8 @@
 <odoo>
     <menuitem 
         id="estate_menu_root" 
-        name="Estate Property"
+        name="Real Estate"
+        web_icon="estate,static/icon.png"
     /> 
     <menuitem 
         id="estate_menu_property_advertisement"
