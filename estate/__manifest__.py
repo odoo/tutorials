@@ -5,7 +5,7 @@
     'author': "taskv",
     'category': 'Category',
     'description': """
-    Description
+    Tutorial Project
     """,
     'data': [
     ],
