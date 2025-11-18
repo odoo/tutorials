@@ -4,7 +4,7 @@ from odoo import fields, models
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "An awesome estate module"
-   
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
