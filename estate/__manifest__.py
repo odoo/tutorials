@@ -1,5 +1,5 @@
 {
-    'name': "My Awesome module",
+    'name': "My Awesome module Roole",
     'version': '1.0',
     'depends': ['base'],
     'author': "roole",
