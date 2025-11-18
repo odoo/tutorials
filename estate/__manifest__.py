@@ -9,6 +9,7 @@
     'description': """
     Description text
     """,
+    'license': 'GPL-3',
     'data': [
         'security/ir.model.access.csv'
     ]
