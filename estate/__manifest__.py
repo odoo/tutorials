@@ -9,4 +9,7 @@
     'description': """
     Description text
     """,
+    'data': [
+        'security/ir.model.access.csv'
+    ]
 }
