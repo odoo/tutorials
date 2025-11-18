@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.number_card">
+        <p><t t-esc="this.props.title"/></p>
+        <h2 class="text-success"><t t-esc="this.props.value"/></h2>
+    </t>
+
+</templates>
