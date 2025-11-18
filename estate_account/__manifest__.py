@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
 {
     "name": "Estate Account",
     "description": """
-    Estate account module to manage Estate Customers and Salesman.
+    Estate account module to create invoice of sold property.
     """,
     "version": "1.0",
     "depends": ["estate", "account"],

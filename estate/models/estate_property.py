@@ -2,7 +2,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 
-from odoo import api, models, fields, exceptions
+from odoo import api, models, fields
 
 
 class EstateProperty(models.Model):
