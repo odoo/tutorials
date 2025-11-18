@@ -6,7 +6,28 @@
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <sheet>
-                    <field name="name"/>
+                    <group>
+                        <field name="name"/>
+                        <field name="description"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="postcode"/>
+                            <field name="expected_price"/>
+                            <field name="bedrooms"/>
+                            <field name="facades"/>
+                            <field name="garden"/>
+                            <field name="garden_orientation"/>
+                        </group>
+                        <group>
+                            <field name="date_availability"/>
+                            <field name="selling_price"/>
+                            <field name="living_area"/>
+                            <field name="garage"/>
+                            <field name="garden_area"/>
+                            <field name="state"/>
+                        </group>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -16,7 +37,7 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Estate Property" editable="bottom">
+            <list string="Estate Property">
                 <field name="name"/>
                 <field name="expected_price"/>
             </list>
