@@ -10,16 +10,7 @@
     'summary': 'Track all the properties you own',
     'website': 'https://www.odoo.com/app/estate',
     'depends': [
-        'base_setup',
-        'sales_team',
-        'mail',
-        'calendar',
-        'resource',
-        'utm',
-        'web_tour',
-        'contacts',
-        'digest',
-        'phone_validation',
+        'base'
     ],
     'data': [
     ],
