@@ -6,5 +6,8 @@
     'application': True,
     'installable': True,
     'category': '',
-    'description': ''
+    'description': '',
+    'data': [
+        'security/ir.model.access.csv'
+    ]
 }
