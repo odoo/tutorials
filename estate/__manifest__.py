@@ -2,9 +2,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 
-{
+manifest = {
     "name": "Estate",
-    "depends": [
-        "base",
+    "version": "1.0",
+    "depends": ["base"],
+    "data": [
+        "data/ir.model.access.csv",
     ],
+    "installable": True,
+    "application": True,
+    "auto_install": False,
 }
