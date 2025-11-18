@@ -1,18 +1,18 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
+
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
 
-    name = fields.Char('Estate Property', required=True, translate='True')
+    name = fields.Char('Estate Property', translate='True')
     active = fields.Boolean('Active', default=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
     date_availability = fields.Date('Date Availability')
-    expected_price = fields.Float('Expected Price', required=True)
+    expected_price = fields.Float('Expected Price')
     selling_price = fields.Float('Selling Price')
     bedrooms = fields.Integer('Bedrooms')
     living_area = fields.Integer('Living Area')
@@ -26,5 +26,3 @@ class EstateProperty(models.Model):
                                                     ('east', 'East'),
                                                     ('west', 'West')]
                                           )
-
-
