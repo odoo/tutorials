@@ -15,7 +15,6 @@ class Property(models.Model):
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
-    garden_area = fields.Boolean()
+    garden = fields.Boolean()
     garden_area = fields.Integer()
-    garden_orientation = fields.Selection(string='garden_orientation' , selection=[('North','north'),('east','East'),('West','west'),('South','south')])
-    
+    garden_orientation = fields.Selection(string='garden_orientation', selection=[('North', 'north'), ('east', 'East'), ('West', 'west'), ('South', 'south')])

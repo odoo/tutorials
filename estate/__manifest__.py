@@ -2,5 +2,6 @@
     'name': "Real estate",
     'depends': ['base'],
     'application': True,
-    'installable': True
+    'installable': True,
+    'data': ['security/ir.model.access.csv']
 }
