@@ -8,5 +8,9 @@
     'license': 'LGPL-3',
     'depends': [
         'base',
-    ]
+    ],
+     'data': [
+         'data/ir.model.access.csv'
+     ],
+     
 }
