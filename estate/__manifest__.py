@@ -1,6 +1,8 @@
-# -*- coding: utf-8 -*-
 {
     'name': "Estate",
     'depends': ['base'],
-    'application': True
+    'application': True,
+    'data': [
+        'data/ir.model.access.csv'
+    ]
 }
