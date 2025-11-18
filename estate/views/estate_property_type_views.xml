@@ -17,8 +17,12 @@
         <field name="arch" type="xml">
             <form name="Property Type List">
                 <header>
-                    <button class="oe_stat_button" type="action" name="%(estate.action_estate_property_offer)d" icon="fa-list" string="offer"/>
-                    <field name="offer_count"/>
+                    <div class="oe_stat_button">
+                        <button type="action" name="%(estate.action_estate_property_offer)d" icon="fa-list">
+                            Offers:
+                            <field name="offer_count"/>
+                        </button>
+                    </div>
                 </header>
                 <sheet>
                     <h1>

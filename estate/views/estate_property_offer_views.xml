@@ -12,7 +12,7 @@
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">  
             <list string="Offer" editable="bottom" decoration-danger="status=='refused'" decoration-success="status=='accepted'">
-                <field name="price"/>
+                <field name="price" options="{'type': 'number', 'step': 100}"/>
                 <field name="partner_id"/>
                 <field name="validity" string="Validity(days)"/>
                 <field name="date_deadline"/>
