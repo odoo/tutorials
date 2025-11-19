@@ -16,6 +16,62 @@
         </field>
     </record>
 
+    <record id="estate_property_form_view" model="ir.ui.view">
+        <field name="name">estate.property.name</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="My new house">
+                <sheet>
+                    <group>
+                        <h1><field name="name" string="" placeholder="My new house"/></h1>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="postcode" default="1000"/>
+                            <field name="date_availability" string="Available From"/>
+                        </group>
+                        <group>
+                            <field name="expected_price" default="150000"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description" help="When duplicated, status and date are not copied"/>
+                                <field name="bedrooms" default="4"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
+                                <field name="facades" default="4"/>
+                                <field name="garage"/>
+                                <field name="garden" default="True"/>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate.property.name</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="TestSearch">
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="facades"/>
+                <separator/>
+                <filter name="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter name="Postcode" context="{'group_by': 'postcode'}"/>
+            </search>
+        </field>
+    </record>
+
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
