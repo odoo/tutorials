@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models
+from dateutil.relativedelta import relativedelta
 
 
 class EstateProperty(models.Model):
@@ -16,9 +17,11 @@ class EstateProperty(models.Model):
     # Basic fields
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
-    date_availability = fields.Date("Available From")
+    date_availability = fields.Date(
+        "Available From", default=lambda self: fields.Date.today() + relativedelta(months=3), copy=False
+    )
     expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price")
+    selling_price = fields.Float("Selling Price", copy=False, readonly=True)
     bedrooms = fields.Integer("Bedrooms", default=2)
     living_area = fields.Integer("Living Area (sqm)")
     facades = fields.Integer("Number of Facades")
@@ -33,4 +36,18 @@ class EstateProperty(models.Model):
             ("west", "West"),
         ],
         string="Garden Orientation",
+    )
+    active = fields.Boolean("Active", default=True)
+    status = fields.Selection(
+        selection=[
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("canceled", "Canceled"),
+        ],
+        string="Status",
+        default="new",
+        required=True,
+        copy=False,
     )
