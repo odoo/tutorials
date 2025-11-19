@@ -27,18 +27,27 @@
                         <group>
                             <field name="selling_price"/>
                         </group>
+                        <group>
+                            <field name="best_price" string="Best Offer"/>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Description">
                             <group>
                                 <field name="description"/>
                                 <field name="bedrooms"/>
-                                <field name="living_area"/>
+                                <field name="living_area" string="Living Area (sqm)"/>
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
+                                <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area" string="Total Area (sqm)"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" string=""/>
                             </group>
                         </page>
                         <page string="Other Info">
