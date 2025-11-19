@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+  <t t-name="awesome_owl.Playground">
+    <div class="container mt-4 col-6">
+        <div>
+            <div class="d-flex gap-5" style="justify-content: space-between; flex-wrap: wrap">
+                <t t-foreach="Array(state.counters)" t-as="counter" t-key="counter_index">
+                    <div class="col-5">
+                        <Counter onChange.bind="incrementSum"/>
+                    </div>
+                </t>
+            </div>
+            <div class="text-center mt-3">
+                <h2>Total: <t t-esc="state.sum"/></h2>
+            </div>
+        </div>
+
+        <!-- Card -->
+        <div class="mt-4">
+            <h2>Card Components</h2>
+            <t t-foreach="cards" t-as="card" t-key="card_index">
+                <Card t-props="{
+                    title: card.title,
+                    visit: card.visit
+                }">
+                    <t t-if="card_last or card_first">
+                        <Counter onChange.bind="incrementSum"/>
+                    </t>
+                    <t t-else="">
+                        <t t-esc="card.body"/>
+                    </t>
+                </Card>
+            </t>
+        </div>
+
+        <!-- Todo -->
+        <div class="mt-4 mb-4">
+            <TodoList/>
+        </div>
+    </div>
+  </t>
+</templates>
