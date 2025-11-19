@@ -10,8 +10,6 @@ class EstateOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True, string='Property')
     status = fields.Selection(
         string='Status',
-        copy=False, 
-        selection=[
-            ('accepted', 'Accepted'),
-            ('refused', 'Refused')]
-        )
+        copy=False,
+        selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
+    )

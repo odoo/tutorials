@@ -6,7 +6,7 @@ class EstateProperty(models.Model):
     _description = "Estate description"
 
     name = fields.Char(required=True)
-    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
+    tag_ids = fields.Many2many("estate.property.tag")
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     user_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', index=True)
@@ -37,14 +37,15 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         string="Estate status",
-        selection=[('new', 'New'),
+        selection=[
+            ('new', 'New'),
             ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('cancelled', 'Cancelled')
+            ('cancelled', 'Cancelled'),
         ],
         help='This field explain the estate status.',
         required=True,
         copy=False,
-        default='new'
+        default='new',
     )
