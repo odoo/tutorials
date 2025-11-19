@@ -10,7 +10,8 @@
         'base',
     ],
      'data': [
-         'data/ir.model.access.csv'
+         'data/ir.model.access.csv',
+         'view/estate_property_views.xml',
      ],
      
 }
