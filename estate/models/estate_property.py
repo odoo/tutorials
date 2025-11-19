@@ -27,3 +27,4 @@ class EstateProperty(models.Model):
         default='new',
         copy=False,
         selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
+    property_type_id = fields.Many2one("estate.property.type", "Type")

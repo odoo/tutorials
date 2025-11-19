@@ -6,6 +6,7 @@
     <field name="arch" type="xml">
       <search string="Estate Property">
         <field name="name" />
+        <field name="property_type_id" />
         <field name="postcode" />
         <field name="expected_price" />
         <field name="bedrooms" />
@@ -14,10 +15,8 @@
         <separator />
         <filter string="Available properties" name="available_properties"
           domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]" />
-        <group expand="1" string="Group By">
-          <filter string="Same Postcode" name="postcode_grpby"
-            context="{'group_by':'postcode'}" />
-        </group>
+        <filter string="Same Postcode" name="postcode_grpby"
+          context="{'group_by':'postcode'}" />
       </search>
     </field>
   </record>
@@ -35,6 +34,7 @@
           </div>
           <group>
             <group>
+              <field name="property_type_id" />
               <field name="postcode" />
               <field name="date_availability" />
             </group>
@@ -69,6 +69,7 @@
     <field name="arch" type="xml">
       <list string="Channel">
         <field name="name" string="Title" />
+        <field name="property_type_id" />
         <field name="postcode" />
         <field name="bedrooms" />
         <field name="living_area" />
