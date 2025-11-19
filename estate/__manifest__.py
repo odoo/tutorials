@@ -5,13 +5,14 @@
     'summary': 'Track Real Estate',
     'website': 'https://www.odoo.com/app/realestate',
     'author': 'Odoo S.A.',
+    'application': True,
     'license': 'LGPL-3',
     'depends': [
         'base',
     ],
      'data': [
-         'data/ir.model.access.csv',
-         'view/estate_property_views.xml',
+         'security/ir.model.access.csv',
+         'views/estate_property_views.xml',
      ],
      
 }
