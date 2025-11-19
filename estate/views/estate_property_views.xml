@@ -10,10 +10,13 @@
                 <field name="expected_price"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="bedrooms"/>
+                <field name="property_type_id"/>
                 <filter string="Available" name="available" domain="[('date_availability', '&lt;=', today)]"/>
                 <separator/>
                 <filter string="New" name="new_state" domain="[('state', '=', 'new')]"/>
-                <filter string="Offer Received" name="offer_received_state" domain="[('state', '=', 'offer_received')]"/>
+                <filter string="Offer Received" name="offer_received_state"
+                        domain="[('state', '=', 'offer_received')]"/>
                 <filter string="Offer Accepted" name="offer_accepted_state" domain="[('state', '=', 'offer_acepted')]"/>
                 <filter string="Sold" name="sold_state" domain="[('state', '=', 'sold')]"/>
                 <group>
@@ -30,12 +33,14 @@
             <form string="Estate Property">
                 <sheet>
                     <div class="oe_title">
-                        <h1 class="mb32">
-                            <field name="name" class="mb16"/>
+                        <h1>
+                            <field name="name"/>
                         </h1>
+                        <field name="property_tag_ids" widget="many2many_tags" class="mb16"/>
                     </div>
                     <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -57,6 +62,21 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -70,6 +90,7 @@
             <list string="Estate Property">
                 <field name="name" width="140px"/>
                 <field name="postcode" width="40px"/>
+                <field name="property_type_id"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
