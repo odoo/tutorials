@@ -1,0 +1,12 @@
+<odoo>
+    <record id="estate_property_type_view_tree" model="ir.ui.view">
+        <field name="name">estate.property.type.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="Property Types">
+                <field name="sequence" widget="handle"/>
+                <field name="name" readonly="1"/>
+            </list>
+        </field>
+    </record>
+</odoo>

@@ -12,7 +12,7 @@
                 <field name="selling_price"/>
                 <field name="date_availability" string="Available from"/>
                 <field name="property_type_id" width="120px"/>
-                <field name="tag_ids" widget="many2many_tags" width="120px"/>
+                <field name="tag_ids" widget="many2many_tags" width="120px" options="{'color_field': 'color'}"/>
             </list>
         </field>
     </record>

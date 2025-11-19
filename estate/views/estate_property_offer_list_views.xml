@@ -8,8 +8,20 @@
                 <field name="partner_id"/>
                 <field name="validity" string="Validity (days)"/>
                 <field name="date_deadline" string="Deadline"/>
-                <button name="action_mark_as_accepted" type="object" icon="fa-check" title="accept"/>
-                <button name="action_mark_as_refused" type="object" icon="fa-times" title="refuse"/>
+                <button
+                    name="action_mark_as_accepted"
+                    type="object"
+                    icon="fa-check"
+                    title="accept"
+                    invisible="status"
+                />
+                <button
+                    name="action_mark_as_refused"
+                    type="object"
+                    icon="fa-times"
+                    title="refuse"
+                    invisible="status"
+                />
                 <field name="status"/>
             </list>
         </field>
