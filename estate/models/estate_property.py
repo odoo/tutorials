@@ -47,7 +47,10 @@ class EstateProperty(models.Model):
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled'),
         ],
-        string='State',default='new',required=True,copy=False
+        string='State',
+        default='new',
+        required=True,
+        copy=False,
     )
 
     active = fields.Boolean('Active', default=True)
