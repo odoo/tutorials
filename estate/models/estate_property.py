@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class EstateProperty(models.Model):
@@ -25,7 +25,9 @@ class EstateProperty(models.Model):
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
+    total_area = fields.Integer(compute="_compute_total_area")
     garden_area = fields.Integer()
+    best_price = fields.Float(compute="_compute_best_price")
     garden_orientation = fields.Selection(
         string='Orientation',
         selection=[
@@ -49,3 +51,26 @@ class EstateProperty(models.Model):
         copy=False,
         default='new',
     )
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_price(self):
+        for record in self:
+            if len(record.offer_ids) > 0:
+                record.best_price = max(record.offer_ids.mapped("price"))
+            else:
+                record.best_price = 0.0
+
+    @api.onchange('garden')
+    def _inverse_garden(self):
+        for record in self:
+            if record.garden:
+                record.garden_orientation = 'north'
+                record.garden_area = 10
+            else:
+                record.garden_orientation = ''
+                record.garden_area = 0
