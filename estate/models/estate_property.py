@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -77,3 +78,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    def action_mark_as_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError('Property is already cancelled')
+
+            record.state = 'sold'
+
+    def action_mark_as_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError('Property is already sold')
+
+            record.state = 'cancelled'

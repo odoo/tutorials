@@ -4,6 +4,21 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button
+                        name="action_mark_as_sold"
+                        string="Sold"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="state == 'sold' or state == 'cancelled'"
+                    />
+                    <button
+                        name="action_mark_as_cancelled"
+                        string="Cancel"
+                        type="object"
+                        invisible="state == 'sold' or state == 'cancelled'"
+                    />
+                </header>
                 <sheet>
                     <h1 class="mb32">
                         <field name="name" class="mb16"/>
@@ -12,6 +27,9 @@
                       <field name="tag_ids" widget="many2many_tags"/>
                     </group>
                     <group>
+                        <group>
+                            <field name="state"/>
+                        </group>
                         <group>
                             <field name="property_type_id"/>
                         </group>
