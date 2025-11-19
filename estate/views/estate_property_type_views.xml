@@ -1,20 +1,20 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="estate_property_type_form_view" model="ir.ui.view">
-        <field name="name">estate.property.type.name</field>
+        <field name="name">estate.property.type.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="New Type">
                 <sheet>
                     <group>
-                        <h1><field name="name" string="" placeholder="New property type"/></h1>
+                        <h1><field name="name" nolabel="1" placeholder="New property type"/></h1>
                     </group>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <record id="estate_model_type_action" model="ir.actions.act_window">
+    <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list</field>
