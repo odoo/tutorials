@@ -2,14 +2,6 @@
     <record id="view_property_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <list>
-                <field name="name"/>
-                <field name="postcode"/>
-                <field name="expected_price"/>
-                <field name="date_availability"/>
-            </list>
-        </field>
     </record>
 
     <record id="estate_property_action" model="ir.actions.act_window">

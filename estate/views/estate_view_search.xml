@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_property_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" string="Title"/>
+                <field name="description" string="Description"/>
+                <field name="post_code" string="Postcode"/>
+                <field name="date_availability" string="Available From"/>
+                <field name="expected_price" string="Expected Price"/>
+                <field name="selling_price" string="Selling Price"/>
+                <field name="bedrooms" string="Bedrooms"/>
+                <field name="living_area" string="Living Area"/>
+                <field name="facades" string="Facades"/>
+                <field name="garage" string="Garage"/>
+                <field name="garden" string="Garden"/>
+                <field name="garden_area" string="Garden Area"/>
+                <field name="garden_orientation" string="Garden Orientation"/>
+                <field name="state" string="State"/>
+                <field name="active" string="Active"/>
+                <filter name="post_code" string="Post code" context="{'group_by':'post_code'}"/>
+                <filter name="state" string="Available" domain="[('state', '=', 'new')]"/>
+            </search>
+        </field>
+    </record>
+</odoo>
