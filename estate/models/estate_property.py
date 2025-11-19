@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import date
 
 from dateutil.relativedelta import relativedelta
 
@@ -22,7 +22,7 @@ class EstateProperty(models.Model):
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
 
-    bedrooms = fields.Integer('Bedrooms', default=0)
+    bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer('Facades')
 
@@ -37,6 +37,17 @@ class EstateProperty(models.Model):
             ('west', 'West'),
         ],
         string='Garden Orientation',
+    )
+    state = fields.Selection(
+        selection=[
+            ('new', 'New'),
+            ('offer', 'Offer'),
+            ('received', 'Received'),
+            ('offer Accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled'),
+        ],
+        string='State',default='new',required=True,copy=False
     )
 
     active = fields.Boolean('Active', default=True)

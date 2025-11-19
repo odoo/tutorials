@@ -17,12 +17,4 @@
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
-
-    <menuitem id="estate_menu_root" name="Real Estate">
-        <menuitem id="estate_menu_advertisements" name="Advertisements">
-            <menuitem id="estate_property_menu_action" 
-                      action="estate_property_action"/>
-        </menuitem>
-    </menuitem>
-
 </odoo>
