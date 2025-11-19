@@ -1,5 +1,6 @@
 from odoo import fields, models
 
+
 class Property(models.Model):
     _name = "estate.property"
     _description = "This is a estate property"
@@ -31,4 +32,4 @@ class Property(models.Model):
     )
 
     active = fields.Boolean('Active', default=True)
-  
+
