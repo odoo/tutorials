@@ -3,3 +3,4 @@ access_estate_model,estate_property_users,model_estate_property,base.group_user,
 access_estate_model_type,estate_property_type_users,model_estate_property_type,base.group_user,1,1,1,1
 portal_access_estate_model,estate_property_portal,model_estate_property,base.group_portal,1,0,0,0
 access_estate_model_tag,estate_property_tag_users,model_estate_property_tag,base.group_user,1,1,1,1
+access_estate_model_offer,estate_property_offer_users,model_estate_property_offer,base.group_user,1,1,1,1

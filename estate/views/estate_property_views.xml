@@ -26,6 +26,9 @@
                         <h1><field name="name" nolabel="1" placeholder="My new house"/></h1>
                     </group>
                     <group>
+                        <field name="tag_ids" nolabel="1" widget="many2many_tags"/>
+                        <br/>
+                        <br/>
                         <group>
                             <field name="property_type_id" string="Property Type"/>
                             <field name="postcode"/>
@@ -48,6 +51,9 @@
                                 <field name="garden_area" string="Garden Area (sqm)"/>
                                 <field name="garden_orientation"/>
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids"/>
                         </page>
                         <page string="Other Info">
                             <group>
