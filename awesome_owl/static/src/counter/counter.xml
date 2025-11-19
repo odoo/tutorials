@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="awesome_owl.playground">
-        <div style="border: 2px solid black; border-radius: 12px; width: fit-content; padding: 10px; margin-top:5px;">
+    <t t-name="awesome_owl.counter">
+        <div style="border: 2px solid black; border-radius: 12px; width: fit-content; padding: 10px; margin-top:10px;">
             <p>Counter: <t t-esc="state.value"/></p>
             <button class="btn btn-primary" t-on-click="increment">Increment</button>
             <button class="btn btn-primary" t-on-click="decrement">Decrement</button>
             <button t-if="state.value != 0" class="btn btn-primary" t-on-click="reset">Reset</button>
         </div>
-        <Counter/>
-        <Card title="'Hello'" content="'word'"/>
-        <Card title="'New'" content="'Card'"/>
     </t>
 </templates>

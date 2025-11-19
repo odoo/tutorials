@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem; border: 2px solid black; border-radius: 12px; margin-top: 10px; text-align:center;">
+            <div class="card-body">
+                <h4 class="card-title" style="background-color: blue; margin:0; border-radius:14px;">
+                    <t t-esc="props.title"/>
+                </h4>
+                <p class="card-text" style="background-color: green; margin:10px; border-radius:14px;">
+                    <t t-esc="props.content"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</templates>
