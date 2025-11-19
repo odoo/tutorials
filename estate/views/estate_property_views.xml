@@ -1,33 +1,63 @@
 <?xml version="1.0"?>
 <odoo>
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Search">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="living_area"/>
+                <field name="facades"/>
+                <filter string="Available" name="available" domain="[('date_availability', '&lt;=', today)]"/>
+                <separator/>
+                <filter string="New" name="new_state" domain="[('state', '=', 'new')]"/>
+                <filter string="Offer Received" name="offer_received_state" domain="[('state', '=', 'offer_received')]"/>
+                <filter string="Offer Accepted" name="offer_accepted_state" domain="[('state', '=', 'offer_acepted')]"/>
+                <filter string="Sold" name="sold_state" domain="[('state', '=', 'sold')]"/>
+                <group>
+                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
                 <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="description"/>
-                    </group>
+                    <div class="oe_title">
+                        <h1 class="mb32">
+                            <field name="name" class="mb16"/>
+                        </h1>
+                    </div>
                     <group>
                         <group>
                             <field name="postcode"/>
-                            <field name="expected_price"/>
-                            <field name="bedrooms"/>
-                            <field name="facades"/>
-                            <field name="garden"/>
-                            <field name="garden_orientation"/>
+                            <field name="date_availability"/>
                         </group>
                         <group>
-                            <field name="date_availability"/>
+                            <field name="expected_price"/>
                             <field name="selling_price"/>
-                            <field name="living_area"/>
-                            <field name="garage"/>
-                            <field name="garden_area"/>
-                            <field name="state"/>
                         </group>
                     </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area"/>
+                                <field name="garden_orientation"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
@@ -38,8 +68,13 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Estate Property">
-                <field name="name"/>
+                <field name="name" width="140px"/>
+                <field name="postcode" width="40px"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
                 <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
             </list>
         </field>
     </record>
@@ -48,6 +83,7 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="estate_property_view_search"/>
     </record>
 
 </odoo>
