@@ -1,9 +1,9 @@
 {
-    'name': "Real Estate",
+    'name': 'Real Estate',
     'license': 'LGPL-3',
     'version': '1.0',
     'depends': ['base'],
-    'author': "Odoo S.A.",
+    'author': 'Odoo S.A.',
     'category': 'Category',
     'description': """
     Real Estate Advertisement module
@@ -13,5 +13,8 @@
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
+        'views/estate_property_list_views.xml',
+        'views/estate_property_form_views.xml',
+        'views/estate_property_search_views.xml',
     ],
 }
