@@ -1,6 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, models, api, exceptions
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 
 class EstateProperty(models.Model):
@@ -39,7 +40,7 @@ class EstateProperty(models.Model):
                                domain=[('is_company', '=', False)])
     salesperson_id = fields.Many2one('res.users', string='Salesperson',
                                      default=lambda self: self.env.user)
-    offer_ids = fields.Many2many('estate.property.offer', 'property_id', string='Offers')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     total_area = fields.Integer('Total Area (sqm)', compute='_compute_total_area')
     best_offer = fields.Float('Best Offer', compute='_compute_best_offer')
 
@@ -52,6 +53,12 @@ class EstateProperty(models.Model):
         'CHECK(selling_price >= 0)',
         'The selling price must be positive',
     )
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 4) and float_compare(record.selling_price, record.expected_price * 0.9, 4) < 0:
+                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price.")
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
