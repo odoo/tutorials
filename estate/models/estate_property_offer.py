@@ -9,7 +9,7 @@ class EstatePropertyOffer(models.Model):
     status = fields.Selection(
         string="Status",
         copy=False,
-        selection = [
+        selection=[
             ('accepted', 'Accepted'),
             ('refused', 'Refused')
         ]
