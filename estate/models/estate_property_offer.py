@@ -16,6 +16,11 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be strictly positive',
+    )
+
     @api.depends('validity')
     def _compute_deadline(self):
         for record in self:
@@ -24,3 +29,18 @@ class EstatePropertyOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - (record.create_date.date() if record.create_date else date.today())).days
+
+    def action_accept(self):
+        for record in self:
+            if record.property_id.state in ('new', 'offer_received'):
+                record.property_id.state = 'offer_accepted'
+                record.status = 'accepted'
+                record.property_id.selling_price = record.price
+                record.property_id.buyer_id = record.partner_id
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            if not record.status:
+                record.status = 'refused'
+        return True

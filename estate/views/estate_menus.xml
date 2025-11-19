@@ -7,7 +7,7 @@
         id="properties_menu"
         name="Properties"
         parent="estate_menu_root"
-        action="estate.estate_property_action"
+        action="estate_property_action"
         sequence="1"/>
     <menuitem
         id="settings_menu"
@@ -18,12 +18,12 @@
         id="properties_type_menu"
         name="Property Types"
         parent="settings_menu"
-        action="estate.estate_property_type_action"
+        action="estate_property_type_action"
         sequence="1"/>
     <menuitem
         id="properties_tag_menu"
         name="Property Tags"
         parent="settings_menu"
-        action="estate.estate_property_tag_action"
+        action="estate_property_tag_action"
         sequence="2"/>
 </odoo>

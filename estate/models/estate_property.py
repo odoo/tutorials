@@ -1,7 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
-from datetime import timedelta
+from odoo import fields, models, api, exceptions
 
 
 class EstateProperty(models.Model):
@@ -12,7 +11,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean('Active', default=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Available From', copy=False, default=fields.Datetime.now() + timedelta(days=90))
+    date_availability = fields.Date('Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
@@ -44,6 +43,16 @@ class EstateProperty(models.Model):
     total_area = fields.Integer('Total Area (sqm)', compute='_compute_total_area')
     best_offer = fields.Float('Best Offer', compute='_compute_best_offer')
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive',
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive',
+    )
+
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
         for record in self:
@@ -65,3 +74,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def property_sold(self):
+        for record in self:
+            if record.state != 'cancelled':
+                record.state = 'sold'
+            else:
+                raise exceptions.UserError("Sold properties cannot be cancelled.")
+        return True
+
+    def property_cancelled(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = 'cancelled'
+            else:
+                raise exceptions.UserError("Cancelled properties cannot be sold.")
+        return True
