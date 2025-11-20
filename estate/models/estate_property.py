@@ -5,6 +5,14 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price should be stricly positive'
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price should be positive'
+    )
 
     name = fields.Char(required=True)
     description = fields.Text()
