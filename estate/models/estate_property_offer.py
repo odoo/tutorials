@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserWarning
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,6 +21,9 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+
+    # SQL constraints
+    _offer_price_positive = models.Constraint("CHECK(price > 0)")
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
@@ -42,7 +45,8 @@ class EstatePropertyOffer(models.Model):
             # Check if there's already an accepted offer
             other_offers = offer.property_id.offer_ids - offer
             if any(other_offers.filtered(lambda o: o.status == "accepted")):
-                raise UserWarning("An offer has already been accepted for this property.")
+                error_msg = "An offer has already been accepted for this property."
+                raise UserError(error_msg)
             offer.status = "accepted"
             # Refuse other offers for the same property
             other_offers.write({"status": "refused"})
