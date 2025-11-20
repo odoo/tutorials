@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 from datetime import date, timedelta
 
 
@@ -22,6 +22,17 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'The offer price must be strictly positive',
     )
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            if 'property_id' in vals and vals.get('property_id'):
+                current_property = self.env['estate.property'].browse(vals['property_id'])
+                if 'price' in vals and current_property.best_offer > vals.get('price', 0):
+                    raise exceptions.ValidationError(f'The offer must be higher than {current_property.best_offer}')
+                if current_property.state == 'new':
+                    current_property.state = 'offer_received'
+        return super().create(vals_list)
 
     @api.depends('validity')
     def _compute_deadline(self):
