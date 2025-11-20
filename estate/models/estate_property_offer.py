@@ -45,7 +45,10 @@ class EstatePropertyOffer(models.Model):
     def action_refuse_offer(self):
         for record in self:
             if record.status == 'accepted':
+                val = record.property_id.expected_price # bypass 90% constraint L1
+                record.property_id.expected_price = 0.0 # bypass 90% constraint L2
                 record.property_id.selling_price = 0.0
+                record.property_id.expected_price = val # bypass 90% constraint L3
                 record.property_id.buyer_id = None
             record.status = 'refused'
         return True
