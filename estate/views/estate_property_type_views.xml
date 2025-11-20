@@ -11,6 +11,17 @@
                             <field name="name" placeholder="House" class="mb16" />
                         </h1>
                     </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="properties_ids">
+                                <list>
+                                    <field name="name" string="Title" />
+                                    <field name="state" />
+                                    <field name="expected_price" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

@@ -54,7 +54,8 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids, key=lambda p: p.price, default=0).price
+            if len(record.offer_ids)>0:
+                record.best_price = max(record.offer_ids, key=lambda p: p.price).price
 
     @api.onchange('garden')
     def _onchange_garden(self):

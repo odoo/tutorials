@@ -9,5 +9,5 @@ class EstatePropertyTag(models.Model):
 
     _tags_uniq = models.Constraint(
         'unique(name)',
-        f"The tag name already exists",
+        "The tag name already exists",
     )
