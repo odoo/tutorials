@@ -95,3 +95,19 @@ class Property(models.Model):
                 raise exceptions.UserError("Property Sold")
             record.status = "cancelled"
         return True
+
+    _check_positive_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'Prices Must Be Positive',
+    )
+
+    _check_positive_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'Prices Must Be Positive',
+    )
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if (record.selling_price - 0.9 * record.expected_price >= 1e-5):
+                raise exceptions.ValidationError("The selling price is too low")

@@ -7,12 +7,22 @@ class PropertyType(models.Model):
 
     name = fields.Char(required=True)
 
+    _check_unique_name = models.Constraint(
+        "unique(name)",
+        "Type must be unique",
+    )
+
 
 class PropertyTags(models.Model):
     _name = "estate.property.tags"
     _description = "Estate Property Tags"
 
     name = fields.Char(required=True)
+
+    _check_unique_name = models.Constraint(
+        "unique(name)",
+        "Tag must be unique",
+    )
 
 
 class PropertyOffer(models.Model):
@@ -65,3 +75,8 @@ class PropertyOffer(models.Model):
             raise exceptions.UserError("Property is already sold")
         self.status = "refused"
         return True
+
+    _check_positive_price = models.Constraint(
+        "CHECK(price > 0.001)",
+        "Prices Must Be Positive",
+    )
