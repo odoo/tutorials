@@ -49,10 +49,8 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.buyer_id = None
             record.status = 'refused'
         return True
-    
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_deleted(self):
-        print("#"*100)
         for record in self:
-            print(record)
             record.property_id.selling_price = 0.0
