@@ -3,7 +3,7 @@
     'version': '1.0',
     'depends': ['base'],
     'author': "taskv",
-    'category': 'Category',
+    'category': 'Tutorials',
     'description': """
     Tutorial Project
     """,
