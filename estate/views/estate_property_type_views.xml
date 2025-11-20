@@ -21,6 +21,13 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
+                <header>
+                    <button
+                        string="Stat"
+                        type="action"
+                        name="%(estate.estate_property_offer_action)d"
+                    />
+                </header>
                 <sheet>
                     <h1 class="mb32">
                         <field name="name" class="mb16"/>
