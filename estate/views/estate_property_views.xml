@@ -65,7 +65,7 @@
                                 options="{'no_create_edit': true, 'no_create': true}"
                             />
                         </group>
-                        <group> /
+                        <group>
                             <field name="postcode"/>
                         </group>
                         <group>
