@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserWarning
 
 
 class EstatePropertyOffer(models.Model):
@@ -35,3 +36,23 @@ class EstatePropertyOffer(models.Model):
                 offer.validity = (offer.date_deadline - offer.create_date.date()).days
             elif offer.date_deadline:  # Fallback if create_date is not set
                 offer.validity = (offer.date_deadline - fields.Date.today()).days
+
+    def action_accept_offer(self):
+        for offer in self:
+            # Check if there's already an accepted offer
+            other_offers = offer.property_id.offer_ids - offer
+            if any(other_offers.filtered(lambda o: o.status == "accepted")):
+                raise UserWarning("An offer has already been accepted for this property.")
+            offer.status = "accepted"
+            # Refuse other offers for the same property
+            other_offers.write({"status": "refused"})
+            # Update the property status
+            offer.property_id.status = "offer_accepted"
+            offer.property_id.selling_price = offer.price
+            offer.property_id.partner_id = offer.partner_id
+        return True
+
+    def action_refuse_offer(self):
+        for offer in self:
+            offer.status = "refused"
+        return True
