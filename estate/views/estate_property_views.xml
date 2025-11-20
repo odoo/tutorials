@@ -21,7 +21,11 @@
 		<field name="name">estate.property.form</field>
 		<field name="model">estate.property</field>
 		<field name="arch" type="xml">
-			<form string="Lost Reason">
+			<form string="Property Form">
+				<header>
+					<button name="sell_property_action" type="object" string="Mark Sold"/>
+					<button name="cancel_property_action" type="object" string="Cancel"/>
+				</header>
 				<sheet>
 					<group>
 						<h1>
@@ -32,6 +36,9 @@
 						<field name="tag_ids" widget="many2many_tags"/>
 					</group>
 					<group>
+						<group>
+							<field name="status"/>
+						</group>
 						<group>
 							<field name="property_type_id"/>
 						</group>
@@ -75,6 +82,8 @@
 										<field name="property_id"/>
 										<field name="validity"/>
 										<field name="date_deadline"/>
+										<button name="accept_offer" string="Accept" type="object" icon="fa-check"/>
+										<button name="refuse_offer" string="Refuse" type="object" icon="fa-times"/>
 									</list>
 								</field>
 							</page>

@@ -1,4 +1,4 @@
-from odoo import fields, models, api
+from odoo import fields, models, api, exceptions
 
 
 class PropertyType(models.Model):
@@ -51,3 +51,17 @@ class PropertyOffer(models.Model):
             if not create_date:
                 create_date = fields.Date.today()
             record.validity = (record.date_deadline - create_date).days
+
+    def accept_offer(self):
+        if self.property_id.status == "sold":
+            raise exceptions.UserError("Property is already sold")
+        self.property_id.buyer_id = self.buyer_id
+        self.property_id.selling_price = self.price
+        self.status = "accepted"
+        return True
+
+    def refuse_offer(self):
+        if self.property_id.status == "sold":
+            raise exceptions.UserError("Property is already sold")
+        self.status = "refused"
+        return True
