@@ -34,6 +34,16 @@ class EstatePropertyOffer(models.Model):
                 created_date, days=record.validity,
             )
 
+    @api.model
+    def create(self, val_lists):
+        for vals in val_lists:
+            linked_property = self.env['estate.property'].browse(vals['property_id'])
+            if vals['price'] < linked_property.best_price:
+                raise UserError('Offer price cannot be lower than existing offers')
+
+            linked_property.state = 'offer_received'
+        return super().create(val_lists)
+
     def _inverse_deadline(self):
         for record in self:
             created_date = record.create_date.date() or fields.Date.today()
