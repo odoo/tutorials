@@ -1,0 +1,17 @@
+.pie-chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+}
+
+.pie-chart-container canvas {
+    max-width: 100%;
+    height: auto !important;
+}

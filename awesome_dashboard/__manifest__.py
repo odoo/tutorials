@@ -16,14 +16,18 @@
     'version': '0.1',
     'application': True,
     'installable': True,
+    'images': ['static/description/icon.png'],
     'depends': ['base', 'web', 'mail', 'crm'],
 
     'data': [
         'views/views.xml',
     ],
-    'assets': {
-        'web.assets_backend': [
-            'awesome_dashboard/static/src/**/*',
+     "assets": {
+        "web.assets_backend": [
+            "awesome_dashboard/static/src/**/*",
+        ],
+        "awesome_dashboard.dashboard": [
+            "awesome_dashboard/static/src/dashboard/**/*",
         ],
     },
     'license': 'AGPL-3'

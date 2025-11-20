@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_10" model="res.partner">
+        <field name="name">Anital Oliver</field>
+        <field name="email">anita.oliver00@example.com</field>
+        <field name="mobile">(538)-672-3185</field>
+        <field name="city">Pleasant Hill</field>
+        <field name="state_id" ref="base.state_us_5"/>
+        <field name="country_id" ref="base.us"/>
+    </record>
+
+    <record id="res_partner_11" model="res.partner">
+        <field name="name">Douglas Fletcher</field>
+        <field name="email">douglas.fletcher51@example.com</field>
+        <field name="phone">(132)-553-7242</field>
+        <field name="street">77 Santa Barbara Rd</field>
+        <field name="city">Pleasant Hill</field>
+        <field name="state_id" ref="base.state_us_5"/>
+        <field name="country_id" ref="base.us"/>
+        <field name="zip">94523</field>
+    </record>
+
+    <record id="res_partner_12" model="res.partner">
+        <field name="name">Art Factory</field>
+        <field name="email">artfactory@test.com</field>
+        <field name="street">77, Complex</field>
+        <field name="city">Neessvilly</field>
+        <field name="state_id" ref="base.state_us_43"/>
+        <field name="country_id" ref="base.us"/>
+        <field name="is_company" eval="True"/>
+    </record>
+
+    <record id="res_partner_13" model="res.partner">
+        <field name="name">Vraj Shah</field>
+        <field name="email">sarah.connor45@example.com</field>
+        <field name="mobile">(346)-872-1935</field>
+        <field name="city">Los Angeles</field>
+        <field name="state_id" ref="base.state_us_5"/>
+        <field name="country_id" ref="base.us"/>
+    </record>
+
+    <record id="res_partner_14" model="res.partner">
+        <field name="name">Michael Roberts</field>
+        <field name="email">michael.roberts61@example.com</field>
+        <field name="phone">(554)-983-2871</field>
+        <field name="city">San Francisco</field>
+        <field name="state_id" ref="base.state_us_5"/>
+        <field name="country_id" ref="base.us"/>
+        <field name="zip">94101</field>
+    </record>
+
+    <record id="res_partner_15" model="res.partner">
+        <field name="name">Jack Mathew</field>
+        <field name="email">jack@test.com</field>
+        <field name="state_id" ref="base.state_us_44"/>
+        <field name="country_id" ref="base.us"/>
+        <field name="zip">4567</field>
+        <field name="function">Artist</field>
+    </record>
+
+    <record id="res_partner_16" model="res.partner">
+        <field name="name">ARCHER ART PRIVATE LIMITED</field>
+        <field name="email">aap@test.com</field>
+        <field name="state_id" ref="base.state_us_as"/>
+        <field name="country_id" ref="base.us"/>
+    </record>
+
+    <record id="res_partner_17" model="res.partner">
+        <field name="name">Tina Adams</field>
+        <field name="email">tina.adams29@example.com</field>
+        <field name="mobile">(745)-231-4567</field>
+        <field name="city">Oakland</field>
+        <field name="state_id" ref="base.state_us_5"/>
+        <field name="country_id" ref="base.us"/>
+    </record>
+
+    <record id="res_partner_18" model="res.partner">
+        <field name="name">David Lee</field>
+        <field name="email">david.lee72@example.com</field>
+        <field name="phone">(653)-124-9384</field>
+        <field name="city">Santa Clara</field>
+        <field name="state_id" ref="base.state_us_5"/>
+        <field name="country_id" ref="base.us"/>
+        <field name="zip">95050</field>
+    </record>
+
+    <record id="res_partner_19" model="res.partner">
+        <field name="name">Michael Jordan</field>
+        <field name="email">michael.jordan@example.com</field>
+        <field name="mobile">(923)-562-1837</field>
+        <field name="city">Chicago</field>
+        <field name="state_id" ref="base.state_us_5"/>
+        <field name="country_id" ref="base.us"/>
+    </record>
+
+    <record id="res_partner_20" model="res.partner">
+        <field name="name">Lisa Evans</field>
+        <field name="email">lisa.evans94@example.com</field>
+        <field name="mobile">(324)-853-7465</field>
+        <field name="city">Sacramento</field>
+        <field name="state_id" ref="base.state_us_5"/>
+        <field name="country_id" ref="base.us"/>
+    </record>
+</odoo>

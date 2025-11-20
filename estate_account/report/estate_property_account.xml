@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="real_estate_property_report_template_offer_inherit" inherit_id="estate.estate_property_offers_table">
+        <xpath expr="//table" position="before">
+            <div t-if="property.status == 'sold'">
+                <h5><strong>
+                    !!!Invoice has already been created!!!
+                </strong></h5>
+            </div>
+        </xpath>
+    </template>
+
+    <record id="estate_property_form" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form//sheet" position="inside">
+                <div class="oe_button_box" name="button_box" invisible="not invoice_id">
+                    <button type="object" name="show_invoice" class="oe_stat_button" icon="fa-file-text-o">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_value">Invoices</span>
+                            <span class="o_stat_text">View</span>
+                        </div>
+                    </button>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

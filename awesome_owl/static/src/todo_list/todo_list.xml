@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.todo_list">
+        <div class="todo-list p-3 border rounded">
+            <!-- Input Field with Reference -->
+            <input type="text" placeholder="Enter a new task..." 
+                class="form-control mb-3"
+                t-ref="input"
+                t-on-keyup="addTodo"/>
+
+        </div>
+        <div t-foreach="todos" t-as="todo" t-key="todo.id" class="todo-item border-bottom py-2 p-3">
+            <div class="d-flex align-items-center">
+                <input type="checkbox" class="form-check-input me-2" t-on-click="() => this.toggleTodo(todo.id)"/>
+                <TodoItem todo="todo"/>
+                <span class="fa fa-remove" t-on-click="(ev) => this.removeTodo(todo.id)"/>
+            </div>
+        </div>
+    </t>
+</templates>
