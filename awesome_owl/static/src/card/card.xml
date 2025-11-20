@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.card">
-        <div class="card d-inline-block m-2" style="width: 18rem; border: 2px solid black; border-radius: 12px; margin-top: 10px; text-align:center;">
-            <div class="card-body">
-                <h4 class="card-title" style="background-color: blue; margin:0; border-radius:14px;">
-                    <t t-esc="props.title"/>
+        <div class="card d-inline-block m-2"
+             style="width: 18rem; 
+                    border: 2px solid #444; 
+                    border-radius: 16px; 
+                    margin-top: 10px; 
+                    text-align:center;">
+
+            <div class="card-body" style="padding: 16px;">
+
+                <h4 class="card-title"
+                    style="background-color: #4c6ef5;
+                        color: white;
+                        margin: 0; 
+                        padding: 10px 0;
+                        border-radius: 12px;
+                        font-size: 1.2rem;">
+                    <t t-out="props.title"/>
                 </h4>
-                <p class="card-text" style="background-color: green; margin:10px; border-radius:14px;">
-                    <t t-esc="props.content"/>
+
+                <p class="card-text"
+                   style="background-color: #69db7c;
+                        color: black;
+                        margin: 12px 0 0 0;
+                        padding: 10px;
+                        border-radius: 12px;
+                        font-size: 1rem;">
+                    <t t-out="props.content"/>
                 </p>
+
             </div>
         </div>
+
     </t>
 </templates>
