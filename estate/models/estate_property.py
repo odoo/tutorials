@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
         'The expected price should be stricly positive'
@@ -97,3 +98,11 @@ class EstateProperty(models.Model):
         for record in self:
             if record.selling_price and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=4) < 0:
                 raise ValidationError("The price cannot be les than 90% of the expected price")
+            
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        for record in self:
+            if len(record.offer_ids) > 0:
+                record.state = "offer_received"
+            else:
+                record.state = "new"
