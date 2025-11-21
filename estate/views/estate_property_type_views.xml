@@ -6,8 +6,17 @@
         <field name="arch" type="xml">
             <form string="New Type">
                 <sheet>
-                    <group>
-                        <h1><field name="name" nolabel="1" placeholder="New property type"/></h1>
+                    <group class="border-bottom">
+                        <group>
+                            <h1><field name="name" nolabel="1" placeholder="New property type"/></h1>
+                        </group>
+                        <group>
+                            <div class="d-flex flex-row-reverse">
+                                <button class="oe_stat_button border" name="%(estate.estate_property_offer_action)d" type="action" string="Stat button" icon="fa-money">
+                                    <field name="offer_count"/>
+                                </button>
+                            </div>
+                        </group>
                     </group>
                     <notebook>
                         <page string="Properties">
