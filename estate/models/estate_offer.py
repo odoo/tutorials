@@ -63,3 +63,12 @@ class EstateOffer(models.Model):
         for record in self:
             if record.status == "accepted":
                 raise UserError("You can't delete an accepted offer.")
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            best_offer = self.env['estate.property'].browse(val["property_id"]).best_price
+            if val['price'] < best_offer:
+                raise UserError(f"Impossible to add an offer lower than {best_offer}.")
+        return super().create(vals)
+

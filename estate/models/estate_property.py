@@ -111,6 +111,7 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
+
     @api.onchange('offer_ids')
     def _onchange_offers(self):
         for record in self:
@@ -118,3 +119,9 @@ class EstateProperty(models.Model):
                 record.state = "new"
             else:
                 record.state = "offer_received"
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if record.state not in  ["new","cancelled"]:
+                raise UserError("You can only delete new or cancelled properties.")
