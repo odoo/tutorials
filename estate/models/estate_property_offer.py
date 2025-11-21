@@ -19,7 +19,8 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         string="Deadline Date",
         compute="_compute_date_deadline",
-        inverse="_inverse_date_deadline"
+        inverse="_inverse_date_deadline",
+        store=True
     )
     property_type_id = fields.Many2one(
         related="property_id.property_type_id",
@@ -79,3 +80,13 @@ class EstatePropertyOffer(models.Model):
             for offer in records:
                 offer.property_id.state = "offer_received"
         return records
+    
+    @api.model
+    def _auto_refuse_pass_deadline_entry(self):
+        current_date = fields.Date.today()+relativedelta(days=7)
+        invalid_offers = self.search([
+            ('date_deadline', '<=', current_date),
+            ('status', 'not in', ['accepted', 'refused']),
+        ])
+        for record in invalid_offers:
+            record.status = 'refused'

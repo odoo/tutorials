@@ -1,6 +1,6 @@
 {
     'name': 'Real Estate',
-    'depends': ['base'],
+    'depends': ['base','sale'],
     'application': True,
     'installable': True,
     'author': 'Odoo S.A.',
@@ -11,6 +11,7 @@
         'views/estate_property_views.xml',
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
-        'views/estate_menus.xml'
+        'views/estate_menus.xml',
+        'data/cron_scheduler_offer.xml'
     ],
 }
