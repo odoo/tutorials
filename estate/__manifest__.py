@@ -7,15 +7,16 @@
     'author': 'Odoo S.A.',
     'application': True,
     'license': 'LGPL-3',
-    'depends': [
-        'base',
+    'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_property_offer_views.xml',
+        'views/estate_property_views.xml',
+        'views/estate_list.xml',
+        'views/estate_view_form.xml',
+        'views/estate_view_search.xml',
+        'views/estate_menus.xml',
     ],
-     'data': [
-         'security/ir.model.access.csv',
-         'views/estate_property_views.xml',
-         'views/estate_tree.xml',
-         'views/estate_menus.xml',
-         'views/estate_view_form.xml',
-         'views/estate_view_search.xml',
-     ],
 }

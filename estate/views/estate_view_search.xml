@@ -16,6 +16,7 @@
                 <field name="facades" string="Facades"/>
                 <field name="garage" string="Garage"/>
                 <field name="garden" string="Garden"/>
+                <field name="property_type_id" string="Property Type"/>
                 <field name="garden_area" string="Garden Area"/>
                 <field name="garden_orientation" string="Garden Orientation"/>
                 <field name="state" string="State"/>

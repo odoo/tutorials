@@ -5,6 +5,7 @@
         <field name="arch" type="xml">
             <list string="Estate Properties">
                 <field name="name"/>
+                <field name="tag_ids" widget="many2many_tags"/>
                 <field name="post_code"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>

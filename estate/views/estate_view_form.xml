@@ -14,6 +14,10 @@
                         </h1>
                     </div>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="property_type_id"/>
+                    </group>
+                    <group>
                         <group>
                             <field name="post_code"/> 
                             <field name="date_availability"/>
@@ -39,6 +43,17 @@
                                     <field name="garden"/>
                                     <field name="garden_area"/>
                                     <field name="garden_orientation"/>
+                                </group>
+                            </group>
+                        </page>
+                         <page string="Offers">
+                            <field name="offer_ids"/>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <group>
+                                    <field name="user_id"/>
+                                    <field name="buyer_id"/>
                                 </group>
                             </group>
                         </page>
