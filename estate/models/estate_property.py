@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate description"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     tag_ids = fields.Many2many("estate.property.tag")
@@ -88,7 +89,7 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            if record.state == "canceled":
+            if record.state == "cancelled":
                 raise UserError("Canceled property can't be sold.")
             else:
                 record.state = "sold"
@@ -99,14 +100,21 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise UserError("Sold property can't be canceled.")
             else:
-                record.state = "canceled"
+                record.state = "cancelled"
                 return True
 
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
-            if float_compare( record.selling_price, record.expected_price * 0.9, precision_digits=4) == -1 \
+            if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=4) == -1 \
                     and (self.state == "offer_accepted"):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
+    @api.onchange('offer_ids')
+    def _onchange_offers(self):
+        for record in self:
+            if len(record.offer_ids) == 0:
+                record.state = "new"
+            else:
+                record.state = "offer_received"
