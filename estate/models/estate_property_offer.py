@@ -21,6 +21,7 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         "Deadline", compute="_compute_date_deadline", store=True
     )
+
     @api.depends('validity')
     def _compute_date_deadline(self):
         for offer in self:
