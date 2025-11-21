@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <Counter onChange.bind="calculateSum"/>
-        <Counter onChange.bind="calculateSum"/>
-        <Card title="'Hello'" content="'World'"/>
         <t t-out="this.state.content"/>
-        <p style="font-weight: bold;">Sum: <t t-esc="state.sum"/></p>
-        <button 
+        <div style="display:flex; align-items:center; gap:12px;">
+            <Counter onChange.bind="calculateSum"/>
+            <Counter onChange.bind="calculateSum"/>
+            <Counter onChange.bind="calculateSum"/>
+        </div>
+        <div style="display:flex; align-items:center; gap:12px; margin-top:10px;">
+            <p style="font-weight:bold; margin:0;">Sum: <t t-esc="state.sum"/></p>
+            <button 
                 t-if="state.sum != 0"
                 t-on-click="reset"
                 style="background:#6a5acd; color:white; border:none; padding:8px 18px; border-radius:8px;">
                 Reset Sum
-        </button>
+            </button>
+        </div>
+        <Card title="'Hello'" content="'World'"/>
+        <TodoList/>
     </t>
 </templates>

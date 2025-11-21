@@ -9,17 +9,14 @@
                     text-align:center;">
 
             <div class="card-body" style="padding: 16px;">
-
                 <h4 class="card-title"
                     style="background-color: #4c6ef5;
-                        color: white;
                         margin: 0; 
                         padding: 10px 0;
                         border-radius: 12px;
                         font-size: 1.2rem;">
                     <t t-out="props.title"/>
                 </h4>
-
                 <p class="card-text"
                    style="background-color: #69db7c;
                         color: black;
