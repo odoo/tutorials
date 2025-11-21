@@ -6,6 +6,12 @@
             <form string="Property">
                 <header>
                     <field name="state" widget="statusbar"/>
+                    <button name="action_sold" string="SOLD" type="object" 
+                    invisible="state in ['action_solde']"
+                         class="oe_highlight"/>
+                    <button name="action_cancel" string="CANCEL" type="object" 
+                    invisible="state in ['action_cancel']"
+                         class="oe_highlight"/>
                 </header>
                 <sheet>
                     <div class="oe_title">

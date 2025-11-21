@@ -1,5 +1,6 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError, ValidationError
 from odoo import api, fields, models
 
 
@@ -57,8 +58,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float(
-        "Best Offer",
-        compute="_compute_best_price", readonly=True
+        "Best Offer", compute="_compute_best_price", readonly=True
     )
 
     @api.depends('living_area', 'garden_area')
@@ -85,3 +85,13 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_sold(self):
+        if "cancelled" in self.mapped("state"):
+            raise UserError("Canceled property cannot be sold !")
+        return self.write({"state": "sold"})
+
+    def action_cancel(self):
+        if "sold" in self.mapped("state"):
+            raise UserError("Sold property cannot be canceled !")
+        return self.write({"state": "cancelled"})
