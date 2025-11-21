@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="pos_add_quantity_button" xml:space="preserve">
+    <t t-name="pos_second_uom.AddQuantityButton">
+        <button class="set-partner btn btn-light btn-lg lh-lg text-truncate w-auto" t-on-click="onClick">
+            Add Quantity
+        </button>
+    </t>
+</templates>

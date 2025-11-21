@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="pos_add_quantity_button" xml:space="preserve">
+    <t t-name="pos_second_uom.AddQuantityButton" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//button[hasclass('flex-shrink-0')]" position="before">
+            <AddQuantityButton/>
+        </xpath>
+    </t>
+</templates>

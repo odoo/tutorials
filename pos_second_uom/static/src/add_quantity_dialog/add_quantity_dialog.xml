@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="pos_add_quantity_dialog" xml:space="preserve">
+    <t t-name="pos_second_uom.AddQuantityDialog">
+        <Dialog title="'Add Quantity'" size="'md'">
+            <main class="modal-body p-4">
+                <div>
+                    <label for="quantityInput" class="form-label mb-2">Quantity:</label>
+                    <input type="number" id="quantityInput" class="form-control" value="1" min="1" t-ref="quantityInput"/>
+                </div>
+            </main>
+            <t t-set-slot="footer">
+                <button type="button" class="btn btn-secondary me-2" t-on-click="cancel">Cancel</button>
+                <button type="button" class="btn btn-primary" t-on-click="confirm">Confirm</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
