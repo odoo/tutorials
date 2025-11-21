@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.ToDoList">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <input class="form-control mb-3" type="text" t-ref="inputAddTodo" t-on-keyup="addTodo" placeholder="Enter a new task" />
+            <t t-foreach="model.todos" t-as="td" t-key="td.id"> 
+                <div class="m-3">   
+                    <ToDoItem todo="td"/>
+                </div>
+            </t>
+       </div>
+    </t>
+
+</templates>

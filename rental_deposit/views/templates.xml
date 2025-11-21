@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="rental_product" inherit_id="website_sale.product_quantity" name="Deposit">
+        <!-- <xpath expr="//div[@id='product_option_block']" position="after"> -->
+        <xpath expr="//div[@id='add_to_cart_wrap']" position="after">
+            <div t-if="product.has_deposit">
+                <div class="alert alert-warning mt-3 ">
+                    <strong>Deposit required:</strong> $ <span id="deposit_amount" t-out="product.amount"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
