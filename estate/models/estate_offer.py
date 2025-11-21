@@ -71,4 +71,3 @@ class EstateOffer(models.Model):
             if val['price'] < best_offer:
                 raise UserError(f"Impossible to add an offer lower than {best_offer}.")
         return super().create(vals)
-

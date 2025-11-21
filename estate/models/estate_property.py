@@ -123,5 +123,5 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_property(self):
         for record in self:
-            if record.state not in  ["new","cancelled"]:
+            if record.state not in ["new", "cancelled"]:
                 raise UserError("You can only delete new or cancelled properties.")
