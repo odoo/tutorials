@@ -1,4 +1,5 @@
 from odoo import fields, models, api, exceptions
+from odoo.tools import float_compare
 
 
 class Property(models.Model):
@@ -64,6 +65,16 @@ class Property(models.Model):
         string="Best Offer",
     )
 
+    _check_positive_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "Prices Must Be Positive",
+    )
+
+    _check_positive_selling_price = models.Constraint(
+        "CHECK(selling_price > 0)",
+        "Prices Must Be Positive",
+    )
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -72,17 +83,14 @@ class Property(models.Model):
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_offer = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_offer = 0
+            record.best_offer = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0
-        self.garden_orientation = "north" if self.garden else ""
+        self.garden_orientation = "north" if self.garden else None
 
-    def sell_property_action(self):
+    def button_sell_property(self):
         for record in self:
             if record.status == "cancelled":
                 raise exceptions.UserError("Property Cancelled")
@@ -96,18 +104,8 @@ class Property(models.Model):
             record.status = "cancelled"
         return True
 
-    _check_positive_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'Prices Must Be Positive',
-    )
-
-    _check_positive_selling_price = models.Constraint(
-        'CHECK(selling_price > 0)',
-        'Prices Must Be Positive',
-    )
-
     @api.constrains("selling_price")
     def _check_selling_price(self):
         for record in self:
-            if (record.selling_price - 0.9 * record.expected_price >= 1e-5):
+            if float_compare(record.selling_price, record.expected_price * 0.90, 2) < 0:
                 raise exceptions.ValidationError("The selling price is too low")

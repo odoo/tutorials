@@ -42,27 +42,32 @@ class PropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
 
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_date", inverse="_inverse_date")
+
+    date_deadline = fields.Datetime(
+        compute="_compute_date_deadline", inverse="_inverse_date_deadline"
+    )
+
+    _check_positive_price = models.Constraint(
+        "CHECK(price > 0.001)",
+        "Prices Must Be Positive",
+    )
 
     @api.depends("validity")
-    def _compute_date(self):
-        for record in self:
-            create_date = record.create_date
-            if not create_date:
-                create_date = fields.Date.today()
-            record.date_deadline = fields.Date.add(
+    def _compute_date_deadline(self):
+        for property in self:
+            create_date = property.create_date or fields.Datetime.now()
+            property.date_deadline = fields.Datetime.add(
                 create_date,
-                days=record.validity,
+                days=property.validity,
             )
 
-    def _inverse_date(self):
-        for record in self:
-            create_date = record.create_date.date()
-            if not create_date:
-                create_date = fields.Date.today()
-            record.validity = (record.date_deadline - create_date).days
+    def _inverse_date_deadline(self):
+        for property in self:
+            create_date = property.create_date or fields.Datetime.now()
+            property.validity = (property.date_deadline - create_date).days
 
     def accept_offer(self):
+        self.ensure_one()
         if self.property_id.status == "sold":
             raise exceptions.UserError("Property is already sold")
         self.property_id.buyer_id = self.buyer_id
@@ -71,12 +76,8 @@ class PropertyOffer(models.Model):
         return True
 
     def refuse_offer(self):
+        self.ensure_one()
         if self.property_id.status == "sold":
             raise exceptions.UserError("Property is already sold")
         self.status = "refused"
         return True
-
-    _check_positive_price = models.Constraint(
-        "CHECK(price > 0.001)",
-        "Prices Must Be Positive",
-    )
