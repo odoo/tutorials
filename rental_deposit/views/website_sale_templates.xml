@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="rental_deposit_product" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='o_wsale_cta_wrapper']" position="after">
+            <t t-if="product.rent_ok and product.require_deposit">
+                <div class="mt16 alert alert-info">
+                    <strong>Deposit Required: </strong>
+                    <span id="calculated_deposit"
+                          t-esc="product.deposit_total"
+                          t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
