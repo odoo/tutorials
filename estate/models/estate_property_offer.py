@@ -50,8 +50,6 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
-    
-
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_deleted(self):
