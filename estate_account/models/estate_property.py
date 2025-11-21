@@ -6,7 +6,7 @@ from odoo import models, Command
 class EstateProperty(models.Model):
     _inherit = 'estate.property'
 
-    def property_sold(self):
+    def action_property_sold(self):
         invoice_vals_list = []
         for record in self:
             if record.state == 'offer_accepted' and record.buyer_id:
@@ -28,4 +28,4 @@ class EstateProperty(models.Model):
                 }
                 invoice_vals_list.append(invoice_vals)
         self.env['account.move'].sudo().create(invoice_vals_list)
-        return super().property_sold()
+        return super().action_property_sold()

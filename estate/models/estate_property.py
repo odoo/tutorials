@@ -55,12 +55,6 @@ class EstateProperty(models.Model):
         'The selling price must be positive',
     )
 
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, 4) and float_compare(record.selling_price, record.expected_price * 0.9, 4) < 0:
-                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price.")
-
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
         for record in self:
@@ -73,6 +67,13 @@ class EstateProperty(models.Model):
                 record.best_offer = max(record.offer_ids.mapped('price'))
             else:
                 record.best_offer = 0
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 4) and float_compare(record.selling_price,
+                                                                            record.expected_price * 0.9, 4) < 0:
+                raise exceptions.ValidationError("The selling price must be at least 90% of the expected price.")
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -89,18 +90,18 @@ class EstateProperty(models.Model):
             if record.state not in ('new', 'cancelled'):
                 raise exceptions.UserError("Only new and cancelled properties can be deleted.")
 
-    def property_sold(self):
-        for record in self:
-            if record.state != 'cancelled':
-                record.state = 'sold'
-            else:
-                raise exceptions.UserError("Cancelled properties cannot be sold.")
+    def action_property_sold(self):
+        self.ensure_one()
+        if self.state != 'cancelled':
+            self.state = 'sold'
+        else:
+            raise exceptions.UserError("Cancelled properties cannot be sold.")
         return True
 
-    def property_cancelled(self):
-        for record in self:
-            if record.state != 'sold':
-                record.state = 'cancelled'
-            else:
-                raise exceptions.UserError("Sold properties cannot be cancelled.")
+    def action_property_cancelled(self):
+        self.ensure_one()
+        if self.state != 'sold':
+            self.state = 'cancelled'
+        else:
+            raise exceptions.UserError("Sold properties cannot be cancelled.")
         return True

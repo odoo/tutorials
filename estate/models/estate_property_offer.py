@@ -23,6 +23,15 @@ class EstatePropertyOffer(models.Model):
         'The offer price must be strictly positive',
     )
 
+    @api.depends('validity')
+    def _compute_deadline(self):
+        for record in self:
+            record.date_deadline = (record.create_date if record.create_date else date.today()) + timedelta(days=record.validity)
+
+    def _inverse_deadline(self):
+        for record in self:
+            record.validity = (record.date_deadline - (record.create_date.date() if record.create_date else date.today())).days
+
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
@@ -34,26 +43,17 @@ class EstatePropertyOffer(models.Model):
                     current_property.state = 'offer_received'
         return super().create(vals_list)
 
-    @api.depends('validity')
-    def _compute_deadline(self):
-        for record in self:
-            record.date_deadline = (record.create_date if record.create_date else date.today()) + timedelta(days=record.validity)
-
-    def _inverse_deadline(self):
-        for record in self:
-            record.validity = (record.date_deadline - (record.create_date.date() if record.create_date else date.today())).days
-
     def action_accept(self):
-        for record in self:
-            if record.property_id.state in ('new', 'offer_received'):
-                record.property_id.state = 'offer_accepted'
-                record.status = 'accepted'
-                record.property_id.selling_price = record.price
-                record.property_id.buyer_id = record.partner_id
+        self.ensure_one()
+        if self.property_id.state in ('new', 'offer_received'):
+            self.property_id.state = 'offer_accepted'
+            self.status = 'accepted'
+            self.property_id.selling_price = self.price
+            self.property_id.buyer_id = self.partner_id
         return True
 
     def action_refuse(self):
-        for record in self:
-            if not record.status:
-                record.status = 'refused'
+        self.ensure_one()
+        if not self.status:
+            self.status = 'refused'
         return True
