@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="deposit_rental_website_view" inherit_id="website_sale.product">
+        <xpath expr="//div[@id='product_option_block']" position="after">
+        <div t-if="product.deposit_require">
+            Deposit Required: <t t-esc="product.currency_id.symbol"></t><span id="deposit_amount" t-att-data-base-amount="product.deposit_amount"/>
+        </div>
+        </xpath>
+    </template>
+    <template id="deposit_amount_cart_line" inherit_id="website_sale.cart_lines">
+        <xpath expr="//div[@name='o_wsale_cart_line_button_container']" position="after">
+            <t t-if="line.product_id.deposit_require">
+                <p>
+                    Deposit for <t t-esc="line.product_id.display_name"/>: 
+                    <t t-esc="line.currency_id.symbol"/><t t-esc="line.product_id.deposit_amount * line.product_uom_qty"/>
+                </p>
+            </t>
+        </xpath>
+    </template>
+</odoo>
