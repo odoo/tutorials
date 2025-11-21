@@ -6,7 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate properties"
-
+    _order = "id desc"
     name = fields.Char('Name', required=True, translate=True)
     description = fields.Text('Description', required=True)
     postcode = fields.Char('Postcode')
@@ -22,13 +22,24 @@ class EstateProperty(models.Model):
     garden_area = fields.Float('Garden Area (sqm)')
     garden_orientation = fields.Selection(
         string='Garden Orientation',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')])
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ])
     state = fields.Selection(
         string='State',
         required=True,
         default='new',
         copy=False,
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')])
+        selection=[
+            ('new', 'New'),
+            ('offer_received','Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ])
     property_type_id = fields.Many2one("estate.property.type", "Type")
     property_tags_ids = fields.Many2many("estate.property.tag", "Tags")
     sales_person_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
@@ -54,9 +65,7 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            if len(record.offer_ids)>0:
-                record.best_price = max(record.offer_ids, key=lambda p: p.price).price
-
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
     @api.onchange('garden')
     def _onchange_garden(self):
         if not self.garden:

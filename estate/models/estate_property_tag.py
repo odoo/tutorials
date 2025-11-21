@@ -4,7 +4,7 @@ from odoo import models, fields
 class EstatePropertyTag(models.Model):
     _name = "estate.property.tag"
     _description = "Estate properties Tags"
-
+    _order = "name"
     name = fields.Char('Name', required=True, translate=True)
 
     _tags_uniq = models.Constraint(
