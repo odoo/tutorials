@@ -36,6 +36,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
+            if record.status == 'accepted':
+                return False
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             for offer in record.property_id.offer_ids:
@@ -46,12 +48,10 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse_offer(self):
         for record in self:
-            if record.status == 'accepted':
-                record.property_id.selling_price = 0.0
-                record.property_id.buyer_id = None
-                record.property_id.state = 'offer_received'
-            record.status = 'refused'
+            record.status = "refused"
         return True
+    
+
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_deleted(self):
