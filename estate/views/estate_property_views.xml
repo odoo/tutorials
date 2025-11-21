@@ -135,7 +135,7 @@
 
                 <separator/>
 
-                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_recevied'))]"/>
                 <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
             </search>
         </field>

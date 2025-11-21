@@ -5,7 +5,7 @@ from odoo.tools.float_utils import float_is_zero, float_compare
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
-    _description = 'All properties'
+    _description = 'Estate Properties'
     _order = 'id desc'
 
     name = fields.Char(required=True)
@@ -69,27 +69,17 @@ class EstateProperty(models.Model):
         'The selling price of a property should be positive.',
     )
 
+    @api.depends('offer_ids')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
             living_area = record.living_area or 0
             garden_area = record.garden_area or 0
             record.total_area = living_area + garden_area
-
-    @api.depends('offer_ids')
-    def _compute_best_price(self):
-        for record in self:
-            offers = record.offer_ids or []
-            record.best_price = max(offers.mapped('price')) if len(offers) else 0
-
-    @api.onchange('garden')
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = None
-            self.garden_orientation = None
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
@@ -100,6 +90,15 @@ class EstateProperty(models.Model):
             ):
                 raise ValidationError("Selling price cannot be lower than 90% of expected price")
 
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         for record in self:
@@ -109,13 +108,13 @@ class EstateProperty(models.Model):
     def action_mark_as_sold(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError('Property is already cancelled')
+                raise UserError('Cannot sell cancelled properties')
 
             record.state = 'sold'
 
     def action_mark_as_cancelled(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError('Property is already sold')
+                raise UserError('Cannot cancel sold properties')
 
             record.state = 'cancelled'
