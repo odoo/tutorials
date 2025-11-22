@@ -1,0 +1,256 @@
+<odoo>
+    <template id="external_layout_report">
+        <t t-name="pos_layout.external_layout_report">
+            <t t-call="web.html_container">
+                <t t-set="company" t-value="res_company" />
+                <div
+                    style="background-color: #f0f0f0; display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+                    <div
+                        style="background-color: white; padding: 20px; width: 80%; max-width: 1100px; font-family: Arial, sans-serif; font-size: 25px; text-align: center;">
+                        <div style="text-align: center; margin-bottom: 20px;">
+                            <img
+                                t-attf-src="/web/image?model=res.company&amp;id={{company.id}}&amp;field=logo"
+                                alt="Logo" class="pos-receipt-logo" />
+                            <br />
+                            <br />
+                            <br />
+                            <div class="pos-receipt-contact">
+                                <div t-if="company.name" t-esc="company.name" />
+                                <t t-if="company.phone">
+                                    <div>Tel:<t t-esc="company.phone" /></div>
+                                </t>
+                                <t t-if="company.vat">
+                                    <div t-esc="vatText" />
+                                </t>
+                                <div t-if="company.email" t-esc="company.email" />
+                                <div t-if="company.website" t-esc="company.website" />
+                                <div t-if="header" style="white-space:pre-line" t-esc="header" />
+                                <div>--------------------------------</div>
+                                <div>Served by Mitchell Admin</div>
+                            </div>
+                        </div>
+
+                        <div style="text-align: center; margin-bottom: 20px; font-size: 18px;">
+                            <strong class="tracking-number fs-1">901</strong>
+                        </div>
+
+                        <t t-if="pos_disp_type=='default'">
+                            <div>
+                                <div
+                                    style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <div>Sourdough Loaf</div>
+                                    <div>$ 12.08</div>
+                                </div>
+                                <div
+                                    style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <div
+                                        style="border: 3px solid black; border-radius: 10px; padding: 3px 5px; margin-right: 5px; font-weight: bold">
+                                        3.00</div>
+                                    <div>x $ 4.03 / Units</div>
+                                </div>
+
+                                <div
+                                    style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <div>Rye Bread</div>
+                                    <div>$ 18.40</div>
+                                </div>
+                                <div
+                                    style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <div
+                                        style="border: 3px solid black; border-radius: 10px; padding: 3px 5px; margin-right: 5px; font-weight: bold">
+                                        4.00</div>
+                                    <div>x $ 4.60 / Units</div>
+                                </div>
+
+                                <div
+                                    style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                    <div>Pecan Pie</div>
+                                    <div>$ 69.00</div>
+                                </div>
+                                <div
+                                    style="display: flex; align-items: center; margin-bottom: 10px;">
+                                    <div
+                                        style="border: 3px solid black; border-radius: 10px; padding: 3px 5px; margin-right: 5px; font-weight: bold">
+                                        4.00</div>
+                                    <div>x $ 17.25 / Units</div>
+                                </div>
+                            </div>
+                            <br />
+                            <br />
+                        </t>
+
+                        <t t-if="pos_disp_type=='lined'">
+                            <table
+                                style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                                <thead>
+                                    <tr style="border-bottom: 3px solid black;">
+                                        <th
+                                            style="text-align: left; padding: 5px; font-weight: bold;">
+                                            No</th>
+                                        <th
+                                            style="text-align: left; padding: 5px; font-weight: bold;">
+                                            Product</th>
+                                        <th
+                                            style="text-align: right; padding: 5px; font-weight: bold;">
+                                            Quantity</th>
+                                        <th
+                                            style="text-align: right; padding: 5px; font-weight: bold;">
+                                            Price</th>
+                                        <th
+                                            style="text-align: right; padding: 5px; font-weight: bold;">
+                                            Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 2px solid #eee;">
+                                        <td style="padding: 5px;">1</td>
+                                        <td style="padding: 5px;">Apple Pie</td>
+                                        <td style="text-align: right; padding: 5px;">3.00</td>
+                                        <td style="text-align: right; padding: 5px;">$ 13.80</td>
+                                        <td style="text-align: right; padding: 5px;">$ 41.40</td>
+                                    </tr>
+                                    <tr style="border-bottom: 2px solid #eee;">
+                                        <td style="padding: 5px;">2</td>
+                                        <td style="padding: 5px;">Bagel</td>
+                                        <td style="text-align: right; padding: 5px;">3.00</td>
+                                        <td style="text-align: right; padding: 5px;">$ 1.44</td>
+                                        <td style="text-align: right; padding: 5px;">$ 4.31</td>
+                                    </tr>
+                                    <tr style="border-bottom: 2px solid #eee;">
+                                        <td style="padding: 5px;">3</td>
+                                        <td style="padding: 5px;">Pain au Chocolat</td>
+                                        <td style="text-align: right; padding: 5px;">3.00</td>
+                                        <td style="text-align: right; padding: 5px;">$ 1.73</td>
+                                        <td style="text-align: right; padding: 5px;">$ 5.18</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <p style="text-align: right;">
+                                ----------------------------------------------</p>
+                            <table
+                                style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; font-size: 25px;">
+                                <tr>
+                                    <td style="text-align: left; padding: 5px;">
+                                        <strong>Total Quantity:</strong> 4 </td>
+                                    <td style="text-align: right; padding: 5px;">
+                                        <strong>Sub-Total:</strong> $ 37.09 </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td style="text-align: right; padding: 5px;">
+                                        <strong>Card:</strong> $ 37.09 </td>
+                                </tr>
+                            </table>
+
+                            <br />
+
+                        </t>
+
+                        <t t-if="pos_disp_type=='boxed'">
+                            <table
+                                style="width: 100%; border-collapse: collapse; border: 3px solid black; margin-bottom: 20px;">
+                                <thead>
+                                    <tr style="border-bottom: 4px solid black;">
+                                        <th
+                                            style="text-align: center; padding: 8px; border-right: 4px solid black; background: #ddd; width: 10%;">
+                                            No</th>
+                                        <th
+                                            style="text-align: center; padding: 8px; border-right: 4px solid black; background: #ddd; width: 60%;">
+                                            Item</th>
+                                        <th
+                                            style="text-align: center; padding: 8px; background: #ddd; width: 30%;">
+                                            Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr style="border-bottom: 4px solid black;">
+                                        <td
+                                            style="padding: 8px; border-right: 4px solid black; text-align: center;">
+                                            1</td>
+                                        <td
+                                            style="padding: 8px; border-right: 4px solid black; text-align: center;">
+                                            Pecan Pie<br />
+                                        <span style="display: block;">1.00 x $
+                                            17.25</span>
+                                        </td>
+                                        <td style="text-align: center; padding: 8px;">$ 17.25</td>
+                                    </tr>
+                                    <tr style="border-bottom: 4px solid black;">
+                                        <td
+                                            style="padding: 8px; border-right: 4px solid black; text-align: center;">
+                                            2</td>
+                                        <td
+                                            style="padding: 8px; border-right: 4px solid black; text-align: center;">
+                                            Rye Bread<br />
+                                        <span style="display: block;">1.00 x $
+                                            4.60</span>
+                                        </td>
+                                        <td style="text-align: center; padding: 8px;">$ 4.60</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr style="border-top: 2px solid black;">
+                                        <td colspan="2"
+                                            style="text-align: left; padding: 8px; font-weight: bold;">
+                                            Total Qty 2
+                                        </td>
+                                        <td
+                                            style="text-align: right; padding: 5px; font-weight: bold;">
+                                            <span> Sub Total $ 21.85</span>
+                                        </td>
+                                    </tr>
+                                    <tr style="border-top: 2px solid black;">
+                                        <td colspan="3" style="text-align: right; padding: 8px;">
+                                            Card $ 21.85
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <br />
+                            <br />
+                        </t>
+
+                        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                            <thead>
+                                <tr
+                                    style="border-top: 4px solid black; border-bottom: 4px solid black;">
+                                    <th style="text-align: left; padding: 5px;">Tax</th>
+                                    <th style="text-align: right; padding: 5px;">Amount</th>
+                                    <th style="text-align: right; padding: 5px;">Base</th>
+                                    <th style="text-align: right; padding: 5px;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="text-align: left; padding: 5px;">SGST</td>
+                                    <td style="text-align: right; padding: 5px;">₹ 0.25</td>
+                                    <td style="text-align: right; padding: 5px;">₹ 10.00</td>
+                                    <td style="text-align: right; padding: 5px;">₹ 10.50</td>
+                                </tr>
+                                <tr>
+                                    <td style="text-align: left; padding: 5px;">CGST</td>
+                                    <td style="text-align: right; padding: 5px;">₹ 0.25</td>
+                                    <td style="text-align: right; padding: 5px;">₹ 10.00</td>
+                                    <td style="text-align: right; padding: 5px;">₹ 10.50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <br />
+                        <br />
+                        <p style="text-aling: center;">----------------------</p>
+                        <div t-if="footer"
+                            style="text-align: center; margin-bottom: 20px;white-space:pre-line"
+                            t-esc="footer" />
+                        <div style="text-align: center; margin-top: 20px;">
+                            <p style="margin: 0;">Powered by Odoo</p>
+                            <p style="margin: 0;">Order 00020-001-0001</p>
+                            <p style="margin: 0;">03/18/2025 14:47:37</p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
