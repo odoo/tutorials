@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_order_form_inherited" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list" position="attributes">
+                <attribute name="decoration-warning" add="(parent_line_id)" separator="or"/>
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly">parent_line_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="attributes">
+                <attribute name="readonly">parent_line_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="readonly">parent_line_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='price_unit']" position="attributes">
+                <attribute name="readonly">parent_line_id</attribute>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="attributes">
+                <attribute name="readonly">parent_line_id</attribute>
+            </xpath>
+            
+            <field name="product_template_id" position="after">
+                <field name="kit_wizard_button" widget="kit_wizard_widget"/>
+                <field name="is_kit_product" invisible="1"/>
+            </field>
+
+            <field name="payment_term_id" position="after">
+                <field name="print_in_report"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
