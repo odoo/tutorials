@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem parent="sale.menu_sale_report" id="menu_commissions_list" name="Commission List" action="sale_commission.commission_list"/>
+    <menuitem parent="sale.menu_sale_config" id="menu_commissions_rule" name="Commission Rule" action="sale_commission.commission_rule"/>
+</odoo>

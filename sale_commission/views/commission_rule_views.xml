@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="commission_rule" model="ir.actions.act_window">
+        <field name="name">Commission Rule</field>
+        <field name="res_model">commission.rule</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <record id="commission_rule_list_view" model="ir.ui.view">
+        <field name="name">commission.rule.list</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <tree string="Commission Rules">
+                <field name="sequence" widget="handle"/>
+                <field name="comission_rate" string="Rate"/>
+                <field name="commission_for"/>
+                <field name="display_name"/>
+            </tree>
+        </field>
+    </record>
+    <record id="commission_rule_form_view" model="ir.ui.view">
+        <field name="name">commission.rule.form</field>
+        <field name="model">commission.rule</field>
+        <field name="arch" type="xml">
+            <form string="Commission Rules">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="comission_rate"/>
+                        </group>
+                        <group>
+                            <field name="commission_for"/>
+                            <field name="target_salesperson" invisible="commission_for == 'salesteam'" required="commission_for == 'salesperson'"/>
+                            <field name="target_sales_team" invisible="commission_for == 'salesperson'" required="commission_for == 'salesteam'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Apply On">
+                            <group>
+                                <group>
+                                    <field name="product_category_id" placeholder="All"/>
+                                    <field name="product_template_id" placeholder="All"/>
+                                    <field name="max_discount"/>
+                                </group>
+                                <group>
+                                    <!-- <label for="on_fast_payment" invisible="due_at != 'payment_confirmation'"/>
+                                    <div invisible="due_at != 'payment_confirmation'">
+                                        <field name="on_fast_payment"/>
+                                        <span class="mx-3" invisible="not on_fast_payment">before</span>
+                                        <field name="fast_payment_days"
+                                        invisible="not on_fast_payment"
+                                        style="width: 3rem"/>
+                                        <span class="mx-3" invisible="not on_fast_payment">days</span>
+                                    </div> -->
+                                    <field name="salesperson" placeholder="All"/>
+                                    <field name="sales_team" placeholder="All"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

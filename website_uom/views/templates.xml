@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_cart_lines_inherited" inherit_id="website_sale.cart_lines">
+        <xpath expr="//div[@name='website_sale_cart_line_quantity']//input" position="attributes">
+            <attribute name="t-att-readonly">'readonly'</attribute>
+        </xpath>
+    </template>
+
+    <template id="template_product_quantity_inherited" inherit_id="website_sale.product_quantity">
+        <xpath expr="//input[@name='add_qty']" position="attributes">
+            <attribute name="t-att-readonly">'readonly'</attribute>
+            <attribute name="t-att-value">default_qty if default_qty else 1</attribute>
+            <attribute name="t-att-data-min">default_qty if default_qty else 1</attribute>
+        </xpath>
+    </template>
+
+    <template id="template_products_inherited" inherit_id="website_sale.products">
+        <xpath expr="//section[@id='o_wsale_products_grid']//div" position="attributes">
+            <attribute name="t-att-title">'Sold in ' + td_product['product']['website_uom_id']['name'] if td_product['product']['website_uom_id'] else ''</attribute>
+        </xpath>
+    </template>
+
+    <template id="template_total_inherited" inherit_id="website_sale.total">
+        <xpath expr="//div[@id='cart_total']//table/tr[last()]" position="after">
+            <t t-set="discount" t-value="0"/>
+            <tr>
+                <td colspan="3" class="border-0 px-0 pt-1">
+                    <t t-foreach="website_sale_order.website_order_line" t-as="line">
+                        <t t-if="line.reward_id">
+                            <span>
+                                <t t-set="discount" t-value="discount + line._get_cart_display_price()"/>
+                            </span>
+                        </t>
+                    </t>
+                    <t t-if="discount != 0">
+                        The Total Discount applied to this order is <t t-out="-discount" t-options="{'widget': 'monetary', 'display_currency': website_sale_order.currency_id}"/>
+                    </t>
+                </td>
+            </tr>
+        </xpath>
+
+        <xpath expr="//div[@id='cart_total']//table/tr[1]" position="before">
+            <tr t-if="website_sale_order._has_deliverable_products() and request.httprequest.path.startswith('/shop/cart')">
+                <td colspan="2" class="text-muted border-0 ps-0 pt-0 pb-5"><strong class="text-black">Quantity</strong></td>
+                <td class="text-end border-0 pe-0 pt-0 pb-5">
+                    <strong class="text-black" t-field="website_sale_order.cart_quantity"/>
+                </td>
+            </tr>
+        </xpath>
+    </template>
+</odoo>

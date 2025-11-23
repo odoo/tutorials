@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="sale.ProductList" t-inherit-mode="extension">
+        <xpath expr="//table/thead/tr/th[last()]" position="before">
+            <th
+                class="px-0 text-end border-bottom-0"
+                t-if="!this.props.areProductsOptional"
+                t-att-colspan="env.showQuantity ? 1 : 2">
+                    SubTotal
+            </th>
+        </xpath>
+        <xpath expr="//table/tbody/tr/td" position="before">
+            <td>
+            </td>
+        </xpath>
+    </t>
+</templates>

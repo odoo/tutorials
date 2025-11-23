@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="sale.Product" t-inherit-mode="extension">
+        <xpath expr="//td[last()]" position="before">
+            <td
+            class="o_sale_product_configurator_price py-3 px-0 text-end"
+            t-if="!this.props.optional">
+            <t t-if="env.showPrice">
+                <span
+                class="h6 text-nowrap"
+                t-esc="getFormattedPrice(this.props.price*this.props.quantity)"/>
+            </t>
+        </td>
+        </xpath>
+        <xpath expr="//td[3]//QuantityButtons" position="attributes">
+            <attribute name="product_temp_id">this.props.product_tmpl_id</attribute>
+        </xpath>
+    </t>
+</templates>
