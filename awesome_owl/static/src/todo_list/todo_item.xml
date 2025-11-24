@@ -10,12 +10,15 @@
             <input
                 type="checkbox"
                 t-att-checked="props.item.isCompleted"
-                class="mr-1"
+                class="mx-2"
                 t-on-click="() => props.toggleState(props.item.id)"
             />
             <span t-esc="props.item.id"/>.
             <span t-esc="props.item.description"/>
-            <button t-on-click="() => props.removeTodo(props.item.id)">
+            <button
+                class="btn text-danger mx-1"
+                t-on-click="() => props.removeTodo(props.item.id)"
+            >
                 <span class="fa fa-remove" />
             </button>
         </div>

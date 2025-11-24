@@ -2,8 +2,15 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.counter">
-        <p>Counter: <t t-esc="state.value"/></p>
-        <button class="btn btn-primary" t-on-click="increment">Increment</button>
+        <div class="py-3">
+            <div>Counter: <t t-esc="state.value"/></div>
+            <button
+                class="btn bg-primary text-white"
+                t-on-click="increment"
+            >
+                Increment
+            </button>
+        </div>
     </t>
 
 </templates>
