@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard" owl="1">
+        <Layout display="this.display" className="'o_dashboard h-100'">
+            <t t-set-slot="layout-buttons">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                <button class="btn btn-light" title="Settings" t-on-click="openSettings">
+                    <i class="fa fa-cog"></i>
+                </button>
+            </t>
+            <div class="o_dashboard d-grid gap-3" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                <t t-foreach="this.dashboardItems" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProps" t-value="item.props ? item.props(this.statistics) : {'data': this.statistics}" />
+                        <t t-if="itemProps">
+                            <t t-component="item.Component" t-props="itemProps" />
+                        </t>
+                        <t t-else="">
+                            <div class="text-muted text-center py-5">
+                                No data available
+                            </div>
+                        </t>
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+</templates>
