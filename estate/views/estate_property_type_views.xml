@@ -11,7 +11,7 @@
                             <field name="name" placeholder="House" class="mb16" />
                         </h1>
                     </div>
-                    <button name="%(estate.estate_property_offer_action)d"
+                    <button name="%(estate.estate_property_action)d"
                         type="action"
                         string="Offers"
                         class="oe_stat_button">

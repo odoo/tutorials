@@ -51,3 +51,12 @@ class EstatePropertyOffer(models.Model):
                 raise exceptions.UserError('You cant refuse an already accepted offer')
             record.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            linked_property = self.env['estate.property'].browse(val['property_id'])
+            if val['price']< linked_property.best_price:
+                raise exceptions.UserError("An offer with a higher price already exists")
+            linked_property.state = 'offer_received'
+        return super(EstatePropertyOffer, self).create(vals)
