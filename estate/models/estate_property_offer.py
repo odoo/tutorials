@@ -1,4 +1,6 @@
 from odoo import api, fields, models
+from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare
 from datetime import timedelta
 
 
@@ -57,3 +59,28 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             offer.state = 'refused'
         return True
+
+    @api.model
+    def create(self, vals_list):
+        if isinstance(vals_list, dict):
+            vals_list = [vals_list]
+
+        for vals in vals_list:
+            prop_id = vals.get('property_id')
+            price = vals.get('price')
+            if prop_id and price is not None:
+                prop = self.env['estate.property'].browse(prop_id)
+                existing_prices = prop.offer_ids.mapped('price')
+                if existing_prices:
+                    best = max(existing_prices)
+                    if float_compare(price, best, precision_digits=2) < 0:
+                        raise ValidationError(
+                            'You cannot create an offer lower than an existing offer.'
+                        )
+
+        offers = super(EstatePropertyOffer, self).create(vals_list)
+
+        for offer in offers:
+            if offer.property_id:
+                offer.property_id.state = 'received'
+        return offers

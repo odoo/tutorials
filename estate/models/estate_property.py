@@ -68,20 +68,6 @@ class EstateProperty(models.Model):
         "Best Offer", compute="_compute_best_price", readonly=True
     )
 
-    # 💡 REPLACED deprecated models.Constraint with _sql_constraints
-    _sql_constraints = [
-        (
-            'check_expected_price',
-            'CHECK(expected_price > 0)',
-            'The expected price must be strictly positive.',
-        ),
-        (
-            'check_selling_price',
-            'CHECK(selling_price >= 0)',
-            'The selling price must be positive or zero.',
-        ),
-    ]
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for rec in self:
@@ -135,3 +121,9 @@ class EstateProperty(models.Model):
     _check_selling_price = models.Constraint(
         'CHECK(selling_price >= 0)', 'The selling price must be positive or zero.'
     )
+
+    @api.ondelete(at_uninstall=False)
+    def _ondelete_check_state(self):
+        for prop in self:
+            if prop.state not in ('new', 'cancelled'):
+                raise UserError('Only properties in New or Cancelled state can be deleted.')
