@@ -1,6 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api, exceptions
+from odoo import fields, models, api, exceptions, _
 from datetime import date, timedelta
 
 
@@ -10,8 +10,11 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Float(string='Price')
-    status = fields.Selection(string='Status', copy=False,
-                            selection=[('accepted', 'Accepted'), ('refused', 'Refused')])
+    status = fields.Selection(
+        string='Status',
+        copy=False,
+        selection=[('accepted', 'Accepted'), ('refused', 'Refused')]
+    )
     partner_id = fields.Many2one('res.partner', string='Customer', required=True)
     property_id = fields.Many2one('estate.property', string='Property', required=True)
     validity = fields.Integer(string='Validity (days)', default=7)
@@ -32,13 +35,13 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - (record.create_date.date() if record.create_date else date.today())).days
 
-    @api.model
+    @api.model_create_multi
     def create(self, vals_list):
         for vals in vals_list:
-            if 'property_id' in vals and vals.get('property_id'):
+            if vals.get('property_id'):
                 current_property = self.env['estate.property'].browse(vals['property_id'])
-                if 'price' in vals and current_property.best_offer > vals.get('price', 0):
-                    raise exceptions.ValidationError(f'The offer must be higher than {current_property.best_offer}')
+                if current_property.best_offer > vals.get('price', 0):
+                    raise exceptions.ValidationError(_("The offer must be higher than %(best_offer)s", best_offer=current_property.best_offer))
                 if current_property.state == 'new':
                     current_property.state = 'offer_received'
         return super().create(vals_list)

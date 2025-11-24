@@ -1,15 +1,20 @@
 import { Component, useState, markup } from "@odoo/owl";
 import { Counter } from "./counter/counter"
 import { Card } from "./card/card";
+import { TodoList } from "./todo_list/todo_list";
 
 export class Playground extends Component {
     static template = "awesome_owl.Playground";
-    static components = { Counter, Card };
-
-    value1 = "<div class='text-primary'>test</div>";
-    value2 = markup("<a href='odoo.com'>test2</a>");
+    static components = { Counter, Card, TodoList };
 
     setup() {
+        this.value1 = "<div class='text-primary'>test</div>";
+        this.value2 = markup("<a href='odoo.com'>test2</a>");
+        this.state = useState({ sum : 0 });
+    }
+
+    implementSum() {
+        this.state.sum++;
     }
 
 }

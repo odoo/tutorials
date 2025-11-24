@@ -8,10 +8,6 @@
     'description': """
     Tutorial Project
     """,
-    'data': [
-    ],
-    'demo': [
-    ],
     'installable': True,
     'application': True,
     'license': 'LGPL-3',

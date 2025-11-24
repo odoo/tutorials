@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.TodoItem">
+        <div>
+            <p>Id: <t t-esc="todo.id"/></p>
+            <p>Description: <t t-esc="todo.description"/></p>
+        </div>
+    </t>
+
+</templates>

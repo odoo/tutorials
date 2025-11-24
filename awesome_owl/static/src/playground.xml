@@ -6,12 +6,19 @@
             hello world
         </div>
         <div>
-            <Counter/>
-            <Counter/>
+            <Counter onChange.bind="implementSum"/>
+            <Counter onChange.bind="implementSum"/>
         </div>
         <div>
             <Card title="'card 1'" content="value1"/>
             <Card title="'card 2'" content="value2"/>
+        </div>
+        <div>
+            The sum is: <t t-esc="state.sum"/>
+        </div>
+        <p></p>
+        <div>
+            <TodoList/>
         </div>
     </t>
 

@@ -22,19 +22,28 @@ class EstateProperty(models.Model):
     garage = fields.Boolean('Garage')
     garden = fields.Boolean('Garden')
     garden_area = fields.Integer('Garden Area (sqm)')
-    garden_orientation = fields.Selection(string='Garden orientation',
-                                          selection=[('north', 'North'),
-                                                    ('south', 'South'),
-                                                    ('east', 'East'),
-                                                    ('west', 'West')]
-                                          )
-    state = fields.Selection(string='State',
-                            selection=[('new', 'New'),
-                                    ('offer_received', 'Offer Received'),
-                                    ('offer_accepted', 'Offer Accepted'),
-                                    ('sold', 'Sold'),
-                                    ('cancelled', 'Cancelled')],
-                             default='new', required=True, copy=False)
+    garden_orientation = fields.Selection(
+            string='Garden orientation',
+            selection=[
+                ('north', 'North'),
+                ('south', 'South'),
+                ('east', 'East'),
+                ('west', 'West'),
+            ],
+        )
+    state = fields.Selection(
+        string='State',
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled'),
+        ],
+        default='new',
+        required=True,
+        copy=False,
+    )
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
     property_tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False,
@@ -63,10 +72,7 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self:
-            if record.offer_ids:
-                record.best_offer = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_offer = 0
+            record.best_offer = max(record.offer_ids.mapped('price'), default=0.0)
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
