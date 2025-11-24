@@ -1,6 +1,6 @@
 {
     'name': 'Real Estate',
-    'depends': ['base','sale'],
+    'depends': ['base', 'sale'],
     'application': True,
     'installable': True,
     'author': 'Odoo S.A.',

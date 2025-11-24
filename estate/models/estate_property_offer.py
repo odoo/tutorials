@@ -80,10 +80,10 @@ class EstatePropertyOffer(models.Model):
             for offer in records:
                 offer.property_id.state = "offer_received"
         return records
-    
+
     @api.model
     def _auto_refuse_pass_deadline_entry(self):
-        current_date = fields.Date.today()+relativedelta(days=7)
+        current_date = fields.Date.today() + relativedelta(days=7)
         invalid_offers = self.search([
             ('date_deadline', '<=', current_date),
             ('status', 'not in', ['accepted', 'refused']),
