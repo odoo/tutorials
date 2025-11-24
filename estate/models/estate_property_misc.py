@@ -102,3 +102,12 @@ class PropertyOffer(models.Model):
             raise exceptions.UserError("Property is already sold")
         self.state = "refused"
         return True
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            property = self.env["estate.property"].browse(vals["property_id"])
+            property.state = "offer_recieved"
+            if vals["price"] < property.best_offer:
+                raise exceptions.UserError("Property is already sold")
+        return super().create(vals)

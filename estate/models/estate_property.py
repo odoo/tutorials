@@ -117,3 +117,10 @@ class Property(models.Model):
         for record in self:
             if float_compare(record.selling_price, record.expected_price * 0.90, 2) < 0:
                 raise exceptions.ValidationError("The selling price is too low")
+
+    @api.ondelete(at_uninstall=False)
+    def _check_ondelete(self):
+        if any((property.state not in ("new", "cancelled")) for property in self):
+            raise exceptions.UserError(
+                "Can't delete, one or more property has some action done, mark as cancelled first"
+            )
