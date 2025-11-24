@@ -2,7 +2,11 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.todo_item">
-        <div class="d-inline-block m-2" style="width: 18rem;">
+        <div
+            class="d-inline-block m-2"
+            t-att-class="{'text-muted': props.item.isCompleted, 'text-decoration-line-through': props.item.isCompleted }"
+            style="width: 18rem;"
+        >
             <span t-esc="props.item.id"/>.
             <span t-esc="props.item.description"/>
         </div>

@@ -7,11 +7,25 @@ class TodoList extends Component {
     static props = {}
 
     setup() {
-        this.todos = useState([
-            { id: 1, description: "Todo 1", isCompleted: false },
-            { id: 2, description: "Todo 2", isCompleted: false },
-            { id: 3, description: "Todo 3", isCompleted: true },
-        ]);
+        this.state = useState({ todos: [], counter: 0 });
+    }
+
+    addTodo(event) {
+      if (event.keyCode === 13) {
+          const value = event.target.value;
+          if (value.length) {
+            this.state.counter++;
+            this.state.todos = [
+              ...this.state.todos,
+              {
+                  id: this.state.counter,
+                  description: event.target.value,
+                  isCompleted: false,
+              },
+            ];
+            event.target.value = "";
+          }
+      }
     }
 }
 
