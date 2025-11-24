@@ -16,7 +16,12 @@
                     title="'Card 1'"
                     content="card_content"
                 />
-                <Card title="'Card 2'" content="card2_content" />
+                <Card title="'Card 2'" content="card2_content">
+                    Hello
+                </Card>
+                <Card title="'Card 3'" content="card2_content">
+                    <Counter />
+                </Card>
             </div>
 
             <div class="p-3">>

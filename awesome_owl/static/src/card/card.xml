@@ -4,8 +4,16 @@
     <t t-name="awesome_owl.card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title" t-out="props.title"/>
-                <p class="card-text" t-out="props.content" />
+                <div class="card-title">
+                    <h5 t-out="props.title"/>
+                    <button class="btn bg-info text-white" t-on-click="toggleOpen">
+                        Toggle
+                    </button>
+                </div>
+                <div t-if="state.open">
+                    <p class="card-text" t-out="props.content"/>
+                    <t t-slot="default">Default content</t>
+                </div>
             </div>
         </div>
     </t>
