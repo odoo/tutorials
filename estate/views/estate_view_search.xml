@@ -21,8 +21,8 @@
                 <field name="garden_orientation" string="Garden Orientation"/>
                 <field name="state" string="State"/>
                 <field name="active" string="Active"/>
-                <filter name="post_code" string="Post code" context="{'group_by':'post_code'}"/>
-                <filter name="state" string="Available" domain="[('state', '=', 'new')]"/>
+                <filter name="post_code_group" string="Post code" context="{'group_by':'post_code'}"/>
+                <filter name="is_new" string="Available" domain="[('state', '=', 'new')]"/>
             </search>
         </field>
     </record>

@@ -6,12 +6,10 @@
             <form string="Property">
                 <header>
                     <field name="state" widget="statusbar"/>
-                    <button name="action_sold" string="SOLD" type="object" 
-                    invisible="state in ['action_solde']"
-                         class="oe_highlight"/>
-                    <button name="action_cancel" string="CANCEL" type="object" 
-                    invisible="state in ['action_cancel']"
-                         class="oe_highlight"/>
+                    <button name="action_sold" string="SOLD" type="object" class="oe_highlight"
+                        invisible="state in ('sold','cancelled')"/>
+                    <button name="action_cancel" type="object" string="CANCEL"
+                        invisible="state in ('sold','cancelled')"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -20,8 +18,8 @@
                         </h1>
                     </div>
                     <group>
-                        <field name="tag_ids" widget="many2many_tags"/>
-                        <field name="property_type_id"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        <field name="property_type_id" options="{'no_create': True, 'no_open': True}"/>
                     </group>
                     <group>
                         <group>
@@ -48,14 +46,14 @@
                                 <group>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                     <field name="total_area"/>
                                 </group>
                             </group>
                         </page>
                          <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')"/>
                         </page>
                         <page string="Other Info">
                             <group>
