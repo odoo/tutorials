@@ -12,11 +12,30 @@
             <button 
                 t-if="state.sum != 0"
                 t-on-click="reset"
-                style="background:#6a5acd; color:white; border:none; padding:8px 18px; border-radius:8px;">
+                style="background:#6a5acd; cursor: pointer; color:white; border:none; padding:8px 18px; border-radius:8px;">
                 Reset Sum
             </button>
         </div>
-        <Card title="'Hello'" content="'World'"/>
         <TodoList/>
+         <div style="display:flex; align-items:center; gap:12px; margin-top:10px;">
+            <Card title="'Hello'">
+                <t t-slot="default">
+                    <Counter onChange.bind="calculateSum"/>
+                </t>
+            </Card>
+            <Card title="'Hello'">
+                <t t-slot="default">
+                    <p class="card-text"
+                    style="background-color: #69db7c;
+                            color: black;
+                            padding: 10px;
+                            margin: 0px;
+                            border-radius: 12px;
+                            font-size: 1rem;">
+                            Hello World
+                    </p>
+                </t>
+            </Card>
+        </div>
     </t>
 </templates>

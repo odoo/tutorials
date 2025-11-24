@@ -1,42 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.todolist">
-    <div class="card d-inline-block m-2"
-             style="width: 18rem; 
-                    border: 2px solid #444; 
-                    border-radius: 16px; 
-                    margin-top: 10px; 
-                    text-align:center;">
-        <div class="card-body" style="padding: 16px;">
-            <h3 class="card-title"
-                        style="background-color: #4c6ef5;
-                            margin: 0; 
-                            padding: 10px 0;
+        <div class="card d-inline-block m-2"
+                style="width: 18rem; 
+                        border: 2px solid #444; 
+                        border-radius: 16px; 
+                        margin-top: 10px; 
+                        text-align:center;">
+            <div class="card-body" style="padding: 16px;">
+                <h3 class="card-title"
+                            style="background-color: #4c6ef5;
+                                margin: 0; 
+                                padding: 10px 0;
+                                border-radius: 12px;
+                                font-size: 1.2rem;"> 
+                            Todo List 
+                </h3>
+                <input  type="text"
+                        t-ref="todo_input"
+                        placeholder="Add a task..."
+                        style="width: 100%;
+                                padding: 10px 12px;
+                                margin-top: 12px;
+                                border: 2px solid #4c6ef5;
+                                border-radius: 10px;
+                                font-size: 1rem;
+                                outline: none;"
+                        t-on-keyup="addTodo"
+                />
+                <div t-foreach="todos" t-as="todo" t-key="todo.id" style="background-color: #69db7c;
+                            color: black;
+                            margin: 12px 0 0 0;
+                            padding: 10px;
                             border-radius: 12px;
-                            font-size: 1.2rem;"> 
-                        Todo List </h3>
-            <input  type="text"
-                    placeholder="Add a task..."
-                    style="width: 100%;
-                            padding: 10px 12px;
-                            margin-top: 12px;
-                            border: 2px solid #4c6ef5;
-                            border-radius: 10px;
-                            font-size: 1rem;
-                            outline: none;"
-                    t-on-keyup="addTodo"
-            />
-            <div t-foreach="todos" t-as="todo" t-key="todo.id" style="background-color: #69db7c;
-                        color: black;
-                        margin: 12px 0 0 0;
-                        padding: 10px;
-                        border-radius: 12px;
-                        font-size: 1rem;"  >
-                <div t-att-class="{'text-muted': todo.isCompleted, 'text-decoration-line-through': todo.isCompleted}">
-                    <TodoItem todo="todo" />
+                            font-size: 1rem;"  >
+                    <div t-att-class="{'text-muted': todo.isCompleted, 'text-decoration-line-through': todo.isCompleted}">
+                        <TodoItem todo="todo" toggleState.bind="toggleState" removeTodo.bind="removeTodo"/>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     </t>
 </templates>

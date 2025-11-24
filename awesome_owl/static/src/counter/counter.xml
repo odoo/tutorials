@@ -5,18 +5,18 @@
             <p style="font-weight: bold;">Counter: <t t-esc="state.value"/></p>
             <button 
                 t-on-click="increment"
-                style="background:#6a5acd; color:white; border:none; padding:8px 18px; border-radius:8px; margin:0px 5px 0px 0px">
+                style="background:#6a5acd; cursor: pointer; color:white; border:none; padding:8px 18px; border-radius:8px; margin:0px 5px 0px 0px">
                 Increment
             </button>
             <button 
                 t-on-click="decrement"
-                style="background:#6a5acd; color:white; border:none; padding:8px 18px; border-radius:8px; margin:5px 5px 0px 0px">
+                style="background:#6a5acd; cursor: pointer; color:white; border:none; padding:8px 18px; border-radius:8px; margin:5px 5px 0px 0px">
                 Decrement
             </button>
             <button 
                 t-if="state.value != 0"
                 t-on-click="reset"
-                style="background:#6a5acd; color:white; border:none; padding:8px 18px; border-radius:8px; margin:5px 0px 0px 0px">
+                style="background:#6a5acd; cursor: pointer; color:white; border:none; padding:8px 18px; border-radius:8px; margin:5px 0px 0px 0px">
                 Reset
             </button>
         </div>

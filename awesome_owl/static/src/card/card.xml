@@ -5,10 +5,13 @@
              style="width: 18rem; 
                     border: 2px solid #444; 
                     border-radius: 16px; 
-                    margin-top: 10px; 
-                    text-align:center;">
-
-            <div class="card-body" style="padding: 16px;">
+                    margin-top: 10px;">
+            <button 
+                t-on-click="toggleCard"
+                style="background:#6a5acd; color:white; cursor: pointer; border:none; padding:8px 18px; border-radius:8px; margin:5px;">
+                Toggle
+            </button>
+            <div class="card-body" style="padding: 16px; text-align:center;">
                 <h4 class="card-title"
                     style="background-color: #4c6ef5;
                         margin: 0; 
@@ -17,18 +20,13 @@
                         font-size: 1.2rem;">
                     <t t-out="props.title"/>
                 </h4>
-                <p class="card-text"
-                   style="background-color: #69db7c;
-                        color: black;
-                        margin: 12px 0 0 0;
-                        padding: 10px;
-                        border-radius: 12px;
-                        font-size: 1rem;">
-                    <t t-out="props.content"/>
-                </p>
-
+                <div class="card-body" 
+                     style="margin: 12px 0 0 0;
+                        padding: 10px;" 
+                     t-if="this.state.isOpen">
+                    <t t-slot="default"/>
+                </div>
             </div>
         </div>
-
     </t>
 </templates>
