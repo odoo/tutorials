@@ -6,6 +6,7 @@ from odoo.tools import float_compare
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Property'
+    _order = 'id desc'
 
     name = fields.Char('Title', required=True)
     description = fields.Text('Description')
@@ -49,8 +50,8 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one('estate.property.type', string='Property Types')
     property_tag_ids = fields.Many2many('estate.property.tag', string='Property Tags')
-    buyer = fields.Many2one('res.partner', string='Buyer', copy=False)
-    salesperson = fields.Many2one(
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    salesperson_id = fields.Many2one(
         'res.users', string='Salesperson', default=lambda self: self.env.user
     )
     offer_ids = fields.One2many(
@@ -71,10 +72,7 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for property in self:
-            if len(self.offer_ids):
-                property.best_price = max(property.offer_ids.mapped('price'))
-            else:
-                property.best_price = 0
+            property.best_price = max(property.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -88,6 +86,9 @@ class EstateProperty(models.Model):
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
         for property in self:
+            if property.state != 'offer_accepted':
+                continue
+
             if (
                 property.state == 'offer_accepted'
                 and float_compare(property.selling_price, 0, 2) == -1
