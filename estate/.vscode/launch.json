@@ -5,7 +5,17 @@
             "name": "debug current file",
             "type": "debugpy",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/odoo/odoo-bin",
+            "args": [
+                "--addons-path=addons,../enterprise/,../tutorials/",
+                "-d",
+                "rd-demo",
+                "-u",
+                "estate",
+                "--dev",
+                "all",
+                "--http-interface=127.0.0.1"
+            ],
             "console": "integratedTerminal",
             "justMyCode": true
         }

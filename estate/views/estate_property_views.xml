@@ -4,13 +4,16 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,search</field>
+        <field name="search_view_id" ref="estate_property_view_search"/>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
-    <record id="estate_property_view_tree" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" decoration-success="status in ['offer_received','offer_accepted']" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'">
+                <field name="sequence" widget="handle"/>
                 <field name="name" string="Title"/>
                 <field name="property_type_id" string="Property Type"/>
                 <field name="tag_ids" string="Tags" widget="many2many_tags"/>
@@ -19,7 +22,7 @@
                 <field name="living_area" string="Living Area (sqm)"/>
                 <field name="expected_price" string="Expected Price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                 <field name="selling_price" string="Selling Price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
-                <field name="date_availability" string="Available From"/>
+                <field name="date_availability" string="Available From" optional="hide"/>
             </list>
         </field>
     </record>
@@ -31,19 +34,19 @@
             <form string="Property">
                 <sheet>
                     <header>
-                        <button name="action_set_sold" type="object" string="Sold" class="btn-primary"/>
-                        <button name="action_set_canceled" type="object" string="Cancel" class="btn-secondary"/>
+                        <button name="action_set_sold" type="object" string="Sold" class="btn-primary" invisible="status in ['sold', 'canceled']"/>
+                        <button name="action_set_canceled" type="object" string="Cancel" class="btn-secondary" invisible="status in ['sold', 'canceled']"/>
+                        <field name="status" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                     </header>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags" string="Tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color',}" string="Tags"/>
                     </div>
                     <group>
                         <group>
-                            <field name="status" string="Status"/>
-                            <field name="property_type_id" string="Property Type"/>
+                            <field name="property_type_id" string="Property Type" options="{'no_create': True, 'no_open': True}"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available From"/>
                         </group>
@@ -63,31 +66,21 @@
                                 <field name="facades" string="Facades"/>
                                 <field name="garage" string="Garage"/>
                                 <field name="garden" string="Garden"/>
-                                <field name="garden_area" string="Garden Area (sqm)"/>
-                                <field name="garden_orientation" string="Garden Orientation"/>
+                                <field name="garden_area" string="Garden Area (sqm)" visible="garden"/>
+                                <field name="garden_orientation" string="Garden Orientation" visible="garden"/>
                                 <field name="total_area" string="Total Area (sqm)"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list string="Offers">
+                            <field name="offer_ids" readonly="status in ['offer_accepted', 'sold', 'canceled']">
+                                <list string="Offers" editable="top" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                     <field name="price" string="Price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                                     <field name="partner_id" string="Partner"/>
                                     <field name="validity" string="Validity (days)"/>
                                     <field name="date_deadline" string="Deadline"/>
-                                    <button name="action_accept_offer" type="object" icon="fa-check"/>
-                                    <button name="action_refuse_offer" type="object" icon="fa-times"/>
-                                    <field name="status" string="Status"/>
+                                    <button name="action_accept_offer" type="object" icon="fa-check" invisible="status"/>
+                                    <button name="action_refuse_offer" type="object" icon="fa-times" title="Refuse Offer" invisible="status"/>
                                 </list>
-                                <form string="Offer">
-                                    <group>
-                                        <field name="price" string="Price"/>
-                                        <field name="partner_id" string="Partner"/>
-                                        <field name="validity" string="Validity (days)"/>
-                                        <field name="date_deadline" string="Deadline"/>
-                                        <field name="status" string="Status"/>
-                                    </group>
-                                </form>
                             </field>
                         </page>
                         <page string="Other Info">
@@ -113,10 +106,10 @@
                 <field name="property_type_id" string="Property Type"/>
                 <field name="tag_ids" string="Tags"/>
                 <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area" string="Living Area (sqm)"/>
+                <field name="living_area" string="Living Area (sqm)" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades" string="Facades"/>
 
-                <filter string="Available" name="available" domain="[('status', 'in', ['new', 'offer_received'])]"/>
+                <filter name="available" string="Available" domain="[('status', 'in', ['new', 'offer_received'])]"/>
                 
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>

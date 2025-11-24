@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     # ----------------------------------------
     _name = "estate.property"
     _description = "Estate Property"
-    _order = "sequence"
+    _order = "id desc"
 
     # ----------------------------------------
     # Field declarations

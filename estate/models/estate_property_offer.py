@@ -5,9 +5,16 @@ from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
+    # ----------------------------------------
+    # Private attributes
+    # ----------------------------------------
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
+    # ----------------------------------------
+    # Field declarations
+    # ----------------------------------------
     price = fields.Float("Price")
     status = fields.Selection(
         selection=[
@@ -21,10 +28,21 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer("Validity (days)", default=7)
     date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True,
+    )
 
+    # ----------------------------------------
     # SQL constraints
+    # ----------------------------------------
     _offer_price_positive = models.Constraint("CHECK(price > 0)")
 
+    # ----------------------------------------
+    # Compute and inverse methods
+    # ----------------------------------------
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
         for offer in self:
@@ -40,6 +58,20 @@ class EstatePropertyOffer(models.Model):
             elif offer.date_deadline:  # Fallback if create_date is not set
                 offer.validity = (offer.date_deadline - fields.Date.today()).days
 
+    # ----------------------------------------
+    # CRUD methods
+    # ----------------------------------------
+    @api.model_create_multi
+    def create(self, vals_list):
+        # Create the offers
+        offers = super().create(vals_list)
+        # Update property status to 'offer_received' for all related properties
+        offers.mapped("property_id").write({"status": "offer_received"})
+        return offers
+
+    # ----------------------------------------
+    # Action methods
+    # ----------------------------------------
     def action_accept_offer(self):
         for offer in self:
             # Check if there's already an accepted offer
