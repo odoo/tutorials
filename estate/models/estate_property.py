@@ -5,6 +5,7 @@ from odoo.tools import float_compare
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property Info"
+    _order = "id desc"
 
     name = fields.Char(required=True, translate=True, string="Title")
     description = fields.Text(translate=True)
@@ -32,7 +33,7 @@ class Property(models.Model):
         ],
     )
     active = fields.Boolean(default=True)
-    status = fields.Selection(
+    state = fields.Selection(
         required=True,
         copy=False,
         default="new",
@@ -45,7 +46,11 @@ class Property(models.Model):
         ],
     )
 
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one(
+        "estate.property.type",
+        string="Property Type",
+    )
+
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy="False")
     salesperson_id = fields.Many2one(
         "res.users",
@@ -53,7 +58,10 @@ class Property(models.Model):
         default=lambda self: self.env.user,
     )
 
-    tag_ids = fields.Many2many("estate.property.tags", string="Tags")
+    tag_ids = fields.Many2many(
+        "estate.property.tags",
+        string="Tags",
+    )
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
     total_area = fields.Float(
@@ -92,16 +100,16 @@ class Property(models.Model):
 
     def button_sell_property(self):
         for record in self:
-            if record.status == "cancelled":
+            if record.state == "cancelled":
                 raise exceptions.UserError("Property Cancelled")
-            record.status = "sold"
+            record.state = "sold"
         return True
 
-    def cancel_property_action(self):
+    def button_cancel_property(self):
         for record in self:
-            if record.status == "sold":
+            if record.state == "sold":
                 raise exceptions.UserError("Property Sold")
-            record.status = "cancelled"
+            record.state = "cancelled"
         return True
 
     @api.constrains("selling_price")
