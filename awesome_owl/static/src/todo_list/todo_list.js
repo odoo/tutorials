@@ -9,7 +9,8 @@ export class TodoList extends Component {
         this.todos = useState([
             { id:1, description: "buy bread", isCompleted: false },
             { id:2, description: "buy milk", isCompleted: false },
-        ])
+            { id:3, description: "have lunch", isCompleted: true },
+        ]);
     }
 }
 

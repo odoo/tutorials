@@ -121,7 +121,7 @@
                                 <span>Expected price:</span>
                                 <field name="expected_price"/>
                             </div>
-                            <div t-if="record.state == 'offer_received'">
+                            <div t-if="record.state.raw_value == 'offer_received'">
                                 <span>Best offer:</span>
                                 <field name="best_offer"/>
                             </div>

@@ -3,8 +3,8 @@
 
     <t t-name="awesome_owl.TodoItem">
         <div>
-            <p>Id: <t t-esc="todo.id"/></p>
-            <p>Description: <t t-esc="todo.description"/></p>
+            <t t-out="props.todo.id"/>.
+            <t t-out="props.todo.description"/>
         </div>
     </t>
 
