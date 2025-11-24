@@ -6,14 +6,8 @@
       <field name="inherit_id" ref="base.view_users_form"/>
       <field name="arch" type="xml">
         <xpath expr="//notebook" position="inside">
-          <page string="Properties">
-            <field name="property_ids">
-              <tree editable="bottom">
-                <field name="name"/>
-                <field name="state"/>
-                <field name="expected_price"/>
-              </tree>
-            </field>
+          <page string="Estate Properties">
+            <field name="property_ids"/>
           </page>
         </xpath>
       </field>

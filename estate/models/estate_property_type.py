@@ -16,9 +16,10 @@ class EstatePropertyType(models.Model):
         "estate.property.offer", "property_type_id", string="Offers"
     )
 
-    _sql_constraints = [
-        ('unique_type_name', 'UNIQUE(name)', 'The property type name must be unique.')
-    ]
+    # SQL constraints declared using the new API
+    _unique_type_name = models.Constraint(
+        'UNIQUE(name)', 'The property type name must be unique.'
+    )
 
     @api.depends('offer_ids')
     def _compute_offer(self):
