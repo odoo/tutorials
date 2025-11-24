@@ -10,7 +10,11 @@
                 t-on-keyup="event => this.addTodo(event)"
             />
             <t t-foreach="state.todos" t-as="todo" t-key="todo.id" >
-                <TodoItem item="todo" />
+                <TodoItem
+                    item="todo"
+                    toggleState="toggleState"
+                    removeTodo="removeTodo"
+                />
             </t>
         </div>
     </t>

@@ -10,6 +10,8 @@ class TodoList extends Component {
     setup() {
         this.state = useState({ todos: [], counter: 0 });
         this.inputRef = useAutofocus({ refName: "input" });
+        this.removeTodo = this.removeTodo.bind(this);
+        this.toggleState = this.toggleState.bind(this);
     }
 
     addTodo(event) {
@@ -28,6 +30,18 @@ class TodoList extends Component {
                 event.target.value = "";
             }
         }
+    }
+
+    toggleState(targetId) {
+        this.state.todos = this.state.todos.map(todo => (
+            todo.id === targetId ? { ...todo, isCompleted: !todo.isCompleted } : todo
+        ));
+    }
+
+    removeTodo(targetId) {
+        this.state.todos = this.state.todos.filter(
+            ({ id }) => id !== targetId
+        );
     }
 }
 
