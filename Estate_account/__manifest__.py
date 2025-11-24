@@ -8,5 +8,6 @@
     'license': 'AGPL-3',
     'data': [
         'security/ir.model.access.csv',
+        'views/estate_move.xml'
     ],
 }

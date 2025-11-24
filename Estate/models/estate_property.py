@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -13,7 +14,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     create_date = fields.Datetime()
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float()
+    selling_price = fields.Float(readonly=True)
     bedrooms = fields.Integer()
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -82,15 +83,21 @@ class EstateProperty(models.Model):
             delta = (record.date_deadline - create_date).days if record.date_deadline else 0
             record.validity_days = delta
 
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
+                    raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
     @api.onchange("garden")
     def _onchange_garden(self):
-        for record in self:
-            if record.garden:
-                record.garden_area = 10
-                record.garden_orientation = "north"
-            else:
-                record.garden_area = 0
-                record.garden_orientation = False
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
 
     @api.model
     def create(self, vals):
@@ -118,12 +125,6 @@ class EstateProperty(models.Model):
     def action_back_to_new(self):
         for record in self:
             record.state = "new"
-
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price_ratio(self):
-        for record in self:
-            if record.selling_price < 0.9 * record.expected_price:
-                raise ValidationError("Selling price must be at least 90% of the expected price")
 
     def _unlink(self):
         for record in self:
