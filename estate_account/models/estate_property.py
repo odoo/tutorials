@@ -21,16 +21,20 @@ class EstateProperty(models.Model):
                 'partner_id': partner.id,
                 'move_type': 'out_invoice',
                 'invoice_line_ids': [
-                    Command.create({
-                        'name': 'Commission (6%)',
-                        'quantity': 1.0,
-                        'price_unit': commission_amount,
-                    }),
-                    Command.create({
-                        'name': 'Administrative fees',
-                        'quantity': 1.0,
-                        'price_unit': 100.00,
-                    }),
+                    Command.create(
+                        {
+                            'name': 'Commission (6%)',
+                            'quantity': 1.0,
+                            'price_unit': commission_amount,
+                        }
+                    ),
+                    Command.create(
+                        {
+                            'name': 'Administrative fees',
+                            'quantity': 1.0,
+                            'price_unit': 100.00,
+                        }
+                    ),
                 ],
             }
             if journal:

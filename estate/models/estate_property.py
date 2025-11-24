@@ -126,4 +126,6 @@ class EstateProperty(models.Model):
     def _ondelete_check_state(self):
         for prop in self:
             if prop.state not in ('new', 'cancelled'):
-                raise UserError('Only properties in New or Cancelled state can be deleted.')
+                raise UserError(
+                    'Only properties in New or Cancelled state can be deleted.'
+                )
