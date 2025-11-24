@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', string='Estate Property', required=True)
     validity = fields.Integer('Validity', default=7)
     date_deadline = fields.Datetime('Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
-    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)    
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)
     _check_positive_price = models.Constraint(
         'CHECK(price >= 0)',
         'The price must be positive.',
@@ -56,7 +56,7 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         for val in vals:
             linked_property = self.env['estate.property'].browse(val['property_id'])
-            if val['price']< linked_property.best_price:
+            if val['price'] < linked_property.best_price:
                 raise exceptions.UserError("An offer with a higher price already exists")
             linked_property.state = 'offer_received'
-        return super(EstatePropertyOffer, self).create(vals)
+        return super().create(vals)
