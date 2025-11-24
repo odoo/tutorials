@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <Counter onChange.bind="incrementSum"/>
-        <Counter onChange.bind="incrementSum"/>
-        <Counter onChange.bind="incrementSum"/>
-        <h3 style="background-color: #90EE90; border: 3px solid #ccc; margin: 20px; padding: 20px">Sum of Counters: <t t-esc="state.sum"/></h3>
+        <t t-out="this.state.content"/>
+        <Counter onChange.bind="totalSum"/>
+        <Counter onChange.bind="totalSum"/>
+        <Counter onChange.bind="totalSum"/>
+        <div style="background-color: #90EE90; border: 3px solid #ccc; margin: 20px; padding: 20px">
+            <h3>Sum of Counters: <t t-esc="state.sum"/></h3>
+        </div>
         <TodoList/>
+        <div>
+            <Card title="'Card with text'">
+                <p>This is arbitrary card content!</p>
+            </Card>
+        </div>
+        <div>
+            <Card title="'Card with a counter'">
+                <Counter onChange.bind="totalSum"/>
+            </Card>
+        </div>
     </t>
 </templates>

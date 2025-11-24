@@ -20,7 +20,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer(default=7)
-    date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
+    date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline", store=True)
 
     _check_offer_price = models.Constraint(
         'CHECK(price>=0)',
@@ -47,6 +47,7 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = record.price
                 record.property_id.state = 'offer_accepted'
                 record.property_id.buyer_id = record.partner_id
+        return True
 
     def action_refuse(self):
         for record in self:
@@ -54,6 +55,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError("Property already accepted")
             else:
                 record.status = 'refused'
+        return True
 
     @api.model
     def create(self, vals):
@@ -65,3 +67,12 @@ class EstatePropertyOffer(models.Model):
             if record['price'] < property.best_offer:
                 raise UserError("Offer must be higher or equal than %d" % property.best_offer)
         return super().create(vals)
+
+    def _cron_auto_refuse_pass_deadline_entry(self):
+        current_date = fields.Date.today()
+        invalid_offers = self.search([
+            ('date_deadline', '<=', current_date),
+            ('status', 'not in', ['accepted', 'refused']),
+        ])
+        for record in invalid_offers:
+            record.status = 'refused'

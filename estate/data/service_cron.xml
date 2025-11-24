@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="ir_cron_auto_refuse_in_valid_entry" model="ir.cron">
+        <field name="name">Estate: Refuse Offer on passing deadline</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="code">model._cron_auto_refuse_pass_deadline_entry()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>

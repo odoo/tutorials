@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-    <t t-name="awesome_owl.Card">
-        <div class="card d-inline-block m-2" style="border: 3px solid #ccc; margin: 20px; padding: 20px">
-            <div class="card-body">
-                <h5 class="card-title" style="font-size: 20px">
-                    <t t-esc="props.title"/>
-                </h5>
-                <p class="card-text">
-                    <t t-esc="props.content"/>
-                </p>
-            </div>
+    <t t-name="awesome_owl.card">
+        <style>
+            .card-main{
+            display: block;
+            border: 1px solid #ccc;
+            padding: 20px;
+            }
+        </style>
+        <button t-on-click="toggleContent">toggle visibility</button>
+        <div class="card-main">
+        <h2 class="card-title" t-esc="props.title"></h2>
+        <t t-if="this.state.visible">
+                <div class="card-body">
+                    <t t-slot="default"/>
+                </div>
+        </t>
         </div>
     </t>
 </templates>
