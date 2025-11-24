@@ -35,7 +35,7 @@ class EstateProperty(models.Model):
         copy=False,
         selection=[
             ('new', 'New'),
-            ('offer_received','Offer Received'),
+            ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('cancelled', 'Cancelled')
@@ -66,6 +66,7 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if not self.garden:

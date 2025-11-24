@@ -10,12 +10,16 @@ class EstatePropertyOffer(models.Model):
         string='Status',
         default='new',
         copy=False,
-        selection=[('accepted', 'Accepted'), ('refused', 'Refused'), ('new', 'New')])
+        selection=[
+            ('accepted', 'Accepted'),
+            ('refused', 'Refused'),
+            ('new', 'New')
+        ])
     partner_id = fields.Many2one('res.partner', string='Buyer', required=True)
     property_id = fields.Many2one('estate.property', string='Estate Property', required=True)
     validity = fields.Integer('Validity', default=7)
     date_deadline = fields.Datetime('Deadline', compute='_compute_date_deadline', inverse='_inverse_date_deadline')
-
+    property_type_id = fields.Many2one(related='property_id.property_type_id', store=True)    
     _check_positive_price = models.Constraint(
         'CHECK(price >= 0)',
         'The price must be positive.',
@@ -38,6 +42,7 @@ class EstatePropertyOffer(models.Model):
             record.status = 'accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
+            record.property_id.state = 'offer_accepted'
         return True
 
     def action_refuse_offer(self):
