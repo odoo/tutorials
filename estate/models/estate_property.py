@@ -103,6 +103,14 @@ class EstateProperty(models.Model):
                     'Selling cannot be less than 90% of the expected price.'
                 )
 
+    @api.ondelete(at_uninstall=False)
+    def delete(self):
+        for property in self:
+            if property.state not in ('new', 'canceled'):
+                raise UserError(
+                    'Only properties in New or Canceled state can be deleted.'
+                )
+
     def action_set_property_as_sold(self):
         for property in self:
             if property.state == 'canceled':

@@ -4,7 +4,7 @@
         Track real estate properties
     """,
     'version': '1.0',
-    'author': "sypol",
+    'author': "Odoo S.A.",
     'license': "LGPL-3",
     'depends': ['base'],
     'application': True,
@@ -15,5 +15,6 @@
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_menus.xml',
+        'views/res_users.xml',
     ],
 }

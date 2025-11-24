@@ -46,6 +46,21 @@ class EstatePropertyOffer(models.Model):
                 offer.date_deadline - (offer.create_date.date() or fields.Date.today())
             ).days
 
+    @api.model
+    def create(self, offers_list):
+        for offer in offers_list:
+            linked_property = self.env['estate.property'].browse(offer['property_id'])
+
+            lowest_price = min(linked_property.offer_ids.mapped('price'), default=0.0)
+            if offer['price'] < lowest_price:
+                raise UserError(
+                    'You cannot create an offer with a lower amount than a existing one.'
+                )
+
+            if linked_property.state == 'new':
+                linked_property.state = 'offer_received'
+        return super().create(offers_list)
+
     def action_accept(self):
         for offer in self:
             other_offers = offer.property_id.offer_ids - offer
