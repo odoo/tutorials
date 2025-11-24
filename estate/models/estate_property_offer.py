@@ -47,8 +47,8 @@ class EstatePropertyOffer(models.Model):
             ).days
 
     @api.model
-    def create(self, offers_list):
-        for offer in offers_list:
+    def create(self, vals_list):
+        for offer in vals_list:
             linked_property = self.env['estate.property'].browse(offer['property_id'])
 
             lowest_price = min(linked_property.offer_ids.mapped('price'), default=0.0)
@@ -59,7 +59,7 @@ class EstatePropertyOffer(models.Model):
 
             if linked_property.state == 'new':
                 linked_property.state = 'offer_received'
-        return super().create(offers_list)
+        return super().create(vals_list)
 
     def action_accept(self):
         for offer in self:
