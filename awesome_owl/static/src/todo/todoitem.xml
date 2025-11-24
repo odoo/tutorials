@@ -5,7 +5,7 @@
         <input type="checkbox" t-att-checked="props.todo.isCompleted" t-on-change="toggleIsCompleted"/>
         <span t-esc="props.todo.id"/>. 
         <span t-esc="props.todo.description"/>
-        <span style="margin-left: 10px; cursor: pointer;" t-on-click="onClickRremove">❌</span>
+        <span style="margin-left: 10px; cursor: pointer;" t-on-click="onClickRemove">❌</span>
     </div>
     </t>
 </templates>

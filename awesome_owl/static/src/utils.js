@@ -1,5 +1,6 @@
 import { useRef, onMounted } from "@odoo/owl";
 
+
 export function useAutofocus(refName) {
     const ref = useRef(refName);
 
@@ -7,7 +8,6 @@ export function useAutofocus(refName) {
         if (ref.el) {
             ref.el.focus();
         }
-    }); 
-
+    });
     return ref;
 }

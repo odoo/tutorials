@@ -13,7 +13,7 @@ export class TodoItem extends Component {
         this.props.toggleState(this.props.todo.id)
     }
 
-    onClickRremove(){
+    onClickRemove(){
         this.props.removeTodo(this.props.todo.id)
     }
 }
