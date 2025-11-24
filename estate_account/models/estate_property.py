@@ -26,7 +26,7 @@ class EstateProperty(models.Model):
                             "price_unit": 100.00,
                         },
                     ),
-                ]
+                ],
             }
         )
         return super().button_sell_property()

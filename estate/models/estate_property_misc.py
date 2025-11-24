@@ -110,4 +110,4 @@ class PropertyOffer(models.Model):
             property.state = "offer_recieved"
             if vals["price"] < property.best_offer:
                 raise exceptions.UserError("Property is already sold")
-        return super().create(vals)
+        return super().create(vals_list)
