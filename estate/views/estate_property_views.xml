@@ -7,7 +7,7 @@
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="date_availability" optional="show"/>
-                <field name="state" invisible="1"/>
+                <field name="state" optional="hidden"/>
             </list>
         </field>
     </record>
