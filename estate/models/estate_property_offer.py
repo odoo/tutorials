@@ -8,9 +8,6 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
-    _check_offer_price = models.Constraint(
-        "CHECK(price > 0)", "An offer price must be strictly positive"
-    )
 
     price = fields.Float()
     status = fields.Selection(
@@ -22,6 +19,10 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_date")
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
+    )
+
+    _check_offer_price = models.Constraint(
+        "CHECK(price > 0)", "An offer price must be strictly positive"
     )
 
     @api.depends("validity")
@@ -46,7 +47,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = record.price
             record.property_id.customer = record.partner_id
             record.property_id.state = "offer_accepted"
-        other_offers.write({'status': 'refused'})
+        other_offers.write({"status": "refused"})
         return True
 
     def action_refuse(self):

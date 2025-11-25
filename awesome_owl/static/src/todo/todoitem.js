@@ -9,11 +9,11 @@ export class TodoItem extends Component {
         removeTodo: Function
     };
 
-    toggleIsCompleted(){
+    toggleIsCompleted() {
         this.props.toggleState(this.props.todo.id)
     }
 
-    onClickRemove(){
+    onClickRemove() {
         this.props.removeTodo(this.props.todo.id)
     }
 }

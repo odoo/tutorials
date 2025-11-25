@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
+    
     <t t-name="awesome_owl.counter">
         <div style="border: 2px solid black; border-radius: 12px; width: fit-content; padding: 10px;">
             <p style="font-weight: bold;">Counter: <t t-esc="state.value"/></p>
@@ -21,4 +22,5 @@
             </button>
         </div>
     </t>
+    
 </templates>

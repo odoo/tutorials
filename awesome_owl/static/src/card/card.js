@@ -5,7 +5,7 @@ export class Card extends Component {
     static template = "awesome_owl.card";
     static props = {
         title: String,
-        slots   : {
+        slots: {
             type: Object,
             shape: {
                 default: {}
@@ -13,13 +13,13 @@ export class Card extends Component {
         }
     };
 
-    setup(){
+    setup() {
         this.state = useState([{
             isOpen: false
         }])
     }
 
-    toggleCard(){
+    toggleCard() {
         this.state.isOpen = !this.state.isOpen
     }
 }

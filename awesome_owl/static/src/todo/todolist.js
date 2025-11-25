@@ -13,8 +13,8 @@ export class TodoList extends Component {
     }
 
     addTodo(ev) {
-        if (ev.keyCode == '13') {   
-            if (ev.target.value != ""){
+        if (ev.keyCode == '13') {
+            if (ev.target.value != "") {
                 this.todos.push({
                     id: this.todos.length + 1,
                     description: ev.target.value,
@@ -24,16 +24,16 @@ export class TodoList extends Component {
             }
         }
     }
-    
+
     toggleState(id) {
         const todo = this.todos.find(todo => todo.id == id)
         todo.isCompleted = !todo.isCompleted;
     }
 
-    removeTodo(id){
+    removeTodo(id) {
         const index = this.todos.findIndex((elem) => elem.id === id);
-        if (index >= 0){
-            this.todos.splice(index,1)
+        if (index >= 0) {
+            this.todos.splice(index, 1)
         }
     }
 }

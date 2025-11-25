@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
+
     <t t-name="awesome_dashboard.AwesomeDashboard">
         <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
              <t t-set-slot="control-panel-buttons">
@@ -10,7 +11,39 @@
                     Leads
                 </button>
             </t>
-            <h1 style="color: black;">Hello World</h1>
+            <div class="d-flex flex-wrap mt-1">
+                <DashboardItem>
+                    <div class="text-center">
+                        Number of new orders this month
+                        <p t-out="this.result.nb_new_orders" class="fs-1 fw-bold text-success"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="text-center">
+                        Total amount of new orders this month
+                        <p t-out="this.result.total_amount" class="fs-1 fw-bold text-success"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="text-center">
+                    Average amount of t-shirt by order this month
+                        <p t-out="this.result.average_quantity" class="fs-1 fw-bold text-success"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="text-center">
+                    Number of cancelled orders this month
+                        <p t-out="this.result.nb_cancelled_orders" class="fs-1 fw-bold text-success"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="text-center">
+                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                        <p t-out="this.result.average_time" class="fs-1 fw-bold text-success"/>
+                    </div>
+                </DashboardItem>
+            </div>
         </Layout>
     </t>
+    
 </templates>

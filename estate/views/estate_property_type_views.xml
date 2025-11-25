@@ -34,7 +34,11 @@
                                     <list>
                                         <field name="name" string="Title"/>
                                         <field name="expected_price"/>
-                                        <field name="state"/>
+                                        <field name="state" widget="badge"
+                                               decoration-success="state == 'new'" 
+                                               decoration-danger="state in ('sold','offer_accepted')" 
+                                               decoration-muted="state == 'cancelled'" 
+                                               decoration-warning="state == 'offer_received'" />
                                     </list>
                                 </field>
                             </page>

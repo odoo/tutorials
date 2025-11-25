@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
+
     <t t-name="awesome_owl.playground">
         <t t-out="this.state.content"/>
         <div style="display:flex; align-items:center; gap:12px;">
@@ -38,4 +39,5 @@
             </Card>
         </div>
     </t>
+
 </templates>
