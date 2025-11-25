@@ -49,7 +49,11 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals_list):
         for offer in vals_list:
-            linked_property = self.env['estate.property'].browse(offer['property_id'])
+            property_id = offer.get('property_id')
+            if not property_id:
+                continue
+
+            linked_property = self.env['estate.property'].browse(property_id)
 
             lowest_price = min(linked_property.offer_ids.mapped('price'), default=0.0)
             if offer['price'] < lowest_price:
