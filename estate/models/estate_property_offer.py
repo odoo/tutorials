@@ -63,6 +63,19 @@ class EstatePropertyOffer(models.Model):
     # ----------------------------------------
     @api.model_create_multi
     def create(self, vals_list):
+        # Validate offer amounts before creation
+        for vals in vals_list:
+            if "property_id" in vals and "price" in vals:
+                # Get the property record
+                property_record = self.env["estate.property"].browse(vals["property_id"])
+                # Check if there are existing offers with higher or equal prices
+                existing_offers = property_record.offer_ids
+                if existing_offers:
+                    max_existing_price = max(existing_offers.mapped("price"))
+                    if vals["price"] <= max_existing_price:
+                        msg = f"The offer amount must be higher than the existing offer of {max_existing_price}."
+                        raise UserError(msg)
+
         # Create the offers
         offers = super().create(vals_list)
         # Update property status to 'offer_received' for all related properties

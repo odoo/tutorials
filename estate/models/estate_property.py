@@ -100,6 +100,16 @@ class EstateProperty(models.Model):
                 self.garden_orientation = "north"
 
     # ----------------------------------------
+    # CRUD methods
+    # ----------------------------------------
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_canceled(self):
+        for record in self:
+            if record.status not in ("new", "canceled"):
+                msg = "You can only delete properties with status 'New' or 'Canceled'."
+                raise UserError(msg)
+
+    # ----------------------------------------
     # Action methods
     # ----------------------------------------
     def action_set_sold(self):
