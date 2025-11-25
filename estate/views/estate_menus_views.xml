@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<odoo>
+<menuitem id="estate_menu_root" name="Estate Property">
+    <menuitem id="advertisement_menu" name="Advertisments">
+        <menuitem id="properties_action" action="estate_property_view"/>
+    </menuitem>
+
+    <menuitem id="settings_menu" name="Settings">
+        <menuitem id="property_type_action" action="property_type_view"/>
+        <menuitem id="property_tag_action" action="property_tag_view"/>
+        <menuitem id="users_and_companies" action="user_and_companies_view"/>
+    </menuitem>
+</menuitem>
+</odoo>
