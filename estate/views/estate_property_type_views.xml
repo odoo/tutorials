@@ -43,7 +43,7 @@
                     </group>
                     <group string="Offers" colspan="2">
                         <field name="offer_count"/>
-                        <field name="offer_ids" invisible="1"/>
+                        <field name="offer_ids" optional="hidden"/>
                     </group>
                 </sheet>
             </form>

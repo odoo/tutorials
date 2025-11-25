@@ -34,7 +34,7 @@
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="property_type_id"/>
-                <field name="state" invisible="1"/>
+                <field name="state" optional="hidden"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <button name="action_accept" type="object" icon="fa-check" title="Accept" invisible="state"/>
