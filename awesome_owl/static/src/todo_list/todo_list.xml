@@ -4,8 +4,9 @@
     <t t-name="awesome_owl.TodoList">
         <div>
         <p>Todo List:</p>
+        <input placeholder="Add a todo" t-on-keyup="addTodo" t-ref="todo_input"/>
         <p t-foreach="todos" t-as="td" t-key="td.id">
-            <TodoItem todo="td"/>
+            <TodoItem todo="td" onClick.bind="removeTodo"/>
         </p>
         </div>
     </t>
