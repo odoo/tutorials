@@ -14,7 +14,10 @@
                     Leads
                 </button>
             </t>
-            Hello world
+            <DashboardItem />
+            <DashboardItem size="2">
+                Longer one
+            </DashboardItem>
         </Layout>
     </t>
 
