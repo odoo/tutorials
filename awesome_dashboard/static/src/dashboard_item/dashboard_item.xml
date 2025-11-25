@@ -3,13 +3,16 @@
 
     <t t-name="awesome_dashboard.DashboardItem">
         <div class="card d-inline-block m-2" t-attf-style="width: {{props.size*18}}rem;">
-            <div class="card-body">
+            <div class="card-body text-center">
                 <div class="card-title">
                     <h5>
                       <t t-slot="default">
                           Some content
                       </t>
                     </h5>
+                    <h1 class="text-success">
+                      <t t-slot="value"/>
+                    </h1>
                 </div>
             </div>
         </div>
