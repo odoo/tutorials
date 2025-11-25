@@ -78,7 +78,7 @@ class EstatePropertyOffer(models.Model):
                             'You cannot create an offer lower than an existing offer.'
                         )
 
-        offers = super(EstatePropertyOffer, self).create(vals_list)
+        offers = super().create(vals_list)
 
         for offer in offers:
             if offer.property_id:

@@ -89,7 +89,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        if any([prop.state == "cancelled" for prop in self]):
+        if any(prop.state == "cancelled" for prop in self):
             raise UserError("Canceled property cannot be sold !")
         self.state = 'sold'
         return True

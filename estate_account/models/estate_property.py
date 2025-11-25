@@ -5,7 +5,7 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_sold(self):
-        res = super(EstateProperty, self).action_sold()
+        res = super().action_sold()
 
         AccountMove = self.env['account.move']
         Journal = self.env['account.journal']
