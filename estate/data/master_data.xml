@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+    <!-- Contacts -->
+    <record id="contact_1" model="res.partner">
+        <field name="name">John Johnson</field>
+        <field name="is_company">False</field>
+    </record>
+    <record id="contact_2" model="res.partner">
+        <field name="name">Steve Stevenson</field>
+        <field name="is_company">False</field>
+    </record>
+
+    <!-- Property Type -->
+    <record id="estate_property_type_residential" model="estate.property.type">
+        <field name="name">Residential</field>
+    </record>
+    <record id="estate_property_type_commercial" model="estate.property.type">
+        <field name="name">Commercial</field>
+    </record>
+    <record id="estate_property_type_industrial" model="estate.property.type">
+        <field name="name">Industrial</field>
+    </record>
+    <record id="estate_property_type_land" model="estate.property.type">
+        <field name="name">Land</field>
+    </record>
+
+</odoo>
