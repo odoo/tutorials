@@ -9,7 +9,9 @@ import { loadJS } from "@web/core/assets";
 
 export class PieChart extends Component {
     static template = "awesome_dashboard.PieChart";
-    static props = { data: { optional: true } }
+    static props = {
+      data: { default: {}, type: Object },
+    }
 
     setup() {
         this.rootRef = useRef("root");
