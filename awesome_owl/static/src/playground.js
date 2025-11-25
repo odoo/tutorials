@@ -9,7 +9,7 @@ export class Playground extends Component {
 
     setup() {
         this.value1 = "<div class='text-primary'>test</div>";
-        this.value2 = markup("<a href='odoo.com'>test2</a>");
+        this.value2 = markup("<a href='http://odoo.com'>test2</a>");
         this.state = useState({ sum : 0 });
     }
 
