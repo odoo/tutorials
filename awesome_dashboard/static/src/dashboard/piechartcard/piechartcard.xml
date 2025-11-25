@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.PieChartCard">
+        <t t-if="this.props.value">
+             <div>
+                 <h4><t t-esc="props.title"/></h4>
+                 <PieChart data="this.props.value"/>
+             </div>
+        </t>
+        <t t-else="">
+            <div>Loading chart...</div>
+        </t>
+    </t>
+</templates>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.setting">
+        <Dialog title="'Dashboard Items Configuration'">
+            <div class="p-3">
+                <h2>Select items to display on your dashboard:</h2>
+                <div t-foreach="settingDisplayItems" t-as="item" t-key="item.id" class="form-check mb-2">
+                    <input
+                            type="checkbox"
+                            class="form-check-input"
+                            t-att-id="'settingsitem' + item.id"
+                            t-att-checked="item.checked"
+                            t-on-change="(ev) => this.onChange(ev.target.checked, item)"
+                    />
+                    <label class="form-check-label" t-att-for="'settingsitem' + item.id">
+                        <t t-out="item.description"/>
+                    </label>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="confirmDone">Done</button>
+                <button class="btn btn-secondary ms-2" t-on-click="props.close">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
