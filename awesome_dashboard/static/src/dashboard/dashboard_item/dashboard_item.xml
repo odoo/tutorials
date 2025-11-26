@@ -11,7 +11,7 @@
                       </t>
                     </h5>
                     <h1 class="text-success">
-                      <t t-slot="value"/>
+                        <t t-slot="value"/>
                     </h1>
                 </div>
             </div>

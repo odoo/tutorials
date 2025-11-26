@@ -4,6 +4,7 @@ import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { PieChart } from "./pie_chart/pie_chart";
+import dashboard_items from "./dashboard_items";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -13,6 +14,7 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         this.statisticService = useService("statistics");
         this.statistics = useState(this.statisticService);
+        this.items = dashboard_items;
     }
 
     openLeads() {
