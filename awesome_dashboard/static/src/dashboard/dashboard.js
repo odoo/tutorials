@@ -13,7 +13,7 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.state = reactive({ statistics: useService("statistics") });
-        this.items = dashboard_items;
+        this.items = registry.category("awesome_dashboard").getAll();
     }
 
     openLeads() {

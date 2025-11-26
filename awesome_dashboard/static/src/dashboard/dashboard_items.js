@@ -1,7 +1,8 @@
+import { registry } from "@web/core/registry";
 import { PieChartCard } from "./pie_chart_card/pie_chart_card";
 import { NumberCard } from "./number_card/number_card";
 
-export default [
+const items = [
     {
         id: "average_quantity",
         description: "Average amount of t-shirt",
@@ -63,3 +64,7 @@ export default [
         }),
     },
 ]
+
+items.forEach(item => {
+    registry.category("awesome_dashboard").add(item.id, item);
+});
