@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="estate_property_view_form_auction_inherit" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="real_estate.estate_property_view_form"/> 
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/div[@name='button_box']" position="inside">
+                <button name="action_view_invoice" type="object" class="oe_stat_button mx-2" icon="fa-list">
+                    <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                </button>
+            </xpath>
+            <xpath expr=".//button[@name='set_sold']" position="before">
+                <button name="start_auction" type="object" string="Start Auction" invisible="bid_type not in('auction')" />
+            </xpath>
+            <xpath expr="//group/group[@name='property_name']/h1" position="after">
+                <field name="bid_type" string="" widget="radio" options="{'horizontal': true}"/>
+            </xpath>
+            <xpath expr="//group[@name='image_holder']/div/field[@name='image']" position="before">
+                <div class="d-flex fw-bold fs-3 text-warning text-end">
+                    <field name="auction_status" string="Auction Status" invisible="bid_type not in('auction')"/>
+                </div>
+            </xpath>
+            <xpath expr="//page[.//field[@name='description']]/group" position="inside">
+                <group invisible="bid_type not in('auction')">
+                    <separator string="Auction Details" />
+                    <field name="auction_end_time" string="End Time:"/>
+                    <field name="highest_offer" />
+                    <field name="highest_bidder"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    <record id="estate_property_view_kanban_auction_inherit" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="real_estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='image']" position="after">
+                <progressbar field="auction_update_status" colors='{"on_track": "success", "at_risk": "warning", "off_track": "danger"}'/>
+                <div class="d-flex align-items-center">
+                    <field t-if="record.auction_update_status.value &amp;&amp; widget.editable" name="auction_update_status" widget="project_state_selection"/>
+                    <span t-if="record.auction_update_status.value &amp;&amp; !widget.editable" t-att-class="'o_status' + record.auction_stage_color.value" t-att-title="record.auction_update_status.value"></span>
+               </div>
+            </xpath>
+        </field>
+    </record> 
+</odoo>
