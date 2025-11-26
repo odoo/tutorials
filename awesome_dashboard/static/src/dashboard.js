@@ -1,10 +1,10 @@
-import { Component, useState, onWillStart } from "@odoo/owl";
-import { registry } from "@web/core/registry";
-import { Layout } from "@web/search/layout";
-import { useService } from "@web/core/utils/hooks"
-import { _t } from "@web/core/l10n/translation";
-import { DashboardItem } from "./dashboard_item";
-import { rpc } from "@web/core/network/rpc";
+import {Component, onWillStart, useState} from "@odoo/owl";
+import {registry} from "@web/core/registry";
+import {Layout} from "@web/search/layout";
+import {useService} from "@web/core/utils/hooks"
+import {_t} from "@web/core/l10n/translation";
+import {DashboardItem} from "./dashboard_item";
+import {rpc} from "@web/core/network/rpc";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -13,9 +13,10 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
          onWillStart(async () => {
-             const result = await rpc("/awesome_dashboard/statistics");
+             const result = await rpc("/awesome_dashboard/statistics", {});
+             this.statistics = result
+             console.log(this.statistics);
          })
-        //this.statistics = useState(useService("awesome_dashboard.statistics"));
     }
 
     openCustomers() {

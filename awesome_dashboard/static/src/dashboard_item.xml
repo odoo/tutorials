@@ -2,9 +2,12 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.DashboardItem">
-        <div class="card m-2" t-attf-style="width: {{18 * props.size }}rem;">
-            <div class="card-body">
-                <t t-slot="default"/>
+        <div class="card m-3 p-1" t-attf-style="width: {{18 * props.size }}rem;">
+            <div class="card-title fs-3 mt-3 text-center">
+                 <t t-slot="title"/>
+            </div>
+            <div class="card-body fs-1 fw-bold text-success text-center">
+                <t t-slot="number"/>
             </div>
         </div>
     </t>
