@@ -11,7 +11,7 @@ export class Playground extends Component {
     html = markup('<a href="https://www.google.com" target="_blank" rel="noopener noreferrer">Some content</a>');
 
     setup() {
-        this.state = useState({ sum: 2 });
+        this.state = useState({ sum: 0 });
     }
 
     incrementSum() {

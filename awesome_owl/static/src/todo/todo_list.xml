@@ -4,9 +4,9 @@
     <t t-name="awesome_owl.todo_list">
         <div class='card d-inline-block m-2' style='width: 18rem;'>
             <div class='card-body'>
-                <input t-on-keyup="addTodo" placeholder="Enter a new task"/>
+                <input t-on-keyup="addTodo" placeholder="Enter a new task" t-ref="input" />
                 <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                    <TodoItem todo="todo"/>
+                    <TodoItem todo="todo" toggleState.bind="() => todo.isCompleted = !todo.isCompleted" removeTodo.bind="removeTodo"/>
                 </t>
             </div>
         </div>

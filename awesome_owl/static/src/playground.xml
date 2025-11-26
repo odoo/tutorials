@@ -2,17 +2,21 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <group class='d-flex'>
-            <Counter onChange.bind="incrementSum" />
-            <Counter onChange.bind="incrementSum" />
-            <Card title="'Total'" content="'The sum is: ' + state.sum" />
-        </group>
-        <group>
-            <Card title="'Injection'" content="html" />
-            <Card title="'Title'" content="'Content'" />
-        </group>
-        <group>
-            <TodoList />
+        <group class='row'>
+            <group class='d-flex'>
+                <Card title="'Counters'">
+                    <Counter onChange.bind="incrementSum" />
+                    <Counter onChange.bind="incrementSum" />
+                </Card>
+                <Card title="'Total'"><p t-esc="`The sum is: ${state.sum}`" /></Card>
+            </group>
+            <group>
+                <Card title="'Injection'"><t t-out="html"/></Card>
+                <Card title="'Title'">Content</Card>
+            </group>
+            <group>
+                <TodoList />
+            </group>
         </group>
     </t>
 
