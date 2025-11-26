@@ -7,9 +7,9 @@ export class Card extends Component {
         slots: {
             type: Object,
             shape: {
-                default: true
+                default: true,
             },
-        }
+        },
     };
 
     setup() {

@@ -9,9 +9,8 @@ export class TodoList extends Component {
     setup() {
         this.nextId = 0;
         this.todos = useState([]);
-        useAutofocus("input")
+        useAutofocus("input");
     }
-
     addTodo(ev) {
         if (ev.keyCode === 13 && ev.target.value != "") {
             this.todos.push({
