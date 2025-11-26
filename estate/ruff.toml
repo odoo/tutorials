@@ -1,0 +1,3 @@
+# ~/Codes/tutorials/ruff.toml
+
+extend = "../../odoo/ruff.toml"
