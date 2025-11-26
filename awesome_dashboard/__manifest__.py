@@ -22,6 +22,9 @@
         'views/views.xml',
     ],
     'assets': {
+        'awesome_dashboard.dashboard': [
+            'awesome_dashboard/static/src/dashboard/**/*',
+        ],
         'web.assets_backend': [
             'awesome_dashboard/static/src/**/*',
         ],
