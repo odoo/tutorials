@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bill_entry_wizard,access_bill_entry_wizard,model_bill_entry_wizard,account.group_account_user,1,1,1,1
+access_bill_entry_details_wizard,access_bill_entry_details_wizard,model_bill_entry_details_wizard,account.group_account_user,1,1,1,1
