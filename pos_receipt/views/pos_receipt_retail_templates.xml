@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_receipts_wizard_preview_light">
+        <div class="receipt-preview-dark-receipt bg-white text-dark font-sans text-sm tracking-wide p-2 rounded-2 border border-3 border-dark shadow-lg" style="width: 430px; margin: 0 auto;">
+            <div class="text-center mb-2">
+                <div class="d-inline-block mb-1">
+                    <img t-if="receipt_logo" t-att-src="image_data_uri(receipt_logo)" alt="Logo" class="img-fluid" style="max-width: 60px; height: auto;"/>
+                </div>
+                <p class="mb-0 fw-bolder ">
+                    <t t-out="receipt_header or 'Odoo India Pvt Ltd'"/>
+                </p>
+                <p class="mb-0 ">Infocity Gandhinagar</p>
+                <p class="mb-0 ">Tax Id: 2233009900223</p>
+            </div>
+            <div class="text-center mb-2 fw-bolder ">
+            701
+            </div>
+            <t t-out="additional_content"/>
+            <div class="container mt-4">
+                <div class="d-flex justify-content-between">
+                    <span>Bacon Burger</span>
+                    <span>$ 53.48</span>
+                </div>
+                <div class="item-details">
+            3.00 x $ 17.83 / Units
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span>Pizza Margherita (Pepperoni)</span>
+                    <span>$ 50.03</span>
+                </div>
+                <div class="item-details">
+            3.00 x $ 16.68 / Units
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span>Water</span>
+                    <span>$ 2.53</span>
+                </div>
+                <div class="item-details">
+            1.00 x $ 2.53 / Units
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span>Schweppes</span>
+                    <span>$ 2.53</span>
+                </div>
+                <div class="item-details">
+            1.00 x $ 2.53 / Units
+                </div>
+                <div>
+                    <span>-----------------------------------</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span>Untaxed Amount</span>
+                    <span>$ 94.40</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span>Tax 15%</span>
+                    <span>$ 14.17</span>
+                </div>
+                <div>
+                    <span>-----------------------------------</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <strong>TOTAL</strong>
+                    <strong>$ 108.57</strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span>Cash</span>
+                    <span>$ 108.57</span>
+                </div>
+            </div>
+            <div class="text-center mt-2 ">
+                <p class="mb-0">Odoo Point of Sale</p>
+                <p class="mb-0">Order 0001-003-0004</p>
+                <p class="mb-0">04/06/2024 08:30:24</p>
+                <p class="mb-0">
+                    <t t-out="receipt_footer or ''"/>
+                </p>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_receipts_wizard_preview_boxes">
+        <div class="receipt-preview-dark-receipt bg-white text-dark font-sans text-sm tracking-wide p-2 rounded-2 border border-3 border-dark shadow-lg" style="width: 400px; margin: 0 auto;">
+            <div class="text-center mb-2">
+                <div class="d-inline-block mb-1">
+                    <img t-if="receipt_logo" t-att-src="image_data_uri(receipt_logo)" alt="Logo" class="img-fluid" style="max-width: 60px; height: auto;"/>
+                </div>
+                <p class="mb-0 fw-bolder ">
+                    <t t-out="receipt_header or 'Odoo India Pvt Ltd'"/>
+                </p>
+                <p class="mb-0 ">Infocity Gandhinagar</p>
+                <p class="mb-0 ">Tax Id: 2233009900223</p>
+            </div>
+            <div class="text-center mb-2 fw-bolder ">
+            701
+            </div>
+            <t t-out="additional_content"/>
+            <table class="table table-bordered table-sm mb-2 border-dark">
+                <thead>
+                    <tr>
+                        <th class="text-start fs-5 fw-bolder col-2">No</th>
+                        <th class="text-start fs-5 fw-bolder col-5">Item</th>
+                        <th class="text-end fs-5 fw-bolder col-4">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td >1</td>
+                        <td > <span class="fw-bolder">Margrita Pizza</span>
+                            <br/>
+                            3 X 200
+                            <br/>
+                                HSN: 2300976
+                            
+                        </td>
+                        <td class="text-end ">$600</td>
+                    </tr>
+                    <tr>
+                        <td >2</td>
+                        <td > <span class="fw-bolder">Bacon Burger</span>
+                            <br/>
+                            5 X 150
+                        </td>
+                        <td class="text-end ">$750</td>
+                    </tr>
+                    <tr>
+                        <td >3</td>
+                        <td > <span class="fw-bolder">Apple Pie</span>
+                            <br/>
+                            3 X 80
+                            <br/>
+                            HSN: 2300976
+                            
+                        </td>
+                        <td class="text-end ">$240</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="border-top border-bottom py-1 mb-2 border-dark">
+                <div class="d-flex justify-content-between ">
+                    <span>Total Qty 12</span>
+                    <span>Sub Total $1625</span>
+                </div>
+            </div>
+            <div class="text-end mb-2 fw-bolder ">
+            Cash $1625
+            </div>
+            <table class="table table-borderless table-sm mb-2">
+                <thead>
+                    <tr>
+                        <th class="text-start fw-bolder">Tax</th>
+                        <th class="text-start fw-bolder">Amount</th>
+                        <th class="text-start fw-bolder">Base</th>
+                        <th class="text-end fw-bolder">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="m-0 p-0">
+                        <td class=" m-0 p-0">SGST 2.5%</td>
+                        <td class=" m-0 p-0">40.2</td>
+                        <td class=" m-0 p-0">1584.8</td>
+                        <td class="text-end  m-0 p-0">1625</td>
+                    </tr>
+                    <tr class="m-0 p-0">
+                        <td class=" m-0 p-0">CGST 2.5%</td>
+                        <td class=" m-0 p-0">40.2</td>
+                        <td class=" m-0 p-0">1584.8</td>
+                        <td class="text-end  m-0 p-0">1625</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-center mt-2 ">
+                <p class="mb-0">Odoo Point of Sale</p>
+                <p class="mb-0">Order 0001-003-0004</p>
+                <p class="mb-0">04/06/2024 08:30:24</p>
+                <p class="mb-0">
+                    <t t-out="receipt_footer or ''"/>
+                </p>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_receipts_wizard_preview_lined">
+        <div class="receipt-preview-dark-receipt bg-white text-dark font-sans text-sm tracking-wide p-2 rounded-2 border border-3 border-dark shadow-lg" style="width: 400px; margin: 0 auto;">
+            <div class="text-center mb-2">
+                <div class="d-inline-block mb-1">
+                    <img t-if="receipt_logo" t-att-src="image_data_uri(receipt_logo)" alt="Logo" class="img-fluid" style="max-width: 60px; height: auto;"/>
+                </div>
+                <p class="mb-0 fw-bolder ">
+                    <t t-out="receipt_header or 'Odoo India Pvt Ltd'"/>
+                </p>
+                <p class="mb-0 ">Infocity Gandhinagar</p>
+                <p class="mb-0 ">Tax Id: 2233009900223</p>
+            </div>
+            <div class="text-center mb-2 fw-bolder ">
+            701
+            </div>
+            <t t-out="additional_content"/>
+            <table class="table table-sm table-borderless mb-2">
+                <thead class="border-top border-bottom">
+                    <tr>
+                        <th class="text-start fw-bolder">No</th>
+                        <th class="text-start fw-bolder">Item</th>
+                        <th class="text-start fw-bolder">Qty</th>
+                        <th class="text-start fw-bolder">Price</th>
+                        <th class="text-end fw-bolder">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td >1</td>
+                        <td >Margrita Pizza</td>
+                        <td >3</td>
+                        <td >200</td>
+                        <td class="text-end ">600</td>
+                    </tr>
+                    <tr>
+                        <td >2</td>
+                        <td >Bacon Burger</td>
+                        <td >5</td>
+                        <td >150</td>
+                        <td class="text-end ">750</td>
+                    </tr>
+                    <tr>
+                        <td >3</td>
+                        <td >Apple Pie</td>
+                        <td >2</td>
+                        <td >100</td>
+                        <td class="text-end ">200</td>
+                    </tr>
+                    <tr>
+                        <td >4</td>
+                        <td >Chees Burger</td>
+                        <td >1</td>
+                        <td >75</td>
+                        <td class="text-end ">75</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="border-top border-bottom  py-1 mb-2">
+                <div class="d-flex justify-content-between ">
+                    <span>Total Qty 12</span>
+                    <span>Sub Total 1625</span>
+                </div>
+            </div>
+            <div class="text-end mb-2 fw-bolder ">
+            Bank 1625
+            </div>
+            <table class="table table-borderless table-sm mb-2">
+                <thead>
+                    <tr>
+                        <th class="text-start ">Tax</th>
+                        <th class="text-start ">Amount</th>
+                        <th class="text-start ">Base</th>
+                        <th class="text-end ">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="m-0 p-0">
+                        <td class=" m-0 p-0">SGST 2.5%</td>
+                        <td class=" m-0 p-0">40.2</td>
+                        <td class=" m-0 p-0">1584.8</td>
+                        <td class="text-end  m-0 p-0">1625</td>
+                    </tr>
+                    <tr class="m-0 p-0">
+                        <td class=" m-0 p-0">CGST 2.5%</td>
+                        <td class=" m-0 p-0">40.2</td>
+                        <td class=" m-0 p-0">1584.8</td>
+                        <td class="text-end  m-0 p-0">1625</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="text-center mt-2 ">
+                <p class="mb-0">Odoo Point of Sale</p>
+                <p class="mb-0">Order 0001-003-0004</p>
+                <p class="mb-0">04/06/2024 08:30:24</p>
+                <p class="mb-0">
+                    <t t-out="receipt_footer or ''"/>
+                </p>
+            </div>
+        </div>
+    </template>
+</odoo>
