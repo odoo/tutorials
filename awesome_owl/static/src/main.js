@@ -8,5 +8,10 @@ const config = {
 };
 
 // Mount the Playground component when the document.body is ready
-whenReady(() => mountComponent(Playground, document.body, config));
+whenReady(() => {
+    const target = document.getElementById('app');
+    if (target) {
+        mountComponent(Playground, target, config);
+    }
+});
 
