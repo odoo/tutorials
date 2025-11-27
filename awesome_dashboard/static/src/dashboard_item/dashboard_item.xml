@@ -9,6 +9,7 @@
             <div class="card-body fs-1 fw-bold text-success text-center">
                 <t t-slot="number"/>
             </div>
+            <t t-slot="default"/>
         </div>
     </t>
 
