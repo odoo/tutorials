@@ -7,7 +7,7 @@ export class PieChart extends Component {
         items: {
             type: Object,
             optional: true,
-            default: () => ({}),
+            default: () => { },
         },
     }
 

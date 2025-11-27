@@ -11,43 +11,48 @@
                     Leads
                 </button>
             </t>
-            <div class="d-flex flex-wrap mt-1">
-                <DashboardItem>
-                    <div class="text-center">
-                        Number of new orders this month
-                        <p t-out="this.statistics.data.nb_new_orders" class="fs-1 fw-bold text-success"/>
+
+             <t t-set-slot="control-panel-additional-actions">
+                <button type="button" class="btn btn-light p-1" t-on-click="toggleModal">
+                    <i class="fa fa-fw fa-cog fs-5 text-muted"></i>
+                </button>
+            </t>
+
+            <div class="d-flex flex-wrap mt-1 text-center">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size">
+                        <t t-set="itemProp" t-value="item.props ? item.props(this.statistics.data) : {'data': this.statistics.data}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>  
+
+            <div class="modal fade d-block" t-att-class="(this.modalState.isOpen ? 'show': 'd-none')" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header d-flex justify-content-between">
+                            <h5 class="modal-title">Dashboard Settings</h5>
+                        </div>
+                        <div class="modal-body">
+                            <label>Select dashboard items:</label>
+                            <div class="m-2">
+                                <t t-foreach="this.allItems" t-as="item" t-key="item.id">
+                                    <div>
+                                        <input type="checkbox" class='me-2'
+                                            t-att-value="item.id"
+                                            t-att-checked="!hiddenItems.ids.includes(item.id)"
+                                            t-on-change="toggleItem"/>
+                                        <t t-esc="item.description"/>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary me-2" t-on-click="applySettings">Apply</button>
+                            <button class="btn btn-secondary" t-on-click="toggleModal">Cancel</button>
+                        </div>
                     </div>
-                </DashboardItem>
-                <DashboardItem>
-                    <div class="text-center">
-                        Total amount of new orders this month
-                        <p t-out="this.statistics.data.total_amount" class="fs-1 fw-bold text-success"/>
-                    </div>
-                </DashboardItem>
-                <DashboardItem>
-                    <div class="text-center">
-                    Average amount of t-shirt by order this month
-                        <p t-out="this.statistics.data.average_quantity" class="fs-1 fw-bold text-success"/>
-                    </div>
-                </DashboardItem>
-                <DashboardItem>
-                    <div class="text-center">
-                    Number of cancelled orders this month
-                        <p t-out="this.statistics.data.nb_cancelled_orders" class="fs-1 fw-bold text-success"/>
-                    </div>
-                </DashboardItem>
-                <DashboardItem>
-                    <div class="text-center">
-                    Shirt order by size
-                        <PieChart items="this.statistics.data.orders_by_size"/>
-                    </div>
-                </DashboardItem>
-                <DashboardItem> 
-                    <div class="text-center">
-                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
-                        <p t-out="this.statistics.data.average_time" class="fs-1 fw-bold text-success"/>
-                    </div>
-                </DashboardItem>
+                </div>
             </div>
         </Layout>
     </t>

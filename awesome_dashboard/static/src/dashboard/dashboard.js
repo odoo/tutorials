@@ -13,6 +13,23 @@ class AwesomeDashboard extends Component {
         this.action = useService("action");
         const statisticsService = useService("awesome_dashboard.statistics");
         this.statistics = useState(statisticsService.state);
+        this.modalState = useState({ isOpen: false });
+        this.hiddenItems = useState({
+            ids: JSON.parse(
+                localStorage.getItem("hidden_dashboard_items") || "[]"
+            ),
+        });
+        this.items = useState(
+            registry
+                .category("awesome_dashboard")
+                .getAll()
+                .filter((item) => !this.hiddenItems.ids.includes(item.id))
+            );
+        this.allItems = useState(
+            registry
+                .category("awesome_dashboard")
+                .getAll()
+        );
     }
 
     openCustomers() {
@@ -38,6 +55,36 @@ class AwesomeDashboard extends Component {
                 [false, "form"],
             ],
         });
+    }
+
+    toggleModal() {
+        this.modalState.isOpen = !this.modalState.isOpen
+    }
+
+    toggleItem(event) {
+        const itemId = event.target.value;
+
+        if (event.target.checked) {
+            this.hiddenItems.ids = this.hiddenItems.ids.filter(
+                (id) => id !== itemId
+            );
+        } else {
+            this.hiddenItems.ids.push(itemId);
+        }
+    }
+
+    applySettings() {
+        localStorage.setItem(
+            "hidden_dashboard_items",
+            JSON.stringify(this.hiddenItems.ids)
+        );
+
+        this.items = registry
+            .category("awesome_dashboard")
+            .getAll()
+            .filter((item) => !this.hiddenItems.ids.includes(item.id));
+
+        this.toggleModal();
     }
 }
 

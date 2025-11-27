@@ -11,7 +11,7 @@ const statisticsService = {
             state.data = await loadStatistics();
         };
         fetchData();
-        setInterval(fetchData, 10000);
+        setInterval(fetchData, 10 * 60 * 1000);
         return {
             state: state
         };
