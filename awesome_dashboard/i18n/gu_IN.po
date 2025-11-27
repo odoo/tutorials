@@ -1,0 +1,99 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* awesome_dashboard
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-16 09:34+0000\n"
+"PO-Revision-Date: 2025-04-16 09:34+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average amount of t-shirt"
+msgstr "ટી-શર્ટની સરેરાશ રકમ"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average amount of t-shirt by order this month"
+msgstr "આ મહિને ઓર્ડર દ્વારા ટી-શર્ટની સરેરાશ રકમ"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average time for an order"
+msgstr "ઓર્ડર માટે સરેરાશ સમય"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Average time for an order to go from 'new' to 'sent' or 'cancelled'"
+msgstr "'નવા' થી 'મોકલેલા' અથવા 'રદ કરાયેલા' જવાના ઓર્ડર માટે સરેરાશ સમય"
+
+#. module: awesome_dashboard
+#: model:ir.ui.menu,name:awesome_dashboard.menu_root
+msgid "Awesome Dashboard"
+msgstr "અદ્ભુત ડેશબોર્ડ"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard.js:0
+msgid "CRM Leads"
+msgstr "સીઆરએમ લીડ્સ"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Cancelled orders this month"
+msgstr "આ મહિને રદ કરાયેલા ઓર્ડર"
+
+#. module: awesome_dashboard
+#: model:ir.actions.client,name:awesome_dashboard.dashboard
+#: model:ir.ui.menu,name:awesome_dashboard.dashboard_menu
+msgid "Dashboard"
+msgstr "ડેશબોર્ડ"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "New orders this month"
+msgstr "આ મહિને નવા ઓર્ડર"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Number of cancelled orders this month"
+msgstr "આ મહિને રદ કરાયેલા આદેશોની સંખ્યા"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Number of new orders this month"
+msgstr "આ મહિને નવા ઓર્ડરની સંખ્યા"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Shirt orders by size"
+msgstr "કદ દ્વારા શર્ટ ઓર્ડર"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Total amount of new orders this month"
+msgstr "આ મહિને નવા ઓર્ડરની કુલ રકમ"
+
+#. module: awesome_dashboard
+#. odoo-javascript
+#: code:addons/awesome_dashboard/static/src/dashboard/dashboard_items.js:0
+msgid "Total amount of orders this month"
+msgstr "આ મહિનામાં ઓર્ડરની કુલ રકમ"
