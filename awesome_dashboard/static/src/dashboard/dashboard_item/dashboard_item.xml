@@ -3,7 +3,12 @@
     <t t-name="awesome_dashboard.DashboardItem">
         <div class="card m-2 border-dark" t-attf-style="width: {{18*props.size}}rem;">
             <div class="card-body">
-                <t t-slot="default"/>
+                <t t-if="props.Component">
+                    <t t-component="props.Component"/>
+                </t>
+                <t t-else="">
+                    <t t-slot="default"/>
+                </t>
             </div>
         </div>
     </t>

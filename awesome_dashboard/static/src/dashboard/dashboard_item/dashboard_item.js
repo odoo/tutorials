@@ -8,6 +8,11 @@ export class DashboardItem extends Component {
             shape: {
                 default: Object,
             },
+            optional: true,
+        },
+        Component: {
+            type: Function,
+            optional: true,
         },
         size: {
             type: Number,
