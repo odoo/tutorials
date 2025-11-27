@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="view_pos_config_settings_inherit_receipt_layout" model="ir.ui.view">
+            <field name="name">res.config.settings.pos.receipt.layout</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="point_of_sale.res_config_settings_view_form" />
+            <field name="arch" type="xml">
+                <xpath
+                    expr="//block[@id='pos_bills_and_receipts_section']/setting[field[@name='pos_is_header_or_footer']]"
+                    position="replace">
+                </xpath>
+
+                <xpath
+                    expr="//block[@id='pos_bills_and_receipts_section']/setting[@id='auto_printing']"
+                    position="before">
+                    <setting id="pos_receipt_layout_select" string="Receipt Layout"
+                        help="Choose layout of your receipt">
+                        <field name="receipt_layout" widget="selection" required="1" />
+                        <br />
+                        <button name="action_open_receipt_layout_wizard"
+                            string="Configure Receipt"
+                            type="object"
+                            class="oe_link"
+                            icon="oi-arrow-right" />
+                    </setting>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="offer_1" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">12000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_2" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">13000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+     <record id="offer_3" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">14000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_4" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_3"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">15000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_5" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">16000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_6" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">17000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_7" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">18000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_8" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">19000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_9" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_3"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">20000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_10" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">21000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_11" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_1"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">22000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <record id="offer_3" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate.demo_property_villa"/>
+        <field name="price">14000</field>
+        <field name="validity_date" eval="(datetime.now() + timedelta(days=14)).date()"/>
+    </record>
+
+    <!-- <function name="action_refuse" model="estate.property.offer">
+        <value eval="[ref('offer_1')]"/>
+    </function>
+    <function name="action_refuse" model="estate.property.offer">
+        <value eval="[ref('offer_2')]"/>
+    </function>
+    <function name="action_accept" model="estate.property.offer">
+        <value eval="[ref('offer_3')]"/>
+    </function> -->
+</odoo>

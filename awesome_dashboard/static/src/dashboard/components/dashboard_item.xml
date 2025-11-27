@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.DashboardItem">
+        <div t-att-class="'o_dashboard_item card shadow-sm p-3 mb-3 dashboard-item'"
+             t-att-style="'width:' + (18 * props.size) + 'rem;'">
+            <div class="card-body">
+                <t t-slot="default" />
+            </div>
+        </div>
+    </t>
+
+</templates>
