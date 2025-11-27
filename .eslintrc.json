@@ -1,0 +1,69 @@
+{
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2022
+  },
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "qunit": true
+  },
+  "rules": {
+    "prettier/prettier": ["off", {
+      "tabWidth": 4,
+      "semi": true,
+      "singleQuote": false,
+      "printWidth": 100,
+      "endOfLine": "auto"
+    }],
+    "no-undef": "off",
+    "no-restricted-globals": ["off", "event", "self"],
+    "no-const-assign": ["off"],
+    "no-debugger": ["off"],
+    "no-dupe-class-members": ["off"],
+    "no-dupe-keys": ["off"],
+    "no-dupe-args": ["off"],
+    "no-dupe-else-if": ["off"],
+    "no-unsafe-negation": ["off"],
+    "no-duplicate-imports": ["off"],
+    "valid-typeof": ["off"],
+    "no-unused-vars": ["off", { "vars": "all", "args": "none", "ignoreRestSiblings": false, "caughtoffs": "all" }],
+    "curly": ["off", "all"],
+    "no-restricted-syntax": ["off", "PrivateIdentifier"],
+    "prefer-const": ["off", {
+      "destructuring": "all",
+      "ignoreReadBeforeAssign": true
+    }],
+    "arrow-body-style": ["off", "as-needed"]
+  },
+  "globals": {
+    "odoo": "readonly",
+    "$": "readonly",
+    "jQuery": "readonly",
+    "Chart": "readonly",
+    "fuzzy": "readonly",
+    "StackTrace": "readonly",
+    "QUnit": "readonly",
+    "luxon": "readonly",
+    "py": "readonly",
+    "FullCalendar": "readonly",
+    "globalThis": "readonly",
+    "ScrollSpy": "readonly",
+    "module": "readonly",
+    "chai": "readonly",
+    "describe": "readonly",
+    "it": "readonly",
+    "mocha": "readonly",
+    "DOMPurify": "readonly",
+    "Prism": "readonly",
+
+    "Alert": "readonly",
+    "Collapse": "readonly",
+    "Dropdown": "readonly",
+    "Modal": "readonly",
+    "Offcanvas": "readonly",
+    "Popover": "readonly",
+    "Tooltip": "readonly"
+  }
+}

@@ -11,8 +11,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
-downloads/
-eggs/
+downloads/eggs/
 .eggs/
 lib/
 lib64/
@@ -127,3 +126,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.eslintignore
+.eslintrc.json
+jsconfig.json
+package.json
+node_modules/
