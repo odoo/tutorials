@@ -15,31 +15,37 @@
                 <DashboardItem>
                     <div class="text-center">
                         Number of new orders this month
-                        <p t-out="this.result.nb_new_orders" class="fs-1 fw-bold text-success"/>
+                        <p t-out="this.statistics.data.nb_new_orders" class="fs-1 fw-bold text-success"/>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
                     <div class="text-center">
                         Total amount of new orders this month
-                        <p t-out="this.result.total_amount" class="fs-1 fw-bold text-success"/>
+                        <p t-out="this.statistics.data.total_amount" class="fs-1 fw-bold text-success"/>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
                     <div class="text-center">
                     Average amount of t-shirt by order this month
-                        <p t-out="this.result.average_quantity" class="fs-1 fw-bold text-success"/>
+                        <p t-out="this.statistics.data.average_quantity" class="fs-1 fw-bold text-success"/>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
                     <div class="text-center">
                     Number of cancelled orders this month
-                        <p t-out="this.result.nb_cancelled_orders" class="fs-1 fw-bold text-success"/>
+                        <p t-out="this.statistics.data.nb_cancelled_orders" class="fs-1 fw-bold text-success"/>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
                     <div class="text-center">
+                    Shirt order by size
+                        <PieChart items="this.statistics.data.orders_by_size"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem> 
+                    <div class="text-center">
                     Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
-                        <p t-out="this.result.average_time" class="fs-1 fw-bold text-success"/>
+                        <p t-out="this.statistics.data.average_time" class="fs-1 fw-bold text-success"/>
                     </div>
                 </DashboardItem>
             </div>
