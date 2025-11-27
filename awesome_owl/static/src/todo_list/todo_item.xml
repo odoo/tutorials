@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div
+            class="d-inline-block m-2"
+            t-att-class="{'text-muted': props.item.isCompleted, 'text-decoration-line-through': props.item.isCompleted }"
+            style="width: 18rem;"
+        >
+            <input
+                type="checkbox"
+                t-att-checked="props.item.isCompleted"
+                class="mx-2"
+                t-on-click="() => props.toggleState(props.item.id)"
+            />
+            <span t-esc="props.item.id"/>.
+            <span t-esc="props.item.description"/>
+            <button
+                class="btn text-danger mx-1"
+                t-on-click="() => props.removeTodo(props.item.id)"
+            >
+                <span class="fa fa-remove" />
+            </button>
+        </div>
+    </t>
+
+</templates>
