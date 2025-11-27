@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        Hello My Friend
+        <div>
+            <Counter callback.bind="incrementSum" />
+            <Counter callback.bind="incrementSum" />
         </div>
-    </t>
+        <div>
+            <Card title="'Task 1'"/>
+            <Card title="'Task 2'">
+                <Counter callback.bind="incrementSum" />
+            </Card>
+        </div>
+        <p>Sum: <t t-esc="state.sum"/></p>
 
+        <TodoList/>
+   </t>
 </templates>
