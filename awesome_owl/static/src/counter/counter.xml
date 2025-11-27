@@ -1,0 +1,8 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.counter">
+        <div style="margin: 2px; padding: 2px; border: 1px solid black; display: flex; align-items: center; gap: 10px;">
+            <span class="me-2">Counter: <t t-esc="state.value"/></span>
+            <button class="btn btn-primary" t-on-click="increment">Increment</button>
+        </div>
+    </t>
+</templates>

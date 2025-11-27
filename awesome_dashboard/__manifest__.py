@@ -23,7 +23,21 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'awesome_dashboard/static/src/**/*',
+            'awesome_dashboard/static/src/dashboard_action.js',
+        ],
+        'awesome_dashboard.dashboard': [
+            'awesome_dashboard/static/src/dashboard_items_service.js',
+            'awesome_dashboard/static/src/dashboard_items.js',
+            'awesome_dashboard/static/src/dashboard/**/*.js',
+            'awesome_dashboard/static/src/dashboard/**/*.xml',
+            'awesome_dashboard/static/src/piechart/**/*.js',
+            'awesome_dashboard/static/src/piechart/**/*.xml',
+            'awesome_dashboard/static/src/dashboard_item/**/*.js',
+            'awesome_dashboard/static/src/dashboard_item/**/*.xml',
+            'awesome_dashboard/static/src/dashboard_configuration_dialog.js',
+            'awesome_dashboard/static/src/dashboard_configuration_dialog.xml',
+            'awesome_dashboard/static/src/statistics_service.js',
+            'awesome_dashboard/static/src/dashboard.scss',
         ],
     },
     'license': 'AGPL-3'

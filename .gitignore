@@ -25,6 +25,13 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+
+*.sublime-project
+*.sublime-workspace
+
+node_modules/
+
 MANIFEST
 
 # PyInstaller

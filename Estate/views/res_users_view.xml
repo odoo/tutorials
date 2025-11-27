@@ -1,0 +1,25 @@
+<odoo> 
+    <record id="view_users_form_inherit_properties" model="ir.ui.view">
+        <field name="name">res.users.form.inherit.properties</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='company_id']" position="after">
+                <field name="estate_property_ids" widget="one2many_list" string="Properties as Salesperson">
+                    <list>
+                        <field name="name"/>
+                        <field name="expected_price"/>
+                        <field name="state"/>
+                    </list>
+                </field>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_res_users_estate_properties" model="ir.actions.act_window">
+          <field name="name">Users</field>
+          <field name="res_model">res.users</field>
+          <field name="view_mode">form</field>
+          <field name="view_id" ref="view_users_form_inherit_properties"/>
+    </record>
+</odoo>

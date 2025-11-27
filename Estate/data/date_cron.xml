@@ -1,0 +1,10 @@
+ <odoo>
+    <record id="ir_cron_move_sold" model="ir.cron">
+        <field name="name">Sold if validity exceeds</field>
+        <field name="model_id" ref="model_estate_property_offer"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_move_sold</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+    </record>
+</odoo>
