@@ -1,6 +1,5 @@
 import { Component, useState } from "@odoo/owl";
 
-
 export class Counter extends Component {
     static template = "awesome_owl.Counter";
     static props = {
@@ -16,14 +15,14 @@ export class Counter extends Component {
     increment() {
         this.state.value++;
         if (this.props.onChange) {
-            this.props.onChange(this.state.value,true);
+            this.props.onChange(this.state.value, true);
         }
     }
 
     decrement() {
         this.state.value--;
         if (this.props.onChange) {
-            this.props.onChange(this.state.value,false);
+            this.props.onChange(this.state.value, false);
         }
     }
 }

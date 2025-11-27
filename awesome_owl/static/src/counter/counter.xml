@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.Counter">
-    <style>
-      .primary-counter{
-          background-color: #FFFFE0;
-          border: 3px solid #ccc;
-          display: inline-block;
-          min-width: 300px;
-          padding: 20px;
-          margin: 20px;
-      }
-      .increment-button{
-          background: purple;
-          color: white;
-          padding: 8px;
-          border-radius: 5px;
-      }
-      .decrement-button{
-          background: purple;
-          color: white;
-          padding: 8px;
-          border-radius: 5px;
-          margin:5px
-      }
-    </style>
-    <div class="primary-counter">
-        <p>Counter: <t t-esc="state.value"/></p>
-        <button class="increment-button" t-on-click="increment">
-            Increment
-          </button>
-          <button class="decrement-button" t-on-click="decrement">
-            Decrement
-          </button>
-    </div>
+        <style>
+            .primary-counter{
+                background-color: #FFFFE0;
+                border: 3px solid #ccc;
+                display: inline-block;
+                min-width: 300px;
+                padding: 20px;
+                margin: 20px;
+            }
+            .increment-button{
+                background: purple;
+                color: white;
+                padding: 8px;
+                border-radius: 5px;
+            }
+            .decrement-button{
+                background: purple;
+                color: white;
+                padding: 8px;
+                border-radius: 5px;
+                margin:5px
+            }
+        </style>
+        <div class="primary-counter">
+            <p>Counter: <t t-esc="state.value"/></p>
+            <button class="increment-button" t-on-click="increment">
+                Increment
+            </button>
+            <button class="decrement-button" t-on-click="decrement">
+                Decrement
+            </button>
+        </div>
     </t>
 </templates>

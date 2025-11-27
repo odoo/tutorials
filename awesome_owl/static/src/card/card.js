@@ -1,6 +1,5 @@
 import { Component, useState } from "@odoo/owl";
 
-
 export class Card extends Component {
     static template = "awesome_owl.card";
     static props = {
@@ -14,7 +13,7 @@ export class Card extends Component {
     };
 
     setup() {
-        this.state = useState({visible: true})
+        this.state = useState({ visible: true })
     }
 
     toggleContent() {
