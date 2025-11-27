@@ -1,17 +1,21 @@
 import { registry } from "@web/core/registry";
 import { rpc } from "@web/core/network/rpc";
-import { memoize } from "@web/core/utils/functions";
-// import { reactive } from "@odoo/owl";
+import { reactive } from "@odoo/owl";
 
 const statisticsService = {
 
     start() {
+        const statistics = reactive ( { changed: false } );
 
-        const loadStatistics = memoize(async() => {
-            return await rpc("/awesome_dashboard/statistics", {});
-        });
+        async function loadStatistics () {
+            const updates = await rpc("/awesome_dashboard/statistics", {});
+            Object.assign(statistics, updates, {changed: true} );
+        }
 
-        return { loadStatistics };
+        setInterval(loadStatistics, 1*60*1000);
+        loadStatistics();
+
+        return statistics;
     }
 }
 

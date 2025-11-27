@@ -39,7 +39,7 @@
 
                 <DashboardItem size="1.5">
                     <t t-set-slot="title">
-                        Test PieChart
+                        Orders by size
                     </t>
                     <PieChart pieChartData="statistics.orders_by_size"/>
                 </DashboardItem>
