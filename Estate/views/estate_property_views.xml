@@ -35,7 +35,7 @@
                     <button name="action_back_to_new" string="Reset to New" type="object" invisible="state not in ('offer_accepted','sold','canceled')"/>
                     <button name="action_set_sold" string="Mark as Sold" type="object" invisible="state == 'sold'"/>
                     <button name="action_set_canceled" string="Cancel" type="object" invisible="state == 'canceled'"/>
-                    <field name="state" widget="statusbar" options="{'clickable': '1'}" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '0'}" statusbar_visible="new,offer_received,offer_accepted,sold,canceled"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -115,7 +115,7 @@
                 <field name="state"/>
                 <templates>
                     <t t-name="card">
-                        <div class="fw-bold fs-5 mb-1">
+                        <div style="fw-bold fs-5 mb-1">
                             <field name="name"/>
                         </div>
                         <div>

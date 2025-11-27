@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardConfigurationDialog">
+        <Dialog title="'Dashboard Configuration'" size="'md'" footer="true">
+            <t t-set-slot="footer" inline="true">
+                <button class="btn btn-primary" t-on-click="onSave">Apply</button>
+                <button class="btn btn-secondary" t-on-click="onCancel">Cancel</button>
+            </t>
+            <div class="container-fluid">
+                <div class="row mb-3">
+                    <div class="col-12">
+                        <p>Select which items to show on your dashboard:</p>
+                    </div>
+                </div>
+                <t t-foreach="state.items" t-as="item" t-key="item.id">
+                    <div class="row mb-2">
+                        <div class="col-1">
+                            <input type="checkbox" t-att-id="item.id" t-att-checked="!item.hidden" t-on-change="() => this.toggleItemVisibility(item.id)"/>
+                        </div>
+                        <label t-att-for="item.id" class="col-11">
+                            <t t-esc="item.description"/>
+                        </label>
+                    </div>
+                </t>
+            </div>
+        </Dialog>
+    </t>
+</templates>

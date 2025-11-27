@@ -9,19 +9,8 @@
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="status" column_invisible="True"/>
-                <button name="action_accept_offer" 
-                        string="Accept" 
-                        type="object" 
-                        icon="fa-check" 
-                        title="Accept"
-                        invisible="status"/>
-
-                <button name="action_refuse_offer" 
-                        string="Refuse" 
-                        type="object" 
-                        icon="fa-times" 
-                        title="Refuse"
-                        invisible="status"/>
+                <button name="action_accept_offer" string="Accept" type="object" icon="fa-check" title="Accept" invisible="status"/>
+                <button name="action_refuse_offer" string="Refuse" type="object" icon="fa-times" title="Refuse" invisible="status"/>
             </list>
         </field>
     </record>

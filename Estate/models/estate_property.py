@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from odoo import models, fields, api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -116,7 +116,10 @@ class EstateProperty(models.Model):
 
     def action_set_sold(self):
         for record in self:
-            record.state = "sold"
+            if record.state != 'canceled':
+                record.state = 'sold'
+            else:
+                raise UserError("once sold cannot be canceled")
 
     def action_set_canceled(self):
         for record in self:
