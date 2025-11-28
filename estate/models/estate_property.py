@@ -47,7 +47,7 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type", required=True)
     customer = fields.Many2one("res.partner", string="Customer", copy=False)
     salesperson = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
@@ -86,6 +86,11 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    @api.onchange("offer_ids")
+    def _onchange_offer_ids(self):
+        if len(self.offer_ids) == 0:
+            self.state = "new"
 
     def action_sold_property(self):
         for record in self:

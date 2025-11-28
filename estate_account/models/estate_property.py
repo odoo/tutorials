@@ -1,5 +1,3 @@
-from odoo.exceptions import UserError
-
 from odoo import models, Command
 
 
@@ -8,8 +6,6 @@ class EstatePropertyInherit(models.Model):
 
     def action_sold_property(self):
         for record in self:
-            if record.selling_price == 0:
-                raise UserError("Cannot sell Property without any accepted offer")
             self.env["account.move"].create(
                 {
                     "partner_id": record.customer.id,
