@@ -7,7 +7,7 @@
     'author': 'Odoo S.A.',
     'application': True,
     'license': 'LGPL-3',
-    'depends': ['base'],
+    'depends': ['base', 'awesome_owl', 'awesome_dashboard'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_tag_views.xml',
