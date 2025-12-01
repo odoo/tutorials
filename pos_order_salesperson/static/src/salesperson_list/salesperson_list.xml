@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="point_of_sale.SalespersonList">
+        <Dialog bodyClass="'partner-list p-0'" modalRef="modalRef" contentClass="'h-100'">
+            <t t-set-slot="header">
+                <span class="modal-title fs-4">Choose Salesperson</span>
+            </t>
+             <t t-set="nbrSalesPersons" t-value="this.state.totalSalespersons"/>
+            <div class="h-100">
+                <table class="table table-hover">
+                    <tbody class="h-100" t-att-class="{'d-none': !nbrSalesPersons}">
+                        <t t-foreach="getSalesPerson()" t-as="salesperson" t-key="salesperson.id">
+                            <SalespersonLine
+                                close="props.close"
+                                salesperson="salesperson"
+                                isSelected="props.salesperson?.id === salesperson.id"
+                                onClickUnselect.bind="() => this.clickSalesPerson()"
+                                onClickEdit.bind="(s) => this.editSalesPerson(s)"
+                                clickSalesPerson.bind="clickSalesPerson"
+                            />
+                        </t>
+                    </tbody>
+                </table>
+                <div class="text-center" t-if="!nbrSalesPersons">
+                    <div class="text-muted mt-5">
+                        <i class="fa fa-users fa-3x"></i>
+                        <p class="mt-3">No Salesperson found.</p>
+                    </div>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <div class="d-flex flex-row gap-2 w-100">
+                    <button class="btn btn-secondary btn-lg lh-lg flex-fill" t-on-click="() => this.clickSalesPerson(this.props.salesperson)">Discard</button>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+</templates>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="SelectSalespersonButton" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//InternalNoteButton" position="after">
+            <t t-name="point_of_sale.SelectSalespersonButton" owl="1">
+                <button class="set-partner btn btn-secondary btn-lg lh-lg text-truncate w-auto" t-on-click="selectSalesperson">
+                 <div t-if="state.salesperson_id" t-out="state.salesperson_id?.name" class="text-truncate text-action" />
+                    <span t-else="">Salesperson</span>
+                </button>
+            </t>
+      </xpath>
+    </t>
+</templates>

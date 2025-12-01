@@ -134,3 +134,11 @@ jsconfig.json
 package.json
 package-lock.json
 node_modules/
+
+awesome_clicker/
+awesome_dashboard/
+awesome_gallery/
+awesome_owl/
+estate/
+estate_account/
+website_airproof/
