@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="catalog.catalog_product_template_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <main>
+                    <div style="display: flex; flex-wrap: wrap; page-break-inside: avoid;">
+                        <t t-foreach="doc['category_ids']" t-as="id">
+                            <div style="display: flex; width: 100%;
+                                    align-items: stretch;
+                                    border-bottom: 2px solid #ccc;
+                                    padding-bottom: 10px;
+                                    margin-bottom: 20px;">
+                                <div t-attf-style="width: 3%;
+                                                writing-mode: vertical-rl;
+                                                text-align: center;
+                                                font-weight: bold;
+                                                font-size: 14px;
+                                                background-color: {{ doc['catalog_info'][id]['color'][0]}};">
+                                    <h2 t-out="doc['catalog_info'][id]['category_name']"
+                                        style="transform: rotate(180deg); padding: 10px 5px; margin: 0;"></h2>
+                                </div>
+                                <div t-attf-style="width: 95%;
+                                                display: flex;
+                                                flex-wrap: wrap;
+                                                gap: 15px;">
+                                    <t t-foreach="doc['catalog_info'][id]['products']" t-as="product_info">
+                                        <div t-if="product_info['id'] not in doc['remove_ids']"
+                                             t-attf-style="border: 1px solid #333;
+                                                        border-radius: 10px;
+                                                        padding: 12px;
+                                                        margin: 8px;
+                                                        width: 260px;
+                                                        background-color: {{ doc['catalog_info'][id]['color'][1]}};
+                                                        font-size: 13px;
+                                                        text-align: center;
+                                                        box-shadow: 2px 2px 5px rgba(0, 0, 0, 1);
+                                                        page-break-inside: avoid;
+                                                        display: inline-block;
+                                                        break-inside: avoid;">
+                                            <t t-foreach="doc['fields_order']" t-as="field">
+                                                <p t-if="field not in ['categ_id', 'id']" 
+                                                    style="margin: 4px 0; color: #222;
+                                                        font-weight: 700;
+                                                        word-wrap: break-word;">
+                                                    <img t-if="field == 'image_1920' and product_info[field]"
+                                                        t-att-src="image_data_uri(product_info[field])"
+                                                        style="max-height: 90px;
+                                                            max-width: 50%;
+                                                            border-radius: 5px;
+                                                            display: block;
+                                                            margin: 0 auto;"
+                                                        alt="Product Image"/>
+                                                    <t t-else="" t-out="product_info[field]" />
+                                                </p>
+                                            </t>
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </main>
+            </t>
+        </t>
+    </template>
+</odoo>

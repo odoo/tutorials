@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_product_uom.QuantityDialog">
+        <Dialog t-props="{'title': 'Enter Quantity'}" size="'sm'" >
+            <div class="dialog-content d-flex gap-2">
+                <label for="quantity" class="fw-bold">Quantity:</label>
+                <input id="quantity" type="number" t-model="this.props.quantity"
+                    class="form-control text-center"
+                    style="width: 300px;"
+                    placeholder="Enter quantity"/>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary mt-2" t-on-click="confirmAction">Confirm</button>
+                <button class="btn btn-primary mt-2" t-on-click="discardAction">Discard</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

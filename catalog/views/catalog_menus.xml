@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="catalog_menu_root" name="Catalog" sequence="100">
+        <menuitem id="catalog_menu" name="Catalog" action="catalog_catalog_action" sequence="1"/>
+    </menuitem>
+</odoo>
