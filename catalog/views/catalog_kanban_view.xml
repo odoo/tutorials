@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_catalog_product_kanban" model="ir.ui.view">
+        <field name="name">catalog.product.kanban</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <kanban sample="1" js_class="kanban_catalog">
+                <field name="categ_id"/>
+                <template>
+                    <t t-name="card">
+                        <main>
+                            <div class="mb-1">
+                                <div class="d-flex mb-0 h5">
+                                    <field class="me-1" name="is_favorite" widget="boolean_favorite" nolabel="1"/>
+                                    <field name="name"/>
+                                </div>
+                                <span t-if="record.default_code.value">
+                                    [<field name="default_code"/>]
+                                </span>
+                                <strong t-if="record.product_variant_count.value &gt; 1">
+                                    <field name="product_variant_count"/> Variants
+                                </strong>
+                            </div>
+                            <span>
+                                Unit Price:
+                                <field name="list_price" widget="monetary" options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+                                <field name="product_template_attribute_value_ids" widget="many2many_tags" domain="[('id', 'in', parent.ids)]" groups="product.group_product_variant" options="{'color_field': 'color'}"/>
+                            </span>
+                        </main>
+                        <aside>
+                            <field name="image_128" widget="image" alt="Product" options="{'img_class': 'w-100 object-fit-contain'}" invisible="not image_128"/>
+                        </aside>
+                    </t>
+                </template>
+            </kanban>
+        </field>
+    </record>
+    <record id="product_kanban_search_catalog" model="ir.ui.view">
+        <field name="name">product.kanban.search.catalog</field>
+        <field name="model">product.product</field>
+        <field name="arch" type="xml">
+            <search string="Product">
+                <searchpanel>
+                    <field name="categ_id"
+                           string="Product Category"
+                           icon="fa-th-list"/>
+                    <field name="product_template_attribute_value_ids"
+                           string="Attributes"
+                           icon="fa-th-list"
+                           domain="[('ptav_active', '=', True), ('product_tmpl_id.active', '=', True)]"
+                           enable_counters="1"
+                           select="multi"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>
