@@ -134,3 +134,7 @@ jsconfig.json
 package.json
 package-lock.json
 node_modules
+awesome_dashboard/
+awesome_owl/
+estate/
+estate_account/

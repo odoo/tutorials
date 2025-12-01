@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.view.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//*[hasclass('oe_subtotal_footer')]" position="replace">
+                <div class="d-flex flex-column align-items-end">
+                    <button name="action_discount" type="object" class="oe_highlight" string="Discount"/>
+                    <group class="oe_subtotal_footer">
+                        <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" readonly="1"/>
+                    </group>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

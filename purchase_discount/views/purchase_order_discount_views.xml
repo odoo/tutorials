@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="purchase_order_discount_view_form" model="ir.ui.view">
+        <field name="name">purchase.order.discount.form</field>
+        <field name="model">purchase.order.discount</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="discount_type"/>
+                        <field name="discount_in_value"/>
+                        <field name="discount_in_percentage"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="apply_discount" type="object" string="Apply" class="oe_highlight"/>
+                    <button name="apply_cancle" type="object" string="Cancle"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_open_discount" model="ir.actions.act_window">
+        <field name="name">Apply Discount</field>
+        <field name="res_model">purchase.order.discount</field>
+        <field name="view_mode">form</field>
+    </record>
+</odoo>
