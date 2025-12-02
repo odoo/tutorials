@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="point_of_sale.SalespersonLine">
+        <tr class="partner-line partner-info" 
+            t-att-class="{'selected': props.isSelected}" 
+            t-on-click="() => props.clickSalesPerson(props.salesperson)">
+                                    
+            <td class="text-break w-25">
+                <b t-out="props.salesperson.name or ''" />
+                <div t-if="props.salesperson.parent_name" class="company-field text-bg-muted" t-out="props.salesperson.parent_name" />
+            </td>
+
+            <td>
+                <div class="partner-line-adress" t-if="props.salesperson.work_contact_id.pos_contact_address" t-out="props.salesperson.work_contact_id.pos_contact_address" />
+            </td>
+
+            <td class="partner-line-email">
+                <div t-if="props.salesperson.work_contact_id.phone">
+                    <i class="fa fa-fw fa-phone me-2"/><t t-out="props.salesperson.work_contact_id.phone"/>
+                </div>
+                <div t-if="props.salesperson.work_contact_id.email" class="email-field">
+                    <i class="fa fa-fw fa-paper-plane-o me-2"/><t t-out="props.salesperson.work_contact_id.email" />
+                </div>
+            </td>
+
+            <td class="edit-partner-button-cell align-middle pe-0">
+                <button t-if="props.isSelected" t-on-click.stop="props.onClickUnselect" class="unselect-tag d-lg-inline-block d-none btn btn-link btn-lg mt-1 float-end">
+                    <i class="fa fa-check"/>
+                </button>
+            </td>
+
+            <td class="edit-partner-button-cell align-middle">
+                <Dropdown>
+                    <button class="btn btn-light btn-lg lh-lg border float-end">
+                        <i class="fa fa-fw fa-bars"/>
+                    </button>
+                    <t t-set-slot="content">
+                        <t t-if="!props.isSelected">
+                            <DropdownItem onSelected="() => props.clickSalesPerson(props.salesperson)">
+                                Select
+                            </DropdownItem>
+                        </t>
+                        <t t-if="props.isSelected">
+                            <DropdownItem onSelected="props.onClickUnselect">
+                                unselect
+                            </DropdownItem>
+                        </t>
+                    </t>
+                </Dropdown>
+            </td>
+        </tr>
+    </t>
+</templates>
