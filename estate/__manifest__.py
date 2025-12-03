@@ -8,5 +8,3 @@
     'description': 'Real estate purchase & sales',
     'application': True,
 }
-
-
