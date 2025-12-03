@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="product_product_view_kanban_inherit" model="ir.ui.view">
+            <field name="name">product.product.view.kanban.inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='image_128']" position="replace">
+                    <field name="image_1920" class="ms-auto o_product_image img-fluid" widget="image"/>
+                </xpath>
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="js_class">product_mobile_kanban_catalog</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

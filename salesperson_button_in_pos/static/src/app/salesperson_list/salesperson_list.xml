@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="salesperson_button_in_pos.SalespersonList">
+        <Dialog bodyClass="'salesperson-list overflow-y-auto'" contentClass="'h-100'">
+            <t t-set-slot="header">
+                <button t-if="!ui.isSmall" class="btn btn-primary btn-lg lh-lg" role="img" aria-label="Add a salesperson"
+                        t-on-click="() => this.editSalesperson()"
+                        title="Add a salesperson">
+                Create
+                </button>
+                <Input tModel="[state, 'query']" class="'ms-auto'" isSmall="ui.isSmall" placeholder.translate="Search Salespersons..." icon="{type: 'fa', value: 'fa-search'}" autofocus="true" debounceMillis="100" t-on-input="onSearchInput" />
+            </t>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="py-2">Name</th>
+                        <th class="py-2">Contact</th>
+                        <th class="py-2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-if="filteredSalespersons.length !== 0">
+                        <t t-foreach="filteredSalespersons" t-as="salesperson" t-key="salesperson.id">
+                            <tr t-on-click="() => this.selectSalesperson(salesperson)" style="cursor: pointer;">
+                                <td>
+                                    <b t-esc="salesperson.name or ''"/>
+                                    <div class="company-field text-bg-muted"/>
+                                </td>
+                                <td t-esc="salesperson?.work_contact_id?.email"/>
+                                <td class="salesperson-line-email">
+                                </td>
+                                <td>
+                                    <t t-if="this.props.currentSelectedSalesperson?.id === salesperson?.id">
+                                        <button t-on-click="() => this.selectSalesperson(salesperson)" class="btn btn-transparent text-danger">
+                                            <i class="fa fa-times text-danger"/>
+                                        </button>
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <tr>
+                            <td colspan="4" class="text-center py-3">No Salesperson Found</td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+            <div t-if="state.query" class="search-more-button d-flex justify-content-center my-2">
+                <button class="btn btn-lg btn-primary" t-on-click="onEnter">Search more</button>
+            </div>
+            <t t-set-slot="footer">
+                <div class="d-flex justify-content-start flex-wrap gap-2 w-100">
+                    <button class="btn btn-secondary btn-lg lh-lg o-default-button" t-on-click="props.close">Discard</button>
+                </div>
+            </t>
+        </Dialog>
+    </t>
+</templates>
