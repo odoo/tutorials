@@ -1,0 +1,98 @@
+from odoo import fields, models, api
+from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_is_zero
+from dateutil.relativedelta import relativedelta
+
+
+class Estateproperty(models.Model):
+    _name = "estate.property"
+    _description = "Estate property"
+    _order = "id desc"
+
+    name = fields.Char('Title', required=True)
+    description = fields.Text('Description', required=True)
+    notes = fields.Html()
+    postcode = fields.Char('Postcode', required=True)
+    date_availability = fields.Date('Available From', copy=False, default=fields.Datetime.now() + relativedelta(months=3))
+    expected_price = fields.Float('Expected Price', required=True)
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    bedrooms = fields.Integer('Bedrooms', default=2)
+    living_area = fields.Integer('Living Area (sqm)')
+    facades = fields.Integer('Facades')
+    garage = fields.Boolean('Garage')
+    garden = fields.Boolean('Garden')
+    garden_area = fields.Integer('Garden area (sqm)')
+    garden_orientation = fields.Selection(
+        string='Garden Orientation',
+        selection=[('north', 'North'), ('south', 'South'), ('west', 'West'), ('east', 'East')],
+    )
+    active = fields.Boolean('Active', default=True)
+    state = fields.Selection(
+        string='State',
+        selection=[('new', 'New'), ('offer received', 'Offer Received'), ('offer accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        help="Estate state",
+        default=('new')
+    )
+    property_type_id = fields.Many2one("estate.property.type", string="Type")
+    salesperson = fields.Many2one('res.users', string='Salesperson')
+    buyer = fields.Many2one('res.partner', string='Buyer')
+    tag_ids = fields.Many2many('estate.property.tag', string='Tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offer')
+    total_area = fields.Float(compute="_compute_total_area")
+    best_offer = fields.Float(compute="_compute_best_offer")
+    offer_accepted = fields.Boolean()
+
+    _expected_property_price_strictly_positive = models.Constraint(
+        'CHECK(expected_price > 0)',
+    )
+
+    _property_selling_price_positive = models.Constraint(
+        'CHECK(selling_price >= 0)',
+    )
+
+    @api.depends("garden_area", "living_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.garden_area + record.living_area
+
+    @api.depends("offer_ids")
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped("price") or [0])
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
+
+    def set_property_sold(self):
+        for record in self:
+            if record.state != 'cancelled':
+                record.state = 'sold'
+            else:
+                raise UserError("Can not cancel sold property")
+
+    def set_property_cancelled(self):
+        for record in self:
+            if record.state != 'sold':
+                record.state = 'cancelled'
+            else:
+                raise UserError("Can not cancel sold property")
+
+    @api.onchange('selling_price', 'expected_price')
+    @api.constrains('selling_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 2) and record.selling_price < 0.9 * record.expected_price:
+                raise UserError("Selling price can not be less than 90'%' of Excpected price")
+
+    @api.ondelete(at_uninstall=False)
+    def unlink_if_not_set(self):
+        for record in self:
+            if record.state not in {'new', 'cancelled'}:
+                raise UserError("Can not delete properties at this state")
+        return super().unlink()
