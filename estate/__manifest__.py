@@ -8,7 +8,5 @@
     'category': 'Sales/Real Estate',
     'installable': True,
     'auto_install': False,
-    'description': """
-    Description text
-    """,
+    'description': """Description text""",
 }
