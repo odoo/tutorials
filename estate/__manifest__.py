@@ -8,5 +8,8 @@
     An Real Estate App to buy, sell, and rent properties.
     """,
     'application': True,
-    'license': 'LGPL-3'
+    'license': 'LGPL-3',
+    'data': [
+        'security/ir.model.access.csv',
+    ],
 }
