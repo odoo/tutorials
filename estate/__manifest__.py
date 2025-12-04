@@ -6,5 +6,8 @@
     'author': 'snrav-odoo',
     'license': 'LGPL-3',
     'description': 'Real estate purchase & sales',
+    'data': [
+        'security/ir.model.access.csv'
+        ],
     'application': True,
 }
