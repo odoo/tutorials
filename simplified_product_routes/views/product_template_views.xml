@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_template_form_inherit_simplified_routes" model="ir.ui.view">
+        <field name="name">product.template.form.inherit.simplified.routes</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.view_template_property_form"/>
+        <field name="arch" type="xml">
+            <!-- Hide Operations section if no routes available -->
+            <xpath expr="//page[@name='inventory']//group[@name='operations']" position="attributes">
+                <attribute name="invisible">not route_ids</attribute>
+            </xpath>
+            
+            <!-- Add information about automatic route selection -->
+            <xpath expr="//page[@name='inventory']//field[@name='route_ids']" position="after">
+                <div class="text-muted mt-2" invisible="purchase_ok == False">
+                    <i class="fa fa-info-circle"/> Buy route is automatically added when purchase option is enabled.
+                </div>
+                <div class="text-muted" invisible="purchase_ok == True">
+                    <i class="fa fa-info-circle"/> Routes will be automatically managed based on product configuration.
+                </div>
+            </xpath>
+
+            <!-- Hides Dropship Subcontractor route -->
+            <xpath expr="//field[@name='route_ids']" position="attributes">
+                <attribute name="domain">[('product_selectable', '=', True), ('id', '!=', %(mrp_subcontracting_dropshipping.route_subcontracting_dropshipping)d)]</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

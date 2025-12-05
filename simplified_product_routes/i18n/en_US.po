@@ -1,0 +1,59 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* simplified_product_routes
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-03-18 12:26+0000\n"
+"PO-Revision-Date: 2025-03-18 12:26+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: simplified_product_routes
+#: model_terms:ir.ui.view,arch_db:simplified_product_routes.view_product_template_form_inherit_simplified_routes
+msgid ""
+"<i class=\"fa fa-info-circle\"/> Buy route is automatically added when "
+"purchase option is enabled."
+msgstr ""
+
+#. module: simplified_product_routes
+#: model_terms:ir.ui.view,arch_db:simplified_product_routes.view_product_template_form_inherit_simplified_routes
+msgid ""
+"<i class=\"fa fa-info-circle\"/> Routes will be automatically managed based "
+"on product configuration."
+msgstr ""
+
+#. module: simplified_product_routes
+#: model:ir.model,name:simplified_product_routes.model_mrp_bom
+msgid "Bill of Material"
+msgstr ""
+
+#. module: simplified_product_routes
+#. odoo-python
+#: code:addons/simplified_product_routes/models/product_template.py:0
+#: model:ir.model.fields,field_description:simplified_product_routes.field_product_product__has_bom
+#: model:ir.model.fields,field_description:simplified_product_routes.field_product_template__has_bom
+msgid "Has Bills of Materials"
+msgstr ""
+
+#. module: simplified_product_routes
+#: model:ir.model,name:simplified_product_routes.model_product_template
+msgid "Product"
+msgstr ""
+
+#. module: simplified_product_routes
+#: model:ir.model,name:simplified_product_routes.model_stock_rule
+msgid "Stock Rule"
+msgstr ""
+
+#. module: simplified_product_routes
+#. odoo-python
+#: code:addons/simplified_product_routes/models/product_template.py:0
+msgid "subcontract"
+msgstr ""
