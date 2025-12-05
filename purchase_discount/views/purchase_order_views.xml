@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_purchase_order_discount_form" model="ir.ui.view">
+        <field name="name">purchase.order.discount.form</field>
+        <field name="model">purchase.order</field>
+        <field name="priority">17</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="d-flex flex-row gap-2">
+                        <label for="discount_in_value">Discount</label>
+                        <div style="max-width:150px;">
+                            <field name="discount_in_value"/>
+                        </div>
+                        <div style="max-width:50px;">
+                            <field name="discount_type"/>
+                        </div>
+                        <span class="text-muted" invisible="discount_type == 'percentage'">
+                            (<field name="discount_in_percentage"/>%)
+                        </span>
+                    </div>
+                </sheet>
+                <footer>
+                    <button name="apply_discount" type="object" string="Apply" class="oe_highlight"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase.order.view.form.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//*[hasclass('oe_subtotal_footer')]" position="replace">
+                <div class="d-flex flex-column align-items-end">
+                    <button name="action_discount" type="object" class="oe_highlight" string="Discount" invisible="state in ('purchase', 'cancel')"/>
+                    <group class="oe_subtotal_footer">
+                        <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" readonly="1"/>
+                    </group>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
