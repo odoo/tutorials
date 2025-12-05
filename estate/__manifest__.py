@@ -5,6 +5,9 @@
     'summary': 'Real Estate advertisement tutorial module',
     'depends': ['base'],
     'author': "Harsh Maniya",
+    'data': [
+       'security/ir.model.access.csv',
+    ],
     'category': 'Sales/Real Estate',
     'installable': True,
     'auto_install': False,
