@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_modular_type_config_user,modular.type.config.user,model_modular_type_config,base.group_user,1,1,1,1
+access_modular_line_generator_wizard,access_modular_line_generator_wizard,modular_types.model_modular_line_generator_wizard,base.group_user,1,1,1,1
+access_modular_line_generator_wizard_line,access_modular_line_generator_wizard_line,modular_types.model_modular_line_generator_wizard_line,base.group_user,1,1,1,1
