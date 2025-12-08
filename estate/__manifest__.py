@@ -1,8 +1,8 @@
 {
-    'name': "Real Estate",
+    'name': 'Real Estate',
     'version': '1.0',
     'depends': ['base'],
-    'author': "Shivam Saksham(shsak)",
+    'author': 'Shivam Saksham(shsak)',
     'category': 'Sales',
     'description': """
     An Real Estate App to buy, sell, and rent properties.
