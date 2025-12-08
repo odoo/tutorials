@@ -1,0 +1,50 @@
+<odoo>
+    <record id="estate_property_view_kanban_auction" model="ir.ui.view">
+        <field name="name">estate.property.view.kanban.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <field name="name" position="replace">
+                <div class="d-flex justify-content-between align-items-center w-100">
+                    <field name="name" class="fw-bolder"/>
+                    <field name="auction_state" widget="estate_auction_state_selection"
+                           invisible="sale_mode != 'auction'"/>
+                </div>
+            </field>
+        </field>
+    </record>
+
+    <record id="estate_property_view_form_auction" model="ir.ui.view">
+        <field name="name">estate.property.view.form.auction</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/field[@name='image']" position="replace">
+                <div class="float-end d-inline-flex flex-column gap-2 align-items-end ms-4">
+                    <field name="auction_state" widget="estate_auction_state_selection"
+                           options="{'hide_label': False}" invisible="sale_mode != 'auction'"/>
+                    <field name="image" widget="image" class="oe_avatar" nolabel='1'
+                           options="{'zoom': True, 'size': [0,270]}"/>
+                </div>
+            </xpath>
+            <xpath expr="//sheet/div/h1" position="after">
+                <field name="sale_mode" widget="radio" options="{'horizontal': True}"/>
+                <br/>
+            </xpath>
+            <xpath expr="//header/button[1]" position="before">
+                <button name="action_start_estate_auction" type="object" string="Start Auction" class="btn btn-primary"
+                        invisible="sale_mode != 'auction' or auction_state != '01_template'"/>
+            </xpath>
+            <xpath expr="//page[@name='description']/group" position="inside">
+                <group string="Auction Details" invisible="sale_mode != 'auction'">
+                    <field name="auction_end_time" widget="datetime" options="{'rounding': 1}"/>
+                    <field name="highest_offer" readonly="True"/>
+                    <field name="highest_bidder_id" widget="many2one_avatar_user" readonly="True"/>
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='offer_ids']" position="attributes">
+                <attribute name="readonly">sale_mode == 'auction'</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

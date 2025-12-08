@@ -1,0 +1,41 @@
+<templates>
+    <t t-name="estate_auction.EstateAuctionStateSelection" t-inherit="web.StateSelectionField" t-inherit-mode="primary">
+        <xpath expr="//t[@t-if='props.readonly']/button" position="replace">
+            <t t-if="isView(['kanban'])">
+                <button class="btn btn-link d-flex p-0">
+                    <div class="d-flex align-items-center" t-att-title="label">
+                        <i t-attf-class="{{ statusIcon(currentValue) }} {{ statusColor(currentValue) }}"/>
+                    </div>
+                </button>
+            </t>
+            <t t-else="">
+                <button t-attf-class="btn {{ statusButton(currentValue) }} d-flex rounded-pill border border-1">
+                    <div class="d-flex align-items-center ">
+                        <span t-attf-class="o_status_label" t-out="label"/>
+                    </div>
+                </button>
+            </t>
+        </xpath>
+
+        <xpath expr="//Dropdown/button" position="replace">
+            <t t-if="isView(['kanban'])">
+                <button class="btn btn-link d-flex p-0">
+                    <div class="d-flex align-items-center" t-att-title="label">
+                        <i t-attf-class="{{ statusIcon(currentValue) }} {{ statusColor(currentValue) }}"/>
+                    </div>
+                </button>
+            </t>
+            <t t-else="">
+                <button t-attf-class="btn {{ statusButton(currentValue) }} d-flex rounded-pill border border-1">
+                    <div class="d-flex align-items-center ">
+                        <span t-attf-class="o_status_label" t-out="label"/>
+                    </div>
+                </button>
+            </t>
+        </xpath>
+
+        <xpath expr="//DropdownItem/span[1]" position="attributes">
+            <attribute name="t-attf-class">mx-2 {{ statusIcon(option[0]) }} {{ statusColor(option[0]) }}</attribute>
+        </xpath>
+    </t>
+</templates>
