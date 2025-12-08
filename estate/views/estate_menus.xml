@@ -1,6 +1,12 @@
 <!-- /home/odoo/odoo19/tutorials/estate/views/estate_menus.xml -->
 <odoo>
     <menuitem id="menu_estate_root" name="Real Estate"/>
-    <menuitem id="menu_estate_advertisements" name="Advertisements" parent="menu_estate_root"/>
-    <menuitem id="menu_estate_properties" name="Properties" parent="menu_estate_advertisements" action="action_estate_property"/>
+    <menuitem id="menu_estate_advertisements" name="Advertisements" parent="menu_estate_root" sequence="10"/>
+    <menuitem id="menu_estate_properties" name="Properties" parent="menu_estate_advertisements" action="action_estate_property" sequence="10"/>
+    <!-- Settings / Property Types -->
+    <menuitem id="menu_estate_settings" name="Settings" parent="menu_estate_root" sequence="20"/>
+    <menuitem id="menu_estate_property_types" name="Property Types"
+              parent="menu_estate_settings"
+              action="action_estate_property_type"
+              sequence="10"/>
 </odoo>
