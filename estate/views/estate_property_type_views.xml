@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form string="property type form">
+                <sheet>
+                    <field name="name" class="display-4" />
+                    <button type="action" name="%(estate_property_offer_action)d" string="Offers"/>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids" />
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="property type list">
+                <field name="name" string="Name" />
+                <field name="offer_ids" string="Offers" />
+                <field name="offer_count" string="Offers Count" />
+                <field name="sequence" string="Sequence" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
