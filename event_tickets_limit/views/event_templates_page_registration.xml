@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <template id="event_tickets_limit_template" inherit_id="website_event.modal_ticket_registration">
+
+        <!-- implementing ticket limit per registration -->
+        <xpath expr="//div[hasclass('o_wevent_registration_single_select')]//select" position="replace">
+            <select t-att-name="'nb_register-%s' % (tickets.id if tickets else 0)" class="d-inline w-auto form-select">
+                <t t-set="seats_max_ticket" t-value="(not tickets or not tickets.seats_limited or tickets.seats_available &gt; 9) and 10 or tickets.seats_available + 1"/>
+                <t t-set="seats_max_event" t-value="(not event.seats_limited or event.seats_available &gt; 9) and 10 or event.seats_available + 1"/>
+                <t t-set="seats_max" t-value="min(seats_max_ticket, seats_max_event) if tickets else seats_max_event"/>
+                <t t-set="seats_max" t-value="min(seats_max, event.max_ticket + 1) if event.tickets_limited else seats_max"/>
+                <t t-foreach="range(0, seats_max)" t-as="nb">
+                    <option t-out="nb" t-att-selected="nb == 1 and 'selected'"/>
+                </t>
+            </select>
+        </xpath>
+
+        <!-- implementing ticket limit per registration on multiple select -->
+        <xpath expr="//div[@id='o_wevent_tickets_collapse']//select" position="replace">
+            <select t-if="not ticket.is_expired and ticket.sale_available" t-attf-name="nb_register-#{ticket.id}" class="w-auto form-select">
+                <t t-set="seats_max_ticket" t-value="(not ticket.seats_limited or ticket.seats_available &gt; 9) and 10 or ticket.seats_available + 1"/>
+                <t t-set="seats_max_event" t-value="(not event.seats_limited or event.seats_available &gt; 9) and 10 or event.seats_available + 1"/>
+                <t t-set="seats_max" t-value="min(seats_max_ticket, seats_max_event)"/>
+                <t t-set="seats_max" t-value="min(seats_max, event.max_ticket + 1) if event.tickets_limited else seats_max"/>
+                <t t-foreach="range(0, seats_max)" t-as="nb">
+                    <option t-out="nb" t-att-selected="len(ticket) == 0 and nb == 0 and 'selected'"/>
+                </t>
+            </select>
+        </xpath>
+        
+    </template>
+
+</odoo>
