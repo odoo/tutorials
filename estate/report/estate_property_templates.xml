@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="estate_property_offers_report"> 
+        <t t-foreach="docs" t-as="property">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                  <div class="page">
+                     <h1>
+                         <span t-field="property.company_id.name"/>
+                     </h1> 
+                  <div>
+                      <t t-if="property.company_id">
+                            <span>
+                                <t t-esc="property.company_id.street"/>
+                                <t t-esc="property.company_id.street2"/> <br/>
+                                <t t-esc="property.company_id.city"/> <br/>
+                                <t t-esc="property.company_id.state_id.name"/> <br/>
+                                <t t-esc="property.company_id.country_id.name"/> <br/>
+                                <t t-esc="property.company_id.zip"/> 
+                            </span>
+                      </t>
+                  </div>
+                  <br />
+                  <br />
+                  <h1>
+                      <span t-field="property.name"/>
+                  </h1>
+                  <div>
+                    <div> 
+                        <strong>Salesman: </strong>
+                        <span t-field="property.salesperson_id"/>
+                    </div>
+                    <div> 
+                        <strong>Expected Price: </strong>
+                        <span t-field="property.expected_price"/>
+                    </div>
+                    <div> 
+                        <strong>Status: </strong>
+                        <span t-field="property.state"/>
+                    </div>     
+                    </div>
+                        <t t-if="property.offer_ids">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Price</th>
+                                        <th>Buyer</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="property.offer_ids" t-as="offer">
+                                        <tr>
+                                            <td>
+                                                <span t-field="offer.price"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="offer.partner_id.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="offer.status"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-else="">
+                            <p>No offers available for this property.</p>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="estate_salesman_property_report" name="template_name">
+        <t t-foreach="docs" t-as="res_users">
+          <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h1>
+                         <span t-field="res_users.company_id.name"/>
+                    </h1> 
+                  <div>
+                    <t t-if="res_users.company_id">
+                        <span>
+                            <t t-esc="res_users.company_id.street"/>
+                            <t t-esc="res_users.company_id.street2"/> <br/>
+                            <t t-esc="res_users.company_id.city"/> <br/>
+                            <t t-esc="res_users.company_id.state_id.name"/> <br/>
+                            <t t-esc="res_users.company_id.country_id.name"/> <br/>
+                            <t t-esc="res_users.company_id.zip"/> 
+                        </span>
+                      </t>
+                   </div>
+                   <br />
+                   <br />    
+                   <div>
+                     <div> 
+                        <strong>Salesman: </strong>
+                        <span t-field="res_users.name"/>
+                     </div>
+                    </div>
+                    <t t-if="res_users.property_ids">
+                      <t t-foreach="res_users.property_ids" t-as="property">
+                        <div class="mt16">
+                            <h2><span t-field="property.name"/></h2>
+                            <div>
+                                <strong>Expected Price:</strong>
+                                <span t-field="property.expected_price"/>
+                            </div>
+                            <div>
+                                <strong>Status:</strong>
+                                <span t-field="property.state"/>
+                            </div>
+                            <div>
+                                <strong>Salesman:</strong>
+                                <span t-field="property.salesperson_id"/>
+                            </div>
+                            <t t-if="property.offer_ids">
+                                <table class="table mt16">
+                                    <thead>
+                                        <tr>
+                                            <th>Price</th>
+                                            <th>Buyer</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="property.offer_ids" t-as="offer">
+                                            <tr>
+                                                <td>
+                                                    <span t-field="offer.price"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.partner_id.name"/>
+                                                </td>
+                                                <td>
+                                                    <span t-field="offer.status"/>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </t>
+                            <t t-else="">
+                                <p>No offers available for this property.</p>
+                            </t>
+                        </div>
+                      </t>
+                    </t>
+                    <t t-else="">
+                        <p>No properties available for this salesman.</p>
+                    </t>
+                </div>
+            </t>
+           </t>
+        </t>
+    </template>
+</odoo>

@@ -1,0 +1,48 @@
+<odoo noupdate="1">
+    <record id="email_template_offer_accepted" model="mail.template">
+        <field name="name">Property Sold Notification</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="email_from">{{object.salesperson_id.email}}</field>
+        <field name="email_to">{{object.buyer_id.email}}</field>
+        <field name="subject">Your Property Purchase: {{object.name}}</field>
+        <field name="body_html" type="html">
+            <tr>
+                <td style="min-width: 590px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                        <tr>
+                            <td valign="top" style="font-size: 13px;">
+                                <div>
+                                    <p>Dear <t t-out="object.buyer_id.name or 'Valued Customer'"/>,</p>
+                                    <p>Congratulations! We are pleased to inform you that the property <strong><t t-out="object.name"/></strong> has been successfully sold to you.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </field>
+    </record>
+
+    <record id="email_template_offer_rejected" model="mail.template">
+        <field name="name">Property Not sold Notification</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="email_from">{{object.salesperson_id.email}}</field>
+        <field name="subject">Your Property Auction Bid: {{object.name}}</field>
+        <field name="body_html" type="html">
+            <tr>
+                <td style="min-width: 590px;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="590" style="min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;">
+                        <tr>
+                            <td valign="top" style="font-size: 13px;">
+                                <div>
+                                    <p>Dear <t t-out="'Valued Customer'"/>,</p>
+                                    <p>Sorry!! We are not pleased to inform you that the property <strong><t t-out="object.name"/></strong> has not been sold to you.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </field>
+    </record>
+</odoo>
