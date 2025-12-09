@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 
 class EstatePropertyOffer(models.Model):
@@ -27,3 +27,19 @@ class EstatePropertyOffer(models.Model):
     def _inverse_offer_date_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    def action_offer_accepted(self):
+        for record in self:
+            if record.status == 'accepted':
+                return False
+            if record.property_id.buyer:
+                raise exceptions.UserError('An another offer is already accepted')
+            record.property_id.selling_price = record.price
+            record.property_id.buyer = record.partner_id
+            record.status = 'accepted'
+        return True
+
+    def action_offer_refused(self):
+        for record in self:
+            record.status = 'refused'
+        return True

@@ -4,6 +4,12 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Description">
+                <haeder>
+                    <group col="2">
+                        <button type="object" name="cancel_property_sale" string="Cancel" />
+                        <button type="object" name="set_property_sold" string="Sold" />
+                    </group>
+                </haeder>
                 <sheet>
                     <h1>
                         <field name="name" nolabel="True" />
@@ -18,7 +24,7 @@
                         <group>
                             <field name="expected_price" />
                             <field name="selling_price" />
-                            <field name="best_price"/>
+                            <field name="best_price" />
                         </group>
                     </group>
                     <notebook>
@@ -33,7 +39,7 @@
                                 <field name="garden_area" string="Garden Area (sqm)" />
                                 <field name="garden_orientation" />
                                 <field name="state" />
-                                <field name="total_area"/>
+                                <field name="total_area" />
                             </group>
                         </page>
                         <page string="Offers">
