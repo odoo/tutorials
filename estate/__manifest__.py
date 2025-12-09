@@ -1,8 +1,8 @@
 {
-    'name': "Real Estate",
+    'name': 'Real Estate',
     'version': '1.0',
     'depends': ['base'],
-    'author': "Harsh Tiwari",
+    'author': 'Harsh Tiwari',
     'category': 'Category',
     'application': True,
     'description': """
@@ -10,8 +10,8 @@
     """,
     'license': 'LGPL-3',
     'data': [
-        'views/estate_menus.xml',
         'views/estate_property_views.xml',
-        'security/ir.model.access.csv'
+        'security/ir.model.access.csv',
+        'views/estate_menus.xml',
     ]
 }
