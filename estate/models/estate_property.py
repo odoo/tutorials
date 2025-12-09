@@ -1,33 +1,30 @@
-from odoo import models, fields
 from dateutil.relativedelta import relativedelta
 from datetime import date
+from odoo import models, fields, api
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
 
-    name = fields.Char(string="Property Title", required=True)
-    description = fields.Text(string="Description")
-    postcode = fields.Char(string="Postcode")
+    name = fields.Char(required=True)
+    description = fields.Text()
+    postcode = fields.Char()
     date_availability = fields.Date(
-        string="Available From",
         default=lambda sself: date.today() + relativedelta(months=3),
         copy=False
     )
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(
-        string="Selling Price",
         readonly=True,
         copy=False
     )
-
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
-    living_area = fields.Integer(string="Living Area (sqm)")
-    facades = fields.Integer(string="Number of Facades")
-    garage = fields.Boolean(string="Has Garage")
-    garden = fields.Boolean(string="Has Garden")
-    garden_area = fields.Integer(string="Garden Area (sqm)")
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer()
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         selection=[
             ('north', 'North'),
@@ -35,7 +32,6 @@ class EstateProperty(models.Model):
             ('east', 'East'),
             ('west', 'West'),
         ],
-        string="Garden Orientation"
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -46,12 +42,33 @@ class EstateProperty(models.Model):
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled'),
     ],
-    string="Status",
     required=True,
     copy=False,
     default='new',
     )
     property_type_id = fields.Many2one(
         "estate.property.type",
-        string="Property Type",
     )
+    salesperson_id = fields.Many2one(
+        "res.users",
+        default=lambda self: self.env.user,
+    )
+    buyer_id = fields.Many2one(
+        "res.partner",
+        copy=False,
+    )
+    tag_ids = fields.Many2many(
+        "estate.property.tag",
+    )
+    offer_ids = fields.One2many(
+        "estate.property.offer",
+        "property_id",
+    )
+    total_area = fields.Float(
+        compute="_compute_total_area"
+    )
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
