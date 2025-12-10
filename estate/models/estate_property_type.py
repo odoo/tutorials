@@ -2,7 +2,12 @@ from odoo import models, fields
 
 
 class EstatePropertyType(models.Model):
-    _name = "estate.property.type"
-    _description = "Defines the type of Real Estate Property"
+    _name = 'estate.property.type'
+    _description = 'Defines the type of Real Estate Property'
 
     name = fields.Char(required=True)
+
+    _check_unique_name = models.Constraint(
+        'unique(name)',
+        'A tag with the same name already exists.'
+    )

@@ -16,7 +16,7 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_offer_date_deadline', inverse='_inverse_offer_date_deadline')
 
-    @api.depends('create_date', 'validity')
+    @api.depends('validity')
     def _compute_offer_date_deadline(self):
         for record in self:
             if record.create_date:
@@ -30,8 +30,6 @@ class EstatePropertyOffer(models.Model):
 
     def action_offer_accepted(self):
         for record in self:
-            if record.status == 'accepted':
-                return False
             if record.property_id.buyer:
                 raise exceptions.UserError('An another offer is already accepted')
             record.property_id.selling_price = record.price
@@ -43,3 +41,8 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
+
+    _check_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer Price cannot be 0 or below 0'
+    )
