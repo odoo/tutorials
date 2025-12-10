@@ -7,6 +7,7 @@
     ],
     'category': "Tutorials",
     'installable': True,
-    'application': True
+    'application': True,
+    'data':['security/ir.model.access.csv']
 
 }
