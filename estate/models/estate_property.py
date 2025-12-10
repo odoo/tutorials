@@ -1,11 +1,17 @@
 from dateutil.relativedelta import relativedelta
 from odoo import models, api, fields, exceptions
+from odoo.exceptions import ValidationError
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)", "Expected price must be strictly positive."
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)", "Selling price must be positive."
+    )
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -86,3 +92,14 @@ class EstateProperty(models.Model):
             else:
                 record.state = "cancelled"
         return True
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price_percentage_criteria(self):
+        for record in self:
+            selling_price_percentage = (record.selling_price / record.expected_price) * 100
+            if selling_price_percentage >= 90 or selling_price_percentage == 0:
+                pass
+            else:
+                raise ValidationError(
+                    "The selling price cannot be lower then 90% of the expected price."
+                )
