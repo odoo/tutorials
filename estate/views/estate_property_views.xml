@@ -27,6 +27,12 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Properties">
+                <haeder>
+                    <group col="2">
+                        <button type="object" name="action_cancel" string="Cancel"/>
+                        <button type="object" name="action_set_sold" string="Sold"/>
+                    </group>
+                </haeder>
                 <sheet>
                     <h1>
                         <field name="name" nolabel="True"/>
@@ -76,24 +82,6 @@
 
                         <page string="Offers">
                             <field name="offer_ids">
-                                <list editable="bottom">
-                                    <field name="price"/>
-                                    <field name="partner_id"/>
-                                    <field name="validity"/>
-                                    <field name="date_deadline"/>
-                                    <field name="status"/>
-                                </list>
-                                <form>
-                                    <sheet>
-                                        <group>
-                                            <field name="price"/>
-                                            <field name="partner_id"/>
-                                            <field name="validity"/>
-                                            <field name="date_deadline"/>
-                                            <field name="status"/>
-                                        </group>
-                                    </sheet>
-                                </form>
                             </field>
                         </page>
                     </notebook>
