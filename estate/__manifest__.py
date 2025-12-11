@@ -8,6 +8,6 @@
     'category': "Tutorials",
     'installable': True,
     'application': True,
-    'data':['security/ir.model.access.csv']
+    'data':['views/estate_property_views.xml','views/estate_menu_view.xml','security/ir.model.access.csv']
 
 }
