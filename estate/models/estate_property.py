@@ -1,5 +1,5 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models,api
+from odoo import fields, models,api,exceptions
 
 
 class EstateProperty(models.Model):
@@ -29,6 +29,20 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag",string="Tags")
     offer_ids = fields.One2many("estate.property.offer","property_id",string="Offers")
 
+    def sell_property(self):
+        for record in self:
+            if(record.state == "Cancelled"):
+                raise exceptions.UserError("Can't sell cancelled property.")
+            record.state = "Sold"
+            return True
+        
+    def cancel_property(self):
+        for record in self:
+            if(record.state == "Sold"):
+                raise exceptions.UserError("Can't cancel sold property.")
+            record.state = "Cancelled"
+            return True
+
     @api.depends('living_area','garden_area')
     def _get_total_area(self):
         for record in self:
@@ -41,7 +55,7 @@ class EstateProperty(models.Model):
             max:int = 0
 
             if(len(record.offer_ids)==0):
-                record.best_price = 0;
+                record.best_price = 0
                 continue
         
             for offer in record.offer_ids:
