@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="mrp.BomOverviewLine" t-inherit-mode="extension">
+        <xpath expr="//td[.//a[@title='Forecast Report']]" position="replace"/>
+        <xpath expr="//td//div[hasclass('o_field_badge')]" position="replace">
+            <div class="o_field_badge">
+                <t t-if="data.index == 0">
+                    <t t-if="data.status == 'No Ready To Produce' or !data.components_available">
+                        <span href="#" role="button" t-attf-class="badge rounded-pill o_mrp_overview_badge {{ColorClass}}" t-on-click.prevent="goToForecast" t-esc="data.availability_display"/>
+                    </t>
+                    <t t-else="">
+                        <span href="#" role="button" t-attf-class="badge rounded-pill o_mrp_overview_badge text-bg-success" t-on-click.prevent="goToForecast" t-esc="data.status"/>
+                    </t>
+                </t>
+                <t t-else="">
+                    <span href="#" role="button" t-attf-class="badge rounded-pill o_mrp_overview_badge {{ColorClass}}" t-on-click.prevent="goToForecast" t-esc="data.availability_display"/>
+                </t>
+            </div>
+        </xpath>
+    </t>
+</templates>

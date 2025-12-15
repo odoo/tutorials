@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="mrp.clean_forecast_view" t-inherit="mrp.BomOverviewTable" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_mrp_bom_report_page')]" position="attributes">
+            <attribute name="class">o_mrp_bom_report_page px-0 overflow-auto border-bottom bg-view</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('d-flex mb-5')]" position="replace"/>
+        <xpath expr="//th[text()='Availability']" position="replace"/>
+    </t>
+</templates>
