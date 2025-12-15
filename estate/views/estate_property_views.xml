@@ -56,6 +56,32 @@
         </field>
     </record>
 
+    <!-- Search view -->
+    <record id="estate_property_view_search" model="ir.ui.view">
+        <field name="name">estate.property.view.search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Properties">
+                <field name="name" string="Title"/>
+                <field name="postcode"/>
+                <field name="expected_price"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+
+                <separator/>
+
+                <filter name="filter_garden" string="Garden" domain="[('garden', '=', True)]"/>
+                <filter name="filter_garage" string="Garage" domain="[('garage', '=', True)]"/>
+                <filter name="filter_high_price" string="High Expected Price" domain="[('expected_price', '&gt;=', 100000)]"/>
+
+                <group name="group_by">
+                    <filter name="group_postcode" string="Postcode" context="{'group_by': 'postcode'}"/>
+                    <filter name="group_bedrooms" string="Bedrooms" context="{'group_by': 'bedrooms'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
     <!-- Action -->
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
