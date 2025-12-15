@@ -5,6 +5,10 @@ from odoo import fields, models,api,exceptions
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Property"
+    _positif_expected_price = models.Constraint("CHECK (expected_price > 0)","A price can't be negatif");
+    _positif_selling_price = models.Constraint("CHECK (selling_price > 0)","A price can't be negatif");
+    _postif_best_price = models.Constraint("CHECK (best_price > 0)", "A price can't be negatif");
+
     state = fields.Selection(selection = [("New","New"), ("Offer_Received","Offer Received") ,("Offer_Accepted","Offer Accepted"), ("Sold","Sold"), ("Cancelled","Cancelled")])
     active = fields.Boolean('Active',default=True)
     name = fields.Char(required=True,default="Unkown")

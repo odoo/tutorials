@@ -6,6 +6,7 @@ from odoo import fields, models, api
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer"
+    _postif_price = models.Constraint("CHECK (best_price > 0)", "A price can't be negatif");
     price = fields.Float(string="Price")
     status = fields.Selection(copy=False,selection = [("Accepted","Accepted"),("Refused","Refused")])
     partner_id = fields.Many2one('res.partner',required=True)
