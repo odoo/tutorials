@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
-{
-    'name': 'Real Estate',
+{   'name': 'Real Estate',
     'depends': ['base'],
-    'application': True
+    'application': True,
+    'author': 'leker',
+    'license': 'LGPL-3'
 }
