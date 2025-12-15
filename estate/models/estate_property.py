@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import models, api, fields, exceptions
 from odoo.exceptions import ValidationError
 
@@ -6,12 +7,8 @@ from odoo.exceptions import ValidationError
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)", "Expected price must be strictly positive."
-    )
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)", "Selling price must be positive."
-    )
+    _order = "id desc"
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -44,7 +41,7 @@ class EstateProperty(models.Model):
         string="Status",
         default="new",
     )
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type", required=True)
     customer = fields.Many2one("res.partner", string="Customer", copy=False)
     salesperson = fields.Many2one(
@@ -52,16 +49,24 @@ class EstateProperty(models.Model):
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offer")
-    total_area = fields.Integer(compute="_total_area")
-    best_price = fields.Integer(compute="_best_price")
+    total_area = fields.Integer(compute="_compute_total_area")
+    best_price = fields.Integer(compute="_compute_best_price")
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)", "Expected price must be strictly positive."
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)", "Selling price must be positive."
+    )
 
     @api.depends("living_area", "garden_area")
-    def _total_area(self):
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
-    def _best_price(self):
+    def _compute_best_price(self):
         for record in self:
             if not record.mapped("offer_ids.price"):
                 record.best_price = 0

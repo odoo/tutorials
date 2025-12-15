@@ -1,21 +1,26 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import models, api, fields
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
-    _check_price = models.Constraint(
-        "CHECK(price > 0)", "Price of an offer must be positive"
-    )
+    _order = "price desc"
+
     price = fields.Float()
     status = fields.Selection(
         selection=[("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_date")
+
+    _check_price = models.Constraint(
+        "CHECK(price > 0)", "Price of an offer must be positive"
+    )
 
     @api.depends("validity")
     def _compute_deadline(self):
@@ -31,6 +36,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             record.status = "accepted"
+            record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
             record.property_id.customer = record.partner_id
         return True
