@@ -18,6 +18,8 @@ This module allows you to manage real estate properties, including:
     """,
     'depends': ['base'],
     'data': [
+                'security/ir.model.access.csv',
+
     ],
     'installable': True,
     'application': True,
