@@ -3,11 +3,11 @@
     'name': "Estate",
 
     'summary': """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
+        App module created specifically for the Server Framework 101 tutorial. 
     """,
 
     'description': """
-        Starting module for "Discover the JS framework, chapter 1: Owl components"
+        App module created specifically for the Server Framework 101 tutorial.
     """,
 
     'author': "Odoo",
