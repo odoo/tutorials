@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 
@@ -6,10 +7,11 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection(
-        [
+        selection=[
             ("accepted", "Accepted"),
             ("refused", "Refused"),
         ],
@@ -31,6 +33,13 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         store=True,
     )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", store=True
+    )
+    _offer_price = models.Constraint(
+        'CHECK (price > 0)',
+        'Offer price must be greater than 0',
+    )
 
     @api.depends("validity")
     def _compute_date_deadline(self):
@@ -50,14 +59,10 @@ class EstatePropertyOffer(models.Model):
             offer.status = 'accepted'
             offer.property_id.selling_price = offer.price
             offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.state = 'offer_accepted'
         return True
 
     def action_refuse(self):
         for offer in self:
             offer.status = 'refused'
         return True
-
-    _offer_price = models.Constraint(
-        'CHECK (price > 0)',
-        'Offer price must be greater than 0',
-    )

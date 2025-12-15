@@ -1,22 +1,23 @@
 from dateutil.relativedelta import relativedelta
 from datetime import date
-from odoo import models, fields, api
-from odoo.exceptions import UserError,ValidationError
-from odoo.tools.float_utils import float_compare, float_is_zero
+
+from odoo import models, fields, api, exceptions, _
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        default=lambda sself: date.today() + relativedelta(months=3),
+        default=lambda self: date.today() + relativedelta(months=3),
         copy=False
     )
-    expected_price = fields.Float(string="Expected Price", required=True)
+    expected_price = fields.Float(required=True)
     selling_price = fields.Float(
         readonly=True,
         copy=False
@@ -101,28 +102,27 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    def action_cancel(self):
-        for rec in self:
-            if rec.state == "sold":
-                raise UserError("Sold properties cannot be cancelled.")
-            else:
-                rec.state = "cancelled"
+    def action_cancel_property(self):
+        if self.filtered(lambda rec: rec.state == "sold"):
+            raise exceptions.UserError(_("Sold properties cannot be cancelled."))
+        self.write({"state": "cancelled"})
         return True
 
     def action_set_sold(self):
         for rec in self:
             if rec.state == "cancelled":
-                raise UserError("Canceled properties cannot be sold.")
+                raise exceptions.UserError(_("Canceled properties cannot be sold."))
             else:
                 rec.state = "sold"
         return True
+
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         for rec in self:
             if rec.selling_price == 0:
                 return False
             if float_compare(rec.selling_price, rec.expected_price * 0.9, precision_digits=2) < 0:
-                raise ValidationError(
+                raise exceptions.ValidationError(_(
                     "The selling price must be at least 90% of the expected price!\n"
                     "You must reduce the expected price if you want to accept this offer."
-                )
+                ))
