@@ -1,9 +1,10 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, _
 
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Offer to buy the property'
+    _order = 'price desc'
 
     price = fields.Float()
     status = fields.Selection(
@@ -15,6 +16,12 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate_property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_offer_date_deadline', inverse='_inverse_offer_date_deadline')
+    property_type_id = fields.Many2one(related='property_id.property_type_id')
+
+    _check_offer_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer Price cannot be 0 or below 0'
+    )
 
     @api.depends('validity')
     def _compute_offer_date_deadline(self):
@@ -31,9 +38,10 @@ class EstatePropertyOffer(models.Model):
     def action_offer_accepted(self):
         for record in self:
             if record.property_id.buyer:
-                raise exceptions.UserError('An another offer is already accepted')
+                raise exceptions.UserError(_('An another offer is already accepted'))
             record.property_id.selling_price = record.price
             record.property_id.buyer = record.partner_id
+            record.property_id.state = 'offer_accepted'
             record.status = 'accepted'
         return True
 
@@ -41,8 +49,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
-
-    _check_offer_price = models.Constraint(
-        'CHECK(price > 0)',
-        'Offer Price cannot be 0 or below 0'
-    )

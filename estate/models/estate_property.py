@@ -1,10 +1,11 @@
-from odoo import models, fields, api, exceptions
+from odoo import models, fields, api, exceptions, _
 from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
     _name = 'estate_property'
     _description = 'Estate Property details'
+    _order = 'id desc'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -23,11 +24,22 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
         string='Garden Orientation',
-        selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')]
+        selection=[
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ]
     )
     state = fields.Selection(
         string='Status',
-        selection=[('new', 'New'), ('offer_received', 'Offer Received'), ('offer_accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
         default='new',
         required=True,
         copy=False
@@ -40,6 +52,24 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Integer(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price')
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The Expected price cannot be 0 or less then 0'
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The Selling price cannot be less then 0'
+    )
+
+    @api.constrains('selling_price', 'buyer', 'expected_price')
+    def _check_selling_price_90p(self):
+        for record in self:
+            if record.selling_price == 0:
+                return False
+            if float_compare((record.selling_price / record.expected_price) * 100, 90, precision_digits=2) < 0:
+                raise exceptions.ValidationError(_('Selling Price should be 90% or more of expected price.'))
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -60,36 +90,16 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
             self.garden_area = 0
 
-    def cancel_property_sale(self):
-        for record in self:
-            if record.state == 'sold':
-                raise exceptions.UserError('A sold property cannot be cancelled')
-            else:
-                record.state = 'cancelled'
+    def action_cancel_property(self):
+        if self.filtered(lambda x: x.state == 'sold'):
+            raise exceptions.UserError(_('A sold property cannot be cancelled'))
+
+        self.state = 'cancelled'
         return True
 
-    def set_property_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise exceptions.UserError('A cancelled property cannot be Sold')
-            else:
-                record.state = 'sold'
+    def action_property_sold(self):
+        if self.filtered(lambda x: x.state == 'cancelled'):
+            raise exceptions.UserError(_('A cancelled property cannot be sold'))
+
+        self.state = 'sold'
         return True
-
-    _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'The Expected price cannot be 0 or less then 0'
-    )
-
-    _check_selling_price = models.Constraint(
-        'CHECK(selling_price >= 0)',
-        'The Selling price cannot be less then 0'
-    )
-
-    @api.constrains('selling_price', 'buyer', 'expected_price')
-    def _check_selling_price_90p(self):
-        for record in self:
-            if record.selling_price == 0:
-                return False
-            if float_compare((record.selling_price / record.expected_price) * 100, 90, precision_digits=2) < 0:
-                raise exceptions.ValidationError('Selling Price should be 90% or more of expected price.')
