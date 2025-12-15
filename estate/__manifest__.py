@@ -9,4 +9,7 @@
     """,
     "application": True,
     "installable": True,
+    "data": [
+        "data/ir.model.access.csv",
+    ],
 }
