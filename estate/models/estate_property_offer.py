@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
@@ -33,13 +32,11 @@ class EstatePropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
-        print("Computed deadlines2")
 
     def _inverse_date_deadline(self):
         for record in self:
             if record.date_deadline:
                 record.validity = (record.date_deadline - fields.Date.today()).days
-        print("Inversed deadlines")
 
     def action_accept(self):
         for record in self:
