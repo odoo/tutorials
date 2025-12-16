@@ -1,0 +1,22 @@
+{
+    "name": "Real Estate Application",
+    "summary": "This is a custom real estate application for understanding Odoo",
+    "description": "This is a custom real estate application for understanding Odoo",
+    "author": "Odoo S.A.",
+    "website": "https://www.odoo.com",
+    "category": "Tutorials",
+    "version": "0.1",
+    "application": True,
+    "data": [
+        "data/res_estate_data.xml",
+        "security/ir.model.access.csv",
+        "views/res_users_templates.xml",
+        "views/estate_property_templates.xml",
+        "views/estate_property_offers_templates.xml",
+        "views/estate_property_type_templates.xml",
+        "views/estate_property_tags_templates.xml",
+        "views/estate_menu.xml",
+    ],
+    "assets": {},
+    "license": "AGPL-3",
+}

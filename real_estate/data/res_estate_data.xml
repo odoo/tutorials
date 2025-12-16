@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="type_1" model="estate.property.type">
+            <field name="name">House</field>
+        </record>
+        <record id="type_2" model="estate.property.type">
+            <field name="name">Apartment</field>
+        </record>
+        <record id="type_3" model="estate.property.type">
+            <field name="name">Castle</field>
+        </record>
+        <record id="property_1" model="estate.property">
+            <field name="name">Property 1</field>
+            <field name="description">Description 1</field>
+            <field name="postcode">1000</field>
+            <field name="expected_price">10000</field>
+            <field name="selling_price">0</field>
+            <field name="active">True</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">22</field>
+            <field name="state">new</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type" ref="type_1"/>
+<!--            <field name="tags">-->
+<!--                <record id="tag_1" model="estate.property.tags">-->
+<!--                    <field name="name">cozy</field>-->
+<!--                </record>-->
+<!--                <record id="tag_2" model="estate.property.tags">-->
+<!--                    <field name="name">small</field>-->
+<!--                </record>-->
+<!--            </field>-->
+            <field name="offer_ids">
+                <record id="offer_1" model="estate.property.offers">
+                    <field name="price">10000.00</field>
+                    <field name="partner_id" ref="base.partner_admin"/>
+                </record>
+                <record id="offer_2" model="estate.property.offers">
+                    <field name="price">20000.00</field>
+                    <field name="partner_id" ref="base.partner_admin"/>
+                </record>
+            </field>
+        </record>
+        <record id="property_2" model="estate.property">
+            <field name="name">Property 2</field>
+            <field name="description">Description 2</field>
+            <field name="postcode">2000</field>
+            <field name="expected_price">10000</field>
+            <field name="selling_price">0</field>
+            <field name="active">True</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">22</field>
+            <field name="state">new</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type" ref="type_2"/>
+<!--            <field name="tags">-->
+<!--                <record id="tag_3" model="estate.property.tags">-->
+<!--                    <field name="name">big</field>-->
+<!--                </record>-->
+<!--            </field>-->
+            <field name="offer_ids">
+                <record id="offer_3" model="estate.property.offers">
+                    <field name="price">10000.00</field>
+                    <field name="partner_id" ref="base.partner_admin"/>
+                </record>
+                <record id="offer_4" model="estate.property.offers">
+                    <field name="price">20000.00</field>
+                    <field name="partner_id" ref="base.partner_admin"/>
+                </record>
+            </field>
+        </record>
+        <record id="property_3" model="estate.property">
+            <field name="name">Property 3</field>
+            <field name="description">Description 3</field>
+            <field name="postcode">1040</field>
+            <field name="expected_price">10000</field>
+            <field name="selling_price">0</field>
+            <field name="active">True</field>
+            <field name="bedrooms">2</field>
+            <field name="living_area">2</field>
+            <field name="facades">2</field>
+            <field name="garage">True</field>
+            <field name="garden">True</field>
+            <field name="garden_area">22</field>
+            <field name="state">new</field>
+            <field name="garden_orientation">north</field>
+            <field name="property_type" ref="type_3"/>
+<!--            <field name="tags">-->
+<!--                <record id="tag_4" model="estate.property.tags">-->
+<!--                    <field name="name">expensive</field>-->
+<!--                </record>-->
+<!--            </field>-->
+        </record>
+    </data>
+</odoo>
