@@ -5,10 +5,10 @@
         <field name="name">estate.property.offer.view.tree</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <tree>
                 <field name="name"/>
                 <field name="property_id"/>
-            </list>
+            </tree>
         </field>
     </record>
 
