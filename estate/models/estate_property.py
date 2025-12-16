@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -28,6 +29,18 @@ class EstateProperty(models.Model):
             ('west', 'West')
         ]
     )
+    state = fields.Selection(
+        selection=[
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
+        default='new',
+        required=True
+    )
+    buyer_id = fields.Many2one('res.partner', string='Buyer')
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
@@ -55,3 +68,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled property cannot be sold.")
+            record.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold property cannot be cancelled.")
+            record.state = 'cancelled'
+        return True
