@@ -49,3 +49,14 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals_list):
+        if len(vals_list) > 0:
+            prop = self.env['estate_property'].browse(vals_list[0]['property_id'])
+            if prop.best_price > vals_list[0]['price']:
+                raise exceptions.UserError(_('An offer with high price already exists.'))
+
+            prop.state = 'offer_received'
+
+        return super().create(vals_list)

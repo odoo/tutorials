@@ -103,3 +103,8 @@ class EstateProperty(models.Model):
 
         self.state = 'sold'
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_sold(self):
+        if self.filtered(lambda x: x.state not in ('new', 'cancelled')):
+            raise exceptions.UserError(_('Cannot delete property which is not yer sold or cancelled'))
