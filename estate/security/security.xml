@@ -1,0 +1,10 @@
+<odoo>
+    <data>
+        <record id="group_all_rights_user" model="res.groups">
+            <field name="name">Complete User</field>
+        </record>
+        <record id="group_readonly_user" model="res.groups">
+            <field name="name">Readonly User</field>
+        </record>
+    </data>
+</odoo>
