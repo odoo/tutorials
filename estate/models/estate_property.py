@@ -5,13 +5,22 @@ class Property(models.Model):
     _name = "estate.property"
     _description = "Real Estate property"
 
-    name = fields.Char('Name', required=True)
+    name = fields.Char('Name', required=True, default='Unknown')
+    active = fields.Boolean('Active', default=True)
+    state = fields.Selection([
+        ('new', 'New'),
+        ('received offer', 'Received offer'),
+        ('offer accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('cancelled', 'Cancelled'),
+    ], string='State', required=True, copy=False, default='new')
     description = fields.Text('Description')
-    postcode = fields.Float('Postcode')
-    date_availability = fields.Date('Date availability')
+    last_seen = fields.Datetime("Last Seen", default=lambda self: fields.Datetime.now())
+    postcode = fields.Char('Postcode')
+    date_availability = fields.Date('Available from', copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float('Expected price', required=True)
-    selling_price = fields.Float('Selling price')
-    bedrooms = fields.Integer('Bedrooms')
+    selling_price = fields.Float('Selling price', readonly=True, copy=False)
+    bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living area')
     facades = fields.Integer('Facades')
     garage = fields.Boolean('Garage')
