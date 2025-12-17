@@ -5,7 +5,7 @@ class Property(models.Model):
     _name = "estate.property"
     _description = "Real Estate property"
 
-    name = fields.Char('Name', required=True, default='Unknown')
+    name = fields.Char('Title', required=True, default='Unknown')
     active = fields.Boolean('Active', default=True)
     state = fields.Selection([
         ('new', 'New'),
@@ -21,11 +21,11 @@ class Property(models.Model):
     expected_price = fields.Float('Expected price', required=True)
     selling_price = fields.Float('Selling price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
-    living_area = fields.Integer('Living area')
+    living_area = fields.Integer('Living area (sqm)')
     facades = fields.Integer('Facades')
     garage = fields.Boolean('Garage')
     garden = fields.Boolean('Garden')
-    garden_area = fields.Integer('Garden area')
+    garden_area = fields.Integer('Garden area (sqm)')
     garden_orientation = fields.Selection([
         ('north', 'North'),
         ('south', 'South'),
