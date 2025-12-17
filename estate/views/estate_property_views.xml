@@ -17,7 +17,7 @@
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="date_availability" optional="hide" />
-                <field name="state" invisible="1" />
+                <field name="state" />
             </list>
         </field>
 
