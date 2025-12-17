@@ -1,8 +1,89 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_model_action" model="ir.actions.act_window">
-        <field name="name">Property</field>
-        <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
-    </record>
+  <record id="estate_property_model_action" model="ir.actions.act_window">
+    <field name="name">Property</field>
+    <field name="res_model">estate.property</field>
+    <field name="view_mode">list,form</field>
+  </record>
+
+  <record id="estate_property_view_tree" model="ir.ui.view">
+    <field name="name">estate.property.list</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+      <list string="Title">
+        <field name="name" />
+        <field name="description" />
+        <field name="bedrooms" />
+        <field name="living_area" />
+        <field name="expected_price" />
+        <field name="selling_price" />
+        <field name="date_availability" />
+      </list>
+    </field>
+  </record>
+
+  <record id="estate_property_view_form" model="ir.ui.view">
+    <field name="name">estate.property.form</field>
+    <field name="model">estate.property</field>
+    <field name="arch" type="xml">
+      <form string="Estate Property">
+        <sheet>
+          <div class="oe_title mb32">
+            <h1>
+              <field name="name" class="mb16" />
+            </h1>
+          </div>
+          <group class="d-flex justify-content-between">
+            <group>
+              <field name="postcode" class="mb16" />
+            </group>
+
+            <group>
+              <field name="expected_price" class="mb16" />
+            </group>
+          </group>
+
+          <group class="d-flex justify-content-between mb32">
+            <group>
+              <field name="date_availability" class="mb16" />
+            </group>
+
+            <group>
+              <field name="selling_price" class="mb16" />
+            </group>
+          </group>
+          <notebook>
+            <page string="Description">
+              <group class="d-flex flex-column">
+                <group>
+                  <field name="description" class="mb4" />
+                </group>
+                <group>
+                  <field name="bedrooms" class="mb4" />
+                </group>
+                <group>
+                  <field name="living_area" class="mb4" />
+                </group>
+                <group>
+                  <field name="facades" class="mb4" />
+                </group>
+                <group>
+                  <field name="garage" class="mb4" />
+                </group>
+                <group>
+                  <field name="garden" class="mb4" />
+                </group>
+                <group>
+                  <field name="garden_area" class="mb4" />
+                </group>
+                <group>
+                  <field name="garden_orientation" class="mb4" />
+                </group>
+              </group>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
 </odoo>
