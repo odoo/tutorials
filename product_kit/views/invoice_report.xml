@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_invoice_document_subproduct" inherit_id="account.report_invoice_document">
+        <xpath expr="//tbody[hasclass('invoice_tbody')]//tr" position="attributes">
+            <attribute name="t-if">
+                (line.sale_line_ids.order_id.is_kit_printable) or (not line.sale_line_ids.filtered('is_subProduct'))
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
