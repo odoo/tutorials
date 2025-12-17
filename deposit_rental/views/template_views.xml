@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="rental_product_details_inherited" inherit_id="website_sale.product">
+        <xpath expr="//t[@t-call='website_sale.cta_wrapper']" position="after">
+            <t t-if="product.rent_ok and product.requires_deposit">
+                <div class="mt-2">
+                    <strong>Deposit Required: </strong>
+                    <span id="deposit_amount" t-att-data-base-amount="product.deposit_amount"/>
+                </div>
+            </t>
+        </xpath>
+    </template>
+</odoo>
