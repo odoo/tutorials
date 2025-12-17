@@ -40,14 +40,12 @@ class EstatePropertyOffer(models.Model):
             record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
             record.property_id.customer = record.partner_id
-        return True
 
     def action_refuse(self):
         for record in self:
             record.status = "refused"
             record.property_id.selling_price = 0.00
             record.property_id.customer = None
-        return True
 
     @api.model
     def create(self, vals):

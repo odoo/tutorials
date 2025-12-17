@@ -88,7 +88,6 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Properties which are Cancelled cannot be Sold")
             else:
                 record.state = "sold"
-        return True
 
     def action_cancel_offer(self):
         for record in self:
@@ -96,7 +95,6 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Properties which are Sold cannot be Cancelled")
             else:
                 record.state = "cancelled"
-        return True
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_percentage_criteria(self):
