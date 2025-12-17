@@ -8,7 +8,7 @@ class buildings_model(models.Model):
 
     name = fields.Char()
     description = fields.Text()
-    value = fields.Integer(readonly=True, copy=False)
+    value = fields.Integer(copy=False)
     availability_date = fields.Date(
         default=fields.Date.today() + timedelta(days=90), copy=False
     )
@@ -28,3 +28,4 @@ class buildings_model(models.Model):
         ],
         default="new",
     )
+    post_code = fields.Integer(default=1000)
