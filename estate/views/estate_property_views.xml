@@ -50,6 +50,7 @@
                         <group>
                             <field name="tag_ids" widget="many2many_tags" />
                             <field name="postcode" string="Postcode" />
+                            <field name="best_price" />
                         </group>
                         <group>
                             <field name="expected_price" string="Expected Price" />
@@ -92,7 +93,10 @@
                             <group>
                                 <field name="garden_orientation" string="Garden Orientation" />
                             </group>
-                            <field name="state" />
+                            <group>
+                                <field name="state" />
+                                <field name="total_area" />
+                            </group>
                         </page>
                         <page string="Offers">
                             <field name="offer_ids" />
