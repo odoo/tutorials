@@ -42,6 +42,12 @@
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
             <form string="Test">
+                <header>
+                    <button name="action_cancel_property" type="object" string="CANCEL"
+                        class="oe_highlight" />
+                    <button name="action_sell_property" type="object" string="SOLD"
+                        class="oe_highlight" />
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" />
@@ -64,6 +70,7 @@
                         <group>
                             <field name="selling_price" string="Selling Price" />
                             <field name="type_id" />
+                            <field name="state" />
                         </group>
                     </group>
 
