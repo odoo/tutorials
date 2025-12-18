@@ -29,3 +29,10 @@ class buildings_model(models.Model):
         default="new",
     )
     post_code = fields.Integer(default=1000)
+    building_type_id = fields.Many2one("estate.building_type", string="Building Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
+    salesperson_id = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
+    tag_ids = fields.Many2many("estate.building_tags", string="Tags")
+    offer_ids = fields.One2many("estate.offers", "building_id", string="Offers")

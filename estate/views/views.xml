@@ -14,6 +14,7 @@
                 <field name="number_of_rooms"/>
                 <field name="value"/>
                 <field name="state"/>
+                <field name="building_type_id"/>
             </list>
         </field>
     </record>
@@ -27,9 +28,11 @@
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="tag_ids" widget="many2many_tags"/>
                             <field name="value"/>
                             <field name="state"/>
                             <field name="availability_date"/>
+                            <field name="building_type_id"/>
                         </group>
                         <group>
                             <field name="number_of_rooms"/>
@@ -39,7 +42,24 @@
                     </group>
                     <notebook>
                         <page string="Description">
-                            <field name="description"/>
+                            <group>
+                                <field name="description"/>
+                            </group>
+                        </page>
+                        <page string="Info">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list>
+                                    <field name="price"/>
+                                    <field name="status"/>
+                                    <field name="partner_id"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
