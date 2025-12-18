@@ -36,6 +36,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
+            if record.property_id.customer:
+                raise UserError("Only one offer can be accepted for one property")
             record.status = "accepted"
             record.property_id.state = "offer_accepted"
             record.property_id.selling_price = record.price
