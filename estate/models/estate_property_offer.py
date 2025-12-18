@@ -77,4 +77,5 @@ class EstatePropertyOffer(models.Model):
                 if price < best_offer:
                     raise exceptions.UserError(_(
                         'Offer price must be greater than or equal to the best offer price.'))
+                property_obj.state = 'offer_received'
         return super().create(vals)
