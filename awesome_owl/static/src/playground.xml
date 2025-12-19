@@ -5,6 +5,13 @@
         <div class="p-3">
             hello world
         </div>
-    </t>
+        <Counter onChange.bind="incrementSum"/>
+        <Counter onChange.bind="incrementSum"/>
+        <p>The sum is <t t-esc="state.sum"/></p>
 
+        <Card title="title1" content="content1"/>
+        <Card title="title2" content="content2"/>
+
+        <TodoList/>
+    </t>
 </templates>
