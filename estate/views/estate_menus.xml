@@ -28,8 +28,13 @@
               parent="estate_settings_menu" 
               action="estate_property_tag_action"/>
 
-      <menuitem id="estate_property_offer_menu_action" 
+    <menuitem id="estate_property_offer_menu_action" 
               name="Property Offers" 
               parent="estate_settings_menu" 
               action="estate_property_offer_action"/>
+    
+    <menuitem id="estate_salesperson_menu_action" 
+              name="Salespersons" 
+              parent="estate_settings_menu" 
+              action="estate_salesperson_action"/>
 </odoo>

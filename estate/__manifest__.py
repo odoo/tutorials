@@ -21,6 +21,7 @@ This module allows you to manage real estate properties, including:
         "views/estate_property_offer_views.xml",
         "views/estate_property_type_views.xml",
         "views/estate_property_tag_views.xml",
+        "views/res_users_views.xml",
         "views/estate_menus.xml",
     ],
     "application": True,

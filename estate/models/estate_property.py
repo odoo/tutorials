@@ -2,7 +2,7 @@
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -46,6 +46,7 @@ class EstateProperty(models.Model):
         string="Status",
     )
     buyer_id = fields.Many2one(comodel_name='res.partner', string="Buyer")
+    salesperson_id = fields.Many2one(comodel_name='res.users', string="Salesperson", default=lambda self: self.env.user)
     property_type_id = fields.Many2one(comodel_name='estate.property.type', string="Property Type")
     tag_ids = fields.Many2many(comodel_name='estate.property.tag', string="Tags")
     offer_ids = fields.One2many(
@@ -98,3 +99,9 @@ class EstateProperty(models.Model):
                 raise UserError(self.env._("Sold property cannot be cancelled."))
             property.state = 'cancelled'
         return True
+
+    def unlink(self):
+        for property in self:
+            if property.state not in ('new', 'cancelled'):
+                raise UserError(self.env._("Only new and cancelled properties can be deleted."))
+        return super().unlink()
