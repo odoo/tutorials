@@ -3,7 +3,7 @@ from odoo.exceptions import UserError
 from datetime import timedelta
 
 
-class buildings_model(models.Model):
+class Building(models.Model):
     _name = "estate.buildings"
     _description = "Buildings Model"
 
@@ -11,7 +11,7 @@ class buildings_model(models.Model):
     description = fields.Text()
     value = fields.Integer(copy=False)
     availability_date = fields.Date(
-        default=fields.Date.today() + timedelta(days=90), copy=False
+        default=lambda self: fields.Date.today() + timedelta(days=90), copy=False
     )
     number_of_rooms = fields.Integer(default=2)
     garden_area = fields.Integer()

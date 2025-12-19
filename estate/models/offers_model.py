@@ -3,7 +3,7 @@ from odoo.exceptions import UserError
 from datetime import timedelta
 
 
-class offers_model(models.Model):
+class Offer(models.Model):
     _name = "estate.offers"
     _description = "Offers Model"
 
