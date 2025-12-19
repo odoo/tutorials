@@ -7,5 +7,6 @@ export class TodoItem extends Component {
             type: Object,
             shape: { id: Number, description: String, isCompleted: Boolean},
         },
+        toggleState: Function,
     };
 }
