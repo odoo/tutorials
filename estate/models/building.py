@@ -5,7 +5,7 @@ from datetime import timedelta
 
 class Building(models.Model):
     _name = "estate.buildings"
-    _description = "Buildings Model"
+    _description = "Buildings"
 
     name = fields.Char()
     description = fields.Text()
@@ -24,8 +24,8 @@ class Building(models.Model):
     state = fields.Selection(
         [
             ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
             ("canceled", "Canceled"),
         ],
@@ -47,6 +47,13 @@ class Building(models.Model):
         compute="_compute_best_price",
     )
     has_garden = fields.Boolean(string="Has Garden", default=False)
+
+    _price_constraint = models.Constraint(
+        "CHECK (value > 0)", "Price must be POSITIVE."
+    )
+    _name_constraint = models.Constraint(
+        "UNIQUE(name)", "Building name must be UNIQUE."
+    )
 
     @api.depends("building_area", "garden_area")
     def _compute_total_area(self):
@@ -73,18 +80,11 @@ class Building(models.Model):
     def action_set_sold(self):
         for record in self:
             if record.state == "canceled":
-                raise UserError("Canceled buildings cannot be sold.")
+                raise UserError(self.env._("Canceled buildings cannot be sold."))
             record.state = "sold"
 
     def action_set_canceled(self):
         for record in self:
             if record.state == "sold":
-                raise UserError("Sold buildings cannot be canceled.")
+                raise UserError(self.env._("Sold buildings cannot be canceled."))
             record.state = "canceled"
-
-    _price_constraint = models.Constraint(
-        "CHECK (value > 0)", "Price must be POSITIVE."
-    )
-    _name_constraint = models.Constraint(
-        "UNIQUE(name)", "Building name must be UNIQUE."
-    )

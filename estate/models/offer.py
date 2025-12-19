@@ -6,7 +6,7 @@ from odoo.tools.float_utils import float_compare
 
 class Offer(models.Model):
     _name = "estate.offers"
-    _description = "Offers Model"
+    _description = "Offers"
 
     price = fields.Integer(required=True)
     status = fields.Selection(
@@ -21,6 +21,10 @@ class Offer(models.Model):
         string="Deadline",
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
+    )
+
+    _price_positive_constraint = models.Constraint(
+        "CHECK (price > 0)", "Offer price must be positive."
     )
 
     @api.depends("validity")
@@ -39,7 +43,7 @@ class Offer(models.Model):
                 "canceled",
             ]:
                 record.status = "accepted"
-                record.building_id.state = "offer accepted"
+                record.building_id.state = "offer_accepted"
                 record.building_id.buyer_id = record.partner_id
                 record.building_id.value = record.price
                 other_offers = self.search(
@@ -50,22 +54,20 @@ class Offer(models.Model):
                 )
                 other_offers.write({"status": "refused"})
             elif record.building_id.state in ["sold", "canceled"]:
-                raise UserError("Cannot accept offers for sold or canceled buildings.")
+                raise UserError(
+                    self.env._("Cannot accept offers for sold or canceled buildings.")
+                )
             else:
-                raise UserError("Offer is already accepted.")
+                raise UserError(self.env._("Offer is already accepted."))
 
     def action_refuse_offer(self):
         for record in self:
             if record.status != "refused":
                 record.status = "refused"
-                record.building_id.state = "offer received"
+                record.building_id.state = "offer_received"
                 record.building_id.buyer_id = False
             else:
-                raise UserError("Offer is already refused.")
-
-    _price_positive_constraint = models.Constraint(
-        "CHECK (price > 0)", "Offer price must be positive."
-    )
+                raise UserError(self.env._("Offer is already refused."))
 
     @api.constrains("building_id", "price")
     def _check_price(self):
@@ -77,5 +79,7 @@ class Offer(models.Model):
                 == 1
             ):
                 raise UserError(
-                    "Offer price must be at least 90% of the building's value."
+                    self.env._(
+                        "Offer price must be at least 90% of the building's value."
+                    )
                 )
