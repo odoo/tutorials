@@ -6,18 +6,6 @@
     <field name="view_mode">list,form</field>
   </record>
 
-  <record id="estate_property_type_action" model="ir.actions.act_window">
-    <field name="name">Settings</field>
-    <field name="res_model">estate.property.type</field>
-    <field name="view_mode">list,form</field>
-  </record>
-
-  <record id="estate_property_taf_action" model="ir.actions.act_window">
-    <field name="name">Settings</field>
-    <field name="res_model">estate.property.type</field>
-    <field name="view_mode">list,form</field>
-  </record>
-
   <record id="estate_property_view_tree" model="ir.ui.view">
     <field name="name">estate.property.list</field>
     <field name="model">estate.property</field>
@@ -30,6 +18,8 @@
         <field name="expected_price" />
         <field name="selling_price" />
         <field name="date_availability" />
+        <field name="property_type_id" />
+        <field name="tag_ids" widget="many2many_tags" />
       </list>
     </field>
   </record>
@@ -47,9 +37,14 @@
           </div>
           <group class="d-flex justify-content-between">
             <group>
+              <field name="property_type_id" class="mb4" />
+            </group>
+            <group>
+              <field name="tag_ids" widget="many2many_tags" />
+            </group>
+            <group>
               <field name="postcode" class="mb16" />
             </group>
-
             <group>
               <field name="expected_price" class="mb16" />
             </group>
@@ -62,14 +57,6 @@
 
             <group>
               <field name="selling_price" class="mb16" />
-            </group>
-
-            <group>
-              <field name="tag_ids" widget="many2many_tags" />
-            </group>
-
-            <group>
-              <field name="tag_ids" widget="many2many_tags" />
             </group>
           </group>
 
@@ -102,11 +89,14 @@
                 </group>
               </group>
             </page>
-            <page string="Sales">
+            <page string="Other Info">
               <group>
                 <field name="salesperson_id" />
                 <field name="buyer_id" />
               </group>
+            </page>
+            <page string="Offers">
+              <field name="offer_ids" />
             </page>
           </notebook>
         </sheet>

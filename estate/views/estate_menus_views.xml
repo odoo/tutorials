@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <odoo>
-  <menuitem id="estate_menu_root" name="Estate">
+  <menuitem id="estate_menu_root" name="Real Estate">
     <menuitem id="estate_property_menu" name="Property">
       <menuitem
         id="estate_property_menu_action"
@@ -13,11 +13,11 @@
         id="estate_property_type_menu_action"
         action="estate_property_type_action"
       />
-      <menuitem 
+       <menuitem 
         id="estate_property_tag_menu_action"
         action="estate_property_tag_action"
-      />
-    </menuitem>
+      /> 
+    </menuitem> 
 
   </menuitem>
 </odoo>
