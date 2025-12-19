@@ -6,10 +6,17 @@ export class TodoList extends Component {
     static components = { TodoItem }
 
     setup() {
-        this.state = useState([
-            { id: 1, description: "buy water", isCompleted: true },
-            { id: 2, description: "buy bread", isCompleted: false },
-            { id: 3, description: "buy milk", isCompleted: false },
-        ]);
+        this.state = useState({todos: [], nextId: 1});
+    }
+
+    input_event_handler(event) {
+        // keyCode is deprecated, use key instead
+        if (event.key === "Enter") {
+            if (event.target.value) {
+                this.state.todos.push({id: this.state.nextId, description: event.target.value, isCompleted: false});
+                this.state.nextId++;
+                event.target.value = "";
+            }
+        }
     }
 }
