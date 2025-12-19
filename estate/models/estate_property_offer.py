@@ -1,4 +1,6 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
 from dateutil.relativedelta import relativedelta
 
 
@@ -26,3 +28,23 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             starting_date = fields.Date.to_date(record.create_date) if record.create_date else fields.Date.context_today(self)
             record.validity = (record.date_deadline - starting_date).days
+
+    def action_accept(self):
+        for record in self:
+            match record.property_id.state:
+                case 'offer_accepted':
+                    raise UserError(_('This property already has an offer accepted'))
+                case 'sold':
+                    raise UserError(_('Sold properties cannot accept offers'))
+                case 'cancelled':
+                    raise UserError(_('Cancelled properties cannot accept other offers'))
+            record.status = 'accepted'
+            record.property_id.state = 'offer_accepted'
+            record.property_id.property_buyer_id = record.property_buyer_id
+            record.property_id.selling_price = record.price
+
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'
+            record.property_id.property_buyer_id = None
+            record.property_id.selling_price = 0

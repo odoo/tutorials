@@ -1,4 +1,6 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
 from datetime import timedelta
 
 
@@ -41,7 +43,7 @@ class EstateProperty(models.Model):
     property_buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     property_salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many('estate.property.tag', string="Property tags")
-    property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers', inverse='_inverse_offers')
     best_price = fields.Float('Best Price', compute='_compute_best_price')
 
     @api.depends('living_area', 'garden_area')
@@ -63,3 +65,22 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = ''
+
+    def _inverse_offers(self):
+        for record in self:
+            if record.state == 'new' and record.property_offer_ids:
+                record.state = 'offer_received'
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError(_('Cancelled properties cannot be sold.'))
+            record.state = 'sold'
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(_('Sold properties cannot be cancelled.'))
+            record.state = 'cancelled'
+        return True
