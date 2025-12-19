@@ -10,6 +10,7 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="status"/>
                 <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
                 <filter string="Status" name="availability" domain="[('status', 'in', ['new', 'offered'])]"/>
                 <group>

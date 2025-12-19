@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class Estate(models.Model):
@@ -43,7 +44,15 @@ class Estate(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
+            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0  
+
+    @api.onchange('offer_ids')
+    def _onchange_property_status(self):
+        for record in self:
+            if record.status == 'new' and len(record.offer_ids) > 0:
+                record.status = 'offer_received'
+            else:
+                record.status = record.status
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -53,3 +62,15 @@ class Estate(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_mark_sold(self):
+        for record in self:
+            if record.status == 'canceled':
+                raise UserError("Canceled properties cannot be sold.")
+            record.status = 'sold'
+
+    def action_mark_cancel(self):
+        for record in self:
+            if record.status == 'sold':
+                raise UserError("Sold properties cannot be canceled.")
+            record.status = 'canceled'

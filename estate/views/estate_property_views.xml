@@ -27,6 +27,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="My new house">
+                <header>
+                    <button name="action_mark_sold" type="object" string="Sold" class="oe_highlight"/>
+                    <button name="action_mark_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -38,6 +42,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="status"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -69,6 +74,8 @@
                                     <field name="partner_id"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
+                                    <button name="action_accept_offer" type="object" icon="fa-check"/>
+                                    <button name="action_reject_offer" type="object" icon="fa-remove"/>
                                     <field name="status"/>
                                 </list>
                             </field>
