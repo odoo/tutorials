@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 from datetime import timedelta
+from odoo.tools.float_utils import float_compare
 
 
 class Offer(models.Model):
@@ -61,3 +62,20 @@ class Offer(models.Model):
                 record.building_id.buyer_id = False
             else:
                 raise UserError("Offer is already refused.")
+
+    _price_positive_constraint = models.Constraint(
+        "CHECK (price > 0)", "Offer price must be positive."
+    )
+
+    @api.constrains("building_id", "price")
+    def _check_price(self):
+        for record in self:
+            if (
+                float_compare(
+                    0.9 * record.building_id.value, record.price, precision_digits=2
+                )
+                == 1
+            ):
+                raise UserError(
+                    "Offer price must be at least 90% of the building's value."
+                )

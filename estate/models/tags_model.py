@@ -6,3 +6,7 @@ class BuildingTag(models.Model):
     _description = "Building Tags Model"
 
     name = fields.Char(required=True)
+
+    _name_uniqueness_constraint = models.Constraint(
+        "UNIQUE (name)", "Building tag name must be UNIQUE."
+    )

@@ -6,3 +6,7 @@ class BuildingType(models.Model):
     _description = "Building Type Model"
 
     name = fields.Char(required=True)
+
+    _name_uniqueness_constraint = models.Constraint(
+        "UNIQUE (name)", "Building type name must be UNIQUE."
+    )

@@ -81,3 +81,10 @@ class Building(models.Model):
             if record.state == "sold":
                 raise UserError("Sold buildings cannot be canceled.")
             record.state = "canceled"
+
+    _price_constraint = models.Constraint(
+        "CHECK (value > 0)", "Price must be POSITIVE."
+    )
+    _name_constraint = models.Constraint(
+        "UNIQUE(name)", "Building name must be UNIQUE."
+    )
