@@ -1,13 +1,13 @@
 <odoo>
-    <record id="estate_property_type_properties_view" model="ir.ui.view">
+    <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate_property_type_form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Properties">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" name="estate.estaet_property_offer_view_action"
-                            type="action" >
+                        <button class="oe_stat_button" name="estate.estaet_property_offer_action"
+                            type="action">
                             <div class="o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="offer_count" />
@@ -37,7 +37,7 @@
         </field>
     </record>
 
-    <record id="estate_property_type_list_view" model="ir.ui.view">
+    <record id="estate_property_type_view_list" model="ir.ui.view">
         <field name="name">estate_property_type_list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">

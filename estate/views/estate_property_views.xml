@@ -86,7 +86,7 @@
         </field>
     </record>
 
-    <record id="estate_property_search_view_options" model="ir.ui.view">
+    <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">Properties Search</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
@@ -106,7 +106,7 @@
         </field>
     </record>
 
-    <record id="estate_property_kanban_view" model="ir.ui.view">
+    <record id="estate_property_view_kanban" model="ir.ui.view">
         <field name="name">Estate Property Kanban</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
