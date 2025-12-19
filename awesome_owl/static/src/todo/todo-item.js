@@ -8,5 +8,6 @@ export class TodoItem extends Component {
             shape: { id: Number, description: String, isCompleted: Boolean},
         },
         toggleState: Function,
+        removeTodo: Function,
     };
 }
