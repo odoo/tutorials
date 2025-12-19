@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class Property(models.Model):
@@ -13,7 +14,7 @@ class Property(models.Model):
         ('offer accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled'),
-    ], string='State', required=True, copy=False, default='new')
+    ], string='Status', required=True, copy=False, default='new')
     description = fields.Text('Description')
     last_seen = fields.Datetime("Last Seen", default=lambda self: fields.Datetime.now())
     postcode = fields.Char('Postcode')
@@ -61,3 +62,17 @@ class Property(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    def action_sell_property(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled properties cannot be sold.")
+            record.state = 'sold'
+        return True
+
+    def action_cancel_property(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties cannot be cancelled.")
+            record.state = 'cancelled'
+        return True
