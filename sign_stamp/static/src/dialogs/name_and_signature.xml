@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="sign_stamp.sign_svg_stamp" name="SVG Stamp">
+        <svg t-att-width="width" t-att-height="height" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+            <defs>
+                <style type="text/css">
+                    @font-face {
+                        font-family: "font";
+                        src: url(data:font/ttf;base64,<t t-esc="font"/>) format("woff");
+                        font-weight: normal;
+                        font-style: normal;
+                    }
+                </style>
+            </defs>
+
+            <image x="10%" y="10%" width="37%" height="60%" t-attf-href="{{logo}}"/>
+
+            <text t-esc="company" x="49%" t-att-y="height * 1 / 5" 
+                t-att-font-size="height * 1 / 8"
+                t-att-textLength="width * 1 / 2 * Math.min(1, company.length / 7)"
+                t-att-lengthAdjust="'spacing' + 'AndGlyphs'"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" 
+                text-anchor="start"/>
+
+            <text t-esc="address" x="49%" t-att-y="height * 2 / 5" 
+                t-att-font-size="height * 1 / 8"
+                t-att-textLength="width * 1 / 2 * Math.min(1, address.length / 7)"
+                t-att-lengthAdjust="'spacing' + 'AndGlyphs'"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" 
+                text-anchor="start"/>
+
+            <text t-esc="city" x="49%" t-att-y="height * 3 / 5" 
+                t-att-font-size="height * 1 / 8"
+                t-att-textLength="width * 1 / 2 * Math.min(1, city.length / 7)"
+                t-att-lengthAdjust="'spacing' + 'AndGlyphs'"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" 
+                text-anchor="start"/>
+
+            <text t-esc="country" x="49%" t-att-y="height * 4 / 5" 
+                t-att-font-size="height * 1 / 8"
+                t-att-textLength="width * 1 / 2 * Math.min(1, country.length / 7)"
+                t-att-lengthAdjust="'spacing' + 'AndGlyphs'"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" 
+                text-anchor="start"/>
+
+            <text t-esc="vat" x="49%" t-att-y="height * 5 / 5" 
+                t-att-font-size="height * 1 / 8"
+                t-att-textLength="width * 1 / 2 * Math.min(1, vat.length / 7)"
+                t-att-lengthAdjust="'spacing' + 'AndGlyphs'"
+                t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" 
+                text-anchor="start"/>
+        </svg>
+    </t>
+</templates>
