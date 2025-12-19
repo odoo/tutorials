@@ -13,5 +13,7 @@
         'views/estate_menus.xml',
 
         'security/ir.model.access.csv',
-    ]
+    ],
+    'author': 'Odoo S.A.',
+    'license': 'LGPL-3',
 }

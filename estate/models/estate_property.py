@@ -1,8 +1,10 @@
 from odoo import api, fields, models
 from datetime import timedelta
 
+
 def default_availability_date(recordset):
     return fields.Date.context_today(recordset) + timedelta(days=90)
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -27,7 +29,7 @@ class EstateProperty(models.Model):
         ('west', 'West')
     ], string='Garden orientation')
     total_area = fields.Integer('Total Area', compute='_compute_total_area')
-    active = fields.Boolean('Active' ,default=True)
+    active = fields.Boolean('Active', default=True)
     state = fields.Selection(selection=[
         ('new', 'New'),
         ('offer_received', 'Offer Received'),
