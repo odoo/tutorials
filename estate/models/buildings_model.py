@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 
@@ -39,9 +40,7 @@ class buildings_model(models.Model):
     tag_ids = fields.Many2many("estate.building_tags", string="Tags")
     offer_ids = fields.One2many("estate.offers", "building_id", string="Offers")
 
-    total_area = fields.Integer(
-        string="Total Area", compute="_compute_total_area"
-    )
+    total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
 
     best_price = fields.Integer(
         string="Best Offer Price",
@@ -61,6 +60,7 @@ class buildings_model(models.Model):
                 record.best_price = max(record.offer_ids.mapped("price"))
             else:
                 record.best_price = 0
+
     @api.onchange("has_garden")
     def _onchange_garden_area(self):
         if self.has_garden:
@@ -69,3 +69,15 @@ class buildings_model(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def action_set_sold(self):
+        for record in self:
+            if record.state == "canceled":
+                raise UserError("Canceled buildings cannot be sold.")
+            record.state = "sold"
+
+    def action_set_canceled(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold buildings cannot be canceled.")
+            record.state = "canceled"
