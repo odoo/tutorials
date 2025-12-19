@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -63,9 +63,31 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped("price"))
+            record.best_price = (
+                max(record.offer_ids.mapped("price")) if record.offer_ids else 0
+            )
 
     @api.onchange("garden")
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0
         self.garden_orientation = "north" if self.garden else None
+
+    def sold_estate_property(self):
+        for record in self:
+            if record.state != "cancelled":
+                record.state = "sold"
+            else:
+                raise exceptions.UserError("can't sell a cancelled property")
+
+    def cancel_estate_property(self):
+        for record in self:
+            if record.state != "sold":
+                record.state = "cancelled"
+            else:
+                raise exceptions.UserError("can't cancel a sold property")
+
+    def reject_other_offers(self, winning_offer):
+        for record in self:
+            for offer in record.offer_ids:
+                if offer != winning_offer:
+                    offer.status = "refused"
