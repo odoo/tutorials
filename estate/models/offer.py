@@ -45,3 +45,7 @@ class Offer(models.Model):
                 record.property_id.buyer_id = False
                 record.property_id.status = 'offer_received'
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The offer price must be strictly positive'
+    )
