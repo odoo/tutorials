@@ -6,7 +6,7 @@ from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Estate Property"
     name = fields.Char("Title", required=True)
     description = fields.Text()
@@ -45,14 +45,16 @@ class EstateProperty(models.Model):
         default="new",
         required=True,
         copy=False,
+        store=True,
+        compute="_compute_state",
     )
-    type_id = fields.Many2one("estate_property_type", string="Property Type")
+    type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
-    tag_ids = fields.Many2many("estate_property_tag")
-    offer_ids = fields.One2many("estate_property_offer", "property_id", string="Offers")
+    tag_ids = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Price", compute="_compute_best_price")
 
@@ -63,6 +65,8 @@ class EstateProperty(models.Model):
         "CHECK(selling_price > 0)", "The selling price must be positive"
     )
 
+    _order = "id desc"
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -72,6 +76,12 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price") or [0])
+
+    @api.depends("offer_ids")
+    def _compute_state(self):
+        for record in self:
+            if len(record.offer_ids) == 1 and record.state == "new":
+                record.state = "offer_received"
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -89,12 +99,16 @@ class EstateProperty(models.Model):
         for record in self:
             record.state = "cancelled"
 
+        return True
+
     def action_sell_property(self):
         if self.state == "cancelled":
             raise UserError("Cancelled property cannot be sold!")
 
         for record in self:
             record.state = "sold"
+
+        return True
 
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
