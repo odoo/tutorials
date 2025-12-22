@@ -6,7 +6,13 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
 
+    _check_offer_price = models.Constraint(
+        "CHECK(price > 0)",
+        "The offer price must be strictly positive.",
+    )
+
     price = fields.Float()
+
     status = fields.Selection(
         [
             ('accepted', 'Accepted'),
@@ -61,3 +67,22 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (
                     record.date_deadline - record.create_date.date()
                 ).days
+
+    def action_accept(self):
+        for record in self:
+            other_offers = record.property_id.offer_ids - record
+            other_offers.write({"status": "refused"})
+
+            record.status = "accepted"
+
+            record.property_id.write({
+                "buyer_id": record.partner_id.id,
+                "selling_price": record.price,
+                "state": "offer_accepted",
+            })
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            record.status = "refused"
+        return True
