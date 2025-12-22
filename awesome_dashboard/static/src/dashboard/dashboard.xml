@@ -7,7 +7,7 @@
                 <button class="btn btn-primary" t-on-click="openCustomerKanban">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeadsViews">Leads</button>
             </t>
-            <div class="d-flex flex-wrap">
+            <div class="d-flex flex-wrap" t-if="statistics.isReady">
                 <DashboardItem>
                     Average number of t-shirt by order
                     <div class="fs-1 fw-bold text-success text-center">
