@@ -15,8 +15,6 @@ export class Playground extends Component {
         this.state.sum++;
     }
 
-    title1 = "Card 1";
-    title2 = "Card 2";
-    content1 = "<div class='text-primary'>My content</div>";
-    content2 = markup("<div class='text-primary'>My content</div>");
+    someHtmlEscaped = "<div class='text-primary'>My content</div>";
+    someHtml = markup("<div class='text-primary'>My content</div>");
 }
