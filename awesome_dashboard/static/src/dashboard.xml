@@ -8,9 +8,11 @@
                 <button type="button" class="btn btn-primary" t-on-click="actionLeads">Leads</button>
             </t>
             <t t-set-slot="default">
-                <DashboardItem>Small content</DashboardItem>
-                <DashboardItem size="2">Long content</DashboardItem>
-                <DashboardItem>Small content 2</DashboardItem>
+                <DashboardItem>Number of new orders this month <h1 style="color:green; font-weight: bold;" t-esc="state.statistics.nb_new_orders"/></DashboardItem>
+                <DashboardItem>Total amount of new orders this month <h1 style="color:green; font-weight: bold;" t-esc="state.statistics.total_amount"/></DashboardItem>
+                <DashboardItem>Average amount of t-shirt by order this month <h1 style="color:green; font-weight: bold;" t-esc="state.statistics.average_quantity"/></DashboardItem>
+                <DashboardItem>Number of cancelled orders this month <h1 style="color:green; font-weight: bold;" t-esc="state.statistics.nb_cancelled_orders"/></DashboardItem>
+                <DashboardItem>Average time for an order to go from 'new' to 'sent' or 'cancelled' <h1 style="color:green; font-weight: bold;" t-esc="state.statistics.average_time"/></DashboardItem>
             </t>
         </Layout>
     </t>
