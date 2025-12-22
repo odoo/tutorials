@@ -14,8 +14,4 @@ export class DashboardItem extends Component {
             },
         },
     };
-
-    setup() {
-        console.log("This item has a size of " + this.props.size);
-    }
 }
