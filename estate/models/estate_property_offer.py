@@ -10,8 +10,9 @@ class EstatePropertyOffer(models.Model):
     _description = "Real Estate Property Offer"
     _order = 'price desc'
 
-    price = fields.Float(required=True, string="Price")
     _check_price = models.Constraint('Check(price > 0)', "The offer price must be strictly positive.")
+
+    price = fields.Float(required=True, string="Price")
     status = fields.Selection(selection=[('accepted', "Accepted"), ('refused', "Refused")], copy=False, string="Status")
     partner_id = fields.Many2one(comodel_name='res.partner', string="Partner", required=True)
     property_id = fields.Many2one(comodel_name='estate.property', string="Property", required=True, ondelete='cascade')

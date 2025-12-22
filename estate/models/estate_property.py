@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real Estate Property"
     _order = 'id desc'
+
     _check_expected_price = models.Constraint('Check(expected_price > 0)', "The expected price must be strictly positive.")
     _check_selling_price = models.Constraint('Check(selling_price >= 0)', "The selling price must be positive.")
 
@@ -100,7 +101,8 @@ class EstateProperty(models.Model):
             property.state = 'cancelled'
         return True
 
-    def unlink(self):
+    @api.ondelete(at_uninstall=True)
+    def delete(self):
         for property in self:
             if property.state not in ('new', 'cancelled'):
                 raise UserError(self.env._("Only new and cancelled properties can be deleted."))

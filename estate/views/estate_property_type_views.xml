@@ -20,8 +20,9 @@
             <form string="Property Type">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button name="%(estate_property_offer_action)d" type="action" class="oe_stat_button" icon="fa-money">
-                            <field name="offer_count" widget="statinfo" string="Offers"/>
+                        <button name="%(estate_property_offer_action)d" type="action"
+                            class="oe_stat_button" icon="fa-money">
+                            <field name="offer_count" widget="statinfo" string="Offers" />
                         </button>
                     </div>
                     <group>
