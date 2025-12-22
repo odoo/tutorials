@@ -24,6 +24,11 @@ This module allows you to manage real estate properties, including:
         "views/res_users_views.xml",
         "views/estate_menus.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "estate/static/src/css/estate.css",
+        ],
+    },
     "application": True,
     "license": "LGPL-3",
 }
