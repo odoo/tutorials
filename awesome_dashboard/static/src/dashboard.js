@@ -2,10 +2,11 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { Component } from "@odoo/owl";
+import { DashboardItem } from "./dashboard-item/dashboard-item"
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout };
+    static components = { Layout, DashboardItem };
 
     setup() {
         this.action = useService("action");

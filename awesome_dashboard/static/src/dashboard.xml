@@ -7,7 +7,11 @@
                 <button type="button" class="btn btn-primary" t-on-click="actionCustomers">Customers</button>
                 <button type="button" class="btn btn-primary" t-on-click="actionLeads">Leads</button>
             </t>
-            <t t-set-slot="default">Some contents for my awesome dashboard!</t>
+            <t t-set-slot="default">
+                <DashboardItem>Small content</DashboardItem>
+                <DashboardItem size="2">Long content</DashboardItem>
+                <DashboardItem>Small content 2</DashboardItem>
+            </t>
         </Layout>
     </t>
 
