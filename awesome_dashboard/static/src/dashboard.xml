@@ -8,24 +8,26 @@
                 <button type="button" class="btn btn-primary" t-on-click="actionLeads">Leads</button>
             </t>
             <t t-set-slot="default">
-                <DashboardItem title="'Number of new orders this month'">
-                    <h1 class="stat_number" t-esc="state.statistics.nb_new_orders"/>
-                </DashboardItem>
-                <DashboardItem title="'Total amount of new orders this month'">
-                    <h1 class="stat_number" t-esc="state.statistics.total_amount"/>
-                </DashboardItem>
-                <DashboardItem title="'Average amount of t-shirt by order this month'">
-                    <h1 class="stat_number" t-esc="state.statistics.average_quantity"/>
-                </DashboardItem>
-                <DashboardItem title="'Number of cancelled orders this month'">
-                    <h1 class="stat_number" t-esc="state.statistics.nb_cancelled_orders"/>
-                </DashboardItem>
-                <DashboardItem title="'Average time for an order to go from \'new\' to \'sent\' or \'cancelled\''">
-                    <h1 class="stat_number" t-esc="state.statistics.average_time"/>
-                </DashboardItem>
-                <DashboardItem size="2" title="'Ordered T-shirts by size'">
-                    <PieChart data="state.statistics.orders_by_size"/>
-                </DashboardItem>
+                <div t-if="statistics.isReady">
+                    <DashboardItem title="'Number of new orders this month'">
+                        <h1 class="stat_number" t-esc="statistics.nb_new_orders"/>
+                    </DashboardItem>
+                    <DashboardItem title="'Total amount of new orders this month'">
+                        <h1 class="stat_number" t-esc="statistics.total_amount"/>
+                    </DashboardItem>
+                    <DashboardItem title="'Average amount of t-shirt by order this month'">
+                        <h1 class="stat_number" t-esc="statistics.average_quantity"/>
+                    </DashboardItem>
+                    <DashboardItem title="'Number of cancelled orders this month'">
+                        <h1 class="stat_number" t-esc="statistics.nb_cancelled_orders"/>
+                    </DashboardItem>
+                    <DashboardItem title="'Average time for an order to go from \'new\' to \'sent\' or \'cancelled\''">
+                        <h1 class="stat_number" t-esc="statistics.average_time"/>
+                    </DashboardItem>
+                    <DashboardItem size="2" title="'Ordered T-shirts by size'">
+                        <PieChart data="statistics.orders_by_size"/>
+                    </DashboardItem>
+                </div>
             </t>
         </Layout>
     </t>

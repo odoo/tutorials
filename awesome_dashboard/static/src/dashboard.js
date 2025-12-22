@@ -1,7 +1,7 @@
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
-import { Component, onWillStart, useState } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { DashboardItem } from "./dashboard-item/dashboard-item"
 import { PieChart } from "./pie-chart/pie-chart";
 
@@ -11,12 +11,7 @@ class AwesomeDashboard extends Component {
 
     setup() {
         this.action = useService("action");
-        this.statistics = useService("awesome_dashboard.statistics");
-        this.state = useState({ statistics: {} });
-        onWillStart( async () => {
-            const result = await this.statistics.loadStatistics();
-            this.state.statistics = result;
-        });
+        this.statistics = useState(useService("awesome_dashboard.statistics"));
     }
 
     actionCustomers() {
