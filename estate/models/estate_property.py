@@ -1,6 +1,7 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+
 class RecurringPlan(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"

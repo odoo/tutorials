@@ -2,6 +2,7 @@ from datetime import timedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real Estate Property Offer"
@@ -34,7 +35,7 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             if offer.date_deadline:
                 offer.validity = (offer.date_deadline - fields.Date.today()).days
-    
+
     def action_accept(self):
         for record in self:
             if record.property_id.offer_ids.filtered(lambda o: o.status == 'accepted' and o.id != record.id):
