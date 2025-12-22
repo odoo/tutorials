@@ -26,6 +26,8 @@ class EstatePropertyOffer(models.Model):
         string="Deadline",
     )
 
+    _check_price = models.Constraint('Check(price > 0)', "The offer price must be strictly positive.")
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for offer in self:

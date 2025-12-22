@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class RecurringPlan(models.Model):
@@ -43,6 +44,16 @@ class RecurringPlan(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price", string="Best Offer Price")
+
+    _check_expected_price = models.Constraint('Check(expected_price > 0)', "The expected price must be strictly positive.")
+    _check_selling_price = models.Constraint('Check(selling_price >= 0)', "The selling price must be positive.")
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for property in self:
+            if not float_is_zero(property.selling_price, precision_digits=2):
+                if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0:
+                    raise ValidationError(self.env._("The selling price cannot be lower than 90% of the expected price."))
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
