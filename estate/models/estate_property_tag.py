@@ -7,4 +7,3 @@ class EstatePropertyTag(models.Model):
     _order = "name"
 
     name = fields.Char(required=True)
-    
