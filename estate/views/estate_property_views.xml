@@ -9,7 +9,7 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <separator/>
@@ -25,22 +25,27 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Property">
+            <list string="Property" 
+            decoration-success="state in ['received offer', 'offer accepted']" 
+            decoration-bf="state=='offer accepted'" 
+            decoration-muted="state=='sold'"
+            >
                 <field name="name"/>
                 <field name="property_type_id"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -51,8 +56,9 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sell_property" type="object" string="SOLD"/>
-                    <button name="action_cancel_property" type="object" string="CANCEL"/>
+                    <button name="action_sell_property" type="object" string="SOLD" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_cancel_property" type="object" string="CANCEL" invisible="state in ['sold', 'cancelled']"/>
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}"/>
                 </header>
                 <sheet>
                     <group>
@@ -62,9 +68,8 @@
                     </group>
                     <group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="state"/>
-                            <field name="property_type_id"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -83,13 +88,13 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible ="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids"/>
+                            <field name="offer_ids" readonly="state in ['offer accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page string="Other Info">
                             <group>
