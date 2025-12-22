@@ -3,14 +3,15 @@ import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { Component, onWillStart, useState } from "@odoo/owl";
 import { DashboardItem } from "./dashboard-item/dashboard-item"
+import { PieChart } from "./pie-chart/pie-chart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, PieChart };
 
     setup() {
         this.action = useService("action");
-        this.statistics = useService("awesome_dashboard.statistics")
+        this.statistics = useService("awesome_dashboard.statistics");
         this.state = useState({ statistics: {} });
         onWillStart( async () => {
             const result = await this.statistics.loadStatistics();
