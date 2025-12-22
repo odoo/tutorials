@@ -1,7 +1,8 @@
 from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
-from odoo import api, exceptions, fields, models
+from odoo import api, exceptions, fields, models, tools
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -16,7 +17,15 @@ class EstateProperty(models.Model):
         copy=False, default=datetime.now() + relativedelta(month=3)
     )
     expected_price = fields.Float(required=True)
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price for a property has to be positive",
+    )
     selling_price = fields.Float(readonly=True, copy=False)
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price > 0)",
+        "The selling price for a property has to be positive",
+    )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -91,3 +100,17 @@ class EstateProperty(models.Model):
             for offer in record.offer_ids:
                 if offer != winning_offer:
                     offer.status = "refused"
+
+    @api.constrains("selling_price")
+    def _check_selling_price(self):
+        for record in self:
+            if (
+                record.selling_price
+                and tools.float_compare(
+                    record.selling_price, (90 / 100) * record.expected_price, 2
+                )
+                == -1
+            ):
+                raise exceptions.ValidationError(
+                    "The selling price cannot be lower than 90% of the expected price"
+                )
