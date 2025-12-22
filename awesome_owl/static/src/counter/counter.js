@@ -14,7 +14,9 @@ export class Counter extends Component {
     }
 
     increment() {
-        this.props.onIncrementCallback()
+        if (this.props.onIncrementCallback) {
+            this.props.onIncrementCallback()
+        }
         this.state.value++;
     }
 }

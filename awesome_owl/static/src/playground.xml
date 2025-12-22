@@ -16,9 +16,16 @@
                     </div>
                 </div>
                 <div class="d-inline-flex border gap-3">
-                    <Card title="'Card 1'" content="this.html_content" />
-                    <Card title="'Card 2'" content="this.html_content2" />
+                    <Card title="'Counter Card'">
+                        <Counter />
+                    </Card>
+                    <Card title="'Card 2'" >
+                        This is simple Content
+                    </Card>
                 </div>
+            </div>
+            <div class="p-2">
+                <TodoList />
             </div>
         </div>
     </t>
