@@ -2,8 +2,9 @@ from odoo import api, fields, models
 
 
 class Offer(models.Model):
-    _name = 'estate.property.offer'
-    _description = 'Estate Property Offer'
+    _name = "estate.property.offer"
+    _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float("Offer Price")
     status = fields.Selection(
@@ -14,6 +15,12 @@ class Offer(models.Model):
     property_id = fields.Many2one('estate.property', string="Property", required=True)
     validity = fields.Integer('Validity (days)', default=7)
     date_deadline = fields.Date("Deadline", compute='_compute_date_deadline', inverse="_inverse_date_deadline")
+    property_type_id = fields.Many2one(related='property_id.property_type_id', string="Property Type", store=True, readonly=True)
+
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "The offer price must be strictly positive"
+    )
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
@@ -28,10 +35,10 @@ class Offer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
-            record.status = 'accepted'
+            record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
-            record.property_id.status = 'offer_accepted'
+            record.property_id.status = "offer_accepted"
 
             # Reject other offers
             other_offers = record.property_id.offer_ids.filtered(lambda o: o.id != record.id)
@@ -39,13 +46,8 @@ class Offer(models.Model):
 
     def action_reject_offer(self):
         for record in self:
-            record.status = 'refused'
-            if record.property_id.status == 'offer_accepted' and record.property_id.buyer_id == record.partner_id:
+            record.status = "refused"
+            if record.property_id.status == "offer_accepted" and record.property_id.buyer_id == record.partner_id:
                 record.property_id.selling_price = 0.0
                 record.property_id.buyer_id = False
-                record.property_id.status = 'offer_received'
-
-    _check_price = models.Constraint(
-        'CHECK(price > 0)',
-        'The offer price must be strictly positive'
-    )
+                record.property_id.status = "offer_received"

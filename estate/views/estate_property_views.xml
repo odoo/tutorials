@@ -4,13 +4,14 @@
         <field name="name">View Records</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
-    <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.tree</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-success="status in ('offer_received', 'offer_accepted')" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
@@ -28,8 +29,9 @@
         <field name="arch" type="xml">
             <form string="My new house">
                 <header>
-                    <button name="action_mark_sold" type="object" string="Sold" class="oe_highlight"/>
-                    <button name="action_mark_cancel" type="object" string="Cancel"/>
+                    <button name="action_mark_sold" type="object" string="Sold" class="oe_highlight" invisible="status == 'sold'"/>
+                    <button name="action_mark_cancel" type="object" string="Cancel" invisible="status == 'sold'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
                 </header>
                 <sheet>
                     <group>
@@ -38,12 +40,11 @@
                         </h1>
                     </group>
                     <group>
-                        <field string="Tags" name="tag_ids" widget="many2many_tags"/>
+                        <field string="Tags" name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
                     </group>
                     <group>
                         <group>
-                            <field name="status"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -62,21 +63,20 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
-                                <list>
+                            <field name="offer_ids" readonly="status in ('offer_accepted', 'sold', 'canceled')">
+                                <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="validity"/>
                                     <field name="date_deadline"/>
-                                    <button name="action_accept_offer" type="object" icon="fa-check"/>
-                                    <button name="action_reject_offer" type="object" icon="fa-remove"/>
-                                    <field name="status"/>
+                                    <button name="action_accept_offer" type="object" icon="fa-check" invisible="status"/>
+                                    <button name="action_reject_offer" type="object" icon="fa-remove" invisible="status"/>
                                 </list>
                             </field>
                         </page>
