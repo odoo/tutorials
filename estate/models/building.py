@@ -4,8 +4,8 @@ from datetime import timedelta
 
 
 class Building(models.Model):
-    _name = 'estate.buildings'
-    _description = 'Buildings'
+    _name = "estate.buildings"
+    _description = "Buildings"
     _order = "id desc"
 
     name = fields.Char()
@@ -89,3 +89,10 @@ class Building(models.Model):
             if record.state == "sold":
                 raise UserError(self.env._("Sold buildings cannot be canceled."))
             record.state = "canceled"
+
+    @api.ondelete(at_uninstall=False)
+    def _check_if_sold(self):
+        for record in self:
+            if record.state not in ("new", "canceled"):
+                raise UserError(self.env._("This building cannot be deleted."))
+        return self
