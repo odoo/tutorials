@@ -8,3 +8,4 @@ class EstatePropertyOffer(models.Model):
 
     name = fields.Char(required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
+    

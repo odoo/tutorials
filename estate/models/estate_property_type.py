@@ -7,3 +7,4 @@ class EstatePropertyType(models.Model):
     _order = "name"
 
     name = fields.Char(required=True)
+    
