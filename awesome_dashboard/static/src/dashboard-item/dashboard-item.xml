@@ -4,6 +4,8 @@
     <t t-name="awesome_dashboard.dashboard-item">
         <div class="card d-inline-block m-2" t-attf-style="width: {{18*props.size}}rem;">
             <div class="card-body">
+                <h5 class="card-title" style="text-align: center;"><t t-esc="props.title"/></h5>
+                <br/>
                 <t t-slot="default"/>
             </div>
         </div>

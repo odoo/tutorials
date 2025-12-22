@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.pie-chart">
-        <DashboardItem size="2"><canvas t-ref="canvas"/></DashboardItem>
+        <canvas t-ref="canvas"/>
     </t>
 
 </templates>
