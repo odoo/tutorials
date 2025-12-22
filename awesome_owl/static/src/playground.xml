@@ -12,17 +12,24 @@
                         <Counter onChange.bind="incrementSum"/>
                         <Counter onChange.bind="incrementSum"/>
                     </div>
-                <div>
-                <p class="fw-bold mb-4">
-                    The Sum is: <t t-esc="state.sum"/>
-                </p>
+                    <div>
+                        <p class="fw-bold mb-4">
+                            The Sum is: <t t-esc="state.sum"/>
+                        </p>
+                    </div>
+                </div>
+                <div class="d-inline-flex border gap-3">
+                    <Card title="'card 1'">
+                        <p>This is simple text content.</p>
+                    </Card>
+                    <Card title="'card 2'">
+                        <Counter onChange.bind="incrementSum"/>
+                    </Card>
+                </div>
             </div>
         </div>
-        <div class="d-inline-flex border gap-3">
-            <Card title="'card 1'" content="htmlContent"/>
-            <Card title="'card 2'" content="normalContent"/>
-            </div>
-            </div>
+        <div class="container py-4">
+            <TodoList/>
         </div>
     </t>
 

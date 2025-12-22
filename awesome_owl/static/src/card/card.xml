@@ -2,14 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.Card">
-        <div class="card d-inline-block m-2" style="width: 18rem;">
+        <div class="card m-2" style="width: 18rem;">
             <div class="card-body">
-                <h5 class="card-title">
-                    <t t-esc="props.title"/>
-                </h5>
-                <p class="card-text">
-                    <t t-esc="props.content"/>
-                </p>
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="card-title mb-0">
+                        <t t-esc="props.title"/>
+                    </h5>
+
+                    <button class="btn btn-sm btn-outline-secondary" t-on-click="toggle">
+                        Toggle
+                    </button>
+                </div>
+
+                <t t-if="state.isOpen">
+                    <t t-slot="default"/>
+                </t>
+
             </div>
         </div>
     </t>
