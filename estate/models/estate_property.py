@@ -46,7 +46,6 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         store=True,
-        # compute="_compute_state",
     )
     type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
@@ -76,13 +75,6 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price") or [0])
-
-    # @api.depends("offer_ids")
-    # def _compute_state(self):
-    #     for record in self:
-    #         if len(record.offer_ids) == 1 and record.state == "new":
-    #             # record.state = "offer_received" OPEN here do not forget!!!
-    #             record.state = record.state
 
     @api.onchange("garden")
     def _onchange_garden(self):
