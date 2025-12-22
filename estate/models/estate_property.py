@@ -46,7 +46,7 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         store=True,
-        compute="_compute_state",
+        # compute="_compute_state",
     )
     type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
@@ -77,11 +77,12 @@ class EstateProperty(models.Model):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price") or [0])
 
-    @api.depends("offer_ids")
-    def _compute_state(self):
-        for record in self:
-            if len(record.offer_ids) == 1 and record.state == "new":
-                record.state = "offer_received"
+    # @api.depends("offer_ids")
+    # def _compute_state(self):
+    #     for record in self:
+    #         if len(record.offer_ids) == 1 and record.state == "new":
+    #             # record.state = "offer_received" OPEN here do not forget!!!
+    #             record.state = record.state
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -120,3 +121,16 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than the 90% of the expected price"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_few_states(self):
+        if any(
+            (record.state != "new" and record.state != "cancelled") for record in self
+        ):
+            raise UserError(
+                "You cannot remove the property except when the state is new or cancelled!"
+            )
+
+    def offer_received(self):
+        if self.state == "new":
+            self.state = "offer_received"

@@ -21,6 +21,21 @@ class EstatePropertyOffer(models.Model):
     )
     _order = "price desc"
 
+    @api.model
+    def create(self, vals_list):
+        an_estate_property = self.env["estate.property"].browse(
+            vals_list[0]["property_id"]
+        )
+        if any(
+            vals_list[0]["price"] < offer_id.price
+            for offer_id in an_estate_property.offer_ids
+        ):
+            raise UserError("Offer cannot be lower than any of previous offers!")
+
+        an_estate_property.offer_received()
+
+        return super().create(vals_list)
+
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for record in self:
