@@ -4,8 +4,9 @@ from datetime import timedelta
 
 
 class Building(models.Model):
-    _name = "estate.buildings"
-    _description = "Buildings"
+    _name = 'estate.buildings'
+    _description = 'Buildings'
+    _order = "id desc"
 
     name = fields.Char()
     description = fields.Text()

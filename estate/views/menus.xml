@@ -3,6 +3,7 @@
     <menuitem id="test_menu_root" name="Estate FelBeit">
         <menuitem id="test_first_level_menu" name="First Level">
             <menuitem id="test_model_menu_action" action="some_model_action_1"/>
+            <menuitem id="test_building_type_menu_action" action="some_model_action_2"/>
         </menuitem>
     </menuitem>
 </odoo>

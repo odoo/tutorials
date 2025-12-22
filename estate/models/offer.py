@@ -5,8 +5,9 @@ from odoo.tools.float_utils import float_compare
 
 
 class Offer(models.Model):
-    _name = "estate.offers"
-    _description = "Offers"
+    _name = 'estate.offers'
+    _description = 'Offers'
+    _order = "price desc"
 
     price = fields.Integer(required=True)
     status = fields.Selection(
@@ -22,6 +23,7 @@ class Offer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
+    property_type_id = fields.Many2one(related="building_id.building_type_id", string="Property Type", store=True)
 
     _price_positive_constraint = models.Constraint(
         "CHECK (price > 0)", "Offer price must be positive."
