@@ -27,8 +27,8 @@
             ('remove', 'awesome_dashboard/static/src/dashboard/**/*'),
         ],
         'awesome_dashboard.dashboard': [
-            'awesome_dashboard/static/src/dashboard/**/*'
-        ]
+            'awesome_dashboard/static/src/dashboard/**/*',
+        ],
     },
     'license': 'AGPL-3',
 }

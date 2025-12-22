@@ -11,7 +11,7 @@ const statisticsService = {
             Object.assign(statistics, updates, { isReady: true });
         }
 
-        setInterval(loadData, 10*1000);
+        setInterval(loadData, 10*1000*60);
         loadData();
 
         return statistics;
