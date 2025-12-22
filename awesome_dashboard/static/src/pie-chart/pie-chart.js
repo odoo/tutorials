@@ -1,4 +1,4 @@
-import { Component, onWillStart, onWillUnmount, onMounted, useRef } from "@odoo/owl";
+import { Component, onWillStart, onWillUnmount, onMounted, useRef, onWillUpdateProps } from "@odoo/owl";
 import { loadJS } from "@web/core/assets";
 import { DashboardItem } from "../dashboard-item/dashboard-item";
 
@@ -15,6 +15,7 @@ export class PieChart extends Component {
 
         onWillStart(() => loadJS("/web/static/lib/Chart/Chart.js"));
         onMounted(this.renderChart);
+        onWillUpdateProps(this.updateChart);
         onWillUnmount(this.destroyChart);
     }
 
@@ -30,6 +31,14 @@ export class PieChart extends Component {
                 datasets: [{ data: datapoints }],
             },
         });
+    }
+
+    updateChart(newProps) {
+        if (this.chart) {
+            const datapoints = Object.values(newProps.data);
+            Object.assign(this.chart.data.datasets[0], { data: datapoints });
+            this.chart.update();
+        }
     }
     
     destroyChart() {
