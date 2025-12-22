@@ -10,5 +10,7 @@
         'views/estate_property_tag_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_menus_views.xml',
-    ]
+    ],
+    'author': 'Odoo S.A.',
+    'license': 'LGPL-3'
 }
