@@ -6,8 +6,7 @@ export class PieChart extends Component {
     static template = "awesome_dashboard.pie-chart";
     static components = { DashboardItem };
     static props = {
-        data: { type: Array, element: { type: Number }},
-        labels: { type: Array, element: { type: String }},
+        data: { type: Object, values: Number },
     }
 
     setup() {
@@ -22,11 +21,13 @@ export class PieChart extends Component {
     renderChart() {
         this.destroyChart();
 
+        const labels = Object.keys(this.props.data);
+        const datapoints = Object.values(this.props.data);
         this.chart = new Chart(this.canvasRef.el, {
             type: "doughnut",
             data: {
-                labels: this.props.labels,
-                datasets: [{ data: this.props.data }],
+                labels: labels,
+                datasets: [{ data: datapoints }],
             },
         });
     }
