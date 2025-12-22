@@ -9,24 +9,12 @@
             </t>
             <t t-set-slot="default">
                 <div t-if="statistics.isReady">
-                    <DashboardItem title="'Number of new orders this month'">
-                        <h1 class="stat_number" t-esc="statistics.nb_new_orders"/>
-                    </DashboardItem>
-                    <DashboardItem title="'Total amount of new orders this month'">
-                        <h1 class="stat_number" t-esc="statistics.total_amount"/>
-                    </DashboardItem>
-                    <DashboardItem title="'Average amount of t-shirt by order this month'">
-                        <h1 class="stat_number" t-esc="statistics.average_quantity"/>
-                    </DashboardItem>
-                    <DashboardItem title="'Number of cancelled orders this month'">
-                        <h1 class="stat_number" t-esc="statistics.nb_cancelled_orders"/>
-                    </DashboardItem>
-                    <DashboardItem title="'Average time for an order to go from \'new\' to \'sent\' or \'cancelled\''">
-                        <h1 class="stat_number" t-esc="statistics.average_time"/>
-                    </DashboardItem>
-                    <DashboardItem size="2" title="'Ordered T-shirts by size'">
-                        <PieChart data="statistics.orders_by_size"/>
-                    </DashboardItem>
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <DashboardItem size="item.size || 1">
+                            <t t-set="itemProp" t-value="item.props ? item.props(statistics) : { 'data': statistics }"/>
+                            <t t-component="item.component" t-props="itemProp"/>
+                        </DashboardItem>
+                    </t>
                 </div>
             </t>
         </Layout>
