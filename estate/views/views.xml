@@ -3,9 +3,8 @@
     <record id="some_model_action_1" model="ir.actions.act_window">
         <field name="name">Buildings</field>
         <field name="res_model">estate.buildings</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_Available': True}</field>
-
     </record>
 
     <record id="some_model_action_2" model="ir.actions.act_window">
@@ -168,6 +167,30 @@
                     </field>
                 </page>
             </xpath>
+        </field>
+    </record>
+    <record id="kanban_1" model="ir.ui.view">
+        <field name="name">estate.buildings.kanban</field>
+        <field name="model">estate.buildings</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="building_type_id">
+                <template>
+                    <t t-name="card">
+                        <div>
+                            <field name="name"/>
+                            <div>
+                                <strong>Price:</strong>
+                                <span><field name="value"/></span>
+                            </div>
+                            <div>
+                                <strong>State:</strong>
+                                <span><field name="state"/></span>
+                            </div>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                        </div>
+                    </t>
+                </template>
+            </kanban>
         </field>
     </record>
 </odoo>
