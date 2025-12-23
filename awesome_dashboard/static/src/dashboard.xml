@@ -1,8 +1,45 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
+            <t t-set-slot="control-panel-create-button">
+                <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
+                <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+            </t>
+            <div class="p-2 d-flex flex-wrap gap-3">
+                <DashboardItem size="1.5">
+                    <div class="d-flex flex-column align-items-center">
+                        <span>Number of new orders this month</span>
+                        <h1 class="text-primary" t-esc="this.stats.nb_new_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="1.5">
+                    <div class="d-flex flex-column align-items-center">
+                        <span>Total amount of new orders this month</span>
+                        <h1 class="text-primary" t-esc="this.stats.total_amount"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="1.5">
+                    <div class="d-flex flex-column align-items-center">
+                        <span>Average amount of t-shirt by order this month</span>
+                        <h1 class="text-primary" t-esc="this.stats.average_quantity" />
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="1.5">
+                    <div class="d-flex flex-column align-items-center">
+                        <span>Number of cancelled orders this month</span>
+                        <h1 class="text-primary" t-esc="this.stats.nb_cancelled_orders" />
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="1.5">
+                    <div class="d-flex flex-column align-items-center">
+                        <span>Average time for an order to go from &apos;new&apos; to &apos;sent&apos; or &apos;cancelled&apos;</span>
+                        <h1 class="text-primary" t-esc="this.stats.average_time" />
+                    </div>
+                </DashboardItem>
+            </div>
+        </Layout>
     </t>
 
 </templates>
