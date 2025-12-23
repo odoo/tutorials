@@ -4,11 +4,19 @@
     'description': """
     add stamp field in sing app
     """,
+    'depends': ['sign', 'web'],
     'data': [
         'data/sign_data.xml',
         'views/sign_request_templates.xml'
     ],
-    'depends': ['sign'],
+    'assets': {
+        'web.assets_backend': [
+            'sign_stamp/static/src/components/**/*',
+        ],
+        'sign.assets_public_sign': [
+            'sign_stamp/static/src/components/**/*',
+        ],
+    },
     'license': 'LGPL-3',
     'application': True,
     'installable': True

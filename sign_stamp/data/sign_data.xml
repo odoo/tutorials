@@ -3,7 +3,6 @@
     <record id="sign_item_type_test_stamp" model="sign.item.type">
         <field name="name">Test Stamp</field>
         <field name="item_type">stamp</field>
-        <field name="auto_field">stamp</field>
         <field name="placeholder">Company&#10;Address&#10;City&#10;Country&#10;VAT Number</field>
         <field name="default_width" type="float">0.3</field>
         <field name="default_height" type="float">0.1</field>
