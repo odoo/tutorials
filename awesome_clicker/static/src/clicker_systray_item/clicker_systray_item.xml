@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.clicker_systray_item">
+        <div class="o_nav_entry">
+            <Dropdown>
+                <button>
+                    <ClickValue/> <i class="fa fa-mouse-pointer fa-fw"/>,
+                    <span t-if="clicker.level >= 4">
+                        <t t-esc="allTrees"/> <i class="fa fa-tree fa-fw"/>,
+                        <t t-esc="allFruits"/> <i class="fa fa-apple fa-fw"/>
+                    </span>
+                </button>
+                <t t-set-slot="content">
+                    <button t-on-click="onOpen">
+                        Open the clicker game
+                    </button>
+                    <button t-if="clicker.level >= 1" t-att-disabled="clicker.clicks lt clicker.bots.clickBot.price" t-on-click="() => {clicker.buyBot(0);}">
+                        Buy a Click Bot
+                    </button>
+                    <div t-if="clicker.level >= 4">
+                        <t t-esc="clicker.trees.pear.quantity"/>x pear Trees
+                    </div>
+                    <div t-if="clicker.level >= 4">
+                        <t t-esc="clicker.trees.pear.fruit"/>x pears
+                    </div>
+                    <div t-if="clicker.level >= 4">
+                        <t t-esc="clicker.trees.cherry.quantity"/>x cherry Trees
+                    </div>
+                    <div t-if="clicker.level >= 4">
+                        <t t-esc="clicker.trees.cherry.fruit"/>x cherries
+                    </div>
+                    <div t-if="clicker.level >= 4">
+                        <t t-esc="clicker.trees.peach.quantity"/>x cherry Trees
+                    </div>
+                    <div t-if="clicker.level >= 4">
+                        <t t-esc="clicker.trees.peach.fruit"/>x cherries
+                    </div>
+                </t>
+            </Dropdown>
+        </div>
+    </t>
+</templates>

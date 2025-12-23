@@ -10,7 +10,7 @@
                     </CheckBox>
                 </div>
             </t>
-            <t t-set-solt="footer">
+            <t t-set-slots="footer">
                 <button class="btn btn-primary" t-on-click="done">Done</button>
             </t>
         </Dialog>
