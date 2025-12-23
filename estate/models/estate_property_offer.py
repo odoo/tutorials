@@ -46,5 +46,16 @@ class PropertyOffer(models.Model):
             record.status = 'refused'
         return True
 
+    @api.model_create_multi
+    def create(self, vals):
+        offer = super().create(vals)
+        property_record = offer.property_id
+        if property_record.state == 'new':
+            property_record.state = 'received offer'
+        else:
+            if offer.price < property_record.best_price:
+                raise UserError("Your offer is lower than an existing offer!")
+        return offer
+
     # Constraints
     _check_offer_price = models.Constraint('CHECK (price > 0)', "An offer price must be strictly positive")

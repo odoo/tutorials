@@ -3,6 +3,7 @@
     'depends': ['base'],
     'data': [
         'security/ir.model.access.csv',
+        'views/base_res_users_views.xml',
         'views/estate_property_views.xml',
         'views/estate_property_offer_views.xml',
         'views/estate_property_type_views.xml',
