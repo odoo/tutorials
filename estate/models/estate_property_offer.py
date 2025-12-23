@@ -80,14 +80,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
-
-    def is_still_open_to_offers(self):
-        return (
-            True
-            if (
-                self.partner_id.state == "offer_accepted"
-                or self.partner_id.state == "sold"
-                or self.partner_id.state == "cancelled"
-            )
-            else False
-        )
