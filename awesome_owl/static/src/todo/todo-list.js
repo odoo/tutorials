@@ -1,13 +1,13 @@
-import { onMounted, useRef, useState, Component } from "@odoo/owl";
+import { useState, Component } from "@odoo/owl";
 import { TodoItem } from "./todo-item";
-import { useAutoFocus } from "../utils"
+import { useAutoFocus } from "../utils";
 
 export class TodoList extends Component {
     static template = "awesome_owl.todo-list";
-    static components = { TodoItem }
+    static components = { TodoItem };
 
     setup() {
-        this.state = useState({todos: [], nextId: 1});
+        this.state = useState({ todos: [], nextId: 1 });
         useAutoFocus("new-todo-input");
     }
 
@@ -15,7 +15,11 @@ export class TodoList extends Component {
         // keyCode is deprecated, use key instead
         if (event.key === "Enter") {
             if (event.target.value) {
-                this.state.todos.push({id: this.state.nextId, description: event.target.value, isCompleted: false});
+                this.state.todos.push({
+                    id: this.state.nextId,
+                    description: event.target.value,
+                    isCompleted: false,
+                });
                 this.state.nextId++;
                 event.target.value = "";
             }
