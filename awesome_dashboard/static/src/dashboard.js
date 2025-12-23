@@ -1,10 +1,12 @@
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
+import { useService, useOwnedDialogs } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { Component, useState } from "@odoo/owl";
-import { DashboardItem } from "./dashboard-item/dashboard-item"
-import { NumberCard } from "./number-card/number-card"
-import { PieChartCard } from "./pie-chart/pie-chart-card"
+import { DashboardItem } from "./dashboard-item/dashboard-item";
+import { NumberCard } from "./number-card/number-card";
+import { PieChartCard } from "./pie-chart/pie-chart-card";
+import { DashboardDialog } from "./configuration-dialog/configuration-dialog";
+import { browser } from "@web/core/browser/browser";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -13,9 +15,11 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
+        this.configDialog = useOwnedDialogs();
 
         // Dashboard items
         this.items = registry.category("awesome_dashboard").getAll();
+        this.state = useState({ disabledItems: JSON.parse(browser.localStorage.getItem("awesome_dashboard.disabled") ?? "[]") });
     }
 
     actionCustomers() {
@@ -28,6 +32,19 @@ class AwesomeDashboard extends Component {
             name: "All leads",
             res_model: "crm.lead",
             views: [[false, "list"], [false, "form"]],
+        });
+    }
+
+    updateConfiguration(disabledItems) {
+        browser.localStorage.setItem("awesome_dashboard.disabled", JSON.stringify(disabledItems));
+        this.state.disabledItems = disabledItems;
+    }
+
+    openDashboardConfig() {
+        this.configDialog(DashboardDialog, {
+            items: this.items,
+            disabledItems: this.state.disabledItems,
+            updateConfiguration: this.updateConfiguration.bind(this),
         });
     }
 }

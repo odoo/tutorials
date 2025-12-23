@@ -7,10 +7,13 @@
                 <button type="button" class="btn btn-primary" t-on-click="actionCustomers">Customers</button>
                 <button type="button" class="btn btn-primary" t-on-click="actionLeads">Leads</button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <span role="button" class="fa fa-fw fa-cog" t-on-click="openDashboardConfig"/>
+            </t>
             <t t-set-slot="default">
                 <div t-if="statistics.isReady">
                     <t t-foreach="items" t-as="item" t-key="item.id">
-                        <DashboardItem size="item.size || 1">
+                        <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
                             <t t-set="itemProp" t-value="item.props ? item.props(statistics) : { 'data': statistics }"/>
                             <t t-component="item.component" t-props="itemProp"/>
                         </DashboardItem>
