@@ -12,6 +12,7 @@ def default_availability_date(recordset):
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Advertisement module"
+    _order = "id desc"
 
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
