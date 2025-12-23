@@ -6,7 +6,7 @@ export function useAutofocus(refName) {
     onMounted(() => {
         if (ref.el) {
             ref.el.focus();
-        }
+        }   
     });
 
     return ref;
