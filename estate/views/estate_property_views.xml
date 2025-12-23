@@ -3,7 +3,7 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">View Records</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">list,form</field>
+        <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
     </record>
 
@@ -89,6 +89,34 @@
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bold"/>
+                        <field name="status" invisible="1"/>
+                        <hr/>
+                        <div>
+                            <label for="expected_price">Expected Price: </label>
+                            <field name="expected_price"/>
+                        </div>
+                        <div t-if="record.status.raw_value == 'offer_received'">
+                            <label for="best_price">Best Offer: </label>
+                            <field name="best_price"/>
+                        </div>
+                        <div t-if="record.status.raw_value == 'sold'">
+                            <label for="selling_price">Selling Price: </label>
+                            <field name="selling_price"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
         </field>
     </record>
 </odoo>

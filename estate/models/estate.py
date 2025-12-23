@@ -64,7 +64,6 @@ class Estate(models.Model):
         if any(property.status not in ("new", "canceled") for property in self):
             raise UserError(self.env._("Only new and canceled properties can be deleted"))
 
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -73,7 +72,7 @@ class Estate(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0 
+            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0
 
     @api.onchange('offer_ids')
     def _onchange_property_status(self):
