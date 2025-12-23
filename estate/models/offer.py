@@ -27,7 +27,7 @@ class Offer(models.Model):
     def create(self, vals_list):
         for record in vals_list:
             property = self.env['estate.property'].browse(record["property_id"])
-            min_price = min(offer.price for offer in property.offer_ids)
+            min_price = min(offer.price for offer in property.offer_ids) if property.offer_ids else 0
             if record["price"] < min_price:
                 raise UserError(self.env._("Offer must be greater than {0}".format(min_price)))
             property.status = "offer_received"
