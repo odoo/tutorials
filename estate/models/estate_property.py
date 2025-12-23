@@ -75,14 +75,16 @@ class Property(models.Model):
     def action_sell_property(self):
         for record in self:
             if record.state == 'cancelled':
-                raise UserError("Cancelled properties cannot be sold.")
+                msg = "Cancelled properties cannot be sold."
+                raise UserError(msg)
             record.state = 'sold'
         return True
 
     def action_cancel_property(self):
         for record in self:
             if record.state == 'sold':
-                raise UserError("Sold properties cannot be cancelled.")
+                msg = "Sold properties cannot be cancelled."
+                raise UserError(msg)
             record.state = 'cancelled'
         return True
 
@@ -94,4 +96,5 @@ class Property(models.Model):
     def _check_selling_price_percentage(self):
         for record in self:
             if record.state == 'offer accepted' and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=9) == -1:
-                raise ValidationError("The selling price cannot be lower than 90% of the expected price")
+                msg = "The selling price cannot be lower than 90% of the expected price"
+                raise ValidationError(msg)

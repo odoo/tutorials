@@ -34,7 +34,8 @@ class PropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             if record.property_id.state == 'offer accepted' or record.property_id.state == 'sold':
-                raise UserError("An offer has already been accepted for this property!")
+                msg = "An offer has already been accepted for this property!"
+                raise UserError(msg)
             record.status = 'accepted'
             record.property_id.state = 'offer accepted'
             record.property_id.buyer_id = record.partner_id
@@ -54,7 +55,8 @@ class PropertyOffer(models.Model):
             property_record.state = 'received offer'
         else:
             if offer.price < property_record.best_price:
-                raise UserError("Your offer is lower than an existing offer!")
+                msg = "Your offer is lower than an existing offer!"
+                raise UserError(msg)
         return offer
 
     # Constraints
