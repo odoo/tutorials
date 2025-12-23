@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 from datetime import timedelta
 
 
@@ -94,3 +95,11 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        prop = self.env['estate.property'].browse(vals['property_id'])
+        if prop.offer_ids and vals['price'] < max(prop.offer_ids.mapped('price')):
+            raise UserError("The offer must be higher than existing offers!")
+        prop.state = 'offer_received'
+        return super().create(vals)
