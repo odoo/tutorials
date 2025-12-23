@@ -7,6 +7,7 @@ from datetime import timedelta
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate property"
+    _order = "id desc"
 
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
