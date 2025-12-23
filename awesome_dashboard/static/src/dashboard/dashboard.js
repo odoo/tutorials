@@ -19,7 +19,11 @@ class AwesomeDashboard extends Component {
 
         // Dashboard items
         this.items = registry.category("awesome_dashboard").getAll();
-        this.state = useState({ disabledItems: JSON.parse(browser.localStorage.getItem("awesome_dashboard.disabled") ?? "[]") });
+        this.state = useState({
+            disabledItems: JSON.parse(
+                browser.localStorage.getItem("awesome_dashboard.disabled") ?? "[]"
+            ),
+        });
     }
 
     actionCustomers() {
@@ -31,7 +35,10 @@ class AwesomeDashboard extends Component {
             type: "ir.actions.act_window",
             name: "All leads",
             res_model: "crm.lead",
-            views: [[false, "list"], [false, "form"]],
+            views: [
+                [false, "list"],
+                [false, "form"],
+            ],
         });
     }
 

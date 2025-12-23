@@ -25,7 +25,7 @@ export class DashboardDialog extends Component {
     applyConfigurationChanges() {
         const disabledItems = this.items.filter((item) => item.disabled).map((item) => item.id);
         this.props.updateConfiguration(disabledItems);
-        if(this.props.close) {
+        if (this.props.close) {
             this.props.close();
         }
     }
