@@ -2,12 +2,12 @@ from datetime import datetime
 
 from dateutil.relativedelta import relativedelta
 from odoo import api, exceptions, fields, models, tools
-from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property data model"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -17,15 +17,7 @@ class EstateProperty(models.Model):
         copy=False, default=datetime.now() + relativedelta(month=3)
     )
     expected_price = fields.Float(required=True)
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)",
-        "The expected price for a property has to be positive",
-    )
     selling_price = fields.Float(readonly=True, copy=False)
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price > 0)",
-        "The selling price for a property has to be positive",
-    )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
@@ -63,6 +55,15 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(compute="_compute_best_price")
+
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "The expected price for a property has to be positive",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price > 0)",
+        "The selling price for a property has to be positive",
+    )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

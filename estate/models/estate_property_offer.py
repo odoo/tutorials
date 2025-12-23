@@ -6,12 +6,9 @@ from odoo import api, fields, models
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Real estate property offer"
+    _order = "price desc"
 
     price = fields.Float()
-    _check_price = models.Constraint(
-        "CHECK(price > 0)",
-        "The offer price for a property has to be positive",
-    )
     status = fields.Selection(
         [("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
@@ -20,6 +17,14 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
+    )
+    property_type_id = fields.Integer(
+        related="property_id.property_type_id.id", store=True
+    )
+
+    _check_price = models.Constraint(
+        "CHECK(price > 0)",
+        "The offer price for a property has to be positive",
     )
 
     @api.depends("create_date", "validity")
@@ -40,6 +45,7 @@ class EstatePropertyOffer(models.Model):
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
+            record.property_id.state = "offer_accepted"
             record.property_id.reject_other_offers(record)
 
     def action_cancel(self):
