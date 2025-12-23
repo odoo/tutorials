@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="sign_stamp.test_dialog">
+        <Dialog title="'Adopt your stamp'">
+            <div>
+                <label class="col-form-label">Company Name</label>
+                <input 
+                    type="text"
+                    placeholder="Type your company name"
+                    t-att-value="props.companyName"
+                />
+            </div>
+            <div>
+                <label class="col-form-label">Address</label>
+                <input 
+                    type="text"
+                    placeholder="Type your address"
+                    t-att-value="props.companyAddress"
+                />
+            </div>
+            <div>
+                <label class="col-form-label">City</label>
+                <input 
+                    type="text"
+                    placeholder="Type your city name"
+                    t-att-value="props.companyCity"
+                />
+            </div>
+            <div>
+                <label class="col-form-label">Country</label>
+                <input 
+                    type="text"
+                    placeholder="Type your country name"
+                    t-att-value="props.companyCountry"
+                />
+            </div>
+            <div>
+                <label class="col-form-label">VAT NUmber</label>
+                <input 
+                    type="text"
+                    placeholder="Type VAT Number"
+                    t-att-value="props.companyVat"
+                />
+            </div>
+            <div>
+                <label class="col-form-label">logo</label>
+                <input 
+                    type="file"
+                    placeholder="Upload logo"
+                />
+            </div>
+            <div class="mt16 small">
+                By signing, I agree that the chosen signature/initials will be a valid electronic 
+                representation of my hand-written signature/initials for all purposes when it is 
+                used on documents, including legally binding contracts.
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary">Sign all</button>
+                <button class="btn btn-secondary">Sign</button>
+                <button class="btn btn-secondary">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

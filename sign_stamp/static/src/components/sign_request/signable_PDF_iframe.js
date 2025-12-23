@@ -1,6 +1,6 @@
 import { patch } from "@web/core/utils/patch";
 import { SignablePDFIframe } from "@sign/components/sign_request/signable_PDF_iframe";
-import { TestDialog } from "./test_dialog";
+import { TestDialog } from "../../dialogs/test_dialog";
 
 patch(SignablePDFIframe.prototype, {
     enableCustom(signItem) {
@@ -11,7 +11,13 @@ patch(SignablePDFIframe.prototype, {
         }
         signItem.el.addEventListener("click", (ev) => {
             console.log("STAMP CLICKED => opening dialog");
-            this.env.services.dialog.add(TestDialog);
+            this.env.services.dialog.add(TestDialog,{
+                companyName: this.props.companyInfo.company,
+                companyAddress: this.props.companyInfo.address,
+                companyCity: this.props.companyInfo.city,
+                companyCountry: this.props.companyInfo.country,
+                companyVat: this.props.companyInfo.vat
+            });
         });
     },
 });
