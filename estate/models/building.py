@@ -1,11 +1,12 @@
+from datetime import timedelta
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-from datetime import timedelta
 
 
 class Building(models.Model):
-    _name = "estate.buildings"
-    _description = "Buildings"
+    _name = 'estate.building'
+    _description = 'Buildings'
     _order = "id desc"
 
     name = fields.Char()
@@ -39,7 +40,7 @@ class Building(models.Model):
         "res.users", string="Salesperson", default=lambda self: self.env.user
     )
     tag_ids = fields.Many2many("estate.building_tags", string="Tags")
-    offer_ids = fields.One2many("estate.offers", "building_id", string="Offers")
+    offer_ids = fields.One2many("estate.offer", "building_id", string="Offers")
 
     total_area = fields.Integer(string="Total Area", compute="_compute_total_area")
 

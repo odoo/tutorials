@@ -2,7 +2,7 @@
 <odoo>
     <record id="some_model_action_1" model="ir.actions.act_window">
         <field name="name">Buildings</field>
-        <field name="res_model">estate.buildings</field>
+        <field name="res_model">estate.building</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_Available': True}</field>
     </record>
@@ -15,14 +15,14 @@
 
     <record id="some_model_action_3" model="ir.actions.act_window">
         <field name="name">Offers</field>
-        <field name="res_model">estate.offers</field>
+        <field name="res_model">estate.offer</field>
         <field name="view_mode">list</field>
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
     <record id="list_view_" model="ir.ui.view">
-        <field name="name">estate.buildings.list</field>
-        <field name="model">estate.buildings</field>
+        <field name="name">estate.building.list</field>
+        <field name="model">estate.building</field>
         <field name="arch" type="xml">
             <list string="test_list" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
                 <field name="name"/>
@@ -36,8 +36,8 @@
     </record>
 
     <record id="first_form_view" model="ir.ui.view">
-        <field name="name">estate.buildings.form</field>
-        <field name="model">estate.buildings</field>
+        <field name="name">estate.building.form</field>
+        <field name="model">estate.building</field>
         <field name="arch" type="xml">
             <form string="Test">
                 <header>
@@ -98,8 +98,8 @@
     </record>
 
     <record id="first_search_view" model="ir.ui.view">
-        <field name="name">estate.buildings.search</field>
-        <field name="model">estate.buildings</field>
+        <field name="name">estate.building.search</field>
+        <field name="model">estate.building</field>
         <field name="arch" type="xml">
             <search string="test_search">
                 <field name="name"/>
@@ -170,8 +170,8 @@
         </field>
     </record>
     <record id="kanban_1" model="ir.ui.view">
-        <field name="name">estate.buildings.kanban</field>
-        <field name="model">estate.buildings</field>
+        <field name="name">estate.building.kanban</field>
+        <field name="model">estate.building</field>
         <field name="arch" type="xml">
             <kanban default_group_by="building_type_id">
                 <template>

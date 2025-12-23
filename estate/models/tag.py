@@ -2,8 +2,8 @@ from odoo import models, fields
 
 
 class BuildingTag(models.Model):
-    _name = "estate.building_tags"
-    _description = "Building Tags"
+    _name = 'estate.building_tags'
+    _description = 'Building Tags'
     _order = "name"
 
     name = fields.Char(required=True)

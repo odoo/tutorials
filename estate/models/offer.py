@@ -1,12 +1,13 @@
+from datetime import timedelta
+
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-from datetime import timedelta
 from odoo.tools.float_utils import float_compare
 
 
 class Offer(models.Model):
-    _name = "estate.offers"
-    _description = "Offers"
+    _name = 'estate.offer'
+    _description = 'Offers'
     _order = "price desc"
 
     price = fields.Integer(required=True)
@@ -15,7 +16,7 @@ class Offer(models.Model):
         string="Status",
         required=False,
     )
-    building_id = fields.Many2one("estate.buildings", string="Building")
+    building_id = fields.Many2one("estate.building", string="Building")
     partner_id = fields.Many2one("res.partner", string="Partner")
     validity = fields.Integer(string="Validity (days)", default=7)
     date_deadline = fields.Date(
@@ -42,10 +43,7 @@ class Offer(models.Model):
 
     def action_accept_offer(self):
         for record in self:
-            if record.status != "accepted" and record.building_id.state not in [
-                "sold",
-                "canceled",
-            ]:
+            if record.status != "accepted" and record.building_id.state not in ["sold", "canceled"]:
                 record.status = "accepted"
                 record.building_id.state = "offer_accepted"
                 record.building_id.buyer_id = record.partner_id
@@ -58,9 +56,7 @@ class Offer(models.Model):
                 )
                 other_offers.write({"status": "refused"})
             elif record.building_id.state in ["sold", "canceled"]:
-                raise UserError(
-                    self.env._("Cannot accept offers for sold or canceled buildings.")
-                )
+                raise UserError(self.env._("Cannot accept offers for sold or canceled buildings."))
             else:
                 raise UserError(self.env._("Offer is already accepted."))
 
@@ -76,22 +72,13 @@ class Offer(models.Model):
     @api.constrains("building_id", "price")
     def _check_price(self):
         for record in self:
-            if (
-                float_compare(
-                    0.9 * record.building_id.value, record.price, precision_digits=2
-                )
-                == 1
-            ):
-                raise UserError(
-                    self.env._(
-                        "Offer price must be at least 90% of the building's value."
-                    )
-                )
+            if float_compare(0.9 * record.building_id.value, record.price, precision_digits=2) > 0:
+                raise UserError(self.env._("Offer price must be at least 90% of the building's value."))
 
     @api.model
     def create(self, vals):
         for val in vals:
-            self.env["estate.buildings"].browse(
+            self.env["estate.building"].browse(
                 val["building_id"]
             ).state = "offer_received"
         return super().create(vals)
