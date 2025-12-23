@@ -8,6 +8,15 @@ from odoo.tools.float_utils import float_compare
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)", "The expected price must be positive"
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price > 0)", "The selling price must be positive"
+    )
+
+    _order = "id desc"
+
     name = fields.Char("Title", required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -43,9 +52,6 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
         default="new",
-        required=True,
-        copy=False,
-        store=True,
     )
     type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
@@ -56,15 +62,6 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Price", compute="_compute_best_price")
-
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)", "The expected price must be positive"
-    )
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price > 0)", "The selling price must be positive"
-    )
-
-    _order = "id desc"
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):

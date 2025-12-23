@@ -87,17 +87,6 @@ class EstatePropertyOffer(models.Model):
             or self.partner_id.state == "sold"
             or self.partner_id.state == "cancelled"
         ):
-            print("HELLO!!")
             return True
 
-        print("FALSE case!!")
         return False
-
-    # @api.depends("create_date", "date_deadline") Not working right now!!!
-    # def _inverse_date_deadline(self):
-    #     print("Hello!")
-    #     for record in self:
-    #         record.validity = (
-    #             (record.date_deadline or fields.Datetime.now())
-    #             - (record.create_date or fields.Datetime.now())
-    #         ).days
