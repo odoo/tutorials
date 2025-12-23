@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class Offer(models.Model):
@@ -21,6 +22,17 @@ class Offer(models.Model):
         "CHECK(price > 0)",
         "The offer price must be strictly positive"
     )
+
+    @api.model
+    def create(self, vals_list):
+        for record in vals_list:
+            property = self.env['estate.property'].browse(record["property_id"])
+            min_price = min(offer.price for offer in property.offer_ids)
+            if record["price"] < min_price:
+                raise UserError(self.env._("Offer must be greater than {0}".format(min_price)))
+            property.status = "offer_received"
+
+        return super().create(vals_list)
 
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):

@@ -23,19 +23,19 @@ class Estate(models.Model):
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
-            ('north', "North"), 
-            ('south', "South"), 
-            ('east', "East"), 
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
             ('west', "West")
         ],
         required=True)
     status = fields.Selection(
         string="Status",
         selection=[
-            ('new', "New"), 
-            ('offer_received', "Offer Received"), 
-            ('offer_accepted', "Offer Accepted"), 
-            ('sold', "Sold"), 
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
             ('canceled', "Canceled")
         ],
         default='new',
@@ -58,7 +58,13 @@ class Estate(models.Model):
         "CHECK(selling_price >= 0)",
         "The selling price must be positive"
     )
-    
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        if any(property.status not in ("new", "canceled") for property in self):
+            raise UserError(self.env._("Only new and canceled properties can be deleted"))
+
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -67,7 +73,7 @@ class Estate(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0  
+            record.best_price = max(record.offer_ids.mapped('price')) if record.offer_ids else 0.0 
 
     @api.onchange('offer_ids')
     def _onchange_property_status(self):
@@ -100,4 +106,4 @@ class Estate(models.Model):
     def _check_selling_price(self):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
-                    raise ValidationError(self.env._("The selling price must be atleast 90% of the expected price! You must reduce the expected price to accept the offer"))
+                raise ValidationError(self.env._("The selling price must be atleast 90% of the expected price! You must reduce the expected price to accept the offer"))

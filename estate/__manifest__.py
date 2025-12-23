@@ -9,6 +9,7 @@
 
     'depends': ['base', 'web'],
     'data': [
+        'views/estate_users_companies_view.xml',
         'views/estate_property_offer_view.xml',
         'views/estate_property_tag_views.xml',
         'views/estate_property_type_views.xml',
