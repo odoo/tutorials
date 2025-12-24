@@ -19,12 +19,16 @@
     'depends': ['base', 'web', 'mail', 'crm'],
 
     'data': [
+        'views/res_config_settings_view.xml',
         'views/views.xml',
     ],
     'assets': {
         'web.assets_backend': [
             'awesome_dashboard/static/src/**/*',
         ],
+        'awesome_dashboard.dashboard': [
+            'awesome_dashboard/static/src/dashboard/**/*'
+        ]
     },
     'license': 'AGPL-3'
 }

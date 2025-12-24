@@ -1,0 +1,3874 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es2019",
+    "checkJs": true,
+    "allowJs": true,
+    "noEmit": true,
+    "typeRoots": [
+      "../community/addons/web/tooling/types",
+      "../community/odoo/addons/web/tooling/types",
+      "../enterprise/web/tooling/types"
+    ],
+    "paths": {
+      "@account_qr_code_emv/*": [
+        "../community/addons/account_qr_code_emv/static/src/*"
+      ],
+      "@mail_bot_hr/*": [
+        "../community/addons/mail_bot_hr/static/src/*"
+      ],
+      "@website_customer/*": [
+        "../community/addons/website_customer/static/src/*"
+      ],
+      "@utm/*": [
+        "../community/addons/utm/static/src/*"
+      ],
+      "@l10n_rs_edi/*": [
+        "../community/addons/l10n_rs_edi/static/src/*"
+      ],
+      "@website_links/*": [
+        "../community/addons/website_links/static/src/*"
+      ],
+      "@account_peppol/*": [
+        "../community/addons/account_peppol/static/src/*"
+      ],
+      "@test_mail_full/*": [
+        "../community/addons/test_mail_full/static/src/*"
+      ],
+      "@l10n_cy/*": [
+        "../community/addons/l10n_cy/static/src/*"
+      ],
+      "@l10n_ch_pos/*": [
+        "../community/addons/l10n_ch_pos/static/src/*"
+      ],
+      "@product_images/*": [
+        "../community/addons/product_images/static/src/*"
+      ],
+      "@project_stock/*": [
+        "../community/addons/project_stock/static/src/*"
+      ],
+      "@sale_purchase_stock/*": [
+        "../community/addons/sale_purchase_stock/static/src/*"
+      ],
+      "@l10n_lu/*": [
+        "../community/addons/l10n_lu/static/src/*"
+      ],
+      "@l10n_lt/*": [
+        "../community/addons/l10n_lt/static/src/*"
+      ],
+      "@payment_authorize/*": [
+        "../community/addons/payment_authorize/static/src/*"
+      ],
+      "@website_sale_loyalty/*": [
+        "../community/addons/website_sale_loyalty/static/src/*"
+      ],
+      "@test_mail_sms/*": [
+        "../community/addons/test_mail_sms/static/src/*"
+      ],
+      "@l10n_mt_pos/*": [
+        "../community/addons/l10n_mt_pos/static/src/*"
+      ],
+      "@auth_totp_mail_enforce/*": [
+        "../community/addons/auth_totp_mail_enforce/static/src/*"
+      ],
+      "@repair/*": [
+        "../community/addons/repair/static/src/*"
+      ],
+      "@mrp_subcontracting_purchase/*": [
+        "../community/addons/mrp_subcontracting_purchase/static/src/*"
+      ],
+      "@crm/*": [
+        "../community/addons/crm/static/src/*"
+      ],
+      "@l10n_eu_oss/*": [
+        "../community/addons/l10n_eu_oss/static/src/*"
+      ],
+      "@website_event_crm/*": [
+        "../community/addons/website_event_crm/static/src/*"
+      ],
+      "@payment_mollie/*": [
+        "../community/addons/payment_mollie/static/src/*"
+      ],
+      "@l10n_gt/*": [
+        "../community/addons/l10n_gt/static/src/*"
+      ],
+      "@analytic/*": [
+        "../community/addons/analytic/static/src/*"
+      ],
+      "@sale_timesheet_margin/*": [
+        "../community/addons/sale_timesheet_margin/static/src/*"
+      ],
+      "@website_sale_stock_wishlist/*": [
+        "../community/addons/website_sale_stock_wishlist/static/src/*"
+      ],
+      "@website_partner/*": [
+        "../community/addons/website_partner/static/src/*"
+      ],
+      "@transifex/*": [
+        "../community/addons/transifex/static/src/*"
+      ],
+      "@purchase_edi_ubl_bis3/*": [
+        "../community/addons/purchase_edi_ubl_bis3/static/src/*"
+      ],
+      "@snailmail/*": [
+        "../community/addons/snailmail/static/src/*"
+      ],
+      "@spreadsheet_dashboard_website_sale/*": [
+        "../community/addons/spreadsheet_dashboard_website_sale/static/src/*"
+      ],
+      "@l10n_vn/*": [
+        "../community/addons/l10n_vn/static/src/*"
+      ],
+      "@account_update_tax_tags/*": [
+        "../community/addons/account_update_tax_tags/static/src/*"
+      ],
+      "@l10n_hn/*": [
+        "../community/addons/l10n_hn/static/src/*"
+      ],
+      "@account_check_printing/*": [
+        "../community/addons/account_check_printing/static/src/*"
+      ],
+      "@link_tracker/*": [
+        "../community/addons/link_tracker/static/src/*"
+      ],
+      "@l10n_es_edi_facturae/*": [
+        "../community/addons/l10n_es_edi_facturae/static/src/*"
+      ],
+      "@web/*": [
+        "../community/addons/web/static/src/*"
+      ],
+      "@l10n_tr_nilvera_einvoice/*": [
+        "../community/addons/l10n_tr_nilvera_einvoice/static/src/*"
+      ],
+      "@l10n_cm/*": [
+        "../community/addons/l10n_cm/static/src/*"
+      ],
+      "@l10n_hr_kuna/*": [
+        "../community/addons/l10n_hr_kuna/static/src/*"
+      ],
+      "@l10n_in_stock/*": [
+        "../community/addons/l10n_in_stock/static/src/*"
+      ],
+      "@base_address_extended/*": [
+        "../community/addons/base_address_extended/static/src/*"
+      ],
+      "@portal_rating/*": [
+        "../community/addons/portal_rating/static/src/*"
+      ],
+      "@website_sale_comparison_wishlist/*": [
+        "../community/addons/website_sale_comparison_wishlist/static/src/*"
+      ],
+      "@pos_event_sale/*": [
+        "../community/addons/pos_event_sale/static/src/*"
+      ],
+      "@account_qr_code_sepa/*": [
+        "../community/addons/account_qr_code_sepa/static/src/*"
+      ],
+      "@stock_dropshipping/*": [
+        "../community/addons/stock_dropshipping/static/src/*"
+      ],
+      "@test_html_field_history/*": [
+        "../community/addons/test_html_field_history/static/src/*"
+      ],
+      "@payment_asiapay/*": [
+        "../community/addons/payment_asiapay/static/src/*"
+      ],
+      "@pos_sale/*": [
+        "../community/addons/pos_sale/static/src/*"
+      ],
+      "@website_profile/*": [
+        "../community/addons/website_profile/static/src/*"
+      ],
+      "@l10n_se/*": [
+        "../community/addons/l10n_se/static/src/*"
+      ],
+      "@web_tour/*": [
+        "../community/addons/web_tour/static/src/*"
+      ],
+      "@hr_hourly_cost/*": [
+        "../community/addons/hr_hourly_cost/static/src/*"
+      ],
+      "@hr_recruitment_sms/*": [
+        "../community/addons/hr_recruitment_sms/static/src/*"
+      ],
+      "@website_mass_mailing_sms/*": [
+        "../community/addons/website_mass_mailing_sms/static/src/*"
+      ],
+      "@google_calendar/*": [
+        "../community/addons/google_calendar/static/src/*"
+      ],
+      "@gamification/*": [
+        "../community/addons/gamification/static/src/*"
+      ],
+      "@payment_custom/*": [
+        "../community/addons/payment_custom/static/src/*"
+      ],
+      "@base_import_module/*": [
+        "../community/addons/base_import_module/static/src/*"
+      ],
+      "@website_sale_autocomplete/*": [
+        "../community/addons/website_sale_autocomplete/static/src/*"
+      ],
+      "@l10n_in_purchase/*": [
+        "../community/addons/l10n_in_purchase/static/src/*"
+      ],
+      "@l10n_at/*": [
+        "../community/addons/l10n_at/static/src/*"
+      ],
+      "@project_purchase/*": [
+        "../community/addons/project_purchase/static/src/*"
+      ],
+      "@l10n_au/*": [
+        "../community/addons/l10n_au/static/src/*"
+      ],
+      "@test_website/*": [
+        "../community/addons/test_website/static/src/*"
+      ],
+      "@l10n_tw/*": [
+        "../community/addons/l10n_tw/static/src/*"
+      ],
+      "@spreadsheet_dashboard_event_sale/*": [
+        "../community/addons/spreadsheet_dashboard_event_sale/static/src/*"
+      ],
+      "@mail_group/*": [
+        "../community/addons/mail_group/static/src/*"
+      ],
+      "@pos_restaurant_stripe/*": [
+        "../community/addons/pos_restaurant_stripe/static/src/*"
+      ],
+      "@cloud_storage_google/*": [
+        "../community/addons/cloud_storage_google/static/src/*"
+      ],
+      "@l10n_bf/*": [
+        "../community/addons/l10n_bf/static/src/*"
+      ],
+      "@website_google_map/*": [
+        "../community/addons/website_google_map/static/src/*"
+      ],
+      "@project_mrp_sale/*": [
+        "../community/addons/project_mrp_sale/static/src/*"
+      ],
+      "@l10n_ar_website_sale/*": [
+        "../community/addons/l10n_ar_website_sale/static/src/*"
+      ],
+      "@l10n_sa/*": [
+        "../community/addons/l10n_sa/static/src/*"
+      ],
+      "@l10n_ar_withholding/*": [
+        "../community/addons/l10n_ar_withholding/static/src/*"
+      ],
+      "@product_margin/*": [
+        "../community/addons/product_margin/static/src/*"
+      ],
+      "@mass_mailing_slides/*": [
+        "../community/addons/mass_mailing_slides/static/src/*"
+      ],
+      "@payment_demo/*": [
+        "../community/addons/payment_demo/static/src/*"
+      ],
+      "@l10n_eg_edi_eta/*": [
+        "../community/addons/l10n_eg_edi_eta/static/src/*"
+      ],
+      "@partner_autocomplete/*": [
+        "../community/addons/partner_autocomplete/static/src/*"
+      ],
+      "@l10n_cn_city/*": [
+        "../community/addons/l10n_cn_city/static/src/*"
+      ],
+      "@stock/*": [
+        "../community/addons/stock/static/src/*"
+      ],
+      "@l10n_pe/*": [
+        "../community/addons/l10n_pe/static/src/*"
+      ],
+      "@sale_project_stock_account/*": [
+        "../community/addons/sale_project_stock_account/static/src/*"
+      ],
+      "@gamification_sale_crm/*": [
+        "../community/addons/gamification_sale_crm/static/src/*"
+      ],
+      "@resource/*": [
+        "../community/addons/resource/static/src/*"
+      ],
+      "@spreadsheet_dashboard_sale/*": [
+        "../community/addons/spreadsheet_dashboard_sale/static/src/*"
+      ],
+      "@l10n_sg_ubl_pint/*": [
+        "../community/addons/l10n_sg_ubl_pint/static/src/*"
+      ],
+      "@sale_margin/*": [
+        "../community/addons/sale_margin/static/src/*"
+      ],
+      "@hr_skills/*": [
+        "../community/addons/hr_skills/static/src/*"
+      ],
+      "@bus/*": [
+        "../community/addons/bus/static/src/*"
+      ],
+      "@sale_crm/*": [
+        "../community/addons/sale_crm/static/src/*"
+      ],
+      "@test_base_automation/*": [
+        "../community/addons/test_base_automation/static/src/*"
+      ],
+      "@l10n_dz/*": [
+        "../community/addons/l10n_dz/static/src/*"
+      ],
+      "@pos_hr/*": [
+        "../community/addons/pos_hr/static/src/*"
+      ],
+      "@l10n_pa/*": [
+        "../community/addons/l10n_pa/static/src/*"
+      ],
+      "@l10n_mc/*": [
+        "../community/addons/l10n_mc/static/src/*"
+      ],
+      "@base_automation/*": [
+        "../community/addons/base_automation/static/src/*"
+      ],
+      "@web_unsplash/*": [
+        "../community/addons/web_unsplash/static/src/*"
+      ],
+      "@test_discuss_full/*": [
+        "../community/addons/test_discuss_full/static/src/*"
+      ],
+      "@sales_team/*": [
+        "../community/addons/sales_team/static/src/*"
+      ],
+      "@l10n_pk/*": [
+        "../community/addons/l10n_pk/static/src/*"
+      ],
+      "@website_event/*": [
+        "../community/addons/website_event/static/src/*"
+      ],
+      "@pos_pine_labs/*": [
+        "../community/addons/pos_pine_labs/static/src/*"
+      ],
+      "@l10n_nl/*": [
+        "../community/addons/l10n_nl/static/src/*"
+      ],
+      "@website_crm_iap_reveal/*": [
+        "../community/addons/website_crm_iap_reveal/static/src/*"
+      ],
+      "@l10n_din5008_stock/*": [
+        "../community/addons/l10n_din5008_stock/static/src/*"
+      ],
+      "@l10n_in_gstin_status/*": [
+        "../community/addons/l10n_in_gstin_status/static/src/*"
+      ],
+      "@rating/*": [
+        "../community/addons/rating/static/src/*"
+      ],
+      "@l10n_kw/*": [
+        "../community/addons/l10n_kw/static/src/*"
+      ],
+      "@l10n_gq/*": [
+        "../community/addons/l10n_gq/static/src/*"
+      ],
+      "@l10n_in_pos/*": [
+        "../community/addons/l10n_in_pos/static/src/*"
+      ],
+      "@website_event_booth_sale_exhibitor/*": [
+        "../community/addons/website_event_booth_sale_exhibitor/static/src/*"
+      ],
+      "@l10n_id_pos/*": [
+        "../community/addons/l10n_id_pos/static/src/*"
+      ],
+      "@http_routing/*": [
+        "../community/addons/http_routing/static/src/*"
+      ],
+      "@spreadsheet_dashboard_pos_restaurant/*": [
+        "../community/addons/spreadsheet_dashboard_pos_restaurant/static/src/*"
+      ],
+      "@spreadsheet_dashboard_website_sale_slides/*": [
+        "../community/addons/spreadsheet_dashboard_website_sale_slides/static/src/*"
+      ],
+      "@l10n_es_edi_tbai/*": [
+        "../community/addons/l10n_es_edi_tbai/static/src/*"
+      ],
+      "@l10n_sa_edi/*": [
+        "../community/addons/l10n_sa_edi/static/src/*"
+      ],
+      "@l10n_ve/*": [
+        "../community/addons/l10n_ve/static/src/*"
+      ],
+      "@website_sale_mondialrelay/*": [
+        "../community/addons/website_sale_mondialrelay/static/src/*"
+      ],
+      "@mass_mailing_sms/*": [
+        "../community/addons/mass_mailing_sms/static/src/*"
+      ],
+      "@payment_worldline/*": [
+        "../community/addons/payment_worldline/static/src/*"
+      ],
+      "@mass_mailing_sale/*": [
+        "../community/addons/mass_mailing_sale/static/src/*"
+      ],
+      "@purchase_requisition_sale/*": [
+        "../community/addons/purchase_requisition_sale/static/src/*"
+      ],
+      "@l10n_latam_invoice_document/*": [
+        "../community/addons/l10n_latam_invoice_document/static/src/*"
+      ],
+      "@sale_mrp_margin/*": [
+        "../community/addons/sale_mrp_margin/static/src/*"
+      ],
+      "@mail/*": [
+        "../community/addons/mail/static/src/*"
+      ],
+      "@auth_password_policy/*": [
+        "../community/addons/auth_password_policy/static/src/*"
+      ],
+      "@pos_epson_printer/*": [
+        "../community/addons/pos_epson_printer/static/src/*"
+      ],
+      "@l10n_lv/*": [
+        "../community/addons/l10n_lv/static/src/*"
+      ],
+      "@sale_project/*": [
+        "../community/addons/sale_project/static/src/*"
+      ],
+      "@hr_skills_survey/*": [
+        "../community/addons/hr_skills_survey/static/src/*"
+      ],
+      "@sale_purchase_project/*": [
+        "../community/addons/sale_purchase_project/static/src/*"
+      ],
+      "@crm_livechat/*": [
+        "../community/addons/crm_livechat/static/src/*"
+      ],
+      "@website_forum/*": [
+        "../community/addons/website_forum/static/src/*"
+      ],
+      "@hr_fleet/*": [
+        "../community/addons/hr_fleet/static/src/*"
+      ],
+      "@sale_async_emails/*": [
+        "../community/addons/sale_async_emails/static/src/*"
+      ],
+      "@l10n_be/*": [
+        "../community/addons/l10n_be/static/src/*"
+      ],
+      "@spreadsheet_dashboard_sale_timesheet/*": [
+        "../community/addons/spreadsheet_dashboard_sale_timesheet/static/src/*"
+      ],
+      "@l10n_ua/*": [
+        "../community/addons/l10n_ua/static/src/*"
+      ],
+      "@l10n_es_edi_tbai_pos/*": [
+        "../community/addons/l10n_es_edi_tbai_pos/static/src/*"
+      ],
+      "@l10n_din5008_purchase/*": [
+        "../community/addons/l10n_din5008_purchase/static/src/*"
+      ],
+      "@product_matrix/*": [
+        "../community/addons/product_matrix/static/src/*"
+      ],
+      "@hr_work_entry/*": [
+        "../community/addons/hr_work_entry/static/src/*"
+      ],
+      "@sale_timesheet/*": [
+        "../community/addons/sale_timesheet/static/src/*"
+      ],
+      "@payment_stripe/*": [
+        "../community/addons/payment_stripe/static/src/*"
+      ],
+      "@test_mass_mailing/*": [
+        "../community/addons/test_mass_mailing/static/src/*"
+      ],
+      "@hr_expense/*": [
+        "../community/addons/hr_expense/static/src/*"
+      ],
+      "@attachment_indexation/*": [
+        "../community/addons/attachment_indexation/static/src/*"
+      ],
+      "@payment_paypal/*": [
+        "../community/addons/payment_paypal/static/src/*"
+      ],
+      "@sale_loyalty_delivery/*": [
+        "../community/addons/sale_loyalty_delivery/static/src/*"
+      ],
+      "@purchase_requisition/*": [
+        "../community/addons/purchase_requisition/static/src/*"
+      ],
+      "@auth_password_policy_portal/*": [
+        "../community/addons/auth_password_policy_portal/static/src/*"
+      ],
+      "@barcodes/*": [
+        "../community/addons/barcodes/static/src/*"
+      ],
+      "@website_sale/*": [
+        "../community/addons/website_sale/static/src/*"
+      ],
+      "@stock_sms/*": [
+        "../community/addons/stock_sms/static/src/*"
+      ],
+      "@project/*": [
+        "../community/addons/project/static/src/*"
+      ],
+      "@test_crm_full/*": [
+        "../community/addons/test_crm_full/static/src/*"
+      ],
+      "@survey/*": [
+        "../community/addons/survey/static/src/*"
+      ],
+      "@l10n_din5008_repair/*": [
+        "../community/addons/l10n_din5008_repair/static/src/*"
+      ],
+      "@l10n_fi_sale/*": [
+        "../community/addons/l10n_fi_sale/static/src/*"
+      ],
+      "@l10n_in_edi_ewaybill/*": [
+        "../community/addons/l10n_in_edi_ewaybill/static/src/*"
+      ],
+      "@l10n_in_edi/*": [
+        "../community/addons/l10n_in_edi/static/src/*"
+      ],
+      "@l10n_ph/*": [
+        "../community/addons/l10n_ph/static/src/*"
+      ],
+      "@l10n_br_website_sale/*": [
+        "../community/addons/l10n_br_website_sale/static/src/*"
+      ],
+      "@marketing_card/*": [
+        "../community/addons/marketing_card/static/src/*"
+      ],
+      "@hr_work_entry_contract/*": [
+        "../community/addons/hr_work_entry_contract/static/src/*"
+      ],
+      "@mrp_subcontracting_dropshipping/*": [
+        "../community/addons/mrp_subcontracting_dropshipping/static/src/*"
+      ],
+      "@l10n_ke_edi_tremol/*": [
+        "../community/addons/l10n_ke_edi_tremol/static/src/*"
+      ],
+      "@iap_mail/*": [
+        "../community/addons/iap_mail/static/src/*"
+      ],
+      "@website_sale_collect/*": [
+        "../community/addons/website_sale_collect/static/src/*"
+      ],
+      "@snailmail_account/*": [
+        "../community/addons/snailmail_account/static/src/*"
+      ],
+      "@spreadsheet_dashboard/*": [
+        "../community/addons/spreadsheet_dashboard/static/src/*"
+      ],
+      "@l10n_syscohada/*": [
+        "../community/addons/l10n_syscohada/static/src/*"
+      ],
+      "@l10n_pl/*": [
+        "../community/addons/l10n_pl/static/src/*"
+      ],
+      "@test_resource/*": [
+        "../community/addons/test_resource/static/src/*"
+      ],
+      "@sale_service/*": [
+        "../community/addons/sale_service/static/src/*"
+      ],
+      "@project_mrp_account/*": [
+        "../community/addons/project_mrp_account/static/src/*"
+      ],
+      "@pos_event/*": [
+        "../community/addons/pos_event/static/src/*"
+      ],
+      "@account_edi_ubl_cii/*": [
+        "../community/addons/account_edi_ubl_cii/static/src/*"
+      ],
+      "@contacts/*": [
+        "../community/addons/contacts/static/src/*"
+      ],
+      "@l10n_be_pos_restaurant/*": [
+        "../community/addons/l10n_be_pos_restaurant/static/src/*"
+      ],
+      "@l10n_sk/*": [
+        "../community/addons/l10n_sk/static/src/*"
+      ],
+      "@calendar_sms/*": [
+        "../community/addons/calendar_sms/static/src/*"
+      ],
+      "@website_event_sale/*": [
+        "../community/addons/website_event_sale/static/src/*"
+      ],
+      "@spreadsheet_account/*": [
+        "../community/addons/spreadsheet_account/static/src/*"
+      ],
+      "@l10n_ec_stock/*": [
+        "../community/addons/l10n_ec_stock/static/src/*"
+      ],
+      "@hr_timesheet/*": [
+        "../community/addons/hr_timesheet/static/src/*"
+      ],
+      "@account_edi/*": [
+        "../community/addons/account_edi/static/src/*"
+      ],
+      "@l10n_ro_edi_stock/*": [
+        "../community/addons/l10n_ro_edi_stock/static/src/*"
+      ],
+      "@project_mail_plugin/*": [
+        "../community/addons/project_mail_plugin/static/src/*"
+      ],
+      "@google_recaptcha/*": [
+        "../community/addons/google_recaptcha/static/src/*"
+      ],
+      "@project_timesheet_holidays/*": [
+        "../community/addons/project_timesheet_holidays/static/src/*"
+      ],
+      "@l10n_hr/*": [
+        "../community/addons/l10n_hr/static/src/*"
+      ],
+      "@l10n_ch/*": [
+        "../community/addons/l10n_ch/static/src/*"
+      ],
+      "@test_spreadsheet/*": [
+        "../community/addons/test_spreadsheet/static/src/*"
+      ],
+      "@l10n_ke/*": [
+        "../community/addons/l10n_ke/static/src/*"
+      ],
+      "@l10n_hk/*": [
+        "../community/addons/l10n_hk/static/src/*"
+      ],
+      "@resource_mail/*": [
+        "../community/addons/resource_mail/static/src/*"
+      ],
+      "@website_mass_mailing/*": [
+        "../community/addons/website_mass_mailing/static/src/*"
+      ],
+      "@account_payment/*": [
+        "../community/addons/account_payment/static/src/*"
+      ],
+      "@l10n_es_pos/*": [
+        "../community/addons/l10n_es_pos/static/src/*"
+      ],
+      "@spreadsheet_dashboard_account/*": [
+        "../community/addons/spreadsheet_dashboard_account/static/src/*"
+      ],
+      "@l10n_iq/*": [
+        "../community/addons/l10n_iq/static/src/*"
+      ],
+      "@website_crm_sms/*": [
+        "../community/addons/website_crm_sms/static/src/*"
+      ],
+      "@purchase_requisition_stock/*": [
+        "../community/addons/purchase_requisition_stock/static/src/*"
+      ],
+      "@l10n_gn/*": [
+        "../community/addons/l10n_gn/static/src/*"
+      ],
+      "@l10n_qa/*": [
+        "../community/addons/l10n_qa/static/src/*"
+      ],
+      "@pos_online_payment_self_order/*": [
+        "../community/addons/pos_online_payment_self_order/static/src/*"
+      ],
+      "@pos_mercado_pago/*": [
+        "../community/addons/pos_mercado_pago/static/src/*"
+      ],
+      "@test_hr_contract_calendar/*": [
+        "../community/addons/test_hr_contract_calendar/static/src/*"
+      ],
+      "@event/*": [
+        "../community/addons/event/static/src/*"
+      ],
+      "@pos_sale_loyalty/*": [
+        "../community/addons/pos_sale_loyalty/static/src/*"
+      ],
+      "@hr_calendar/*": [
+        "../community/addons/hr_calendar/static/src/*"
+      ],
+      "@l10n_jo/*": [
+        "../community/addons/l10n_jo/static/src/*"
+      ],
+      "@l10n_kr/*": [
+        "../community/addons/l10n_kr/static/src/*"
+      ],
+      "@digest/*": [
+        "../community/addons/digest/static/src/*"
+      ],
+      "@base_vat/*": [
+        "../community/addons/base_vat/static/src/*"
+      ],
+      "@crm_iap_enrich/*": [
+        "../community/addons/crm_iap_enrich/static/src/*"
+      ],
+      "@l10n_ca/*": [
+        "../community/addons/l10n_ca/static/src/*"
+      ],
+      "@website_crm_livechat/*": [
+        "../community/addons/website_crm_livechat/static/src/*"
+      ],
+      "@l10n_id_efaktur_coretax/*": [
+        "../community/addons/l10n_id_efaktur_coretax/static/src/*"
+      ],
+      "@website_cf_turnstile/*": [
+        "../community/addons/website_cf_turnstile/static/src/*"
+      ],
+      "@onboarding/*": [
+        "../community/addons/onboarding/static/src/*"
+      ],
+      "@l10n_tr/*": [
+        "../community/addons/l10n_tr/static/src/*"
+      ],
+      "@pos_adyen/*": [
+        "../community/addons/pos_adyen/static/src/*"
+      ],
+      "@l10n_zm_account/*": [
+        "../community/addons/l10n_zm_account/static/src/*"
+      ],
+      "@website_slides/*": [
+        "../community/addons/website_slides/static/src/*"
+      ],
+      "@l10n_test_pos_qr_payment/*": [
+        "../community/addons/l10n_test_pos_qr_payment/static/src/*"
+      ],
+      "@mrp_repair/*": [
+        "../community/addons/mrp_repair/static/src/*"
+      ],
+      "@hr_org_chart/*": [
+        "../community/addons/hr_org_chart/static/src/*"
+      ],
+      "@payment_mercado_pago/*": [
+        "../community/addons/payment_mercado_pago/static/src/*"
+      ],
+      "@l10n_ml/*": [
+        "../community/addons/l10n_ml/static/src/*"
+      ],
+      "@mass_mailing_sale_sms/*": [
+        "../community/addons/mass_mailing_sale_sms/static/src/*"
+      ],
+      "@l10n_id/*": [
+        "../community/addons/l10n_id/static/src/*"
+      ],
+      "@l10n_ga/*": [
+        "../community/addons/l10n_ga/static/src/*"
+      ],
+      "@mrp_subcontracting_landed_costs/*": [
+        "../community/addons/mrp_subcontracting_landed_costs/static/src/*"
+      ],
+      "@payment_razorpay/*": [
+        "../community/addons/payment_razorpay/static/src/*"
+      ],
+      "@l10n_ae/*": [
+        "../community/addons/l10n_ae/static/src/*"
+      ],
+      "@website_event_booth_exhibitor/*": [
+        "../community/addons/website_event_booth_exhibitor/static/src/*"
+      ],
+      "@l10n_in_hr_holidays/*": [
+        "../community/addons/l10n_in_hr_holidays/static/src/*"
+      ],
+      "@test_mail/*": [
+        "../community/addons/test_mail/static/src/*"
+      ],
+      "@l10n_do/*": [
+        "../community/addons/l10n_do/static/src/*"
+      ],
+      "@website_membership/*": [
+        "../community/addons/website_membership/static/src/*"
+      ],
+      "@l10n_fr/*": [
+        "../community/addons/l10n_fr/static/src/*"
+      ],
+      "@project_todo/*": [
+        "../community/addons/project_todo/static/src/*"
+      ],
+      "@l10n_ec_website_sale/*": [
+        "../community/addons/l10n_ec_website_sale/static/src/*"
+      ],
+      "@hr_homeworking/*": [
+        "../community/addons/hr_homeworking/static/src/*"
+      ],
+      "@l10n_mx_hr/*": [
+        "../community/addons/l10n_mx_hr/static/src/*"
+      ],
+      "@website_crm/*": [
+        "../community/addons/website_crm/static/src/*"
+      ],
+      "@project_mrp/*": [
+        "../community/addons/project_mrp/static/src/*"
+      ],
+      "@account_fleet/*": [
+        "../community/addons/account_fleet/static/src/*"
+      ],
+      "@l10n_mt/*": [
+        "../community/addons/l10n_mt/static/src/*"
+      ],
+      "@test_website_slides_full/*": [
+        "../community/addons/test_website_slides_full/static/src/*"
+      ],
+      "@l10n_bj/*": [
+        "../community/addons/l10n_bj/static/src/*"
+      ],
+      "@test_website_modules/*": [
+        "../community/addons/test_website_modules/static/src/*"
+      ],
+      "@l10n_sg/*": [
+        "../community/addons/l10n_sg/static/src/*"
+      ],
+      "@l10n_pe_pos/*": [
+        "../community/addons/l10n_pe_pos/static/src/*"
+      ],
+      "@base_iban/*": [
+        "../community/addons/base_iban/static/src/*"
+      ],
+      "@payment_xendit/*": [
+        "../community/addons/payment_xendit/static/src/*"
+      ],
+      "@l10n_in_withholding/*": [
+        "../community/addons/l10n_in_withholding/static/src/*"
+      ],
+      "@barcodes_gs1_nomenclature/*": [
+        "../community/addons/barcodes_gs1_nomenclature/static/src/*"
+      ],
+      "@auth_totp/*": [
+        "../community/addons/auth_totp/static/src/*"
+      ],
+      "@social_media/*": [
+        "../community/addons/social_media/static/src/*"
+      ],
+      "@l10n_it_edi_withholding/*": [
+        "../community/addons/l10n_it_edi_withholding/static/src/*"
+      ],
+      "@delivery_stock_picking_batch/*": [
+        "../community/addons/delivery_stock_picking_batch/static/src/*"
+      ],
+      "@portal/*": [
+        "../community/addons/portal/static/src/*"
+      ],
+      "@l10n_cg/*": [
+        "../community/addons/l10n_cg/static/src/*"
+      ],
+      "@l10n_uy/*": [
+        "../community/addons/l10n_uy/static/src/*"
+      ],
+      "@project_stock_landed_costs/*": [
+        "../community/addons/project_stock_landed_costs/static/src/*"
+      ],
+      "@cloud_storage_azure/*": [
+        "../community/addons/cloud_storage_azure/static/src/*"
+      ],
+      "@hr_homeworking_calendar/*": [
+        "../community/addons/hr_homeworking_calendar/static/src/*"
+      ],
+      "@uom/*": [
+        "../community/addons/uom/static/src/*"
+      ],
+      "@certificate/*": [
+        "../community/addons/certificate/static/src/*"
+      ],
+      "@pos_sale_margin/*": [
+        "../community/addons/pos_sale_margin/static/src/*"
+      ],
+      "@sale_edi_ubl/*": [
+        "../community/addons/sale_edi_ubl/static/src/*"
+      ],
+      "@l10n_latam_check/*": [
+        "../community/addons/l10n_latam_check/static/src/*"
+      ],
+      "@l10n_my_edi/*": [
+        "../community/addons/l10n_my_edi/static/src/*"
+      ],
+      "@sale_sms/*": [
+        "../community/addons/sale_sms/static/src/*"
+      ],
+      "@pos_self_order_stripe/*": [
+        "../community/addons/pos_self_order_stripe/static/src/*"
+      ],
+      "@payment_buckaroo/*": [
+        "../community/addons/payment_buckaroo/static/src/*"
+      ],
+      "@crm_iap_mine/*": [
+        "../community/addons/crm_iap_mine/static/src/*"
+      ],
+      "@web_hierarchy/*": [
+        "../community/addons/web_hierarchy/static/src/*"
+      ],
+      "@iap_crm/*": [
+        "../community/addons/iap_crm/static/src/*"
+      ],
+      "@lunch/*": [
+        "../community/addons/lunch/static/src/*"
+      ],
+      "@pos_stripe/*": [
+        "../community/addons/pos_stripe/static/src/*"
+      ],
+      "@html_editor/*": [
+        "../community/addons/html_editor/static/src/*"
+      ],
+      "@payment_razorpay_oauth/*": [
+        "../community/addons/payment_razorpay_oauth/static/src/*"
+      ],
+      "@pos_paytm/*": [
+        "../community/addons/pos_paytm/static/src/*"
+      ],
+      "@l10n_ci/*": [
+        "../community/addons/l10n_ci/static/src/*"
+      ],
+      "@l10n_es_edi_sii/*": [
+        "../community/addons/l10n_es_edi_sii/static/src/*"
+      ],
+      "@l10n_ie/*": [
+        "../community/addons/l10n_ie/static/src/*"
+      ],
+      "@l10n_tz_account/*": [
+        "../community/addons/l10n_tz_account/static/src/*"
+      ],
+      "@base_sparse_field/*": [
+        "../community/addons/base_sparse_field/static/src/*"
+      ],
+      "@l10n_pt/*": [
+        "../community/addons/l10n_pt/static/src/*"
+      ],
+      "@mass_mailing_crm_sms/*": [
+        "../community/addons/mass_mailing_crm_sms/static/src/*"
+      ],
+      "@website_sale_slides/*": [
+        "../community/addons/website_sale_slides/static/src/*"
+      ],
+      "@project_mrp_stock_landed_costs/*": [
+        "../community/addons/project_mrp_stock_landed_costs/static/src/*"
+      ],
+      "@hr/*": [
+        "../community/addons/hr/static/src/*"
+      ],
+      "@point_of_sale/*": [
+        "../community/addons/point_of_sale/static/src/*"
+      ],
+      "@website_event_jitsi/*": [
+        "../community/addons/website_event_jitsi/static/src/*"
+      ],
+      "@sale_management/*": [
+        "../community/addons/sale_management/static/src/*"
+      ],
+      "@l10n_latam_base/*": [
+        "../community/addons/l10n_latam_base/static/src/*"
+      ],
+      "@fleet/*": [
+        "../community/addons/fleet/static/src/*"
+      ],
+      "@l10n_it_edi_website_sale/*": [
+        "../community/addons/l10n_it_edi_website_sale/static/src/*"
+      ],
+      "@hr_holidays/*": [
+        "../community/addons/hr_holidays/static/src/*"
+      ],
+      "@spreadsheet_dashboard_hr_expense/*": [
+        "../community/addons/spreadsheet_dashboard_hr_expense/static/src/*"
+      ],
+      "@mass_mailing_event/*": [
+        "../community/addons/mass_mailing_event/static/src/*"
+      ],
+      "@mass_mailing_event_track/*": [
+        "../community/addons/mass_mailing_event_track/static/src/*"
+      ],
+      "@l10n_br/*": [
+        "../community/addons/l10n_br/static/src/*"
+      ],
+      "@theme_default/*": [
+        "../community/addons/theme_default/static/src/*"
+      ],
+      "@hw_escpos/*": [
+        "../community/addons/hw_escpos/static/src/*"
+      ],
+      "@website_blog/*": [
+        "../community/addons/website_blog/static/src/*"
+      ],
+      "@pos_self_order_razorpay/*": [
+        "../community/addons/pos_self_order_razorpay/static/src/*"
+      ],
+      "@l10n_rs/*": [
+        "../community/addons/l10n_rs/static/src/*"
+      ],
+      "@l10n_th/*": [
+        "../community/addons/l10n_th/static/src/*"
+      ],
+      "@google_account/*": [
+        "../community/addons/google_account/static/src/*"
+      ],
+      "@website_event_track/*": [
+        "../community/addons/website_event_track/static/src/*"
+      ],
+      "@l10n_ro_edi/*": [
+        "../community/addons/l10n_ro_edi/static/src/*"
+      ],
+      "@stock_picking_batch/*": [
+        "../community/addons/stock_picking_batch/static/src/*"
+      ],
+      "@l10n_br_sales/*": [
+        "../community/addons/l10n_br_sales/static/src/*"
+      ],
+      "@l10n_cd/*": [
+        "../community/addons/l10n_cd/static/src/*"
+      ],
+      "@l10n_it_edi_sale/*": [
+        "../community/addons/l10n_it_edi_sale/static/src/*"
+      ],
+      "@board/*": [
+        "../community/addons/board/static/src/*"
+      ],
+      "@l10n_sa_edi_pos/*": [
+        "../community/addons/l10n_sa_edi_pos/static/src/*"
+      ],
+      "@l10n_mz/*": [
+        "../community/addons/l10n_mz/static/src/*"
+      ],
+      "@mass_mailing_themes/*": [
+        "../community/addons/mass_mailing_themes/static/src/*"
+      ],
+      "@l10n_rw/*": [
+        "../community/addons/l10n_rw/static/src/*"
+      ],
+      "@sale_stock_margin/*": [
+        "../community/addons/sale_stock_margin/static/src/*"
+      ],
+      "@l10n_ee/*": [
+        "../community/addons/l10n_ee/static/src/*"
+      ],
+      "@spreadsheet_dashboard_stock_account/*": [
+        "../community/addons/spreadsheet_dashboard_stock_account/static/src/*"
+      ],
+      "@hw_drivers/*": [
+        "../community/addons/hw_drivers/static/src/*"
+      ],
+      "@l10n_co/*": [
+        "../community/addons/l10n_co/static/src/*"
+      ],
+      "@sale_product_matrix/*": [
+        "../community/addons/sale_product_matrix/static/src/*"
+      ],
+      "@l10n_ar/*": [
+        "../community/addons/l10n_ar/static/src/*"
+      ],
+      "@hr_gamification/*": [
+        "../community/addons/hr_gamification/static/src/*"
+      ],
+      "@pos_hr_restaurant/*": [
+        "../community/addons/pos_hr_restaurant/static/src/*"
+      ],
+      "@product/*": [
+        "../community/addons/product/static/src/*"
+      ],
+      "@test_sale_product_configurators/*": [
+        "../community/addons/test_sale_product_configurators/static/src/*"
+      ],
+      "@website_livechat/*": [
+        "../community/addons/website_livechat/static/src/*"
+      ],
+      "@purchase_repair/*": [
+        "../community/addons/purchase_repair/static/src/*"
+      ],
+      "@base_install_request/*": [
+        "../community/addons/base_install_request/static/src/*"
+      ],
+      "@phone_validation/*": [
+        "../community/addons/phone_validation/static/src/*"
+      ],
+      "@website_project/*": [
+        "../community/addons/website_project/static/src/*"
+      ],
+      "@sale_mrp/*": [
+        "../community/addons/sale_mrp/static/src/*"
+      ],
+      "@l10n_mx/*": [
+        "../community/addons/l10n_mx/static/src/*"
+      ],
+      "@account_tax_python/*": [
+        "../community/addons/account_tax_python/static/src/*"
+      ],
+      "@l10n_no/*": [
+        "../community/addons/l10n_no/static/src/*"
+      ],
+      "@l10n_gw/*": [
+        "../community/addons/l10n_gw/static/src/*"
+      ],
+      "@l10n_tg/*": [
+        "../community/addons/l10n_tg/static/src/*"
+      ],
+      "@mrp_subcontracting_account/*": [
+        "../community/addons/mrp_subcontracting_account/static/src/*"
+      ],
+      "@l10n_dk/*": [
+        "../community/addons/l10n_dk/static/src/*"
+      ],
+      "@l10n_gcc_invoice/*": [
+        "../community/addons/l10n_gcc_invoice/static/src/*"
+      ],
+      "@l10n_ar_pos/*": [
+        "../community/addons/l10n_ar_pos/static/src/*"
+      ],
+      "@website_slides_forum/*": [
+        "../community/addons/website_slides_forum/static/src/*"
+      ],
+      "@l10n_tr_nilvera/*": [
+        "../community/addons/l10n_tr_nilvera/static/src/*"
+      ],
+      "@pos_account_tax_python/*": [
+        "../community/addons/pos_account_tax_python/static/src/*"
+      ],
+      "@mass_mailing_crm/*": [
+        "../community/addons/mass_mailing_crm/static/src/*"
+      ],
+      "@pos_discount/*": [
+        "../community/addons/pos_discount/static/src/*"
+      ],
+      "@pos_restaurant_adyen/*": [
+        "../community/addons/pos_restaurant_adyen/static/src/*"
+      ],
+      "@website_event_booth/*": [
+        "../community/addons/website_event_booth/static/src/*"
+      ],
+      "@l10n_id_efaktur/*": [
+        "../community/addons/l10n_id_efaktur/static/src/*"
+      ],
+      "@spreadsheet_dashboard_im_livechat/*": [
+        "../community/addons/spreadsheet_dashboard_im_livechat/static/src/*"
+      ],
+      "@event_product/*": [
+        "../community/addons/event_product/static/src/*"
+      ],
+      "@event_crm_sale/*": [
+        "../community/addons/event_crm_sale/static/src/*"
+      ],
+      "@event_booth/*": [
+        "../community/addons/event_booth/static/src/*"
+      ],
+      "@sale_purchase/*": [
+        "../community/addons/sale_purchase/static/src/*"
+      ],
+      "@mrp_product_expiry/*": [
+        "../community/addons/mrp_product_expiry/static/src/*"
+      ],
+      "@l10n_fr_account/*": [
+        "../community/addons/l10n_fr_account/static/src/*"
+      ],
+      "@l10n_sa_pos/*": [
+        "../community/addons/l10n_sa_pos/static/src/*"
+      ],
+      "@data_recycle/*": [
+        "../community/addons/data_recycle/static/src/*"
+      ],
+      "@website_mail/*": [
+        "../community/addons/website_mail/static/src/*"
+      ],
+      "@sale_pdf_quote_builder/*": [
+        "../community/addons/sale_pdf_quote_builder/static/src/*"
+      ],
+      "@l10n_bg_ledger/*": [
+        "../community/addons/l10n_bg_ledger/static/src/*"
+      ],
+      "@pos_loyalty/*": [
+        "../community/addons/pos_loyalty/static/src/*"
+      ],
+      "@l10n_cr/*": [
+        "../community/addons/l10n_cr/static/src/*"
+      ],
+      "@product_email_template/*": [
+        "../community/addons/product_email_template/static/src/*"
+      ],
+      "@l10n_my/*": [
+        "../community/addons/l10n_my/static/src/*"
+      ],
+      "@event_crm/*": [
+        "../community/addons/event_crm/static/src/*"
+      ],
+      "@iap/*": [
+        "../community/addons/iap/static/src/*"
+      ],
+      "@project_account/*": [
+        "../community/addons/project_account/static/src/*"
+      ],
+      "@auth_totp_portal/*": [
+        "../community/addons/auth_totp_portal/static/src/*"
+      ],
+      "@pos_sms/*": [
+        "../community/addons/pos_sms/static/src/*"
+      ],
+      "@l10n_din5008_sale/*": [
+        "../community/addons/l10n_din5008_sale/static/src/*"
+      ],
+      "@base_import/*": [
+        "../community/addons/base_import/static/src/*"
+      ],
+      "@l10n_et/*": [
+        "../community/addons/l10n_et/static/src/*"
+      ],
+      "@hr_work_entry_holidays/*": [
+        "../community/addons/hr_work_entry_holidays/static/src/*"
+      ],
+      "@website_sale_mass_mailing/*": [
+        "../community/addons/website_sale_mass_mailing/static/src/*"
+      ],
+      "@project_stock_account/*": [
+        "../community/addons/project_stock_account/static/src/*"
+      ],
+      "@l10n_lb_account/*": [
+        "../community/addons/l10n_lb_account/static/src/*"
+      ],
+      "@website_crm_partner_assign/*": [
+        "../community/addons/website_crm_partner_assign/static/src/*"
+      ],
+      "@l10n_in_sale_stock/*": [
+        "../community/addons/l10n_in_sale_stock/static/src/*"
+      ],
+      "@l10n_mn/*": [
+        "../community/addons/l10n_mn/static/src/*"
+      ],
+      "@l10n_it_edi/*": [
+        "../community/addons/l10n_it_edi/static/src/*"
+      ],
+      "@payment_flutterwave/*": [
+        "../community/addons/payment_flutterwave/static/src/*"
+      ],
+      "@mrp_subcontracting_repair/*": [
+        "../community/addons/mrp_subcontracting_repair/static/src/*"
+      ],
+      "@website_sale_wishlist/*": [
+        "../community/addons/website_sale_wishlist/static/src/*"
+      ],
+      "@website_jitsi/*": [
+        "../community/addons/website_jitsi/static/src/*"
+      ],
+      "@l10n_mu_account/*": [
+        "../community/addons/l10n_mu_account/static/src/*"
+      ],
+      "@l10n_in/*": [
+        "../community/addons/l10n_in/static/src/*"
+      ],
+      "@l10n_de/*": [
+        "../community/addons/l10n_de/static/src/*"
+      ],
+      "@l10n_ma/*": [
+        "../community/addons/l10n_ma/static/src/*"
+      ],
+      "@pos_razorpay/*": [
+        "../community/addons/pos_razorpay/static/src/*"
+      ],
+      "@auth_password_policy_signup/*": [
+        "../community/addons/auth_password_policy_signup/static/src/*"
+      ],
+      "@product_expiry/*": [
+        "../community/addons/product_expiry/static/src/*"
+      ],
+      "@pos_restaurant/*": [
+        "../community/addons/pos_restaurant/static/src/*"
+      ],
+      "@l10n_cl/*": [
+        "../community/addons/l10n_cl/static/src/*"
+      ],
+      "@l10n_co_pos/*": [
+        "../community/addons/l10n_co_pos/static/src/*"
+      ],
+      "@website_sale_comparison/*": [
+        "../community/addons/website_sale_comparison/static/src/*"
+      ],
+      "@l10n_fr_hr_holidays/*": [
+        "../community/addons/l10n_fr_hr_holidays/static/src/*"
+      ],
+      "@auth_passkey/*": [
+        "../community/addons/auth_passkey/static/src/*"
+      ],
+      "@spreadsheet_dashboard_pos_hr/*": [
+        "../community/addons/spreadsheet_dashboard_pos_hr/static/src/*"
+      ],
+      "@l10n_it_edi_doi/*": [
+        "../community/addons/l10n_it_edi_doi/static/src/*"
+      ],
+      "@l10n_it_stock_ddt/*": [
+        "../community/addons/l10n_it_stock_ddt/static/src/*"
+      ],
+      "@base_setup/*": [
+        "../community/addons/base_setup/static/src/*"
+      ],
+      "@website_sms/*": [
+        "../community/addons/website_sms/static/src/*"
+      ],
+      "@privacy_lookup/*": [
+        "../community/addons/privacy_lookup/static/src/*"
+      ],
+      "@l10n_uk/*": [
+        "../community/addons/l10n_uk/static/src/*"
+      ],
+      "@website_event_meet/*": [
+        "../community/addons/website_event_meet/static/src/*"
+      ],
+      "@purchase_product_matrix/*": [
+        "../community/addons/purchase_product_matrix/static/src/*"
+      ],
+      "@auth_signup/*": [
+        "../community/addons/auth_signup/static/src/*"
+      ],
+      "@l10n_nz/*": [
+        "../community/addons/l10n_nz/static/src/*"
+      ],
+      "@website_mail_group/*": [
+        "../community/addons/website_mail_group/static/src/*"
+      ],
+      "@l10n_bh/*": [
+        "../community/addons/l10n_bh/static/src/*"
+      ],
+      "@l10n_gr_edi/*": [
+        "../community/addons/l10n_gr_edi/static/src/*"
+      ],
+      "@website_event_track_quiz/*": [
+        "../community/addons/website_event_track_quiz/static/src/*"
+      ],
+      "@auth_ldap/*": [
+        "../community/addons/auth_ldap/static/src/*"
+      ],
+      "@stock_fleet/*": [
+        "../community/addons/stock_fleet/static/src/*"
+      ],
+      "@pos_online_payment/*": [
+        "../community/addons/pos_online_payment/static/src/*"
+      ],
+      "@delivery_mondialrelay/*": [
+        "../community/addons/delivery_mondialrelay/static/src/*"
+      ],
+      "@hr_attendance/*": [
+        "../community/addons/hr_attendance/static/src/*"
+      ],
+      "@project_hr_expense/*": [
+        "../community/addons/project_hr_expense/static/src/*"
+      ],
+      "@l10n_anz_ubl_pint/*": [
+        "../community/addons/l10n_anz_ubl_pint/static/src/*"
+      ],
+      "@maintenance/*": [
+        "../community/addons/maintenance/static/src/*"
+      ],
+      "@l10n_es_modelo130/*": [
+        "../community/addons/l10n_es_modelo130/static/src/*"
+      ],
+      "@l10n_dk_oioubl/*": [
+        "../community/addons/l10n_dk_oioubl/static/src/*"
+      ],
+      "@hw_posbox_homepage/*": [
+        "../community/addons/hw_posbox_homepage/static/src/*"
+      ],
+      "@hr_contract/*": [
+        "../community/addons/hr_contract/static/src/*"
+      ],
+      "@event_sale/*": [
+        "../community/addons/event_sale/static/src/*"
+      ],
+      "@mass_mailing_event_sms/*": [
+        "../community/addons/mass_mailing_event_sms/static/src/*"
+      ],
+      "@l10n_jp_ubl_pint/*": [
+        "../community/addons/l10n_jp_ubl_pint/static/src/*"
+      ],
+      "@delivery/*": [
+        "../community/addons/delivery/static/src/*"
+      ],
+      "@microsoft_outlook/*": [
+        "../community/addons/microsoft_outlook/static/src/*"
+      ],
+      "@website_payment_authorize/*": [
+        "../community/addons/website_payment_authorize/static/src/*"
+      ],
+      "@website/*": [
+        "../community/addons/website/static/src/*"
+      ],
+      "@l10n_in_withholding_payment/*": [
+        "../community/addons/l10n_in_withholding_payment/static/src/*"
+      ],
+      "@l10n_si/*": [
+        "../community/addons/l10n_si/static/src/*"
+      ],
+      "@l10n_km/*": [
+        "../community/addons/l10n_km/static/src/*"
+      ],
+      "@pos_self_order/*": [
+        "../community/addons/pos_self_order/static/src/*"
+      ],
+      "@website_event_exhibitor/*": [
+        "../community/addons/website_event_exhibitor/static/src/*"
+      ],
+      "@stock_account/*": [
+        "../community/addons/stock_account/static/src/*"
+      ],
+      "@l10n_ne/*": [
+        "../community/addons/l10n_ne/static/src/*"
+      ],
+      "@website_hr_recruitment/*": [
+        "../community/addons/website_hr_recruitment/static/src/*"
+      ],
+      "@l10n_my_ubl_pint/*": [
+        "../community/addons/l10n_my_ubl_pint/static/src/*"
+      ],
+      "@l10n_gcc_pos/*": [
+        "../community/addons/l10n_gcc_pos/static/src/*"
+      ],
+      "@project_hr_skills/*": [
+        "../community/addons/project_hr_skills/static/src/*"
+      ],
+      "@l10n_pe_website_sale/*": [
+        "../community/addons/l10n_pe_website_sale/static/src/*"
+      ],
+      "@l10n_us/*": [
+        "../community/addons/l10n_us/static/src/*"
+      ],
+      "@purchase_mrp/*": [
+        "../community/addons/purchase_mrp/static/src/*"
+      ],
+      "@sale_loyalty/*": [
+        "../community/addons/sale_loyalty/static/src/*"
+      ],
+      "@cloud_storage/*": [
+        "../community/addons/cloud_storage/static/src/*"
+      ],
+      "@payment/*": [
+        "../community/addons/payment/static/src/*"
+      ],
+      "@test_event_full/*": [
+        "../community/addons/test_event_full/static/src/*"
+      ],
+      "@website_sale_gelato/*": [
+        "../community/addons/website_sale_gelato/static/src/*"
+      ],
+      "@l10n_ec/*": [
+        "../community/addons/l10n_ec/static/src/*"
+      ],
+      "@crm_sms/*": [
+        "../community/addons/crm_sms/static/src/*"
+      ],
+      "@l10n_cn/*": [
+        "../community/addons/l10n_cn/static/src/*"
+      ],
+      "@l10n_za/*": [
+        "../community/addons/l10n_za/static/src/*"
+      ],
+      "@membership/*": [
+        "../community/addons/membership/static/src/*"
+      ],
+      "@website_event_booth_sale/*": [
+        "../community/addons/website_event_booth_sale/static/src/*"
+      ],
+      "@l10n_it/*": [
+        "../community/addons/l10n_it/static/src/*"
+      ],
+      "@l10n_ug/*": [
+        "../community/addons/l10n_ug/static/src/*"
+      ],
+      "@account_test/*": [
+        "../community/addons/account_test/static/src/*"
+      ],
+      "@pos_viva_wallet/*": [
+        "../community/addons/pos_viva_wallet/static/src/*"
+      ],
+      "@pos_mrp/*": [
+        "../community/addons/pos_mrp/static/src/*"
+      ],
+      "@l10n_jo_edi/*": [
+        "../community/addons/l10n_jo_edi/static/src/*"
+      ],
+      "@l10n_kz/*": [
+        "../community/addons/l10n_kz/static/src/*"
+      ],
+      "@sale/*": [
+        "../community/addons/sale/static/src/*"
+      ],
+      "@l10n_fi/*": [
+        "../community/addons/l10n_fi/static/src/*"
+      ],
+      "@payment_aps/*": [
+        "../community/addons/payment_aps/static/src/*"
+      ],
+      "@crm_mail_plugin/*": [
+        "../community/addons/crm_mail_plugin/static/src/*"
+      ],
+      "@l10n_be_pos_sale/*": [
+        "../community/addons/l10n_be_pos_sale/static/src/*"
+      ],
+      "@sale_expense_margin/*": [
+        "../community/addons/sale_expense_margin/static/src/*"
+      ],
+      "@spreadsheet/*": [
+        "../community/addons/spreadsheet/static/src/*"
+      ],
+      "@hr_recruitment_skills/*": [
+        "../community/addons/hr_recruitment_skills/static/src/*"
+      ],
+      "@purchase_stock/*": [
+        "../community/addons/purchase_stock/static/src/*"
+      ],
+      "@event_booth_sale/*": [
+        "../community/addons/event_booth_sale/static/src/*"
+      ],
+      "@purchase/*": [
+        "../community/addons/purchase/static/src/*"
+      ],
+      "@l10n_in_sale/*": [
+        "../community/addons/l10n_in_sale/static/src/*"
+      ],
+      "@mrp_landed_costs/*": [
+        "../community/addons/mrp_landed_costs/static/src/*"
+      ],
+      "@l10n_vn_edi_viettel/*": [
+        "../community/addons/l10n_vn_edi_viettel/static/src/*"
+      ],
+      "@calendar/*": [
+        "../community/addons/calendar/static/src/*"
+      ],
+      "@l10n_sn/*": [
+        "../community/addons/l10n_sn/static/src/*"
+      ],
+      "@payment_adyen/*": [
+        "../community/addons/payment_adyen/static/src/*"
+      ],
+      "@hr_holidays_attendance/*": [
+        "../community/addons/hr_holidays_attendance/static/src/*"
+      ],
+      "@l10n_td/*": [
+        "../community/addons/l10n_td/static/src/*"
+      ],
+      "@sale_project_stock/*": [
+        "../community/addons/sale_project_stock/static/src/*"
+      ],
+      "@l10n_cf/*": [
+        "../community/addons/l10n_cf/static/src/*"
+      ],
+      "@pos_self_order_sale/*": [
+        "../community/addons/pos_self_order_sale/static/src/*"
+      ],
+      "@project_sale_expense/*": [
+        "../community/addons/project_sale_expense/static/src/*"
+      ],
+      "@l10n_account_edi_ubl_cii_tests/*": [
+        "../community/addons/l10n_account_edi_ubl_cii_tests/static/src/*"
+      ],
+      "@mail_bot/*": [
+        "../community/addons/mail_bot/static/src/*"
+      ],
+      "@hr_maintenance/*": [
+        "../community/addons/hr_maintenance/static/src/*"
+      ],
+      "@website_sale_stock/*": [
+        "../community/addons/website_sale_stock/static/src/*"
+      ],
+      "@l10n_bo/*": [
+        "../community/addons/l10n_bo/static/src/*"
+      ],
+      "@l10n_gcc_invoice_stock_account/*": [
+        "../community/addons/l10n_gcc_invoice_stock_account/static/src/*"
+      ],
+      "@mrp/*": [
+        "../community/addons/mrp/static/src/*"
+      ],
+      "@event_sms/*": [
+        "../community/addons/event_sms/static/src/*"
+      ],
+      "@l10n_hu_edi/*": [
+        "../community/addons/l10n_hu_edi/static/src/*"
+      ],
+      "@website_event_track_live_quiz/*": [
+        "../community/addons/website_event_track_live_quiz/static/src/*"
+      ],
+      "@l10n_fr_pos_cert/*": [
+        "../community/addons/l10n_fr_pos_cert/static/src/*"
+      ],
+      "@website_event_track_live/*": [
+        "../community/addons/website_event_track_live/static/src/*"
+      ],
+      "@l10n_gr/*": [
+        "../community/addons/l10n_gr/static/src/*"
+      ],
+      "@hr_recruitment/*": [
+        "../community/addons/hr_recruitment/static/src/*"
+      ],
+      "@website_payment/*": [
+        "../community/addons/website_payment/static/src/*"
+      ],
+      "@base_geolocalize/*": [
+        "../community/addons/base_geolocalize/static/src/*"
+      ],
+      "@auth_oauth/*": [
+        "../community/addons/auth_oauth/static/src/*"
+      ],
+      "@microsoft_account/*": [
+        "../community/addons/microsoft_account/static/src/*"
+      ],
+      "@hr_recruitment_survey/*": [
+        "../community/addons/hr_recruitment_survey/static/src/*"
+      ],
+      "@l10n_jp/*": [
+        "../community/addons/l10n_jp/static/src/*"
+      ],
+      "@im_livechat/*": [
+        "../community/addons/im_livechat/static/src/*"
+      ],
+      "@website_event_meet_quiz/*": [
+        "../community/addons/website_event_meet_quiz/static/src/*"
+      ],
+      "@stock_delivery/*": [
+        "../community/addons/stock_delivery/static/src/*"
+      ],
+      "@l10n_hu/*": [
+        "../community/addons/l10n_hu/static/src/*"
+      ],
+      "@account_edi_ubl_cii_tax_extension/*": [
+        "../community/addons/account_edi_ubl_cii_tax_extension/static/src/*"
+      ],
+      "@l10n_il/*": [
+        "../community/addons/l10n_il/static/src/*"
+      ],
+      "@test_sale_purchase_edi_ubl/*": [
+        "../community/addons/test_sale_purchase_edi_ubl/static/src/*"
+      ],
+      "@project_sms/*": [
+        "../community/addons/project_sms/static/src/*"
+      ],
+      "@l10n_fr_hr_work_entry_holidays/*": [
+        "../community/addons/l10n_fr_hr_work_entry_holidays/static/src/*"
+      ],
+      "@loyalty/*": [
+        "../community/addons/loyalty/static/src/*"
+      ],
+      "@l10n_tn/*": [
+        "../community/addons/l10n_tn/static/src/*"
+      ],
+      "@stock_landed_costs/*": [
+        "../community/addons/stock_landed_costs/static/src/*"
+      ],
+      "@l10n_us_account/*": [
+        "../community/addons/l10n_us_account/static/src/*"
+      ],
+      "@microsoft_calendar/*": [
+        "../community/addons/microsoft_calendar/static/src/*"
+      ],
+      "@l10n_ro/*": [
+        "../community/addons/l10n_ro/static/src/*"
+      ],
+      "@l10n_bg/*": [
+        "../community/addons/l10n_bg/static/src/*"
+      ],
+      "@auth_totp_mail/*": [
+        "../community/addons/auth_totp_mail/static/src/*"
+      ],
+      "@pos_six/*": [
+        "../community/addons/pos_six/static/src/*"
+      ],
+      "@mail_plugin/*": [
+        "../community/addons/mail_plugin/static/src/*"
+      ],
+      "@l10n_ng/*": [
+        "../community/addons/l10n_ng/static/src/*"
+      ],
+      "@hr_timesheet_attendance/*": [
+        "../community/addons/hr_timesheet_attendance/static/src/*"
+      ],
+      "@l10n_in_ewaybill_stock/*": [
+        "../community/addons/l10n_in_ewaybill_stock/static/src/*"
+      ],
+      "@l10n_din5008/*": [
+        "../community/addons/l10n_din5008/static/src/*"
+      ],
+      "@sale_stock/*": [
+        "../community/addons/sale_stock/static/src/*"
+      ],
+      "@payment_nuvei/*": [
+        "../community/addons/payment_nuvei/static/src/*"
+      ],
+      "@hr_presence/*": [
+        "../community/addons/hr_presence/static/src/*"
+      ],
+      "@mass_mailing_event_track_sms/*": [
+        "../community/addons/mass_mailing_event_track_sms/static/src/*"
+      ],
+      "@sale_gelato/*": [
+        "../community/addons/sale_gelato/static/src/*"
+      ],
+      "@l10n_es/*": [
+        "../community/addons/l10n_es/static/src/*"
+      ],
+      "@website_slides_survey/*": [
+        "../community/addons/website_slides_survey/static/src/*"
+      ],
+      "@mrp_account/*": [
+        "../community/addons/mrp_account/static/src/*"
+      ],
+      "@pos_self_order_adyen/*": [
+        "../community/addons/pos_self_order_adyen/static/src/*"
+      ],
+      "@sale_gelato_stock/*": [
+        "../community/addons/sale_gelato_stock/static/src/*"
+      ],
+      "@hr_holidays_contract/*": [
+        "../community/addons/hr_holidays_contract/static/src/*"
+      ],
+      "@pos_self_order_epson_printer/*": [
+        "../community/addons/pos_self_order_epson_printer/static/src/*"
+      ],
+      "@sale_expense/*": [
+        "../community/addons/sale_expense/static/src/*"
+      ],
+      "@account/*": [
+        "../community/addons/account/static/src/*"
+      ],
+      "@l10n_ro_edi_stock_batch/*": [
+        "../community/addons/l10n_ro_edi_stock_batch/static/src/*"
+      ],
+      "@l10n_cz/*": [
+        "../community/addons/l10n_cz/static/src/*"
+      ],
+      "@l10n_bd/*": [
+        "../community/addons/l10n_bd/static/src/*"
+      ],
+      "@test_import_export/*": [
+        "../community/addons/test_import_export/static/src/*"
+      ],
+      "@sms/*": [
+        "../community/addons/sms/static/src/*"
+      ],
+      "@web_editor/*": [
+        "../community/addons/web_editor/static/src/*"
+      ],
+      "@mass_mailing/*": [
+        "../community/addons/mass_mailing/static/src/*"
+      ],
+      "@project_purchase_stock/*": [
+        "../community/addons/project_purchase_stock/static/src/*"
+      ],
+      "@l10n_it_edi_ndd/*": [
+        "../community/addons/l10n_it_edi_ndd/static/src/*"
+      ],
+      "@pos_restaurant_loyalty/*": [
+        "../community/addons/pos_restaurant_loyalty/static/src/*"
+      ],
+      "@hr_livechat/*": [
+        "../community/addons/hr_livechat/static/src/*"
+      ],
+      "@l10n_my_edi_extended/*": [
+        "../community/addons/l10n_my_edi_extended/static/src/*"
+      ],
+      "@account_edi_proxy_client/*": [
+        "../community/addons/account_edi_proxy_client/static/src/*"
+      ],
+      "@l10n_fr_facturx_chorus_pro/*": [
+        "../community/addons/l10n_fr_facturx_chorus_pro/static/src/*"
+      ],
+      "@hr_skills_slides/*": [
+        "../community/addons/hr_skills_slides/static/src/*"
+      ],
+      "@mrp_subcontracting/*": [
+        "../community/addons/mrp_subcontracting/static/src/*"
+      ],
+      "@google_gmail/*": [
+        "../community/addons/google_gmail/static/src/*"
+      ],
+      "@account_debit_note/*": [
+        "../community/addons/account_debit_note/static/src/*"
+      ],
+      "@l10n_eg/*": [
+        "../community/addons/l10n_eg/static/src/*"
+      ],
+      "@l10n_in_purchase_stock/*": [
+        "../community/addons/l10n_in_purchase_stock/static/src/*"
+      ],
+      "@spreadsheet_dashboard_hr_timesheet/*": [
+        "../community/addons/spreadsheet_dashboard_hr_timesheet/static/src/*"
+      ],
+      "@test_assetsbundle/*": [
+        "../community/odoo/addons/test_assetsbundle/static/src/*"
+      ],
+      "@test_search_panel/*": [
+        "../community/odoo/addons/test_search_panel/static/src/*"
+      ],
+      "@test_convert/*": [
+        "../community/odoo/addons/test_convert/static/src/*"
+      ],
+      "@test_translation_import/*": [
+        "../community/odoo/addons/test_translation_import/static/src/*"
+      ],
+      "@test_mimetypes/*": [
+        "../community/odoo/addons/test_mimetypes/static/src/*"
+      ],
+      "@test_converter/*": [
+        "../community/odoo/addons/test_converter/static/src/*"
+      ],
+      "@test_inherit_depends/*": [
+        "../community/odoo/addons/test_inherit_depends/static/src/*"
+      ],
+      "@test_http/*": [
+        "../community/odoo/addons/test_http/static/src/*"
+      ],
+      "@test_inherit/*": [
+        "../community/odoo/addons/test_inherit/static/src/*"
+      ],
+      "@test_data_module/*": [
+        "../community/odoo/addons/test_data_module/static/src/*"
+      ],
+      "@test_new_api/*": [
+        "../community/odoo/addons/test_new_api/static/src/*"
+      ],
+      "@test_exceptions/*": [
+        "../community/odoo/addons/test_exceptions/static/src/*"
+      ],
+      "@test_main_flows/*": [
+        "../community/odoo/addons/test_main_flows/static/src/*"
+      ],
+      "@test_lint/*": [
+        "../community/odoo/addons/test_lint/static/src/*"
+      ],
+      "@test_inherits_depends/*": [
+        "../community/odoo/addons/test_inherits_depends/static/src/*"
+      ],
+      "@test_read_group/*": [
+        "../community/odoo/addons/test_read_group/static/src/*"
+      ],
+      "@test_access_rights/*": [
+        "../community/odoo/addons/test_access_rights/static/src/*"
+      ],
+      "@test_limits/*": [
+        "../community/odoo/addons/test_limits/static/src/*"
+      ],
+      "@test_uninstall/*": [
+        "../community/odoo/addons/test_uninstall/static/src/*"
+      ],
+      "@test_inherits/*": [
+        "../community/odoo/addons/test_inherits/static/src/*"
+      ],
+      "@test_apikeys/*": [
+        "../community/odoo/addons/test_apikeys/static/src/*"
+      ],
+      "@test_testing_utilities/*": [
+        "../community/odoo/addons/test_testing_utilities/static/src/*"
+      ],
+      "@base/*": [
+        "../community/odoo/addons/base/static/src/*"
+      ],
+      "@test_data_module_install/*": [
+        "../community/odoo/addons/test_data_module_install/static/src/*"
+      ],
+      "@test_performance/*": [
+        "../community/odoo/addons/test_performance/static/src/*"
+      ],
+      "@test_rpc/*": [
+        "../community/odoo/addons/test_rpc/static/src/*"
+      ],
+      "@test_action_bindings/*": [
+        "../community/odoo/addons/test_action_bindings/static/src/*"
+      ],
+      "@test_auth_custom/*": [
+        "../community/odoo/addons/test_auth_custom/static/src/*"
+      ],
+      "@website_knowledge/*": [
+        "../enterprise/website_knowledge/static/src/*"
+      ],
+      "@social_youtube/*": [
+        "../enterprise/social_youtube/static/src/*"
+      ],
+      "@test_whatsapp/*": [
+        "../enterprise/test_whatsapp/static/src/*"
+      ],
+      "@l10n_es_reports_modelo130/*": [
+        "../enterprise/l10n_es_reports_modelo130/static/src/*"
+      ],
+      "@l10n_bg_reports/*": [
+        "../enterprise/l10n_bg_reports/static/src/*"
+      ],
+      "@sale_subscription_timesheet/*": [
+        "../enterprise/sale_subscription_timesheet/static/src/*"
+      ],
+      "@social/*": [
+        "../enterprise/social/static/src/*"
+      ],
+      "@l10n_us_1099/*": [
+        "../enterprise/l10n_us_1099/static/src/*"
+      ],
+      "@product_unspsc/*": [
+        "../enterprise/product_unspsc/static/src/*"
+      ],
+      "@l10n_nz_reports/*": [
+        "../enterprise/l10n_nz_reports/static/src/*"
+      ],
+      "@website_appointment_crm/*": [
+        "../enterprise/website_appointment_crm/static/src/*"
+      ],
+      "@l10n_be_intrastat_services/*": [
+        "../enterprise/l10n_be_intrastat_services/static/src/*"
+      ],
+      "@website_appointment_sale/*": [
+        "../enterprise/website_appointment_sale/static/src/*"
+      ],
+      "@l10n_mx_reports_closing/*": [
+        "../enterprise/l10n_mx_reports_closing/static/src/*"
+      ],
+      "@l10n_din5008_industry_fsm/*": [
+        "../enterprise/l10n_din5008_industry_fsm/static/src/*"
+      ],
+      "@l10n_us_payment_nacha/*": [
+        "../enterprise/l10n_us_payment_nacha/static/src/*"
+      ],
+      "@helpdesk_sms/*": [
+        "../enterprise/helpdesk_sms/static/src/*"
+      ],
+      "@l10n_eg_hr_payroll/*": [
+        "../enterprise/l10n_eg_hr_payroll/static/src/*"
+      ],
+      "@l10n_ro_hr_payroll_account/*": [
+        "../enterprise/l10n_ro_hr_payroll_account/static/src/*"
+      ],
+      "@stock_../enterprise/*": [
+        "../enterprise/stock_../enterprise/static/src/*"
+      ],
+      "@snailmail_account_followup/*": [
+        "../enterprise/snailmail_account_followup/static/src/*"
+      ],
+      "@documents_l10n_hk_hr_payroll/*": [
+        "../enterprise/documents_l10n_hk_hr_payroll/static/src/*"
+      ],
+      "@l10n_cz_reports_2025/*": [
+        "../enterprise/l10n_cz_reports_2025/static/src/*"
+      ],
+      "@test_mail_../enterprise/*": [
+        "../enterprise/test_mail_../enterprise/static/src/*"
+      ],
+      "@account_reports_cash_basis/*": [
+        "../enterprise/account_reports_cash_basis/static/src/*"
+      ],
+      "@l10n_in_asset/*": [
+        "../enterprise/l10n_in_asset/static/src/*"
+      ],
+      "@documents_account/*": [
+        "../enterprise/documents_account/static/src/*"
+      ],
+      "@hr_contract_salary_holidays/*": [
+        "../enterprise/hr_contract_salary_holidays/static/src/*"
+      ],
+      "@l10n_fr_fec_import/*": [
+        "../enterprise/l10n_fr_fec_import/static/src/*"
+      ],
+      "@l10n_gr_reports/*": [
+        "../enterprise/l10n_gr_reports/static/src/*"
+      ],
+      "@web_cohort/*": [
+        "../enterprise/web_cohort/static/src/*"
+      ],
+      "@l10n_br_edi_website_sale/*": [
+        "../enterprise/l10n_br_edi_website_sale/static/src/*"
+      ],
+      "@l10n_be_reports/*": [
+        "../enterprise/l10n_be_reports/static/src/*"
+      ],
+      "@account_bank_statement_import_ofx/*": [
+        "../enterprise/account_bank_statement_import_ofx/static/src/*"
+      ],
+      "@account_sepa_direct_debit/*": [
+        "../enterprise/account_sepa_direct_debit/static/src/*"
+      ],
+      "@website_sale_dashboard/*": [
+        "../enterprise/website_sale_dashboard/static/src/*"
+      ],
+      "@frontdesk/*": [
+        "../enterprise/frontdesk/static/src/*"
+      ],
+      "@website_sale_stock_renting/*": [
+        "../enterprise/website_sale_stock_renting/static/src/*"
+      ],
+      "@mail_../enterprise/*": [
+        "../enterprise/mail_../enterprise/static/src/*"
+      ],
+      "@l10n_mn_reports/*": [
+        "../enterprise/l10n_mn_reports/static/src/*"
+      ],
+      "@l10n_eg_hr_payroll_account/*": [
+        "../enterprise/l10n_eg_hr_payroll_account/static/src/*"
+      ],
+      "@industry_fsm_sale_report/*": [
+        "../enterprise/industry_fsm_sale_report/static/src/*"
+      ],
+      "@spreadsheet_dashboard_account_accountant/*": [
+        "../enterprise/spreadsheet_dashboard_account_accountant/static/src/*"
+      ],
+      "@marketing_automation_whatsapp/*": [
+        "../enterprise/marketing_automation_whatsapp/static/src/*"
+      ],
+      "@l10n_hk_hr_payroll_account/*": [
+        "../enterprise/l10n_hk_hr_payroll_account/static/src/*"
+      ],
+      "@sign_itsme/*": [
+        "../enterprise/sign_itsme/static/src/*"
+      ],
+      "@l10n_it_pos/*": [
+        "../enterprise/l10n_it_pos/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_acerta/*": [
+        "../enterprise/l10n_be_hr_payroll_acerta/static/src/*"
+      ],
+      "@l10n_id_hr_payroll/*": [
+        "../enterprise/l10n_id_hr_payroll/static/src/*"
+      ],
+      "@l10n_ng_reports/*": [
+        "../enterprise/l10n_ng_reports/static/src/*"
+      ],
+      "@timer/*": [
+        "../enterprise/timer/static/src/*"
+      ],
+      "@l10n_es_sale_amazon/*": [
+        "../enterprise/l10n_es_sale_amazon/static/src/*"
+      ],
+      "@l10n_ae_corporate_tax_report/*": [
+        "../enterprise/l10n_ae_corporate_tax_report/static/src/*"
+      ],
+      "@whatsapp_website_sale/*": [
+        "../enterprise/whatsapp_website_sale/static/src/*"
+      ],
+      "@marketing_automation_website_sale/*": [
+        "../enterprise/marketing_automation_website_sale/static/src/*"
+      ],
+      "@helpdesk_holidays/*": [
+        "../enterprise/helpdesk_holidays/static/src/*"
+      ],
+      "@l10n_hu_reports/*": [
+        "../enterprise/l10n_hu_reports/static/src/*"
+      ],
+      "@l10n_bd_hr_payroll_account/*": [
+        "../enterprise/l10n_bd_hr_payroll_account/static/src/*"
+      ],
+      "@l10n_it_riba/*": [
+        "../enterprise/l10n_it_riba/static/src/*"
+      ],
+      "@hr_referral/*": [
+        "../enterprise/hr_referral/static/src/*"
+      ],
+      "@l10n_be_soda/*": [
+        "../enterprise/l10n_be_soda/static/src/*"
+      ],
+      "@l10n_tn_reports/*": [
+        "../enterprise/l10n_tn_reports/static/src/*"
+      ],
+      "@l10n_mx_hr_payroll/*": [
+        "../enterprise/l10n_mx_hr_payroll/static/src/*"
+      ],
+      "@l10n_be_reports_post_wizard/*": [
+        "../enterprise/l10n_be_reports_post_wizard/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_attendance/*": [
+        "../enterprise/l10n_be_hr_payroll_attendance/static/src/*"
+      ],
+      "@l10n_tz_reports/*": [
+        "../enterprise/l10n_tz_reports/static/src/*"
+      ],
+      "@account_avatax_sale/*": [
+        "../enterprise/account_avatax_sale/static/src/*"
+      ],
+      "@account_intrastat/*": [
+        "../enterprise/account_intrastat/static/src/*"
+      ],
+      "@sale_renting/*": [
+        "../enterprise/sale_renting/static/src/*"
+      ],
+      "@l10n_mx_edi_sale/*": [
+        "../enterprise/l10n_mx_edi_sale/static/src/*"
+      ],
+      "@l10n_jo_hr_payroll_account/*": [
+        "../enterprise/l10n_jo_hr_payroll_account/static/src/*"
+      ],
+      "@l10n_ch_hr_payroll_elm_transmission_account/*": [
+        "../enterprise/l10n_ch_hr_payroll_elm_transmission_account/static/src/*"
+      ],
+      "@whatsapp_event/*": [
+        "../enterprise/whatsapp_event/static/src/*"
+      ],
+      "@stock_barcode_product_expiry/*": [
+        "../enterprise/stock_barcode_product_expiry/static/src/*"
+      ],
+      "@stock_fleet_../enterprise/*": [
+        "../enterprise/stock_fleet_../enterprise/static/src/*"
+      ],
+      "@test_l10n_ch_hr_payroll_account/*": [
+        "../enterprise/test_l10n_ch_hr_payroll_account/static/src/*"
+      ],
+      "@quality_mrp_workorder/*": [
+        "../enterprise/quality_mrp_workorder/static/src/*"
+      ],
+      "@l10n_in_reports_gstr/*": [
+        "../enterprise/l10n_in_reports_gstr/static/src/*"
+      ],
+      "@account_asset/*": [
+        "../enterprise/account_asset/static/src/*"
+      ],
+      "@planning_hr_skills/*": [
+        "../enterprise/planning_hr_skills/static/src/*"
+      ],
+      "@sale_external_tax/*": [
+        "../enterprise/sale_external_tax/static/src/*"
+      ],
+      "@hr_work_entry_holidays_../enterprise/*": [
+        "../enterprise/hr_work_entry_holidays_../enterprise/static/src/*"
+      ],
+      "@l10n_es_reports_2024/*": [
+        "../enterprise/l10n_es_reports_2024/static/src/*"
+      ],
+      "@delivery_ups_rest/*": [
+        "../enterprise/delivery_ups_rest/static/src/*"
+      ],
+      "@l10n_in_documents/*": [
+        "../enterprise/l10n_in_documents/static/src/*"
+      ],
+      "@hr_work_entry_contract_../enterprise/*": [
+        "../enterprise/hr_work_entry_contract_../enterprise/static/src/*"
+      ],
+      "@website_helpdesk_livechat/*": [
+        "../enterprise/website_helpdesk_livechat/static/src/*"
+      ],
+      "@l10n_rw_reports/*": [
+        "../enterprise/l10n_rw_reports/static/src/*"
+      ],
+      "@helpdesk_account/*": [
+        "../enterprise/helpdesk_account/static/src/*"
+      ],
+      "@l10n_co_reports/*": [
+        "../enterprise/l10n_co_reports/static/src/*"
+      ],
+      "@l10n_br_sale_subscription/*": [
+        "../enterprise/l10n_br_sale_subscription/static/src/*"
+      ],
+      "@account_external_tax/*": [
+        "../enterprise/account_external_tax/static/src/*"
+      ],
+      "@documents_hr_holidays/*": [
+        "../enterprise/documents_hr_holidays/static/src/*"
+      ],
+      "@l10n_cl_edi_factoring/*": [
+        "../enterprise/l10n_cl_edi_factoring/static/src/*"
+      ],
+      "@l10n_de_pos_cert/*": [
+        "../enterprise/l10n_de_pos_cert/static/src/*"
+      ],
+      "@account_3way_match/*": [
+        "../enterprise/account_3way_match/static/src/*"
+      ],
+      "@l10n_pl_reports/*": [
+        "../enterprise/l10n_pl_reports/static/src/*"
+      ],
+      "@l10n_do_reports/*": [
+        "../enterprise/l10n_do_reports/static/src/*"
+      ],
+      "@account_disallowed_expenses_fleet/*": [
+        "../enterprise/account_disallowed_expenses_fleet/static/src/*"
+      ],
+      "@stock_barcode_quality_control_picking_batch/*": [
+        "../enterprise/stock_barcode_quality_control_picking_batch/static/src/*"
+      ],
+      "@hr_contract_salary/*": [
+        "../enterprise/hr_contract_salary/static/src/*"
+      ],
+      "@project_holidays/*": [
+        "../enterprise/project_holidays/static/src/*"
+      ],
+      "@l10n_ie_reports/*": [
+        "../enterprise/l10n_ie_reports/static/src/*"
+      ],
+      "@project_sale_subscription/*": [
+        "../enterprise/project_sale_subscription/static/src/*"
+      ],
+      "@l10n_se_sie4_export/*": [
+        "../enterprise/l10n_se_sie4_export/static/src/*"
+      ],
+      "@l10n_fr_reports/*": [
+        "../enterprise/l10n_fr_reports/static/src/*"
+      ],
+      "@worksheet/*": [
+        "../enterprise/worksheet/static/src/*"
+      ],
+      "@account_batch_payment/*": [
+        "../enterprise/account_batch_payment/static/src/*"
+      ],
+      "@l10n_mt_reports/*": [
+        "../enterprise/l10n_mt_reports/static/src/*"
+      ],
+      "@helpdesk_sale_loyalty/*": [
+        "../enterprise/helpdesk_sale_loyalty/static/src/*"
+      ],
+      "@documents_project_sign/*": [
+        "../enterprise/documents_project_sign/static/src/*"
+      ],
+      "@website_sale_renting/*": [
+        "../enterprise/website_sale_renting/static/src/*"
+      ],
+      "@test_web_gantt/*": [
+        "../enterprise/test_web_gantt/static/src/*"
+      ],
+      "@pos_sale_stock_renting/*": [
+        "../enterprise/pos_sale_stock_renting/static/src/*"
+      ],
+      "@l10n_mz_reports/*": [
+        "../enterprise/l10n_mz_reports/static/src/*"
+      ],
+      "@l10n_tr_hr_payroll/*": [
+        "../enterprise/l10n_tr_hr_payroll/static/src/*"
+      ],
+      "@l10n_rs_reports/*": [
+        "../enterprise/l10n_rs_reports/static/src/*"
+      ],
+      "@crm_sale_subscription/*": [
+        "../enterprise/crm_sale_subscription/static/src/*"
+      ],
+      "@l10n_au_hr_payroll_account/*": [
+        "../enterprise/l10n_au_hr_payroll_account/static/src/*"
+      ],
+      "@account_bank_statement_extract/*": [
+        "../enterprise/account_bank_statement_extract/static/src/*"
+      ],
+      "@account_invoice_extract_purchase/*": [
+        "../enterprise/account_invoice_extract_purchase/static/src/*"
+      ],
+      "@l10n_tr_reports/*": [
+        "../enterprise/l10n_tr_reports/static/src/*"
+      ],
+      "@delivery_iot/*": [
+        "../enterprise/delivery_iot/static/src/*"
+      ],
+      "@l10n_bo_reports/*": [
+        "../enterprise/l10n_bo_reports/static/src/*"
+      ],
+      "@pos_self_order_iot/*": [
+        "../enterprise/pos_self_order_iot/static/src/*"
+      ],
+      "@l10n_at_saft/*": [
+        "../enterprise/l10n_at_saft/static/src/*"
+      ],
+      "@l10n_fi_reports/*": [
+        "../enterprise/l10n_fi_reports/static/src/*"
+      ],
+      "@l10n_tw_reports/*": [
+        "../enterprise/l10n_tw_reports/static/src/*"
+      ],
+      "@sale_purchase_stock_inter_company_rules/*": [
+        "../enterprise/sale_purchase_stock_inter_company_rules/static/src/*"
+      ],
+      "@documents_hr_expense/*": [
+        "../enterprise/documents_hr_expense/static/src/*"
+      ],
+      "@event_social/*": [
+        "../enterprise/event_social/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_ucm/*": [
+        "../enterprise/l10n_be_hr_payroll_ucm/static/src/*"
+      ],
+      "@social_linkedin/*": [
+        "../enterprise/social_linkedin/static/src/*"
+      ],
+      "@l10n_ec_reports/*": [
+        "../enterprise/l10n_ec_reports/static/src/*"
+      ],
+      "@hr_holidays_contract_gantt/*": [
+        "../enterprise/hr_holidays_contract_gantt/static/src/*"
+      ],
+      "@industry_fsm_sms/*": [
+        "../enterprise/industry_fsm_sms/static/src/*"
+      ],
+      "@l10n_kz_reports/*": [
+        "../enterprise/l10n_kz_reports/static/src/*"
+      ],
+      "@l10n_es_reports/*": [
+        "../enterprise/l10n_es_reports/static/src/*"
+      ],
+      "@l10n_ae_reports/*": [
+        "../enterprise/l10n_ae_reports/static/src/*"
+      ],
+      "@documents_spreadsheet/*": [
+        "../enterprise/documents_spreadsheet/static/src/*"
+      ],
+      "@sale_stock_renting/*": [
+        "../enterprise/sale_stock_renting/static/src/*"
+      ],
+      "@hr_payroll_expense/*": [
+        "../enterprise/hr_payroll_expense/static/src/*"
+      ],
+      "@mail_mobile/*": [
+        "../enterprise/mail_mobile/static/src/*"
+      ],
+      "@pos_urban_piper_swiggy/*": [
+        "../enterprise/pos_urban_piper_swiggy/static/src/*"
+      ],
+      "@website_event_social/*": [
+        "../enterprise/website_event_social/static/src/*"
+      ],
+      "@product_barcodelookup/*": [
+        "../enterprise/product_barcodelookup/static/src/*"
+      ],
+      "@room/*": [
+        "../enterprise/room/static/src/*"
+      ],
+      "@delivery_fedex/*": [
+        "../enterprise/delivery_fedex/static/src/*"
+      ],
+      "@sale_commission_margin/*": [
+        "../enterprise/sale_commission_margin/static/src/*"
+      ],
+      "@currency_rate_live/*": [
+        "../enterprise/currency_rate_live/static/src/*"
+      ],
+      "@website_sale_subscription/*": [
+        "../enterprise/website_sale_subscription/static/src/*"
+      ],
+      "@l10n_ro_reports/*": [
+        "../enterprise/l10n_ro_reports/static/src/*"
+      ],
+      "@project_timesheet_forecast/*": [
+        "../enterprise/project_timesheet_forecast/static/src/*"
+      ],
+      "@l10n_ro_saft_import/*": [
+        "../enterprise/l10n_ro_saft_import/static/src/*"
+      ],
+      "@hr_gantt/*": [
+        "../enterprise/hr_gantt/static/src/*"
+      ],
+      "@l10n_hr_reports/*": [
+        "../enterprise/l10n_hr_reports/static/src/*"
+      ],
+      "@l10n_ch_reports/*": [
+        "../enterprise/l10n_ch_reports/static/src/*"
+      ],
+      "@industry_fsm_sale_subscription/*": [
+        "../enterprise/industry_fsm_sale_subscription/static/src/*"
+      ],
+      "@account_invoice_extract/*": [
+        "../enterprise/account_invoice_extract/static/src/*"
+      ],
+      "@approvals_purchase/*": [
+        "../enterprise/approvals_purchase/static/src/*"
+      ],
+      "@spreadsheet_dashboard_stock/*": [
+        "../enterprise/spreadsheet_dashboard_stock/static/src/*"
+      ],
+      "@spreadsheet_dashboard_sale_renting/*": [
+        "../enterprise/spreadsheet_dashboard_sale_renting/static/src/*"
+      ],
+      "@test_rental_product_configurators/*": [
+        "../enterprise/test_rental_product_configurators/static/src/*"
+      ],
+      "@hr_contract_sign/*": [
+        "../enterprise/hr_contract_sign/static/src/*"
+      ],
+      "@helpdesk_stock/*": [
+        "../enterprise/helpdesk_stock/static/src/*"
+      ],
+      "@sale_management_renting/*": [
+        "../enterprise/sale_management_renting/static/src/*"
+      ],
+      "@l10n_br_avatax/*": [
+        "../enterprise/l10n_br_avatax/static/src/*"
+      ],
+      "@l10n_dk_reports/*": [
+        "../enterprise/l10n_dk_reports/static/src/*"
+      ],
+      "@pos_restaurant_urban_piper/*": [
+        "../enterprise/pos_restaurant_urban_piper/static/src/*"
+      ],
+      "@l10n_br_edi/*": [
+        "../enterprise/l10n_br_edi/static/src/*"
+      ],
+      "@project_account_asset/*": [
+        "../enterprise/project_account_asset/static/src/*"
+      ],
+      "@data_merge_helpdesk/*": [
+        "../enterprise/data_merge_helpdesk/static/src/*"
+      ],
+      "@l10n_ro_hr_payroll/*": [
+        "../enterprise/l10n_ro_hr_payroll/static/src/*"
+      ],
+      "@mrp_workorder_expiry/*": [
+        "../enterprise/mrp_workorder_expiry/static/src/*"
+      ],
+      "@digest_../enterprise/*": [
+        "../enterprise/digest_../enterprise/static/src/*"
+      ],
+      "@delivery_dhl/*": [
+        "../enterprise/delivery_dhl/static/src/*"
+      ],
+      "@documents_hr_payroll/*": [
+        "../enterprise/documents_hr_payroll/static/src/*"
+      ],
+      "@pos_hr_mobile/*": [
+        "../enterprise/pos_hr_mobile/static/src/*"
+      ],
+      "@mrp_accountant/*": [
+        "../enterprise/mrp_accountant/static/src/*"
+      ],
+      "@test_sale_subscription/*": [
+        "../enterprise/test_sale_subscription/static/src/*"
+      ],
+      "@hr_payroll_account/*": [
+        "../enterprise/hr_payroll_account/static/src/*"
+      ],
+      "@l10n_ae_hr_payroll_account/*": [
+        "../enterprise/l10n_ae_hr_payroll_account/static/src/*"
+      ],
+      "@social_push_notifications/*": [
+        "../enterprise/social_push_notifications/static/src/*"
+      ],
+      "@website_generator/*": [
+        "../enterprise/website_generator/static/src/*"
+      ],
+      "@spreadsheet_dashboard_edition/*": [
+        "../enterprise/spreadsheet_dashboard_edition/static/src/*"
+      ],
+      "@hr_contract_reports/*": [
+        "../enterprise/hr_contract_reports/static/src/*"
+      ],
+      "@event_../enterprise/*": [
+        "../enterprise/event_../enterprise/static/src/*"
+      ],
+      "@quality_control/*": [
+        "../enterprise/quality_control/static/src/*"
+      ],
+      "@website_helpdesk_slides/*": [
+        "../enterprise/website_helpdesk_slides/static/src/*"
+      ],
+      "@account_saft_import/*": [
+        "../enterprise/account_saft_import/static/src/*"
+      ],
+      "@l10n_co_edi_website_sale/*": [
+        "../enterprise/l10n_co_edi_website_sale/static/src/*"
+      ],
+      "@account_intrastat_services/*": [
+        "../enterprise/account_intrastat_services/static/src/*"
+      ],
+      "@test_data_cleaning/*": [
+        "../enterprise/test_data_cleaning/static/src/*"
+      ],
+      "@documents_project_sale/*": [
+        "../enterprise/documents_project_sale/static/src/*"
+      ],
+      "@l10n_se_sie_import/*": [
+        "../enterprise/l10n_se_sie_import/static/src/*"
+      ],
+      "@l10n_lt_intrastat/*": [
+        "../enterprise/l10n_lt_intrastat/static/src/*"
+      ],
+      "@l10n_fr_hr_payroll_account/*": [
+        "../enterprise/l10n_fr_hr_payroll_account/static/src/*"
+      ],
+      "@social_test_full/*": [
+        "../enterprise/social_test_full/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_partena/*": [
+        "../enterprise/l10n_be_hr_payroll_partena/static/src/*"
+      ],
+      "@social_crm/*": [
+        "../enterprise/social_crm/static/src/*"
+      ],
+      "@l10n_ch_hr_payroll_elm_transmission/*": [
+        "../enterprise/l10n_ch_hr_payroll_elm_transmission/static/src/*"
+      ],
+      "@l10n_ae_hr_payroll/*": [
+        "../enterprise/l10n_ae_hr_payroll/static/src/*"
+      ],
+      "@l10n_ke_hr_payroll_shif/*": [
+        "../enterprise/l10n_ke_hr_payroll_shif/static/src/*"
+      ],
+      "@account_extract/*": [
+        "../enterprise/account_extract/static/src/*"
+      ],
+      "@l10n_se_sie4_import/*": [
+        "../enterprise/l10n_se_sie4_import/static/src/*"
+      ],
+      "@hr_work_entry_contract_planning/*": [
+        "../enterprise/hr_work_entry_contract_planning/static/src/*"
+      ],
+      "@voip_crm/*": [
+        "../enterprise/voip_crm/static/src/*"
+      ],
+      "@pos_order_tracking_display/*": [
+        "../enterprise/pos_order_tracking_display/static/src/*"
+      ],
+      "@l10n_it_reports/*": [
+        "../enterprise/l10n_it_reports/static/src/*"
+      ],
+      "@helpdesk_sale_timesheet/*": [
+        "../enterprise/helpdesk_sale_timesheet/static/src/*"
+      ],
+      "@l10n_us_hr_payroll_state_calculation/*": [
+        "../enterprise/l10n_us_hr_payroll_state_calculation/static/src/*"
+      ],
+      "@account_accountant_fleet/*": [
+        "../enterprise/account_accountant_fleet/static/src/*"
+      ],
+      "@l10n_ke_edi_oscu_mrp/*": [
+        "../enterprise/l10n_ke_edi_oscu_mrp/static/src/*"
+      ],
+      "@sale_timesheet_../enterprise/*": [
+        "../enterprise/sale_timesheet_../enterprise/static/src/*"
+      ],
+      "@l10n_lu_reports/*": [
+        "../enterprise/l10n_lu_reports/static/src/*"
+      ],
+      "@l10n_din5008_sale_renting/*": [
+        "../enterprise/l10n_din5008_sale_renting/static/src/*"
+      ],
+      "@website_sale_shiprocket/*": [
+        "../enterprise/website_sale_shiprocket/static/src/*"
+      ],
+      "@hr_appraisal_survey/*": [
+        "../enterprise/hr_appraisal_survey/static/src/*"
+      ],
+      "@l10n_be_reports_prorata/*": [
+        "../enterprise/l10n_be_reports_prorata/static/src/*"
+      ],
+      "@l10n_ee_rounding/*": [
+        "../enterprise/l10n_ee_rounding/static/src/*"
+      ],
+      "@l10n_nl_reports_sbr_icp/*": [
+        "../enterprise/l10n_nl_reports_sbr_icp/static/src/*"
+      ],
+      "@hr_recruitment_integration_website_monster/*": [
+        "../enterprise/hr_recruitment_integration_website_monster/static/src/*"
+      ],
+      "@l10n_pe_reports_stock/*": [
+        "../enterprise/l10n_pe_reports_stock/static/src/*"
+      ],
+      "@base_automation_hr_contract/*": [
+        "../enterprise/base_automation_hr_contract/static/src/*"
+      ],
+      "@l10n_syscohada_reports/*": [
+        "../enterprise/l10n_syscohada_reports/static/src/*"
+      ],
+      "@mrp_workorder_plm/*": [
+        "../enterprise/mrp_workorder_plm/static/src/*"
+      ],
+      "@l10n_bg_reports_ledger/*": [
+        "../enterprise/l10n_bg_reports_ledger/static/src/*"
+      ],
+      "@documents_hr_recruitment/*": [
+        "../enterprise/documents_hr_recruitment/static/src/*"
+      ],
+      "@l10n_cl_edi_exports/*": [
+        "../enterprise/l10n_cl_edi_exports/static/src/*"
+      ],
+      "@mrp_workorder/*": [
+        "../enterprise/mrp_workorder/static/src/*"
+      ],
+      "@whatsapp_account/*": [
+        "../enterprise/whatsapp_account/static/src/*"
+      ],
+      "@l10n_ke_hr_payroll/*": [
+        "../enterprise/l10n_ke_hr_payroll/static/src/*"
+      ],
+      "@web_gantt/*": [
+        "../enterprise/web_gantt/static/src/*"
+      ],
+      "@whatsapp/*": [
+        "../enterprise/whatsapp/static/src/*"
+      ],
+      "@pos_blackbox_be/*": [
+        "../enterprise/pos_blackbox_be/static/src/*"
+      ],
+      "@sale_project_forecast/*": [
+        "../enterprise/sale_project_forecast/static/src/*"
+      ],
+      "@account_accountant_batch_payment/*": [
+        "../enterprise/account_accountant_batch_payment/static/src/*"
+      ],
+      "@account_saft/*": [
+        "../enterprise/account_saft/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_sd_worx/*": [
+        "../enterprise/l10n_be_hr_payroll_sd_worx/static/src/*"
+      ],
+      "@pos_urban_piper_zomato/*": [
+        "../enterprise/pos_urban_piper_zomato/static/src/*"
+      ],
+      "@pos_preparation_display/*": [
+        "../enterprise/pos_preparation_display/static/src/*"
+      ],
+      "@pos_urban_piper_enhancements/*": [
+        "../enterprise/pos_urban_piper_enhancements/static/src/*"
+      ],
+      "@l10n_pl_hr_payroll_account/*": [
+        "../enterprise/l10n_pl_hr_payroll_account/static/src/*"
+      ],
+      "@l10n_uk_reports/*": [
+        "../enterprise/l10n_uk_reports/static/src/*"
+      ],
+      "@sale_subscription_stock/*": [
+        "../enterprise/sale_subscription_stock/static/src/*"
+      ],
+      "@l10n_pe_edi_pos/*": [
+        "../enterprise/l10n_pe_edi_pos/static/src/*"
+      ],
+      "@project_helpdesk/*": [
+        "../enterprise/project_helpdesk/static/src/*"
+      ],
+      "@l10n_my_reports/*": [
+        "../enterprise/l10n_my_reports/static/src/*"
+      ],
+      "@l10n_nl_reports_sbr_ob_nummer/*": [
+        "../enterprise/l10n_nl_reports_sbr_ob_nummer/static/src/*"
+      ],
+      "@spreadsheet_sale_management/*": [
+        "../enterprise/spreadsheet_sale_management/static/src/*"
+      ],
+      "@l10n_dz_reports/*": [
+        "../enterprise/l10n_dz_reports/static/src/*"
+      ],
+      "@documents_fleet/*": [
+        "../enterprise/documents_fleet/static/src/*"
+      ],
+      "@l10n_mx_edi/*": [
+        "../enterprise/l10n_mx_edi/static/src/*"
+      ],
+      "@l10n_lu_hr_payroll_account/*": [
+        "../enterprise/l10n_lu_hr_payroll_account/static/src/*"
+      ],
+      "@pos_self_order_preparation_display/*": [
+        "../enterprise/pos_self_order_preparation_display/static/src/*"
+      ],
+      "@appointment_microsoft_calendar/*": [
+        "../enterprise/appointment_microsoft_calendar/static/src/*"
+      ],
+      "@payment_sepa_direct_debit/*": [
+        "../enterprise/payment_sepa_direct_debit/static/src/*"
+      ],
+      "@documents_project/*": [
+        "../enterprise/documents_project/static/src/*"
+      ],
+      "@l10n_at_reports/*": [
+        "../enterprise/l10n_at_reports/static/src/*"
+      ],
+      "@hr_work_entry_contract_attendance/*": [
+        "../enterprise/hr_work_entry_contract_attendance/static/src/*"
+      ],
+      "@quality_control_picking_batch/*": [
+        "../enterprise/quality_control_picking_batch/static/src/*"
+      ],
+      "@project_mrp_workorder_account/*": [
+        "../enterprise/project_mrp_workorder_account/static/src/*"
+      ],
+      "@l10n_br_edi_pos/*": [
+        "../enterprise/l10n_br_edi_pos/static/src/*"
+      ],
+      "@l10n_be_hr_contract_salary_mobility_budget/*": [
+        "../enterprise/l10n_be_hr_contract_salary_mobility_budget/static/src/*"
+      ],
+      "@planning_contract/*": [
+        "../enterprise/planning_contract/static/src/*"
+      ],
+      "@helpdesk_sale/*": [
+        "../enterprise/helpdesk_sale/static/src/*"
+      ],
+      "@voip_onsip/*": [
+        "../enterprise/voip_onsip/static/src/*"
+      ],
+      "@l10n_nl_reports_vat_pay_wizard/*": [
+        "../enterprise/l10n_nl_reports_vat_pay_wizard/static/src/*"
+      ],
+      "@l10n_my_hr_payroll_account/*": [
+        "../enterprise/l10n_my_hr_payroll_account/static/src/*"
+      ],
+      "@documents_hr_contract/*": [
+        "../enterprise/documents_hr_contract/static/src/*"
+      ],
+      "@mrp_maintenance/*": [
+        "../enterprise/mrp_maintenance/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_dmfa_sftp/*": [
+        "../enterprise/l10n_be_hr_payroll_dmfa_sftp/static/src/*"
+      ],
+      "@project_../enterprise/*": [
+        "../enterprise/project_../enterprise/static/src/*"
+      ],
+      "@pos_restaurant_appointment/*": [
+        "../enterprise/pos_restaurant_appointment/static/src/*"
+      ],
+      "@web_../enterprise/*": [
+        "../enterprise/web_../enterprise/static/src/*"
+      ],
+      "@marketing_automation_crm/*": [
+        "../enterprise/marketing_automation_crm/static/src/*"
+      ],
+      "@pos_hr_preparation_display/*": [
+        "../enterprise/pos_hr_preparation_display/static/src/*"
+      ],
+      "@l10n_ke_edi_oscu/*": [
+        "../enterprise/l10n_ke_edi_oscu/static/src/*"
+      ],
+      "@l10n_ar_reports/*": [
+        "../enterprise/l10n_ar_reports/static/src/*"
+      ],
+      "@spreadsheet_dashboard_marketing_automation/*": [
+        "../enterprise/spreadsheet_dashboard_marketing_automation/static/src/*"
+      ],
+      "@website_studio/*": [
+        "../enterprise/website_studio/static/src/*"
+      ],
+      "@hr_payroll_attendance/*": [
+        "../enterprise/hr_payroll_attendance/static/src/*"
+      ],
+      "@test_website_sale_full/*": [
+        "../enterprise/test_website_sale_full/static/src/*"
+      ],
+      "@l10n_pe_reports/*": [
+        "../enterprise/l10n_pe_reports/static/src/*"
+      ],
+      "@l10n_cl_edi_pos/*": [
+        "../enterprise/l10n_cl_edi_pos/static/src/*"
+      ],
+      "@l10n_it_xml_export/*": [
+        "../enterprise/l10n_it_xml_export/static/src/*"
+      ],
+      "@l10n_fr_intrastat_services/*": [
+        "../enterprise/l10n_fr_intrastat_services/static/src/*"
+      ],
+      "@account_winbooks_import/*": [
+        "../enterprise/account_winbooks_import/static/src/*"
+      ],
+      "@pos_iot/*": [
+        "../enterprise/pos_iot/static/src/*"
+      ],
+      "@website_crm_iap_reveal_../enterprise/*": [
+        "../enterprise/website_crm_iap_reveal_../enterprise/static/src/*"
+      ],
+      "@l10n_ma_hr_payroll/*": [
+        "../enterprise/l10n_ma_hr_payroll/static/src/*"
+      ],
+      "@l10n_mx_edi_extended/*": [
+        "../enterprise/l10n_mx_edi_extended/static/src/*"
+      ],
+      "@l10n_br_reports/*": [
+        "../enterprise/l10n_br_reports/static/src/*"
+      ],
+      "@sale_purchase_inter_company_rules/*": [
+        "../enterprise/sale_purchase_inter_company_rules/static/src/*"
+      ],
+      "@website_event_track_gantt/*": [
+        "../enterprise/website_event_track_gantt/static/src/*"
+      ],
+      "@l10n_jp_zengin/*": [
+        "../enterprise/l10n_jp_zengin/static/src/*"
+      ],
+      "@l10n_ch_hr_payroll/*": [
+        "../enterprise/l10n_ch_hr_payroll/static/src/*"
+      ],
+      "@l10n_kr_reports/*": [
+        "../enterprise/l10n_kr_reports/static/src/*"
+      ],
+      "@l10n_dk_intrastat/*": [
+        "../enterprise/l10n_dk_intrastat/static/src/*"
+      ],
+      "@hr_attendance_gantt/*": [
+        "../enterprise/hr_attendance_gantt/static/src/*"
+      ],
+      "@planning_holidays/*": [
+        "../enterprise/planning_holidays/static/src/*"
+      ],
+      "@project_forecast/*": [
+        "../enterprise/project_forecast/static/src/*"
+      ],
+      "@l10n_ro_saft/*": [
+        "../enterprise/l10n_ro_saft/static/src/*"
+      ],
+      "@pos_avatax/*": [
+        "../enterprise/pos_avatax/static/src/*"
+      ],
+      "@account_asset_fleet/*": [
+        "../enterprise/account_asset_fleet/static/src/*"
+      ],
+      "@l10n_co_edi_mandate/*": [
+        "../enterprise/l10n_co_edi_mandate/static/src/*"
+      ],
+      "@hr_recruitment_integration_monster/*": [
+        "../enterprise/hr_recruitment_integration_monster/static/src/*"
+      ],
+      "@pos_settle_due/*": [
+        "../enterprise/pos_settle_due/static/src/*"
+      ],
+      "@sale_renting_crm/*": [
+        "../enterprise/sale_renting_crm/static/src/*"
+      ],
+      "@pos_iot_six/*": [
+        "../enterprise/pos_iot_six/static/src/*"
+      ],
+      "@l10n_ee_reports/*": [
+        "../enterprise/l10n_ee_reports/static/src/*"
+      ],
+      "@website_helpdesk_slides_forum/*": [
+        "../enterprise/website_helpdesk_slides_forum/static/src/*"
+      ],
+      "@helpdesk_stock_account/*": [
+        "../enterprise/helpdesk_stock_account/static/src/*"
+      ],
+      "@l10n_my_hr_payroll/*": [
+        "../enterprise/l10n_my_hr_payroll/static/src/*"
+      ],
+      "@test_discuss_full_../enterprise/*": [
+        "../enterprise/test_discuss_full_../enterprise/static/src/*"
+      ],
+      "@mass_mailing_sale_subscription/*": [
+        "../enterprise/mass_mailing_sale_subscription/static/src/*"
+      ],
+      "@helpdesk_timesheet/*": [
+        "../enterprise/helpdesk_timesheet/static/src/*"
+      ],
+      "@website_generator_sale/*": [
+        "../enterprise/website_generator_sale/static/src/*"
+      ],
+      "@quality/*": [
+        "../enterprise/quality/static/src/*"
+      ],
+      "@test_timer/*": [
+        "../enterprise/test_timer/static/src/*"
+      ],
+      "@purchase_mrp_workorder_quality/*": [
+        "../enterprise/purchase_mrp_workorder_quality/static/src/*"
+      ],
+      "@sale_commission_subscription/*": [
+        "../enterprise/sale_commission_subscription/static/src/*"
+      ],
+      "@stock_barcode_quality_mrp/*": [
+        "../enterprise/stock_barcode_quality_mrp/static/src/*"
+      ],
+      "@l10n_se_reports/*": [
+        "../enterprise/l10n_se_reports/static/src/*"
+      ],
+      "@industry_fsm_repair/*": [
+        "../enterprise/industry_fsm_repair/static/src/*"
+      ],
+      "@project_enterprise_hr_skills/*": [
+        "../enterprise/project_enterprise_hr_skills/static/src/*"
+      ],
+      "@pos_sale_subscription/*": [
+        "../enterprise/pos_sale_subscription/static/src/*"
+      ],
+      "@l10n_ca_payment_cpa005/*": [
+        "../enterprise/l10n_ca_payment_cpa005/static/src/*"
+      ],
+      "@pos_online_payment_self_order_preparation_display/*": [
+        "../enterprise/pos_online_payment_self_order_preparation_display/static/src/*"
+      ],
+      "@l10n_ph_check_printing/*": [
+        "../enterprise/l10n_ph_check_printing/static/src/*"
+      ],
+      "@sale_shopee/*": [
+        "../enterprise/sale_shopee/static/src/*"
+      ],
+      "@website_helpdesk_sale_loyalty/*": [
+        "../enterprise/website_helpdesk_sale_loyalty/static/src/*"
+      ],
+      "@l10n_sg_reports/*": [
+        "../enterprise/l10n_sg_reports/static/src/*"
+      ],
+      "@test_l10n_be_hr_payroll_account/*": [
+        "../enterprise/test_l10n_be_hr_payroll_account/static/src/*"
+      ],
+      "@whatsapp_sale/*": [
+        "../enterprise/whatsapp_sale/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_group_s/*": [
+        "../enterprise/l10n_be_hr_payroll_group_s/static/src/*"
+      ],
+      "@l10n_ar_edi/*": [
+        "../enterprise/l10n_ar_edi/static/src/*"
+      ],
+      "@l10n_in_reports_gstr_pos/*": [
+        "../enterprise/l10n_in_reports_gstr_pos/static/src/*"
+      ],
+      "@l10n_sk_hr_payroll_account/*": [
+        "../enterprise/l10n_sk_hr_payroll_account/static/src/*"
+      ],
+      "@sale_amazon/*": [
+        "../enterprise/sale_amazon/static/src/*"
+      ],
+      "@pos_mobile/*": [
+        "../enterprise/pos_mobile/static/src/*"
+      ],
+      "@l10n_co_edi/*": [
+        "../enterprise/l10n_co_edi/static/src/*"
+      ],
+      "@l10n_ch_hr_payroll_account/*": [
+        "../enterprise/l10n_ch_hr_payroll_account/static/src/*"
+      ],
+      "@voip/*": [
+        "../enterprise/voip/static/src/*"
+      ],
+      "@spreadsheet_dashboard_mrp_account/*": [
+        "../enterprise/spreadsheet_dashboard_mrp_account/static/src/*"
+      ],
+      "@sale_amazon_avatax/*": [
+        "../enterprise/sale_amazon_avatax/static/src/*"
+      ],
+      "@hr_payroll/*": [
+        "../enterprise/hr_payroll/static/src/*"
+      ],
+      "@pos_../enterprise/*": [
+        "../enterprise/pos_../enterprise/static/src/*"
+      ],
+      "@l10n_tr_hr_payroll_account/*": [
+        "../enterprise/l10n_tr_hr_payroll_account/static/src/*"
+      ],
+      "@delivery_starshipit/*": [
+        "../enterprise/delivery_starshipit/static/src/*"
+      ],
+      "@l10n_id_hr_payroll_account/*": [
+        "../enterprise/l10n_id_hr_payroll_account/static/src/*"
+      ],
+      "@industry_fsm_stock/*": [
+        "../enterprise/industry_fsm_stock/static/src/*"
+      ],
+      "@l10n_be_hr_payroll/*": [
+        "../enterprise/l10n_be_hr_payroll/static/src/*"
+      ],
+      "@pos_tyro/*": [
+        "../enterprise/pos_tyro/static/src/*"
+      ],
+      "@stock_barcode_quality_control/*": [
+        "../enterprise/stock_barcode_quality_control/static/src/*"
+      ],
+      "@sale_renting_planning/*": [
+        "../enterprise/sale_renting_planning/static/src/*"
+      ],
+      "@helpdesk_fsm/*": [
+        "../enterprise/helpdesk_fsm/static/src/*"
+      ],
+      "@account_online_payment/*": [
+        "../enterprise/account_online_payment/static/src/*"
+      ],
+      "@crm_helpdesk/*": [
+        "../enterprise/crm_helpdesk/static/src/*"
+      ],
+      "@pos_restaurant_preparation_display/*": [
+        "../enterprise/pos_restaurant_preparation_display/static/src/*"
+      ],
+      "@sale_planning/*": [
+        "../enterprise/sale_planning/static/src/*"
+      ],
+      "@sale_renting_sign/*": [
+        "../enterprise/sale_renting_sign/static/src/*"
+      ],
+      "@account_avatax_geolocalize/*": [
+        "../enterprise/account_avatax_geolocalize/static/src/*"
+      ],
+      "@hr_appraisal_contract/*": [
+        "../enterprise/hr_appraisal_contract/static/src/*"
+      ],
+      "@hr_payroll_account_iso20022/*": [
+        "../enterprise/hr_payroll_account_iso20022/static/src/*"
+      ],
+      "@test_web_cohort/*": [
+        "../enterprise/test_web_cohort/static/src/*"
+      ],
+      "@marketing_automation/*": [
+        "../enterprise/marketing_automation/static/src/*"
+      ],
+      "@quality_iot/*": [
+        "../enterprise/quality_iot/static/src/*"
+      ],
+      "@industry_fsm_report/*": [
+        "../enterprise/industry_fsm_report/static/src/*"
+      ],
+      "@helpdesk_fsm_sale/*": [
+        "../enterprise/helpdesk_fsm_sale/static/src/*"
+      ],
+      "@appointment_hr_recruitment/*": [
+        "../enterprise/appointment_hr_recruitment/static/src/*"
+      ],
+      "@sale_subscription_external_tax/*": [
+        "../enterprise/sale_subscription_external_tax/static/src/*"
+      ],
+      "@web_grid/*": [
+        "../enterprise/web_grid/static/src/*"
+      ],
+      "@l10n_jo_hr_payroll/*": [
+        "../enterprise/l10n_jo_hr_payroll/static/src/*"
+      ],
+      "@l10n_uk_bacs/*": [
+        "../enterprise/l10n_uk_bacs/static/src/*"
+      ],
+      "@account_avatax_stock/*": [
+        "../enterprise/account_avatax_stock/static/src/*"
+      ],
+      "@l10n_br_test_avatax_sale/*": [
+        "../enterprise/l10n_br_test_avatax_sale/static/src/*"
+      ],
+      "@industry_fsm_sale/*": [
+        "../enterprise/industry_fsm_sale/static/src/*"
+      ],
+      "@l10n_ke_edi_oscu_pos/*": [
+        "../enterprise/l10n_ke_edi_oscu_pos/static/src/*"
+      ],
+      "@l10n_be_reports_sms/*": [
+        "../enterprise/l10n_be_reports_sms/static/src/*"
+      ],
+      "@l10n_ec_reports_ats/*": [
+        "../enterprise/l10n_ec_reports_ats/static/src/*"
+      ],
+      "@account_accountant_check_printing/*": [
+        "../enterprise/account_accountant_check_printing/static/src/*"
+      ],
+      "@l10n_mx_xml_polizas/*": [
+        "../enterprise/l10n_mx_xml_polizas/static/src/*"
+      ],
+      "@test_event_full_../enterprise/*": [
+        "../enterprise/test_event_full_../enterprise/static/src/*"
+      ],
+      "@l10n_ca_check_printing/*": [
+        "../enterprise/l10n_ca_check_printing/static/src/*"
+      ],
+      "@l10n_de_pos_res_cert/*": [
+        "../enterprise/l10n_de_pos_res_cert/static/src/*"
+      ],
+      "@sale_renting_project/*": [
+        "../enterprise/sale_renting_project/static/src/*"
+      ],
+      "@sale_account_accountant/*": [
+        "../enterprise/sale_account_accountant/static/src/*"
+      ],
+      "@social_instagram/*": [
+        "../enterprise/social_instagram/static/src/*"
+      ],
+      "@l10n_nl_hr_payroll/*": [
+        "../enterprise/l10n_nl_hr_payroll/static/src/*"
+      ],
+      "@website_helpdesk/*": [
+        "../enterprise/website_helpdesk/static/src/*"
+      ],
+      "@hr_appraisal_skills/*": [
+        "../enterprise/hr_appraisal_skills/static/src/*"
+      ],
+      "@l10n_ph_reports/*": [
+        "../enterprise/l10n_ph_reports/static/src/*"
+      ],
+      "@whatsapp_delivery/*": [
+        "../enterprise/whatsapp_delivery/static/src/*"
+      ],
+      "@l10n_pl_hr_payroll/*": [
+        "../enterprise/l10n_pl_hr_payroll/static/src/*"
+      ],
+      "@l10n_pk_reports/*": [
+        "../enterprise/l10n_pk_reports/static/src/*"
+      ],
+      "@sale_timesheet_enterprise_holidays/*": [
+        "../enterprise/sale_timesheet_enterprise_holidays/static/src/*"
+      ],
+      "@stock_barcode_mrp_subcontracting/*": [
+        "../enterprise/stock_barcode_mrp_subcontracting/static/src/*"
+      ],
+      "@appointment_crm/*": [
+        "../enterprise/appointment_crm/static/src/*"
+      ],
+      "@hr_payroll_planning/*": [
+        "../enterprise/hr_payroll_planning/static/src/*"
+      ],
+      "@accountant/*": [
+        "../enterprise/accountant/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_dimona/*": [
+        "../enterprise/l10n_be_hr_payroll_dimona/static/src/*"
+      ],
+      "@whatsapp_pos/*": [
+        "../enterprise/whatsapp_pos/static/src/*"
+      ],
+      "@hr_mobile/*": [
+        "../enterprise/hr_mobile/static/src/*"
+      ],
+      "@l10n_pl_reports_pos_jpk/*": [
+        "../enterprise/l10n_pl_reports_pos_jpk/static/src/*"
+      ],
+      "@stock_barcode/*": [
+        "../enterprise/stock_barcode/static/src/*"
+      ],
+      "@pos_urban_piper_ubereats/*": [
+        "../enterprise/pos_urban_piper_ubereats/static/src/*"
+      ],
+      "@hr_recruitment_integration_skills_monster/*": [
+        "../enterprise/hr_recruitment_integration_skills_monster/static/src/*"
+      ],
+      "@l10n_pt_reports/*": [
+        "../enterprise/l10n_pt_reports/static/src/*"
+      ],
+      "@l10n_eu_oss_reports/*": [
+        "../enterprise/l10n_eu_oss_reports/static/src/*"
+      ],
+      "@web_mobile/*": [
+        "../enterprise/web_mobile/static/src/*"
+      ],
+      "@helpdesk_fsm_report/*": [
+        "../enterprise/helpdesk_fsm_report/static/src/*"
+      ],
+      "@quality_repair/*": [
+        "../enterprise/quality_repair/static/src/*"
+      ],
+      "@l10n_fr_intrastat/*": [
+        "../enterprise/l10n_fr_intrastat/static/src/*"
+      ],
+      "@website_helpdesk_knowledge/*": [
+        "../enterprise/website_helpdesk_knowledge/static/src/*"
+      ],
+      "@account_bank_statement_import_camt/*": [
+        "../enterprise/account_bank_statement_import_camt/static/src/*"
+      ],
+      "@l10n_cl_edi_stock/*": [
+        "../enterprise/l10n_cl_edi_stock/static/src/*"
+      ],
+      "@l10n_ma_hr_payroll_account/*": [
+        "../enterprise/l10n_ma_hr_payroll_account/static/src/*"
+      ],
+      "@l10n_in_enet_batch_payment/*": [
+        "../enterprise/l10n_in_enet_batch_payment/static/src/*"
+      ],
+      "@website_delivery_sendcloud/*": [
+        "../enterprise/website_delivery_sendcloud/static/src/*"
+      ],
+      "@appointment_account_payment/*": [
+        "../enterprise/appointment_account_payment/static/src/*"
+      ],
+      "@l10n_nl_reports/*": [
+        "../enterprise/l10n_nl_reports/static/src/*"
+      ],
+      "@pos_barcodelookup/*": [
+        "../enterprise/pos_barcodelookup/static/src/*"
+      ],
+      "@project_hr_payroll_account/*": [
+        "../enterprise/project_hr_payroll_account/static/src/*"
+      ],
+      "@spreadsheet_dashboard_hr_payroll/*": [
+        "../enterprise/spreadsheet_dashboard_hr_payroll/static/src/*"
+      ],
+      "@social_demo/*": [
+        "../enterprise/social_demo/static/src/*"
+      ],
+      "@project_timesheet_forecast_sale/*": [
+        "../enterprise/project_timesheet_forecast_sale/static/src/*"
+      ],
+      "@l10n_es_real_estates/*": [
+        "../enterprise/l10n_es_real_estates/static/src/*"
+      ],
+      "@website_documents/*": [
+        "../enterprise/website_documents/static/src/*"
+      ],
+      "@whatsapp_hr_referral/*": [
+        "../enterprise/whatsapp_hr_referral/static/src/*"
+      ],
+      "@project_account_budget/*": [
+        "../enterprise/project_account_budget/static/src/*"
+      ],
+      "@l10n_lt_saft/*": [
+        "../enterprise/l10n_lt_saft/static/src/*"
+      ],
+      "@l10n_nl_intrastat/*": [
+        "../enterprise/l10n_nl_intrastat/static/src/*"
+      ],
+      "@social_twitter/*": [
+        "../enterprise/social_twitter/static/src/*"
+      ],
+      "@l10n_nl_reports_sbr_status_info/*": [
+        "../enterprise/l10n_nl_reports_sbr_status_info/static/src/*"
+      ],
+      "@l10n_pe_edi_stock/*": [
+        "../enterprise/l10n_pe_edi_stock/static/src/*"
+      ],
+      "@l10n_in_reports_gstr_spreadsheet/*": [
+        "../enterprise/l10n_in_reports_gstr_spreadsheet/static/src/*"
+      ],
+      "@l10n_no_saft/*": [
+        "../enterprise/l10n_no_saft/static/src/*"
+      ],
+      "@website_appointment/*": [
+        "../enterprise/website_appointment/static/src/*"
+      ],
+      "@sale_commission/*": [
+        "../enterprise/sale_commission/static/src/*"
+      ],
+      "@spreadsheet_dashboard_purchase_stock/*": [
+        "../enterprise/spreadsheet_dashboard_purchase_stock/static/src/*"
+      ],
+      "@hr_recruitment_integration_base/*": [
+        "../enterprise/hr_recruitment_integration_base/static/src/*"
+      ],
+      "@quality_mrp/*": [
+        "../enterprise/quality_mrp/static/src/*"
+      ],
+      "@l10n_ke_reports/*": [
+        "../enterprise/l10n_ke_reports/static/src/*"
+      ],
+      "@mrp_subcontracting_quality/*": [
+        "../enterprise/mrp_subcontracting_quality/static/src/*"
+      ],
+      "@test_l10n_us_hr_payroll_account/*": [
+        "../enterprise/test_l10n_us_hr_payroll_account/static/src/*"
+      ],
+      "@delivery_sendcloud/*": [
+        "../enterprise/delivery_sendcloud/static/src/*"
+      ],
+      "@documents_hr/*": [
+        "../enterprise/documents_hr/static/src/*"
+      ],
+      "@l10n_us_hr_payroll_account/*": [
+        "../enterprise/l10n_us_hr_payroll_account/static/src/*"
+      ],
+      "@hr_recruitment_sign/*": [
+        "../enterprise/hr_recruitment_sign/static/src/*"
+      ],
+      "@data_merge_utm/*": [
+        "../enterprise/data_merge_utm/static/src/*"
+      ],
+      "@website_event_track_social/*": [
+        "../enterprise/website_event_track_social/static/src/*"
+      ],
+      "@appointment_google_calendar/*": [
+        "../enterprise/appointment_google_calendar/static/src/*"
+      ],
+      "@l10n_ca_reports/*": [
+        "../enterprise/l10n_ca_reports/static/src/*"
+      ],
+      "@marketing_automation_sms/*": [
+        "../enterprise/marketing_automation_sms/static/src/*"
+      ],
+      "@l10n_pk_hr_payroll_account/*": [
+        "../enterprise/l10n_pk_hr_payroll_account/static/src/*"
+      ],
+      "@l10n_in_hr_payroll/*": [
+        "../enterprise/l10n_in_hr_payroll/static/src/*"
+      ],
+      "@website_appointment_account_payment/*": [
+        "../enterprise/website_appointment_account_payment/static/src/*"
+      ],
+      "@l10n_au_reports/*": [
+        "../enterprise/l10n_au_reports/static/src/*"
+      ],
+      "@l10n_pe_edi/*": [
+        "../enterprise/l10n_pe_edi/static/src/*"
+      ],
+      "@account_bank_statement_import/*": [
+        "../enterprise/account_bank_statement_import/static/src/*"
+      ],
+      "@test_spreadsheet_edition/*": [
+        "../enterprise/test_spreadsheet_edition/static/src/*"
+      ],
+      "@account_online_synchronization/*": [
+        "../enterprise/account_online_synchronization/static/src/*"
+      ],
+      "@pos_l10n_se/*": [
+        "../enterprise/pos_l10n_se/static/src/*"
+      ],
+      "@spreadsheet_dashboard_sale_subscription/*": [
+        "../enterprise/spreadsheet_dashboard_sale_subscription/static/src/*"
+      ],
+      "@pos_account_reports/*": [
+        "../enterprise/pos_account_reports/static/src/*"
+      ],
+      "@mrp_mps/*": [
+        "../enterprise/mrp_mps/static/src/*"
+      ],
+      "@hr_recruitment_integration_website/*": [
+        "../enterprise/hr_recruitment_integration_website/static/src/*"
+      ],
+      "@partner_commission/*": [
+        "../enterprise/partner_commission/static/src/*"
+      ],
+      "@l10n_de_intrastat/*": [
+        "../enterprise/l10n_de_intrastat/static/src/*"
+      ],
+      "@l10n_vn_reports/*": [
+        "../enterprise/l10n_vn_reports/static/src/*"
+      ],
+      "@l10n_sa_hr_payroll/*": [
+        "../enterprise/l10n_sa_hr_payroll/static/src/*"
+      ],
+      "@stock_barcode_picking_batch/*": [
+        "../enterprise/stock_barcode_picking_batch/static/src/*"
+      ],
+      "@l10n_br_edi_stock/*": [
+        "../enterprise/l10n_br_edi_stock/static/src/*"
+      ],
+      "@project_enterprise_hr_contract/*": [
+        "../enterprise/project_enterprise_hr_contract/static/src/*"
+      ],
+      "@contacts_../enterprise/*": [
+        "../enterprise/contacts_../enterprise/static/src/*"
+      ],
+      "@l10n_din5008_account_followup/*": [
+        "../enterprise/l10n_din5008_account_followup/static/src/*"
+      ],
+      "@hr_recruitment_reports/*": [
+        "../enterprise/hr_recruitment_reports/static/src/*"
+      ],
+      "@l10n_uk_hmrc/*": [
+        "../enterprise/l10n_uk_hmrc/static/src/*"
+      ],
+      "@spreadsheet_dashboard_helpdesk/*": [
+        "../enterprise/spreadsheet_dashboard_helpdesk/static/src/*"
+      ],
+      "@l10n_in_qr_code_bill_scan/*": [
+        "../enterprise/l10n_in_qr_code_bill_scan/static/src/*"
+      ],
+      "@l10n_lt_hr_payroll_account/*": [
+        "../enterprise/l10n_lt_hr_payroll_account/static/src/*"
+      ],
+      "@l10n_lt_hr_payroll/*": [
+        "../enterprise/l10n_lt_hr_payroll/static/src/*"
+      ],
+      "@test_l10n_hk_hr_payroll_account/*": [
+        "../enterprise/test_l10n_hk_hr_payroll_account/static/src/*"
+      ],
+      "@pos_urban_piper/*": [
+        "../enterprise/pos_urban_piper/static/src/*"
+      ],
+      "@whatsapp_payment/*": [
+        "../enterprise/whatsapp_payment/static/src/*"
+      ],
+      "@delivery_usps_rest/*": [
+        "../enterprise/delivery_usps_rest/static/src/*"
+      ],
+      "@iot/*": [
+        "../enterprise/iot/static/src/*"
+      ],
+      "@l10n_lu_hr_payroll/*": [
+        "../enterprise/l10n_lu_hr_payroll/static/src/*"
+      ],
+      "@l10n_si_reports/*": [
+        "../enterprise/l10n_si_reports/static/src/*"
+      ],
+      "@l10n_ma_reports/*": [
+        "../enterprise/l10n_ma_reports/static/src/*"
+      ],
+      "@l10n_br_avatax_sale/*": [
+        "../enterprise/l10n_br_avatax_sale/static/src/*"
+      ],
+      "@crm_enterprise_partner_assign/*": [
+        "../enterprise/crm_enterprise_partner_assign/static/src/*"
+      ],
+      "@mrp_plm/*": [
+        "../enterprise/mrp_plm/static/src/*"
+      ],
+      "@l10n_mx_hr_payroll_account/*": [
+        "../enterprise/l10n_mx_hr_payroll_account/static/src/*"
+      ],
+      "@account_accountant/*": [
+        "../enterprise/account_accountant/static/src/*"
+      ],
+      "@documents_fsm/*": [
+        "../enterprise/documents_fsm/static/src/*"
+      ],
+      "@quality_control_worksheet/*": [
+        "../enterprise/quality_control_worksheet/static/src/*"
+      ],
+      "@l10n_pk_hr_payroll/*": [
+        "../enterprise/l10n_pk_hr_payroll/static/src/*"
+      ],
+      "@maintenance_worksheet/*": [
+        "../enterprise/maintenance_worksheet/static/src/*"
+      ],
+      "@l10n_ee_intrastat/*": [
+        "../enterprise/l10n_ee_intrastat/static/src/*"
+      ],
+      "@web_studio/*": [
+        "../enterprise/web_studio/static/src/*"
+      ],
+      "@l10n_bd_hr_payroll/*": [
+        "../enterprise/l10n_bd_hr_payroll/static/src/*"
+      ],
+      "@mrp_workorder_iot/*": [
+        "../enterprise/mrp_workorder_iot/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_prisma/*": [
+        "../enterprise/l10n_be_hr_payroll_prisma/static/src/*"
+      ],
+      "@l10n_ec_edi_stock/*": [
+        "../enterprise/l10n_ec_edi_stock/static/src/*"
+      ],
+      "@sale_intrastat/*": [
+        "../enterprise/sale_intrastat/static/src/*"
+      ],
+      "@test_marketing_automation/*": [
+        "../enterprise/test_marketing_automation/static/src/*"
+      ],
+      "@planning/*": [
+        "../enterprise/planning/static/src/*"
+      ],
+      "@account_reports/*": [
+        "../enterprise/account_reports/static/src/*"
+      ],
+      "@delivery_ups/*": [
+        "../enterprise/delivery_ups/static/src/*"
+      ],
+      "@hr_work_entry_contract_planning_attendance/*": [
+        "../enterprise/hr_work_entry_contract_planning_attendance/static/src/*"
+      ],
+      "@l10n_ke_hr_payroll_account/*": [
+        "../enterprise/l10n_ke_hr_payroll_account/static/src/*"
+      ],
+      "@hr_appraisal/*": [
+        "../enterprise/hr_appraisal/static/src/*"
+      ],
+      "@data_merge_crm/*": [
+        "../enterprise/data_merge_crm/static/src/*"
+      ],
+      "@account_iso20022/*": [
+        "../enterprise/account_iso20022/static/src/*"
+      ],
+      "@data_cleaning/*": [
+        "../enterprise/data_cleaning/static/src/*"
+      ],
+      "@sale_mrp_renting/*": [
+        "../enterprise/sale_mrp_renting/static/src/*"
+      ],
+      "@sign/*": [
+        "../enterprise/sign/static/src/*"
+      ],
+      "@delivery_easypost/*": [
+        "../enterprise/delivery_easypost/static/src/*"
+      ],
+      "@l10n_us_check_printing/*": [
+        "../enterprise/l10n_us_check_printing/static/src/*"
+      ],
+      "@approvals/*": [
+        "../enterprise/approvals/static/src/*"
+      ],
+      "@website_../enterprise/*": [
+        "../enterprise/website_../enterprise/static/src/*"
+      ],
+      "@hr_payroll_fleet/*": [
+        "../enterprise/hr_payroll_fleet/static/src/*"
+      ],
+      "@delivery_usps/*": [
+        "../enterprise/delivery_usps/static/src/*"
+      ],
+      "@l10n_be_hr_contract_salary/*": [
+        "../enterprise/l10n_be_hr_contract_salary/static/src/*"
+      ],
+      "@quality_mrp_workorder_iot/*": [
+        "../enterprise/quality_mrp_workorder_iot/static/src/*"
+      ],
+      "@appointment/*": [
+        "../enterprise/appointment/static/src/*"
+      ],
+      "@delivery_bpost/*": [
+        "../enterprise/delivery_bpost/static/src/*"
+      ],
+      "@l10n_in_reports/*": [
+        "../enterprise/l10n_in_reports/static/src/*"
+      ],
+      "@l10n_uy_edi/*": [
+        "../enterprise/l10n_uy_edi/static/src/*"
+      ],
+      "@website_helpdesk_forum/*": [
+        "../enterprise/website_helpdesk_forum/static/src/*"
+      ],
+      "@data_merge_stock_account/*": [
+        "../enterprise/data_merge_stock_account/static/src/*"
+      ],
+      "@account_followup/*": [
+        "../enterprise/account_followup/static/src/*"
+      ],
+      "@l10n_sk_hr_payroll/*": [
+        "../enterprise/l10n_sk_hr_payroll/static/src/*"
+      ],
+      "@account_disallowed_expenses/*": [
+        "../enterprise/account_disallowed_expenses/static/src/*"
+      ],
+      "@documents_product/*": [
+        "../enterprise/documents_product/static/src/*"
+      ],
+      "@mrp_workorder_hr_account/*": [
+        "../enterprise/mrp_workorder_hr_account/static/src/*"
+      ],
+      "@documents_l10n_ch_hr_payroll/*": [
+        "../enterprise/documents_l10n_ch_hr_payroll/static/src/*"
+      ],
+      "@l10n_cy_reports/*": [
+        "../enterprise/l10n_cy_reports/static/src/*"
+      ],
+      "@l10n_hk_reports/*": [
+        "../enterprise/l10n_hk_reports/static/src/*"
+      ],
+      "@sale_subscription/*": [
+        "../enterprise/sale_subscription/static/src/*"
+      ],
+      "@documents/*": [
+        "../enterprise/documents/static/src/*"
+      ],
+      "@hr_payroll_holidays/*": [
+        "../enterprise/hr_payroll_holidays/static/src/*"
+      ],
+      "@stock_barcode_mrp/*": [
+        "../enterprise/stock_barcode_mrp/static/src/*"
+      ],
+      "@account_base_import/*": [
+        "../enterprise/account_base_import/static/src/*"
+      ],
+      "@l10n_co_dian/*": [
+        "../enterprise/l10n_co_dian/static/src/*"
+      ],
+      "@pos_pricer/*": [
+        "../enterprise/pos_pricer/static/src/*"
+      ],
+      "@l10n_mx_reports/*": [
+        "../enterprise/l10n_mx_reports/static/src/*"
+      ],
+      "@social_sale/*": [
+        "../enterprise/social_sale/static/src/*"
+      ],
+      "@hr_expense_predict_product/*": [
+        "../enterprise/hr_expense_predict_product/static/src/*"
+      ],
+      "@l10n_be_codabox/*": [
+        "../enterprise/l10n_be_codabox/static/src/*"
+      ],
+      "@hr_holidays_gantt/*": [
+        "../enterprise/hr_holidays_gantt/static/src/*"
+      ],
+      "@l10n_be_account_disallowed_expenses_fleet/*": [
+        "../enterprise/l10n_be_account_disallowed_expenses_fleet/static/src/*"
+      ],
+      "@website_sale_external_tax/*": [
+        "../enterprise/website_sale_external_tax/static/src/*"
+      ],
+      "@project_enterprise_hr/*": [
+        "../enterprise/project_enterprise_hr/static/src/*"
+      ],
+      "@l10n_bd_reports/*": [
+        "../enterprise/l10n_bd_reports/static/src/*"
+      ],
+      "@l10n_de_reports/*": [
+        "../enterprise/l10n_de_reports/static/src/*"
+      ],
+      "@l10n_cl_edi_website_sale/*": [
+        "../enterprise/l10n_cl_edi_website_sale/static/src/*"
+      ],
+      "@data_merge_project/*": [
+        "../enterprise/data_merge_project/static/src/*"
+      ],
+      "@crm_../enterprise/*": [
+        "../enterprise/crm_../enterprise/static/src/*"
+      ],
+      "@stock_accountant/*": [
+        "../enterprise/stock_accountant/static/src/*"
+      ],
+      "@spreadsheet_edition/*": [
+        "../enterprise/spreadsheet_edition/static/src/*"
+      ],
+      "@l10n_no_reports/*": [
+        "../enterprise/l10n_no_reports/static/src/*"
+      ],
+      "@analytic_../enterprise/*": [
+        "../enterprise/analytic_../enterprise/static/src/*"
+      ],
+      "@l10n_lv_reports/*": [
+        "../enterprise/l10n_lv_reports/static/src/*"
+      ],
+      "@spreadsheet_dashboard_crm/*": [
+        "../enterprise/spreadsheet_dashboard_crm/static/src/*"
+      ],
+      "@l10n_be_intrastat/*": [
+        "../enterprise/l10n_be_intrastat/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_account/*": [
+        "../enterprise/l10n_be_hr_payroll_account/static/src/*"
+      ],
+      "@l10n_be_hr_payroll_fleet/*": [
+        "../enterprise/l10n_be_hr_payroll_fleet/static/src/*"
+      ],
+      "@helpdesk_mail_plugin/*": [
+        "../enterprise/helpdesk_mail_plugin/static/src/*"
+      ],
+      "@documents_l10n_be_hr_payroll/*": [
+        "../enterprise/documents_l10n_be_hr_payroll/static/src/*"
+      ],
+      "@l10n_us_hr_payroll_adp/*": [
+        "../enterprise/l10n_us_hr_payroll_adp/static/src/*"
+      ],
+      "@spreadsheet_dashboard_hr_referral/*": [
+        "../enterprise/spreadsheet_dashboard_hr_referral/static/src/*"
+      ],
+      "@l10n_us_hr_payroll/*": [
+        "../enterprise/l10n_us_hr_payroll/static/src/*"
+      ],
+      "@documents_l10n_ke_hr_payroll/*": [
+        "../enterprise/documents_l10n_ke_hr_payroll/static/src/*"
+      ],
+      "@website_sale_fedex/*": [
+        "../enterprise/website_sale_fedex/static/src/*"
+      ],
+      "@l10n_mx_edi_pos/*": [
+        "../enterprise/l10n_mx_edi_pos/static/src/*"
+      ],
+      "@approvals_purchase_stock/*": [
+        "../enterprise/approvals_purchase_stock/static/src/*"
+      ],
+      "@test_web_studio/*": [
+        "../enterprise/test_web_studio/static/src/*"
+      ],
+      "@social_facebook/*": [
+        "../enterprise/social_facebook/static/src/*"
+      ],
+      "@account_avatax/*": [
+        "../enterprise/account_avatax/static/src/*"
+      ],
+      "@helpdesk_repair/*": [
+        "../enterprise/helpdesk_repair/static/src/*"
+      ],
+      "@spreadsheet_dashboard_documents/*": [
+        "../enterprise/spreadsheet_dashboard_documents/static/src/*"
+      ],
+      "@quality_control_iot/*": [
+        "../enterprise/quality_control_iot/static/src/*"
+      ],
+      "@l10n_th_reports/*": [
+        "../enterprise/l10n_th_reports/static/src/*"
+      ],
+      "@purchase_intrastat/*": [
+        "../enterprise/purchase_intrastat/static/src/*"
+      ],
+      "@l10n_zm_reports/*": [
+        "../enterprise/l10n_zm_reports/static/src/*"
+      ],
+      "@appointment_sms/*": [
+        "../enterprise/appointment_sms/static/src/*"
+      ],
+      "@mrp_account_../enterprise/*": [
+        "../enterprise/mrp_account_../enterprise/static/src/*"
+      ],
+      "@l10n_au_aba/*": [
+        "../enterprise/l10n_au_aba/static/src/*"
+      ],
+      "@l10n_mx_edi_website_sale/*": [
+        "../enterprise/l10n_mx_edi_website_sale/static/src/*"
+      ],
+      "@l10n_dk_saft_import/*": [
+        "../enterprise/l10n_dk_saft_import/static/src/*"
+      ],
+      "@documents_sign/*": [
+        "../enterprise/documents_sign/static/src/*"
+      ],
+      "@l10n_cl_reports/*": [
+        "../enterprise/l10n_cl_reports/static/src/*"
+      ],
+      "@l10n_in_reports_tds_tcs/*": [
+        "../enterprise/l10n_in_reports_tds_tcs/static/src/*"
+      ],
+      "@l10n_be_disallowed_expenses/*": [
+        "../enterprise/l10n_be_disallowed_expenses/static/src/*"
+      ],
+      "@l10n_lt_saft_import/*": [
+        "../enterprise/l10n_lt_saft_import/static/src/*"
+      ],
+      "@documents_account_peppol/*": [
+        "../enterprise/documents_account_peppol/static/src/*"
+      ],
+      "@delivery_envia/*": [
+        "../enterprise/delivery_envia/static/src/*"
+      ],
+      "@website_sale_ups/*": [
+        "../enterprise/website_sale_ups/static/src/*"
+      ],
+      "@delivery_shiprocket/*": [
+        "../enterprise/delivery_shiprocket/static/src/*"
+      ],
+      "@account_auto_transfer/*": [
+        "../enterprise/account_auto_transfer/static/src/*"
+      ],
+      "@l10n_nl_hr_payroll_account/*": [
+        "../enterprise/l10n_nl_hr_payroll_account/static/src/*"
+      ],
+      "@helpdesk/*": [
+        "../enterprise/helpdesk/static/src/*"
+      ],
+      "@account_inter_company_rules/*": [
+        "../enterprise/account_inter_company_rules/static/src/*"
+      ],
+      "@l10n_cl_edi/*": [
+        "../enterprise/l10n_cl_edi/static/src/*"
+      ],
+      "@l10n_nz_eft/*": [
+        "../enterprise/l10n_nz_eft/static/src/*"
+      ],
+      "@hr_contract_salary_payroll/*": [
+        "../enterprise/hr_contract_salary_payroll/static/src/*"
+      ],
+      "@l10n_ec_edi/*": [
+        "../enterprise/l10n_ec_edi/static/src/*"
+      ],
+      "@industry_fsm/*": [
+        "../enterprise/industry_fsm/static/src/*"
+      ],
+      "@l10n_lt_reports/*": [
+        "../enterprise/l10n_lt_reports/static/src/*"
+      ],
+      "@documents_approvals/*": [
+        "../enterprise/documents_approvals/static/src/*"
+      ],
+      "@l10n_br_edi_sale/*": [
+        "../enterprise/l10n_br_edi_sale/static/src/*"
+      ],
+      "@l10n_ke_edi_oscu_stock/*": [
+        "../enterprise/l10n_ke_edi_oscu_stock/static/src/*"
+      ],
+      "@l10n_ec_edi_pos/*": [
+        "../enterprise/l10n_ec_edi_pos/static/src/*"
+      ],
+      "@l10n_hk_hr_payroll/*": [
+        "../enterprise/l10n_hk_hr_payroll/static/src/*"
+      ],
+      "@l10n_uk_reports_cis/*": [
+        "../enterprise/l10n_uk_reports_cis/static/src/*"
+      ],
+      "@test_appointment_full/*": [
+        "../enterprise/test_appointment_full/static/src/*"
+      ],
+      "@spreadsheet_dashboard_hr_contract/*": [
+        "../enterprise/spreadsheet_dashboard_hr_contract/static/src/*"
+      ],
+      "@mrp_subcontracting_account_../enterprise/*": [
+        "../enterprise/mrp_subcontracting_account_../enterprise/static/src/*"
+      ],
+      "@l10n_cz_reports/*": [
+        "../enterprise/l10n_cz_reports/static/src/*"
+      ],
+      "@hr_recruitment_extract/*": [
+        "../enterprise/hr_recruitment_extract/static/src/*"
+      ],
+      "@appointment_hr/*": [
+        "../enterprise/appointment_hr/static/src/*"
+      ],
+      "@stock_intrastat/*": [
+        "../enterprise/stock_intrastat/static/src/*"
+      ],
+      "@l10n_sa_hr_payroll_account/*": [
+        "../enterprise/l10n_sa_hr_payroll_account/static/src/*"
+      ],
+      "@website_appointment_sale_project/*": [
+        "../enterprise/website_appointment_sale_project/static/src/*"
+      ],
+      "@l10n_au_hr_payroll/*": [
+        "../enterprise/l10n_au_hr_payroll/static/src/*"
+      ],
+      "@timesheet_grid_holidays/*": [
+        "../enterprise/timesheet_grid_holidays/static/src/*"
+      ],
+      "@iap_extract/*": [
+        "../enterprise/iap_extract/static/src/*"
+      ],
+      "@quality_mrp_workorder_worksheet/*": [
+        "../enterprise/quality_mrp_workorder_worksheet/static/src/*"
+      ],
+      "@l10n_be_coda/*": [
+        "../enterprise/l10n_be_coda/static/src/*"
+      ],
+      "@hr_expense_extract/*": [
+        "../enterprise/hr_expense_extract/static/src/*"
+      ],
+      "@delivery_fedex_rest/*": [
+        "../enterprise/delivery_fedex_rest/static/src/*"
+      ],
+      "@web_map/*": [
+        "../enterprise/web_map/static/src/*"
+      ],
+      "@website_product_barcodelookup/*": [
+        "../enterprise/website_product_barcodelookup/static/src/*"
+      ],
+      "@l10n_us_reports/*": [
+        "../enterprise/l10n_us_reports/static/src/*"
+      ],
+      "@l10n_nl_reports_sbr/*": [
+        "../enterprise/l10n_nl_reports_sbr/static/src/*"
+      ],
+      "@mrp_subcontracting_../enterprise/*": [
+        "../enterprise/mrp_subcontracting_../enterprise/static/src/*"
+      ],
+      "@timesheet_grid/*": [
+        "../enterprise/timesheet_grid/static/src/*"
+      ],
+      "@stock_barcode_barcodelookup/*": [
+        "../enterprise/stock_barcode_barcodelookup/static/src/*"
+      ],
+      "@account_loans/*": [
+        "../enterprise/account_loans/static/src/*"
+      ],
+      "@l10n_mx_edi_landing/*": [
+        "../enterprise/l10n_mx_edi_landing/static/src/*"
+      ],
+      "@account_bank_statement_import_qif/*": [
+        "../enterprise/account_bank_statement_import_qif/static/src/*"
+      ],
+      "@knowledge/*": [
+        "../enterprise/knowledge/static/src/*"
+      ],
+      "@l10n_fr_hr_payroll/*": [
+        "../enterprise/l10n_fr_hr_payroll/static/src/*"
+      ],
+      "@account_budget/*": [
+        "../enterprise/account_budget/static/src/*"
+      ],
+      "@l10n_mx_hr_payroll_localisation/*": [
+        "../enterprise/l10n_mx_hr_payroll_localisation/static/src/*"
+      ],
+      "@l10n_employment_hero/*": [
+        "../enterprise/l10n_employment_hero/static/src/*"
+      ],
+      "@l10n_mx_edi_stock/*": [
+        "../enterprise/l10n_mx_edi_stock/static/src/*"
+      ],
+      "@account_bank_statement_import_csv/*": [
+        "../enterprise/account_bank_statement_import_csv/static/src/*"
+      ],
+      "@l10n_in_hr_payroll_account/*": [
+        "../enterprise/l10n_in_hr_payroll_account/static/src/*"
+      ],
+      "@odoo/owl": [
+        "../community/addons/web/static/lib/owl/owl.js"
+      ]
+    }
+  },
+  "exclude": [
+    "/**/*.po",
+    "/**/*.py",
+    "/**/*.pyc",
+    "/**/*.xml",
+    "/**/*.png",
+    "/**/*.md",
+    "/**/*.dat",
+    "/**/*.scss",
+    "/**/*.jpg",
+    "/**/*.svg",
+    "/**/*.pot",
+    "/**/*.csv",
+    "/**/*.mo",
+    "/**/*.txt",
+    "/**/*.less",
+    "/**/*.bcmap",
+    "/**/*.properties",
+    "/**/*.html",
+    "/**/*.ttf",
+    "/**/*.rst",
+    "/**/*.css",
+    "/**/*.pack",
+    "/**/*.idx",
+    "/**/*.h",
+    "/**/*.map",
+    "/**/*.gif",
+    "/**/*.sample",
+    "/**/*.doctree",
+    "/**/*.so",
+    "/**/*.pdf",
+    "/**/*.xslt",
+    "/**/*.conf",
+    "/**/*.woff",
+    "/**/*.xsd",
+    "/**/*.eot",
+    "/**/*.jst",
+    "/**/*.flow",
+    "/**/*.sh",
+    "/**/*.yml",
+    "/**/*.pfb",
+    "/**/*.jpeg",
+    "/**/*.crt",
+    "/**/*.template",
+    "/**/*.pxd",
+    "/**/*.dylib",
+    "/**/*.pem",
+    "/**/*.rng",
+    "/**/*.xsl",
+    "/**/*.xls",
+    "/**/*.cfg",
+    "/**/*.pyi",
+    "/**/*.pth",
+    "/**/*.markdown",
+    "/**/*.key",
+    "/**/*.ico"
+  ]
+}
