@@ -82,8 +82,8 @@ class EstateProperty(models.Model):
             for offer in record.property_offer_ids:
                 if new_offer_price < offer.price:
                     raise ValidationError(_("Cannot create an offer with a lower amount than an existing offer."))
-                if record.state == 'new':
-                    record.state = 'offer_received'
+            if record.state == 'new':
+                record.state = 'offer_received'
         return True
 
     def action_sold(self):
