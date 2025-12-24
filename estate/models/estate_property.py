@@ -45,7 +45,7 @@ class EstateProperty(models.Model):
     property_buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
     property_salesperson_id = fields.Many2one('res.users', string="Salesperson", default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many('estate.property.tag', string="Property tags")
-    property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers', inverse='_inverse_offers')
+    property_offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
     best_price = fields.Float('Best Price', compute='_compute_best_price')
 
     _check_expected_price = models.Constraint(
@@ -77,10 +77,14 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = ''
 
-    def _inverse_offers(self):
+    def check_create_offer(self, new_offer_price):
         for record in self:
-            if record.state == 'new' and record.property_offer_ids:
-                record.state = 'offer_received'
+            for offer in record.property_offer_ids:
+                if new_offer_price < offer.price:
+                    raise ValidationError(_("Cannot create an offer with a lower amount than an existing offer."))
+                if record.state == 'new':
+                    record.state = 'offer_received'
+        return True
 
     def action_sold(self):
         for record in self:
@@ -101,3 +105,12 @@ class EstateProperty(models.Model):
         for record in self:
             if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1:
                 raise ValidationError(_('The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.'))
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if not record.state in ['new', 'cancelled']:
+                raise UserError(_(
+                    'You cannot delete a property that is in %s state.',
+                    dict(self._fields['state']._description_selection(self.env)).get(record.state)
+                ))

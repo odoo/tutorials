@@ -55,3 +55,9 @@ class EstatePropertyOffer(models.Model):
             record.status = 'refused'
             record.property_id.property_buyer_id = None
             record.property_id.selling_price = 0
+
+    @api.model
+    def create(self, vals_list):
+        for val in vals_list:
+            self.env['estate.property'].browse(val['property_id']).check_create_offer(val['price'])
+        return super().create(vals_list)
