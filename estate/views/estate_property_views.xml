@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">View Records</field>
+        <field name="res_model">estate.property</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="context">{'search_default_available': True}</field>
+    </record>
+
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <list decoration-success="status in ('offer_received', 'offer_accepted')" decoration-bf="status == 'offer_accepted'" decoration-muted="status == 'sold'">
+                <field name="name"/>
+                <field name="postcode"/>
+                <field name="bedrooms"/>
+                <field name="living_area"/>
+                <field name="expected_price"/>
+                <field name="selling_price"/>
+                <field name="date_availability"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_view_form" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <form string="My new house">
+                <header>
+                    <button name="action_mark_sold" type="object" string="Sold" class="oe_highlight" invisible="status == 'sold'"/>
+                    <button name="action_mark_cancel" type="object" string="Cancel" invisible="status == 'sold'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="new, offer_received, offer_accepted, sold"/>
+                </header>
+                <sheet>
+                    <group>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </group>
+                    <group>
+                        <field string="Tags" name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    </group>
+                    <group>
+                        <group>
+                            <field name="property_type_id" options="{'no_create': true}"/>
+                            <field name="postcode"/>
+                            <field name="date_availability"/>
+                        </group>
+                        <group>
+                            <field name="expected_price"/>
+                            <field name="best_price"/>
+                            <field name="selling_price"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <field name="description"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="facades"/>
+                                <field name="garage"/>
+                                <field name="garden"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
+                                <field name="total_area"/>
+                            </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids" readonly="status in ('offer_accepted', 'sold', 'canceled')">
+                                <list editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+                                    <field name="price"/>
+                                    <field name="partner_id"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
+                                    <button name="action_accept_offer" type="object" icon="fa-check" invisible="status"/>
+                                    <button name="action_reject_offer" type="object" icon="fa-remove" invisible="status"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="salesperson_id" string="Salesman"/>
+                                <field name="buyer_id" string="Buyer"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban" model="ir.ui.view">
+        <field name="name">estate.property.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <templates>
+                    <t t-name="card">
+                        <field name="name" class="fw-bold"/>
+                        <field name="status" invisible="1"/>
+                        <hr/>
+                        <div>
+                            <label for="expected_price">Expected Price: </label>
+                            <field name="expected_price"/>
+                        </div>
+                        <div t-if="record.status.raw_value == 'offer_received'">
+                            <label for="best_price">Best Offer: </label>
+                            <field name="best_price"/>
+                        </div>
+                        <div t-if="record.status.raw_value == 'sold'">
+                            <label for="selling_price">Selling Price: </label>
+                            <field name="selling_price"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+</odoo>
