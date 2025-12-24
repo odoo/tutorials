@@ -31,7 +31,6 @@ class EstateTestCase(TransactionCase):
             })
 
     def test_cannot_sell_property_with_no_accepted_offers_on_it(self):
-        self.property.offer_ids.action_refuse()
         with self.assertRaises(UserError):
             self.property.action_set_sold()
 
@@ -40,11 +39,12 @@ class EstateTestCase(TransactionCase):
         self.property.action_set_sold()
         self.assertEqual(self.property.state, 'sold')
 
-    def test_unchecking_garden_checkbox_does_not_break(self):
+    def test_property_on_change_garden(self):
         with Form(self.property) as property_form:
-            # Uncheck and check box again
             property_form.garden = False
-            property_form.garden = True
+            self.assertEqual(property_form.garden_area, 0)
+            self.assertEqual(property_form.garden_orientation, False)
 
+            property_form.garden = True
             self.assertEqual(property_form.garden_area, 10)
             self.assertEqual(property_form.garden_orientation, 'north')

@@ -71,7 +71,7 @@ class Property(models.Model):
     @api.onchange('garden')
     def _onchange_garden(self):
         self.garden_area = 10 if self.garden else 0
-        self.garden_orientation = 'north' if self.garden else ''
+        self.garden_orientation = 'north' if self.garden else False
 
     @api.constrains('selling_price', 'expected_price')
     def _check_selling_price(self):
