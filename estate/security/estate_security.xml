@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
+        <field name="description">Real Estate Brokerage related permissions</field>
+        <field name="sequence">1</field>
+    </record>
+
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
+    </record>
+
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"></field>
+        <field name="implied_ids"
+            eval="[(6, 0, [ref('estate_group_user')])]" />
+    </record>
+
+    <record id="rule_id" model="ir.rule">
+        <field name="name">Agents: see or modify properties with no salesperson or themselves as
+            salesperson</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="False" />
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]" />
+        <field name="domain_force">[
+            '|',
+            '|', ('salesperson_id', '=', user.id),
+            ('salesperson_id', '=', False),
+            ('write_uid', '=', user.id)
+            ]</field>
+    </record>
+
+    <record id="rule_id_offer" model="ir.rule">
+        <field name="name">A description of the rule's on offer</field>
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_unlink" eval="False" />
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]" />
+        <field name="domain_force">[
+            '|',
+            '|', ('property_id.salesperson_id', '=', user.id),
+            ('property_id.salesperson_id', '=', False),
+            ('write_uid', '=', user.id)
+            ]
+        </field>
+    </record>
+
+    <record id="estate_property_company_rule" model="ir.rule">
+        <field name="name">Estate: Agents see properties of their company</field>
+        <field name="model_id" ref="model_estate_property" />
+        <field name="groups" eval="[Command.link(ref('estate_group_user'))]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="False" />
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+    </record>
+
+</odoo>

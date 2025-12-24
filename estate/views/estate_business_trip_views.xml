@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="estate_business_trip_action" model="ir.actions.act_window">
+        <field name="name">Communications</field>
+        <field name="res_model">estate.business.trip</field>
+        <field name="view_mode">form</field>
+    </record>
+
+    <record id="business_trip_form" model="ir.ui.view">
+        <field name="name">business.trip.form</field>
+        <field name="model">estate.business.trip</field>
+        <field name="arch" type="xml">
+            <form string="Business Trip">
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="partner_id" />
+                        <field name="guest_ids" />
+                        <field name="state" />
+                    </group>
+                </sheet>
+                <chatter open_attachments="True" />
+            </form>
+        </field>
+    </record>
+
+</odoo>
