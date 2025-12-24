@@ -4,7 +4,8 @@
         <Dialog title="'Adopt your stamp'">
             <div>
                 <label class="col-form-label">Company Name</label>
-                <input 
+                <input
+                    id="company_name_input" 
                     type="text"
                     placeholder="Type your company name"
                     t-att-value="props.companyName"
@@ -12,7 +13,8 @@
             </div>
             <div>
                 <label class="col-form-label">Address</label>
-                <input 
+                <input
+                    id="company_address_input"  
                     type="text"
                     placeholder="Type your address"
                     t-att-value="props.companyAddress"
@@ -20,7 +22,8 @@
             </div>
             <div>
                 <label class="col-form-label">City</label>
-                <input 
+                <input
+                    id="company_city_input"  
                     type="text"
                     placeholder="Type your city name"
                     t-att-value="props.companyCity"
@@ -28,7 +31,8 @@
             </div>
             <div>
                 <label class="col-form-label">Country</label>
-                <input 
+                <input
+                    id="company_country_input" 
                     type="text"
                     placeholder="Type your country name"
                     t-att-value="props.companyCountry"
@@ -36,7 +40,8 @@
             </div>
             <div>
                 <label class="col-form-label">VAT NUmber</label>
-                <input 
+                <input
+                    id="company_vat_input" 
                     type="text"
                     placeholder="Type VAT Number"
                     t-att-value="props.companyVat"
@@ -44,7 +49,8 @@
             </div>
             <div>
                 <label class="col-form-label">logo</label>
-                <input 
+                <input
+                    id="company_logo_input" 
                     type="file"
                     placeholder="Upload logo"
                 />
@@ -55,9 +61,9 @@
                 used on documents, including legally binding contracts.
             </div>
             <t t-set-slot="footer">
-                <button class="btn btn-primary">Sign all</button>
-                <button class="btn btn-secondary">Sign</button>
-                <button class="btn btn-secondary">Cancel</button>
+                <button class="btn btn-primary" t-on-click="props.OnSign">Sign all</button>
+                <button class="btn btn-secondary" t-on-click="props.OnSign">Sign</button>
+                <button class="btn btn-secondary" t-on-click="props.onCancel">Cancel</button>
             </t>
         </Dialog>
     </t>

@@ -14,10 +14,10 @@ patch(Document.prototype, {
         this.companyInfo.logo = parentEl.querySelector("#o_sign_signer_logo_input_info")?.value;
         console.log(this.companyInfo)
     },
+
     getIframeProps(sign_document_id) {
         const props = super.getIframeProps(sign_document_id);
         const document = this.documents.find((doc) => doc.id === sign_document_id);
-        console.log("ADD")
         console.log(this.companyInfo)
         return {
             ...props,

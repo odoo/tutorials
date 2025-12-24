@@ -27,11 +27,11 @@
                 type="hidden"
                 t-att-value="current_request_item.partner_id.company_id.partner_id.vat if current_request_item and current_request_item.partner_id else None" 
             />
-            <!-- <input 
+            <input 
                 id="o_sign_signer_logo_input_info" 
                 type="hidden"
-                t-att-value="current_request_item.partner_id.company_id.partner_id.logo_web if current_request_item and current_request_item.partner_id else None" 
-            /> -->
+                t-att-value="current_request_item.partner_id.company_id.logo_web if current_request_item and current_request_item.partner_id else None" 
+            />
         </xpath>
     </template>
 </odoo>
