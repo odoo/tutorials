@@ -1,20 +1,19 @@
-import { Component, onWillStart } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout"
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_tem";
+import { PieChartCard } from "./pie_chart/pie_chart_card";
+import { NumberCard } from "./number_card/number_card";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, PieChartCard, NumberCard };
 
     setup() {
         this.action = useService("action");
         this.statisticsService = useService("awesome_dashboard.statistics")
-        this.stats = {}
-        onWillStart(async () => {
-            this.stats = await this.statisticsService.stats;
-        })
+        this.state = useState(this.statisticsService.state)
     }
 
     openCustomers() {
@@ -32,4 +31,4 @@ class AwesomeDashboard extends Component {
     }
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard)
