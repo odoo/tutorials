@@ -19,7 +19,7 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline", inverse="_inverse_date_deadline"
     )
     property_type_id = fields.Integer(
-        related="property_id.property_type_id.id", store=True
+        related="property_id.property_type_id.id", store=True, string="Property Type id"
     )
 
     _check_price = models.Constraint(

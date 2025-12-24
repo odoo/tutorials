@@ -8,4 +8,5 @@
     A link module between real estate and accounting modules
     """,
     "application": True,
+    'license': 'AGPL-3',
 }

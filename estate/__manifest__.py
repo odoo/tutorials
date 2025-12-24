@@ -18,4 +18,5 @@
         "views/estate_menus.xml",
         "views/res_users.xml",
     ],
+    'license': 'AGPL-3',
 }
