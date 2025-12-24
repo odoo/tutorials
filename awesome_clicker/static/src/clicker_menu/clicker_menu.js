@@ -6,13 +6,10 @@ export class ClickerMenu extends Component {
     static template = "awesome_clicker.clicker_menu";
 
     setup() {
-        this.state = useState({ value: 0 });
+        this.clickerService = useService("awesome_clicker.game_service");
+        this.clickerState = useState(this.clickerService.state);
         this.action = useService("action");
-        useExternalListener(document.body, "click", () => this.incrementState(this.state, 1));
-    }
-
-    incrementState(state, val) {
-        state.value += val;
+        useExternalListener(document.body, "click", () => this.clickerService.increment(1));
     }
 
     doAction() {

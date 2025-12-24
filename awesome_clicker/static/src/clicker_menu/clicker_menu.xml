@@ -3,11 +3,8 @@
 
     <t t-name="awesome_clicker.clicker_menu">
         <div class="o_nav_entry">
-            Clicks: <t t-esc="state.value"/>
+            Clicks: <t t-esc="clickerState.clicks"/>
         </div>
-        <button class="o_nav_entry">
-            <i class="fa fa-plus" role="img" t-on-click.stop="() => incrementState(state, 10)"/>
-        </button>
         <button class="o_nav_entry" t-on-click="doAction">Open</button>
     </t>
 

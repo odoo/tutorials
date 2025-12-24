@@ -2,7 +2,8 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.clicker_action">
-        Hello world!
+        Clicks: <t t-esc="clickerState.clicks"/>
+        <button type="button" class="btn btn-primary" t-on-click.stop="() => clickerService.increment(10)">Increment</button>
     </t>
 
 </templates>
