@@ -5,11 +5,13 @@ class EstateProperty(models.Model):
     _inherit = "estate.property"
 
     def action_set_sold(self) -> bool:
+        # Call the action on the base model first to ensure validation is done (e.g. one accepted offer)
+        result = super().action_set_sold()
+
         percent_description = "6 percent of selling price"
         admin_fee_description = "Administrative fees"
         account_moves = []
         for record in self:
-            # TODO test buyer_id not being set
             account_move = {
                 "partner_id": record.buyer_id.id,
                 "move_type": "out_invoice",
@@ -22,4 +24,4 @@ class EstateProperty(models.Model):
 
         # Note: account move creation does not work if fiscal localization is not set
         self.env["account.move"].create(account_moves)
-        return super().action_set_sold()
+        return result
