@@ -1,35 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-
-    <t t-name="awesome_dashboard.AwesomeDashboard">
-
-        <Layout
+	<t t-name="awesome_dashboard.AwesomeDashboard">
+		<Layout
             display="{ controlPanel: {} }"
             className="'o_dashboard h-100'"
         >
-
-            <t t-set-slot="control-panel-buttons">
-                <button class="btn btn-primary me-2" t-on-click="openCustomers">
+			<t t-set-slot="control-panel-create-button">
+				<button class="btn btn-primary" t-on-click="openCustomers">
                     Customers
                 </button>
-                <button class="btn btn-secondary" t-on-click="openLeads">
+				<button class="btn btn-primary" t-on-click="openLeads">
                     Leads
                 </button>
-            </t>
-            <div class="d-flex gap-3 p-3 flex-wrap">
-                <DashboardItem>
-                    <div>some content</div>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <div>Virat Kohli</div>
-                </DashboardItem>
-
-                <DashboardItem>
-                    <div>Rohit Sharma</div>
-                </DashboardItem>
-            </div>
-            
-        </Layout>
-    </t>
+			</t>
+			<div class="d-flex gap-3 p-3 flex-wrap">
+				<DashboardItem>
+					<div class="text-center">
+                    Average amount of t-shirt by order this month   
+						<p t-out="this.data.average_quantity" class="fs-1 fw-bold text-success"/>
+					</div>
+				</DashboardItem>
+				<DashboardItem>
+					<div class="text-center">
+                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
+                        
+						<p t-out="this.data.average_time" class="fs-1 fw-bold text-success"/>
+					</div>
+				</DashboardItem>
+				<DashboardItem>
+					<div class="text-center">
+                        Number of new orders this month
+                        
+						<p t-out="this.data.nb_new_orders" class="fs-1 fw-bold text-success"/>
+					</div>
+				</DashboardItem>
+				<DashboardItem>
+					<div class="text-center">
+                    Number of cancelled orders this month  
+						<p t-out="this.data.nb_cancelled_orders" class="fs-1 fw-bold text-success"/>
+					</div>
+				</DashboardItem>
+				<DashboardItem>
+					<div class="text-center">
+                        Total amount of new orders this month
+						
+						<p t-out="this.data.total_amount" class="fs-1 fw-bold text-success"/>
+					</div>
+				</DashboardItem>
+				<DashboardItem>
+					<div class="text-center">
+						<h5>T-shirt sales by size</h5>
+						<PieChart value="this.data.orders_by_size"/>
+					</div>
+				</DashboardItem>
+			</div>
+		</Layout>
+	</t>
 </templates>

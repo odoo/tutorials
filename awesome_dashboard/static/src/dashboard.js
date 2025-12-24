@@ -1,15 +1,22 @@
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_Item/dashboard_item";
+import { PieChart } from "./pie_chart/pie_chart";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem };
+    static components = { Layout, DashboardItem, PieChart };
 
     setup() {
         this.action = useService("action");
+        this.statistics = useService("awesome_dashboard.statistics");
+
+        onWillStart(async () => {
+            console.log("Dashboard loading (will request only once)");
+            this.data = await this.statistics.loadStatistics();
+        });
     }
 
     openCustomers() {
@@ -29,8 +36,4 @@ class AwesomeDashboard extends Component {
     }
 }
 
-registry.category("actions").add(
-    "awesome_dashboard.dashboard",
-    AwesomeDashboard
-);
-
+registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
