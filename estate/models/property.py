@@ -90,6 +90,8 @@ class Property(models.Model):
     def action_set_sold(self):
         if self.state == 'cancelled':
             raise UserError(self.env._("Cancelled properties cannot be sold."))
+        if not self.offer_ids or not self.offer_ids.filtered(lambda r: r.status == 'accepted'):
+            raise UserError(self.env._("Cannot sell a property without any accepted offer."))
 
         self.state = 'sold'
         return True

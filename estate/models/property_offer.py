@@ -52,6 +52,9 @@ class PropertyOffer(models.Model):
     def create(self, vals):
         for record in vals:
             property = self.env['estate.property'].browse(record['property_id'])
+            if property.state == 'sold':
+                raise UserError(self.env._("You cannot create an offer for property that is already sold."))
+
             min_price = min(property.offer_ids.mapped('price')) if property.offer_ids else 0.0
             if record['price'] < min_price:
                 raise UserError(self.env._("The offer must be higher than %d.", min_price))
