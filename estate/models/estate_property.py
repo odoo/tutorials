@@ -112,23 +112,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.depends("create_date", "validity")
-    def _compute_date_deadline(self):
-        for record in self:
-            if record.create_date:
-                record.date_deadline = (
-                    record.create_date.date() + timedelta(days=record.validity)
-            )
-            else:
-                record.date_deadline = fields.Date.context_today(self)
-
-    def _inverse_date_deadline(self):
-        for record in self:
-            if record.create_date and record.date_deadline:
-                record.validity = (
-                    record.date_deadline - record.create_date.date()
-                ).days
-
     def action_cancel(self):
         for record in self:
             if record.state == "sold":

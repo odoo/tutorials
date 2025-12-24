@@ -30,7 +30,7 @@
               class="oe_stat_button"
               icon="fa-money"
               context="{'search_default_property_type_id': id}"
-              title="estate_property_offer_action_btn"
+              title="Search Offers"
             />
           </div>
           <div class="oe_title mb32">
