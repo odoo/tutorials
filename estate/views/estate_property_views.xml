@@ -59,7 +59,6 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <!-- TODO: double check backend validation ? -->
                             <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page string="Other Info">

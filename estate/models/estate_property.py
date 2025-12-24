@@ -114,3 +114,8 @@ class EstateProperty(models.Model):
             # Selling price is zero when no offer has been accepted
             if not float_is_zero(record.selling_price, precision_digits=2) and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) < 0:
                 raise ValidationError(record.env._("A property's selling price cannot be lower than 90 percent of its expected price."))
+
+    @api.constrains("offer_ids")
+    def _check_offer_ids_state(self) -> None:
+        if any(record.state in {"offer_accepted", "sold", "cancelled"} for record in self):
+            raise ValidationError(self.env._("Cannot edit the offers on this property."))
