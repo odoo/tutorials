@@ -3,9 +3,15 @@ import { humanNumber } from "@web/core/utils/numbers";
 
 export class ClickValue extends Component {
     static props = {
+        label: { type: String, optional: true },
         value: Number,
     };
-    static template = xml`<t t-esc="format(props.value)"/>`;
+    static template = xml`
+        <span t-att-data-tooltip="props.value">
+            <t t-esc="props.label || ''"/>
+            <t t-esc="format(props.value)"/>
+        </span>
+        `;
 
     format(value) {
         if (value < 1000) {
