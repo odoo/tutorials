@@ -1,6 +1,6 @@
 import datetime
 
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstatePropertyOffer(models.Model):
@@ -51,3 +51,13 @@ class EstatePropertyOffer(models.Model):
     def action_cancel(self):
         for record in self:
             record.status = "refused"
+    
+    @api.model
+    def create(self, vals_list):
+        print(vals_list)
+        for vals in vals_list:
+            prop = self.env['estate.property'].browse(vals['property_id'])
+            if prop.lowball_offer(vals['price']):
+                raise exceptions.UserError("Offer price can't be lower than lowest offer")
+            prop.state = "offer_received"
+        return super().create(vals_list)
