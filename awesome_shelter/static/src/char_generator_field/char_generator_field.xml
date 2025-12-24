@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="shelter.char_generator_field">
+        <button t-on-click="generate" t-if="isShow">
+            Generate
+        </button>
+        <t t-call="web.CharField"/>
+        
+    </t>
+</templates>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="shelter.long_stay_banner">
+        <div class="bg-warning  text-bg-warning p-2 rounded">
+            <p>Oh no, <t t-esc="props.record.data['display_name']"/> has stayed here for very long.
+             Quick find them a home
+             </p>
+            
+        </div>
+    </t>
+</templates>
