@@ -80,6 +80,9 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 raise UserError(record.env._("Cancelled properties cannot be sold."))
 
+            if not any(record.offer_ids.filtered(lambda offer: offer.status == "accepted")):
+                raise UserError(record.env._("Cannot mark this property as sold because it does not have any accepted offers."))
+
             record.state = "sold"
         return True
 
