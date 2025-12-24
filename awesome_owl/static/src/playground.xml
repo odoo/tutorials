@@ -1,9 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            <h1>Hello Owl Playground!</h1>
+            <p>Sum: <t t-esc="state.sum"/>
+            </p>
+            <div class="d-flex gap-3 flex-wrap">
+                <Card title="'Counter Card'">
+                    <Counter onChange.bind="incrementSum"/>
+                </Card>
+                <Card title="'Multiple Counters'">
+                    <Counter/>
+                    <Counter/>
+                </Card>
+                <Card>
+                    <p class="card-text">This is a card with custom content!</p>
+                    <button class="btn btn-success">Click me</button>
+                </Card>
+                <TodoList/>
+            </div>
         </div>
     </t>
 

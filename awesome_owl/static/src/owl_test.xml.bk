@@ -1,0 +1,37 @@
+<!-- <?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.OwlTest">
+        <div class="owl-test p-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fa fa-magic me-2"/>Awesome Owl Framework Test
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info mb-4">
+                        <i class="fa fa-info-circle me-2"/>
+                        <strong t-esc="state.message"/>
+                    </div>
+                    
+                    <div class="text-center mb-4">
+                        <h1 class="display-1 fw-bold text-primary" t-esc="state.counter"/>
+                        <p class="text-muted">Current Counter Value</p>
+                    </div>
+                    
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button class="btn btn-success btn-lg" t-on-click="increment">
+                            <i class="fa fa-plus me-2"/>Increment
+                        </button>
+                        <button class="btn btn-danger btn-lg" t-on-click="decrement">
+                            <i class="fa fa-minus me-2"/>Decrement
+                        </button>
+                        <button class="btn btn-secondary btn-lg" t-on-click="reset">
+                            <i class="fa fa-refresh me-2"/>Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates> -->

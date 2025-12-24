@@ -1,6 +1,6 @@
 <odoo>
     <data>
-          <template id="awesome_owl.playground" name="Awesome T-Shirt thank you">
+        <template id="playground_template" name="Awesome Owl Playground">
             <html>
                 <head>
                     <link type="image/x-icon" rel="shortcut icon" href="/web/static/img/favicon.ico"/>
@@ -10,6 +10,16 @@
                 <body>
                 </body>
             </html>
-          </template>
+        </template>
+
+        <record id="action_owl_playground" model="ir.actions.act_url">
+            <field name="name">Owl Framework Test</field>
+            <field name="url">/awesome_owl/playground</field>
+            <field name="target">self</field>
+        </record>
+        <menuitem id="menu_owl_test"
+              name="Owl Test"
+              action="action_owl_playground"
+              sequence="100"/>
     </data>
 </odoo>

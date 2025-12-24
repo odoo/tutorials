@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_list">
+        <h1>Hello Owl Playground!</h1>
+
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <div class="card-body" t-ref="todo_list">
+                <form t-on-submit.prevent="addTodo">
+                    <input type="text" t-model="state.newTodoText" placeholder="New todo" t-ref="new_todo_input"/>
+                    <button type="submit" class="btn btn-primary mt-2">Add Todo</button>
+                </form>
+
+                <div class="d-flex flex-column">
+                    <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+                        <TodoItem t-props="todo" onToggle.bind="toggleTodo" onRemove.bind="onRemoveTodo" />
+                    </t>
+                </div>
+            </div>
+        </div>
+
+    </t>
+
+</templates>
