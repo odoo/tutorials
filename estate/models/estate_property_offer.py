@@ -52,9 +52,10 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         for record in self:
+            if record.status == 'accepted':
+                record.property_id.selling_price = 0
+                record.property_id.property_buyer_id = False
             record.status = 'refused'
-            record.property_id.property_buyer_id = None
-            record.property_id.selling_price = 0
 
     @api.model
     def create(self, vals_list):

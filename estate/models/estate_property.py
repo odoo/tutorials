@@ -75,7 +75,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = 'north'
         else:
             self.garden_area = 0
-            self.garden_orientation = ''
+            self.garden_orientation = False
 
     def check_create_offer(self, new_offer_price):
         for record in self:
