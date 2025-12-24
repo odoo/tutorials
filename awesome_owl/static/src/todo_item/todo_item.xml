@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="d-flex flex-row align-items-center gap-2 mb-2 p-2 border" t-attf-class="{{props.isCompleted ? 'bg-success' : ''}}">
+            <input type="checkbox" t-att-checked="props.isCompleted" t-on-change="toggleCompletion" />
+            <div t-esc="props.text" t-attf-class="{{props.isCompleted ? 'text-decoration-line-through' : ''}}"/>
+            <button class="btn btn-sm btn-danger bg-danger text-white ms-auto" t-on-click="removeItem">X</button>
+        </div>
+    </t>
+
+</templates>
