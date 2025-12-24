@@ -3,7 +3,7 @@
 
     <t t-name="awesome_clicker.clicker_menu">
         <div class="o_nav_entry">
-            Clicks: <t t-esc="clickerState.clicks"/>
+            Clicks: <t t-esc="clicker.state.clicks"/>
         </div>
         <button class="o_nav_entry" t-on-click="doAction">Open</button>
     </t>
