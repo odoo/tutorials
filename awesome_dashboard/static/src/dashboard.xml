@@ -13,15 +13,51 @@
                     </button>
                 </div>
             </t>
-            <div class="d-flex gap-3 p-3">
+            <div class="d-flex flex-wrap gap-3 p-3">
                 <DashboardItem>
-                    some content
+                    <div class="fw-bold">
+                        Average amount of t-shirt by order this month
+                    </div>
+                    <div class="display-4 text-success">
+                        <t t-esc="stats.avg_tshirt"/>
+                    </div>
                 </DashboardItem>
                 <DashboardItem size="2">
-                    I love milk
+                    <div class="fw-bold">
+                        Average time for an order to go from
+                        'new' to 'sent' or 'cancelled'
+                    </div>
+                    <div class="display-4 text-success">
+                        <t t-esc="stats.avg_processing_time"/>
+                    </div>
                 </DashboardItem>
                 <DashboardItem>
-                    some content
+                    <div class="fw-bold">
+                        Number of new orders this month
+                    </div>
+                    <div class="display-4 text-success">
+                        <t t-esc="stats.new_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="fw-bold">
+                        Number of cancelled orders this month
+                    </div>
+                    <div class="display-4 text-success">
+                        <t t-esc="stats.cancelled_orders"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem>
+                    <div class="fw-bold">
+                        Total amount of new orders this month
+                    </div>
+                    <div class="display-4 text-success">
+                        <t t-esc="stats.total_amount"/>
+                    </div>
+                </DashboardItem>
+                <DashboardItem size="2">
+                    <h5>Shirt orders by size</h5>
+                    <PieChart data="stats.sales_by_category"/>
                 </DashboardItem>
             </div>
         </Layout>
