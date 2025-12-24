@@ -38,8 +38,12 @@ class EstatePropertyOffer(models.Model):
     # CRUD overrides
     @api.model
     def create(self, vals):
+        # This logic is outside the loop to avoid multiple calls to browse if vals contains offers for multiple properties
+        property_ids = [val["property_id"] for val in vals]
+        estate_properties_by_id = self.env["estate.property"].browse(property_ids).grouped("id")
+
         for val in vals:
-            estate_property = self.env["estate.property"].browse(val["property_id"])
+            estate_property = estate_properties_by_id[val["property_id"]]
             best_price = estate_property.best_price or 0.0
             if float_compare(val["price"], best_price, precision_digits=2) < 0:
                 raise UserError(self.env._("A new offer must match or exceed the price of the current best offer."))
