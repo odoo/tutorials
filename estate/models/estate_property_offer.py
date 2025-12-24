@@ -50,6 +50,9 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self) -> bool:
         # TODO double check validation
         for record in self:
+            if record.property_id.state in ["cancelled", "sold"]:
+                raise UserError(record.env._("Cannot accept this offer because the property has already been sold or cancelled."))
+
             if record.property_id.offer_ids.filtered(lambda r: r.status == "accepted"):
                 raise UserError(record.env._("Cannot accept this offer because another offer has already been accepted for the property."))
 
