@@ -52,8 +52,13 @@ class EstatePropertyOffer(models.Model):
 
     # Public methods
     def action_accept(self) -> bool:
-        # TODO double check validation
         for record in self:
+            if record.status == "accepted":
+                continue
+
+            if record.status == "refused":
+                raise UserError(record.env._("Cannot accept this offer because it has already been refused."))
+
             if record.property_id.state in ["cancelled", "sold"]:
                 raise UserError(record.env._("Cannot accept this offer because the property has already been sold or cancelled."))
 
@@ -67,8 +72,16 @@ class EstatePropertyOffer(models.Model):
         return True
 
     def action_refuse(self) -> bool:
-        # TODO double check validation
         for record in self:
+            if record.status == "refused":
+                continue
+
+            if record.status == "accepted":
+                raise UserError(record.env._("Cannot refuse this offer because it has already been accepted."))
+
+            if record.property_id.state in ["cancelled", "sold"]:
+                raise UserError(record.env._("Cannot refuse this offer because the property has already been sold or cancelled."))
+
             record.status = "refused"
         return True
 
