@@ -1,8 +1,10 @@
-from odoo.tests.common import TransactionCase
-from odoo import fields, Command
 from datetime import timedelta
 
+from odoo import fields, Command
+from odoo.tests.common import TransactionCase, tagged
 
+
+@tagged('post_install', '-at_install')
 class TestLastOrderProduct(TransactionCase):
 
     @classmethod

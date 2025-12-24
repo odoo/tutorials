@@ -8,6 +8,9 @@
             <xpath expr="//field[@name='order_line']/list/field[@name='product_id']" position="attributes">
                 <attribute name="context">{'vendor': parent.partner_id}</attribute>
             </xpath>
+            <xpath expr="//button[@name='action_add_from_catalog']" position="attributes">
+                <attribute name="context">{'order_id': parent.id, 'isPurchase': True}</attribute>
+            </xpath>
         </field>
     </record>
 </odoo>

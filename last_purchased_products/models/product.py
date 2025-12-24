@@ -1,7 +1,7 @@
-from dateutil.relativedelta import relativedelta
 import datetime
+from dateutil.relativedelta import relativedelta
 
-from odoo import models, api, fields
+from odoo import api, fields, models
 
 
 class ProductProduct(models.Model):
@@ -10,6 +10,7 @@ class ProductProduct(models.Model):
     last_order = fields.Datetime(compute="_compute_last_order")
     last_invoice_date = fields.Datetime(compute="_compute_last_invoice_date")
     last_invoice_time = fields.Char(compute="_compute_invoice_time")
+    invoice_partner_name = fields.Char(compute="_compute_last_invoice_date")
 
     @api.depends_context("customer", "formatted_display_name")
     def _compute_display_name(self):
@@ -48,37 +49,45 @@ class ProductProduct(models.Model):
             domain.append(("move_id.move_type", "=", "in_invoice"))
             domain.append(("partner_id", "=", vendor_id))
         else:
-            pass
+            domain.append(("move_id.move_type", "=", "out_invoice"))
 
         last_invoice_dates = self.env["account.move.line"].search(
             domain, order="create_date desc"
         )
         invoice_dates = {}
+        invoice_partners = {}
         for invoice in last_invoice_dates:
             if invoice.product_id.id not in invoice_dates:
                 invoice_dates[invoice.product_id.id] = invoice.create_date
+            if invoice.product_id.id not in invoice_partners:
+                invoice_partners[invoice.product_id.id] = invoice.partner_id.name
         for product in self:
             product.last_invoice_date = invoice_dates.get(product.id, False)
+            product.invoice_partner_name = invoice_partners.get(product.id, False)
 
     @api.depends_context("customer")
     def _compute_last_order(self):
         last_orders = self.env["sale.order.line"].search(
             [
                 ("order_id.partner_id", "=", self.env.context.get("customer")),
-                ("product_id", "in", self.ids),
                 ("state", "=", "sale"),
             ],
-            order="order_id desc",
+            order="order_id",
         )
         order_dates = {}
         for order in last_orders:
-            if order.product_id.id not in order_dates:
-                order_dates[order.product_id.id] = order.order_id.date_order
+            p_id = order.product_id.id
+            if p_id not in order_dates:
+                order_dates[p_id] = order.order_id.date_order
         for product in self:
             product.last_order = order_dates.get(product.id, False)
 
-    @api.depends('last_invoice_date')
+    @api.depends("last_invoice_date")
+    @api.depends_context("isPurchase")
     def _compute_invoice_time(self):
+        if self.env.context.get("isPurchase"):
+            self.write({"last_invoice_time": False})
+            return
         compute_agotime_ref = self.compute_agotime
         for product in self:
             if product.last_invoice_date:
@@ -88,6 +97,24 @@ class ProductProduct(models.Model):
                 product.last_invoice_time = ago
             else:
                 product.last_invoice_time = False
+
+    def action_open_last_invoice(self):
+        self.ensure_one()
+        domain = [
+            ("move_id.move_type", "=", "out_invoice"),
+            ("product_id", "=", self.id),
+            ("parent_state", "=", "posted"),
+        ]
+        last_line = self.env["account.move.line"].search(
+            domain, order="create_date desc", limit=1
+        )
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "account.move",
+            "res_id": last_line.move_id.id,
+            "view_mode": "form",
+            "target": "current",
+        }
 
     @api.model
     def name_search(self, name="", args=None, operator="ilike", limit=100):
