@@ -1,4 +1,4 @@
-import { Component, useState } from "@odoo/owl";
+import { Component, useExternalListener, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 
 export class ClickerMenu extends Component {
@@ -6,10 +6,11 @@ export class ClickerMenu extends Component {
 
     setup() {
         this.state = useState({ value: 0 });
+        useExternalListener(document.body, "click", () => this.incrementState(this.state, 1));
     }
 
-    increment() {
-        this.state.value++;
+    incrementState(state, val) {
+        state.value += val;
     }
 }
 

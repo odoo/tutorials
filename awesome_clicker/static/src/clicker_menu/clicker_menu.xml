@@ -6,7 +6,7 @@
             Clicks: <t t-esc="state.value"/>
         </div>
         <button class="o_nav_entry">
-            <i class="fa fa-plus" role="img" t-on-click="increment"/>
+            <i class="fa fa-plus" role="img" t-on-click.stop="() => incrementState(state, 10)"/>
         </button>
     </t>
 
