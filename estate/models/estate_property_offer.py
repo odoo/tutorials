@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import UserError, ValidationError
 
+
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Offer to buy real estate property"
@@ -22,6 +23,7 @@ class EstatePropertyOffer(models.Model):
         compute='_compute_date',
         inverse='_inverse_date',
     )
+
     @api.depends('validity')
     def _compute_date(self):
         for record in self:
@@ -38,6 +40,7 @@ class EstatePropertyOffer(models.Model):
         selection=[('accepted', "Accepted"), ('refused', "Refused")],
         copy=False,
     )
+
     def accept_offer(self):
         for record in self:
             if record.property_id.offer_ids.filtered(lambda o: o.status == 'accepted'):
@@ -47,10 +50,12 @@ class EstatePropertyOffer(models.Model):
             record.property_id.state = 'offer_accepted'
             record.property_id.buyer_id = record.partner_id
         return True
+
     def refuse_offer(self):
         for record in self:
             record.status = 'refused'
         return True
+
     _check_price = models.Constraint(
         'CHECK(price > 0)',
         "The offer price must be positive",
@@ -68,5 +73,5 @@ class EstatePropertyOffer(models.Model):
     @api.constrains('status')
     def _check_fair_price(self):
         for record in self:
-            if record.status == 'accepted' and record.price < record.property_id.expected_price*0.9:
+            if record.status == 'accepted' and record.price < record.property_id.expected_price * 0.9:
                 raise ValidationError(record.env._(f"The selling price must be at least {90}% of the expected price. \n If you want to accept this offer, lower the expected price."))

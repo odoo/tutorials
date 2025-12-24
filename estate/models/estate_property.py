@@ -32,6 +32,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean("Garden", default=False)
     garden_area = fields.Integer("Garden Area (sqm)", required=False)
     garden_orientation = fields.Selection(selection=[('north', "North"), ('south', "South"), ('east', "East"), ('west', "West")], string="Garden Orientation")
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -42,6 +43,7 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     total_area = fields.Integer("Total Area (sqm)", compute='_compute_area')
+
     @api.depends('garden_area', 'living_area')
     def _compute_area(self):
         for record in self:
@@ -54,6 +56,7 @@ class EstateProperty(models.Model):
         copy=False,
         default='new',
     )
+
     def sold_action(self):
         for record in self:
             if record.state != 'canceled':
@@ -61,6 +64,7 @@ class EstateProperty(models.Model):
             else:
                 raise UserError(record.env._("You can not sell a canceled property."))
         return True
+
     def cancel_action(self):
         for record in self:
             if record.state != 'sold':
@@ -84,6 +88,7 @@ class EstateProperty(models.Model):
         string="Best Offer",
         compute='_compute_best_offer',
     )
+
     @api.depends('offer_ids.price')
     def _compute_best_offer(self):
         for record in self:
@@ -110,8 +115,9 @@ class EstateProperty(models.Model):
         'CHECK(selling_price >= 0)',
         "The selling price can't be negative",
     )
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_canceled(self):
-        if any((not(record.state == 'new') and not(record.state == 'canceled'))
+        if any((not (record.state == 'new') and not (record.state == 'canceled'))
         for record in self):
             raise UserError("Only new and canceled properties can be deleted!")
