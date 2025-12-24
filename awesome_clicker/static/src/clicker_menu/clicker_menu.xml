@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.clicker_menu">
+        <div class="o_nav_entry">
+            Clicks: <t t-esc="state.value"/>
+        </div>
+        <button class="o_nav_entry">
+            <i class="fa fa-plus" role="img" t-on-click="increment"/>
+        </button>
+    </t>
+
+</templates>
