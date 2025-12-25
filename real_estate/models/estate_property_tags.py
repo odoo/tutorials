@@ -1,0 +1,15 @@
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from odoo import models, fields
+
+
+class EstatePropertyTags(models.Model):
+    _name = "estate.property.tags"
+    _description = "Estate Property Tags"
+    _order = "name"
+
+    _sql_constraints = [
+        ("unique_tag_name", "UNIQUE(name)", "This property tag already exits, create a unique one.")
+    ]
+    name = fields.Char(required=True)
+    color = fields.Integer()
