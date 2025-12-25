@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <record id="res_user_view_form" model="ir.ui.view">
+            <field name="name">res.users.view.form.inherit.estate</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_simple_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form//sheet//group[@name='phone_numbers']" position="after">
+                  <notebook>
+                        <page string="Properties">
+                            <group>
+                                <field name="property_ids"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
