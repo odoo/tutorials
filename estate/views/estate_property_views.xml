@@ -75,13 +75,13 @@
             name="action_sold"
             type="object"
             string="Sold"
-            invisible="state in ['sold', 'canceled']"
+            invisible="state in ['sold', 'cancelled']"
           />
           <button
             name="action_cancel"
             type="object"
             string="Cancel"
-            invisible="state in ['sold', 'canceled']"
+            invisible="state in ['sold', 'cancelled']"
           />
           <field
             name="state"
@@ -133,7 +133,6 @@
                   <field name="facades" class="mb4" />
                   <field name="garage" class="mb4" />
                   <field name="garden" class="mb4" />
-                  <field name="garden" />
                   <field name="garden_area" invisible="not garden" />
                   <field name="garden_orientation" invisible="not garden" />
                   <field name="total_area" readonly="1" />
@@ -143,7 +142,7 @@
             <page string="Offers">
               <field
                 name="offer_ids"
-                readonly="state in ['offer_accepted', 'sold', 'canceled']"
+                readonly="state in ['offer_accepted', 'sold', 'cancelled']"
               />
             </page>
             <page string="Other Info">
