@@ -1,22 +1,19 @@
 import { registry } from "@web/core/registry";
 import { ClickerModel } from "./clicker_model";
+import { BOT_FREQUENCY, MILESTONES } from "./clicker_data";
 
 export const clickerService = {
     dependencies: ["effect"],
     start(env, deps) {
-        const MILESTONE_MESSAGES = {
-            MILESTONE_1k: "Milestone reached! You can now buy clickbots.",
-            MILESTONE_5k: "Milestone reached! You can now buy bigbots.",
-            MILESTONE_100k: "Milestone reached! You can now increase your power level.",
-        };
-
         const model = new ClickerModel();
 
-        for (const [key, value] of Object.entries(MILESTONE_MESSAGES)) {
-            model.bus.addEventListener(key, () => deps.effect.add({ message: value }));
+        for (const milestone of MILESTONES) {
+            model.bus.addEventListener(milestone.event, () =>
+                deps.effect.add({ message: `Milestone reached! ${milestone.description}` })
+            );
         }
         document.addEventListener("click", () => model.increment(1), true);
-        setInterval(() => model.botsDoClicks(), 10000);
+        setInterval(() => model.botsDoClicks(), BOT_FREQUENCY);
         return model;
     },
 };

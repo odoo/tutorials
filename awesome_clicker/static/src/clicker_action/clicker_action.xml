@@ -8,33 +8,21 @@
             <button type="button" class="btn btn-primary" t-on-click="() => clicker.increment(999)">Increment</button>
         </div>
         <div t-if="clicker.level >= 1" class="ms-1 mt-1">
-            <h5>Bots</h5>
-            <div class="card">
-                <div class="card-header">
-                    <t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10seconds) <i class="fa fa-android"/>
+            <h5>Shop</h5>
+            <t t-foreach="clicker.shopItems" t-as="item" t-key="item.name">
+                <div t-if="clicker.level &gt;= item.minLevel" class="card">
+                    <div class="card-header">
+                        <t t-esc="`${item.currentNumber(clicker)}x ${item.name}`"/>
+                        <t t-if="item.clicks" t-esc="` (${item.clicks} clicks/${clicker.botFrequency/1000} seconds) `"/>
+                        <i class="fa" t-att-class="item.icon"/>
+                    </div>
+                    <div class="card-body">
+                        <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; item.price" t-on-click="() => item.buy(clicker)">
+                            <t t-esc="`Buy ${item.name} (${item.price} clicks)`"/>
+                        </button>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; 1000" t-on-click="() => clicker.buyClickBot()">Buy ClickBot (1000 clicks)</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <t t-esc="clicker.bigBots"/>x Bigbots (100 clicks/10seconds) <i class="fa fa-android"/>
-                </div>
-                <div class="card-body">
-                    <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; 5000" t-on-click="() => clicker.buyBigBot()">Buy BigBot (5000 clicks)</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <t t-esc="clicker.power"/>x Power Level <i class="fa fa-bolt"/>
-                </div>
-                <div class="card-body">
-                    <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; 100000" t-on-click="() => clicker.buyPower()">Buy Power Level (50000 clicks)</button>
-                </div>
-            </div>
+            </t>
         </div>
     </t>
 
