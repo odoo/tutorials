@@ -3,6 +3,7 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { useClicker } from "../utils";
 import { ClickValue } from "../click_value";
+import { doClickerAction } from "../clicker_service";
 
 export class ClickerMenu extends Component {
     static template = "awesome_clicker.clicker_menu";
@@ -14,12 +15,7 @@ export class ClickerMenu extends Component {
     }
 
     doAction() {
-        this.action.doAction({
-            type: "ir.actions.client",
-            tag: "awesome_clicker.clicker_action",
-            target: "new",
-            name: "Clicker Game",
-        });
+        doClickerAction(this.action);
     }
 }
 

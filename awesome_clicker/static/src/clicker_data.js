@@ -67,6 +67,13 @@ export const MILESTONES = [
 
 export const RANDOM_REWARDS = [
     {
+        description: "Get 1 click bot",
+        apply(clicker) {
+            clicker.clickBots += 1;
+        },
+        maxLevel: 1,
+    },
+    {
         description: "Get 3 click bots",
         apply(clicker) {
             clicker.clickBots += 3;

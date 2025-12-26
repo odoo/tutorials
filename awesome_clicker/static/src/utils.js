@@ -10,3 +10,7 @@ export function useClicker() {
 export function choose(choices) {
     return choices[Math.floor(Math.random() * choices.length)];
 }
+
+export function randomBoolean(trueChance) {
+    return Math.random() < trueChance;
+}
