@@ -14,6 +14,7 @@
         'views/estate_property_tag_views.xml',
         'views/estate_menu_views.xml',
         'views/res_user_views.xml',
+        'security/security.xml',
         'security/ir.model.access.csv'],
     'author': 'Odoo S.A.',
     'license': 'LGPL-3'
