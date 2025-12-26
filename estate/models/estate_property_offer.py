@@ -12,7 +12,7 @@ class EstatePropertyOffer(models.Model):
 
     _postif_price = models.Constraint("CHECK (price > 0)", "A price can't be negatif")
 
-    price = fields.Float(string="Price")
+    price = fields.Float(string="Price", required=True)
     status = fields.Selection(copy=False, selection=[
                                             ("accepted", "Accepted"),
                                             ("refused", "Refused")])
@@ -53,8 +53,13 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         property_ids = (val['property_id'] for val in vals_list)
         property = self.env['estate.property'].browse(property_ids)
-
+        print('-----------------------------------')
+        print(property)
         for i, record in enumerate(vals_list):
+            print('-----------------------------------')
+            print(property[i].best_price)
+            print(type(property[i].best_price))
+            print('-----------------------------------')
             if (float_compare(record['price'], property[i].best_price, 2) == -1):
                 raise UserError(self.env._("This offer is lower than what has already been offered."))
         return super().create(vals_list)

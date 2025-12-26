@@ -53,6 +53,8 @@ class EstateProperty(models.Model):
         for record in self:
             if (record.state == "cancelled"):
                 raise UserError(self.env._("Can't sell cancelled property."))
+            if (len(record.offer_ids) <= 0):
+                raise UserError(self.env._("Can't sell property with no offeres"))
             record.state = "sold"
             return True
 
@@ -70,7 +72,10 @@ class EstateProperty(models.Model):
 
     @api.depends('offer_ids')
     def _compute_best_price(self):
+        print("compute best price")
+        print(self)
         for record in self:
+            print(record.offer_ids)
             if (not record.offer_ids):
                 record.best_price = 0
                 continue
