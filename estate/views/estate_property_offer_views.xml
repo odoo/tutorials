@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<odoo>
+  <record id="view_estate_property_offer_tree" model="ir.ui.view">
+    <field name="name">estate.property.offer.tree</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+      <list
+        string="Offers"
+        editable="bottom"
+        decoration-danger="status == 'refused'"
+        decoration-success="status == 'accepted'"
+      >
+        <field name="price" />
+        <field name="partner_id" />
+        <field name="validity" />
+        <field name="date_deadline" />
+        <button
+          name="action_accept"
+          type="object"
+          icon="fa-check"
+          invisible="status"
+          title="Accept Offer"
+        />
+        <button
+          name="action_refuse"
+          type="object"
+          icon="fa-times"
+          invisible="status"
+          title="Refuse Offer"
+        />
+      </list>
+    </field>
+  </record>
+
+  <record id="view_estate_property_offer_form" model="ir.ui.view">
+    <field name="name">estate.property.offer.form</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+      <form>
+        <header>
+          <button
+            name="action_accept"
+            type="object"
+            string="Accept"
+            icon="fa-check"
+            invisible="status == 'accepted'"
+            title="Accept"
+          />
+
+          <button
+            name="action_refuse"
+            type="object"
+            string="Refuse"
+            icon="fa-times"
+            invisible="status == 'refused'"
+            title="Reject"
+          />
+        </header>
+        <sheet>
+          <group>
+            <field name="price" />
+            <field name="partner_id" />
+            <field name="validity" />
+            <field name="date_deadline" />
+            <field name="status" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="estate_property_offer_action" model="ir.actions.act_window">
+    <field name="name">Property Offers</field>
+    <field name="res_model">estate.property.offer</field>
+    <field name="view_mode">list,form</field>
+    <field name="domain">[('property_type_id', '=', active_id)]</field>
+  </record>
+
+  <record id="estate_property_offer_view_search" model="ir.ui.view">
+    <field name="name">estate.property.offer.search</field>
+    <field name="model">estate.property.offer</field>
+    <field name="arch" type="xml">
+      <search string="Search Offers">
+        <field name="property_type_id" />
+      </search>
+    </field>
+  </record>
+</odoo>
