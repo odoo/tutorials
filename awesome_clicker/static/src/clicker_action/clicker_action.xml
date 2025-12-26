@@ -4,8 +4,7 @@
     <t t-name="awesome_clicker.clicker_action">
         <div class="ms-1 mt-1">
             <ClickValue label="'Clicks: '" value="clicker.clicks"/>
-            <!-- TODO reset the increment amount for the button below to 99 -->
-            <button type="button" class="btn btn-primary" t-on-click="() => clicker.increment(999)">Increment</button>
+            <button type="button" class="btn btn-primary" t-on-click="() => clicker.increment(9)">Increment</button>
         </div>
         <div t-if="clicker.level >= 1" class="ms-1 mt-1">
             <h5>Shop</h5>

@@ -6,3 +6,7 @@ export function useClicker() {
 
     return useState(service);
 }
+
+export function choose(choices) {
+    return choices[Math.floor(Math.random() * choices.length)];
+}

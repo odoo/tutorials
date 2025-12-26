@@ -6,7 +6,9 @@ import {
     CLICKBOT_CLICKS,
     MILESTONES,
     PURCHASABLE_REWARDS,
+    RANDOM_REWARDS,
 } from "./clicker_data";
+import { choose } from "./utils";
 
 export class ClickerModel extends Reactive {
     constructor() {
@@ -18,6 +20,7 @@ export class ClickerModel extends Reactive {
         this.multiplier = 1;
         this.shopItems = PURCHASABLE_REWARDS;
         this.botFrequency = BOT_FREQUENCY;
+        this.randomRewards = RANDOM_REWARDS;
         this.bus = new EventBus();
     }
 
@@ -40,6 +43,10 @@ export class ClickerModel extends Reactive {
 
         this.clicks -= price;
         return true;
+    }
+
+    getRandomReward() {
+        return choose(this.randomRewards);
     }
 
     botsDoClicks() {

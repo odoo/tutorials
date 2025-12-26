@@ -9,10 +9,10 @@ export const PURCHASABLE_REWARDS = [
         clicks: CLICKBOT_CLICKS,
         price: 1000,
         minLevel: 1,
-        currentNumber: (clickerModel) => clickerModel.clickBots,
-        buy(clickerModel) {
-            if (clickerModel.verifyPurchase(1, 1000)) {
-                clickerModel.clickBots++;
+        currentNumber: (clicker) => clicker.clickBots,
+        buy(clicker) {
+            if (clicker.verifyPurchase(1, 1000)) {
+                clicker.clickBots++;
             }
         },
     },
@@ -22,10 +22,10 @@ export const PURCHASABLE_REWARDS = [
         clicks: BIGBOT_CLICKS,
         price: 5000,
         minLevel: 2,
-        currentNumber: (clickerModel) => clickerModel.bigBots,
-        buy(clickerModel) {
-            if (clickerModel.verifyPurchase(2, 5000)) {
-                clickerModel.bigBots++;
+        currentNumber: (clicker) => clicker.bigBots,
+        buy(clicker) {
+            if (clicker.verifyPurchase(2, 5000)) {
+                clicker.bigBots++;
             }
         },
     },
@@ -34,10 +34,10 @@ export const PURCHASABLE_REWARDS = [
         icon: "fa-bolt",
         price: 50000,
         minLevel: 3,
-        currentNumber: (clickerModel) => clickerModel.multiplier,
-        buy(clickerModel) {
-            if (clickerModel.verifyPurchase(3, 50000)) {
-                clickerModel.multiplier++;
+        currentNumber: (clicker) => clicker.multiplier,
+        buy(clicker) {
+            if (clicker.verifyPurchase(3, 50000)) {
+                clicker.multiplier++;
             }
         },
     },
@@ -62,5 +62,37 @@ export const MILESTONES = [
         clicks: 100000,
         event: "MILESTONE_100k",
         description: "You can now increase your bots' power.",
+    },
+];
+
+export const RANDOM_REWARDS = [
+    {
+        description: "Get 3 click bots",
+        apply(clicker) {
+            clicker.clickBots += 3;
+        },
+        minLevel: 1,
+        maxLevel: 2,
+    },
+    {
+        description: "Get 3 big bots",
+        apply(clicker) {
+            clicker.bigBots += 3;
+        },
+        minLevel: 2,
+    },
+    {
+        description: "Get 10 big bots",
+        apply(clicker) {
+            clicker.bigBots += 10;
+        },
+        minLevel: 3,
+    },
+    {
+        description: "Increase bot power!",
+        apply(clicker) {
+            clicker.multipler += 1;
+        },
+        minLevel: 3,
     },
 ];
