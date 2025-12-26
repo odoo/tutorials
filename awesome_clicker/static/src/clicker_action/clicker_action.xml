@@ -16,6 +16,15 @@
                     <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; 1000" t-on-click="() => clicker.buyClickBot()">Buy ClickBot (1000 clicks)</button>
                 </div>
             </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <t t-esc="clicker.bigBots"/>x Bigbots (100 clicks/10seconds) <i class="fa fa-android"/>
+                </div>
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; 5000" t-on-click="() => clicker.buyBigBot()">Buy BigBot (5000 clicks)</button>
+                </div>
+            </div>
         </div>
     </t>
 

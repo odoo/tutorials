@@ -4,13 +4,18 @@ import { ClickerModel } from "./clicker_model";
 export const clickerService = {
     dependencies: ["effect"],
     start(env, deps) {
+        const MILESTONE_MESSAGES = {
+            MILESTONE_1k: "Milestone reached! You can now buy clickbots.",
+            MILESTONE_5k: "Milestone reached! You can now buy bigbots.",
+        };
+
         const model = new ClickerModel();
 
-        model.bus.addEventListener("MILESTONE_1k", () =>
-            deps.effect.add({ message: "Milestone reached! You can now buy clickbots." })
-        );
+        for (const [key, value] of Object.entries(MILESTONE_MESSAGES)) {
+            model.bus.addEventListener(key, () => deps.effect.add({ message: value }));
+        }
         document.addEventListener("click", () => model.increment(1), true);
-        setInterval(() => model.botsDoClicks(10), 10000);
+        setInterval(() => model.botsDoClicks(), 10000);
         return model;
     },
 };
