@@ -1,0 +1,7 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <t t-slot="default"/>
+        </div>
+    </t>
+</templates>

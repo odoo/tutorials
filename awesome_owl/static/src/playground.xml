@@ -1,10 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
+        <div class="w-25">
+            <input
+            type="text"
+            class="form-control form-control-sm border-primary text-primary"
+            placeholder="Add a todo"
+            t-on-keyup="addTodo"
+            t-ref="todoInputRef"
+            />
         </div>
+        <Card isOpened="state.isOpened">
+            <div>
+                <h5>
+                    <p>Card 1</p>
+                    <button t-on-click="toggleIsOpened">Toggle</button>
+                </h5>
+                <t t-if="state.isOpened">
+                    <Counter />
+                </t>
+            </div>
+        </Card>
+         <TodoList model="state"/>
     </t>
 
 </templates>
