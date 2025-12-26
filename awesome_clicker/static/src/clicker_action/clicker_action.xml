@@ -3,17 +3,17 @@
 
     <t t-name="awesome_clicker.clicker_action">
         <div class="ms-1 mt-1">
-            <ClickValue label="'Clicks: '" value="clicker.state.clicks"/>
+            <ClickValue label="'Clicks: '" value="clicker.clicks"/>
             <button type="button" class="btn btn-primary" t-on-click="() => clicker.increment(99)">Increment</button>
         </div>
-        <div t-if="clicker.state.level >= 1" class="ms-1 mt-1">
+        <div t-if="clicker.level >= 1" class="ms-1 mt-1">
             <h5>Bots</h5>
             <div class="card">
                 <div class="card-header">
-                    1x ClickBots (10 clicks/10seconds) <i class="fa fa-android"/>
+                    <t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/10seconds) <i class="fa fa-android"/>
                 </div>
                 <div class="card-body">
-                    <button type="button" class="btn btn-primary" t-att-disabled="clicker.state.clicks &lt; 1000" t-on-click="() => clicker.buyClickBot()">Buy ClickBot (1000 clicks)</button>
+                    <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; 1000" t-on-click="() => clicker.buyClickBot()">Buy ClickBot (1000 clicks)</button>
                 </div>
             </div>
         </div>

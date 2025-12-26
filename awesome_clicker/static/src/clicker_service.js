@@ -1,42 +1,13 @@
-import { reactive } from "@odoo/owl";
 import { registry } from "@web/core/registry";
+import { ClickerModel } from "./clicker_model";
 
 export const clickerService = {
     start() {
-        const state = reactive({
-            clicks: 0,
-            level: 0,
-            clickBots: 0,
-        });
+        const model = new ClickerModel();
 
-        function increment(val) {
-            state.clicks += val;
-            if (state.level < 1 && state.clicks >= 1000) {
-                state.level++;
-            }
-        }
-
-        function buyClickBot() {
-            const botPrice = 1000;
-            if (state.clicks < botPrice) {
-                return;
-            }
-
-            state.clicks -= botPrice;
-            state.clickBots++;
-        }
-
-        function botsDoClicks() {
-            state.clicks += state.clickBots * 10;
-        }
-
-        document.addEventListener("click", () => increment(1), true);
-        setInterval(botsDoClicks, 10000);
-        return {
-            state,
-            increment,
-            buyClickBot,
-        };
+        document.addEventListener("click", () => model.increment(1), true);
+        setInterval(() => model.botsDoClicks(10), 10000);
+        return model;
     },
 };
 
