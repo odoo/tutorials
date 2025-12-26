@@ -6,11 +6,9 @@
             <ClickValue label="'Clicks: '" value="clicker.clicks"/>
             <!-- 9 -->
             <button type="button" class="btn btn-primary" t-on-click="() => clicker.increment(999999)">Increment</button>
-            <t t-if="clicker.level >= 4">
+            <t t-foreach="Object.keys(clicker.fruits)" t-as="fruitType" t-key="fruitType">
                 <br/>
-                <ClickValue label="'Pears: '" value="clicker.pears"/>
-                <br/>
-                <ClickValue label="'Cherries: '" value="clicker.cherries"/>
+                <ClickValue label="`${fruitType}: `" value="clicker.fruits[fruitType]"/>
             </t>
         </div>
         <div t-if="clicker.level >= 1" class="ms-1 mt-1">

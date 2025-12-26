@@ -2,10 +2,33 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.clicker_menu">
-        <div class="o_nav_entry">
-            <ClickValue label="'Clicks: '" value="clicker.clicks"/>
-        </div>
-        <button class="o_nav_entry" t-on-click="doAction">Open</button>
+        <Dropdown>
+            <button type="button">
+                <div class="o_nav_entry">
+                    <ClickValue icon="'fa-mouse-pointer'" value="clicker.clicks"/>
+                </div>
+                <div class="o_nav_entry">
+                    <ClickValue icon="'fa-tree'" value="clicker.totalTrees"/>
+                </div>
+                <div class="o_nav_entry">
+                    <ClickValue icon="'fa-apple'" value="clicker.totalFruits"/>
+                </div>
+            </button>
+            <t t-set-slot="content">
+                <DropdownItem>
+                    <button type="button" class="btn btn-secondary" t-on-click="doAction">Open the clicker game</button>
+                </DropdownItem>
+                <DropdownItem>
+                    <button type="button" class="btn btn-secondary" t-if="clicker.level >= 1" t-on-click="() => clicker.purchase('clickbot')">Buy a ClickBot</button>
+                </DropdownItem>
+                <DropdownItem t-foreach="Object.keys(clicker.trees)" t-as="treeType" t-key="treeType">
+                    <t t-esc="`${clicker.trees[treeType]}x ${treeType} tree`"/>
+                </DropdownItem>
+                 <DropdownItem t-foreach="Object.keys(clicker.fruits)" t-as="fruitType" t-key="fruitType">
+                    <t t-esc="`${clicker.fruits[fruitType]}x ${fruitType}`"/>
+                </DropdownItem>
+            </t>
+        </Dropdown>
     </t>
 
 </templates>

@@ -4,10 +4,12 @@ import { useService } from "@web/core/utils/hooks";
 import { useClicker } from "../utils";
 import { ClickValue } from "../click_value";
 import { doClickerAction } from "../clicker_service";
+import { Dropdown } from "@web/core/dropdown/dropdown";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 
 export class ClickerMenu extends Component {
     static template = "awesome_clicker.clicker_menu";
-    static components = { ClickValue };
+    static components = { ClickValue, Dropdown, DropdownItem };
 
     setup() {
         this.clicker = useClicker();

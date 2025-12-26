@@ -55,10 +55,13 @@ export const PURCHASABLE_REWARDS = [
         category: "Trees",
         price: 1000000,
         minLevel: 4,
-        currentNumber: (clicker) => clicker.pearTrees,
+        currentNumber: (clicker) => clicker.trees.pear ?? 0,
         buy(clicker) {
             if (clicker.verifyPurchase(4, 1000000)) {
-                clicker.pearTrees++;
+                if (!clicker.trees.pear) {
+                    clicker.trees.pear = 0;
+                }
+                clicker.trees.pear++;
             }
         },
     },
@@ -69,10 +72,13 @@ export const PURCHASABLE_REWARDS = [
         category: "Trees",
         price: 1000000,
         minLevel: 4,
-        currentNumber: (clicker) => clicker.cherryTrees,
+        currentNumber: (clicker) => clicker.trees.cherry ?? 0,
         buy(clicker) {
             if (clicker.verifyPurchase(4, 1000000)) {
-                clicker.cherryTrees++;
+                if (!clicker.trees.cherry) {
+                    clicker.trees.cherry = 0;
+                }
+                clicker.trees.cherry++;
             }
         },
     },

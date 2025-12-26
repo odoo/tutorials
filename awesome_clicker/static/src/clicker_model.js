@@ -18,21 +18,19 @@ export class ClickerModel extends Reactive {
         this.clickBots = 0;
         this.bigBots = 0;
         this.multiplier = 1;
-        this.pearTrees = 0;
-        this.cherryTrees = 0;
-        this.pears = 0;
-        this.cherries = 0;
+        this.trees = {};
+        this.fruits = {};
         this.shopItems = PURCHASABLE_REWARDS;
         this.botFrequency = BOT_FREQUENCY;
         this.bus = new EventBus();
     }
 
-    get fruits() {
-        return this.pears + this.cherries;
+    get totalFruits() {
+        return Object.values(this.fruits).reduce((a, b) => a + b, 0);
     }
 
-    get trees() {
-        return this.pearTrees + this.cherryTrees;
+    get totalTrees() {
+        return Object.values(this.trees).reduce((a, b) => a + b, 0);
     }
 
     _getApplicableRewards() {
@@ -89,7 +87,11 @@ export class ClickerModel extends Reactive {
     }
 
     treesProduceFruit() {
-        this.cherries += this.cherryTrees;
-        this.pears += this.pearTrees;
+        for (const [type, nb] of Object.entries(this.trees)) {
+            if (!this.fruits[type]) {
+                this.fruits[type] = 0;
+            }
+            this.fruits[type] += nb;
+        }
     }
 }
