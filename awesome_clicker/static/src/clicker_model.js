@@ -8,6 +8,7 @@ export class ClickerModel extends Reactive {
         this.level = 0;
         this.clickBots = 0;
         this.bigBots = 0;
+        this.power = 1;
         this.bus = new EventBus();
     }
 
@@ -18,6 +19,9 @@ export class ClickerModel extends Reactive {
             this.level++;
         } else if (this.level < 2 && this.clicks >= 5000) {
             this.bus.trigger("MILESTONE_5k");
+            this.level++;
+        } else if (this.level < 3 && this.clicks >= 100000) {
+            this.bus.trigger("MILESTONE_100k");
             this.level++;
         }
     }
@@ -42,7 +46,17 @@ export class ClickerModel extends Reactive {
         this.bigBots++;
     }
 
+    buyPower() {
+        const price = 50000;
+        if (this.clicks < price) {
+            return;
+        }
+
+        this.clicks -= price;
+        this.power++;
+    }
+
     botsDoClicks() {
-        this.clicks += this.clickBots * 10 + this.bigBots * 100;
+        this.clicks += (this.clickBots * 10 + this.bigBots * 100) * this.power;
     }
 }

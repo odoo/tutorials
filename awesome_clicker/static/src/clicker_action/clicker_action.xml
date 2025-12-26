@@ -4,7 +4,8 @@
     <t t-name="awesome_clicker.clicker_action">
         <div class="ms-1 mt-1">
             <ClickValue label="'Clicks: '" value="clicker.clicks"/>
-            <button type="button" class="btn btn-primary" t-on-click="() => clicker.increment(99)">Increment</button>
+            <!-- TODO reset the increment amount for the button below to 99 -->
+            <button type="button" class="btn btn-primary" t-on-click="() => clicker.increment(999)">Increment</button>
         </div>
         <div t-if="clicker.level >= 1" class="ms-1 mt-1">
             <h5>Bots</h5>
@@ -23,6 +24,15 @@
                 </div>
                 <div class="card-body">
                     <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; 5000" t-on-click="() => clicker.buyBigBot()">Buy BigBot (5000 clicks)</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <t t-esc="clicker.power"/>x Power Level <i class="fa fa-bolt"/>
+                </div>
+                <div class="card-body">
+                    <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; 100000" t-on-click="() => clicker.buyPower()">Buy Power Level (50000 clicks)</button>
                 </div>
             </div>
         </div>

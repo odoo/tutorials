@@ -7,6 +7,7 @@ export const clickerService = {
         const MILESTONE_MESSAGES = {
             MILESTONE_1k: "Milestone reached! You can now buy clickbots.",
             MILESTONE_5k: "Milestone reached! You can now buy bigbots.",
+            MILESTONE_100k: "Milestone reached! You can now increase your power level.",
         };
 
         const model = new ClickerModel();
