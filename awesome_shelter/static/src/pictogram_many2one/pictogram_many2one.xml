@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="shelter.picto_many2one">
+        <xpath expr="//t" position="inside">
+        <t t-call="web.Many2OneField"/>
+        <img t-att-src="pictoUrl" t-if="hasImage" class="ms-2" style="width: 18px; height: 18px;"/>
+        </xpath>
+        
+    </t>
+</templates>

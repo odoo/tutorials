@@ -13,7 +13,7 @@
       <field name="arch" type="xml">
         <list string="Animals">
           <field name="name" />
-          <field name="type_id" />
+          <field name="type_id" widget="picto_many2one" options="{'image':'pictogram'}"/>
           <field name="pictogram" widget="image" options="{ 'size': [18, 18] }"/>
           <field name="owner_id" widget="many2one_avatar"/>
           <field name="state" widget="badge" decoration-success="state == 'adopted'"/>
@@ -25,9 +25,10 @@
       <field name="name">awesome_shelter.animal.kanban</field>
       <field name="model">awesome_shelter.animal</field>
       <field name="arch" type="xml">
-        <kanban>
+        <kanban js_class="updated_kanban">
           <templates>
             <t t-name="card" class="flex-row">
+              <widget name="web_ribbon" title="Adopted" bg_color="text-bg-success" invisible="state != 'adopted'"/>
               <aside class="o_kanban_aside_full">
                 <field name="picture" class="w-100" widget="image" options="{'img_class': 'object-fit-cover w-100 h-100'}" invisible="not picture"/>
                 <field name="pictogram" class="w-100" widget="image" options="{'img_class': 'object-fit-content w-100 h-100'}" invisible="picture"/>
@@ -49,14 +50,16 @@
       <field name="model">awesome_shelter.animal</field>
       <field name="arch" type="xml">
         <form>
+          <widget name="long_stay_banner" invisible="state == 'adopted' or not is_present_for_six_month" class="mb-2"/>
           <header>
-            <field name="state" widget="statusbar" options="{ 'clickable': True }" />
+            <field name="state" widget="adopt_status_bar" options="{ 'clickable': True, 'activationStage':'adopted' }" />
           </header>
           <sheet>
+            <widget name="web_ribbon" title="Adopted" bg_color="text-bg-success" invisible="state != 'adopted'"/>
             <group col="4">
               <group col="2">
-                <field name="name" />
-                <field name="type_id" />
+                <field name="name" widget="char_generator"/>
+                <field name="type_id"/>
                 <field name="race_id" />
                 <field name="owner_id" widget="many2one_avatar" />
                 <field name="dropper_id" widget="many2one_avatar" />
