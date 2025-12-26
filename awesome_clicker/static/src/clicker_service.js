@@ -1,6 +1,7 @@
 import { registry } from "@web/core/registry";
 import { ClickerModel } from "./clicker_model";
 import { BOT_FREQUENCY, MILESTONES, TREE_FREQUENCY } from "./clicker_data";
+import { browser } from "@web/core/browser/browser";
 
 export function doClickerAction(actionService) {
     actionService.doAction({
@@ -15,6 +16,10 @@ export const clickerService = {
     dependencies: ["effect", "action", "notification"],
     start(env, { effect, action, notification }) {
         const model = new ClickerModel();
+        const persistentState = browser.localStorage.getItem("clicker_state");
+        if (persistentState) {
+            model.persistentState = JSON.parse(persistentState);
+        }
 
         for (const milestone of MILESTONES) {
             model.bus.addEventListener(milestone.event, () =>
@@ -46,6 +51,14 @@ export const clickerService = {
         document.addEventListener("click", () => model.increment(1), true);
         setInterval(() => model.botsDoClicks(), BOT_FREQUENCY);
         setInterval(() => model.treesProduceFruit(), TREE_FREQUENCY);
+        setInterval(
+            () =>
+                browser.localStorage.setItem(
+                    "clicker_state",
+                    JSON.stringify(model.persistentState)
+                ),
+            10000
+        );
         return model;
     },
 };

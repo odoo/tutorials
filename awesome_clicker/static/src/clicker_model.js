@@ -35,6 +35,22 @@ export class ClickerModel extends Reactive {
         return Object.values(this.trees).reduce((a, b) => a + b, 0);
     }
 
+    get persistentState() {
+        return {
+            clicks: this.clicks,
+            level: this.level,
+            clickBots: this.clickBots,
+            bigBots: this.bigBots,
+            multiplier: this.multiplier,
+            trees: this.trees,
+            fruits: this.fruits,
+        };
+    }
+
+    set persistentState(state) {
+        Object.assign(this, state);
+    }
+
     getItemsByCategory(category) {
         return this.shopItems.filter((item) => item.category === category);
     }
