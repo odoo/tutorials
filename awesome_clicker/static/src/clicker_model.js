@@ -7,6 +7,7 @@ import {
     MILESTONES,
     PURCHASABLE_REWARDS,
     RANDOM_REWARDS,
+    TREE_FREQUENCY,
 } from "./clicker_data";
 import { choose, randomBoolean } from "./utils";
 
@@ -22,6 +23,7 @@ export class ClickerModel extends Reactive {
         this.fruits = {};
         this.shopItems = PURCHASABLE_REWARDS;
         this.botFrequency = BOT_FREQUENCY;
+        this.treeFrequency = TREE_FREQUENCY;
         this.bus = new EventBus();
     }
 
@@ -31,6 +33,10 @@ export class ClickerModel extends Reactive {
 
     get totalTrees() {
         return Object.values(this.trees).reduce((a, b) => a + b, 0);
+    }
+
+    getItemsByCategory(category) {
+        return this.shopItems.filter((item) => item.category === category);
     }
 
     _getApplicableRewards() {

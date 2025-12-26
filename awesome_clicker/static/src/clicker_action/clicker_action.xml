@@ -12,21 +12,40 @@
             </t>
         </div>
         <div t-if="clicker.level >= 1" class="ms-1 mt-1">
-            <h5>Shop</h5>
-            <t t-foreach="clicker.shopItems" t-as="item" t-key="item.id">
-                <div t-if="clicker.level &gt;= item.minLevel" class="card">
-                    <div class="card-header">
-                        <t t-esc="`${item.currentNumber(clicker)}x ${item.name} `"/>
-                        <t t-if="item.clicks" t-esc="`(${item.clicks} clicks/${clicker.botFrequency/1000} seconds) `"/>
-                        <i class="fa" t-att-class="item.icon"/>
-                    </div>
-                    <div class="card-body">
-                        <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; item.price" t-on-click="() => item.buy(clicker)">
-                            <t t-esc="`Buy ${item.name} (${item.price} clicks)`"/>
-                        </button>
-                    </div>
-                </div>
-            </t>
+            <Notebook>
+                <t t-set-slot="page_1" title="'Bots'" isVisible="clicker.level >= 1">
+                    <t t-foreach="clicker.getItemsByCategory('Bots')" t-as="item" t-key="item.id">
+                        <div t-if="clicker.level &gt;= item.minLevel" class="card">
+                            <div class="card-header">
+                                <t t-esc="`${item.currentNumber(clicker)}x ${item.name} `"/>
+                                <t t-if="item.clicks" t-esc="`(${item.clicks} clicks/${clicker.botFrequency/1000} seconds) `"/>
+                                <i class="fa" t-att-class="item.icon"/>
+                            </div>
+                            <div class="card-body">
+                                <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; item.price" t-on-click="() => item.buy(clicker)">
+                                    <t t-esc="`Buy ${item.name} (${item.price} clicks)`"/>
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+                <t t-set-slot="page_2" title="'Trees'" isVisible="clicker.level >= 4">
+                    <t t-foreach="clicker.getItemsByCategory('Trees')" t-as="item" t-key="item.id">
+                        <div t-if="clicker.level &gt;= item.minLevel" class="card">
+                            <div class="card-header">
+                                <t t-esc="`${item.currentNumber(clicker)}x ${item.name} `"/>
+                                <t t-esc="`(1 fruit/${clicker.treeFrequency/1000} seconds) `"/>
+                                <i class="fa" t-att-class="item.icon"/>
+                            </div>
+                            <div class="card-body">
+                                <button type="button" class="btn btn-primary" t-att-disabled="clicker.clicks &lt; item.price" t-on-click="() => item.buy(clicker)">
+                                    <t t-esc="`Buy ${item.name} (${item.price} clicks)`"/>
+                                </button>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </Notebook>
         </div>
     </t>
 
