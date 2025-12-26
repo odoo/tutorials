@@ -52,6 +52,13 @@ export class ClickerModel extends Reactive {
         return true;
     }
 
+    purchase(name) {
+        const index = this.shopItems.findIndex((elem) => elem.name === name);
+        if (index >= 0) {
+            this.shopItems[index].buy(this);
+        }
+    }
+
     giveRandomReward(chance = 1) {
         if (!randomBoolean(chance)) {
             return;
