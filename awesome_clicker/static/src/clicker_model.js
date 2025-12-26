@@ -18,9 +18,21 @@ export class ClickerModel extends Reactive {
         this.clickBots = 0;
         this.bigBots = 0;
         this.multiplier = 1;
+        this.pearTrees = 0;
+        this.cherryTrees = 0;
+        this.pears = 0;
+        this.cherries = 0;
         this.shopItems = PURCHASABLE_REWARDS;
         this.botFrequency = BOT_FREQUENCY;
         this.bus = new EventBus();
+    }
+
+    get fruits() {
+        return this.pears + this.cherries;
+    }
+
+    get trees() {
+        return this.pearTrees + this.cherryTrees;
     }
 
     _getApplicableRewards() {
@@ -52,8 +64,8 @@ export class ClickerModel extends Reactive {
         return true;
     }
 
-    purchase(name) {
-        const index = this.shopItems.findIndex((elem) => elem.name === name);
+    purchase(id) {
+        const index = this.shopItems.findIndex((elem) => elem.id === id);
         if (index >= 0) {
             this.shopItems[index].buy(this);
         }
@@ -74,5 +86,10 @@ export class ClickerModel extends Reactive {
     botsDoClicks() {
         this.clicks +=
             (this.clickBots * CLICKBOT_CLICKS + this.bigBots * BIGBOT_CLICKS) * this.multiplier;
+    }
+
+    treesProduceFruit() {
+        this.cherries += this.cherryTrees;
+        this.pears += this.pearTrees;
     }
 }

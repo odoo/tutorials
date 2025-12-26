@@ -1,11 +1,14 @@
 export const CLICKBOT_CLICKS = 10;
 export const BIGBOT_CLICKS = 100;
 export const BOT_FREQUENCY = 10000; // In milliseconds
+export const TREE_FREQUENCY = 30000; // In milliseconds
 
 export const PURCHASABLE_REWARDS = [
     {
-        name: "clickbot",
+        id: "clickbot",
+        name: "ClickBot",
         icon: "fa-android",
+        category: "Bots",
         clicks: CLICKBOT_CLICKS,
         price: 1000,
         minLevel: 1,
@@ -17,8 +20,10 @@ export const PURCHASABLE_REWARDS = [
         },
     },
     {
-        name: "bigbot",
+        id: "bigbot",
+        name: "BigBot",
         icon: "fa-android",
+        category: "Bots",
         clicks: BIGBOT_CLICKS,
         price: 5000,
         minLevel: 2,
@@ -30,14 +35,44 @@ export const PURCHASABLE_REWARDS = [
         },
     },
     {
-        name: "bot power",
+        id: "power-multiplier",
+        name: "Power Multiplier",
         icon: "fa-bolt",
+        category: "Bots",
         price: 50000,
         minLevel: 3,
         currentNumber: (clicker) => clicker.multiplier,
         buy(clicker) {
             if (clicker.verifyPurchase(3, 50000)) {
                 clicker.multiplier++;
+            }
+        },
+    },
+    {
+        id: "pear-tree",
+        name: "Pear Tree",
+        icon: "fa-tree",
+        category: "Trees",
+        price: 1000000,
+        minLevel: 4,
+        currentNumber: (clicker) => clicker.pearTrees,
+        buy(clicker) {
+            if (clicker.verifyPurchase(4, 1000000)) {
+                clicker.pearTrees++;
+            }
+        },
+    },
+    {
+        id: "cherry-tree",
+        name: "Cherry Tree",
+        icon: "fa-tree",
+        category: "Trees",
+        price: 1000000,
+        minLevel: 4,
+        currentNumber: (clicker) => clicker.cherryTrees,
+        buy(clicker) {
+            if (clicker.verifyPurchase(4, 1000000)) {
+                clicker.cherryTrees++;
             }
         },
     },
@@ -62,6 +97,12 @@ export const MILESTONES = [
         clicks: 100000,
         event: "MILESTONE_100k",
         description: "You can now increase your bots' power.",
+    },
+    {
+        level: 4,
+        clicks: 1000000,
+        event: "MILESTONE_1m",
+        description: "You can now plant trees.",
     },
 ];
 

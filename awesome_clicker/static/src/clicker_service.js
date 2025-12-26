@@ -1,6 +1,6 @@
 import { registry } from "@web/core/registry";
 import { ClickerModel } from "./clicker_model";
-import { BOT_FREQUENCY, MILESTONES } from "./clicker_data";
+import { BOT_FREQUENCY, MILESTONES, TREE_FREQUENCY } from "./clicker_data";
 
 export function doClickerAction(actionService) {
     actionService.doAction({
@@ -45,6 +45,7 @@ export const clickerService = {
 
         document.addEventListener("click", () => model.increment(1), true);
         setInterval(() => model.botsDoClicks(), BOT_FREQUENCY);
+        setInterval(() => model.treesProduceFruit(), TREE_FREQUENCY);
         return model;
     },
 };

@@ -4,15 +4,22 @@
     <t t-name="awesome_clicker.clicker_action">
         <div class="ms-1 mt-1">
             <ClickValue label="'Clicks: '" value="clicker.clicks"/>
-            <button type="button" class="btn btn-primary" t-on-click="() => clicker.increment(9)">Increment</button>
+            <!-- 9 -->
+            <button type="button" class="btn btn-primary" t-on-click="() => clicker.increment(999999)">Increment</button>
+            <t t-if="clicker.level >= 4">
+                <br/>
+                <ClickValue label="'Pears: '" value="clicker.pears"/>
+                <br/>
+                <ClickValue label="'Cherries: '" value="clicker.cherries"/>
+            </t>
         </div>
         <div t-if="clicker.level >= 1" class="ms-1 mt-1">
             <h5>Shop</h5>
-            <t t-foreach="clicker.shopItems" t-as="item" t-key="item.name">
+            <t t-foreach="clicker.shopItems" t-as="item" t-key="item.id">
                 <div t-if="clicker.level &gt;= item.minLevel" class="card">
                     <div class="card-header">
-                        <t t-esc="`${item.currentNumber(clicker)}x ${item.name}`"/>
-                        <t t-if="item.clicks" t-esc="` (${item.clicks} clicks/${clicker.botFrequency/1000} seconds) `"/>
+                        <t t-esc="`${item.currentNumber(clicker)}x ${item.name} `"/>
+                        <t t-if="item.clicks" t-esc="`(${item.clicks} clicks/${clicker.botFrequency/1000} seconds) `"/>
                         <i class="fa" t-att-class="item.icon"/>
                     </div>
                     <div class="card-body">
