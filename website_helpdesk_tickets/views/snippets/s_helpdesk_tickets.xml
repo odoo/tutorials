@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Define the custom snippet -->
+    <template id="s_helpdesk_tickets" name="Helpdesk Tic36kets">
+            <section class="s_helpdesk_tickets o_snippet" data-snippet="s_helpdesk_tickets" data-name="Help Tickets">
+               <div class="my-5 container">
+                    <h2 class="text-center mb-4">Helpdesk Tickets</h2>
+                    <p class="text-center mb-5">Choose which tickets to be shown from options menu.</p>
+                </div>   
+            </section>
+    </template>
+
+    <template id="helpdesk_input_snippet_options" inherit_id="website.snippet_options">
+        <xpath expr="." position="inside">
+            <div data-js="HelpdeskTickets" data-selector=".s_helpdesk_tickets">
+                <we-row>
+                    <we-many2one string="Helpdesk Team" data-model="helpdesk.team" data-name="helpdesk_team_opt" data-no-preview="true" data-default-message="All Teams" data-select-attribute="" data-attribute-name="data-helpdesk-team-id"/>
+                    <we-button data-icon="fa-times" data-no-preview="true" data-select-attribute="" data-attribute-name="data-helpdesk-team-id"/>
+                </we-row>
+                <we-select string="Select layout" data-no-preview="true" data-attribute-default-value="card">
+                    <we-button title="Card" data-select-data-attribute="card" data-attribute-name="layout" data-value="card">Card</we-button>
+                    <we-button title="List" data-select-data-attribute="list" data-attribute-name="layout" data-value="list">List</we-button>
+                </we-select>
+            </div>
+        </xpath>
+    </template>
+</odoo>
