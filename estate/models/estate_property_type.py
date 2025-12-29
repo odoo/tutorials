@@ -16,8 +16,8 @@ class EstatePropertyType(models.Model):
     offer_count = fields.Integer(compute="_compute_offer_count")
 
     _unique_name = models.Constraint(
-        'unique(name)',
-        'The property type name must be unique.',
+        "unique(name)",
+        "The property type name must be unique.",
     )
 
     def _compute_offer_count(self):

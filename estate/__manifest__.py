@@ -1,11 +1,11 @@
 {
-    'name': "Real Estate",
+    'name': 'Real Estate',
     'description': """Real estate management tutorial module with properties, offers, types and tags.""",
     'version': '1.0',
     'license': 'LGPL-3',
     'summary': 'Real Estate advertisement tutorial module',
     'depends': ['base'],
-    'author': "Harsh Maniya",
+    'author': 'Harsh Maniya',
     'data': [
        'security/ir.model.access.csv',
        'views/estate_property_offer_views.xml',

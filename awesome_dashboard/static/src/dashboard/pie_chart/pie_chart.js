@@ -25,18 +25,18 @@ export class PieChart extends Component{
                 datasets: [
                     {
                         data: [
-                            this.props.data.s || 2,
-                            this.props.data.m || 5,
-                            this.props.data.l || 7,
-                            this.props.data.xl || 11,
-                            this.props.data.xxl || 13,
+                            this.props.data.s || 11,
+                            this.props.data.m || 9,
+                            this.props.data.l || 13,
+                            this.props.data.xl || 7,
+                            this.props.data.xxl || 15,
                         ],
                         backgroundColor: [
                             "#ff6384",
                             "#36a2eb",
                             "#ffce56",
                             "#4bc0c0",
-                            "#9966ff",
+                            "#906fd1",
                         ],
                     },
                 ],

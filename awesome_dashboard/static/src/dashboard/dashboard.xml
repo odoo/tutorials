@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_dashboard.AwesomeDashboard">
+    <t t-name="awesome_dashboard.Awesomedashboard">
         <Layout className="'o_dashboard h-100'" display="{ controlPanel: {} }">
             <t t-set-slot="control-panel-create-button">
                 <div class="btn-group">
@@ -36,7 +36,10 @@
                         Number of new orders this month
                     </div>
                     <div class="display-4 text-success">
-                        <t t-esc="stats.new_orders"/>
+                        <t t-if="stats.loading">Loading…</t>
+                        <t t-else="">
+                            <t t-esc="stats.data.new_orders"/>
+                        </t>
                     </div>
                 </DashboardItem>
                 <DashboardItem>
@@ -57,7 +60,7 @@
                 </DashboardItem>
                 <DashboardItem size="2">
                     <h5>Shirt orders by size</h5>
-                    <PieChart data="stats.sales_by_category"/>
+                    <PieChart data="stats.data.sales_by_category || {}"/>
                 </DashboardItem>
             </div>
         </Layout>

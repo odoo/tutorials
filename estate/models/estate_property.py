@@ -12,7 +12,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Text()
-    postcode = fields.Char()
+    postcode = fields.Integer()
     date_availability = fields.Date(
         default=lambda self: date.today() + relativedelta(months=3),
         copy=False
