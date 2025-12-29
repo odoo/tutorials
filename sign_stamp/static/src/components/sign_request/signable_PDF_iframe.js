@@ -1,56 +1,61 @@
 import { patch } from "@web/core/utils/patch";
 import { SignablePDFIframe } from "@sign/components/sign_request/signable_PDF_iframe";
-import { TestDialog } from "../../dialogs/test_dialog";
+import { _t } from "@web/core/l10n/translation";
+import { SignNameAndSignatureDialog } from "@sign/dialogs/dialogs";
+import { StampSignDetailsDialog } from "../../dialogs/stamp_dialog";;
 
 patch(SignablePDFIframe.prototype, {
     enableCustom(signItem) {
         super.enableCustom(signItem);
-        const signItemType = this.signItemTypesById[signItem.data.type_id];
-        if (signItemType.item_type !== "stamp") {
+        const signItemElement = signItem.el;
+        const signItemData = signItem.data;
+        const signItemType = this.signItemTypesById[signItemData.type_id];
+        const { name, item_type: type, auto_value: autoValue } = signItemType;
+        if (type === _t("stamp")) {
+            signItemElement.addEventListener("click", (e) => {
+                this.handleSignatureDialogClick(e.currentTarget, signItemType);
+            });
+        }
+    },
+    openSignatureDialog(signatureItem, type) {
+        if (this.dialogOpen) {
             return;
         }
-
-        signItem.el.value = `
-            ${this.props.companyInfo.company}
-            ${this.props.companyInfo.address}
-            ${this.props.companyInfo.city}
-            ${this.props.companyInfo.country}
-            ${this.props.companyInfo.vat}
-        `
-
-        signItem.el.addEventListener("click", (ev) => {
-            console.log("STAMP CLICKED => opening dialog");
-            this.env.services.dialog.add(TestDialog, {
-                companyName: this.props.companyInfo.company,
-                companyAddress: this.props.companyInfo.address,
-                companyCity: this.props.companyInfo.city,
-                companyCountry: this.props.companyInfo.country,
-                companyVat: this.props.companyInfo.vat,
-                signItemEl: signItem.el,
-                onCancel() {
-                    this.props.close();
+        const signature = {
+            name: this.signerName || "",
+            company: this.props.companyInfo?.company || "",
+            address: this.props.companyInfo?.address || "",
+            city: this.props.companyInfo?.city || "",
+            country: this.props.companyInfo?.country || "",
+            vat: this.props.companyInfo?.vat || "",
+        };
+        const frame = {};
+        const { height, width } = signatureItem.getBoundingClientRect();
+        const signFrame = signatureItem.querySelector(".o_sign_frame");
+        this.dialogOpen = true;
+        const signatureImage = signatureItem?.dataset?.signature;
+        this.closeFn = this.dialog.add(
+            type.item_type === "stamp"
+                ? StampSignDetailsDialog
+                : SignNameAndSignatureDialog,
+            {
+                frame,
+                signature,
+                signatureType: type.item_type,
+                displaySignatureRatio: width / height,
+                activeFrame: Boolean(signFrame) || !type.auto_value,
+                mode: "auto",
+                defaultFrame: type.frame_value || "",
+                hash: this.frameHash,
+                signatureImage,
+                onConfirm: () => {},
+                onConfirmAll: () => {},
+            },
+            {
+                onClose: () => {
+                    this.dialogOpen = false;
                 },
-                OnSign() {
-                    const companyNameInput = document.querySelector('#company_name_input')?.value || ""
-                    const companyAddressInput = document.querySelector('#company_address_input')?.value || "" 
-                    const companyCityInput = document.querySelector('#company_city_input')?.value || "" 
-                    const companyCountryInput = document.querySelector('#company_country_input')?.value || "" 
-                    const companyVatInput = document.querySelector('#company_vat_input')?.value || ""
-                    this.companyName = companyNameInput 
-                    this.companyAddress = companyAddressInput 
-                    this.companyCity = companyCityInput 
-                    this.companyCountry = companyCountryInput 
-                    this.companyVat = companyVatInput 
-                    signItem.el.value = `
-                        ${this.companyName}
-                        ${this.companyAddress}
-                        ${this.companyCity}
-                        ${this.companyCountry}
-                        ${this.companyVat}
-                    ` 
-                    this.props.close();
-                },
-            });
-        });
-    },
+            }
+        );
+    }
 });
