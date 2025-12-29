@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.SettingsDialog">
+        <Dialog title="Settings">
+            
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <div>
+                    <CheckBox value="item.enabled" onChange="(ev) =>this.onChange(ev,item)">
+                        <t t-esc="item.description"/>
+                    </CheckBox>
+                </div>
+            </t>
+            <t t-set-slots="footer">
+                <button class="btn btn-primary" t-on-click="done">Done</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

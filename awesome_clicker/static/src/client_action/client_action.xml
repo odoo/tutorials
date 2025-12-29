@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.client_action">
+        <div>
+            Clicks : <ClickValue/>
+            <button class="btn btn-secondary" t-on-click="onClick">
+                <i class="fa fa-plus fa-lg"/>
+            </button> 
+        </div>
+        <Notebook>
+            <t t-set-slot="Bots" title="'Bots'" isVisible="clicker.level >= 1">
+                <div>
+                    <h2>BOTS : </h2>
+                    <div>
+                        <t t-esc="clicker.bots.clickBot.quantity"/>x ClickBots (10clicks/10 second)
+                    </div>
+                    <button class="btn btn-primary" t-att-disabled="clicker.clicks lt clicker.bots.clickBot.price" t-on-click="() => {clicker.buyBot(0);}"> 
+                        Buy ClickBot (<t t-esc="clicker.bots.clickBot.price"/> clicks)
+                    </button>
+                    <div t-if="clicker.level >= 2">
+                            <div>
+                                <t t-esc="clicker.bots.bigClickBot.quantity"/>x BigClickBots (1000clicks/10 second)
+                            </div>
+                            <button class="btn btn-primary" t-att-disabled="clicker.clicks lt clicker.bots.bigClickBot.price" t-on-click="() => {clicker.buyBot(1);}"> 
+                                Buy BigClickBot (<t t-esc="clicker.bots.bigClickBot.price"/> clicks)
+                            </button>
+                    </div>
+                    <div t-if="clicker.level >= 3">
+                            <h2>POWER : </h2>
+                            <t t-esc="clicker.power"/>x
+                            <button class="btn btn-primary" t-att-disabled="clicker.clicks lt 5000" t-on-click="() => {clicker.buyPower();}"> Buy Power multiplyer (5000 clicks)</button>
+                    </div>
+                </div>
+            </t>
+            <t t-set-slot="Trees" title="'Trees and fruits'" isVisible="clicker.level >= 4">
+                <div t-if="clicker.level >= 4">
+                    <h2>Trees</h2>
+                    <div>
+                        <t t-esc="clicker.trees.cherry.quantity"/>x Cherry Trees (1 cherry/30 second)
+                    </div>
+                    <button class="btn btn-primary" t-att-disabled="clicker.clicks lt clicker.trees.cherry.price" t-on-click="() => {clicker.buyTrees(0);}">
+                        Buy Cherry Trees (<t t-esc="clicker.trees.cherry.price"/> clicks)
+                        </button>
+                    <div>
+                        <t t-esc="clicker.trees.pear.quantity"/>x Pear Trees (1 cherry/30 second)
+                    </div>
+                    <button class="btn btn-primary" t-att-disabled="clicker.clicks lt clicker.trees.pear.price" t-on-click="() => {clicker.buyTrees(1);}">
+                        Buy Pear Trees (<t t-esc="clicker.trees.pear.price"/> clicks)
+                        </button>
+                    <button class="btn btn-primary" t-att-disabled="clicker.clicks lt clicker.trees.peach.price" t-on-click="() => {clicker.buyTrees(2);}">
+                        Buy Peach Trees (<t t-esc="clicker.trees.peach.price"/> clicks)
+                    </button>
+                    <h2>Fruits</h2>
+                    <div>
+                        Cherries : <t t-esc="clicker.trees.cherry.fruit"/>
+                    </div>
+                    <div>
+                        Pears: <t t-esc="clicker.trees.pear.fruit"/>
+                    </div>
+                    <div>
+                        Peach: <t t-esc="clicker.trees.peach.fruit"/>
+                    </div>
+                </div>
+            </t>
+        </Notebook>
+
+    </t>
+</templates>
