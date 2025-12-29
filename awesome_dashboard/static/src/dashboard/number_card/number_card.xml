@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    
+
     <t t-name="awesome_dashboard.number_card">
-        <DashboardItem size="this.props.size || 1">
-            <div class="d-flex flex-column align-items-center">
-                <span t-esc="this.props.description" />
-                <h1 class="text-primary" t-esc="this.props.data" />
-            </div>
-        </DashboardItem>
+        <div class="d-flex flex-column align-items-center">
+            <span t-esc="this.props.description" />
+            <h1 class="text-primary" t-esc="this.props.data" />
+        </div>
     </t>
 
 </templates>

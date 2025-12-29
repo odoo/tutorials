@@ -8,10 +8,11 @@
                     <button type="object" name="action_cancel_property" string="Cancel"
                         invisible="state in ('cancelled', 'sold')" />
                     <button type="object" name="action_property_sold" string="Sold"
-                        invisible="state in ('cancelled', 'sold')" />
-                    <field name="state" widget="statusbar" />
+                        invisible="state not in ('offer_accepted')" />
+                    <field name="state" widget="statusbar" options="{'clickable': '1'}" />
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Sold" invisible="state != 'sold'"/>
                     <h1>
                         <field name="name" nolabel="True" />
                     </h1>
@@ -63,6 +64,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter open_attachments="True" />
             </form>
         </field>
     </record>

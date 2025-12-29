@@ -20,7 +20,7 @@ class EstatePropertyOffer(models.Model):
 
     _check_offer_price = models.Constraint(
         'CHECK(price > 0)',
-        'Offer Price cannot be 0 or below 0'
+        'The offer price must be greater than 0'
     )
 
     @api.depends('validity')
@@ -43,6 +43,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.buyer = record.partner_id
             record.property_id.state = 'offer_accepted'
             record.status = 'accepted'
+            record.property_id.offer_ids.filtered(lambda x: x.id != record.id).status = "refused"
         return True
 
     def action_offer_refused(self):

@@ -2,12 +2,10 @@
 <templates>
 
     <t t-name="awesome_dashboard.pie_chart_card">
-        <DashboardItem size="this.props.size || 1">
-            <div class="d-flex flex-column">
-                <span t-esc="this.props.description"></span>
-                <PieChart data="this.props.data" />
-            </div>
-        </DashboardItem>
+        <div class="d-flex flex-column">
+            <span t-esc="this.props.description"></span>
+            <PieChart data="this.props.data" />
+        </div>
     </t>
 
 </templates>

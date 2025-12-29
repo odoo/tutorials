@@ -4,12 +4,13 @@ from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate_property"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _description = "Estate Property details"
     _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
-    postcode = fields.Char()
+    postcode = fields.Integer()
     date_availability = fields.Date(
         default=lambda self: fields.Date.add(fields.Date.today(), months=3), copy=False
     )
@@ -60,6 +61,10 @@ class EstateProperty(models.Model):
 
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)", "The Selling price cannot be less then 0"
+    )
+
+    _check_living_area = models.Constraint(
+        "CHECK(living_area > 0)", "Living area value can't be 0"
     )
 
     @api.constrains("selling_price", "buyer", "expected_price")
@@ -114,5 +119,5 @@ class EstateProperty(models.Model):
     def _unlink_if_new_or_sold(self):
         if self.filtered(lambda x: x.state not in ("new", "cancelled")):
             raise exceptions.UserError(
-                _("Cannot delete property which is new or cancelled")
+                _("Can only delete property which is new or cancelled")
             )

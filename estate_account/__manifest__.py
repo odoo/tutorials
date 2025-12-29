@@ -8,5 +8,4 @@
     A Real Estate Invoicing Module
     """,
     "license": "LGPL-3",
-    "data": [],
 }
