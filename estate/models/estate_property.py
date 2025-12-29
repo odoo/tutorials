@@ -73,6 +73,7 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         compute="_compute_best_price",
     )
+
     _expected_price = models.Constraint(
         'CHECK(expected_price >= 0)',
         'The expected price must be positive.',
@@ -106,7 +107,7 @@ class EstateProperty(models.Model):
         if self.filtered(lambda rec: rec.state == "sold"):
             raise exceptions.UserError(_("Sold properties cannot be cancelled."))
         self.write({"state": "cancelled"})
-        return True
+        return False
 
     def action_set_sold(self):
         for rec in self:
@@ -114,7 +115,7 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError(_("Canceled properties cannot be sold."))
             else:
                 rec.state = "sold"
-        return True
+                return False
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):

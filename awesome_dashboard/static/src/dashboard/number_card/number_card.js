@@ -4,6 +4,6 @@ export class NumberCard extends Component {
   static template = "awesome_dashboard.number_card";
   static props = {
     data: {type: Number},
-    description: {type: Number},
+    description: {type: String},
   };
 }

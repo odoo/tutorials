@@ -12,9 +12,9 @@ class AwesomeDashboard extends Component {
 
     setup(){
         this.action = useService("action");
-        this.statistics = useService("awesome_dashboard.statistics");   
-        this.stats = useState(this.statistics.statistics);
-        this.items = items;
+        this.statistics = useService("awesome_dashboard.statistics");
+        const dashboardRegistry = registry.category("awesome_dashboard");
+        this.items = registry.category("awesome_dashboard").getAll();;
     }
     openCustomers(){
         this.action.doAction("base.action_partner_form");
@@ -29,7 +29,7 @@ class AwesomeDashboard extends Component {
                 [false, "form"],
             ],
             target: "current",
-        })  
+        })
     }
 }
 

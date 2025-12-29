@@ -32,6 +32,7 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
         store=True,
     )
+
     property_type_id = fields.Many2one(
         related="property_id.property_type_id", store=True
     )
@@ -79,4 +80,3 @@ class EstatePropertyOffer(models.Model):
                         "Offer price must be greater than or equal to the best offer price."))
                 property_obj.state = "offer_received"
         return super().create(vals)
-
