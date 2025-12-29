@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="picking_type_containerisation" model="stock.picking.type">
+        <field name="name">Containerisation</field>
+        <field name="code">incoming</field>
+        <field name="sequence_code">IN/CONT</field>
+        <field name="warehouse_id" ref="stock.warehouse0"/>
+        <field name="default_location_src_id" ref="stock.stock_location_suppliers"/>
+        <field name="default_location_dest_id" ref="stock.stock_location_stock"/>
+    </record>
+
+    <record id="stock.warehouse0" model="stock.warehouse">
+        <field name="cont_type_id" ref="purchase_order_containerisation.picking_type_containerisation"/>
+    </record>
+</odoo>

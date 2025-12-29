@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_purchase_order_containerisation_supplier,access.purchase.order.containerisation.supplier,model_purchase_order_containerisation_supplier,base.group_user,1,1,1,0
+access_purchase_order_create_containerisation,access.purchase.order.create.containerisation,model_purchase_order_create_containerisation,base.group_user,1,1,1,0
+access_containerisation_location_warning,access.containerisation.location.warning,model_containerisation_location_warning,base.group_user,1,1,1,0
