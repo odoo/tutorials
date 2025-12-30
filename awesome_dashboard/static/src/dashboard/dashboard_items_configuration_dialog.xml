@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+    <t t-name="event.DashboardItemsConfigurationDialog">
+        <Dialog size="'md'" title.translate="Dashboard Items Configuration">
+            <div class="d-flex flex-column gap-2">
+                <t t-foreach="props.items" t-as="item" t-key="item.id">
+                    <div class="d-flex gap-1 align-items-center">
+                        <input class="form-check-input" type="checkbox"
+                            t-on-change="()=> this.handleCheckBoxChange(item.id)" t-att-checked="!this.state.value.includes(item.id)" />
+                        <t t-esc="item.description" />
+                    </div>
+                </t>
+                <t t-set-slot="footer">
+                    <button t-on-click="handleApply" class="btn btn-primary">Apply</button>
+                </t>
+            </div>
+        </Dialog>
+    </t>
+
+</templates>

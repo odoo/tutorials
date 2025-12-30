@@ -5,7 +5,7 @@ import { PieChartCard } from "./pie_chart/pie_chart_card";
 const items = [
     {
         id: "average_quantity",
-        description: "Average amount of t-shirt",
+        description: "Average amount of t-shirt by order this month",
         Component: NumberCard,
         // size and props are optionals
         size: 1.5,
@@ -16,7 +16,7 @@ const items = [
     },
     {
         id: "average_time",
-        description: "Average amount of t-shirt",
+        description: "Average time for an order to go from 'new' to 'sent' or 'cancelled'",
         Component: NumberCard,
         // size and props are optionals
         size: 1.5,
@@ -27,7 +27,7 @@ const items = [
     },
     {
         id: "nb_cancelled_orders",
-        description: "Average amount of t-shirt",
+        description: "Number of cancelled orders this month",
         Component: NumberCard,
         // size and props are optionals
         size: 1.5,
@@ -38,7 +38,7 @@ const items = [
     },
     {
         id: "nb_new_orders",
-        description: "Average amount of t-shirt",
+        description: "Number of new orders this month",
         Component: NumberCard,
         // size and props are optionals
         size: 1.5,
@@ -49,7 +49,7 @@ const items = [
     },
     {
         id: "total_amount",
-        description: "Average amount of t-shirt",
+        description: "Total amount of new orders this month",
         Component: NumberCard,
         // size and props are optionals
         size: 1.5,
@@ -60,7 +60,7 @@ const items = [
     },
     {
         id: "orders_by_size",
-        description: "Average amount of t-shirt",
+        description: "Shirt orders by size",
         Component: PieChartCard,
         // size and props are optionals
         size: 1.5,

@@ -4,7 +4,7 @@ from odoo.tools.float_utils import float_compare
 
 class EstateProperty(models.Model):
     _name = "estate_property"
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Estate Property details"
     _order = "id desc"
 
@@ -56,11 +56,7 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute="_compute_best_price")
 
     _check_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)", "The Expected price cannot be 0 or less then 0"
-    )
-
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)", "The Selling price cannot be less then 0"
+        "CHECK(expected_price > 0)", "The Expected price must be greater than 0"
     )
 
     _check_living_area = models.Constraint(
@@ -107,7 +103,7 @@ class EstateProperty(models.Model):
         if self.filtered(lambda x: x.state == "sold"):
             raise exceptions.UserError(_("A sold property cannot be cancelled"))
 
-        self.state = "cancelled"
+        self.write({"state": "cancelled"})
 
     def action_property_sold(self):
         if self.filtered(lambda x: x.state == "cancelled"):

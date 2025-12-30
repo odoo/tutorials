@@ -28,9 +28,6 @@ export class PieChart extends Component {
 
     getChartConfig() {
         const chartData = this.props.data;
-        console.log("chart data in chartconfig", chartData);
-        console.log(Object.keys(chartData));
-        console.log(Object.values(chartData));
 
         return {
             type: "pie",

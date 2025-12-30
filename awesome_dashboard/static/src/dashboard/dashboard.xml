@@ -6,13 +6,18 @@
             <t t-set-slot="control-panel-create-button">
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
+                <div class="d-flex align-items-center">
+                    <icon class="fa fa-gear" t-on-click="openDashboardItemsConfigurationDialog" />
+                </div>
             </t>
             <div class="p-2 d-flex flex-wrap gap-3">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size || 1">
-                        <t t-set="itemProp" t-value="item.props ? item.props(state.stats): {'data': state.stats }" />
-                        <t t-component="item.Component" t-props="itemProp" />
-                    </DashboardItem>
+                    <t t-if="!this.excludeItems.value.includes(item.id)">
+                        <DashboardItem size="item.size || 1">
+                            <t t-set="itemProp" t-value="item.props ? item.props(state.stats): {'data': state.stats }" />
+                            <t t-component="item.Component" t-props="itemProp" />
+                        </DashboardItem>
+                    </t>
                 </t>
             </div>
         </Layout>

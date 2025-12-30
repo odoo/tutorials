@@ -3,6 +3,7 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout"
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
+import { DashboardItemsConfigurationDialog, EXCLUDE_FIELDS_KEY } from "./dashboard_items_configuration_dialog";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -11,7 +12,9 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action = useService("action");
         this.statisticsService = useService("awesome_dashboard.statistics")
+        this.dialog = useService("dialog")
         this.state = useState(this.statisticsService.state)
+        this.excludeItems = useState({value: JSON.parse(localStorage.getItem(EXCLUDE_FIELDS_KEY)) || []})
         this.items = registry.category("awesome_dashboard").get("awesome_dashboard.items")
     }
 
@@ -27,6 +30,18 @@ class AwesomeDashboard extends Component {
             res_model: "crm.lead",
             views: [[false, "list"], [false, "form"]]
         })
+    }
+
+    openDashboardItemsConfigurationDialog() {
+        this.dialog.add(
+            DashboardItemsConfigurationDialog,
+            {
+                items: this.items,
+                setExcludeItems: (items) => {
+                    this.excludeItems.value = items
+                }
+            }
+        )
     }
 }
 

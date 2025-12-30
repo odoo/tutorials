@@ -1,3 +1,4 @@
+from datetime import timedelta
 from odoo import models, fields, api, exceptions, _
 
 
@@ -61,3 +62,14 @@ class EstatePropertyOffer(models.Model):
             prop.state = 'offer_received'
 
         return super().create(vals_list)
+
+    def _cron_auto_refuse(self):
+        domain = [
+            ("status", "=", False),
+        ]
+        records = self.search(domain, limit=100)
+        for record in records:
+            rect = record.date_deadline
+            now = fields.Date.today()
+            if (rect - now) < timedelta(days=1):
+                record.status = "refused"
