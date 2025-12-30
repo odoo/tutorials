@@ -1,5 +1,7 @@
 from odoo import http
 from odoo.addons.sign.controllers.main import Sign
+import logging
+_logger = logging.getLogger(__name__)
 
 
 class Sign(Sign):
@@ -28,12 +30,12 @@ class Sign(Sign):
 
     @http.route(["/sign/update_user_signature"], type="jsonrpc", auth="user")
     def update_signature(self, sign_request_id, role, signature_type=None, datas=None, frame_datas=None):
-        sign_request_item_sudo = http.request.env['sign.request.item'].sudo().search([('sign_request_id', '=', sign_request_id), ('role_id', '=', role)], limit=1)
+        if signature_type == "stamp_sign":
+            signature_type = "stamp_sign_stamp"
         user = http.request.env.user
         if not user:
             return False
-        allowed = sign_request_item_sudo.partner_id.id == user.partner_id.id
-        if not allowed or signature_type not in ['sign_signature', 'sign_initials', 'stamp_sign_stamp']:
+        if signature_type not in ['sign_signature', 'sign_initials', 'stamp_sign_stamp']:
             return False
         user[signature_type] = datas[datas.find(',') + 1:]
         user[signature_type + '_frame'] = frame_datas[frame_datas.find(',') + 1:] if frame_datas else False

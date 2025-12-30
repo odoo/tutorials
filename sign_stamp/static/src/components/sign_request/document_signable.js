@@ -11,7 +11,6 @@ patch(Document.prototype, {
         this.companyInfo.city = parentEl.querySelector("#o_sign_signer_city_input_info")?.value;
         this.companyInfo.country = parentEl.querySelector("#o_sign_signer_country_input_info")?.value;
         this.companyInfo.vat = parentEl.querySelector("#o_sign_signer_vat_input_info")?.value;
-        this.companyInfo.logo = parentEl.querySelector("#o_sign_signer_logo_input_info")?.value;
         console.log(this.companyInfo)
     },
 

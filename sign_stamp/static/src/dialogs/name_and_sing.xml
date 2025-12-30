@@ -14,23 +14,27 @@
             </defs>
 
             <t t-if="company">
-                <text t-esc="company" x="150" y="20" font-size="14" t-att-textLength="Math.min(180, company.length * 9)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+                <text t-esc="company" x="150" y="20" font-size="14" t-attf-style="font-family:'font';"/>
             </t>
 
             <t t-if="address">
-                <text t-esc="address" x="150" y="35" font-size="12" t-att-textLength="Math.min(180, address.length * 8)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+                <text t-esc="address" x="150" y="35" font-size="12" t-attf-style="font-family:'font';"/>
             </t>
 
             <t t-if="city">
-                <text t-esc="city" x="150" y="50" font-size="12" t-att-textLength="Math.min(180, city.length * 8)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+                <text t-esc="city" x="150" y="50" font-size="12"  t-attf-style="font-family:'font';"/>
             </t>
 
             <t t-if="country">
-                <text t-esc="country" x="150" y="65" font-size="12" t-att-textLength="Math.min(180, country.length * 8)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+                <text t-esc="country" x="150" y="65" font-size="12"  t-attf-style="font-family:'font';"/>
             </t>
 
             <t t-if="vat">
-                <text t-esc="vat" x="150" y="80" font-size="10" t-att-textLength="Math.min(180, vat.length * 7)" t-att-lengthAdjust="'spacing' + (type === 'stamp' ? 'AndGlyphs' : '')" t-attf-style="font-family:'font'; stroke: none; fill: {{color}};" text-anchor="start" />
+                <text t-esc="vat" x="150" y="80" font-size="10"  t-attf-style="font-family:'font';"/>
+            </t>
+
+            <t t-if="image">
+                <image x="30" y="10" width="50" height="50" t-att-href="image"/>
             </t>
         </svg>
     </t>
