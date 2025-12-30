@@ -15,8 +15,8 @@ export class StampSignDetails extends SignNameAndSignature {
         const field = ev.target.name;
         if (field === "logo") {
             const file = ev.target.files[0];
-            if (!file) return;
-
+            if (!file)
+                return;
             const reader = new FileReader();
             reader.onload = (e) => {
                 this.props.signature.image = e.target.result;

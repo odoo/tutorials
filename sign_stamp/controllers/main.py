@@ -1,10 +1,9 @@
 from odoo import http
 from odoo.addons.sign.controllers.main import Sign
-import logging
-_logger = logging.getLogger(__name__)
 
 
 class Sign(Sign):
+
     def get_document_qweb_context(self, sign_request_id, token, **post):
         result = super().get_document_qweb_context(sign_request_id, token, **post)
         context = result.get('rendering_context', {})
@@ -30,8 +29,6 @@ class Sign(Sign):
 
     @http.route(["/sign/update_user_signature"], type="jsonrpc", auth="user")
     def update_signature(self, sign_request_id, role, signature_type=None, datas=None, frame_datas=None):
-        if signature_type == "stamp_sign":
-            signature_type = "stamp_sign_stamp"
         user = http.request.env.user
         if not user:
             return False

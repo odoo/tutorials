@@ -13,7 +13,6 @@ patch(NameAndSignature.prototype, {
     },
 
     async drawCurrentName() {
-        console.log("signatureType:", this.props.signatureType);
         if (this.props.signatureType === "stamp") {
             const font = this.Notofonts;
             const stamp = this.getStampDetails();
@@ -24,6 +23,7 @@ patch(NameAndSignature.prototype, {
             super.drawCurrentName();
         }
     },
+
     getStampDetails() {
         return {
             name: this.props.signature.name,
