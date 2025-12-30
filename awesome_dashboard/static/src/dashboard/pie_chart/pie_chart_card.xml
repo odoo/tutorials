@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+    <t t-name="awesome_dashboard.pie_chart_card">
+        <div class="d-flex flex-column">
+            <span t-esc="this.props.description"></span>
+            <PieChart data="this.props.data" />
+        </div>
+    </t>
+
+</templates>

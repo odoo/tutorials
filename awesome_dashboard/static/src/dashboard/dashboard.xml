@@ -13,51 +13,14 @@
                     Leads
                 </button>
 			</t>
-			<div class="d-flex gap-3 p-3 flex-wrap">
-				<DashboardItem>
-					<div class="text-center">
-                    Average amount of t-shirt by order this month   
-						<p t-out="this.statistics.data.average_quantity" class="fs-1 fw-bold text-success"/>
-					</div>
-				</DashboardItem>
-				<DashboardItem>
-					<div>
-					</div>
-				</DashboardItem>
-				<DashboardItem>
-					<div class="text-center">
-                    Average time for an order to go from ‘new’ to ‘sent’ or ‘cancelled’
-                        
-						<p t-out="this.statistics.data.average_time" class="fs-1 fw-bold text-success"/>
-					</div>
-				</DashboardItem>
-				<DashboardItem>
-					<div class="text-center">
-                        Number of new orders this month
-                        
-						<p t-out="this.statistics.data.nb_new_orders" class="fs-1 fw-bold text-success"/>
-					</div>
-				</DashboardItem>
-				<DashboardItem>
-					<div class="text-center">
-                    Number of cancelled orders this month  
-						<p t-out="this.statistics.data.nb_cancelled_orders" class="fs-1 fw-bold text-success"/>
-					</div>
-				</DashboardItem>
-				<DashboardItem>
-					<div class="text-center">
-                        Total amount of new orders this month
-						
-						<p t-out="this.statistics.data.total_amount" class="fs-1 fw-bold text-success"/>
-					</div>
-				</DashboardItem>
-				<DashboardItem>
-					<div class="text-center">
-						<h5>T-shirt sales by size</h5>
-						<PieChart value="this.statistics.data.orders_by_size"/>
-					</div>
-				</DashboardItem>
-			</div>
+			<div class="p-2 d-flex flex-wrap gap-3">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(this.statistics.state.stats): {'data': this.statistics.state.stats }" />
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>
 		</Layout>
 	</t>
 </templates>

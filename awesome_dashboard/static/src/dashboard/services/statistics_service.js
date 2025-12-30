@@ -6,14 +6,14 @@ const statisticsService = {
     async: ["loadStatistics"],
     start() {
         const loadStatistics = () => rpc("/awesome_dashboard/statistics");
-        const state = reactive({ data: null });
+        const state = reactive({ stats: null });
         const fetchData = async () => {
-            state.data = await loadStatistics();
+            state.stats = await loadStatistics();
         };
         fetchData();
         setInterval(fetchData, 10000);
         return {
-            state: state,
+            state
         };
     },
 };

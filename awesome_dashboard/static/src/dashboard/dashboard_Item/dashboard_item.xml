@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_dashboard.DashboardItem">
+    <t t-name="awesome_dashboard.dashboard_item">
         <div
             class="o_dashboard_item card shadow-sm"
             t-att-style="'width: ' + width"
