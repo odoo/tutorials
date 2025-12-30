@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.DashboardSettingsDialog">
+        <Dialog title="'Dashboard items configuration'">
+            <div class="o_form_sheet">
+                <t t-foreach="props.items" t-as="item" t-key="item.id">
+                    <label class="d-flex align-items-center mb-2">
+                        <input type="checkbox" t-att-checked="!state.unchecked.has(item.id)" t-on-change="toggleItem.bind(this, item.id)"/>
+                        <span class="ms-2">
+                            <t t-esc="item.description"/>
+                        </span>
+                    </label>
+                </t>
+            </div>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">
+                    Apply
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
