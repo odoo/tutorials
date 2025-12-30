@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+node_modules
+.eslintignore
+.eslintrc.json
+jsconfig.json
+package-lock.json
+package.json

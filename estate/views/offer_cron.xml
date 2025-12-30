@@ -1,0 +1,11 @@
+<odoo>
+    <record id="ir_cron_auto_reject_offer_after_validity" model="ir.cron">
+        <field name="name">Estate Offer: Refuse offer after it's validity date</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="nextcall" eval="(DateTime.now().replace(hour=2, minute=0) + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')" />
+        <field name="model_id" ref="model_estate_property_offer" />
+        <field name="code">model._cron_auto_refuse()</field>
+        <field name="state">code</field>
+    </record>
+</odoo>
