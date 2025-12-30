@@ -1,6 +1,6 @@
 import { registry } from "@web/core/registry";
-import { NumberCard } from "./number_card/number_card"
-import { PieChartCard } from "./pie_chart/pie_chart_card"
+import { NumberCard } from "./number_card/number_card";
+import { PieChartCard } from "./pie_chart/pie_chart_card";
 
 const dashboardRegistry = registry.category("awesome_dashboard");
 
@@ -11,7 +11,7 @@ dashboardRegistry.add("average_quantity", {
     size: 1,
     props: (data) => ({
         description: "Average amount of t-shirt by order this month",
-        data: data.average_quantity,
+        data: data.average_quantity ?? 0,
     }),
 });
 dashboardRegistry.add("new_orders", {
@@ -21,7 +21,7 @@ dashboardRegistry.add("new_orders", {
     size: 1,
     props: (data) => ({
         description: "Number of new orders this month",
-        data: data.nb_new_orders,
+        data: data.nb_new_orders ?? 0,
     }),
 });
 dashboardRegistry.add("nb_cancelled_orders", {
@@ -31,7 +31,7 @@ dashboardRegistry.add("nb_cancelled_orders", {
     size: 1,
     props: (data) => ({
         description: "Number of cancelled orders this month",
-        data: data.nb_cancelled_orders,
+        data: data.nb_cancelled_orders ?? 0,
     }),
 });
 dashboardRegistry.add("total_amount", {
@@ -41,7 +41,7 @@ dashboardRegistry.add("total_amount", {
     size: 1,
     props: (data) => ({
         description: "Total amount of new orders this month",
-        data: data.total_amount,
+        data: data.total_amount ?? 0,
     }),
 });
 dashboardRegistry.add("average_time", {
@@ -51,7 +51,7 @@ dashboardRegistry.add("average_time", {
     size: 1,
     props: (data) => ({
         description: "Average time for an order to go from 'new' to 'sent' or 'cancelled'",
-        data: data.average_time,
+        data: data.average_time ?? 0,
     }),
 });
 
@@ -62,6 +62,6 @@ dashboardRegistry.add("orders_by_size", {
     size: 2,
     props: (data) => ({
         description: "Shirt orders by size",
-        data: data.orders_by_size,
+        data: data.orders_by_size ?? 0,
     }),
 });

@@ -11,15 +11,18 @@
                     <button class="btn btn-primary" t-on-click="openLeads">
                         Leads
                     </button>
+                    <button class="btn btn-secondary" t-on-click="openDashboardSettings">
+                        <i class="fa fa-cog"/>
+                    </button>
                 </div>
             </t>
             <div class="d-flex flex-wrap gap-3 p-3">
-                <t t-foreach="items" t-as="item" t-key="item.id">
+                <t t-foreach="visibleItems" t-as="item" t-key="item.id">
                     <DashboardItem size="item.size || 1">
-                        <t t-set="itemProp"
+                        <t t-set="itemProps"
                             t-value="item.props
-                                ? item.props(statistics.data)
-                                : { data: statistics.data }"
+                                ? item.props(statistics.data || {})
+                                : { 'data': statistics.data || {}}"
                         />
                       <t t-component="item.Component" t-props="itemProps"/>
                     </DashboardItem>

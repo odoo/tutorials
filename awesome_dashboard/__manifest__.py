@@ -24,6 +24,8 @@
     'assets': {
         'web.assets_backend': [
             'awesome_dashboard/static/src/**/*.js',
+            'awesome_dashboard/static/src/dashboard/settings_dialog.js',
+            'awesome_dashboard/static/src/dashboard/settings_dialog.xml',
         ],
         'awesome_dashboard.dashboard': [
             'awesome_dashboard/static/src/dashboard/**/*',

@@ -15,7 +15,7 @@ async function fetchStatistics() {
 export const statisticsService = {
     start() {
         fetchStatistics();
-        setInterval(fetchStatistics, 10);
+        setInterval(fetchStatistics, 10000);
         return {
             statistics: statisticsState,
             reload: fetchStatistics,
