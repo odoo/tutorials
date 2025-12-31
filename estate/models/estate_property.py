@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import models, api, fields, exceptions
+from odoo import _, models, api, fields, exceptions
 from odoo.exceptions import ValidationError
 
 
@@ -84,18 +84,14 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     def action_sold_property(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise exceptions.UserError("Properties which are Cancelled cannot be Sold")
-            else:
-                record.state = "sold"
+        if self.filtered(lambda x: x.state == "cancelled"):
+            raise exceptions.UserError(_("Properties which are Cancelled cannot be Sold"))
+        self.state = "sold"
 
     def action_cancel_offer(self):
-        for record in self:
-            if record.state == "sold":
-                raise exceptions.UserError("Properties which are Sold cannot be Cancelled")
-            else:
-                record.state = "cancelled"
+        if self.filtered(lambda x: x.state == "sold"):
+            raise exceptions.UserError(_("Properties which are Sold cannot be Cancelled"))
+        self.state = "cancelled"
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_percentage_criteria(self):

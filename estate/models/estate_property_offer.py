@@ -35,13 +35,17 @@ class EstatePropertyOffer(models.Model):
             record.validity = (record.date_deadline - fields.Date.to_date(base_date)).days
 
     def action_accept(self):
-        for record in self:
-            if record.property_id.customer:
-                raise UserError("Only one offer can be accepted for one property")
-            record.status = "accepted"
-            record.property_id.state = "offer_accepted"
-            record.property_id.selling_price = record.price
-            record.property_id.customer = record.partner_id
+        if self.property_id.customer:
+            raise UserError("Only one offer can be accepted for one property")
+        self.status = "accepted"
+        self.property_id.state = "offer_accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.customer = self.partner_id
+        other_offers = self.search([
+            ('property_id', '=', self.property_id),
+            ('status', 'not in', ('refused', 'accepted'))
+            ])
+        other_offers.write({'status': 'refused'})
 
     def action_refuse(self):
         for record in self:
