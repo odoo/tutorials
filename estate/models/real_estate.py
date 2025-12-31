@@ -2,7 +2,7 @@ from odoo import models, fields
 
 
 class RealEstate(models.Model):
-    _name= "real_estate"
+    _name = "real_estate"
     _description = "Test model"
 
     name = fields.Char(required=True)
@@ -23,4 +23,3 @@ class RealEstate(models.Model):
         ('east', 'East'),
         ('west', 'West'),
     ])
-    
