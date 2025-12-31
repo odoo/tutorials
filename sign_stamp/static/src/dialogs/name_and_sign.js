@@ -1,20 +1,11 @@
 import { renderToString } from "@web/core/utils/render";
 import { patch } from "@web/core/utils/patch";
 import { NameAndSignature } from "@web/core/signature/name_and_signature";
-import { rpc } from "@web/core/network/rpc";
-import { onWillStart } from "@odoo/owl";
 
 patch(NameAndSignature.prototype, {
-    setup() {
-        super.setup(...arguments);
-        onWillStart(async () => {
-            this.Notofonts = await rpc(`/web/sign/get_fonts/NotoSans-Reg.ttf`);
-        });
-    },
-
     async drawCurrentName() {
         if (this.props.signatureType === "stamp") {
-            const font = this.Notofonts;
+            const font = this.fonts[this.currentFont];
             const stamp = this.getStampDetails();
             const canvas = this.signatureRef.el;
             const img = this.getSVGStamp(font, stamp, canvas.width, canvas.height);
@@ -32,22 +23,10 @@ patch(NameAndSignature.prototype, {
             city: this.props.signature.city,
             country: this.props.signature.country,
             vat: this.props.signature.vat,
-            logo: this.props.signature.logo,
             image: this.props.signature.image,
         };
     },
 
-    /**
-     * Gets an SVG matching the given parameters, output compatible with the
-     * src attribute of <img/>.
-     *
-     * @private
-     * @param {string} font: base64 encoded font to use
-     * @param {string} text: the name to draw
-     * @param {number} width: the width of the resulting image in px
-     * @param {number} height: the height of the resulting image in px
-     * @returns {string} image = mimetype + image data
-     */
     getSVGStamp(font, stampData, width, height) {
         const svg = renderToString("stamp_sign.sign_svg_stamp", {
             width: width,

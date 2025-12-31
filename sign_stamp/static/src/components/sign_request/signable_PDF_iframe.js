@@ -1,4 +1,3 @@
-import { user } from "@web/core/user";
 import { patch } from "@web/core/utils/patch";
 import { SignablePDFIframe } from "@sign/components/sign_request/signable_PDF_iframe";
 import { SignNameAndSignatureDialog } from "@sign/dialogs/dialogs";
@@ -20,7 +19,14 @@ patch(SignablePDFIframe.prototype, {
         if (this.dialogOpen) {
             return;
         }
-        const { signature, signMode, signatureImage } = this._prepareSignatureData(signatureItem, type);
+        const signature = {
+            name: this.signerName || "",
+            company: this.props.companyInfo?.company || "",
+            address: this.props.companyInfo?.address || "",
+            city: this.props.companyInfo?.city || "",
+            country: this.props.companyInfo?.country || "",
+            vat: this.props.companyInfo?.vat || "",
+        };
         const frame = {};
         const { height, width } = signatureItem.getBoundingClientRect();
         const signFrame = signatureItem.querySelector(".o_sign_frame");
@@ -33,10 +39,9 @@ patch(SignablePDFIframe.prototype, {
                 signatureType: type.item_type,
                 displaySignatureRatio: width / height,
                 activeFrame: Boolean(signFrame) || !type.auto_value,
-                mode: signMode,
+                mode: "auto",
                 defaultFrame: type.frame_value || "",
                 hash: this.frameHash,
-                signatureImage,
                 onConfirm: async () => {
                     if (!signature.isSignatureEmpty && signature.signatureChanged) {
                         const signatureName = signature.name;
@@ -44,18 +49,11 @@ patch(SignablePDFIframe.prototype, {
                         await frame.updateFrame();
                         const frameData = frame.getFrameImageSrc();
                         const signatureSrc = signature.getSignatureImage();
-                        type.auto_value = signatureSrc;
-                        type.frame_value = frameData;
-                        if (user.userId) {
-                            await this.updateUserSignature(type);
-                        }
                         this.fillItemWithSignature(signatureItem, signatureSrc, {
                             frame: frameData,
                             hash: this.frameHash,
                         });
                     } else if (signature.signatureChanged) {
-                        delete signatureItem.dataset.signature;
-                        delete signatureItem.dataset.frame;
                         signatureItem.replaceChildren();
                         const signHelperSpan = document.createElement("span");
                         signHelperSpan.classList.add("o_sign_helper");
@@ -79,18 +77,7 @@ patch(SignablePDFIframe.prototype, {
         );
     },
 
-    _prepareSignatureData(signatureItem, type) {
-        const signature = {
-            name: this.signerName || "",
-            company: this.props.companyInfo?.company || "",
-            address: this.props.companyInfo?.address || "",
-            city: this.props.companyInfo?.city || "",
-            country: this.props.companyInfo?.country || "",
-            vat: this.props.companyInfo?.vat || "",
-            image: type.auto_value || null,
-        };
-        const signatureImage = signatureItem?.dataset?.signature;
-        const signMode = "auto";
-        return { signature, signMode, signatureImage };
+    getSignatureValueFromElement(item) {
+        return item.data.type === "stamp" ? item.el.dataset.signature : super.getSignatureValueFromElement(item)
     },
 });

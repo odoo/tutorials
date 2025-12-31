@@ -2,7 +2,11 @@
     'author': 'Odoo S.A.',
     'name': 'Sign Stamp',
     'description': """
-    add stamp field in sing app
+    Adds a Company Stamp feature to the Sign application.
+    This module introduces a new Stamp sign item that allows companies to
+    apply an official stamp containing company details such as name, address,
+    VAT number, and logo. The stamp is rendered dynamically and can be used
+    as a valid electronic signature when signing documents.
     """,
     'depends': ['sign', 'web'],
     'data': [
