@@ -7,13 +7,13 @@
     'description': "ytyut",
     'application': True,
     'installable': True,
-    '
-    # data files always loaded at installation
+    'license': 'LGPL-3',
+
     'data': [
-        'views/mymodule_view.xml',
-    ],
-    # data files containing optionally loaded demonstration data
-    'demo': [
-        'demo/demo_data.xml',
-    ],
+        'Security/ir.model.access.csv'
+    ]
+    # # data files containing optionally loaded demonstration data
+    # 'demo': [
+    #     'demo/demo_data.xml',
+    # ],
 }
