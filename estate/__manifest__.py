@@ -1,0 +1,13 @@
+{
+    'name': 'RealEstate',
+    'description': 'Welcome to my Real Estate',
+    'author': 'KRPAT',
+    'website': 'https://www.odoo.com/',
+    'category': 'Tutorials',
+    'version': '19.0.0.0',
+    'license': 'LGPL-3',
+    'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
+}
