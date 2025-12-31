@@ -1,0 +1,20 @@
+{
+    'name':'Real Estate',
+    'version': '1.0',
+    
+    'depends':['crm'],
+    'author':'jaldip vekariya (javek)',
+    'description': """
+     An Real Estate App to buy, sell, and rent properties.
+     """,
+    'application': True,
+    'license': 'LGPL-3',
+    'data':[
+        'security/ir.model.access.csv',
+        'security/res_groups.xml'
+    ],
+    'demo':[
+        'demo/demo.xml'
+    ]
+    
+}
