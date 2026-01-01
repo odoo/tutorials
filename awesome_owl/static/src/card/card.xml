@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card d-inline-block m-2"
+             style="width: 18rem; 
+                    border: 2px solid #444; 
+                    border-radius: 16px; 
+                    margin-top: 10px;">
+            <button 
+                t-on-click="toggleCard"
+                style="background:#6a5acd; color:white; cursor: pointer; border:none; padding:8px 18px; border-radius:8px; margin:5px;">
+                Toggle
+            </button>
+            <div class="card-body" style="padding: 16px; text-align:center;">
+                <h4 class="card-title"
+                    style="background-color: #4c6ef5;
+                        margin: 0; 
+                        padding: 10px 0;
+                        border-radius: 12px;
+                        font-size: 1.2rem;">
+                    <t t-out="props.title"/>
+                </h4>
+                <div class="card-body" 
+                     style="margin: 12px 0 0 0;
+                        padding: 10px;" 
+                     t-if="this.state.isOpen">
+                    <t t-slot="default"/>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
