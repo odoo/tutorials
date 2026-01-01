@@ -11,6 +11,11 @@
 				t-on-click="increment">
 				Increment
 			</button>
+			<button
+				class="btn bg-primary text-purple p-2"
+				t-on-click="decrement">
+				Decrement
+			</button>
 		</div>
 	</t>
 </templates>
