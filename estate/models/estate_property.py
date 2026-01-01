@@ -1,7 +1,5 @@
-from collections import defaultdict
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from typing_extensions import ReadOnly
 from odoo import fields, models
 
 
