@@ -18,56 +18,62 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold_property" type="object" string="Sold" class="oe_highlight" invisible="state in ('sold','cancelled','new','offer_received')"/>
-                    <button name="action_sold_property" type="object" string="Sold" class="disabled" invisible="state in ('sold','cancelled','offer_accepted')"/>
-                    <button name="action_cancel_offer" type="object" string="Cancel" invisible="state in ('sold','cancelled')" 
-                            confirm="Are you sure to Cancel this Property? You cannot revert this back."/>
-                    <field name="state" widget="statusbar"/>
-                </header>   
+                    <button name="action_sold_property" type="object" string="Sold"
+                        class="oe_highlight"
+                        invisible="state in ('sold','cancelled','new','offer_received')" />
+                    <button name="action_sold_property" type="object" string="Sold" class="disabled"
+                        invisible="state in ('sold','cancelled','offer_accepted')" />
+                    <button name="action_cancel_offer" type="object" string="Cancel"
+                        invisible="state in ('sold','cancelled')"
+                        confirm="Are you sure to Cancel this Property? You cannot revert this back." />
+                    <field name="state" widget="statusbar" />
+                </header>
                 <sheet>
-                    <h1>    
-                        <field name="name" string="Title"/>
+                    <h1>
+                        <field name="name" string="Title" />
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                    <hr/>
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                    <hr />
                     <group>
                         <group>
-                            <field name="postcode"/>    
-                            <field name="expected_price"/>
-                            <field name="selling_price"/>
-                            <field name="best_price" string="Best Offer"/>
+                            <field name="postcode" />
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                            <field name="best_price" string="Best Offer" />
                         </group>
                         <group>
-                            <field name="property_type_id" options="{'no_create': true}"/>
-                            <field name="date_avaliability" string="Avaliable From"/>
+                            <field name="property_type_id" options="{'no_create': true}" />
+                            <field name="date_avaliability" string="Avaliable From" />
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
-                        <group>
                             <group>
-                                <field name="description"/>
-                                <field name="bedrooms"/>
-                                <field name="living_area" string="Living Area(sqm)"/>
-                                <field name="facades"/>
-                                <field name="garage"/>
+                                <group>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" string="Living Area(sqm)" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                </group>
+                                <group>
+                                    <field name="garden" />
+                                    <field name="garden_area" string="Garden Area(sqm)"
+                                        invisible="not garden" />
+                                    <field name="garden_orientation" invisible="not garden" />
+                                    <field name="total_area" string="Total Area(sqm)" />
+                                    <field name="active" />
+                                </group>
                             </group>
-                            <group>
-                                <field name="garden"/>
-                                <field name="garden_area" string="Garden Area(sqm)" invisible="not garden"/>
-                                <field name="garden_orientation" invisible="not garden"/>
-                                <field name="total_area" string="Total Area(sqm)"/>
-                                <field name="active"/>
-                            </group>
-                        </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids" readonly="state in ('offer_accepted','sold','cancelled')"/>
+                            <field name="offer_ids"
+                                readonly="state in ('offer_accepted','sold','cancelled')" />
                         </page>
                         <page string="Other info">
                             <group>
-                                <field name="salesperson"/>
-                                <field name="customer"/>
+                                <field name="salesperson" />
+                                <field name="customer" />
                             </group>
                         </page>
                     </notebook>
@@ -80,15 +86,22 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Property" decoration-success="state in ('offer_received','offer_accepted')" decoration-bf="state in ('offer_accepted')" decoration-muted="state in ('sold')">
-                <field name="name" string="Title"/>
-                <field name="property_type_id"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area" string="Living Area(sqm)"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="date_avaliability" string="Avaliable From" optional="hide"/>
+            <list string="Property"
+                decoration-success="state == 'offer_received'"
+                decoration-warning="state == 'offer_accepted'"
+                decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+                <header>
+                    <button name="action_open_wizard" type="object"
+                        string="Bulk Offer" />
+                </header>
+                <field name="name" string="Title" />
+                <field name="property_type_id" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" string="Living Area(sqm)" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_avaliability" string="Avaliable From" optional="hide" />
             </list>
         </field>
     </record>
@@ -98,32 +111,34 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="False">
-                <field name="state"/>
+                <field name="state" />
                 <templates>
-                    <t t-name="card"> 
+                    <t t-name="card">
                         <div>
                             <div class="d-flex justify-content-between align-items-center">
-                                <field class="fw-bold fs-3" name="name"/>
-                                <field name="state" class="fs-5" 
-                                       widget="badge" 
-                                       decoration-success="state == 'new'" 
-                                       decoration-danger="state in ('sold','offer_accepted')" 
-                                       decoration-muted="state == 'cancelled'" 
-                                       decoration-warning="state == 'offer_received'"/>
+                                <field class="fw-bold fs-3" name="name" />
+                                <field name="state" class="fs-5"
+                                    widget="badge"
+                                    decoration-success="state == 'new'"
+                                    decoration-danger="state in ('sold','offer_accepted')"
+                                    decoration-muted="state == 'cancelled'"
+                                    decoration-warning="state == 'offer_received'" />
                             </div>
                             <div>
                                 <span>Expected Price: </span>
-                                <field name="expected_price"/>
+                                <field name="expected_price" />
                             </div>
                             <div t-if="record.best_price.raw_value">
                                 <span>Best Offer: </span>
-                                <field name="best_price"/>
+                                <field name="best_price" />
                             </div>
-                            <div t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold' ">
+                            <div
+                                t-if="record.state.raw_value == 'offer_accepted' or record.state.raw_value == 'sold' ">
                                 <span>Selling Price: </span>
-                                <field name="selling_price"/>
+                                <field name="selling_price" />
                             </div>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field': 'color'}" />
                         </div>
                     </t>
                 </templates>
@@ -136,18 +151,22 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Delivery Carrier">
-                <field name="name" string="Title"/>
-                <field name="postcode"/>
-                <field name="bedrooms"/>
-                <field name="living_area" string="Living Area(sqm)" filter_domain="[('living_area', '>=', self)]"/>
-                <field name="expected_price"/>
-                <field name="facades"/>
-                <field name="property_type_id"/>
-                <separator/>
-                <filter string="Avaliable" name="avaliable" domain="['|',('state', '=', 'new'),('state', '=', 'offer_received')]"/>
-                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
-                <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
-                <filter string="Status" name="state" context="{'group_by':'state'}"/>
+                <field name="name" string="Title" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" string="Living Area(sqm)"
+                    filter_domain="[('living_area', '>=', self)]" />
+                <field name="expected_price" />
+                <field name="facades" />
+                <field name="property_type_id" />
+                <separator />
+                <filter string="Avaliable" name="avaliable"
+                    domain="[('state', 'in', ('new','offer_received'))]" />
+                <filter string="Archived" name="inactive" domain="[('active', '=', False)]" />
+                <filter string="Expacts less than 5 Lac" name="filter_expected_price_low"
+                    domain="[('expected_price','&lt;=', 500000), ('state', 'in', ('new','offer_received'))]" />
+                <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
+                <filter string="Status" name="state" context="{'group_by':'state'}" />
             </search>
         </field>
     </record>

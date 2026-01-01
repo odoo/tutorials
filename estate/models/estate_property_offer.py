@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
 
-from odoo import api, models, fields
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -40,31 +40,31 @@ class EstatePropertyOffer(models.Model):
                 record.date_deadline - fields.Date.to_date(default_creation_date)
             ).days
 
-    def action_accept(self):
-        for record in self:
-            record.status = "accepted"
-            other_offers = record.property_id.offer_ids - record
-            record.property_id.selling_price = record.price
-            record.property_id.customer = record.partner_id
-            record.property_id.state = "offer_accepted"
-        other_offers.write({"status": "refused"})
-        return True
-
-    def action_refuse(self):
-        for record in self:
-            record.status = "refused"
-            record.property_id.customer = None
-        return True
-
     @api.model
     def create(self, vals):
         if len(vals) > 0:
-            property = self.env["estate.property"].browse(vals[0]["property_id"])
+            property_ids = [val.get("property_id") for val in vals]
+            properties = self.env["estate.property"].browse(property_ids)
+            properties_map = {prop.id: prop for prop in properties}
         for record in vals:
-            if property.state == "new":
-                property.state = "offer_received"
-            if record["price"] < property.best_price:
-                raise UserError(
-                    "Cannot create an offer with a lower amount than an existing offer."
-                )
+            prop = properties_map.get(record.get("property_id"))
+            if prop.state == "new":
+                prop.state = "offer_received"
+            if record["price"] < prop.best_price:
+                raise UserError(_("Cannot create an offer with a lower amount than an existing offer."))
         return super().create(vals)
+
+    def action_accept(self):
+        self.status = "accepted"
+        self.property_id.selling_price = self.price
+        self.property_id.customer = self.partner_id
+        self.property_id.state = "offer_accepted"
+        self.property_id.offer_ids.filtered(
+            lambda record: not record.status
+        ).write({"status": "refused"})
+        return True
+
+    def action_refuse(self):
+        self.status = "refused"
+        self.property_id.customer = None
+        return True

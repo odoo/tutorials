@@ -5,7 +5,7 @@
     Real Estate Module to Buy and Sell Your Real Estate with Ease.
     """,
     "version": "1.0",
-    "depends": ["base", "sale"],
+    "depends": ["base", "sale", "website"],
     "author": "danal",
     "category": "Category",
     "application": True,
@@ -19,5 +19,7 @@
         "views/res_users_views.xml",
         "views/sale_order_views.xml",
         "views/estate_menus.xml",
+        "views/website_templates.xml",
+        "wizard/estate_list_bulk_offer.xml",
     ],
 }

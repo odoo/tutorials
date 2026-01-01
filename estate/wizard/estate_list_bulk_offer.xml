@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_estate_list_bulk_offer" model="ir.ui.view">
+            <field name="name">estate.wizard.list.form</field>
+            <field name="model">estate.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="price" />
+                            <field name="partner_id" />
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Offer" name="action_give_offer" type="object"
+                            class="btn-primary" />
+                        <button string="Discard" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

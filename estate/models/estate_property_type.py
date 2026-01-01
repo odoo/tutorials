@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from odoo import models, fields, api
+from odoo import api, fields, models
 
 
 class EstatePropertyType(models.Model):

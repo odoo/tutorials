@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError, ValidationError
 
-from odoo import api, models, fields
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -47,7 +47,9 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    property_type_id = fields.Many2one("estate.property.type", string="Property Type", required=True)
+    property_type_id = fields.Many2one(
+        "estate.property.type", string="Property Type", required=True
+    )
     customer = fields.Many2one("res.partner", string="Customer", copy=False)
     salesperson = fields.Many2one(
         "res.users", string="Salesperson", default=lambda self: self.env.user
@@ -92,22 +94,6 @@ class EstateProperty(models.Model):
         if len(self.offer_ids) == 0:
             self.state = "new"
 
-    def action_sold_property(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("Cancelled Property cannot be Sold")
-            else:
-                record.state = "sold"
-        return True
-
-    def action_cancel_offer(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("Sold Property cannot be Cancelled")
-            else:
-                record.state = "cancelled"
-        return True
-
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price_persentage(self):
         for record in self:
@@ -118,13 +104,50 @@ class EstateProperty(models.Model):
                 pass
             else:
                 raise ValidationError(
-                    "the selling price cannot be lower than 90% of the expected price."
+                    _(
+                        "the selling price cannot be lower than 90% of the expected price."
+                    )
                 )
+
+    def action_sold_property(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError(_("Cancelled Property cannot be Sold"))
+            else:
+                record.state = "sold"
+        return True
+
+    def action_cancel_offer(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError(_("Sold Property cannot be Cancelled"))
+            else:
+                record.state = "cancelled"
+        return True
+
+    def action_open_wizard(self):
+        filtered_properties = self.filtered(
+            lambda prop: prop.expected_price <= 500000
+            and prop.state in ("new", "offer_received")
+        )
+        if not filtered_properties:
+            raise UserError(
+                _("No Avaliable properties found with a price under 5 Lac.")
+            )
+        return {
+            "name": _("Estate List Bulk Offer"),
+            "type": "ir.actions.act_window",
+            "res_model": "estate.wizard",
+            "view_mode": "form",
+            "view_id": self.env.ref("estate.view_estate_list_bulk_offer").id,
+            "target": "new",
+            "context": {"active_ids": filtered_properties.ids},
+        }
 
     @api.ondelete(at_uninstall=False)
     def _unlink_prevent_property_on_state(self):
         for record in self:
             if record.state not in ("new", "cancelled"):
                 raise UserError(
-                    "Can Delete property only on 'New' or 'Cancelled' state!"
+                    _("Can Delete property only on 'New' or 'Cancelled' state!")
                 )
