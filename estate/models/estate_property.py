@@ -1,23 +1,49 @@
-from odoo import models
+from collections import defaultdict
+from datetime import date
+from dateutil.relativedelta import relativedelta
+from typing_extensions import ReadOnly
+from odoo import fields, models
+
 
 class EstateProperty(models.Model):
     _name = "estate_model"
     _description = "This is to say that this is the description of the Estate Model"
-    
-    name = fields.Char()
-    description = fields.Text()
-    postcode = fields.Char()
-    date_availability = fields.Date()
-    expected_price = fields.Float()
-    selling_price = fields.Float()
-    bedrooms = fields.Integer()
-    living_area = fields.Integer()
-    facades = fields.Integer()
-    garage = fields.Boolean()
-    garden = fields.Boolean()
-    garden_area = fields.Integer()
+
+    name = fields.Char("Name", default="Unknown", required=True)
+    description = fields.Text("Description")
+    postcode = fields.Char("Postcode")
+    date_availability = fields.Date(
+        "Date Availability", copy=False, default=date.today() + relativedelta(months=3)
+    )
+    expected_price = fields.Float("Expected Price", required=True)
+    selling_price = fields.Float("Selling Price", readonly=True)
+    bedrooms = fields.Integer("Bedrooms", default=2)
+    living_area = fields.Integer("Living Area(sqm)")
+    facades = fields.Integer("Facades")
+    garage = fields.Boolean("Garage")
+    garden = fields.Boolean("Garden")
+    last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
+    garden_area = fields.Integer("Garden Area")
+    active = fields.Boolean("Active", default=True)
     garden_orientation = fields.Selection(
-        string='Type',
-        selection=[('east', 'East'), ('west', 'West'),('north', 'North'), ('south', 'South')],
-        help="You can choose any direction of you own"
+        string="Garden Orientation",
+        selection=[
+            ("east", "East"),
+            ("west", "West"),
+            ("north", "North"),
+            ("south", "South"),
+        ],
+        help="This is the direction of the proprety, which side the preperty is facing.",
+    )
+    state = fields.Selection(
+        default="new",
+        string="State",
+        selection=[
+            ("new", "New"),
+            ("offer received", "Offer Received"),
+            ("offer accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
+        ],
+        help="This field tells the state of the property.",
     )
