@@ -1,7 +1,8 @@
 from odoo import fields, models
 
+
 class EstateProperty(models.Model):
-    _name = 'estate.property'   
+    _name = 'estate.property'
     _description = 'Real Estate Property'
 
     # Each field becomes a column in PostgreSQL table
@@ -18,6 +19,9 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        string='Direction',
-        selection=[('north', 'North'),('south', 'South'),('east', 'East'),('west', 'West')],
-    )
+        string="Direction",
+        selection=[
+            ("north", "North"),
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West")])
