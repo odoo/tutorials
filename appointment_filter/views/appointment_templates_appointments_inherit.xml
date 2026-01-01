@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="appointments_list_layout_inherit" name="Appointment Filter" inherit_id="appointment.appointments_list_layout">
+        <xpath expr="//h4[hasclass('mt-4')]" position="after">
+            <div class="mb-4">
+                <t t-set="locations" t-value="['All', 'Online', 'Offline']"/>
+                <t t-set="based_on" t-value="['All', 'User', 'Resource']"/>
+                <t t-set="payment_options" t-value="['All', 'True', 'False']"/>
+                
+                <!-- Location Filter -->
+                <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                    <span>Location</span>
+                </a>
+                <div class="dropdown-menu">
+                    <t t-foreach="locations" t-as="location">
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', filter_location=(location if location != 'All' else False), prevent_redirect=True)" 
+                              t-attf-class="post_link cursor-pointer dropdown-item #{'active' if (searches.get('filter_location', 'All')).lower() == location.lower() else ''}">
+                            <t t-out="location"/>
+                        </span>
+                    </t>
+                </div>
+                
+                <!-- Based On Filter -->
+                <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                    Schedule Based On
+                </a>
+                <div class="dropdown-menu">
+                    <t t-foreach="based_on" t-as="based">
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', filter_based_on=(based if based != 'All' else False), prevent_redirect=True)" 
+                              t-attf-class="post_link cursor-pointer dropdown-item #{'active' if (searches.get('filter_based_on', 'All')).lower() == based.lower() else ''}">
+                            <t t-out="based"/>
+                        </span>
+                    </t>
+                </div>
+                
+                <!-- Payment Filter -->
+                <a href="#" role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown">
+                    Payment Required
+                </a>
+                <div class="dropdown-menu">
+                    <t t-foreach="payment_options" t-as="payment">
+                        <span t-att-data-post="'/appointment?%s' % keep_query('*', filter_payment=(payment if payment != 'All' else 'None'), prevent_redirect=True)" 
+                              t-attf-class="post_link cursor-pointer dropdown-item #{'active' if (searches.get('filter_payment', 'All')).lower() == payment.lower() else ''}">
+                            <t t-out="payment"/>
+                        </span>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+        
+        <xpath expr="//div[hasclass('o_appointment_appointments_list_selection')]" position="replace">
+            <div class="container">
+                <div id="o_appointment_index_main_col" class="col-md px-0 o_wappointment_appointment_list_columns">
+                    <div class="row">
+                        <div t-foreach="appointment_types" t-as="appointment" class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                            <div class="o_wappointment_card card h-100" itemscope="itemscope" itemtype="http://schema.org/Appointments">
+                                <a t-attf-href="/appointment/#{appointment.id}?#{keep_query('filter_appointment_type_ids', 'filter_staff_user_ids', 'invite_token')}"
+                                   class="text-reset text-decoration-none">
+                                    <t t-call="website_appointment.appointment_card_top"/>
+                                    <t t-call="website_appointment.appointment_card_body"/>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </xpath>
+    </template>
+</odoo>
