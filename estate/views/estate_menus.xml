@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <menuitem id="root_level" name="Root"/>
+    <menuitem id="second_level" name="Estate" parent="root_level"/>
+    <menuitem id="third_level" name="Properties" parent="second_level" action="estate.test_record"/>
+
+  </data>
+</odoo>
