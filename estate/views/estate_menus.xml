@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <menuitem
+            id="estate_property_menu_root"
+            name="Estate Property"/>
+        <menuitem
+            id="estate_property_advertisements"
+            name="Advertisements"
+            parent="estate_property_menu_root"/>
+        <menuitem
+            id="estate_property_properties"
+            name="Properties"
+            parent="estate_property_advertisements"
+            action="estate_property_action"/>
+    </data>
+</odoo>
