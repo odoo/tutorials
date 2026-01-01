@@ -1,5 +1,5 @@
 {
-    'name':'Real Estate',
-    'author':'Kunj Koradiya',
+    'name': 'Real Estate',
+    'author': 'Kunj Koradiya',
     'description': 'This is the description'
 }
