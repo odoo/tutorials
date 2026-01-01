@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem 
+        id="estate_menu_root" 
+        name="Real Estate"
+    />
+    <menuitem 
+        id="estate_advertisements_menu" 
+        name="Advertisements"
+        parent="estate_menu_root"
+    />
+    <menuitem 
+        id="estate_properties_menu" 
+        name="Properties" 
+        action="estate_property_action"
+        parent="estate_advertisements_menu"
+    />
+</odoo>
