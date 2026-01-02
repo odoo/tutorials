@@ -1,22 +1,24 @@
-<?xml version='1.0' encoding='UTF-8' ?>
+<?xml version='1.0' encoding='UTF-8'?>
 <odoo>
     <data>
+        <!-- LIST -->
         <record model="ir.ui.view" id="estate_list">
             <field name="name">estate_list</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <list>
-                    <field name="name"/>
-                    <field name="postcode"/>
-                    <field name="date_availability"/>
-                    <field name="expected_price"/>
-                    <field name="selling_price"/>
-                    <field name="bedrooms"/>
-                    <field name="garden_orientation"/>
+                    <field name="name" />
+                    <field name="postcode" />
+                    <field name="date_availability" />
+                    <field name="expected_price" />
+                    <field name="selling_price" />
+                    <field name="bedrooms" />
+                    <field name="garden_orientation" />
                 </list>
             </field>
         </record>
 
+        <!-- FORM -->
         <record model="ir.ui.view" id="estate_form">
             <field name="name">estate_form</field>
             <field name="model">estate.property</field>
@@ -24,32 +26,46 @@
                 <form>
                     <sheet>
                         <h1>
-                            <field name="name"/>
+                            <field name="name" />
                         </h1>
                         <group>
                             <group>
-                                <field name="postcode"/>
-                                <field name="date_availability"/>
+                                <field name="tags" widget="many2many_tags"
+                                    options="{'color_field': 'color'}" />
+                                <field name="property_type_id"></field>
+                                <field name="postcode" />
+                                <field name="date_availability" />
                             </group>
                             <group>
-                                <field name="expected_price"/>
-                                <field name="selling_price"/>
+                                <field name="expected_price" />
+                                <field name="selling_price" />
                             </group>
                         </group>
                         <notebook>
                             <page string="Description">
                                 <group>
-                                    <field name="description"/>
-                                    <field name="bedrooms"/>
-                                    <field name="living_area"/>
-                                    <field name="facades"/>
-                                    <field name="garage"/>
-                                    <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" />
+                                    <field name="garden_orientation" />
                                 </group>
                             </page>
-                        </notebook>its default value set to ‘New’.
+                            <page string="Offers">
+                                <group>
+                                    <field name="offer" string="" />
+                                </group>
+                            </page>
+                            <page string="Other Info">
+                                <group>
+                                    <field name="seller" />
+                                    <field name="buyer" />
+                                </group>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -60,16 +76,17 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name"/>
-                    <field name="postcode"/>
-                    <field name="expected_price"/>
-                    <field name="bedrooms"/>
-                    <field name="living_area"/>
-                    <field name="facades"/>
-                    <separator/>
-                    <filter string="Ar" name="state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                    <field name="name" />
+                    <field name="postcode" />
+                    <field name="expected_price" />
+                    <field name="bedrooms" />
+                    <field name="living_area" />
+                    <field name="facades" />
+                    <separator />
+                    <filter string="Ar" name="state"
+                        domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]" />
                     <group>
-                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                        <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}" />
                     </group>
                 </search>
             </field>
@@ -82,4 +99,4 @@
             <field name="view_mode">list,form</field>
         </record>
     </data>
-</odoo>
+</odoo> 

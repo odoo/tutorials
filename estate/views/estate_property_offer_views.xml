@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="estate_property_offer">
+            <field name="name">estate_property_offer</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="price" />
+                    <field name="partner_id" />
+                    <field name="status" />
+                </list>
+            </field>
+        </record>
+
+        <record id="estate_property_offer_views" model="ir.actions.act_window">
+            <field name="name">Property Tags</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">list,form</field>
+        </record>
+    </data>
+</odoo>
