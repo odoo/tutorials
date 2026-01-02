@@ -1,5 +1,4 @@
 from odoo import fields, models
-from odoo.orm.fields_selection import Selection
 
 
 class EstatePropertyOffer(models.Model):
