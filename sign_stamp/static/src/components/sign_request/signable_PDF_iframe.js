@@ -53,18 +53,7 @@ patch(SignablePDFIframe.prototype, {
                             frame: frameData,
                             hash: this.frameHash,
                         });
-                    } else if (signature.signatureChanged) {
-                        signatureItem.replaceChildren();
-                        const signHelperSpan = document.createElement("span");
-                        signHelperSpan.classList.add("o_sign_helper");
-                        signatureItem.append(signHelperSpan);
-                        if (type.placeholder) {
-                            const placeholderSpan = document.createElement("span");
-                            placeholderSpan.classList.add("o_placeholder");
-                            placeholderSpan.innerText = type.placeholder;
-                            signatureItem.append(placeholderSpan);
-                        }
-                    }
+                    } 
                     this.closeDialog();
                     this.handleInput();
                 },
