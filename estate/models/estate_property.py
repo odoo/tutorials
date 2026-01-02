@@ -33,7 +33,7 @@ class EstateProperty(models.Model):
         ],
         string='Garden Orientation',
     )
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
          [
             ('new', 'New'),
