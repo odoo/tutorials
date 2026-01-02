@@ -1,7 +1,7 @@
 {
     "name": "Real Estate",
     "version": "1.0.0",
-    "depends": ["base","web"],
+    "depends": ["base", "web"],
     "author": "john addams",
     "category": "Tutorials",
     "description": "ytyut",
