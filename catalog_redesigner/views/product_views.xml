@@ -1,0 +1,17 @@
+<odoo>
+    <record id="product_view_kanban_catalog" model="ir.ui.view">
+        <field name="name">product.view.kanban.catalog.inherit.catalog.redesigner</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='image_128']" position="attributes">
+                <attribute name="widget">custom_image_designer</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_template_attribute_value_ids']" position="after">
+                <div class="d-sm-none">
+                    <field name="uom_ids" widget="many2many_tags" />
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
