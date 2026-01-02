@@ -32,8 +32,10 @@
                         <h1>
                             <field name="name"></field>
                         </h1>
+                        <field name="tag_ids" widget="many2many_tags" />
                         <group>
                             <group>
+                                <field name="property_type_id" />
                                 <field name="postcode" />
                                 <field name="date_availability" />
                             </group>
@@ -49,15 +51,21 @@
                                 <group>
                                     <group>
                                         <field name="description" />
-                                        <field name="bedrooms"></field>
-                                        <field name="living_area"></field>
-                                        <field name="facades"></field>
-                                        <field name="garage"></field>
-                                        <field name="garden"></field>
-                                        <field name="garden_area"></field>
-                                        <field name="garden_orientation"></field>
+                                        <field name="living_area" />
+                                        <field name="bedrooms" />
+                                        <field name="facades" />
+                                        <field name="garage" />
+                                        <field name="garden" />
+                                        <field name="garden_area" />
+                                        <field name="garden_orientation" />
                                         <field name="state" />
                                     </group>
+                                </group>
+                            </page>
+                            <page string="other info">
+                                <group>
+                                    <field name="buyer_id" />
+                                    <field name="seller_id" />
                                 </group>
                             </page>
                         </notebook>
@@ -73,8 +81,41 @@
                 <search string="Properties">
                     <field name="name" />
                     <field name="postcode" />
-                    <field name="state" />
                     <field name="expected_price" />
+                    <field name="bedrooms" />
+                    <field name="living_area" />
+                    <field name="facades" />
+
+                    <filter name="available"
+                        string="Available"
+                        domain="['|',('state','=','new'),
+                            ('state','=','offer_received')]" />
+
+                    <filter name="cheap"
+                        string="Cheap"
+                        domain="[('expected_price','&lt;',1000000)]" />
+
+                    <filter name="expensive"
+                        string="Expensive"
+                        domain="[('expected_price','&gt;',1000000)]" />
+
+                    <filter
+                        name="group_by_postcode"
+                        string="Postcode"
+                        context="{'group_by': 'postcode'}"
+                    />
+
+                    <filter
+                        name="group_by_bedrooms"
+                        string="Bedrooms"
+                        context="{'group_by': 'bedrooms'}"
+                    />
+
+                    <filter
+                        name="group_by_state"
+                        string="State"
+                        context="{'group_by': 'state'}"
+                    />
                 </search>
             </field>
         </record>
