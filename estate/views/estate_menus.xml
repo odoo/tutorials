@@ -7,4 +7,12 @@
         name="Properties"
         parent="estate_first_level_menu"
         action="estate_property_action" />
+
+    <menuitem id="estate_property_type_setting" name="Setting" parent="estate_menu_root" />
+
+    <menuitem id="estate_property_type_menu_action" name="Property Type"
+        parent="estate_property_type_setting" action="estate_property_type_action" />
+
+    <menuitem id="estate_property_tag_menu" name="Property Tag"
+        parent="estate_property_type_setting" action="estate_property_tag_action" />
 </odoo>
