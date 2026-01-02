@@ -6,13 +6,27 @@
         <field name="view_mode">list,form</field>
     </record>
 
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">property</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">tag</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
     <record id="estate_property_view_list" model="ir.ui.view">
+
         <field name="name">estate.property.view.list</field>
         <field name="model">home.plan</field>
         <field name="arch" type="xml">
             <list string="Channel">
                 <field name='name'/>
                 <field name = "description"/>
+                <field name='property_type_id'/>
                 <field name= "expected_price"/>
                 <field name= "bedrooms"/>
                 <field name= "State"/>
@@ -36,6 +50,8 @@
                     </group>
                     <group>
                         <group>
+                            <field name= "property_tag_id" widget="many2many_tags"/>
+                            <field name='property_type_id'/>
                             <field name='postcode'/>
                             <field name = 'date_availability'/>
                         </group>
@@ -70,7 +86,21 @@
                         <page string='Sale'>
 
                         </page>
+
+
+
+                        <page string="Other Info">
+                            <group>
+
+                                <group>
+                                    <field name='Salesman'/>
+                                    <field name='Buyer' />
+                                </group>
+
+                            </group>
+                        </page>
                     </notebook>
+
                 </sheet>
             </form>
         </field>
@@ -81,8 +111,9 @@
         <field name="model">home.plan</field>
         <field name="arch" type="xml">
             <search string="Home">
-                <field name = 'bedrooms'  string ='bedrooms'   filter_domain="[('bedrooms', '>=', self )]" />
+                <field name = 'bedrooms'  string ='bedrooms' filter_domain="[('bedrooms', '>=', self )]" />
                 <field name = 'name'/>
+                <!-- <field name ='property_type_id' string='property type'/> -->
                 <field name="expected_price" />
                 <separator/>
                 <filter string="offer received" name="offer received" domain="[('State','in',['New','new', 'offer received', 'Offer Received'])]"/>

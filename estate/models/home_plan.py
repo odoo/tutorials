@@ -23,7 +23,10 @@ class homePlan(models.Model):
     Garden = fields.Boolean("Garden")
     Garden_area = fields.Integer("Garden area")
     active = fields.Boolean("Active", default=True)
-
+    property_type_id = fields.Many2one("estate.property.type")
+    Salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
+    Buyer = fields.Many2one("res.partner", copy=False)
+    property_tag_id = fields.Many2many("estate.property.tag")
     State = fields.Selection(
         [
             ("New", "new"),

@@ -1,9 +1,13 @@
 <?xml version="1.0"?>
-    <odoo>
-        <menuitem id="test_menu_root" name="Test">
-            <menuitem id="test_first_level_menu" name="First Level">
-                <menuitem id="test_model_menu_action" action="test_model_action"/>
-            </menuitem>
+<odoo>
+    <menuitem id="test_menu_root" name="Test">
+        <menuitem id="test_first_level_menu" name="First Level">
+            <menuitem id="test_model_menu_action" action="test_model_action"/>
         </menuitem>
+        <menuitem id="first_level_menu_estate_property_type" name="Setting">
+            <menuitem id="estate_property_action" action="estate_property_type_action"/>
+            <menuitem id="estate_property_action_tag" action="estate_property_tag_action"/>
+        </menuitem>
+    </menuitem>
 
-    </odoo>
+</odoo>
