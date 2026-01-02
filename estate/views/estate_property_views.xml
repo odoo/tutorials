@@ -1,13 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-        <record id="test_record" model="ir.actions.act_window">
-            <field name="name">Real Estate</field>
-            <field name="res_model">real_estate</field>
-            <field name="view_mode">list,form</field>
-            <field name="help" type="html">
+    <record id="real_estate_list_view" model="ir.ui.view">
+        <field name="name">real_estate.list</field>
+        <field name="model">real_estate</field>
+        <field name="arch" type="xml">
+            <list string="Properties">
+                <field name="name" string="Title" />
+                <field name="postcode" />
+                <field name="bedrooms" />
+                <field name="living_area" string="Living Area (sqm)" />
+                <field name="expected_price" />
+                <field name="selling_price" />
+                <field name="date_availability" string="Available From"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="real_estate_form_view" model="ir.ui.view">
+        <field name="name">real_estate.form</field>
+        <field name="model">real_estate</field>
+        <field name="arch" type="xml">
+            <form string="Property">
+                <sheet>
+                    <h1>
+                        <field name="name" placeholder="Name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="postcode" />
+                            <field name="date_availability" string="Available From" />
+                        </group>
+                        <group>
+                            <field name="expected_price" />
+                            <field name="selling_price" />
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <group>
+                                <group>
+                                    <field name="description" />
+                                    <field name="bedrooms" />
+                                    <field name="living_area" string="Living Area (sqm)" />
+                                    <field name="facades" />
+                                    <field name="garage" />
+                                    <field name="garden" />
+                                    <field name="garden_area" string="Garden Area (sqm)" />
+                                    <field name="garden_orientation" />
+                                </group>
+                                <group>
+                                    <field name="active" />
+                                </group>
+                            </group>
+
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="real_estate_search_option_view" model="ir.ui.view">
+        <field name="name">Search Property</field>
+        <field name="model">real_estate</field>
+        <field name="arch" type="xml">
+            <search string="Search Property">
+                <field name="name" string="Title" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" string="Living Area (sqm)" />
+                <field name="facades" />
+                <filter name="available" string="Available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer_received')]"/>
+                <filter name="postcode" string="Postcode" context="{'group_by': 'postcode'}" />
+            </search>
+        </field>
+    </record>
+    <record id="test_record" model="ir.actions.act_window">
+        <field name="name">Real Estate</field>
+        <field name="res_model">real_estate</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create your Properties here !
             </p>
         </field>
-        </record>
+    </record>
 </odoo>
