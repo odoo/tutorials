@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="clicker_client_action.ClickerClientAction">
+        <div>
+            Click:
+            <ClickValue clicks="state.clicks"/>
+            <button t-on-click="increment_button" class="btn btn-primary">Increment</button>
+        </div>
+        <Notebook orientation="'horizontal'">
+            <t t-set-slot="page_1" title="'Clicks'" isVisible="true">
+                <ClickBot/>
+                <PowerBuy/>
+            </t>
+            <t t-set-slot="page_2" title="'Trees and Fruits'" isVisible="true">
+                <Tree/>
+                <Fruits/>
+            </t>
+        </Notebook>
+    </t>
+</templates>
