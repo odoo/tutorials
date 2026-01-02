@@ -12,5 +12,14 @@
             name="Properties"
             parent="estate_property_advertisements"
             action="estate_property_action"/>
+        <menuitem
+            id="estate_property_settings"
+            name="Settings"
+            parent="estate_property_menu_root"/>
+        <menuitem
+            id="estate_property_types"
+            name="Property Types"
+            parent="estate_property_settings"
+            action="estate_property_type_action"/> 
     </data>
 </odoo>

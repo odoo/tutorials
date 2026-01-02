@@ -2,13 +2,13 @@
 <odoo>
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Estate Property</field>
-        <field name="res_model">estate_property</field>
+        <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <record id="estate_property_list" model="ir.ui.view">
-        <field name="name">Estate_Property_list</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.list</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
@@ -31,8 +31,8 @@
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">Estate_Property_view_form</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.view.form</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
                 <sheet>
@@ -64,6 +64,7 @@
                             <field name="garden_orientation" string="Garden Orientation"/>
                             <field name="state" string="state"/>
                             <field name="active" string="active"/>
+                            <field name="property_type_id" string="Property Type"/>
                         </group>
                     </page>
                 </notebook>
@@ -73,8 +74,8 @@
     </record>
 
     <record id="estate_property_search_view" model="ir.ui.view">
-        <field name="name">Estate_Property_search</field>
-        <field name="model">estate_property</field>
+        <field name="name">estate.property.search</field>
+        <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
@@ -83,6 +84,10 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <filter name="state" string="State" domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <group>
+                    <filter string="Postcode" name="postcode" context="{'group_by' : 'postcode'}"/>
+                </group>
             </search>
         </field>    
     </record>
