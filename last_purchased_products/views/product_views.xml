@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_view_kanban_catalog_inherit" model="ir.ui.view">
+        <field name="name">product.view.kanban.catalog.inherit</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='id']" position="after">
+                <field name="virtual_available" invisible="1"/>
+                <field name="last_invoice_time" invisible="1"/>
+                <field name="invoice_partner_name" invisible="1"/>
+            </xpath>
+            <xpath expr="//t[@name='qty_available']" position="inside">
+                <t t-set="final_qty" t-value="record.virtual_available.raw_value - record.qty_available.raw_value"/>
+                <t t-if="final_qty"> (
+                    <span t-if="final_qty >= 0" class="fw-bold text-success">
+                        +<t t-out="final_qty"/>
+                    </span>
+                    <span t-else="" class="fw-bold text-danger">
+                        <t t-out="final_qty"/>
+                    </span>
+                )
+                </t>
+            </xpath>
+            <xpath expr="//div[@name='o_kanban_qty_available_and_on_hand']" position="after">
+                <t t-if="record.last_invoice_time.raw_value" name="last_invoice_time">
+                    <span class="text-muted">
+                        <t t-out="record.last_invoice_time.raw_value"/>
+                        <t t-if="record.last_invoice_time.raw_value != 'Just Now'"> ago</t>
+                        <t  t-if="record.invoice_partner_name.raw_value">
+                            (<a name="action_open_last_invoice" type="object"> 
+                                <t t-out="record.invoice_partner_name.raw_value"/>
+                            </a>)
+                        </t>
+                    </span>
+                </t>
+            </xpath>
+        </field>
+    </record>
+</odoo>

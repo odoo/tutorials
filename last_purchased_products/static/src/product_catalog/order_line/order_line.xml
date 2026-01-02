@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-inherit="product.ProductCatalogOrderLine" t-inherit-mode="extension">
+        <xpath expr="//span[@t-out=&quot;price&quot;]" position="attributes">
+            <attribute name="class">o_product_catalog_price fw-bold</attribute>
+        </xpath>
+        <xpath expr="//span[@t-out=&quot;price&quot;]" position="after">
+            <t t-if="this.env.displayUoM">
+                / <span class="text-muted text-truncate w-50 me-4" t-out="props.uomDisplayName"/>
+            </t>
+            <t t-else="">
+                <span class="me-4"/>
+            </t>
+        </xpath>
+    </t>
+</templates>

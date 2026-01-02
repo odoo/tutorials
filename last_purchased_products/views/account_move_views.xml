@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_move_form_custom_display" model="ir.ui.view">
+        <field name="name">account.move.form.custom.display</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/list/field[@name='product_id']"
+                position="attributes">
+                <attribute name="context">{
+                    'vendor': parent.partner_id if parent.move_type in ('in_invoice', 'in_refund') else False,
+                    'customer': parent.partner_id if parent.move_type in ('out_invoice','out_refund') else False
+                    }
+                </attribute>
+            </xpath>
+            <xpath expr="//button[@name='action_add_from_catalog']" position="attributes">
+                <attribute name="context">
+                    {'order_id': parent.id, 'isPurchase': parent.move_type in ('in_invoice', 'in_refund')}
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
