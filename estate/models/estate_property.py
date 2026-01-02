@@ -23,6 +23,12 @@ class EstateProperty(models.Model):
     last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
     garden_area = fields.Integer("Garden Area")
     active = fields.Boolean("Active", default=True)
+    partner_id = fields.Many2one("res.partner", string="Salesperson")
+    buyer_id = fields.Many2one("res.users", string="Buyer")
+    property_type_id = fields.Many2one("estate_type", string="Property Type")
+    property_tag_id = fields.Many2many("estate_tags")
+
+    offers_id = fields.One2many("estate_offer", "property_id")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[

@@ -1,0 +1,37 @@
+<odoo>
+    <!-- listview -->
+    <record id="estate_offer_list" model="ir.ui.view">
+        <field name="name">estate_offer.list</field>
+        <field name="model">estate_offer</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="price" />
+                <field name="partner_id" />
+                <field name="property_id" />
+                <field name="status" />
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_offer_view_form" model="ir.ui.view">
+        <field name="name">estate_offer.view.form</field>
+        <field name="model">estate_offer</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="price" />
+                        </group>
+                        <group>
+                            <field name="partner_id" />
+                        </group>
+                        <group>
+                            <field name="status" />
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,31 @@
+<odoo>
+    <record id="estate_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate_type</field>
+    </record>
+
+    <!-- listview -->
+    <record id="estate_type_list" model="ir.ui.view">
+        <field name="name">estate_type.list</field>
+        <field name="model">estate_type</field>
+        <field name="arch" type="xml">
+            <list string="Channel">
+                <field name="name" />
+            </list>
+        </field>
+    </record>
+
+    <!-- search view -->
+    <record id="estate_type_search" model="ir.ui.view">
+        <field name="name">estate_type.search</field>
+        <field name="model">estate_type</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name" />
+                <group>
+                    <filter string="House" name="name" context="{'group_by': 'name'}" />
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>
