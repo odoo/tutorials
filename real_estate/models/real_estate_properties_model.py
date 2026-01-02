@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 from odoo import models, fields
 
 
@@ -9,7 +11,7 @@ class real_estate(models.Model):
     street_address = fields.Char(string='Street Address')
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
-    date_availability = fields.Datetime(string='Date Availability', default=fields.Datetime.now)
+    date_availability = fields.Datetime(string='Date Availability', default=date.today() + timedelta(days=90))
     expected_price = fields.Float(string='Expected Price')
     selling_price = fields.Float(string='Selling Price', default=1000)
     bedrooms = fields.Integer(string='Bedrooms', default=2)
@@ -25,3 +27,10 @@ class real_estate(models.Model):
         ('east', 'East'),
         ('west', 'West')
     ])
+    active = fields.Boolean(default=True)
+    tag_ids = fields.Many2many(
+        "real.estate.tag", string="Tags"
+    )
+    offer_ids = fields.One2many(
+        "real.estate.property.offer", "property_id", string="Offers"
+    )

@@ -13,6 +13,7 @@
                     <field name="selling_price"/>
                     <field name="bedrooms"/>
                     <field name="garden_orientation"/>
+                    <field name="tag_ids" widget="many2many_tags"/>
                 </list>
             </field>
         </record>
@@ -29,23 +30,45 @@
                                 <field name="name"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
-                                <field name="expected_price"/>
-                                <field name="selling_price" readonly="1"/>
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
                             </group>
                             <group>
                                 <field name="bathrooms"/>
                                 <field name="facades"/>
-                                <field name="garage"/>
-                                <field name="garden"/>
+                                <field name="tag_ids" widget="many2many_tags"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
                             </group>
                         </group>
                         <notebook>
                             <page string="Description">
-                                <field name="description"/>
+                                <group>
+                                    <field name="description"/>
+                                </group>
+                            </page>
+                            <page string="Extra Info">
+                                <group>
+                                    <group string="Email">
+                                        <field name="garage"/>
+                                        <field name="garden"/>
+                                    </group>
+                                    <group string="Marketing">
+                                        <field name="expected_price"/>
+                                        <field name="selling_price" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Offers">
+                                <group>
+                                    <field name="offer_ids" widget="one2many">
+                                        <list editable="bottom">
+                                            <field name="price"/>
+                                            <field name="status"/>
+                                            <field name="partner_id"/>
+                                        </list>
+                                    </field>
+                                </group>
                             </page>
                         </notebook>
                     </sheet>
@@ -59,6 +82,18 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name"/>
+                    <filter
+                            string="Active"
+                            name="active"
+                            domain="[('active', '=', True)]"
+                    />
+                    <group>
+                        <filter
+                                string="Orientation"
+                                name="garden_orientation"
+                                context="{'group_by': 'garden_orientation'}"
+                        />
+                    </group>
                 </search>
             </field>
         </record>
@@ -73,6 +108,7 @@
         <menuitem id="real_estate_menu_one" name="Advertisements" parent="real_estate_main_menu"/>
         <menuitem id="real_estate_menu_two" name="Properties" parent="real_estate_menu_one"
                   action="real_estate_action"/>
+        <menuitem id="real_estate_menu_configuration" name="configuration" parent="real_estate_main_menu"/>
 
     </data>
 </odoo>
