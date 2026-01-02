@@ -1,5 +1,5 @@
-from odoo import fields, models
 from dateutil.relativedelta import relativedelta
+from odoo import fields, models
 
 
 class EstateProperty(models.Model):
@@ -42,4 +42,4 @@ class EstateProperty(models.Model):
         default='new',
     )
 
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
