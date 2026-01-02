@@ -1,10 +1,10 @@
-from odoo import models, fields
+from odoo import fields, models
 from dateutil.relativedelta import relativedelta
 
 
 class RealEstate(models.Model):
     _name = "real_estate"
-    _description = "Test model"
+    _description = "Real Estate"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -22,10 +22,10 @@ class RealEstate(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection([
-        ('north', 'North'),
-        ('south', 'South'),
-        ('east', 'East'),
-        ('west', 'West'),
+        ("north", "North"),
+        ("south", "South"),
+        ("east", "East"),
+        ("west", "West"),
     ])
     state = fields.Selection(
         selection=[

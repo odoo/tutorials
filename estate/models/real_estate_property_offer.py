@@ -7,10 +7,10 @@ class PropertyType(models.Model):
 
     price = fields.Float()
     status = fields.Selection(
-        selection = [
+        selection=[
             ('accepted', 'Accepted'),
             ('refused', 'Refused')
         ]
-    ) 
+    )
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("real_estate", string="Property", required=True)

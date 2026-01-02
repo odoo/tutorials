@@ -73,7 +73,6 @@
         </field>
     </record>
 
-
     <record id="real_estate_search_option_view" model="ir.ui.view">
         <field name="name">Search Property</field>
         <field name="model">real_estate</field>

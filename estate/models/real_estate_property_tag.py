@@ -5,4 +5,4 @@ class PropertyType(models.Model):
     _name = "estate.property.tag"
     _description = "Test-tag"
 
-    name= fields.Char(string="Name")
+    name = fields.Char(string="Name")

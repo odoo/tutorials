@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-
     <menuitem id="estate" name="Estate"/>
     <menuitem id="estate_advertisement" name="Advertisement" parent="estate"/>
     <menuitem id="estate_advertisement_properties" name="Properties" parent="estate_advertisement" action="test_record"/>
