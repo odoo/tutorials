@@ -26,7 +26,7 @@ class EstateProperty(models.Model):
     garden_area = fields.Integer("Garden Area (sqm)")
     active = fields.Boolean(default=True)
     partner_id = fields.Many2one('res.partner', string="Salesperson")
-    buyer_id = fields.Many2one('res.users',)
+    buyer_id = fields.Many2one('res.users')
     property_type_id = fields.Many2one('estate.property.type')
     property_tag_id = fields.Many2many('estate.property.tags')
     offers_id = fields.One2many('estate.property.offer', 'property_id')
