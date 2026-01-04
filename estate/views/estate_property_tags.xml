@@ -1,12 +1,13 @@
 <odoo>
-    <record id="estate_tags_action" model="ir.actions.act_window">
+    <record id="estate_property_tags_action" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
-        <field name="res_model">estate_tags</field>
+        <field name="res_model">estate.property.tags</field>
     </record>
 
-    <record id="estate_tags_list" model="ir.ui.view">
-        <field name="name">estate_tags.list</field>
-        <field name="model">estate_tags</field>
+    <!-- listview -->
+    <record id="estate_property_tags_view_list" model="ir.ui.view">
+        <field name="name">estate.property.tags.list</field>
+        <field name="model">estate.property.tags</field>
         <field name="arch" type="xml">
             <list string="Channel">
                 <field name="name" />
@@ -14,14 +15,15 @@
         </field>
     </record>
 
-    <record id="estate_tags_search" model="ir.ui.view">
-        <field name="name">estate_tags.search</field>
-        <field name="model">estate_tags</field>
+    <!-- searchview -->
+    <record id="estate_property_tags_view_search" model="ir.ui.view">
+        <field name="name">estate.property.tags.search</field>
+        <field name="model">estate.property.tags</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
                 <group>
-                    <filter string="Tags" name="name" context="{'group_by': 'name'}" />
+                    <filter name="name" context="{'group_by': 'name'}" />
                 </group>
             </search>
         </field>

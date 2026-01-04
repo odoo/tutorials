@@ -1,53 +1,66 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models
+
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
-    _name = "estate_model"
-    _description = "This is to say that this is the description of the Estate Model"
+    _name = 'estate.property'
+    _description = "Estate Property"
 
-    name = fields.Char("Name", default="Unknown", required=True)
-    description = fields.Text("Description")
-    postcode = fields.Char("Postcode")
+    name = fields.Char(default="Unknown", required=True)
+    description = fields.Text()
+    postcode = fields.Char()
     date_availability = fields.Date(
-        "Date Availability", copy=False, default=date.today() + relativedelta(months=3)
+        default=date.today() + relativedelta(months=3),
+        copy=False
     )
-    expected_price = fields.Float("Expected Price", required=True)
-    selling_price = fields.Float("Selling Price", readonly=True)
-    bedrooms = fields.Integer("Bedrooms", default=2)
-    living_area = fields.Integer("Living Area(sqm)")
-    facades = fields.Integer("Facades")
-    garage = fields.Boolean("Garage")
-    garden = fields.Boolean("Garden")
-    last_seen = fields.Datetime("Last Seen", default=fields.Datetime.now)
-    garden_area = fields.Integer("Garden Area")
-    active = fields.Boolean("Active", default=True)
-    partner_id = fields.Many2one("res.partner", string="Salesperson")
-    buyer_id = fields.Many2one("res.users", string="Buyer")
-    property_type_id = fields.Many2one("estate_type", string="Property Type")
-    property_tag_id = fields.Many2many("estate_tags")
-
-    offers_id = fields.One2many("estate_offer", "property_id")
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(readonly=True)
+    bedrooms = fields.Integer(default=2)
+    living_area = fields.Integer("Lining Area (sqm)")
+    facades = fields.Integer()
+    garage = fields.Boolean()
+    garden = fields.Boolean()
+    last_seen = fields.Datetime(default=fields.Datetime.now)
+    garden_area = fields.Integer("Garden Area (sqm)")
+    active = fields.Boolean(default=True)
+    partner_id = fields.Many2one('res.partner', string="Salesperson")
+    buyer_id = fields.Many2one('res.users',)
+    property_type_id = fields.Many2one('estate.property.type')
+    property_tag_id = fields.Many2many('estate.property.tags')
+    offers_id = fields.One2many('estate.property.offer', 'property_id')
     garden_orientation = fields.Selection(
-        string="Garden Orientation",
         selection=[
-            ("east", "East"),
-            ("west", "West"),
-            ("north", "North"),
-            ("south", "South"),
+            ('east', "East"),
+            ('west', "West"),
+            ('north', "North"),
+            ('south', "South"),
         ],
-        help="This is the direction of the proprety, which side the preperty is facing.",
+        help="This field tells us the direction of the garden",
     )
     state = fields.Selection(
-        default="new",
-        string="State",
+        default='new',
         selection=[
-            ("new", "New"),
-            ("offer received", "Offer Received"),
-            ("offer accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled"),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
-        help="This field tells the state of the property.",
+        help="This field tells us the state of the property.",
     )
+    total_area = fields.Integer(compute='_compute_total_area')
+    best_price = fields.Integer(compute='_compute_best_price')
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = (record.living_area or 0) + (record.garden_area or 0)
+
+    @api.depends('offers_id')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = (
+                max(record.offers_id.mapped('price')) if record.offers_id else 0.0
+            )
