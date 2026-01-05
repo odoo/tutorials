@@ -2,7 +2,7 @@ from odoo import models, fields
 
 
 class PropertyTag(models.Model):
-    _name = "estate.property.tag"
-    _description = "Property Tags to describe property such new, renovated..."
+    _name = 'estate.property.tag'
+    _description = 'Property Tags to describe property such new, renovated...'
 
     name = fields.Char(required=True)
