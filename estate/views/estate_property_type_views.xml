@@ -10,7 +10,7 @@
                 <form>
                     <sheet>
                         <h1>
-                            <field name="name" />
+                            <field name="name"/>
                         </h1>
                     </sheet>
                 </form>
@@ -23,11 +23,11 @@
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="name" />
-                    <separator />
-                    <filter string="Type" name="name" />
+                    <field name="name"/>
+                    <separator/>
+                    <filter string="Type" name="name"/>
                     <group>
-                        <filter string="Nmae" name="name" context="{'group_by':'name'}" />
+                        <filter string="Nmae" name="name" context="{'group_by':'name'}"/>
                     </group>
                 </search>
             </field>

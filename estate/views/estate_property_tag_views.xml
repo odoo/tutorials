@@ -10,10 +10,22 @@
                 <form>
                     <sheet>
                         <group>
-                            <field name="name" />
+                            <field name="name"/>
                         </group>
                     </sheet>
                 </form>
+            </field>
+        </record>
+
+        <record id="estate_property_tag_view_list" model="ir.ui.view">
+            <field name="name">estate_property_tag_view_list</field>
+            <field name="model">estate.property.tag</field>
+            <field name="arch" type="xml">
+                    <list>
+                            <field name="name"/>
+                            <field name="create_date"/>
+                            <field name="write_date"/> 
+                    </list>
             </field>
         </record>
 

@@ -2,8 +2,8 @@ from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
-    _name = "estate.property"
-    _description = "Estate Property Planning"
+    _name = 'estate.property'
+    _description = 'Estate Property Planning'
 
     name = fields.Char(required=True, default="Unknown")
     description = fields.Text()
@@ -26,19 +26,21 @@ class EstateProperty(models.Model):
             ('east', "East"),
             ('south', "South"),
         ],
+        help="Direction for the garden"
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
             ('new', "New"),
             ('offer_received', "Offer Received"),
-            ('offer_Accepted', "Offer Accepted"),
+            ('offer_accepted', "Offer Accepted"),
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
         default="new",
     )
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    property_type_id = fields.Many2one(
+        'estate.property.type', string="Property Type")
     seller = fields.Many2one(
         'res.users', string="Salesman", default=lambda self: self.env.user
     )
@@ -59,3 +61,12 @@ class EstateProperty(models.Model):
             record.best_price = (
                 max(record.offer.mapped('price')) if record.offer else 0.0
             )
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = "10"
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = None
+            self.garden_orientation = None
