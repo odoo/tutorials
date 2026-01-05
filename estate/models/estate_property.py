@@ -1,5 +1,5 @@
-from odoo import fields, models
 from dateutil.relativedelta import relativedelta
+from odoo import fields, models
 
 
 class EstateProperty(models.Model):
@@ -7,7 +7,7 @@ class EstateProperty(models.Model):
     _description = 'Real Estate Property'
 
     # Each field becomes a column in PostgreSQL table
-    name = fields.Char(required=True)
+    name = fields.Char(required=True, default="Unknown")
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -45,3 +45,6 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    seller_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
