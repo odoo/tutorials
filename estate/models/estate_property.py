@@ -44,3 +44,9 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean()
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    customer = fields.Many2one("res.partner", string="Customer", copy=False)
+    salesperson = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
+    tag_ids = fields.Many2many('estate.property.tag', string="Tag type")
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string="Offers")

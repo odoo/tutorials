@@ -6,7 +6,8 @@
         <menuitem
             id="estate_property_advertisements"
             name="Advertisements"
-            parent="estate_property_menu_root"/>
+            parent="estate_property_menu_root"
+            sequence="1"/>
         <menuitem
             id="estate_property_properties"
             name="Properties"
@@ -15,11 +16,17 @@
         <menuitem
             id="estate_property_settings"
             name="Settings"
-            parent="estate_property_menu_root"/>
+            parent="estate_property_menu_root"
+            sequence="2"/>
         <menuitem
             id="estate_property_types"
             name="Property Types"
             parent="estate_property_settings"
-            action="estate_property_type_action"/> 
+            action="estate_property_type_action"/>
+        <menuitem
+            id="estate_property_tags"
+            name="Property Tags"
+            parent="estate_property_settings"
+            action="estate_property_tag_action"/> 
     </data>
 </odoo>
