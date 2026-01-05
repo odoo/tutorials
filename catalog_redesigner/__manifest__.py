@@ -7,7 +7,7 @@
     'description': """
     An module to redesign the catalog in small screens.
     """,
-    'application': True,
+    'application': False,
     'license': 'LGPL-3',
     'data': [
         'views/product_views.xml',

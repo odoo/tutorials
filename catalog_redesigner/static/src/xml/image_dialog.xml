@@ -7,10 +7,12 @@
             <div class="modal-dialog bg-white d-flex flex-column h-auto">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <i class="fa fa-fw fa-times ms-auto" role="img" t-on-click="props.close" title="Close" aria-label="Close"></i>
+                        <i class="fa fa-fw fa-times ms-auto" t-on-click="props.close" title="Close"
+                            aria-label="Close"></i>
                     </div>
                     <div class="modal-body">
-                        <img class="m-auto p-4 img-fluid" style="min-width: 300px" t-att-src="props.imgSrc" />
+                        <img class="m-auto p-4 img-fluid" style="min-width: 300px"
+                            t-att-src="props.imgSrc" />
                     </div>
                 </div>
             </div>

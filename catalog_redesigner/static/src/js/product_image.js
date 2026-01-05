@@ -11,10 +11,11 @@ export class ImageClickEnlarge extends ImageField {
         this.dialog = useService("dialog")
     }
 
-    openImageInDialog() {
+    openImageInDialog(e) {
         if(!this.isMobile){
             return
         }
+        e.stopPropagation()
         this.dialog.add(ImageDialog, {
             imgSrc: this.getUrl(this.props.name)
         })

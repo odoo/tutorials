@@ -3,9 +3,9 @@
 
     <t t-name="product_view_kanban_catalog_inherit.image_preview" t-inherit="web.ImageField"
         t-inherit-mode="primary">
-        <xpath expr="//img" position="attributes">
-            <attribute name="t-on-click.stop">openImageInDialog</attribute>
-            <attribute name="class">ms-auto img-fluid o-responisve-img</attribute>
+        <xpath expr="//img[@t-att-class='imgClass']" position="attributes">
+            <attribute name="t-on-click">openImageInDialog</attribute>
+            <attribute name="class">ms-auto img-fluid o-responsive-img</attribute>
         </xpath>
     </t>
 
