@@ -15,6 +15,8 @@
             <list string="Types">
                 <field name="price" />
                 <field name="partner_id" string="Partner" />
+                <field name="validity" string="Validity(days)"/>
+                <field name="deadline"/>
                 <field name="status"/>
             </list>
         </field>
@@ -28,6 +30,8 @@
                 <group>
                     <field name="price" />
                     <field name="partner_id" string="Partner" />
+                    <field name="validity"/>
+                    <field name="deadline" readonly="0"/>
                     <field name="status"/>
                 </group>
             </form>
