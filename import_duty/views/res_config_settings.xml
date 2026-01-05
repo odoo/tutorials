@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_import_export_custom_duty_view_form" model="ir.ui.view">
+        <field name="name">
+            res.config.settings.view.form.inherit.account.base.import.export.custom.duty</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="account.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='india_localization']" position="inside">
+                <t groups="account.group_account_user">
+
+                    <setting string="Import-Export"
+                        help="Enable this feature to apply custom duty on import/export transactions, including Bill of Entry and Shipping Bills"
+                        company_dependent="1">
+                        <field name="custom_duty" class="oe_inline" />
+                    </setting>
+
+                    <block title="Import Export" id="import_export" invisible="not custom_duty">
+                        <setting string="Import:" company_dependent="1" invisible="not custom_duty">
+                            <div class="content-group">
+                                <div class="row mt8">
+                                    <label for="import_journal_id"
+                                        class="col-lg-5 o_light_label" />
+                                    <field name="import_journal_id"
+                                        domain="[('type', '=', 'general'), ('active', '=', True)]"
+                                        required="custom_duty" />
+                                </div>
+                                <div class="row mt8">
+                                    <label for="import_duty_account_id"
+                                        class="col-lg-5 o_light_label" />
+                                    <field name="import_duty_account_id" required="custom_duty" />
+                                </div>
+                                <div class="row mt8">
+                                    <label for="import_duty_tax_account_id"
+                                        class="col-lg-5 o_light_label" />
+                                    <field name="import_duty_tax_account_id"
+                                        required="custom_duty" />
+                                </div>
+                            </div>
+                        </setting>
+                        <setting string="Export:" company_dependent="1" invisible="not custom_duty">
+                            <div class="content-group">
+                                <div class="row mt8">
+                                    <label for="export_journal_id"
+                                        class="col-lg-5 o_light_label" />
+                                    <field name="export_journal_id"
+                                        domain="[('type', '=', 'general'), ('active', '=', True)]"
+                                        required="custom_duty" />
+                                </div>
+                                <div class="row mt8">
+                                    <label for="export_duty_account_id"
+                                        class="col-lg-5 o_light_label" />
+                                    <field name="export_duty_account_id" required="custom_duty" />
+                                </div>
+                                <div class="row mt8">
+                                    <label for="export_duty_tax_account_id"
+                                        class="col-lg-5 o_light_label" />
+                                    <field name="export_duty_tax_account_id"
+                                        required="custom_duty" />
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+
+                </t>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <data>
+
+        <record id="view_bill_of_entry_wizard_form" model="ir.ui.view">
+            <field name="name">bill.of.entry.wizard.form</field>
+            <field name="model">bill.of.entry</field>
+            <field name="arch" type="xml">
+                <form string="Bill of Entry Wizard">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="journal_entry_number" />
+                                <field name="journal_entry_date" />
+                                <field name="import_journal_id" />
+                                <field name="custom_currency_rate" />
+                                <field name="currency_id" invisible="1" />
+                            </group>
+                            <group>
+                                <field name="reference" />
+                                <field name="shipping_bill_number" />
+                                <field name="shipping_bill_date" />
+                                <field name="port_code_id" />
+                            </group>
+                        </group>
+
+                        <notebook>
+                            <page string="Journal Items" invisible="not vendor_bill_confirmed">
+                                <!-- <field name="journal_entry_number" readonly="1" /> -->
+                                <field name="journal_entry_line_ids" readonly="1">
+                                    <list>
+                                        <field name="name" />
+                                        <field name="account_id" />
+                                        <field name="debit" />
+                                        <field name="credit" />
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Bill of Entry Details">
+                                <group>
+                                    <field name="entry_line_ids" nolabel="1">
+                                        <list editable="bottom">
+                                            <field name="product_id" />
+                                            <field name="assessable_value" widget="monetary" />
+                                            <field name="custom_duty" widget="monetary" />
+                                            <field name="currency_id" column_invisible="1" />
+                                            <field name="taxable_amount" widget="monetary"
+                                                readonly="1" />
+                                            <field name="tax_id"
+                                                domain="[('type_tax_use', '=', 'purchase')]" />
+                                            <field name="tax_amount" widget="monetary" readonly="1" />
+                                        </list>
+                                    </field>
+                                </group>
+                            </page>
+
+                        </notebook>
+
+                        <group col="12" class="oe_invoice_lines_tab overflow-hidden">
+                            <group colspan="8">
+                            </group>
+                            <group colspan="4" class="oe_subtotal_footer">
+                                <span class="oe_subtotal_footer_separator"/>
+                                <field name="total_custom_duty" widget="monetary" readonly="1" />
+                                <field name="total_tax_amount" widget="monetary" readonly="1" />
+                                <field name="total_amount_payable" widget="monetary" readonly="1" />
+                            </group>
+                        </group>
+
+                        <footer>
+                            <button string="Confirm" type="object" name="action_confirm"
+                                class="btn-primary" invisible="vendor_bill_confirmed"/>
+                            <button string="Confirm" type="object" name="action_confirm_boe"
+                                class="btn-primary" invisible="not vendor_bill_confirmed"/>
+                            <button string="Discard" special="cancel" class="btn-secondary" />
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+    </data>
+
+
+</odoo>

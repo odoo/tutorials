@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="account_move_stat_view" model="ir.ui.view">
+            <field name="name">account.move.stat.view</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_open_bill_of_entry_wizard" string="Bill of Entry"
+                        type="object"
+                        invisible="state in ('draft', 'cancel') or l10n_in_gst_treatment not in ('overseas', 'special_economic_zone', 'deemed_export') or on_confirm or not custom_duty_enabled" />
+                </xpath>
+                <xpath expr="//button[@name='action_open_business_doc']" position="before">
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button"
+                            name="action_open_bill_of_entry_wizard"
+                            icon="fa-file-text-o"
+                            string="Bill of Entry"
+                            type="object"
+                            invisible="state in ('draft', 'cancel') or l10n_in_gst_treatment not in ('overseas', 'special_economic_zone', 'deemed_export') or not on_confirm or not custom_duty_enabled"/>
+
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

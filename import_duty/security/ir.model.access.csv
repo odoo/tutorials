@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+
+import_duty.bill_of_entry_line,bill_of_entry_line,import_duty.model_bill_of_entry_line,base.group_user,1,1,1,1
+import_duty.bill_of_entry,bill_of_entry,import_duty.model_bill_of_entry,base.group_user,1,1,1,1
