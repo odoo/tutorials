@@ -6,6 +6,9 @@
             <menuitem id="estate_properties_menu" name="Properties">
                 <menuitem id="estate_properties_menu_action" action="estate_property_action"/>
             </menuitem>
+            <menuitem id="estate_setting" name="Setting">
+                <menuitem id="estate_setting_type_action" action="estate_property_type_action"/>
+            </menuitem>
         </menuitem>
 
     </data>
