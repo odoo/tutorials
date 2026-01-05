@@ -10,7 +10,7 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Channel">
-                <field name="name" />
+                <field name="name"/>
             </list>
         </field>
     </record>

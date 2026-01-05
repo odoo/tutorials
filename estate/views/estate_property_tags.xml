@@ -10,7 +10,7 @@
         <field name="model">estate.property.tags</field>
         <field name="arch" type="xml">
             <list string="Channel">
-                <field name="name" />
+                <field name="name"/>
             </list>
         </field>
     </record>
@@ -23,7 +23,7 @@
             <search>
                 <field name="name"/>
                 <group>
-                    <filter name="name" context="{'group_by': 'name'}" />
+                    <filter name="name" context="{'group_by': 'name'}"/>
                 </group>
             </search>
         </field>
