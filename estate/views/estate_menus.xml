@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
+    <data noupdate="0">
         <menuitem id="estate_menu_root" name="Real Estate"/>
 
         <menuitem id="estate_menu_advertisements"
@@ -27,6 +27,11 @@
                   name="Property tages"
                   parent="estate_menu_settings"
                   action="estate_property_tag_action"/>
+
+        <menuitem id="estate_menu_property_offer"
+                  name="Property Offers"
+                  parent="estate_menu_settings"
+                  action="estate_property_offer_action"/>
 
     </data>
 </odoo>

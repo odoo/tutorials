@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <data>
+    <data noupdate="0">
         <record id="estate_property_action" model="ir.actions.act_window">
             <field name="name">Properties</field>
             <field name="res_model">estate.property</field>
@@ -67,6 +67,15 @@
                                     <field name="buyer_id" />
                                     <field name="seller_id" />
                                 </group>
+                            </page>
+                            <page string="Offers">
+                                <field name="offer_ids">
+                                    <list>
+                                        <field name="price" />
+                                        <field name="partner_id" />
+                                        <field name="status" />
+                                    </list>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>
