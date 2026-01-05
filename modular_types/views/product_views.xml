@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="product_template_form_view_modular_types" model="ir.ui.view">
         <field name="name">product.template.form.modular.types</field>
         <field name="model">product.template</field>
@@ -10,4 +11,5 @@
             </xpath>
         </field>
     </record>
+
 </odoo>

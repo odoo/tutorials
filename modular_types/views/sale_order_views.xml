@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
+    <record id="modular_type_wizard_action" model="ir.actions.act_window">
+        <field name="name">Modular Type Value</field>
+        <field name="res_model">modular.type.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
     <record id="sale_order_modular_button_view" model="ir.ui.view">
         <field name="name">sale.order.form.modular.button</field>
         <field name="model">sale.order</field>
@@ -7,6 +14,7 @@
         <field name="arch" type="xml">
             <xpath expr="//list/field[@name='product_template_id']" position="after">
                 <button
+                    name="%(modular_type_wizard_action)d"
                     type="action"
                     icon="fa-flask"
                     context="{'active_order_line_id': id}"
@@ -15,4 +23,5 @@
             </xpath>
         </field>
     </record>
+
 </odoo>

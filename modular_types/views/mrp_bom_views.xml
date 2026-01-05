@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+
     <record id="mrp_bom_form_view_inherit_modular_type" model="ir.ui.view">
         <field name="name">mrp.bom.form.modular.type</field>
         <field name="model">mrp.bom</field>
@@ -10,4 +11,5 @@
             </xpath>
         </field>
     </record>
+
 </odoo>
