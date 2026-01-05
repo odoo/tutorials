@@ -19,7 +19,6 @@
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
-
         <field name="name">estate.property.view.list</field>
         <field name="model">home.plan</field>
         <field name="arch" type="xml">
@@ -32,7 +31,6 @@
                 <field name= "State"/>
                 <field name= "last_seen"/>
             </list>
-
         </field>
     </record>
 
@@ -58,13 +56,12 @@
                         <group>
                             <field name='expected_price'/>
                             <field name='selling_price'/>
+                            <field name='best_price'/>
                         </group>
                     </group>
                     <notebook>
                         <page string="Description">
-
                             <group>
-
                                 <group>
                                     <field name="description"/>
                                     <field name='bedrooms'/>
@@ -75,32 +72,31 @@
                                     <field name='State'/>
                                     <field name='Garden'/>
                                     <field name='Garden_area' invisible= "not Garden"/>
+                                    <field name='total_area'/>
                                     <field name='active' />
-
-                                </group>
-                                <group>
-
                                 </group>
                             </group>
                         </page>
-                        <page string='Sale'>
-
+                        <page string='Offer'>
+                            <field name="offer_ids">
+                                <list>
+                                    <field name='price'/>
+                                    <field name = "status"/>
+                                    <field name='partner_id'/>
+                                    <field name = "validity"/>
+                                    <field name = "date_deadline"/>
+                                </list>
+                            </field>
                         </page>
-
-
-
                         <page string="Other Info">
                             <group>
-
                                 <group>
                                     <field name='Salesman'/>
                                     <field name='Buyer' />
                                 </group>
-
                             </group>
                         </page>
                     </notebook>
-
                 </sheet>
             </form>
         </field>
@@ -113,7 +109,6 @@
             <search string="Home">
                 <field name = 'bedrooms'  string ='bedrooms' filter_domain="[('bedrooms', '>=', self )]" />
                 <field name = 'name'/>
-                <!-- <field name ='property_type_id' string='property type'/> -->
                 <field name="expected_price" />
                 <separator/>
                 <filter string="offer received" name="offer received" domain="[('State','in',['New','new', 'offer received', 'Offer Received'])]"/>

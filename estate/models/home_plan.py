@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class homePlan(models.Model):
@@ -22,11 +22,15 @@ class homePlan(models.Model):
     Garage = fields.Boolean("Garage", default=True)
     Garden = fields.Boolean("Garden")
     Garden_area = fields.Integer("Garden area")
+    total_area = fields.Float("total area", compute="_compute_balance", store=True)
+    best_price = fields.Float("best price", compute="_compute_offer")
     active = fields.Boolean("Active", default=True)
     property_type_id = fields.Many2one("estate.property.type")
     Salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
     Buyer = fields.Many2one("res.partner", copy=False)
     property_tag_id = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
+
     State = fields.Selection(
         [
             ("New", "new"),
@@ -43,6 +47,12 @@ class homePlan(models.Model):
         [("North", "north"), ("East", "east"), ("West", "west"), ("South", "south")]
     )
 
-    # _sql_constraints = [
-    #     ('check_number_of_months', 'CHECK(number_of_months >= 0)', 'The number of month can\'t be negative.'),
-    # ]
+    @api.depends("living_area", "Garden_area")
+    def _compute_balance(self):
+        for line in self:
+            line.total_area = line.living_area + line.Garden_area
+
+    @api.depends("offer_ids")
+    def _compute_offer(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)

@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<odoo>
-    <list string="Tests">
-        <field name="name"/>
-        <field name="last_seen"/>
-    </list>
-</odoo>
