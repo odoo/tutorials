@@ -8,7 +8,7 @@ class real_estate_property_offer(models.Model):
     _description = 'Real Estate Property Offer'
 
     price = fields.Float(required=True)
-    property_id = fields.Many2one('real.estate', string='Property', ondelete='restricted')
+    property_id = fields.Many2one('real.estate', string='Property')
     status = fields.Selection([
         ('accepted', 'Accepted'),
         ('refused', 'Refused'),
