@@ -1,7 +1,6 @@
 from datetime import timedelta
 
 from odoo import models, fields, api
-from odoo.exceptions import UserError
 
 
 class real_estate_property_offer(models.Model):
@@ -9,7 +8,7 @@ class real_estate_property_offer(models.Model):
     _description = 'Real Estate Property Offer'
 
     price = fields.Float(required=True)
-    property_id = fields.Many2one('real.estate', string='Property', ondelete='restrict')
+    property_id = fields.Many2one('real.estate', string='Property', ondelete='restricted')
     status = fields.Selection([
         ('accepted', 'Accepted'),
         ('refused', 'Refused'),
