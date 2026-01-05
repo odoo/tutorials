@@ -6,12 +6,12 @@
     'category': 'Uncategorized',
     'version': '0.1',
     'depends': ['base'],
-
     'data': [
         'security/ir.model.access.csv',
-        'views/properties_views.xml',
-        'views/real_estate_tag.xml',
-        'views/real_estate_properties_offer.xml',
+        'views/real_estate_properties_offer_views.xml',
+        'views/real_estate_properties_views.xml',
+        'views/real_estate_tag_views.xml',
+        'views/real_estate_menus.xml',
     ],
     'application': True,
     'installable': True,
