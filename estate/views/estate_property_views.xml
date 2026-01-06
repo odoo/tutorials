@@ -43,12 +43,14 @@
                     </div>
                     <group>
                         <group>
+                            <field name="state" string="State"/>
                             <field name="property_type_id" string="Property Type"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability" string="Available Form"/>
                         </group>
                         <group>
                             <field name="expected_price" string="Expected Price"/>
+                            <field name="best_price" string="Best Price"/>
                             <field name="selling_price" string="Selling Price"/>
                         </group>
                     </group>
@@ -63,7 +65,7 @@
                             <field name="garden" string="Garden"/>
                             <field name="garden_area" string="Garden Area(sqm)"/>
                             <field name="garden_orientation" string="Garden Orientation"/>
-                            <field name="state" string="state"/>
+                            <field name="total_area"/>
                             <field name="active" string="active"/>
                         </group>
                     </page>
@@ -100,6 +102,7 @@
                 <field name="living_area"/>
                 <field name="facades"/>
                 <filter name="state" string="State" domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter name="active" string="non-active property" domain="[('active', '=', False)]" />
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by' : 'postcode'}"/>
                 </group>

@@ -12,12 +12,9 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
-                    <div>
-                        <label for="name" string="Name"/>
-                    </div>
-                    <div>
-                        <h1><field name="name"/></h1>
-                    </div>
+                    <group>
+                        <h1><field name="name" placeholder="Add Tag"/></h1>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -31,6 +28,5 @@
                 <field name="name" string="Tags"/>
             </list>
         </field>
-
     </record>
 </odoo>
