@@ -5,29 +5,25 @@
         <field name="name">modular.type.wizard.form</field>
         <field name="model">modular.type.wizard</field>
         <field name="arch" type="xml">
-            <form string="Set Modular Type Values">
-                <sheet>
-                    <group>
-                        <field name="wizard_line_ids" nolabel="1">
-                            <list editable="bottom">
-                                <field name="modular_type_id" readonly="1"/>
-                                <field name="value"/>
-                            </list>
-                        </field>
-                    </group>
-                    <footer>
-                        <button string="Add" type="object" class="btn-primary"/>
-                        <button string="Cancel" special="cancel"/>
-                    </footer>
-                </sheet>
+            <form>
+                <field name="wizard_line_ids" nolabel="1">
+                    <list editable="bottom" create="false" delete="false">
+                        <field name="modular_type_id"/>
+                        <field name="value"/>
+                    </list>
+                </field>
+                <footer>
+                    <button string="Add" type="object" name="add_modular_value" class="btn-primary"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
             </form>
         </field>
     </record>
     <record id="modular_type_wizard_action" model="ir.actions.act_window">
-        <field name="name">modular type</field>
+        <field name="name">Set Modular Type Value</field>
         <field name="res_model">modular.type.wizard</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="modular_type_wizard_form"/>
+        <field name="view_id" ref="modular_type_wizard_form" />
     </record>
 
 </odoo>

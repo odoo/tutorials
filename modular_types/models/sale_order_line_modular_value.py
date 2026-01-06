@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import fields, models
 
 
 class SaleOrderLineModularValue(models.Model):
@@ -6,5 +6,5 @@ class SaleOrderLineModularValue(models.Model):
     _description = 'Sale order line modular value'
 
     order_line_id = fields.Many2one('sale.order.line')
-    modular_type_id = fields.Many2one('modular.type', required=True)
+    modular_type_id = fields.Many2one('modular.type')
     value = fields.Float()

@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class ModularTypeWizard(models.TransientModel):
@@ -24,10 +25,30 @@ class ModularTypeWizard(models.TransientModel):
         })
         return res
 
+    def add_modular_value(self):
+        active_order_line_id = self.env.context.get('active_order_line_id')
+        if not self.product_id:
+            raise UserError("Sales order line not found.")
+        for line in self.wizard_line_ids:
+            existing = self.env['sale.order.line.modular.value'].search([
+                ('order_line_id', '=', active_order_line_id),
+                ('modular_type_id', '=', line.modular_type_id.id),
+            ], limit=1)
+            if existing:
+                existing.value = line.value
+            else:
+                self.env['sale.order.line.modular.value'].create({
+                    'order_line_id': active_order_line_id,
+                    'modular_type_id': line.modular_type_id.id,
+                    'value': line.value,
+                })
+        return
+
 
 class ModularTypeWizardLine(models.TransientModel):
     _name = 'modular.type.wizard.line'
+    _description = 'Modular Type Wizard Line'
 
     wizard_id = fields.Many2one('modular.type.wizard')
-    modular_type_id = fields.Many2one('modular.type', readonly=True)
-    value = fields.Integer()
+    modular_type_id = fields.Many2one('modular.type')
+    value = fields.Float()
