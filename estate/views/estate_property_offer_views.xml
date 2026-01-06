@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="estate_property_offer_action" model="ir.actions.act_window">
+        <field name="name">Property Offers</field>
+        <field name="res_model">x_estate.property.offer</field>
+        <field name="domain">[('x_property_type_id', '=', active_id)]</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">x_estate.property.offer.list</field>
+        <field name="model">x_estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Offer"
+                  decoration-success="x_status == 'accepted'"
+                  decoration-danger="x_status == 'refused'"
+                  editable="top">
+                <field name="x_price"/>
+                <field name="x_partner_id"/>
+                <button name="estate.action_estate_property_offer_accept" type="action" icon="fa-check" string="Accept" invisible="x_status"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_view_form" model="ir.ui.view">
+        <field name="name">x_estate.property.offer.form</field>
+        <field name="model">x_estate.property.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="x_price"/>
+                        <field name="x_partner_id"/>
+                        <field name="x_status"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
