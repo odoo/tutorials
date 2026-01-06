@@ -13,5 +13,9 @@
               name="Property Tags"
               parent="real_estate_menu_configuration"
               action="real_estate_tag_action_view"/>
+    <menuitem id="real_estate_menu_property_type"
+              name="Property Type"
+              parent="real_estate_menu_configuration"
+              action="real_estate_property_type_action_view"/>
 
 </odoo>

@@ -7,8 +7,23 @@
             <list>
                 <field name="price"/>
                 <field name="partner_id"/>
-                <field name="status"/>
-                <field name="property_id"/>
+                <field name="validity"/>
+                <field name="date_deadline"/>
+                <button
+                    name="action_accept"
+                    type="object"
+                    icon="fa-check"
+                    title="accept"
+                    invisible="status == 'refused'"
+                />
+                <button
+                    name="action_refuse"
+                    type="object"
+                    icon="fa-times"
+                    title="refused"
+                    invisible="status == 'accepted'"
+                />
+                <field name="status" readonly="1"/>
             </list>
         </field>
     </record>

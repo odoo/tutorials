@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 
 class real_estate_property_offer(models.Model):
@@ -8,7 +9,7 @@ class real_estate_property_offer(models.Model):
     _description = 'Real Estate Property Offer'
 
     price = fields.Float(required=True)
-    property_id = fields.Many2one('real.estate', string='Property')
+    property_id = fields.Many2one('real.estate', string='Property', ondelete='cascade')
     status = fields.Selection([
         ('accepted', 'Accepted'),
         ('refused', 'Refused'),
@@ -34,3 +35,26 @@ class real_estate_property_offer(models.Model):
         for offer in self:
             if offer.create_date and offer.date_deadline:
                 offer.validity = (offer.date_deadline - offer.create_date.date()).days
+
+    def action_accept(self):
+        # accepted_offer = self.search([
+        #     ('property_id', '=', self.property_id.id),
+        #     ('status', '=', 'accepted')
+        # ], limit=1)
+        # accepted_offer = self.property_id.offer_ids.filtered(
+        #     lambda o: o.status == 'accepted'
+        # )
+        accepted_offer = self.property_id.offer_ids.filtered_domain([
+            ('status', '=', 'accepted')
+        ])
+        if accepted_offer:
+            raise UserError(
+                "Only one offer can be accepted for a property."
+            )
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.stage = 'sold'
+        self.property_id.buyer_id = self.partner_id.id
+
+    def action_refuse(self):
+        self.status = 'refused'

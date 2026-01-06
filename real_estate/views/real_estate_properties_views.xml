@@ -22,23 +22,38 @@
         <field name="model">real.estate</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button
+                        name="action_sold"
+                        type="object"
+                        string="Sold"
+                        class="btn-primary"
+                    />
+                    <button
+                        name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        class="btn-secondary"
+                    />
+                    <field name="stage" widget="statusbar"
+                           options="{'clickable': False}"
+                           statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
                             <field name="name"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
-                            <field name="bedrooms"/>
                             <field name="living_area"/>
-                            <field name="best_price" readonly="1"/>
+                            <field name="garden_area"/>
                             <field name="total_area" readonly="1"/>
                         </group>
                         <group>
-                            <field name="bathrooms"/>
-                            <field name="facades"/>
                             <field name="tag_ids" widget="many2many_tags"/>
-                            <field name="garden_area"/>
-                            <field name="garden_orientation"/>
+                            <field name="expected_price"/>
+                            <field name="best_price" readonly="1"/>
                         </group>
                     </group>
                     <notebook>
@@ -52,22 +67,24 @@
                                 <group string="Email">
                                     <field name="garage"/>
                                     <field name="garden"/>
+                                    <field name="garden_orientation"/>
                                 </group>
                                 <group string="Marketing">
-                                    <field name="expected_price"/>
-                                    <field name="selling_price" readonly="1"/>
+                                    <field name="bedrooms"/>
+                                    <field name="bathrooms"/>
+                                    <field name="facades"/>
                                 </group>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" widget="one2many">
-                                    <list editable="bottom">
-                                        <field name="price"/>
-                                        <field name="status"/>
-                                        <field name="partner_id"/>
-                                    </list>
-                                </field>
+                                <field name="offer_ids" nolabel="0"/>
+                            </group>
+                        </page>
+                        <page string="Other Info">
+                            <group>
+                                <field name="selling_price" readonly="1"/>
+                                <field name="buyer_id" readonly="1"/>
                             </group>
                         </page>
                     </notebook>
@@ -86,15 +103,15 @@
                 <field name="total_area"/>
                 <filter
                     string="Active"
-                    name="active"
+                    name="active_record"
                     domain="[('active', '=', True)]"
                 />
                 <filter
                     string="Garden orientation"
-                    name="garden_orientation"
+                    name="name"
                     domain="['|','&amp;',('garden_orientation', '=' , 'north'),
                     ('garden_orientation', '=' , 'south'),
-                    ('garden_orientation', '=' , 'west')]"
+                    ('name', '=' , 'test')]"
                 />
                 <group>
                     <filter
@@ -111,6 +128,12 @@
         <field name="name">Real Estate</field>
         <field name="res_model">real.estate</field>
         <field name="view_mode">list,form</field>
+          <field name="context">
+            {
+
+                'search_default_active_record': 1,
+            }
+            </field>
     </record>
 
 </odoo>
