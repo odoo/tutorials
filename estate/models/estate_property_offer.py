@@ -1,5 +1,6 @@
 from typing import Required
 from odoo import fields, models, api
+from odoo.exceptions import UserError
 
 
 class estate_property_offer(models.Model):
@@ -17,6 +18,10 @@ class estate_property_offer(models.Model):
     partner_id = fields.Many2one("res.partner", required=True)
     property_id = fields.Many2one("home.plan", required=True)
 
+    _check_offer_price = models.Constraint(
+        "CHECK( price > 0)", "The offer price must be Strictly positive"
+    )
+
     @api.depends("validity")
     def _compute_deadline(self):
         for record in self:
@@ -27,3 +32,20 @@ class estate_property_offer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    def action_confirm(self):
+        for record in self:
+            if record.property_id.State == "Offer Accepted":
+                raise UserError(message="You can't Accept multiple offer")
+            else:
+                record.status = "Accepted"
+                record.property_id.Buyer = record.partner_id
+                record.property_id.selling_price = record.price
+                record.property_id.State = "Offer Accepted"
+
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            record.status = "Refused"
+        return True

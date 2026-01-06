@@ -40,6 +40,10 @@
         <field name="model">home.plan</field>
         <field name="arch" type="xml">
             <form string="Test">
+                <header>
+                    <button name="action_sold" type="object" string="Sold" />
+                    <button name="action_Cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -67,10 +71,11 @@
                                     <field name='bedrooms'/>
                                     <field name='facades'/>
                                     <field name='Garage'/>
-                                    <field name='Garden_orientation_direction'/>
+                                    <field name='Garden'/>
+                                    <field name='Garden_area' />
+                                    <field name='Garden_orientation_direction' invisible= "not Garden"/>
                                     <field name="living_area"/>
                                     <field name='State'/>
-                                    <field name='Garden'/>
                                     <field name='Garden_area' invisible= "not Garden"/>
                                     <field name='total_area'/>
                                     <field name='active' />
@@ -81,10 +86,12 @@
                             <field name="offer_ids">
                                 <list>
                                     <field name='price'/>
-                                    <field name = "status"/>
                                     <field name='partner_id'/>
                                     <field name = "validity"/>
                                     <field name = "date_deadline"/>
+                                    <button name="action_confirm" title="confirm" type="object" icon="fa-check" invisible="status"/>
+                                    <button name="action_cancel" title="cancel" type="object" icon="fa-times"/>
+                                    <field name = "status"/>
                                 </list>
                             </field>
                         </page>
