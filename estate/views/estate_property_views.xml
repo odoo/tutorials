@@ -28,8 +28,9 @@
                     <group>
                         <group>
                             <field name="name" />
+                            <field name="tag_ids" widget="many2many_tags" />
                             <field name="property_type_id" />
-                            <field name="postcode" />
+                            <field name="state" />
                             <field name="date_availability" />
                         </group>
                         <group>
@@ -51,8 +52,17 @@
                                 <field name="garden" />
                                 <field name="garden_area" />
                                 <field name="garden_orientation" />
-                                <field name="state" />
+                                <field name="postcode" />
                             </group>
+                        </page>
+                        <page string="Offers">
+                            <field name="offer_ids">
+                                <list string="Offers">
+                                    <field name="price" />
+                                    <field name="partner_id" />
+                                    <field name="status" />
+                                </list>
+                            </field>
                         </page>
                         <page string="Other Info">
                             <group>
