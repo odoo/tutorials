@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<templates>
+    <t t-name="stamp_sign.StampSignDetailsDialog">
+        <Dialog t-props="dialogProps">
+            <StampSignDetails t-props="nameAndSignatureProps" />
+            <div class="mt16 small">
+                By clicking Sign, I confirm this stamp will be used as my electronic signature.
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="props.onConfirm" t-att-disabled="footerState.buttonsDisabled">Sign</button>
+                <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+
+    <t t-name="stamp_sign.StampSignDetails" t-inherit="sign.NameAndSignature" t-inherit-mode="primary">
+        <xpath expr="//div[@t-if='!props.noInputName']" position="replace">
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label">Full Name</label>
+                <input type="text" name="signer" class="o_web_sign_name_input form-control" t-on-input="onInputSignName" t-att-value="props.signature.name" placeholder="Type your name"/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label">Company</label>
+                <input type="text" name="company" class="o_web_sign_name_input form-control" t-on-input="onInputStampDetails" t-att-value="props.signature.company" placeholder="Type your company name"/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label">Address</label>
+                <input type="text" name="address" class="o_web_sign_name_input form-control form-control" t-on-input="onInputStampDetails" t-att-value="props.signature.address" placeholder="Type your Address"/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label">City</label>
+                <input type="text" name="city" class="o_web_sign_name_input form-control form-control" t-on-input="onInputStampDetails" t-att-value="props.signature.city" placeholder="Type your city name"/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label">Country</label>
+                <input type="text" name="country" class="o_web_sign_name_input form-control form-control" t-on-input="onInputStampDetails" t-att-value="props.signature.country" placeholder="Type your country name"/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group">
+                <label class="col-form-label">VAT Number</label>
+                <input type="text" name="vat" class="o_web_sign_name_input form-control form-control" t-on-input="onInputStampDetails" t-att-value="props.signature.vat" placeholder="Type your VAT number"/>
+            </div>
+            <div t-if="!props.noInputName" class="o_web_sign_name_group d-flex align-items-center gap-3 mt-2">
+                <label class="col-form-label">Logo</label>
+                <div class="upload-button">
+                    <input type="file" name="logo" class="d-none" t-on-input="onInputStampDetails" accept="image/*"/>
+                    <button type="button" class="btn btn-primary" t-on-click="triggerFileUpload">Upload</button>
+                </div>
+            </div>
+        </xpath>
+    </t>
+</templates>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="sign.sign_item_type_signature" model="sign.item.type">
+        <field name="sequence">0</field>
+    </record>
+
+    <record id="sign_item_type_test_stamp" model="sign.item.type">
+        <field name="name"></field>
+        <field name="sequence">0</field>
+        <field name="item_type">stamp</field>
+        <field name="placeholder">Company&#10;Address&#10;City&#10;Country&#10;VAT</field>
+        <field name="default_width" type="float">0.3</field>
+        <field name="default_height" type="float">0.1</field>
+        <field name="icon">fa-circle</field>
+    </record>
+</odoo>
