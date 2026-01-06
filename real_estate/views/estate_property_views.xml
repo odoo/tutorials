@@ -22,14 +22,16 @@
         <field name="arch" type="xml">
             <form string="properties">
                 <sheet>
-                    <group>
-                        <h1>
-                            <field name="name" />
-                        </h1>
-                    </group>
+                    <div class="oe-title">
+                        <group>
+                            <h1>
+                                <field name="name" placeholder="e.g Beach View House" />
+                            </h1>
+                        </group>
+                    </div>
                     <group>
                         <group>
-                            <field name="postcode" />
+                            <field name="postcode" placeholder="e.g 123456" />
                             <field name="date_availability" string="Available from" />
                         </group>
 
@@ -42,20 +44,54 @@
                     <notebook>
                         <page string="Description">
                             <group>
-                                <field name="description" string="Description" />
+                                <field name="description" string="Description"
+                                    placeholder="e.g Almost having all facilities" />
                                 <field name="bedrooms" />
                                 <field name="living_area" />
-                                <field name="facades" />
+                                <field name="facades"
+                                    help="Number of external walls (0-4). e.g A detached house has 4." />
                                 <field name="garage" />
                                 <field name="garden" />
-                                <field name="garden_area" />
-                                <field name="expected_price" />
-                                <field name="garden_orientation" />
+                                <field name="garden_area" help="e.g 100(sqm)" invisible="not garden" />
+                                <field name="garden_orientation" invisible="not garden" />
+                                <field name="state" />
+                                <field name="active" />
                             </group>
                         </page>
                     </notebook>
                 </sheet>
             </form>
+        </field>
+    </record>
+
+    <record id="estate_property_search_view" model="ir.ui.view">
+        <field name="name">estate_property_search</field>
+        <field name="model">estate.property</field>
+        <field name="arch" type="xml">
+            <search string="Properties">
+                <field name="name" string="Title" />
+                <field name="postcode" />
+                <field name="expected_price" />
+                <field name="bedrooms" />
+                <field name="living_area" string="Living Area(sqm)" />
+                <field name="facades" />
+
+                <filter name="available_properties" string="Available Properties"
+                    domain="['|',
+                        ('state', '=', 'new'),
+                        ('state', '=', 'offer_received')]" />
+                <filter name="luxury_properties" string="Luxury Properties"
+                    domain="[
+                    ('expected_price', '>=', 1000000),
+                    ('living_area', '>=', 200),
+                    ('bedrooms', '>=', 3),
+                    ('garden', '=', True)
+                    ]" />
+                <group>
+                    <filter name="group_by_postcode" string="Group By Postcode"
+                        context="{'group_by' : 'postcode'}" />
+                </group>
+            </search>
         </field>
     </record>
     <record id="action_estate_property" model="ir.actions.act_window">
