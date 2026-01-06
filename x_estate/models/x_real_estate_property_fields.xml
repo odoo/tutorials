@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="field_real_estate_property_name" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_name</field>
+        <field name="field_description">Name</field>
+        <field name="ttype">char</field>
+        <field name="required">True</field>
+    </record>
+
+    <record id="field_real_estate_property_date_availability" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_date_availability</field>
+        <field name="field_description">Date availability</field>
+        <field name="ttype">date</field>
+    </record>
+
+    <record id="field_real_estate_property_expected_price" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_expected_price</field>
+        <field name="field_description">Expected Price</field>
+        <field name="ttype">float</field>
+    </record>
+
+    <record id="field_real_estate_property_selling_price" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_selling_price</field>
+        <field name="field_description">Selling Price</field>
+        <field name="ttype">float</field>
+    </record>
+
+    <record id="field_real_estate_property_bedrooms" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_bedrooms</field>
+        <field name="field_description">Bedrooms</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="field_real_estate_property_living_area" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_living_area</field>
+        <field name="field_description">Living Area</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="field_real_estate_property_facades" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_facades</field>
+        <field name="field_description">Facades</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="field_real_estate_property_garage" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_garage</field>
+        <field name="field_description">Garage</field>
+        <field name="ttype">boolean</field>
+    </record>
+
+    <record id="field_real_estate_property_garden" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_garden</field>
+        <field name="field_description">Garden</field>
+        <field name="ttype">boolean</field>
+    </record>
+
+    <record id="field_real_estate_property_garden_area" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_garden_area</field>
+        <field name="field_description">Garden Area</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="field_real_estate_property_garden_orientation" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_garden_orientation</field>
+        <field name="field_description">Garden Orientation</field>
+        <field name="ttype">selection</field>
+        <field name="selection">[('x_north', "North"), ('x_south', "South"), ('x_east', "East"), ('x_west', "West")]</field>
+    </record>
+
+
+    <record id="field_real_estate_property_total_area" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model" />
+        <field name="name">x_total_area</field>
+        <field name="field_description">Total Area</field>
+        <field name="ttype">float</field>
+        <field name="depends">x_living_area,x_garden_area</field>
+        <field name="compute"><![CDATA[
+for property in self: property['x_total_area'] = property.x_living_area + property.x_garden_area
+        ]]></field>
+    </record>
+
+    <record id="field_real_estate_property_type_id" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model" />
+        <field name="name">x_property_type_id</field>
+        <field name="field_description">Property type</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">x_estate.property.type</field>
+        <field name="required">True</field>
+        <field name="on_delete">restrict</field>
+    </record>
+
+    <record id="field_real_estate_property_partner_id" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model" />
+        <field name="name">x_partner_id</field>
+        <field name="field_description">Buyer</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.partner</field>
+    </record>
+
+    <record id="field_real_estate_property_user_id" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model" />
+        <field name="name">x_user_id</field>
+        <field name="field_description">Salesperson</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.users</field>
+    </record>
+
+    <record id="field_real_estate_property_tag_ids" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model" />
+        <field name="name">x_property_tag_ids</field>
+        <field name="field_description">Tags</field>
+        <field name="ttype">many2many</field>
+        <field name="relation">x_estate.property.tag</field>
+    </record>
+
+    <record id="field_real_estate_property_offer_ids" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model" />
+        <field name="name">x_property_offer_ids</field>
+        <field name="field_description">Offers</field>
+        <field name="ttype">one2many</field>
+        <field name="relation">x_estate.property.offer</field>
+        <field name="relation_field">x_property_id</field>
+    </record>
+
+    <record id="field_real_estate_property_api_published" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="name">x_api_published</field>
+        <field name="field_description">API published</field>
+        <field name="ttype">boolean</field>
+        <field name="required">True</field>
+    </record>
+    
+    <record id="default_real_estate_property_api_published" model="ir.default">
+        <field name="field_id" ref="field_real_estate_property_api_published"/>
+        <field name="json_value">true</field>
+    </record>
+    
+    <!-- Actions -->
+
+    <record id="api_public_write_rule" model="ir.rule">
+        <field name="name">Public users can't write</field>
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="domain_force">[(0, '=', 1)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_public'))]"/>
+        <field name="perm_read" eval="False"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="api_public_write_rule" model="ir.rule">
+        <field name="name">Public users can read x_api_published properties</field>
+        <field name="model_id" ref="real_estate_property_model"/>
+        <field name="domain_force">[('x_api_published', '=', True)]</field>
+        <field name="groups" eval="[Command.link(ref('base.group_public'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="server_action_estate_list" model="ir.actions.server">
+        <field name="name">Estate List Controller</field>
+        <field name="model_id" ref="real_estate_property_model" />
+        <field name="website_published">True</field>
+        <field name="website_path">estate</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+data = []
+# only these fields because the others are 403
+FIELDS = {'x_name', 'x_expected_price', 'x_selling_price', 'x_bedrooms', 'x_living_area', 'x_facades', 'x_garage', 'x_garden', 'x_garden_area', 'x_garden_orientation', 'x_total_area'}
+for record in request.env['x_estate.property'].search([('x_api_published', '=', True)]):
+    data.append({field: value for field, value in record if field in FIELDS})
+response = request.make_json_response(data, headers=None, cookies=None, status=200)
+        ]]></field>
+    </record>
+</odoo>

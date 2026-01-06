@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="real_estate_property_type_model" model="ir.model">
+        <field name="name">Real Estate Property Type</field>
+        <field name="model">x_estate.property.type</field>
+    </record>
+
+    <!-- fields -->
+
+    <record id="field_real_estate_property_type_name" model="ir.model.fields">
+        <field name="model_id" ref="real_estate_property_type_model"/>
+        <field name="name">x_name</field>
+        <field name="field_description">Name</field>
+        <field name="ttype">char</field>
+        <field name="required">True</field>
+    </record>
+</odoo>
