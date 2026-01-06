@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="template" xml:space="preserve">
+	<t t-inherit="point_of_sale.CustomerDisplay" t-inherit-mode="extension">
+		<xpath expr="//div[hasclass('o_customer_display_main')]//div[@t-if='order.change']" position="after">
+			<div>
+				<t t-if="order.customerName">
+					<div class="row">
+						<div class="col text-end">Customer: </div>
+						<div class="col text-end">
+							<t t-esc="order.customerName"/>
+						</div>
+					</div>
+				</t>
+				<div class="row">
+					<t t-if="order.amountPerGuest">
+						<div class="message text-center">
+							<t t-esc="order.amountPerGuest" /> / Guest      
+						</div>
+					</t>
+				</div>
+			</div>
+		</xpath>
+	</t>
+</templates>
