@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" string="Title" />
+                <field name="property_type_id" />
                 <field name="postcode" />
                 <field name="bedrooms" />
                 <field name="living_area" string="Living Area (sqm)" />
@@ -21,6 +22,10 @@
         <field name="model">real_estate</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="estate_sold" type="object" string="Sold"/>
+                    <button name="estate_cancel" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name" placeholder="Name"/>
@@ -31,6 +36,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state" string="Status" readonly="1"/>
                             <field name="property_type_id" string="Property Type" />
                             <field name="postcode" />
                             <field name="date_availability" string="Available From" />

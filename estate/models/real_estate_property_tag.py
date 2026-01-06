@@ -6,3 +6,8 @@ class PropertyTag(models.Model):
     _description = "Property Tags"
 
     name = fields.Char(string="Name")
+
+    _name_unique = models.Constraint(
+        'UNIQUE(name)',
+        'The name must be unique'
+    )
