@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <menuitem id="estate_property_root" name="Test">
-        <menuitem id="test_first_level_menu" name="First Level">
+    <menuitem id="estate_property_root" name="Estate">
+        <menuitem id="estate_first_level_menu_first" name="Properties">
             <menuitem id="test_model_menu_action" action="estate_property_action"/>
         </menuitem>
-        <menuitem id="esate_setting" name="Setting">
+        <menuitem id="estate_first_level_menu_second" name="Setting">
             <menuitem id="esate_setting_menu" action="estate_property_type_action"/>
             <menuitem id="esate_setting_menu1" action="estate_property_tag_action"/>
         </menuitem>
