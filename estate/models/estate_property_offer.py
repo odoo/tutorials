@@ -1,6 +1,8 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
 
+from odoo.exceptions import UserError
+
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
@@ -8,7 +10,6 @@ class EstatePropertyOffer(models.Model):
 
     price = fields.Float("Price")
     status = fields.Selection(
-        string="Status",
         copy=False,
         selection=[('accepted', "Accepted"), ('refused', "Refused")],
     )
@@ -19,6 +20,12 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute='_compute_date_deadline', inverse='_inverse_deadline')
 
+    # SQL Constraint
+    _check_offer_price = models.Constraint(
+        'CHECK(price > 0)', "The selling price must be  positive")
+
+    # Compute Methods
+    # Depends Decorator
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for offer in self:
@@ -29,3 +36,21 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.validity = (offer.date_deadline - date).days
+
+    # Action Funcitons
+    def action_accept(self):
+        for record in self:
+            if record.property_id.state != 'offer_accepted':
+                record.status = 'accepted'
+                record.property_id.selling_price = record.price
+                record.property_id.buyer = self.partner_id
+                record.property_id.state = 'offer_accepted'
+            else:
+                raise UserError('One offer has already been accepted')
+
+    def action_refuse(self):
+        for record in self:
+            record.status = 'refused'
+            record.property_id.state = 'new'
+            record.property_id.selling_price = '0'
+            record.property_id.buyer = None

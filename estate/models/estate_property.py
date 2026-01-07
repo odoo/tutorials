@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
@@ -37,6 +38,7 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
+        string="Status",
         default="new",
     )
     property_type_id = fields.Many2one(
@@ -50,6 +52,21 @@ class EstateProperty(models.Model):
     total_area = fields.Float(compute='_compute_total')
     best_price = fields.Float("Best offer", compute='_compute_best_price')
 
+    # SQL Constraint
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)', "The expected price must be strictly positive")
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)', "The selling price must be  positive")
+
+    # Python Constriant
+    @api.constrains('selling_price', 'expected_price')
+    def _check_price(self):
+        if self.buyer and self.selling_price < (self.expected_price * 0.9):
+            raise ValidationError(
+                "The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
+
+    # Compute Methods
+    # Depends Decorator
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
         for record in self:
@@ -62,6 +79,7 @@ class EstateProperty(models.Model):
                 max(record.offer.mapped('price')) if record.offer else 0.0
             )
 
+    # Onchange Decorator
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -70,3 +88,14 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    # Action Methods
+    def action_sold(self):
+        if 'cancelled' in self.mapped('state'):
+            raise UserError("Cancelled properties cannot be sold.")
+        return self.write({'state': 'sold'})
+
+    def action_cancel(self):
+        if 'sold' in self.mapped('state'):
+            raise UserError("Sold properties cannot be cancelled.")
+        return self.write({'state': 'cancelled'})

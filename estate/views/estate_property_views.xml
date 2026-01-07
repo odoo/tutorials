@@ -2,7 +2,7 @@
 <odoo>
     <!-- LIST View-->
     <record id="estate_view_list" model="ir.ui.view">
-        <field name="name">estate_view_list</field>
+        <field name="name">estate.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list>
@@ -21,18 +21,23 @@
 
     <!-- FORM View-->
     <record id="estate_view_form" model="ir.ui.view">
-        <field name="name">estate_view_form</field>
+        <field name="name">estate.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button string="Sold" name="action_sold" type="object"/>
+                    <button string="Cancel" name="action_cancel" type="object"/>
+                    <!-- <button type="action" name="%(estate.estate_property_type_action)d" string="Property Types" icon="fa-magic"/> -->
+                </header>
                 <sheet>
                     <h1>
-                        <field name="name" />
+                        <field name="name"/>
                     </h1>
                     <group>
                         <group>
-                            <field name="tags" widget="many2many_tags"
-                                options="{'color_field': 'color'}" />
+                            <field name="tags" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                            <field name='state'/>
                             <field name="property_type_id"></field>
                             <field name="postcode"/>
                             <field name="date_availability"/>
@@ -76,7 +81,7 @@
 
     <!-- Search View -->
     <record id="estate_view_search" model="ir.ui.view">
-        <field name="name">estate_view_search</field>
+        <field name="name">estate.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
@@ -87,8 +92,7 @@
                 <field name="living_area"/>
                 <field name="facades"/>
                 <separator/>
-                <filter string="New / Offer Received" name="state"
-                    domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter string="New / Offer Received" name="state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
@@ -101,5 +105,6 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_state': 0}</field>
     </record>
-</odoo> 
+</odoo>
