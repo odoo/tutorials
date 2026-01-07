@@ -4,22 +4,30 @@
 	<t t-inherit="point_of_sale.CustomerDisplay" t-inherit-mode="extension">
 		<xpath expr="//div[hasclass('o_customer_display_main')]//div[@t-if='order.change']" position="after">
 			<div>
-				<t t-if="order.customerName">
-					<div class="row">
-						<div class="col text-end">Customer: </div>
+				<t t-if="order.partner_id">
+					<div class="row fs-2 fw-bolder">
+						<div class="col text-end">Customer </div>
 						<div class="col text-end">
-							<t t-esc="order.customerName"/>
+							<t t-esc="order.partner_id"/>
 						</div>
 					</div>
 				</t>
-				<div class="row">
+				<div class="row fs-2 fw-bolder">
 					<t t-if="order.amountPerGuest">
-						<div class="message text-center">
-							<t t-esc="order.amountPerGuest" /> / Guest      
+						<div class="message text-end">
+							<t t-esc="order.amountPerGuest.toFixed(2)" /> / Guest      
 						</div>
-					</t>
+					</t> 
 				</div>
 			</div>
 		</xpath>
+		<xpath expr="//div[hasclass('o_line_container')]" position="before">
+            <div>
+				<t t-if="order.is_refund">
+                	<p class="p-2 fw-bolder">Refund</p>
+					<seperator />
+            	</t>
+			</div>
+        </xpath>
 	</t>
 </templates>
