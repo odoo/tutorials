@@ -42,7 +42,7 @@ class PropertyOffer(models.Model):
                 record.validity = (record.date_deadline - fields.Date.today())
 
     def action_accepted(self):
-        accepect_records = self.property_id.offer_ids.filtered( lambda o: o.status == 'accepted')
+        accepect_records = self.property_id.offer_ids.filtered(lambda o: o.status == 'accepted')
         if accepect_records:
             raise UserError("Only one offer can be accepted.")
         self.status = "accepted"

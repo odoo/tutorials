@@ -80,16 +80,16 @@ class Property(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
-    
+
     @api.constrains('selling_price', 'expected_price')
     def _constraint_selling_price(self):
-        if  self.partner_id and self.selling_price < (self.expected_price * .9):
+        if self.partner_id and self.selling_price < (self.expected_price * .9):
             raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
-            
+
     def action_property_sold(self):
-         if self.state == 'cancelled':
+        if self.state == 'cancelled':
             raise UserError("Cancelled property cannot be sold.")
-         else:
+        else:
             self.state = "sold"
 
     def action_property_cancel(self):
