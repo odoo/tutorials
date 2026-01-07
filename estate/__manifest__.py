@@ -1,7 +1,7 @@
 {
     'name': "estate",
-    'author': 'pkhu',
-    'license': 'LGPL-3',
+    'author': "pkhu",
+    'license': "LGPL-3",
     'depends': ['base'],
     'application': True,
     'data': [

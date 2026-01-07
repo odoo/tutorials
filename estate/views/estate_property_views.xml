@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="estate_property_view_list" model="ir.ui.view">
-        <field name='name'>Properties list</field>
+        <field name='name'>estate.property.view.list</field>
         <field name='model'>estate.property</field>
         <field name="arch" type="xml">
             <list string="Channel" expand="1">
@@ -20,10 +20,14 @@
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name='name'>Properties</field>
+        <field name='name'>estate.property.view.form</field>
         <field name='model'>estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button name="action_property_sold" type="object" string="SOLD"/>
+                    <button name="action_property_cancel" type="object" string="CANCEL"/>
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -66,7 +70,7 @@
                                 <field name="total_area"/>
                             </group>
                         </page>
-                        <page string="Offers" >
+                        <page string="Offers">
                             <group>
                                 <field name="offer_ids" nolabel="1"/>
                             </group>
@@ -84,7 +88,7 @@
     </record>
 
     <record id='estate_property_view_search' model='ir.ui.view'>
-        <field name='name'>Properties Search</field>
+        <field name='name'>estate.property.view.search</field>
         <field name='model'>estate.property</field>
         <field name="arch" type="xml">
             <search string="Properties">

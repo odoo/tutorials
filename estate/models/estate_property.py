@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
 
 
 class Property(models.Model):
@@ -44,11 +45,20 @@ class Property(models.Model):
     )
     property_type_id = fields.Many2one('estate.property.type', string="Property Type")
     user_id = fields.Many2one('res.users', string="Salesperson")
-    partner_id = fields.Many2one('res.partner', string="Buyer")
+    partner_id = fields.Many2one('res.partner', string="Buyer", readonly=True)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Integer(compute='_compute_total_area', string="Total Area(sqm)")
     best_price = fields.Float(compute='_compute_best_price')
+
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        "The Expected price cannot be negative or zero."
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price > 0)',
+        "The Selling price cannot be negative."
+    )
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
@@ -66,7 +76,24 @@ class Property(models.Model):
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = 'north'
+            self.garden_orientation = "north"
         else:
             self.garden_area = None
             self.garden_orientation = None
+    
+    @api.constrains('selling_price', 'expected_price')
+    def _constraint_selling_price(self):
+        if  self.partner_id and self.selling_price < (self.expected_price * .9):
+            raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+            
+    def action_property_sold(self):
+         if self.state == 'cancelled':
+            raise UserError("Cancelled property cannot be sold.")
+         else:
+            self.state = "sold"
+
+    def action_property_cancel(self):
+        if self.state == 'sold':
+            raise UserError("Sold property cannot be Cancelled.")
+        else:
+            self.state = "cancelled"
