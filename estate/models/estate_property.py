@@ -1,5 +1,7 @@
-from odoo import api, fields, models
 from datetime import timedelta
+
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class Property(models.Model):
@@ -28,7 +30,7 @@ class Property(models.Model):
             ("south", "South"),
         ]
     )
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
             ("new", "New"),
@@ -41,11 +43,17 @@ class Property(models.Model):
         copy=False,
         required=True,
     )
+    status = fields.Selection(
+        selection=[("new", "New"), ("sold", "Sold"), ("cancelled", "Cancelled")],
+        default="new",
+        copy=False,
+    )
+
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
         "res.users", string="Salesman", default=lambda self: self.env.user
     )
-    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float(string="Total Area(sqm)", compute="_compute_total_area")
@@ -75,3 +83,18 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    def sold_button_action(self):
+        for record in self:
+            if record.status == "cancelled":
+                raise UserError("Cancelled Property cannot be sold.")
+            else:
+                record.state = "sold"
+                record.status = "sold"
+
+    def cancelled_button_action(self):
+        for record in self:
+            if record.status == "sold":
+                raise UserError("Sold Property cannot be Cancelled.")
+            record.state = "cancelled"
+            record.status = "cancelled"
