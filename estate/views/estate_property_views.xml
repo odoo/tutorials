@@ -24,6 +24,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property Form">
+                <header>
+                    <button name="action_cancel" type="object" string="Cancel" />
+                    <button name="action_sold" type="object" string="Sold" />
+                </header>
                 <sheet>
                     <group>
                         <group>
@@ -65,6 +69,8 @@
                                     <field name="validity" />
                                     <field name="date_deadline" />
                                     <field name="status" />
+                                    <button name="action_accept" type="object" title="accept offer" icon="fa-check"/>
+                                    <button name="action_refuse" type="object" title="refused offer" icon="fa-times"/>
                                 </list>
                             </field>
                         </page>
@@ -96,7 +102,6 @@
                 <separator />
                 <filter string="Available" name="active" domain="[('state', 'in', ['new','offer_received'])]" />
                 <filter string="postcode" name="postcode" context="{'group_by':'postcode'}" />
-
             </search>
         </field>
     </record>
