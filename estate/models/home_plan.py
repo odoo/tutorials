@@ -20,32 +20,32 @@ class homePlan(models.Model):
     bedrooms = fields.Integer("bedrooms", default=2)
     living_area = fields.Integer("Living area")
     facades = fields.Integer("facades")
-    Garage = fields.Boolean("Garage", default=True)
-    Garden = fields.Boolean("Garden")
-    Garden_area = fields.Integer("Garden area", default=0)
-    total_area = fields.Float("total area", compute="_compute_balance", store=True)
-    best_price = fields.Float("best price", compute="_compute_offer")
+    garage = fields.Boolean("Garage", default=True)
+    garden = fields.Boolean("Garden")
+    garden_area = fields.Integer("Garden area", default=0)
+    total_area = fields.Float("Total area", compute="_compute_area", store=True)
+    best_price = fields.Float("Best price", compute="_compute_offer")
     active = fields.Boolean("Active", default=True)
     property_type_id = fields.Many2one("estate.property.type")
-    Salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
-    Buyer = fields.Many2one("res.partner", copy=False)
+    salesman = fields.Many2one("res.users", default=lambda self: self.env.user)
+    buyer = fields.Many2one("res.partner", copy=False)
     property_tag_id = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
 
-    State = fields.Selection(
+    state = fields.Selection(
         [
-            ("New", "new"),
-            ("Offer Received", "offer received"),
-            ("Offer Accepted", "offer accepted"),
-            ("Sold", "sold"),
-            ("Cancelled", "cancelled"),
+            ("new", "New"),
+            ("offer_received", "Offer received"),
+            ("offer_accepted", "Offer accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
-        default="New",
+        default="new",
         copy=False,
     )
 
-    Garden_orientation_direction = fields.Selection(
-        [("North", "north"), ("East", "east"), ("West", "west"), ("South", "south")]
+    garden_orientation_direction = fields.Selection(
+        [("north", "North"), ("east", "East"), ("west", "West"), ("south", "South")]
     )
 
     _check_expected_price = models.Constraint(
@@ -55,40 +55,40 @@ class homePlan(models.Model):
         "CHECK(selling_price > 0)", "The expected price must be Strictly positive"
     )
 
-    @api.depends("living_area", "Garden_area")
-    def _compute_balance(self):
+    @api.depends("living_area", "garden_area")
+    def _compute_area(self):
         for line in self:
-            line.total_area = line.living_area + line.Garden_area
+            line.total_area = line.living_area + line.garden_area
 
     @api.depends("offer_ids")
     def _compute_offer(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
-    @api.onchange("Garden")
+    @api.onchange("garden")
     def _onchange_partner(self):
         for record in self:
-            if record.Garden:
-                record.Garden_area = 10
-                record.Garden_orientation_direction = "East"
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation_direction = "east"
 
             else:
-                record.Garden_area = 0
-                record.Garden_orientation_direction = False
+                record.garden_area = 0
+                record.garden_orientation_direction = False
 
     def action_sold(self):
         for record in self:
-            if record.State == "Cancelled":
+            if record.state == "cancelled":
                 raise UserError(message="You can't sold once you have cancelled")
             else:
-                record.State = "Sold"
+                record.state = "sold"
         return True
 
     def action_Cancel(self):
         for record in self:
-            if record.State == "Sold":
+            if record.state == "sold":
                 raise UserError(message="You can't Cancel once you have sold")
             else:
-                record.State = "Cancelled"
+                record.state = "cancelled"
 
         return True

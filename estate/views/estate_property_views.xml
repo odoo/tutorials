@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <odoo>
     <record id="test_model_action" model="ir.actions.act_window">
-        <field name="name">Test action</field>
+        <field name="name">Property</field>
         <field name="res_model">home.plan</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">property</field>
+        <field name="name">Property Type</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form</field>
     </record>
 
     <record id="estate_property_tag_action" model="ir.actions.act_window">
-        <field name="name">tag</field>
+        <field name="name">Property tag</field>
         <field name="res_model">estate.property.tag</field>
         <field name="view_mode">list,form</field>
     </record>
@@ -28,18 +28,17 @@
                 <field name='property_type_id'/>
                 <field name= "expected_price"/>
                 <field name= "bedrooms"/>
-                <field name= "State"/>
+                <field name= "state"/>
                 <field name= "last_seen"/>
             </list>
         </field>
     </record>
 
-
     <record id="estate_property_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">home.plan</field>
         <field name="arch" type="xml">
-            <form string="Test">
+            <form string="Property Form">
                 <header>
                     <button name="action_sold" type="object" string="Sold" />
                     <button name="action_Cancel" type="object" string="Cancel"/>
@@ -52,10 +51,10 @@
                     </group>
                     <group>
                         <group>
-                            <field name= "property_tag_id" widget="many2many_tags"/>
+                            <field name= 'property_tag_id' widget="many2many_tags"/>
                             <field name='property_type_id'/>
                             <field name='postcode'/>
-                            <field name = 'date_availability'/>
+                            <field name ='date_availability'/>
                         </group>
                         <group>
                             <field name='expected_price'/>
@@ -70,15 +69,15 @@
                                     <field name="description"/>
                                     <field name='bedrooms'/>
                                     <field name='facades'/>
-                                    <field name='Garage'/>
-                                    <field name='Garden'/>
-                                    <field name='Garden_area' />
-                                    <field name='Garden_orientation_direction' invisible= "not Garden"/>
+                                    <field name='garage'/>
+                                    <field name='garden'/>
+                                    <field name='garden_area' />
+                                    <field name='garden_orientation_direction' invisible= "not garden"/>
                                     <field name="living_area"/>
-                                    <field name='State'/>
-                                    <field name='Garden_area' invisible= "not Garden"/>
+                                    <field name='state'/>
+                                    <field name='garden_area' invisible= "not garden"/>
                                     <field name='total_area'/>
-                                    <field name='active' />
+                                    <field name='active'/>
                                 </group>
                             </group>
                         </page>
@@ -87,8 +86,8 @@
                                 <list>
                                     <field name='price'/>
                                     <field name='partner_id'/>
-                                    <field name = "validity"/>
-                                    <field name = "date_deadline"/>
+                                    <field name ="validity"/>
+                                    <field name ="date_deadline"/>
                                     <button name="action_confirm" title="confirm" type="object" icon="fa-check" invisible="status"/>
                                     <button name="action_cancel" title="cancel" type="object" icon="fa-times"/>
                                     <field name = "status"/>
@@ -98,8 +97,8 @@
                         <page string="Other Info">
                             <group>
                                 <group>
-                                    <field name='Salesman'/>
-                                    <field name='Buyer' />
+                                    <field name='salesman'/>
+                                    <field name='buyer' />
                                 </group>
                             </group>
                         </page>
@@ -118,11 +117,10 @@
                 <field name = 'name'/>
                 <field name="expected_price" />
                 <separator/>
-                <filter string="offer received" name="offer received" domain="[('State','in',['New','new', 'offer received', 'Offer Received'])]"/>
-                <filter string="location" name='active' context="{'group_by': 'postcode'}"/>
+                <filter string="offer received" name="offer received" domain="[('state','in',['new', 'offer_received'])]"/>
+                <filter string="location" name='location' context="{'group_by': 'postcode'}"/>
                 <separator/>
             </search>
         </field>
     </record>
-
 </odoo>

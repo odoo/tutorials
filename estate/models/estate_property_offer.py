@@ -1,17 +1,16 @@
-from typing import Required
 from odoo import fields, models, api
 from odoo.exceptions import UserError
 
 
-class estate_property_offer(models.Model):
+class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "this is property offer model"
 
-    price = fields.Float("price")
+    price = fields.Float("Price")
     status = fields.Selection(
-        [("Accepted", "Accepted"), ("Refused", "Refused")], copy=False
+        [("accepted", "Accepted"), ("refused", "Refused")], copy=False
     )
-    validity = fields.Integer("validity", default=7)
+    validity = fields.Integer("Validity", default=7)
     date_deadline = fields.Date(
         "date_deadline", compute="_compute_deadline", inverse="_inverse_deadline"
     )
@@ -35,17 +34,17 @@ class estate_property_offer(models.Model):
 
     def action_confirm(self):
         for record in self:
-            if record.property_id.State == "Offer Accepted":
+            if record.property_id.state == "offer_accepted":
                 raise UserError(message="You can't Accept multiple offer")
             else:
-                record.status = "Accepted"
-                record.property_id.Buyer = record.partner_id
+                record.status = "accepted"
+                record.property_id.buyer = record.partner_id
                 record.property_id.selling_price = record.price
-                record.property_id.State = "Offer Accepted"
+                record.property_id.state = "offer_accepted"
 
         return True
 
     def action_cancel(self):
         for record in self:
-            record.status = "Refused"
+            record.status = "refused"
         return True
