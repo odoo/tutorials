@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import models, fields, api
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -9,7 +10,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Text()
-    postcode = fields.Char()
+    postcode = fields.Integer()
     date_availability = fields.Date(
         default=lambda self: fields.Date.today() + relativedelta(months=3),
         copy=False
@@ -73,15 +74,14 @@ class EstateProperty(models.Model):
         string="Offers",
     )
     total_area = fields.Integer(compute="_compute_total_area", store=True)
+    best_price = fields.Float(compute="_compute_best_price", store=True)
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    best_price = fields.Float(compute="_compute_best_price", store=True)
-
-    @api.depends("offer_ids")
+    @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
             record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
@@ -93,4 +93,14 @@ class EstateProperty(models.Model):
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
-            self.garden_orientation = ""
+            self.garden_orientation = False
+
+    def action_cancelled(self):
+        if self.state == "sold":
+            raise UserError("Sold property can not be Cancelled")
+        self.state = "cancelled"
+
+    def action_sold(self):
+        if self.state == "cancelled":
+            raise UserError("Cancelled property can not be sold")
+        self.state = "sold"

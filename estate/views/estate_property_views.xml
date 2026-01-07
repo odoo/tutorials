@@ -28,6 +28,10 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form string="Properties">
+                    <header>
+                        <button name="action_sold" type="object" string="Sold"/>
+                        <button name="action_cancelled" type="object" string="Cancle"/>
+                    </header>
                     <sheet>
                         <h1>
                             <field name="name"></field>
@@ -35,6 +39,7 @@
                         <field name="tag_ids" widget="many2many_tags"/>
                         <group>
                             <group>
+                                <field name="state"/>
                                 <field name="property_type_id"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
@@ -66,7 +71,9 @@
                             </page>
                             <page string="other info">
                                 <group>
-                                    <field name="buyer_id"/>
+                                    <field name="buyer_id"
+                                           readonly="1"
+                                    />
                                     <field name="seller_id"/>
                                 </group>
                             </page>
@@ -77,6 +84,10 @@
                                         <field name="partner_id"/>
                                         <field name="validity"/>
                                         <field name="date_deadline"/>
+                                        <button name="action_confirm" states="draft" type="object"
+                                                icon="fa-check" title="accepted"/>
+                                        <button name="action_cancel" states="draft,open" type="object"
+                                                icon="fa-times" title="refused"/>
                                         <field name="status"/>
                                     </list>
                                 </field>
@@ -115,20 +126,17 @@
                     <filter
                             name="group_by_postcode"
                             string="Postcode"
-                            context="{'group_by': 'postcode'}"
-                    />
+                            context="{'group_by': 'postcode'}"/>
 
                     <filter
                             name="group_by_bedrooms"
                             string="Bedrooms"
-                            context="{'group_by': 'bedrooms'}"
-                    />
+                            context="{'group_by': 'bedrooms'}"/>
 
                     <filter
                             name="group_by_state"
                             string="State"
-                            context="{'group_by': 'state'}"
-                    />
+                            context="{'group_by': 'state'}"/>
                 </search>
             </field>
         </record>
