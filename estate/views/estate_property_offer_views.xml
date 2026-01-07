@@ -7,6 +7,8 @@
             <list>
                 <field name="price"/>
                 <field name="partner_id"/>
+                <field name="validity" string="Validity(days)"/>
+                <field name="date_deadline"/>
                 <field name="status"/>
             </list>
         </field>
@@ -16,12 +18,14 @@
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Create Offers">
                 <sheet>
                     <group>
                         <field name="price"/>
                         <field name="partner_id"/>
                         <field name="status"/>
+                        <field name="validity" string="Validity(days)"/>
+                        <field name="date_deadline"/>
                     </group>
                 </sheet>
             </form>
