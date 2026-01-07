@@ -2,6 +2,7 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -24,11 +25,12 @@ class EstateProperty(models.Model):
     last_seen = fields.Datetime(default=fields.Datetime.now)
     garden_area = fields.Integer("Garden Area (sqm)")
     active = fields.Boolean(default=True)
-    partner_id = fields.Many2one('res.partner', string="Salesperson")
-    buyer_id = fields.Many2one('res.users')
+    partner_id = fields.Many2one('res.users', string="Salesperson")
+    buyer_id = fields.Many2one('res.partner')
     property_type_id = fields.Many2one('estate.property.type')
     property_tag_id = fields.Many2many('estate.property.tags')
     offers_id = fields.One2many('estate.property.offer', 'property_id')
+    color = fields.Integer('Color Index')
     garden_orientation = fields.Selection(
         selection=[
             ('east', "East"),
@@ -52,6 +54,15 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute='_compute_total_area')
     best_price = fields.Integer(compute='_compute_best_price')
 
+    # SQL CONSTRAINT
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)', "Expected Price must be positiv"
+    )
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)', "Selling Price must be positive"
+    )
+
+    # DEPENDS DECORATOR
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         self.total_area = (self.living_area or 0) + (self.garden_area or 0)
@@ -63,6 +74,7 @@ class EstateProperty(models.Model):
                 max(record.offers_id.mapped('price')) if record.offers_id else 0.0
             )
 
+    # ONCHANGE DECORATOR
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -71,3 +83,29 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    @api.onchange('state')
+    def _change_state(self):
+        if self.state in ('new', 'offer_received', 'cancelled'):
+            self.selling_price = 0
+
+    # CONSTRAIN DECORATOR    
+    @api.constrains('selling_price', 'expected_price')
+    def _constrain_selling_price(self):
+        if self.selling_price < self.expected_price * 0.90 and self.buyer_id:
+            raise UserError(
+                "Selling price cannot be lower then the 90% percent of the expected price"
+            )
+
+    # BUTTON ACTION - SOLD/CANCEL
+    def action_sold(self):
+        if self.state == 'cancelled':
+            raise UserError("Cancelled Property can not be sold !")
+        else:
+            self.state = 'sold'
+
+    def action_cancel(self):
+        if self.state == 'sold':
+            raise UserError("Sold Property can not be cancel !")
+        else:
+            self.state = 'cancelled'
