@@ -1,7 +1,8 @@
-from datetime import date, timedelta
+from datetime import timedelta
 
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_is_zero, float_compare
 
 
 class real_estate(models.Model):
@@ -14,7 +15,7 @@ class real_estate(models.Model):
     street_address = fields.Char()
     description = fields.Text()
     postcode = fields.Integer()
-    date_availability = fields.Datetime(default=date.today() + timedelta(days=90))
+    date_availability = fields.Datetime(default=lambda self: fields.Datetime.now() + timedelta(days=90))
     expected_price = fields.Float()
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -55,6 +56,23 @@ class real_estate(models.Model):
         string='Buyer',
         copy=False)
     selling_price = fields.Float()
+    _check_expected_price_positive = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.',
+    )
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_selling_price(self):
+        for rec in self:
+            if float_is_zero(rec.selling_price, precision_rounding=0.01):
+                continue
+            if float_compare(
+                    rec.selling_price,
+                    rec.expected_price * 0.9,
+                    precision_rounding=0.01) < 0:
+                raise ValidationError(
+                    'The selling price cannot be lower than 90% of the expected price.'
+                )
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -77,7 +95,7 @@ class real_estate(models.Model):
             self.garden_orientation = False
 
     @api.ondelete(at_uninstall=False)
-    def _unlink_if_garden_orientation(self):
+    def _unlink_if_accepted_offer(self):
         for record in self:
             for offer in record.offer_ids:
                 if offer.status == 'accepted':

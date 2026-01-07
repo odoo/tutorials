@@ -19,6 +19,19 @@
                     <group>
                         <field name="name"/>
                     </group>
+                    <notebook>
+                        <page string="Property Details">
+                            <group>
+                                <field name="property_ids">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <field name="expected_price"/>
+                                        <field name="stage"/>
+                                    </list>
+                                </field>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

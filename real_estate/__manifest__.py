@@ -5,7 +5,7 @@
     'author': "Ruchita Gothi (Rugot)",
     'category': 'Uncategorized',
     'version': '0.1',
-    'depends': ['base'],
+    'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
         'views/real_estate_properties_offer_views.xml',
