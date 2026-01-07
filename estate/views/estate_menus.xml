@@ -1,32 +1,35 @@
 <odoo>
     <data>
         <menuitem
-            id="estate_property_menu_root"
+            id="estate_property_menu"
             name="Estate Property"/>
         <menuitem
-            id="estate_property_advertisements"
+            id="estate_property_menu_advertisements"
             name="Advertisements"
-            parent="estate_property_menu_root"
-            sequence="1"/>
+            parent="estate_property_menu"
+            sequence="5"/>
         <menuitem
-            id="estate_property_properties"
+            id="estate_property_menu_properties"
             name="Properties"
-            parent="estate_property_advertisements"
-            action="estate_property_action"/>
+            parent="estate_property_menu_advertisements"
+            action="estate_property_action"
+            sequence="5"/>
         <menuitem
-            id="estate_property_settings"
+            id="estate_property_menu_settings"
             name="Settings"
-            parent="estate_property_menu_root"
-            sequence="2"/>
+            parent="estate_property_menu"
+            sequence="10"/>
         <menuitem
-            id="estate_property_types"
+            id="estate_property_menu_types"
             name="Property Types"
-            parent="estate_property_settings"
-            action="estate_property_type_action"/>
+            parent="estate_property_menu_settings"
+            action="estate_property_type_action"
+            sequence="5"/>
         <menuitem
-            id="estate_property_tags"
+            id="estate_property_menu_tags"
             name="Property Tags"
-            parent="estate_property_settings"
-            action="estate_property_tag_action"/> 
+            parent="estate_property_menu_settings"
+            action="estate_property_tag_action"
+            sequence="10"/>
     </data>
 </odoo>

@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -21,6 +22,11 @@ class EstatePropertyOffer(models.Model):
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_date_deadline", inverse="_inverse_date_deadline", store=True)
 
+    _check_offer_price = models.Constraint(
+        "check(price > 0)",
+        "Offer price must be positive",
+    )
+
     @api.depends("validity")
     def _compute_date_deadline(self):
         for record in self:
@@ -31,3 +37,22 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             create = record.create_date or fields.Date.today()
             record.validity = (record.date_deadline - fields.Date.today(create)).days
+
+    def action_accept_offer(self):
+        for offer in self:
+            if offer.property_id.customer:
+                raise UserError(_("Only one offer can be accepted."))
+            offer.property_id.customer = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = "sold"
+            offer.status = "accepted"
+            other_offer = offer.property_id.offer_ids.filtered(
+                lambda s: s.id != offer.id
+            )
+            other_offer.status = "refused"
+
+    def action_refuse_offer(self):
+        for offer in self:
+            offer.status = "refused"
+
+        return True

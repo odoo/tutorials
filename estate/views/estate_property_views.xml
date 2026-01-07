@@ -6,7 +6,7 @@
         <field name="view_mode">list,form</field>
     </record>
 
-    <record id="estate_property_list" model="ir.ui.view">
+    <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
@@ -17,11 +17,6 @@
                 <field name="tag_ids" widget="many2many_tags"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
-                <field name="expected_price"/>
-                <field name="selling_price"/>
-                <field name="garden_area"/>
-                <field name="garden_orientation"/>
-                <field name="state"/>
                 <field name="date_availability"/>
             </list>
         </field>
@@ -32,13 +27,23 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
+                <header>
+                    <button
+                        string="sold"
+                        name="action_sold"
+                        type="object"/>
+                    <button
+                        string="Cancel"
+                        name="action_cancel"
+                        type="object"/> 
+                </header>
                 <sheet>
                     <div>
                         <h1>
-                            <field name="name"/>
+                            <field name="name" placeholder="Name"/>
                         </h1>
                         <h3>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" placeholder="Tag"/>
                         </h3>
                     </div>
                     <group>
@@ -71,11 +76,6 @@
                     </page>
                     <page string="Offers">
                         <field name="offer_ids">
-                            <list>
-                                <field name="price"/>
-                                <field name="partner_id"/>
-                                <field name="status"/>
-                            </list>
                         </field>
                     </page>
                     <page string="Other Info">
@@ -90,7 +90,7 @@
         </field>
     </record>
 
-    <record id="estate_property_search_view" model="ir.ui.view">
+    <record id="estate_property_view_search" model="ir.ui.view">
         <field name="name">estate.property.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">

@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -45,22 +46,32 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean()
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    customer = fields.Many2one("res.partner", string="Customer", copy=False)
+    customer = fields.Many2one(
+        "res.partner", string="Customer", copy=False, readonly=True
+    )
     salesperson = fields.Many2one(
-        "res.users", string="Salesperson", default=lambda self: self.env.user
+        "res.users",
+        string="Salesperson",
+        readonly=True,
+        default=lambda self: self.env.user,
     )
     tag_ids = fields.Many2many("estate.property.tag", string="Tag type")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
-    total_area = fields.Integer(compute="_compute_total")
-    best_price = fields.Float(compute="_compute_maximum")
+    total_area = fields.Integer(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
+
+    _check_expected_price = models.Constraint(
+        "check(expected_price > 0)",
+        "The Expected Price must be positive",
+    )
 
     @api.depends("living_area", "garden_area")
-    def _compute_total(self):
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
     @api.depends("offer_ids.price")
-    def _compute_maximum(self):
+    def _compute_best_price(self):
         for record in self:
             prices = record.offer_ids.mapped("price")
             record.best_price = max(prices) if prices else 0.0
@@ -73,3 +84,17 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def action_cancel(self):
+        if self.filtered(lambda record: record.state == "sold"):
+            raise UserError(
+                _("You cannot cancel the property offer that already sold.")
+            )
+        self.write({"state": "cancelled"})
+
+    def action_sold(self):
+        if self.filtered(lambda record: record.state == "cancelled"):
+            raise UserError(
+                _("You cannot Sold the property offer that already Cancelled")
+            )
+        self.write({"state": "sold"})
