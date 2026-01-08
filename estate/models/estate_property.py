@@ -24,7 +24,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer(string="Garden Area (sqm)")
     garden_orientation = fields.Selection(
-        [("North", "north"), ("South", "south"), ("East", "east"), ("West", "west")]
+        [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
 
     property_type_id = fields.Many2one("estate_property_type")
@@ -38,13 +38,13 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
-            ("New", "new"),
-            ("Offer Received", "Offer Received"),
-            ("Offer Accepted", "Offer Accepted"),
-            ("Sold", "sold"),
-            ("Cancelled", "cancelled"),
+            ("new", "New"),
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"),
+            ("cancelled", "Cancelled"),
         ],
-        default="New",
+        default="new",
         copy=False,
     )
 
@@ -67,30 +67,31 @@ class EstateProperty(models.Model):
     def _onchange_gaden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = "North"
+            self.garden_orientation = "north"
         else:
             self.garden_area = 0
             self.garden_orientation = False
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        if (
+        if (           
             self.selling_price
             and (float_compare(self.selling_price, (0.9 * self.expected_price), 2))
             == -1
         ):
+             
             raise ValidationError(
                 "The selling price is must greater than 90% of expected price"
             )
 
     def action_set_sold(self):
-        if self.state == "Cancelled":
+        if self.state == "cancelled":
             raise UserError(message="The cancelled property cant be sold")
-        self.state = "Sold"
+        self.state = "sold"
         return True
 
     def action_set_cancelled(self):
-        if self.state == "Sold":
+        if self.state == "sold":
             raise UserError(message="Sold property can not be cancelled")
-        self.state = "Cancelled"
+        self.state = "cancelled"
         return True
