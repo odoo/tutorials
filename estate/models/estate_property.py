@@ -1,12 +1,20 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class Property(models.Model):
     _name = "estate.property"
     _description = "estate property details"
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price >= 0)",
+        "The expected price should be strictly positive",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "The selling price should be strictly positive",
+    )
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -83,6 +91,13 @@ class Property(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_price(self):
+        if self.selling_price < (self.expected_price * 0.9):
+            raise ValidationError(
+                "The selling price must be at least 90% of the expected price"
+            )
 
     def sold_button_action(self):
         for record in self:

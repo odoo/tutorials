@@ -7,6 +7,9 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _check_offer_price = models.Constraint(
+        "CHECK(price>=0)", "Offer Price must be strictly positive"
+    )
 
     price = fields.Float()
     status = fields.Selection(
