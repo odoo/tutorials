@@ -1,0 +1,17 @@
+<odoo>
+    <data>      
+        <record id="action_add_remove_inventory_wizard" model="ir.actions.act_window">
+            <field name="name">Add/Remove Inventory</field>
+            <field name="res_model">inventory.import.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+      
+        <menuitem id="menuitem_add_remove_inventory"
+                  name="Add/Remove Inventory"
+                  parent="stock.menu_stock_adjustments"
+                  action="action_add_remove_inventory_wizard"
+                  sequence="5"/>
+                        
+    </data>
+</odoo>
