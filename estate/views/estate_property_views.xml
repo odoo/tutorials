@@ -6,14 +6,11 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" />
-                <field name="property_type_id" />
                 <field name="postcode" />
                 <field name="expected_price" />
                 <field name="selling_price" />
                 <field name="bedrooms" />
                 <field name="living_area" />
-                <field name="garden" />
-                <field name="garage" />
                 <field name="date_availability" />
             </list>
         </field>

@@ -1,5 +1,7 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import api, exceptions, fields, models
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -48,6 +50,16 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
 
+    _expected_price_positive = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.',
+    )
+
+    _selling_price_positive = models.Constraint(
+        'CHECK(selling_price > 0)',
+        'The selling price must be positive.',
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -81,3 +93,16 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Sold properties cannot be cancelled.")
             record.state = 'cancelled'
         return True
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            
+            min_selling_price = record.expected_price * 0.9
+            
+            if float_compare(record.selling_price, min_selling_price, precision_digits=2) < 0:
+                raise exceptions.ValidationError(
+                    f"Minimum selling price: {min_selling_price:.2f}"
+                )
