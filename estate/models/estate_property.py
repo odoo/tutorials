@@ -1,7 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError, RedirectWarning
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -76,6 +77,20 @@ class EstateProperty(models.Model):
     total_area = fields.Integer(compute="_compute_total_area", store=True)
     best_price = fields.Float(compute="_compute_best_price", store=True)
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'Expected price must be positive!',
+    )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_selling_price = record.expected_price * 0.9
+            if float_compare(record.selling_price, min_selling_price, precision_digits=2) < 0:
+                raise ValidationError("The selling price must be at least 90% of the expected price.")
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -96,8 +111,11 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_cancelled(self):
-        if self.state == "sold":
-            raise UserError("Sold property can not be Cancelled")
+        for record in self:
+            if record.state == "sold":
+                raise RedirectWarning("A sold property cannot be cancelled",
+                                      self.env.ref('estate.estate_property_offer_action').id,
+                                      "go to offer page!")
         self.state = "cancelled"
 
     def action_sold(self):
