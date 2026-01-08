@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="portal_my_home_custom" name="Projects / Tasks" inherit_id="project.portal_my_home" priority="50">
+        <xpath expr="//div[@id='portal_service_category']/t[1]" position="attributes">
+            <attribute name="t-if">request.env.user.has_group('portal_user_access_control.projects')</attribute>
+        </xpath>
+        <xpath expr="//div[@id='portal_service_category']/t[2]" position="attributes">
+            <attribute name="t-if">request.env.user.has_group('portal_user_access_control.tasks')</attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_sale_custome" name="Quotations / Sales Orders" inherit_id="sale.portal_my_home_sale" priority="50">
+        <xpath expr="//div[@id='portal_alert_category']" position="attributes">
+            <attribute name="t-if">request.env.user.has_group('portal_user_access_control.quotetion')</attribute>
+        </xpath>
+        <xpath expr="//div[@id='portal_client_category']/t[1]" position="attributes">
+            <attribute name="t-if">request.env.user.has_group('portal_user_access_control.sales_order_group')</attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_invoice_custome" name="Invoices / Bills" inherit_id="account.portal_my_home_invoice" priority="50">
+        <xpath expr="//div[@id='portal_client_category']/t[last()]" position="attributes">
+            <attribute name="t-if">request.env.user.has_group('portal_user_access_control.invoices')</attribute>
+        </xpath>
+        <xpath expr="//div[@id='portal_vendor_category']/t[last()]" position="attributes">
+            <attribute name="t-if">request.env.user.has_group('portal_user_access_control.invoices')</attribute>
+        </xpath>
+    </template>
+
+    <template id="portal_my_home_purchase_custome" name="Requests for Quotation / Purchase Orders" inherit_id="purchase.portal_my_home_purchase" priority="50">
+        <xpath expr="//div[@id='portal_vendor_category']/t[1]" position="attributes">
+            <attribute name="t-if">request.env.user.has_group('portal_user_access_control.rfq')</attribute>
+        </xpath>
+        <xpath expr="//div[@id='portal_vendor_category']/t[2]" position="attributes">
+            <attribute name="t-if">request.env.user.has_group('portal_user_access_control.purchase_order')</attribute>
+        </xpath>
+    </template>
+</odoo>
