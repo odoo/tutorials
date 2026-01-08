@@ -1,4 +1,5 @@
 from dateutil.relativedelta import relativedelta
+
 from odoo import fields, models
 
 
@@ -25,16 +26,15 @@ class EstateProperty(models.Model):
     garden = fields.Boolean()
     garden_area = fields.Integer()
     garden_orientation = fields.Selection(
-        string='Garden Orientation',
         selection=[
             ('north', 'North'),
             ('south', 'South'),
             ('east', 'East'),
             ('west', 'West'),
-            ],
+        ],
         help='Garden facing direction',
     )
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         string='States',
         selection=[
@@ -42,9 +42,16 @@ class EstateProperty(models.Model):
             ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
-            ('cancelled', 'Cancelled')
+            ('cancelled', 'Cancelled'),
         ],
         required=True,
         copy=False,
         default='new',
     )
+    property_type_id = fields.Many2one("estate.property.type")
+    buyer_id = fields.Many2one("res.partner", copy=False)
+    salesperson_id = fields.Many2one(
+        "res.users", string="Sales Person", default=lambda self: self.env.user
+    )
+    tag_ids = fields.Many2many("estate.property.tag")
+    offer_ids = fields.One2many("estate.property.offer", "property_id")
