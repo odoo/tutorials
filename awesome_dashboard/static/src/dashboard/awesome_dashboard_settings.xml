@@ -1,0 +1,13 @@
+<!-- <record id="view_dashboard_settings_form" model="ir.ui.view">
+    <field name="name">awesome.dashboard.settings.form</field>
+    <field name="model">awesome.dashboard.settings</field>
+    <field name="arch" type="xml">
+        <form string="Dashboard Settings">
+            <sheet>
+                <group>
+                    
+                </group>
+            </sheet>
+        </form>
+    </field>
+</record> -->

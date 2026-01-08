@@ -1,0 +1,32 @@
+<odoo>
+    <data >
+        <record id="warranty_product_1_yr" model="product.template">
+            <field name="name">Extended Warranty 1 Yr</field>   
+        </record>
+        <record id="warranty_product_2_yr" model="product.template">
+            <field name="name">Extended Warranty 2 Yr</field>   
+        </record>
+        <record id="warranty_product_3_yr" model="product.template">
+            <field name="name">Extended Warranty 3 Yr</field>
+        </record>
+
+        <record id="warranty_1_year" model="warranty.configuration">
+            <field name="name">1 Yr</field>
+            <field name="product_id" ref="warranty_product_1_yr"/>
+            <field name="percentage">10</field>
+            <field name="warranty_period">1</field>
+        </record>
+        <record id="warranty_2_year" model="warranty.configuration">
+            <field name="name">2 Yr</field>
+            <field name="product_id" ref="warranty_product_2_yr"/>
+            <field name="percentage">15</field>
+            <field name="warranty_period">2</field>
+        </record>
+        <record id="warranty_3_year" model="warranty.configuration">
+            <field name="name">3 Yr</field>
+            <field name="product_id" ref="warranty_product_3_yr"/>
+            <field name="percentage">20</field>
+            <field name="warranty_period">3</field>
+        </record>
+    </data>
+</odoo>
