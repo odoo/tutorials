@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="appointment_info_inherited" inherit_id="appointment.appointment_info">
+        <xpath expr="//div[@t-if='not based_on_users and appointment_type.resource_manage_capacity']" position="attributes">
+            <attribute name="t-if">appointment_type.resource_capacity != 'one_booking' and appointment_type.resource_capacity != 'multi_booking' </attribute>
+        </xpath>
+    </template>
+
+    <!-- This is template we can a show a people tag icon in the details page -->
+    <template id="appointment_meeting_details_inherited" inherit_id="appointment.appointment_meeting_details">
+        <xpath expr="//div[@t-if='appointment_type.resource_manage_capacity and isDetails']" position="attributes">
+            <attribute name="t-if">appointment_type.resource_capacity != 'one_booking'</attribute>
+        </xpath>
+    </template>  
+</odoo>
