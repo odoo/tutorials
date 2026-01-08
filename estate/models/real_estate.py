@@ -8,6 +8,7 @@ from odoo.tools import float_compare
 class RealEstate(models.Model):
     _name = "real_estate"
     _description = "Real Estate"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -78,7 +79,7 @@ class RealEstate(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    def estate_sold(self):
+    def action_sold(self):
         for record in self:
             if record.state != "cancelled":
                 record.state = "sold"
@@ -86,7 +87,7 @@ class RealEstate(models.Model):
                 raise UserError("Cancelled Property can not be sold")
             return True
 
-    def estate_cancel(self):
+    def action_cancel(self):
         for record in self:
             if record.state != "sold":
                 record.state = "cancelled"

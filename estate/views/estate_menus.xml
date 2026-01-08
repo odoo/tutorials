@@ -2,8 +2,8 @@
 <odoo>
     <menuitem id="estate" name="Estate"/>
     <menuitem id="estate_advertisement" name="Advertisement" parent="estate"/>
-    <menuitem id="estate_advertisement_properties" name="Properties" parent="estate_advertisement" action="test_record"/>
+    <menuitem id="estate_advertisement_properties" name="Properties" parent="estate_advertisement" action="real_estate"/>
     <menuitem id="estate_settings" name="Settings" parent="estate"/>
     <menuitem id="estate_settings_property_type" name="Property Type" parent="estate_settings" action="estate_property_type"/>
-    <menuitem id="estate_settings_property_tags" name="Property Tags" parent="estate_settings" action="estate_property_tags"/>
+    <menuitem id="estate_settings_property_tag" name="Property Tags" parent="estate_settings" action="estate_property_tag"/>
 </odoo>

@@ -3,9 +3,11 @@ from dateutil.relativedelta import relativedelta
 from odoo import api, fields, models
 from odoo.exceptions import UserError
 
+
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offers"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
