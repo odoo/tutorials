@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_vendor_home" name="vendor_portal.home" inherit_id="website.template_header_default">
+        <xpath expr="//t[@t-call='website.navbar_nav']" position="inside">
+            <t t-if="request.env.user.has_group('website_vendor.group_vendor_portal_user')">
+                <a class="nav-item nav-link" href="/vendor_portal">Vendor Portal</a>
+            </t>
+        </xpath>
+    </template>
+</odoo>

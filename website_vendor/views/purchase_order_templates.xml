@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="website_vendor_purchase_order_view" name="Purchase Order Vendor">
+        <t t-call="website.layout">
+            <div class="container py-5">
+                <div class="text-center">
+                    <h2 class="text-success fw-bold">
+                        <i class="fa fa-check-circle"></i> Purchase Order Created!
+                    </h2>
+                    <p class="text-muted">Your order has been successfully placed.</p>
+                </div>
+
+                <div class="card shadow-lg mx-auto mt-4 p-4"
+                     style="max-width: 500px; border-radius: 15px;">
+                    <div class="card-body text-center">
+                        <h4 class="card-title text-primary fw-bold">
+                            <i class="fa fa-box"></i>
+                            <t t-out="product_id.name"/>
+                        </h4>
+
+                        <hr class="my-3"/>
+
+                        <p class="mb-2 text-dark">
+                            <i class="fa fa-user"></i>
+                            <strong>Vendor:</strong>
+                            <span class="text-muted">
+                                <t t-out="vendor_id.name" />
+                            </span>
+                        </p>
+
+                        <p class="mb-3 text-dark">
+                            <i class="fa fa-shopping-cart"></i>
+                            <strong>Quantity:</strong>
+                            <span class="badge bg-info text-dark">
+                                <t t-out="quantity" />
+                            </span>
+                        </p>
+
+                        <div class="d-flex justify-content-center mt-4">
+                            <a href="/" class="btn btn-primary me-2">
+                                <i class="fa fa-home"></i> Back to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+</odoo>
