@@ -1,0 +1,54 @@
+<odoo>
+    <record id="view_partner_form" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.vendor.status</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='vat']" position="after">
+                <field name="vendor_status_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_partner_form_inherit_vendor_categories" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.vendor.categories</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='internal_notes']" position="after">
+                <page name="product_categories" string="Product Categories">
+                    <group>
+                        <field name="vendor_product_category_ids" widget="many2many_tags"/>
+                    </group>
+                </page>
+                <page string="Compliance">
+                    <group>
+                        <group>
+                            <field name="sedex_registered"/>
+                        </group>
+                        <group>
+                            <field name="sedex_no" invisible="sedex_registered not in ['yes']"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="ethical_audit"/>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="gfsi_certified"/>
+                        </group>
+                        <group>
+                            <field name="gfsi_scheme_id" invisible="gfsi_certified not in ['yes']"/>
+                            <field name="gfsi_grade_id" invisible="gfsi_certified not in ['yes']"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="fsc_certified"/>
+                        <field name="pefc_certified"/>
+                        <field name="certification_id" widget="many2many_tags"/>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

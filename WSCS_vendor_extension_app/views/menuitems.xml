@@ -1,0 +1,7 @@
+<odoo>
+    <menuitem id="menu_vendor_status_action" action="action_vendor_status" name="Vendor Status" parent="purchase.menu_product_in_config_purchase"/>
+    <menuitem id="menu_incoterms_action" action="account.action_incoterms_tree" name="Incoterms" parent="purchase.menu_product_in_config_purchase"/>
+    <menuitem id="menu_gfsi_scheme_action" action="action_gfsi_scheme" name="GFSI Scheme" parent="purchase.menu_product_in_config_purchase"/>
+    <menuitem id="menu_gfsi_grade_action" action="action_gfsi_grade" name="GFSI Grade" parent="purchase.menu_product_in_config_purchase"/>
+    <menuitem id="menu_gfsi_certification_action" action="action_gfsi_certificate" name="Certification" parent="purchase.menu_product_in_config_purchase"/>
+</odoo>

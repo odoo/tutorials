@@ -1,0 +1,81 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Prospective -->
+        <record id="vendor_status_prospective" model="vendor.status">
+            <field name="name">Prospective</field>
+            <field name="sequence">1</field>
+            <field name="description">Suppliers who have been identified but not yet evaluated or approved</field>
+            <field name="status_change_type">any_user</field>
+            <field name="prevent_po_creation">yes</field>
+        </record>
+
+        <!-- Evaluation -->
+        <record id="vendor_status_evaluation" model="vendor.status">
+            <field name="name">Evaluation</field>
+            <field name="sequence">2</field>
+            <field name="description">Suppliers undergoing evaluation and verification</field>
+            <field name="status_change_type">certain_users</field>
+            <field name="status_change_user_ids" eval="[(6, 0, [ref('base.user_demo'), ref('base.user_admin')])]"/>
+            <field name="prevent_po_creation">yes</field>
+        </record>
+
+        <!-- Rejected -->
+        <record id="vendor_status_rejected" model="vendor.status">
+            <field name="name">Rejected</field>
+            <field name="sequence">2</field>
+            <field name="description">Suppliers who have undergone the verification process but do not meet our criteria at the present time</field>
+            <field name="status_change_type">certain_users</field>
+            <field name="status_change_user_ids" eval="[(6, 0, [ref('base.user_demo'), ref('base.user_admin')])]"/>
+            <field name="prevent_po_creation">yes</field>
+        </record>
+
+        <!-- Verified - Grade 2 -->
+        <record id="vendor_status_verified_g2" model="vendor.status">
+            <field name="name">Verified - Grade 2</field>
+            <field name="sequence">3</field>
+            <field name="description">Suppliers who are approved for immediate supply but having missing certifications</field>
+            <field name="status_change_type">certain_users</field>
+            <field name="status_change_user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+            <field name="prevent_po_creation">no</field>
+        </record>
+
+        <!-- Verified - Grade 1 -->
+        <record id="vendor_status_verified_g1" model="vendor.status">
+            <field name="name">Verified - Grade 1</field>
+            <field name="sequence">3</field>
+            <field name="description">Suppliers who are approved for immediate supply</field>
+            <field name="status_change_type">certain_users</field>
+            <field name="status_change_user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+            <field name="prevent_po_creation">no</field>
+        </record>
+
+        <!-- Active -->
+        <record id="vendor_status_active" model="vendor.status">
+            <field name="name">Active</field>
+            <field name="sequence">4</field>
+            <field name="description">Suppliers currently in use and regularly supplying goods</field>
+            <field name="status_change_type">automatic</field>
+            <field name="prevent_po_creation">no</field>
+        </record>
+
+        <!-- Active - On Hold -->
+        <record id="vendor_status_active_hold" model="vendor.status">
+            <field name="name">Active - On Hold</field>
+            <field name="sequence">4</field>
+            <field name="description">Suppliers temporarily on hold due to pending issues or temporary pauses in business relationships.</field>
+            <field name="status_change_type">certain_users</field>
+            <field name="status_change_user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+            <field name="prevent_po_creation">alert</field>
+        </record>
+
+        <!-- Disqualified -->
+        <record id="vendor_status_disqualified" model="vendor.status">
+            <field name="name">Disqualified</field>
+            <field name="sequence">5</field>
+            <field name="description">Suppliers who have been permanently disqualified from providing goods or services due to serious issues or non-compliance.</field>
+            <field name="status_change_type">certain_users</field>
+            <field name="status_change_user_ids" eval="[(6, 0, [ref('base.user_admin')])]"/>
+            <field name="prevent_po_creation">yes</field>
+        </record>
+    </data>
+</odoo>
