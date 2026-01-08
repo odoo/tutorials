@@ -1,0 +1,52 @@
+.o_image_comparison_container {
+    --slider-position: 50%;
+
+    img {
+        grid-area: 1 / 1;
+        width: 100%;
+        height: 100%;
+
+        &.o_image_after {
+            clip-path: rect(0 100% 100% var(--slider-position));
+
+            .o_rtl & {
+                clip-path: rect(0 calc(100% - var(--slider-position)) 100% 0);
+            }
+        }
+    }
+
+    .o_image_comparison_slider {
+        inset: 0;
+        margin-inline: -2px;
+        appearance: none;
+        background-color: transparent;
+        cursor: ew-resize;
+        z-index: 1;
+
+        &::-webkit-slider-thumb {
+            appearance: none;
+            height: 100vh;
+            width: 4px;
+            border: 0;
+            background-color: #fff;
+        }
+        &::-moz-range-thumb {
+            appearance: none;
+            height: 100vh;
+            width: 4px;
+            border: 0;
+            background-color: #fff;
+        }
+
+        &:focus-visible + .o_image_comparison_handle {
+            box-shadow: 0 0 0 3px var(--o-color-1), 0 0 0 6px #fff;
+        }
+    }
+
+    .o_image_comparison_handle {
+        left: var(--slider-position);
+        width: 2rem;
+        aspect-ratio: 1;
+        background-color: #fff;
+    }
+}

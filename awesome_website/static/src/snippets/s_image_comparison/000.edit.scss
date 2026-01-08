@@ -1,0 +1,9 @@
+.o_image_comparison_container {
+    .o_image_comparison_slider {
+        clip-path: rect(0 calc(var(--slider-position) + 1%) 100% var(--slider-position));
+
+        .o_rtl & {
+            clip-path: rect(0 calc(100% - var(--slider-position)) 100% calc(100% - var(--slider-position) - 1%));
+        }
+    }
+}

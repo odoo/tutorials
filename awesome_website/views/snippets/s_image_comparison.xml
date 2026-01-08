@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="s_image_comparison" name="Image Comparison">
+    <!-- Your snippet here -->
+</template>
+
+</odoo>
