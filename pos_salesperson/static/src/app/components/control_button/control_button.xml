@@ -1,0 +1,7 @@
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_salesperson.SalesPersonButton" t-inherit="point_of_sale.ControlButtons" t-inherit-mode="extension">
+        <xpath expr="//OrderlineNoteButton" position="after">
+                <SalespersonButton/>
+        </xpath>
+    </t>
+</templates>
