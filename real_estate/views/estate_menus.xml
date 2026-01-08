@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem id="estate_menu_root" name="Estate" />
+
+    <!-- Submenu: Advertisements-->
+    <menuitem id="estate_menu_properties" name="Application" parent="estate_menu_root" />
+    <menuitem id="estate_menu_property_action" name="Properties" action="estate_property_action"
+        parent="estate_menu_properties" />
+
+    <!-- Submenu: Settings -->
+    <menuitem id="estate_menu_settings" name="Settings" parent="estate_menu_root" sequence="100"
+        groups="estate_group_manager" />
+    <menuitem id="estate_menu_property_type" name="Property Types"
+        action="estate_property_type_action" parent="estate_menu_settings" />
+    <menuitem id="estate_menu_property_tag" name="Property Tags"
+        parent="estate_menu_settings" action="estate_property_tag_action" />
+</odoo>
