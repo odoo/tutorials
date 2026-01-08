@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="mrp_production_inherit_view_form" model="ir.ui.view">
+        <field name="name">mrp.production.inherit.view.form</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='components']/field/list/field[@name='location_id']" position="after">
+                <field name="modular_type_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
