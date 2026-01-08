@@ -1,0 +1,33 @@
+{
+    "name": "estate",
+    "version": "0.1",
+    "description": """
+  The Estate Module manages real estate properties, buyers, sellers, and offers efficiently.
+    """,
+    "depends": ["mail", "website"],
+    "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "wizard/add_offer_wizard_views.xml",
+        "views/estate_property_view.xml",
+        "views/estate_property_offer_view.xml",
+        "views/estate_property_type_view.xml",
+        "views/estate_property_tags_view.xml",
+        "views/estate_menus.xml",
+        "views/res_users_view.xml",
+        "data/estate.property.type.csv",
+        "demo/estate_property_demo.xml",
+        "demo/estate_property_offer_demo.xml",
+        "data/estate_property_menu.xml",
+        "views/estate_property_templates.xml",
+        "views/property_details.xml",
+        "report/estate_property_reports.xml",
+        "report/estate_property_offer_templates.xml",
+        "report/estate_property_templates.xml",
+        "report/estate_property_user_reports.xml",
+        "report/estate_property_user_templates.xml",
+    ],
+    "category": "Real Estate/Brokerage",
+    "application": True,
+    "license": "AGPL-3",
+}

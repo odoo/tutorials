@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{ controlPanel:{} }" className="'o_dashboard'">
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="openCustomers" type="button" class="btn btn-primary">Customers</button>
+                <button t-on-click="openLeads" type="button" class="btn btn-secondary">Leads</button>
+                <button t-on-click="openSettings" type="button" class="btn btn-light">
+                <i class="fa fa-cog"></i>
+                </button>
+            </t>
+
+            <div>Welcome to the Awesome Dashboard!</div>
+            <div><t t-esc="_t('Welcome to the Awesome Dashboard!')"/></div>
+
+            <t t-log="_t('Welcome to the Awesome Dashboard!')"/>
+
+            <div class="dashboard-content d-flex gap-3">
+             <t t-foreach="this.state.items" t-as="entry" t-key="entry[0]">
+             <t t-if="!this.state.hiddenItems.has(entry[0])"> <!-- here we are check with {entry[0], list} ,, entry[0] in toggle , so items is and entry[0] should be equal -->
+                    <t t-set="itemO" t-value="entry[1]" />
+                    <t t-set="item" t-value="{...itemO}"/>
+                    <t t-log="entry[0]"/>
+
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(this.state.res) : {'data': this.state.res}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+                </t>
+            </div>
+        </Layout>
+    </t>
+</templates>
