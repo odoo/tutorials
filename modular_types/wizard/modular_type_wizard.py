@@ -1,5 +1,4 @@
-from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo import api, exceptions, fields, models
 
 
 class ModularTypeWizard(models.TransientModel):
@@ -28,7 +27,7 @@ class ModularTypeWizard(models.TransientModel):
     def add_modular_value(self):
         active_order_line_id = self.env.context.get('active_order_line_id')
         if not self.product_id:
-            raise UserError("Sales order line not found.")
+            raise exceptions.UserError("Sales order line not found.")
         for line in self.wizard_line_ids:
             existing = self.env['sale.order.line.modular.value'].search([
                 ('order_line_id', '=', active_order_line_id),

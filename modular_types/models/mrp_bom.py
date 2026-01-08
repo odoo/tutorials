@@ -5,7 +5,6 @@ class MrpBomLine(models.Model):
     _inherit = 'mrp.bom.line'
 
     modular_type_id = fields.Many2one('modular.type', domain="[('id', 'in', available_modular_type_ids)]")
-
     available_modular_type_ids = fields.Many2many('modular.type', compute='_compute_available_modular_type_ids')
 
     @api.depends('product_id')
