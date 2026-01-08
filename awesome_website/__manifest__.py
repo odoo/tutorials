@@ -26,6 +26,9 @@
         'data/images.xml',
     ],
     'assets': {
+        'web.assets_frontend': [
+            'awesome_website/static/src/interactions/**/*',
+        ],
     },
     'license': 'AGPL-3'
 }
