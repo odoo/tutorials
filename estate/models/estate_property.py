@@ -1,12 +1,14 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "This is the table of real estate property data"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -86,10 +88,9 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     def action_cancel(self):
-        if self.filtered(lambda record: record.state == "sold"):
-            raise UserError(
-                _("You cannot cancel the property offer that already sold.")
-            )
+        for record in self:
+            if record.state == 'sold':
+                raise UserError(_("You cannot cannoy cancel the property that already cancelled"))
         self.write({"state": "cancelled"})
 
     def action_sold(self):
@@ -97,4 +98,24 @@ class EstateProperty(models.Model):
             raise UserError(
                 _("You cannot Sold the property offer that already Cancelled")
             )
+        if not self.customer:
+            raise UserError(
+                _("You can not sold the property that has no customer")
+            ) 
         self.write({"state": "sold"})
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+
+            min_price = record.expected_price * 0.9
+            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
+                raise ValidationError(_("The Selling price cannot be lower than 90% of the expected price."))
+
+    @api.constrains("offer_ids")
+    def _check_offer_vaild(self):
+        for record in self:
+            if record.state == "sold":
+                UserError(_("already offer is accept"))

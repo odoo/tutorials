@@ -13,7 +13,9 @@
             <form>
                 <sheet>
                     <group>
-                        <h1><field name="name" placeholder="Add Tag"/></h1>
+                        <h1>
+                            <field name="name" placeholder="Add Tag"/>
+                        </h1>
                     </group>
                 </sheet>
             </form>
@@ -24,7 +26,7 @@
         <field name="name">estate.property.tag.view.list</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom">
                 <field name="name" string="Tags"/>
             </list>
         </field>

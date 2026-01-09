@@ -27,7 +27,7 @@
         <field name="name">estate_property_offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
@@ -35,12 +35,14 @@
                     name="action_accept_offer"
                     type="object"
                     string="Accpet"
-                    icon="fa-check"/>
+                    icon="fa-check"
+                    invisible="status in ('accepted', 'refused')"/>
                 <button
                     name="action_refuse_offer"
                     type="object"
                     string="refuse"
-                    icon="fa-close"/>
+                    icon="fa-close"
+                    invisible="status in ('accepted', 'refused')"/>
                 <field name="date_deadline"/>
                 <field name="status"/>
             </list>
