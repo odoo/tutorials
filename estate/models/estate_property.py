@@ -4,20 +4,21 @@ from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
-    _name = "estate_property"
+    _name = "estate.property"
     _description = "Storing Properties of Real Estate"
+    _order = "id desc"
 
-    name = fields.Char(string="name", required=True)
-    description = fields.Text(string="description")
-    postcode = fields.Char("postcode")
+    name = fields.Char(required=True)
+    description = fields.Text()
+    postcode = fields.Char()
     date_availability = fields.Date(
-        string="date availability",
+        string="",
         default=fields.Date.add(fields.Date.today(), months=3),
         copy=False,
     )
-    expected_price = fields.Float(string="expected price", required=True)
-    selling_price = fields.Float(string="selling price", copy=False)
-    bedrooms = fields.Integer(string="Bedrooms", default=2)
+    expected_price = fields.Float(required=True)
+    selling_price = fields.Float(copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string="Living Area (sqm)")
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -27,11 +28,11 @@ class EstateProperty(models.Model):
         [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
 
-    property_type_id = fields.Many2one("estate_property_type")
-    property_tag_ids = fields.Many2many("estate_property_tag")
+    property_type_id = fields.Many2one("estate.property.type")
+    property_tag_ids = fields.Many2many("estate.property.tag")
     salesman_id = fields.Many2one("res.users", default=lambda self: self.env.user)
     buyer_id = fields.Many2one("res.partner", copy=False)
-    offer_property_ids = fields.One2many("estate_property_offer", "property_id")
+    offer_property_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float("Total Area(sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Price", compute="_compute_best_price")
 
@@ -59,7 +60,7 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         self.total_area = self.garden_area + self.living_area
 
-    @api.depends("offer_property_ids")
+    @api.depends("offer_property_ids.price")
     def _compute_best_price(self):
         self.best_price = max(self.offer_property_ids.mapped("price"), default=0.0)
 
@@ -74,12 +75,11 @@ class EstateProperty(models.Model):
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
-        if (           
+        if (
             self.selling_price
             and (float_compare(self.selling_price, (0.9 * self.expected_price), 2))
             == -1
         ):
-             
             raise ValidationError(
                 "The selling price is must greater than 90% of expected price"
             )
