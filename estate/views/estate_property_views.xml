@@ -27,7 +27,13 @@
             <field name="name">estate.property.form</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <form string="Estate_Property">
+            <form string="Estate_Property">
+
+            <header>
+                <button name="action_sold" type="object" string="Sold"  title="Accept Property" class="btn-primary"/>
+                <button name="action_cancel" type="object" string="Cancel" title="Cancel Property" class="btn-secondary"/>
+                <field name="state" widget="statusbar"/>   
+            </header>
                     <sheet>
                         <div>
                             <h1>
@@ -74,6 +80,8 @@
                                         <field name="validity"/>
                                         <field name="date_deadline" string="Deadline"/>
                                         <field name="status" />
+                                        <button name="action_accept" type="object" icon="fa-check" title="accepted"/>
+                                        <button name="action_refuse" type="object" icon="fa-times" title="refused"/>
                                     </list>
                                 </field>
                             </page>
