@@ -7,8 +7,8 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Estate Property Offer"
-
     _order = "price desc"
+
     price = fields.Float()
     status = fields.Selection(
         selection=[('accepted', "Accepted"), ('refused', "Refused")], copy=False
@@ -22,7 +22,8 @@ class EstatePropertyOffer(models.Model):
     _offer_price_check = models.Constraint(
         'CHECK(price >= 0)', "Offer price should be strictly positive"
     )
-
+    property_type_id = fields.Many2one(
+        related='property_id.property_type_id', store=True)
     check_button = fields.Char(store=False)
 
     # DEPENDS DECORATOR
@@ -56,7 +57,6 @@ class EstatePropertyOffer(models.Model):
             ])
 
     # BUTTON ACTION - OFFER
-
     def action_accept(self):
         for offer in self:
             if offer.property_id.buyer_id:
@@ -75,6 +75,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = None
             record.property_id.state = 'offer_received'
 
+    # OFFER ADDED - STATE CHANGE TO OFFER_RECEIVED
     def create(self, vals):
         offer = super().create(vals)
         if offer.property_id and offer.property_id.state == 'new':

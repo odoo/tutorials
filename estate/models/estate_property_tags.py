@@ -9,7 +9,9 @@ class EstatePropertyTags(models.Model):
 
     _order = "name"
     name = fields.Char("Property Tags", required=True)
-    color = fields.Integer('Color Index', default=lambda self: random.randint(1, 11))
+    color = fields.Integer(
+        'Color Index', default=lambda self: random.randint(1, 11)
+    )
 
     # SQL CONSTRAINT
     _property_tag_uniq = models.Constraint(

@@ -10,27 +10,39 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Channel" editable="bottom">
-                 <field name="sequence" widget="handle"/>
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>
         </field>
     </record>
 
+    <!-- form view -->
     <record id="estate_property_type_view_form" model="ir.ui.view">
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="">
+                <header>
+                </header>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" name="%(estate_property_offers_action)d" icon="fa-money">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count" string="Offers" widget="statinfo"/>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
                     <notebook>
                         <page name="property" string="Properties">
                             <field name="property_ids">
-                             <list>
-                                <field name="name" string="Title"/>
-                                <field name="expected_price"/>
-                                <field name="state"/>
-                             </list>
-                             </field>
+                                <list>
+                                    <field name="name" string="Title"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>
