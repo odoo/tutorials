@@ -2,12 +2,12 @@
     <record id="estate_property_tags_action" model="ir.actions.act_window">
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tags</field>
-        <field name="context">{'search_default_name': 1}</field>
+        <field name="context">{'search_default_name':1} </field>
     </record>
 
     <!-- listview -->
     <record id="estate_property_tags_view_list" model="ir.ui.view">
-        <field name="name">estate.property.tags.list</field>
+        <field name="name">estate.property.tags.view.list</field>
         <field name="model">estate.property.tags</field>
         <field name="arch" type="xml">
             <list string="Channel">
@@ -18,8 +18,8 @@
     </record>
 
     <!-- formview -->
-  <record id="estate_property_tags_view_form" model="ir.ui.view">
-        <field name="name">estate.property.tags.form</field>
+    <record id="estate_property_tags_view_form" model="ir.ui.view">
+        <field name="name">estate.property.tags.view.form</field>
         <field name="model">estate.property.tags</field>
         <field name="arch" type="xml">
             <form>
@@ -35,7 +35,7 @@
 
     <!-- searchview -->
     <record id="estate_property_tags_view_search" model="ir.ui.view">
-        <field name="name">estate.property.tags.search</field>
+        <field name="name">estate.property.tags.view.search</field>
         <field name="model">estate.property.tags</field>
         <field name="arch" type="xml">
             <search>

@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate Property"
 
+    _order = "id desc"
     name = fields.Char(default="Unknown", required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -28,7 +29,7 @@ class EstateProperty(models.Model):
     partner_id = fields.Many2one('res.users', string="Salesperson")
     buyer_id = fields.Many2one('res.partner')
     property_type_id = fields.Many2one('estate.property.type')
-    property_tag_id = fields.Many2many('estate.property.tags')
+    property_tag_ids = fields.Many2many('estate.property.tags')
     offers_id = fields.One2many('estate.property.offer', 'property_id')
     color = fields.Integer('Color Index')
     garden_orientation = fields.Selection(
@@ -49,10 +50,11 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
+
         help="This field tells us the state of the property."
     )
     total_area = fields.Integer(compute='_compute_total_area')
-    best_price = fields.Integer(compute='_compute_best_price')
+    best_price = fields.Integer(compute='_compute_best_price', store=True)
 
     # SQL CONSTRAINT
     _check_expected_price = models.Constraint(
@@ -67,11 +69,12 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         self.total_area = (self.living_area or 0) + (self.garden_area or 0)
 
-    @api.depends('offers_id')
+    @api.depends('offers_id.price')
     def _compute_best_price(self):
         for record in self:
             record.best_price = (
-                max(record.offers_id.mapped('price')) if record.offers_id else 0.0
+                max(record.offers_id.mapped('price')
+                    ) if record.offers_id else 0.0
             )
 
     # ONCHANGE DECORATOR
@@ -84,12 +87,7 @@ class EstateProperty(models.Model):
             self.garden_area = None
             self.garden_orientation = None
 
-    @api.onchange('state')
-    def _change_state(self):
-        if self.state in ('new', 'offer_received', 'cancelled'):
-            self.selling_price = 0
-
-    # CONSTRAIN DECORATOR    
+    # CONSTRAIN DECORATOR
     @api.constrains('selling_price', 'expected_price')
     def _constrain_selling_price(self):
         if self.selling_price < self.expected_price * 0.90 and self.buyer_id:

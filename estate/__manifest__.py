@@ -3,7 +3,7 @@
     'author': "Kunj Koradiya",
     'description': "This is the description",
     'license': "LGPL-3",
-    'depends': [],
+    'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',

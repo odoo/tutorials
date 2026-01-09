@@ -8,6 +8,7 @@ class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = "Estate Property Offer"
 
+    _order = "price desc"
     price = fields.Float()
     status = fields.Selection(
         selection=[('accepted', "Accepted"), ('refused', "Refused")], copy=False
@@ -16,42 +17,67 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
-        "Deadline", compute='_compute_validity', inverse='_inverse_validity'
+        "Deadline", compute='_compute_deadline', inverse='_inverse_deadline'
     )
     _offer_price_check = models.Constraint(
         'CHECK(price >= 0)', "Offer price should be strictly positive"
     )
 
+    check_button = fields.Char(store=False)
+
     # DEPENDS DECORATOR
     @api.depends('validity', 'create_date')
-    def _compute_validity(self):
+    def _compute_deadline(self):
         for record in self:
             start_date = (
                 record.create_date.date() if record.create_date else fields.Date.today()
             )
-            record.date_deadline = start_date + relativedelta(days=record.validity)
+            record.date_deadline = start_date + \
+                relativedelta(days=record.validity)
 
-    def _inverse_validity(self):
+    def _inverse_deadline(self):
         for record in self:
             start_date = (
                 record.create_date.date() if record.create_date else fields.Date.today()
             )
             record.validity = (record.date_deadline - start_date).days
 
+    @api.depends("property_id.offers_id")
+    def _compute_offer(self):
+        #     for record in self:
+        #         if record.property_id.buyer_id and record.property_id.buyer_id != record.partner_id:
+        #             record.check_button = True
+        #         else:
+        #             record.check_button = False
+
+        for record in self.property_id.offers_id:
+            record.check_button = self.property_id.offers_id.filtered_domain([
+                ('status', 'in', ('accepted', 'refused'))
+            ])
+
     # BUTTON ACTION - OFFER
+
     def action_accept(self):
-        for record in self:
-            if record.property_id.state != 'offer_accepted' and record.property_id.state not in ('cancelled', 'sold'):
-                record.status = 'accepted'
-                record.property_id.buyer_id = self.partner_id
-                record.property_id.selling_price = record.price
-                record.property_id.state = 'offer_accepted'
-            else:
-                raise UserError(f"One offer has already been ({record.property_id.state})")
+        for offer in self:
+            if offer.property_id.buyer_id:
+                raise UserError(
+                    "An offer has already been accepted for this property.")
+
+            offer.status = 'accepted'
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = 'offer_accepted'
 
     def action_refuse(self):
         for record in self:
             record.status = 'refused'
-            record.property_id.state = 'new'
             record.property_id.buyer_id = None
             record.property_id.selling_price = None
+            record.property_id.state = 'offer_received'
+
+    def create(self, vals):
+        offer = super().create(vals)
+        if offer.property_id and offer.property_id.state == 'new':
+            offer.property_id.state = 'offer_received'
+
+        return offer

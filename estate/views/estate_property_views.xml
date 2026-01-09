@@ -6,7 +6,7 @@
 
     <!-- listview -->
     <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Channel">
@@ -14,6 +14,7 @@
                 <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="date_availability"/>
+                <field name="best_price"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="state"/>
@@ -24,26 +25,27 @@
 
     <!-- formview -->
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_sold" type="object" string="Sold" />
-                    <button name="action_cancel" type="object" string="Cancel" />
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state in ['sold', 'cancelled']"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state in ['sold', 'cancelled']"/>
                 </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
                     </h1>
                     <group>
-                        <field name="property_tag_id" widget="many2many_tags" string="Property Tag" options="{'color_field' : 'color'}"/>
+                        <field name="property_tag_ids" widget="many2many_tags" string="Property Tag" options="{'color_field' : 'color'}"/>
                     </group>
                     <separator/>
                     <group>
                         <group>
                             <field name="state" string="Status"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': True, 'no_edit': True}"/>
                             <field name="date_availability"/>
                             <field name="postcode"/>
                         </group>
@@ -63,8 +65,8 @@
                                     <field name="facades"/>
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_area"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_area" invisible="not garden"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
                                 </group>
                                 <group>
                                     <field name="total_area"/>
@@ -90,7 +92,7 @@
 
     <!-- search view -->
     <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
@@ -103,6 +105,7 @@
                 <field name="garage"/>
                 <filter string="Garage" name="garage" domain="[('garage', '=', True)]"/>
                 <filter string="Archived" name="active" domain="[('active', '=', False)]"/>
+                <filter string="Best Price" name="hei" domain="[('best_price', '>' , 1000)]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>
