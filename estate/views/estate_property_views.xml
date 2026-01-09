@@ -5,20 +5,23 @@
         <field name="name">properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': True}</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-success="state in ['offer_received','offer_accepted']" decoration-bf="state=='offer_accepted'" decoration-muted="state=='sold'">
                 <field name="name"/>
+                <field name="property_type"/>
                 <field name="postcode"/>
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -30,7 +33,7 @@
             <form string="properties">
                 <header>
                     <button name='action_property_sold' type="object" string='sold' invisible="state=='sold' or state=='cancelled'"/>
-                    <button name='action_property_cancel' type='object' string='cancel' invisible="state=='sold' or state=='cancelled'"/>
+                    <button name='action_property_cancel' type='object' string='cancel' invisible="state in ['sold', 'cancelled']"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
@@ -43,7 +46,7 @@
                         <group>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="state"/>
-                            <field name="property_type" options="{'no_create': true}"/>
+                            <field name="property_type" options="{'no_create_edit': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -63,14 +66,13 @@
                                 <field name="garage"/>
                                 <field name="garden"/>
                                 <field name="garden_area" invisible="not garden"/>
-                                <field name="garden_orientation"/>
-                                <field name="best_price"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" nolabel="1"/>
+                                <field name="offer_ids" nolabel="1" readonly="state in ['sold', 'cancelled', 'offer_accepted']"/>
                             </group>
                         </page>
                         <page string="Other Info">
@@ -90,11 +92,11 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="property">
-                <field name="name" string="property" />
+                <field name="name" string="property"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
                 <field name="facades"/>
                 <field name="total_area" filter_domain="[('total_area','>=',self)]"/>
                 <field name="property_type"/>
@@ -103,7 +105,6 @@
                 <filter string="property type" name="property_type" domain="[('property_type', '=', 'house')]"/>
                 <filter string="Available" name="active" domain="[('state', 'in', ['new', 'offer_accepted'])]"/>
                 <filter string="postcode" name="postcode" context="{'group_by': 'postcode'}"/>
-                <filter name="best_price" string="Best Price" domain="[('best_price', '=', '100000')]"/>
             </search>
         </field>
     </record>

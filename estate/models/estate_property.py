@@ -36,7 +36,6 @@ class EstateProperty(models.Model):
         copy=False,
     )
     garden_orientation = fields.Selection(
-        string="Type",
         selection=[
             ('north', "North"),
             ('south', "South"),
@@ -52,7 +51,7 @@ class EstateProperty(models.Model):
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Float(compute='_compute_total_area', store=True)
-    best_price = fields.Float(compute='_compute_best_price', store=True)
+    best_price = fields.Float(compute='_compute_best_price')
     _chek_expected_price = models.Constraint(
         "CHECK(expected_price > 0)", "Expected price of property should be positive"
     )
