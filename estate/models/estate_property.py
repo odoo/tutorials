@@ -2,11 +2,13 @@ from datetime import timedelta
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Property(models.Model):
     _name = 'estate.property'
     _description = 'estate property details'
+    _order = 'id desc'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -30,7 +32,7 @@ class Property(models.Model):
             ('south', "South"),
         ]
     )
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
             ('new', "New"),
@@ -43,13 +45,16 @@ class Property(models.Model):
         copy=False,
         required=True,
     )
-    property_type_id = fields.Many2one('estate.property.type', string="Property Type")
+    property_type_id = fields.Many2one(
+        'estate.property.type', string="Property Type")
     user_id = fields.Many2one('res.users', string="Salesperson")
     partner_id = fields.Many2one('res.partner', string="Buyer", readonly=True)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
-    offer_ids = fields.One2many('estate.property.offer', 'property_id')
-    total_area = fields.Integer(compute='_compute_total_area', string="Total Area(sqm)")
-    best_price = fields.Float(compute='_compute_best_price')
+    offer_ids = fields.One2many(
+        'estate.property.offer', 'property_id')
+    total_area = fields.Integer(
+        compute='_compute_total_area', string="Total Area(sqm)")
+    best_price = fields.Float(compute='_compute_best_price', store=True)
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -83,8 +88,11 @@ class Property(models.Model):
 
     @api.constrains('selling_price', 'expected_price')
     def _constraint_selling_price(self):
-        if self.partner_id and self.selling_price < (self.expected_price * .9):
-            raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+        if float_is_zero(self.selling_price, precision_rounding=0.01):
+            return
+        if float_compare(self.selling_price, self.expected_price * 0.9, precision_rounding=0.01) < 0:
+            raise ValidationError(
+                "Selling price cannot be lower than 90% of the expected price.")
 
     def action_property_sold(self):
         if self.state == 'cancelled':
