@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="home_page_template" inherit_id="website.homepage">
+        <xpath expr="//div[@id='wrap']" position="inside">
+            <section class="s_text_block pt40 pb40 o_colored_level "
+                data-snippet="s_text_block">
+                <div class="container s_allow_columns">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-7 mt-4 mt-lg-0">
+                            <section class="s_website_form" data-vcss="001"
+                                data-snippet="s_website_form">
+                                <div class="container">
+                                    <form id="signup_form" action="web/signup/" method="post"
+                                        enctype="multipart/form-data" data-model_name="res.users"
+                                        data-pre-fill="true" data-success-mode="redirect"
+                                        data-success-page="/my">
+                                        <div
+                                            class="s_website_form_rows row s_col_no_bgcolor d-flex flex-column align-items-center">
+                                            <div
+                                                class="col-5 s_website_form_field s_website_form_required s_website_form_model_required text-start"
+                                                data-type="char" data-name="Field">
+                                                <label class="s_website_form_label"
+                                                    for="signup1">
+                                                    <span class="s_website_form_label_content">Your
+                                                        Email</span>
+                                                </label>
+                                                <input id="signup1" type="email"
+                                                    class="form-control s_website_form_input"
+                                                    name="login" required=""
+                                                    data-fill-with="email" />
+                                            </div>
+                                            <div
+                                                class="py-2 col-5 s_website_form_field s_website_form_custom s_website_form_required text-start"
+                                                data-type="char" data-name="Field">
+                                                <label class="s_website_form_label text-start"
+                                                    for="signup2">
+                                                    <span class="s_website_form_label_content">Your
+                                                        Name</span>
+                                                </label>
+                                                <input id="signup2" type="text"
+                                                    class="form-control s_website_form_input"
+                                                    name="name" required="" data-fill-with="name" />
+                                            </div>
+                                            <div
+                                                class="py-2 col-5 s_website_form_field s_website_form_required s_website_form_model_required text-start"
+                                                data-type="char" data-name="Field">
+                                                <label class="s_website_form_label"
+                                                    style="width: 200px" for="signup3">
+                                                    <span class="s_website_form_label_content">
+                                                        Password</span>
+                                                </label>
+                                                <input id="signup3" type="password"
+                                                    class="form-control s_website_form_input"
+                                                    name="password" required="" />
+                                            </div>
+                                            <div
+                                                class="py-2 col-5 s_website_form_field s_website_form_required s_website_form_model_required text-start"
+                                                data-type="char" data-name="Field">
+                                                <label class="s_website_form_label"
+                                                    style="width: 200px" for="signup4">
+                                                    <span class="s_website_form_label_content">Confirm
+                                                        Password</span>
+                                                </label>
+                                                <input id="signup4" type="password"
+                                                    class="form-control s_website_form_input"
+                                                    name="confirm_password" required="" />
+                                            </div>
+                                            <div class="py-2 col-5">
+                                                <span id="s_website_form_result" />
+                                            </div>
+                                            <div
+                                                class="py-2 col-5 d-grid pt-3 mx-auto s_website_form_submit s_website_form_no_submit_label text-center"
+                                                data-name="Submit Button">
+                                                <a href="#" role="button"
+                                                    class="btn btn-primary s_website_form_send">
+                                                    Sign Up</a>
+                                                <a href="/web/login?{{ keep_query() }}"
+                                                    class="btn btn-link btn-sm" role="button">
+                                                    Already have an account?
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <center>
+                <div class="col-2 o_login_auth text-center" style="margin-top: -30px;">
+                    <t t-if="providers and len(providers) > 0">
+                        <t t-call="auth_oauth.providers" />
+                    </t>
+                </div>
+            </center>
+        </xpath>
+    </template>
+</odoo>
