@@ -1,11 +1,12 @@
 from dateutil.relativedelta import relativedelta
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo import fields, models, api
 
 
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
+    _order = 'price desc'
 
     price = fields.Float(string="Price")
     status = fields.Selection(
@@ -66,3 +67,9 @@ class EstatePropertyOffer(models.Model):
         'CHECK(price > 0)',
         'Offer price must be positive.',
     )
+
+    @api.constrains('property_id')
+    def _check_property_state(self):
+        for offer in self:
+            if offer.property_id.state in ('sold', 'cancelled'):
+                raise ValidationError("You cannot add an offer on a Sold or Cancelled property")

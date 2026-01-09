@@ -1,12 +1,13 @@
 from dateutil.relativedelta import relativedelta
+from odoo import fields, models, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
-from odoo import fields, models, api
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _order = 'id desc'
 
     # Each field becomes a column in PostgreSQL table
     name = fields.Char(required=True, default="Unknown")
@@ -30,18 +31,18 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string="Direction",
         selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West")])
+            ('north', "North"),
+            ('south', "South"),
+            ('east', "East"),
+            ('west', "West")])
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
-            ('new', 'New'),
-            ('offer_received', 'Offer Received'),
-            ('offer_accepted', 'Offer Accepted'),
-            ('sold', 'Sold'),
-            ('cancelled', 'Cancelled'),
+            ('new', "New"),
+            ('offer_received', "Offer Received"),
+            ('offer_accepted', "Offer Accepted"),
+            ('sold', "Sold"),
+            ('cancelled', "Cancelled"),
         ],
         required=True,
         copy=False,
@@ -81,6 +82,8 @@ class EstateProperty(models.Model):
         for property in self:
             if property.state == 'cancelled':
                 raise UserError("Sold property cannot be cancelled")
+            if not property.buyer_id:
+                raise UserError("Without accept any offer we can't sold it")
             property.state = 'sold'
         return True
 
