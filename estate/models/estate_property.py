@@ -5,10 +5,11 @@ from odoo.exceptions import UserError, ValidationError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property Planning'
+    _order = 'id desc'  # defaultvalue = asc
 
     name = fields.Char(required=True, default="Unknown")
     description = fields.Text()
-    postcode = fields.Char()
+    postcode = fields.Float()
     date_availability = fields.Date(
         "Available From", copy=False, default=fields.Datetime.now
     )
@@ -39,18 +40,19 @@ class EstateProperty(models.Model):
             ('cancelled', "Cancelled"),
         ],
         string="Status",
-        default="new",
+        default='new',
     )
     property_type_id = fields.Many2one(
         'estate.property.type', string="Property Type")
-    seller = fields.Many2one(
+    seller_ids = fields.Many2one(
         'res.users', string="Salesman", default=lambda self: self.env.user
     )
-    buyer = fields.Many2one('res.partner', string="Buyer", copy=False)
-    tags = fields.Many2many('estate.property.tag')
-    offer = fields.One2many('estate.property.offer', 'property_id')
-    total_area = fields.Float(compute='_compute_total')
-    best_price = fields.Float("Best offer", compute='_compute_best_price')
+    buyer_ids = fields.Many2one('res.partner', string="Buyer", copy=False)
+    tags_ids = fields.Many2many('estate.property.tag')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
+    total_area = fields.Float(compute='_compute_total_area')
+    best_price = fields.Float(
+        "Best offer", compute='_compute_best_price', store=True)
 
     # SQL Constraint
     _check_expected_price = models.Constraint(
@@ -61,22 +63,23 @@ class EstateProperty(models.Model):
     # Python Constriant
     @api.constrains('selling_price', 'expected_price')
     def _check_price(self):
-        if self.buyer and self.selling_price < (self.expected_price * 0.9):
+        if self.buyer_ids and self.selling_price < (self.expected_price * 0.9):
             raise ValidationError(
                 "The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
 
     # Compute Methods
     # Depends Decorator
     @api.depends('living_area', 'garden_area')
-    def _compute_total(self):
+    def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends('offer')
+    @api.depends('offer_ids')
     def _compute_best_price(self):
         for record in self:
             record.best_price = (
-                max(record.offer.mapped('price')) if record.offer else 0.0
+                max(record.offer_ids.mapped('price')
+                    ) if record.offer_ids else 0.0
             )
 
     # Onchange Decorator

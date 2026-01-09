@@ -1,42 +1,68 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <odoo>
-    <data>
 
-        <!-- List view -->
-        <record id="estate_property_type_view_form" model="ir.ui.view">
-            <field name="name">estate.property.type.view.form</field>
-            <field name="model">estate.property.type</field>
-            <field name="arch" type="xml">
-                <form>
-                    <sheet>
-                        <h1>
-                            <field name="name"/>
-                        </h1>
-                    </sheet>
-                </form>
-            </field>
-        </record>
+    <!-- Form view -->
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <div name="button_box" class="oe_button_box">
+                        <button class="oe_stat_button" type="action" name="%(estate_property_offer_action)d" string="Offers" icon="fa-money"/>
+                        <div class="o_stat_info">
+                        </div>
+                    </div>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids">
+                                <list default_order="name desc" editable="top">
+                                    <field name="name"/>
+                                    <field name="expected_price"/>
+                                    <field name="state"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
 
-        <!-- Search View -->
-        <record id="estate_property_type_view_search" model="ir.ui.view">
-            <field name="name">estate.property.type.view.search</field>
-            <field name="model">estate.property.type</field>
-            <field name="arch" type="xml">
-                <search>
-                    <field name="name"/>
-                    <separator/>
-                    <filter string="Type" name="name"/>
-                    <group>
-                        <filter string="Name" name="name" context="{'group_by':'name'}"/>
-                    </group>
-                </search>
-            </field>
-        </record>
+    <!-- List View -->
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="sequence" widget="handle"/>
+            </list>
+        </field>
+    </record>
 
-        <record id="estate_property_type_action" model="ir.actions.act_window">
-            <field name="name">Property Types</field>
-            <field name="res_model">estate.property.type</field>
-            <field name="view_mode">list,form</field>
-        </record>
-    </data>
+    <!-- Search View -->
+    <record id="estate_property_type_view_search" model="ir.ui.view">
+        <field name="name">estate.property.type.view.search</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <separator/>
+                <filter string="Type" name="name"/>
+                <group>
+                    <filter string="Name" name="name" context="{'group_by':'name'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
+    </record>
 </odoo>

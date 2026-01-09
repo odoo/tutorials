@@ -1,5 +1,5 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models
 
 from odoo.exceptions import UserError
 
@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property offer'
+    _order = 'price desc'
 
     price = fields.Float("Price")
     status = fields.Selection(
@@ -18,7 +19,9 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate.property', required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
-        compute='_compute_date_deadline', inverse='_inverse_deadline')
+        compute='_compute_date_deadline', inverse='_inverse_date_deadline')
+    property_type_id = fields.Many2one(
+        related='property_id.property_type_id', store=True)
 
     # SQL Constraint
     _check_offer_price = models.Constraint(
@@ -32,10 +35,12 @@ class EstatePropertyOffer(models.Model):
             date = offer.create_date.date() if offer.create_date else fields.Date.today()
             offer.date_deadline = date + relativedelta(days=offer.validity)
 
-    def _inverse_deadline(self):
-        for offer in self:
-            date = offer.create_date.date() if offer.create_date else fields.Date.today()
-            offer.validity = (offer.date_deadline - date).days
+    def _inverse_date_deadline(self):
+        for record in self:
+            start_date = (
+                record.create_date.date() if record.create_date else fields.Date.today()
+            )
+            record.validity = (record.date_deadline - start_date).days
 
     # Action Funcitons
     def action_accept(self):
@@ -43,7 +48,7 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.state != 'offer_accepted':
                 record.status = 'accepted'
                 record.property_id.selling_price = record.price
-                record.property_id.buyer = self.partner_id
+                record.property_id.buyer_ids = self.partner_id
                 record.property_id.state = 'offer_accepted'
             else:
                 raise UserError('One offer has already been accepted')
@@ -53,4 +58,4 @@ class EstatePropertyOffer(models.Model):
             record.status = 'refused'
             record.property_id.state = 'new'
             record.property_id.selling_price = '0'
-            record.property_id.buyer = None
+            record.property_id.buyer_ids = None
