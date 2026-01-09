@@ -29,6 +29,7 @@
             <field name="arch" type="xml">
                 <form string="Properties">
                     <header>
+                        <field name="state" widget="statusbar"/>
                         <button name="action_sold" type="object" string="Sold"/>
                         <button name="action_cancelled" type="object" string="Cancel"/>
                     </header>
@@ -36,11 +37,11 @@
                         <h1>
                             <field name="name"></field>
                         </h1>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                         <group>
                             <group>
                                 <field name="state"/>
-                                <field name="property_type_id"/>
+                                <field name="property_type_id" options="{'no_create': True, 'no_create_edit': True}"/>
                                 <field name="postcode"/>
                                 <field name="date_availability"/>
                             </group>
@@ -77,9 +78,11 @@
                                         <field name="validity"/>
                                         <field name="date_deadline"/>
                                         <button name="action_accepted" states="draft" type="object"
-                                                icon="fa-check" title="accepted" invisible="status in ('rejected')"/>
+                                                icon="fa-check" title="accepted"
+                                                invisible="status in ('accepted or rejected')"/>
                                         <button name="action_rejected" states="draft,open" type="object"
-                                                icon="fa-times" title="refused" invisible="status in ('rejected')"/>
+                                                icon="fa-times" title="refused"
+                                                invisible="status in ('accepted or rejected')"/>
                                         <field name="status"/>
                                     </list>
                                 </field>

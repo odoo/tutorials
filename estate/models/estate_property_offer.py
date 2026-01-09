@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     status = fields.Selection([
@@ -52,15 +53,15 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.property_id.selling_price or record.status == "accepted":
                 raise UserError("Offer is already accepted")
-            self.status = "accepted"
-            rejected_offer = self.search([
-                ('property_id', '=', self.property_id.id),
-                ('id', '!=', self.id),
+            record.status = "accepted"
+            rejected_offers = record.search([
+                ('property_id', '=', record.property_id.id),
+                ('id', '!=', record.id),
             ])
-            for ro in rejected_offer:
+            for ro in rejected_offers:
                 ro.status = "rejected"
-            self.property_id.buyer_id = self.partner_id
-            self.property_id.selling_price = self.price
+            record.property_id.buyer_id = record.partner_id
+            record.property_id.selling_price = record.price
 
     def action_rejected(self):
         if self.status == "accepted":

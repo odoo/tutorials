@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real state Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -116,9 +117,13 @@ class EstateProperty(models.Model):
                 raise RedirectWarning("A sold property cannot be cancelled",
                                       self.env.ref('estate.estate_property_offer_action').id,
                                       "go to offer page!")
-        self.state = "cancelled"
+            record.state = "cancelled"
 
     def action_sold(self):
-        if self.state == "cancelled":
-            raise UserError("Cancelled property can not be sold")
-        self.state = "sold"
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("A cancelled property cannot be sold")
+            accepted_offer = record.offer_ids.filtered(lambda offer: offer.status == "accepted")
+            if not accepted_offer:
+                raise UserError("Property can not be sold without an accepted offer")
+            record.state = "sold"
