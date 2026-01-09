@@ -17,5 +17,6 @@ class PropertyTag(models.Model):
         'UNIQUE(name)',
         'The name must be unique'
     )
+
     def _default_color(self):
         return randint(1, 11)

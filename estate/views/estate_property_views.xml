@@ -13,7 +13,7 @@
                 <field name="living_area" string="Living Area (sqm)" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="date_availability" string="Available From"/>
+                <field name="date_availability" string="Available From" optional="{'hide': 'true'}"/>
             </list>
         </field>
     </record>
@@ -24,10 +24,10 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="action_sold" type="object" string="Sold" />
-                    <button name="action_cancel" type="object" string="Cancel" />
-                    <button type="action" name="%(estate_property_tag)d" string="Tags"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <button name="action_sold" type="object" string="Sold" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <button name="action_cancel" type="object" string="Cancel" invisible="state == 'sold' or state == 'cancelled'"/>
+                    <button type="action" name="%(estate_property_tag)d" string="Tags"/>
                 </header>
                 <sheet>
                     <h1>
@@ -39,7 +39,7 @@
                     </group>
                     <group>
                         <group>
-                            <field name="property_type_id" string="Property Type" />
+                            <field name="property_type_id" string="Property Type" options="{'no_create': true, 'no_open': true}"/>
                             <field name="postcode" />
                             <field name="date_availability" string="Available From" />
                         </group>
@@ -69,7 +69,7 @@
                             </group>
                         </page>
                         <page string="Offer">
-                            <field name="offer_ids" />
+                            <field name="offer_ids" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
                         </page>
                         <page string="Other Information">
                             <group>
