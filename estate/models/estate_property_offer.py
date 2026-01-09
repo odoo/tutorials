@@ -46,8 +46,9 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             if record.property_id.buyer_id:
                 raise exceptions.UserError("An offer has already been accepted for this property.")
-
             record.status = "accepted"
+            other_offers = record.property_id.offer_ids.filtered(lambda o: o.id != record.id)
+            other_offers.write({"status": "refused"})
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
             record.property_id.state = "offer_accepted"
@@ -56,11 +57,12 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             if record.property_id.buyer_id == record.partner_id and record.property_id.state == "offer_accepted":
-                # write 0.001 to handle constrains in estate_property_offer.py
-                record.property_id.selling_price = 0.001
-                record.property_id.buyer_id = False
                 other_offers = record.property_id.offer_ids - record
                 has_other_offers = other_offers.filtered(lambda o: o.status != "refused")
-                record.property_id.state = "offer_received" if has_other_offers else "new"
+                record.property_id.write({
+                    'selling_price': 0.0,
+                    'buyer_id': False,
+                    'state': 'offer_received' if has_other_offers else 'new'
+                })
             record.status = "refused"
         return True
