@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+
+    <t t-name="product_view_kanban_catalog_inherit.image_dialog">
+        <div role="dialog"
+            class="modal d-flex justify-content-center align-items-center fixed-top w-100">
+            <div class="modal-dialog bg-white d-flex flex-column h-auto">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i class="fa fa-fw fa-times ms-auto" t-on-click="props.close" title="Close"
+                            aria-label="Close"></i>
+                    </div>
+                    <div class="modal-body">
+                        <img class="m-auto p-4 img-fluid" style="min-width: 300px"
+                            t-att-src="props.imgSrc" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>
