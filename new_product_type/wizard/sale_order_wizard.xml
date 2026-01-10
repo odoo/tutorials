@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="sale_order_line_wizard_view_form" model="ir.ui.view">
+        <field name="name">Sale order line wizard view form</field>
+        <field name="model">sale.order.wizard</field>
+        <field name="inherit_id" ref=""></field>
+        <field name="arch" type="xml">
+            <form string="Sub Products">
+                <group>
+                    <div class="d-flex flex-column gap-2 ">
+                        <label for="main_product_id" string="Main Product" />
+                        <field name="main_product_id" class="fw-bold fs-2" nolabel="0" readonly="1" />
+                        <div class="fw-bold fs-4">Sub Products</div>
+                        <field name="line_ids" nolabel="1">
+                            <list editable="bottom" create="0">
+                                <field name="product_id" />
+                                <field name="quantity" />
+                                <field name="price" />
+                            </list>
+                        </field>
+                    </div>
+                </group>
+                <footer>
+                    <button class="btn btn-primary" type="object" string="Confirm"
+                        name="confirm_sub_products" />
+                    <button special="cancel" string="Cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
