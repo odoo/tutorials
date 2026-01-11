@@ -5,7 +5,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
 
-            <!-- Smart button -->
+         <!-- Smart button -->
             <xpath expr="//sheet/div[@class='oe_button_box']" position="inside">
                 <button type="object"
                         name="action_view_products_in_categories"
@@ -16,6 +16,28 @@
                     <field name="product_tmpl_count" widget="statinfo" string="Products"/>
                 </button>
             </xpath>
+
+            <xpath expr="//sheet/div[hasclass('oe_button_box')]" position="inside">
+
+                <button name="%(contact_product_categories.action_partner_convert_wizard)d"
+                        type="action"
+                        class="oe_stat_button"
+                        icon="fa-user"
+                        invisible="not is_company">
+                    <div class="o_stat_info">
+                        <span class="o_stat_text">Convert to Persona</span>
+                    </div>
+                </button>
+
+            </xpath>
+
+
+            <!-- The toggle is company_type (person/company), not is_company -->
+            <xpath expr="//field[@name='company_type']" position="attributes">
+                <!-- Odoo 19: use invisible expression (no attrs/states) -->
+                <attribute name="invisible">company_type == 'company'</attribute>
+            </xpath>
+
 
             <!-- Tab with Many2many categories -->
             <xpath expr="//sheet/notebook" position="inside">

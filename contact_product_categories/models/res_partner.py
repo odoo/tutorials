@@ -1,81 +1,118 @@
+# -*- coding: utf-8 -*-
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError, ValidationError
+
 
 class ResPartner(models.Model):
-    _inherit = 'res.partner'
+    _inherit = "res.partner"
 
+    # -----------------------
+    # Company-only fields
+    # -----------------------
     product_category_ids = fields.Many2many(
         comodel_name="product.category",
         relation="res_partner_product_category_rel",
         column1="partner_id",
         column2="categ_id",
         string="Product Categories",
-        help="Internal product categories associated with this contact.",
-    )
-
-    product_tmpl_count = fields.Integer(
-        string="Products",
-        compute="_compute_product_tmpl_count",
     )
 
     capacity_tons = fields.Float(
         string="Capacity (tons)",
-        help="Production capacity of this company in tons.",
         digits=(16, 2),
     )
 
     partner_status_id = fields.Many2one(
         "res.partner.status",
         string="Company Status",
-        help="Company status (e.g., Existing Customer, Potential Customer).",
     )
 
+    # -----------------------
+    # UI helpers
+    # -----------------------
+    product_tmpl_count = fields.Integer(
+        compute="_compute_product_tmpl_count"
+    )
 
+    is_company_lock_to_person = fields.Boolean(
+        compute="_compute_is_company_lock_to_person",
+        store=False,
+    )
 
+    # -----------------------
+    # WRITE GUARD
+    # -----------------------
+    def write(self, vals):
+        if (
+            "is_company" in vals
+            and vals["is_company"] is False
+            and not self.env.context.get("allow_company_to_person")
+        ):
+            for partner in self:
+                if partner.is_company:
+                    raise UserError(_(
+                        "To convert a company to an individual, use the "
+                        "'Convert to Individual' button."
+                    ))
+        return super().write(vals)
+
+    # -----------------------
+    # COMPUTES
+    # -----------------------
     @api.depends("product_category_ids")
     def _compute_product_tmpl_count(self):
-        ProductTmpl = self.env["product.template"]
+        Product = self.env["product.template"]
         for partner in self:
             if not partner.product_category_ids:
                 partner.product_tmpl_count = 0
                 continue
-            partner.product_tmpl_count = ProductTmpl.search_count(
-                [("all_categ_ids", "child_of", partner.product_category_ids.ids)]
-            )
+            partner.product_tmpl_count = Product.search_count([
+                ("all_categ_ids", "child_of", partner.product_category_ids.ids)
+            ])
 
-    @api.constrains("is_company", "product_category_ids", "capacity_tons")
-    def _check_company_only_fields(self):
+    def _compute_is_company_lock_to_person(self):
         for partner in self:
-            if not partner.is_company:
-                if partner.capacity_tons:
-                    raise ValidationError(_("Capacity can be set only for companies."))
-                if partner.product_category_ids:
-                    raise ValidationError(_("Only companies can have product categories."))
-                if partner.partner_status_id:
-                    raise ValidationError(_("Only companies can have statuses."))
-            if partner.capacity_tons < 0:
-                raise ValidationError(_("Capacity cannot be negative."))
+            partner.is_company_lock_to_person = bool(partner.is_company)
 
+    # -----------------------
+    # CONSTRAINTS (wizard-aware)
+    # -----------------------
+    @api.constrains("is_company", "capacity_tons")
+    def _check_capacity_company_only(self):
+        if self.env.context.get("allow_company_to_person"):
+            return
 
-
-    @api.onchange("is_company")
-    def _onchange_is_company_clear_company_only_fields(self):
         for partner in self:
-            if not partner.is_company:
-                # Clear company-only fields for friendly UX
-                if partner.capacity_tons:
-                    partner.capacity_tons = 0.0
-                if partner.product_category_ids:
-                    partner.product_category_ids = [(5, 0, 0)]
-                if partner.partner_status_id:
-                    partner.partner_status_id = False
-                return {
-                    "warning": {
-                        "title": _("Company fields cleared"),
-                        "message": _("Capacity, Product Categories and Status are available only for companies."),
-                    }
-                }
+            if not partner.is_company and (partner.capacity_tons or 0.0) > 0:
+                raise ValidationError(
+                    _("Capacity can be set only for companies.")
+                )
 
+    @api.constrains("is_company", "partner_status_id")
+    def _check_status_company_only(self):
+        if self.env.context.get("allow_company_to_person"):
+            return
+
+        for partner in self:
+            if not partner.is_company and partner.partner_status_id:
+                raise ValidationError(
+                    _("Company Status can be set only for companies.")
+                )
+
+    @api.constrains("is_company", "product_category_ids")
+    def _check_categories_company_only(self):
+        if self.env.context.get("allow_company_to_person"):
+            return
+
+        for partner in self:
+            if not partner.is_company and partner.product_category_ids:
+                raise ValidationError(
+                    _("Product Categories can be set only for companies.")
+                )
+
+    # -----------------------
+    # ACTIONS
+    # -----------------------
     def _products_domain_for_partner_categories(self):
         self.ensure_one()
         if not self.product_category_ids:

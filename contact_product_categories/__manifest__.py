@@ -7,11 +7,17 @@
     'depends': ['base', 'contacts', 'product'],
     'data': [
         "data/partner_status_data.xml",
+        "views/partner_convert_wizard_views.xml",
         "views/res_partner_views.xml",
         "views/product_template_views.xml",
         "views/partner_status_views.xml",
         "security/ir.model.access.csv"
     ],
+    "assets": {
+      "web.assets_backend": [
+          "contact_product_categories/static/src/js/company_type_confirm.js"
+      ]
+    },
     'application': False,
     'author': 'Denys Azhymov (azhimov93@gmail.com)',
     'license': 'LGPL-3'

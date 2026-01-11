@@ -1,0 +1,35 @@
+<odoo>
+    <record id="view_res_partner_convert_wizard_form" model="ir.ui.view">
+        <field name="name">res.partner.convert.wizard.form</field>
+        <field name="model">res.partner.convert.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Convert Contact">
+                <sheet>
+                    <group>
+                        <field name="partner_id" readonly="1"/>
+                    </group>
+
+                    <!-- Full-width warning, Odoo-native style -->
+                    <div class="alert alert-warning o_mt16" role="alert">
+                        <field name="warning_html" nolabel="1" readonly="1"/>
+                    </div>
+                    <p>Do you want to continue?</p>
+                </sheet>
+
+                <footer>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    <button string="Confirm" type="object" name="action_confirm" class="btn-primary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_partner_convert_wizard" model="ir.actions.act_window">
+        <field name="name">Convert Contact</field>
+        <field name="res_model">res.partner.convert.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_res_partner_convert_wizard_form"/>
+        <field name="context">{'default_partner_id': active_id, 'default_to_is_company': False}</field>
+    </record>
+</odoo>
