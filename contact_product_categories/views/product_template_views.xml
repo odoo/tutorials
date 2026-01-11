@@ -1,0 +1,27 @@
+<odoo>
+  <record id="product_template_form_inherit_extra_categories" model="ir.ui.view">
+    <field name="name">product.template.form.inherit.extra.categories</field>
+    <field name="model">product.template</field>
+    <field name="inherit_id" ref="product.product_template_form_view"/>
+    <field name="arch" type="xml">
+
+      <!-- Put Extra Categories right after the standard Category (categ_id) -->
+      <xpath expr="//field[@name='categ_id']" position="after">
+        <field name="extra_categ_ids" widget="many2many_tags"
+               placeholder="Add extra categories..."/>
+      </xpath>
+
+      <xpath expr="//field[@name='extra_categ_ids']" position="after">
+        <field name="dosage_per_ton"/>
+      </xpath>
+
+      <!-- Optional: show computed helper field (usually not needed in UI) -->
+      <!--
+      <xpath expr="//field[@name='extra_categ_ids']" position="after">
+        <field name="all_categ_ids" widget="many2many_tags" readonly="1"/>
+      </xpath>
+      -->
+
+    </field>
+  </record>
+</odoo>

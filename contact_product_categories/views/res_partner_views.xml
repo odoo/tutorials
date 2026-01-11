@@ -1,0 +1,45 @@
+<odoo>
+    <record id="res_partner_form_inherit_contact_product_categories" model="ir.ui.view">
+        <field name="name">res.partner.form.inherit.contact.product.categories</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Smart button -->
+            <xpath expr="//sheet/div[@class='oe_button_box']" position="inside">
+                <button type="object"
+                        name="action_view_products_in_categories"
+                        class="oe_stat_button"
+                        icon="fa-cubes"
+                        invisible="not is_company or not product_category_ids"
+                >
+                    <field name="product_tmpl_count" widget="statinfo" string="Products"/>
+                </button>
+            </xpath>
+
+            <!-- Tab with Many2many categories -->
+            <xpath expr="//sheet/notebook" position="inside">
+                <page string="Company [Novi Agro Extension]" invisible="not is_company">
+                    <group>
+                        <div class="oe_notice" invisible="is_company">
+                            These fields are available only for companies. Enable “Is a Company” to edit them.
+                        </div>
+                        <field name="capacity_tons" invisible="not is_company"/>
+
+                        <div class="oe_notice" invisible="is_company">
+                            Status is available only for companies. Enable “Is a Company” to edit it.
+                        </div>
+                        <field name="partner_status_id" invisible="not is_company" options="{'no_create_edit': False}"/>
+
+                        <field name="product_category_ids"
+                               widget="many2many_tags"
+                               invisible="not is_company"
+                               placeholder="Add product categories..."
+                        />
+                    </group>
+                </page>
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

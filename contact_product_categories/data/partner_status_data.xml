@@ -1,0 +1,13 @@
+<odoo noupdate="1">
+  <record id="partner_status_ec" model="res.partner.status">
+    <field name="name">Existing Customer</field>
+    <field name="code">EC</field>
+    <field name="sequence">10</field>
+  </record>
+
+  <record id="partner_status_pc" model="res.partner.status">
+    <field name="name">Potential Customer</field>
+    <field name="code">PC</field>
+    <field name="sequence">20</field>
+  </record>
+</odoo>

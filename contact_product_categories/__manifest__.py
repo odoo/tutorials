@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+{
+    'name': 'Contact Product Categories',
+    'summary': 'Bind internal product categories to contacts and browse products by those categories.',
+    "version": "19.0.1.0.0",
+    'category': 'Contacts',
+    'depends': ['base', 'contacts', 'product'],
+    'data': [
+        "data/partner_status_data.xml",
+        "views/res_partner_views.xml",
+        "views/product_template_views.xml",
+        "views/partner_status_views.xml",
+        "security/ir.model.access.csv"
+    ],
+    'application': False,
+    'author': 'Denys Azhymov (azhimov93@gmail.com)',
+    'license': 'LGPL-3'
+}
