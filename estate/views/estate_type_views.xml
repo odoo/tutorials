@@ -21,12 +21,10 @@
         <field name="name">estate.property.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="">
-                <header>
-                </header>
+            <form>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="action" name="%(estate_property_offers_action)d" icon="fa-money">
+                        <button type="action" name="%(estate_property_offers_action)d" icon="fa-tag">
                             <div class="o_form_field o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="offer_count" string="Offers" widget="statinfo"/>

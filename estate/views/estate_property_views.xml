@@ -10,12 +10,11 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel" expand="1" decoration-success="state in ('offer_received', 'offer_accepted')"
-            decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
+            <list string="Channel" expand="1" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
-                <field name="date_availability" optional="{'hide':'true'}"/>
+                <field name="date_availability" optional="{'show'}"/>
                 <field name="best_price"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
@@ -41,8 +40,7 @@
                         <field name="name"/>
                     </h1>
                     <group>
-                        <field name="property_tag_ids" widget="many2many_tags" string="Property Tag"
-                        options="{'color_field' : 'color'}"/>
+                        <field name="property_tag_ids" widget="many2many_tags" string="Property Tag" options="{'color_field' : 'color'}"/>
                     </group>
                     <separator/>
                     <group>
@@ -55,7 +53,9 @@
                         <group>
                             <field name="expected_price"/>
                             <field name="best_price"/>
+                            <field name="total_cost"/>
                             <field name="selling_price"/>
+
                         </group>
                     </group>
                     <notebook>
@@ -85,6 +85,17 @@
                             <group>
                                 <field name="partner_id"/>
                                 <field name="buyer_id"/>
+                            </group>
+                        </page>
+                        <page string="Maintenance">
+                            <group>
+                                <field name="maintenance_id" nolabel="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="cost"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
                             </group>
                         </page>
                     </notebook>

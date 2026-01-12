@@ -32,6 +32,8 @@ class EstateProperty(models.Model):
     property_tag_ids = fields.Many2many('estate.property.tags')
     offers_id = fields.One2many('estate.property.offer', 'property_id')
     color = fields.Integer('Color Index')
+    maintenance_id = fields.One2many(
+        'estate.property.maintenance', 'property_id')
     garden_orientation = fields.Selection(
         selection=[
             ('east', "East"),
@@ -54,6 +56,7 @@ class EstateProperty(models.Model):
         help="This field tells us the state of the property."
     )
     total_area = fields.Integer(compute='_compute_total_area')
+    total_cost = fields.Integer(compute='_compute_total_cost')
     best_price = fields.Integer(compute='_compute_best_price', store=True)
 
     # SQL CONSTRAINT
@@ -77,6 +80,14 @@ class EstateProperty(models.Model):
                     ) if record.offers_id else 0.0
             )
 
+    @api.depends('maintenance_id.cost')
+    def _compute_total_cost(self):
+        for record in self:
+            record.total_cost = (
+                sum(record.maintenance_id.mapped('cost')
+                    ) if record.maintenance_id else 0.0
+            )
+
     # ONCHANGE DECORATOR
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -98,9 +109,11 @@ class EstateProperty(models.Model):
     # BUTTON ACTION - SOLD/CANCEL
     def action_sold(self):
         if self.state == 'cancelled':
-            raise UserError("Cancelled Property can not be sold !")
+            raise UserError("There is not any maintenance !")
         else:
-            self.state = 'sold'
+            for record in self:
+                if record.maintenance_id.status != 'done':
+                    raise UserError("property is not under maintenance")
 
     def action_cancel(self):
         if self.state == 'sold':

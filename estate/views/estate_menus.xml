@@ -31,4 +31,9 @@
         name="Property Tags"
         parent="estate_menu_setting"
         action="estate_property_tags_action"/>
+    <menuitem
+        id="estate_prop_maintenance"
+        name="Property Maintenance"
+        parent="estate_menu_setting"
+        action="estate_property_maintenance_action"/>
 </odoo>
