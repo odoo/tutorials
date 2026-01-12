@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models
+from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -55,3 +56,56 @@ class EstateProperty(models.Model):
     )
     tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
+    total_area = fields.Float(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price")
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            if not record.mapped("offer_ids.price"):
+                record.best_price = 0
+            else:
+                record.best_price = max(record.mapped("offer_ids.price"))
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = 'north'
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
+
+    def action_sold(self):
+        for record in self:
+            if record.state == 'cancelled':
+                raise UserError("Cancelled Properties Can Not be sold")
+            if not record.buyer_id:
+                raise UserError("Can not sold property who has no buyer")
+            record.state = 'sold'
+        return True
+
+    def action_cancelled(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold Properties can not be cancel")
+            record.state = 'cancelled'
+        return True
+
+    def action_approve(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties cannot accept other Offers.")
+            target_offer = record.offer_ids.filtered(lambda r: r.price == record.best_price)
+            if target_offer:
+                target_offer = target_offer[0]
+                target_offer.status = 'accepted'
+            (record.offer_ids - target_offer).status = 'refused'
+            record.selling_price = target_offer.price
+            record.buyer_id = target_offer.partner_id
