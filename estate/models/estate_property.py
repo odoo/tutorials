@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, models, fields
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -68,8 +69,7 @@ class EstateProperty(models.Model):
         compute="_compute_total_area", string="Total Area", readonly=False
     )
     best_price = fields.Float(
-        compute="_compute_best_price",
-        string="Best Offer",
+        compute="_compute_best_price", string="Best Offer", store=True
     )
 
     _check_expected_price = models.Constraint(
@@ -89,10 +89,7 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_price(self):
         for record in self:
-            if record.offer_ids:
-                record.best_price = max(record.offer_ids.mapped("price"))
-            else:
-                record.best_price = 0.0
+            record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -133,3 +130,19 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "The selling price cannot be lower than 90% of the expected price."
                 )
+
+    def accept_best_price(self):
+        for record in self:
+            if not record.offer_ids:
+                raise UserError("There are no offers to accept.")
+
+            best_offer = max(record.offer_ids, key=lambda o: o.price)
+
+            record.offer_ids.write({"status": "refused"})
+            best_offer.write({"status": "accepted"})
+
+            if record.offer_ids.filtered(lambda o: o.status == "accepted"):
+                record.selling_price = record.best_price
+                record.buyer_id = best_offer.partner_id
+
+        return True
