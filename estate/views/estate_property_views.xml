@@ -17,7 +17,8 @@
                 <field name="name" string="Title"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags"
+                                options="{'color_field' : 'color'}"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="date_availability" optional="hidden"/>
@@ -48,7 +49,7 @@
                             <field name="name" placeholder="Name"/>
                         </h1>
                         <h3>
-                            <field name="tag_ids" widget="many2many_tags" placeholder="Tag"/>
+                            <field name="tag_ids" widget="many2many_tags" placeholder="Tag" options="{'color_field' : 'color'}"/>
                         </h3>
                     </div>
                     <group>

@@ -101,7 +101,7 @@ class EstateProperty(models.Model):
         if not self.customer:
             raise UserError(
                 _("You can not sold the property that has no customer")
-            ) 
+            )
         self.write({"state": "sold"})
 
     @api.constrains("selling_price", "expected_price")
