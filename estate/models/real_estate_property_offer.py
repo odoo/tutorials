@@ -23,6 +23,7 @@ class PropertyOffer(models.Model):
         compute="_compute_deadline",
         inverse="_inverse_validity"
     )
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     _price_positive = models.Constraint(
         'CHECK(price > 0)',
@@ -44,6 +45,9 @@ class PropertyOffer(models.Model):
             if record.property_id.buyer_id:
                 raise UserError("Only One Offer can be accepted")
             else:
+                for ids in record.property_id.offer_ids:
+                    if(record.id != ids.id):
+                        ids.status = "refused"
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
                 record.status = "accepted"

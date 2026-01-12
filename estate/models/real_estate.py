@@ -42,7 +42,7 @@ class RealEstate(models.Model):
         string="Status",
         default="new",
     )
-    active = fields.Boolean(default=False)
+    active = fields.Boolean(default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type", required=True)
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     sales_id = fields.Many2one("res.users", string="Salesperson")

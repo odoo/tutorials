@@ -26,6 +26,15 @@
         <field name="arch" type="xml">
             <form string="Properties">
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="action" name="%(estate_property_offer)d" icon="fa-dollar">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count" string="Offers" widget="statinfo"/>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
                     <h1>
                         <field name="name" placeholder="Name"/>
                     </h1>
