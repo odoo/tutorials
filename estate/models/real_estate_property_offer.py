@@ -46,7 +46,7 @@ class PropertyOffer(models.Model):
                 raise UserError("Only One Offer can be accepted")
             else:
                 for ids in record.property_id.offer_ids:
-                    if(record.id != ids.id):
+                    if (record.id != ids.id):
                         ids.status = "refused"
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
