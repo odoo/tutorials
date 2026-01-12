@@ -50,8 +50,10 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one('res.partner', string="Buyer", copy=False)
     tag_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
+    maintenance_request_ids = fields.One2many('estate.property.maintenance.request', 'property_id')
     total_area = fields.Float(compute='_compute_total_area', store=True)
     best_price = fields.Float(compute='_compute_best_price')
+    total_maintenance_cost = fields.Float(compute='_compute_total_maintenance_cost')
     _chek_expected_price = models.Constraint(
         "CHECK(expected_price > 0)", "Expected price of property should be positive"
     )
@@ -109,3 +111,17 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "Selling price should not be less than 90% of expected price"
                 )
+        
+    @api.depends('maintenance_request_ids.cost')
+    def _compute_total_maintenance_cost(self):
+        for record in self:
+            record.total_maintenance_cost = sum(record.maintenance_request_ids.mapped('cost'))
+
+    @api.constrains('state')
+    def _check_state(self):
+        for record in self:
+            if record.state == "sold" and record.maintenance_request_ids.filtered(lambda r:r.status != 'done'):
+                raise ValidationError(
+                    "All maintenance request should be done before property marked as sold"
+                )
+                

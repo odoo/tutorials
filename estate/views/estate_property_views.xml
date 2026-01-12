@@ -75,6 +75,12 @@
                                 <field name="offer_ids" nolabel="1" readonly="state in ['sold', 'cancelled', 'offer_accepted']"/>
                             </group>
                         </page>
+                        <page string="maintenance">
+                            <group>
+                                <field name="maintenance_request_ids"/>
+                                <field name="total_maintenance_cost"/>
+                            </group>
+                        </page>
                         <page string="Other Info">
                             <group>
                                 <field name="salesman_id"/>
