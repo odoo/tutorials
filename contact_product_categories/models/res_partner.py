@@ -121,19 +121,12 @@ class ResPartner(models.Model):
         return [("all_categ_ids", "child_of", self.product_category_ids.ids)]
 
     def action_view_products_in_categories(self):
-        """
-        Smart button action: open product templates filtered by partner's categories.
-        """
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
             "name": "Products",
-            "res_model": "product.template",
-            "view_mode": "list,form",
-            "domain": self._products_domain_for_partner_categories(),
-            "context": {
-                # optional: can set defaults/search filters here if you want
-                # "search_default_sale_ok": 1,
-                "group_by": ["all_categ_ids"],
-            },
+            "res_model": "partner.products.view",
+            "view_mode": "list",
+            "domain": [("partner_id", "=", self.id)],
+            "context": {"group_by": ["company_category_id"]},
         }

@@ -34,7 +34,7 @@ class MarketViewReport(models.Model):
     product_tmpl_id = fields.Many2one("product.template", string="Product", readonly=True)
     product_name = fields.Char(string="Product Description", readonly=True)
 
-    dosage_per_ton = fields.Float(string="Dosage per ton", readonly=True)
+    dosage_per_ton = fields.Float(string="Dosage (Kg/Ton)", readonly=True)
     potential_monthly_demand = fields.Float(string="Potential Monthly Demand", readonly=True)
 
     monthly_result = fields.Float(string="Monthly Result", readonly=True)
