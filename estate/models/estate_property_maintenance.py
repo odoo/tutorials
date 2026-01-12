@@ -1,6 +1,6 @@
-from odoo import fields, models, api
+from odoo import fields, models
 from odoo.exceptions import UserError
-
+from odoo.tools.float_utils import float_is_zero
 
 class EstatePropertyMaintenance(models.Model):
     _name = 'estate.property.maintenance'
@@ -23,7 +23,7 @@ class EstatePropertyMaintenance(models.Model):
 
     def maintenance_accept(self):
         for maintenance in self:
-            if maintenance.cost <= 0.00:
+            if float_is_zero(maintenance.cost, precision_digits=2):
                 raise UserError("Maintenance cost must be greater than zero")
 
             maintenance.status = "approved"
