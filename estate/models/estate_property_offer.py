@@ -10,6 +10,7 @@ class EstatePropertyOffer(models.Model):
     _check_offer_price = models.Constraint(
         "CHECK(price>=0)", "Offer Price must be strictly positive"
     )
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -24,6 +25,7 @@ class EstatePropertyOffer(models.Model):
         compute="_compute_date_deadline",
         inverse="_inverse_date_deadline",
     )
+    disable_buttons = fields.Boolean(compute="_disable_offer_buttons", default=False)
 
     @api.depends("validity", "date_deadline")
     def _compute_date_deadline(self):
@@ -33,6 +35,13 @@ class EstatePropertyOffer(models.Model):
             else:
                 creation_date = fields.Date.today()
             record.date_deadline = timedelta(days=record.validity) + creation_date
+
+    @api.depends("property_id.offer_ids.status")
+    def _disable_offer_buttons(self):
+        for record in self:
+            record.disable_buttons = "accepted" in record.property_id.offer_ids.mapped(
+                "status"
+            )
 
     def _inverse_date_deadline(self):
         for record in self:

@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class Property(models.Model):
@@ -15,6 +16,7 @@ class Property(models.Model):
         "CHECK(selling_price >= 0)",
         "The selling price should be strictly positive",
     )
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -29,7 +31,7 @@ class Property(models.Model):
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer(string="Garden Area(sqm)")
+    garden_area = fields.Integer(string="Garden Area(sqm)", store=True)
     garden_orientation = fields.Selection(
         selection=[
             ("north", "North"),
@@ -94,10 +96,20 @@ class Property(models.Model):
 
     @api.constrains("selling_price", "expected_price")
     def _check_price(self):
-        if self.selling_price < (self.expected_price * 0.9):
-            raise ValidationError(
-                "The selling price must be at least 90% of the expected price"
-            )
+        for record in self:
+            if float_is_zero(record.selling_price, precision_rounding=0.001):
+                continue
+            if (
+                float_compare(
+                    record.selling_price,
+                    record.expected_price * 0.9,
+                    precision_rounding=0.01,
+                )
+                == -1
+            ):
+                raise ValidationError(
+                    "The selling price must be at least 90% of the expected price"
+                )
 
     def sold_button_action(self):
         for record in self:

@@ -2,7 +2,42 @@
     <record id="estate_property_type_action" model="ir.actions.act_window">
         <field name="name">Properties Type</field>
         <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
+        <!-- <field name="view_mode">list,form</field> -->
     </record>
 
+    <record id="estate_property_type_form" model="ir.ui.view">
+        <field name="name">Properties</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1>
+                        <field name="name" />
+                    </h1>
+                    <notebook>
+                        <page string="Properties">
+                            <field name="property_ids" readonly="True">
+                                <list>
+                                    <field name="name" string="Title" />
+                                    <field name="expected_price" />
+                                    <field name="status" />
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="estate_property_type_list" model="ir.ui.view">
+        <field name="name">Propertiess</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="sequence" widget="handle" />
+            </list>
+        </field>
+    </record>
 </odoo>
