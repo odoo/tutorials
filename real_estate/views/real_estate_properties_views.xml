@@ -75,7 +75,6 @@
                                 <group string="Area Details">
                                     <field name="living_area"/>
                                     <field name="total_area"/>
-                                    <field name="total_area_square"/>
                                 </group>
                                 <group string="Interior Details">
                                     <field name="bedrooms"/>
@@ -140,7 +139,7 @@
                         string="Garden orientation"
                         name="name"
                         domain="['|',('garden_orientation', '=' , 'north'),
-                    ('garden_orientation', '=' , 'south')]"
+                                ('garden_orientation', '=' , 'south')]"
                 />
                 <group>
                     <filter

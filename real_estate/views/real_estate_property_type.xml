@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
+                <field name="sequence" widget="handle"/>
             </list>
         </field>
     </record>
@@ -16,6 +17,17 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(real_estate_property_offer_action_view_state_button)d"
+                                type="action"
+                                icon="fa-tag">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="offer_count" string="Offers" widget="statinfo"/>
+                                </span>
+                            </div>
+                        </button>
+                    </div>
                     <group>
                         <field name="name"/>
                     </group>
@@ -23,7 +35,7 @@
                         <page string="Property Details">
                             <group>
                                 <field name="property_ids">
-                                    <list editable="bottom">
+                                    <list editable="bottom" default_order="expected_price desc">
                                         <field name="name"/>
                                         <field name="expected_price"/>
                                         <field name="stage"/>

@@ -4,24 +4,25 @@
         <field name="name">real.estate.property.offer.view.tree</field>
         <field name="model">real.estate.property.offer</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-danger="status == 'refused'"
+                  decoration-success="status == 'accepted'">
                 <field name="price"/>
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
                 <button
-                    name="action_accept"
-                    type="object"
-                    icon="fa-check"
-                    title="accept"
-                    invisible="status == 'refused'"
+                        name="action_accept"
+                        type="object"
+                        icon="fa-check"
+                        title="accept"
+                        invisible="status == 'refused'"
                 />
                 <button
-                    name="action_refuse"
-                    type="object"
-                    icon="fa-times"
-                    title="refused"
-                    invisible="status == 'accepted'"
+                        name="action_refuse"
+                        type="object"
+                        icon="fa-times"
+                        title="refused"
+                        invisible="status == 'refused'"
                 />
                 <field name="status" readonly="1"/>
             </list>
@@ -39,6 +40,7 @@
                         <field name="partner_id"/>
                         <field name="status"/>
                         <field name="property_id"/>
+                        <field name="property_type_id"/>
                         <field name="validity"/>
                         <field name="date_deadline"/>
                     </group>
@@ -51,6 +53,13 @@
         <field name="name">Property Offer</field>
         <field name="res_model">real.estate.property.offer</field>
         <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="real_estate_property_offer_action_view_state_button" model="ir.actions.act_window">
+        <field name="name">Property Offer</field>
+        <field name="res_model">real.estate.property.offer</field>
+        <field name="view_mode">list</field>
+        <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
 </odoo>

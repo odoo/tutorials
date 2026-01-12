@@ -19,10 +19,10 @@ class real_estate_properties_maintenance_request(models.Model):
     @api.onchange('status')
     def _check_cost_on_accepted_status(self):
         if self.status == 'approved' and self.cost <= 0:
-            raise UserError(" Maintenance Request Approved cost must be greater than 0")
+            raise UserError("Approved cost must be greater than 0")
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_maintenance_request_not_done(self):
         maintenace_request = self.filtered_domain([('status', '!=', 'done')])
         if maintenace_request:
-            raise UserError("Can't delete an active Maintenance Request Record.")
+            raise UserError("Can't delete an active Maintenance Request Record!")

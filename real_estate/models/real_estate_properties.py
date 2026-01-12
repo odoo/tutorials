@@ -37,7 +37,6 @@ class real_estate(models.Model):
     offer_ids = fields.One2many(
         "real.estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total", store=True)
-    total_area_square = fields.Float(compute="_compute_total_area_square", store=True)
     best_price = fields.Float(
         string="Best Offer",
         compute="_compute_best_price",
@@ -96,11 +95,6 @@ class real_estate(models.Model):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
 
-    @api.depends("total_area")
-    def _compute_total_area_square(self):
-        for record in self:
-            record.total_area_square = (record.total_area or 0) ** 2
-
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -111,10 +105,12 @@ class real_estate(models.Model):
             self.garden_orientation = False
 
     @api.ondelete(at_uninstall=False)
-    def _unlink_if_accepted_offer(self):
-        accepted_offer = self.offer_ids.filtered_domain([('status', '=', 'accepted')])
-        if accepted_offer:
-            raise UserError("Can't delete an active record!")
+    def _check_property_delete(self):
+        for record in self:
+            if record.stage not in ('new', 'cancelled'):
+                raise UserError(
+                    "You can only delete properties in New or Cancelled state."
+                )
 
     # @api.depends('create_date')
     # def _compute_create_date_ist(self):
