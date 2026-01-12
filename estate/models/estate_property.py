@@ -55,6 +55,10 @@ class Property(models.Model):
     total_area = fields.Integer(
         compute='_compute_total_area', string="Total Area(sqm)")
     best_price = fields.Float(compute='_compute_best_price', store=True)
+    property_maintainance_ids = fields.One2many(
+        'estate.property.maintenance', 'property_id')
+    total_maintenance_cost = fields.Float(
+        compute='_compute_total_maintenance_cost')
 
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -98,6 +102,9 @@ class Property(models.Model):
         if self.state == 'cancelled':
             raise UserError("Cancelled property cannot be sold.")
         else:
+            for record in self.property_maintainance_ids:
+                if record.status != 'done':
+                    raise UserError("Maintenance Request are still pending.")
             self.state = "sold"
 
     def action_property_cancel(self):
@@ -105,3 +112,12 @@ class Property(models.Model):
             raise UserError("Sold property cannot be Cancelled.")
         else:
             self.state = "cancelled"
+
+    @api.depends('property_maintainance_ids.cost')
+    def _compute_total_maintenance_cost(self):
+        for record in self:
+            if record.property_maintainance_ids:
+                record.total_maintenance_cost = sum(
+                    record.property_maintainance_ids.mapped('cost'))
+            else:
+                record.total_maintenance_cost = 0.00

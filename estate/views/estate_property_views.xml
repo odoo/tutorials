@@ -83,6 +83,20 @@
                                 <field name="partner_id"/>
                             </group>
                         </page>
+                        <page string="Maintenance Request">
+                            <group>
+                                <field name="property_maintainance_ids" nolabel="1">
+                                    <list editable='bottom'>
+                                        <field name='name'/>
+                                        <field name='cost'/>
+                                        <field name='status'/>
+                                    </list>
+                                </field>
+                            </group>
+                            <group>
+                                <field name='total_maintenance_cost' string="Total Cost"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>

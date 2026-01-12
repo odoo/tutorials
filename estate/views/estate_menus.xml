@@ -9,6 +9,7 @@
         <menuitem id="estate_settings" name="Settings">
             <menuitem id="estate_settings_property_type" action="estate_property_type_action"/>
             <menuitem id="estate_settings_property_tag" action="estate_property_tag_action"/>
+            <menuitem id="estate_settings_property_maintenance" action="estate_property_maintenance_action"/>
         </menuitem>
     </menuitem>
 
