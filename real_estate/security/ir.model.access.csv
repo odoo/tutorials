@@ -3,4 +3,5 @@ real_estate,real_estate,model_real_estate,base.group_user,1,1,1,1
 real_estate_tag,real_estate_tag,model_real_estate_tag,base.group_user,1,1,1,1
 real_estate_property_offer,real_estate_property_offer,model_real_estate_property_offer,base.group_user,1,1,1,1
 real_estate_property_type,real_estate_property_type,model_real_estate_property_type,base.group_user,1,1,1,1
+real_estate_property_maintenance_request,real_estate_property_maintenance_request,model_real_estate_property_maintenance_request,base.group_user,1,1,1,1
 ,,,,,,,

@@ -8,8 +8,9 @@ from odoo.tools import float_is_zero, float_compare
 class real_estate(models.Model):
     _name = 'real.estate'
     _description = 'Real Estate Property'
+    _order = "id desc"
 
-    name = fields.Char(default="Unknown", required=True)
+    name = fields.Char(required=True)
     property_type_id = fields.Many2one(
         "real.estate.property.type", string="Property Type")
     street_address = fields.Char()
@@ -36,6 +37,7 @@ class real_estate(models.Model):
     offer_ids = fields.One2many(
         "real.estate.property.offer", "property_id", string="Offers")
     total_area = fields.Float(compute="_compute_total", store=True)
+    total_area_square = fields.Float(compute="_compute_total_area_square", store=True)
     best_price = fields.Float(
         string="Best Offer",
         compute="_compute_best_price",
@@ -56,6 +58,9 @@ class real_estate(models.Model):
         string='Buyer',
         copy=False)
     selling_price = fields.Float()
+    maintenance_request_ids = fields.One2many(
+        "real.estate.property.maintenance.request", "property_id", string="Maintenance Requests")
+    total_maintenance_cost = fields.Float(compute="_compute_total_maintenance_cost", store=True)
     _check_expected_price_positive = models.Constraint(
         'CHECK(expected_price > 0)',
         'The expected price must be strictly positive.',
@@ -80,10 +85,21 @@ class real_estate(models.Model):
             prices = record.offer_ids.mapped('price')
             record.best_price = max(prices) if prices else 0.0
 
+    @api.depends('maintenance_request_ids.cost')
+    def _compute_total_maintenance_cost(self):
+        for record in self:
+            costs = record.maintenance_request_ids.mapped('cost')
+            record.total_maintenance_cost = sum(costs) if costs else 0.0
+
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
         for record in self:
             record.total_area = (record.living_area or 0) + (record.garden_area or 0)
+
+    @api.depends("total_area")
+    def _compute_total_area_square(self):
+        for record in self:
+            record.total_area_square = (record.total_area or 0) ** 2
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -96,10 +112,9 @@ class real_estate(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_accepted_offer(self):
-        for record in self:
-            for offer in record.offer_ids:
-                if offer.status == 'accepted':
-                    raise UserError("Can't delete an active record!")
+        accepted_offer = self.offer_ids.filtered_domain([('status', '=', 'accepted')])
+        if accepted_offer:
+            raise UserError("Can't delete an active record!")
 
     # @api.depends('create_date')
     # def _compute_create_date_ist(self):
@@ -120,4 +135,7 @@ class real_estate(models.Model):
     def action_sold(self):
         if self.stage == 'cancelled':
             raise UserError("A cancelled property cannot be sold.")
+        maintenace_request = self.maintenance_request_ids.filtered_domain([('status', '!=', 'done')])
+        if maintenace_request:
+            raise UserError("CProperty cannot be sold , there is any maintenance request not done")
         self.stage = 'sold'

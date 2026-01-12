@@ -4,13 +4,16 @@
         <field name="name">real.estate.view.list</field>
         <field name="model">real.estate</field>
         <field name="arch" type="xml">
-            <list>
+            <list
+                    decoration-success="stage in ('offer_received', 'offer_accepted')"
+                    decoration-bf="stage == 'offer_accepted'"
+                    decoration-muted="stage == 'sold'">
                 <field name="name"/>
                 <field name="postcode"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="tag_ids" widget="many2many_tags"/>
+                <field name="tag_ids" widget="many2many_tags" optional="show"/>
                 <field name="best_price"/>
                 <field name="total_area"/>
             </list>
@@ -24,16 +27,18 @@
             <form>
                 <header>
                     <button
-                        name="action_sold"
-                        type="object"
-                        string="Sold"
-                        class="btn-primary"
+                            name="action_sold"
+                            type="object"
+                            string="Sold"
+                            class="btn-primary"
+                            invisible="stage in ('sold', 'cancelled')"
                     />
                     <button
-                        name="action_cancel"
-                        type="object"
-                        string="Cancel"
-                        class="btn-secondary"
+                            name="action_cancel"
+                            type="object"
+                            string="Cancel"
+                            class="btn-secondary"
+                            invisible="stage in ('sold', 'cancelled')"
                     />
                     <field name="stage" widget="statusbar"
                            options="{'clickable': False}"
@@ -43,15 +48,12 @@
                     <group>
                         <group>
                             <field name="name"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': True, 'no_create_edit': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
-                            <field name="living_area"/>
-                            <field name="garden_area"/>
-                            <field name="total_area" readonly="1"/>
                         </group>
                         <group>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="expected_price"/>
                             <field name="best_price" readonly="1"/>
                         </group>
@@ -64,12 +66,18 @@
                         </page>
                         <page string="Extra Info">
                             <group>
-                                <group string="Email">
+                                <group string="Property Features">
                                     <field name="garage"/>
                                     <field name="garden"/>
-                                    <field name="garden_orientation"/>
+                                    <field name="garden_orientation" invisible="not garden"/>
+                                    <field name="garden_area" invisible="not garden"/>
                                 </group>
-                                <group string="Marketing">
+                                <group string="Area Details">
+                                    <field name="living_area"/>
+                                    <field name="total_area"/>
+                                    <field name="total_area_square"/>
+                                </group>
+                                <group string="Interior Details">
                                     <field name="bedrooms"/>
                                     <field name="bathrooms"/>
                                     <field name="facades"/>
@@ -78,9 +86,22 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" nolabel="0"/>
+                                <field name="offer_ids" readonly="stage in ('offer_accepted', 'sold', 'cancelled')"/>
                             </group>
                         </page>
+                        <page string="Maintenance Requests">
+                            <group>
+                                <field name="maintenance_request_ids">
+                                    <list editable="bottom">
+                                        <field name="name"/>
+                                        <field name="cost"/>
+                                        <field name="status"/>
+                                    </list>
+                                </field>
+                                <field name="total_maintenance_cost"/>
+                            </group>
+                        </page>
+
                         <page string="Other Info">
                             <group>
                                 <field name="selling_price" readonly="1"/>
@@ -101,23 +122,31 @@
                 <field name="name"/>
                 <field name="best_price"/>
                 <field name="total_area"/>
+                <field name="living_area"
+                       filter_domain="[('living_area', '>=', self)]"/>
+                <field name="description"
+                       filter_domain="['|', ('name', 'ilike', self), ('description', 'ilike', self)]"/>
                 <filter
-                    string="Active"
-                    name="active_record"
-                    domain="[('active', '=', True)]"
+                        string="Active"
+                        name="active_record"
+                        domain="[('active', '=', True)]"
                 />
                 <filter
-                    string="Garden orientation"
-                    name="name"
-                    domain="['|','&amp;',('garden_orientation', '=' , 'north'),
-                    ('garden_orientation', '=' , 'south'),
-                    ('name', '=' , 'test')]"
+                        name="In_active_record"
+                        string="IN Active"
+                        domain="[('active', '=', False)]"
+                />
+                <filter
+                        string="Garden orientation"
+                        name="name"
+                        domain="['|',('garden_orientation', '=' , 'north'),
+                    ('garden_orientation', '=' , 'south')]"
                 />
                 <group>
                     <filter
-                        string="Orientation"
-                        name="garden_orientation"
-                        context="{'group_by': 'garden_orientation'}"
+                            string="Orientation"
+                            name="garden_orientation"
+                            context="{'group_by': 'garden_orientation'}"
                     />
                 </group>
             </search>
@@ -128,12 +157,11 @@
         <field name="name">Real Estate</field>
         <field name="res_model">real.estate</field>
         <field name="view_mode">list,form</field>
-          <field name="context">
+        <field name="context">
             {
-
-                'search_default_active_record': 1,
+            'search_default_active_record': 1,
             }
-            </field>
+        </field>
     </record>
 
 </odoo>

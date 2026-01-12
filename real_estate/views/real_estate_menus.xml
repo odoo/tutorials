@@ -1,21 +1,32 @@
 <odoo>
 
     <menuitem id="real_estate_menu" name="Real Estate"/>
+
     <menuitem id="real_estate_menu_Advertisements" name="Advertisements" parent="real_estate_menu" sequence="265"/>
+
     <menuitem id="real_estate_menu_properties" name="Properties" parent="real_estate_menu_Advertisements"
               action="real_estate_action_view"/>
+
     <menuitem id="real_estate_menu_configuration" name="configuration" parent="real_estate_menu" sequence="267"/>
+
     <menuitem id="real_estate_menu_property_offer"
               name="Property Offers"
               parent="real_estate_menu_Advertisements"
               action="real_estate_property_offer_action_view"/>
+
     <menuitem id="rewal_estate_menu_tag"
               name="Property Tags"
               parent="real_estate_menu_configuration"
               action="real_estate_tag_action_view"/>
+
     <menuitem id="real_estate_menu_property_type"
               name="Property Type"
               parent="real_estate_menu_configuration"
               action="real_estate_property_type_action_view"/>
+
+    <menuitem id="real_estate_menu_property_maintenance_request"
+              name="Maintenance Request"
+              parent="real_estate_menu_configuration"
+              action="real_estate_property_maintenance_request_action_view"/>
 
 </odoo>
