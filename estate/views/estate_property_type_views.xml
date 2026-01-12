@@ -24,6 +24,14 @@
             <field name="arch" type="xml">
                 <form string="Properties_type">
                     <sheet>
+                        <header>
+                            <button class="oe_stat_button"
+                                    icon="fa-gavel"
+                                    type="action"
+                                    name="%(estate_property_offer_action_by_type)d">
+                                <field name="offer_count" widget="statinfo"/>
+                            </button>
+                        </header>
                         <h1>
                             <field name="name"/>
                         </h1>
