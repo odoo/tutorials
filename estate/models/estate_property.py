@@ -26,6 +26,7 @@ class homePlan(models.Model):
     garden_area = fields.Integer("Garden area", default=0)
     total_area = fields.Float("Total area", compute='_compute_total_area', store=True)
     best_price = fields.Float("Best price", compute='_compute_best_price', store=True)
+    total_maintenance_cost = fields.Float( compute='_compute_total_maintenance', store=True)
     active = fields.Boolean("Active", default=True)
     property_type_id = fields.Many2one("estate.property.type")
     salesman_id = fields.Many2one("res.users", default=lambda self: self.env.user)
@@ -33,8 +34,7 @@ class homePlan(models.Model):
     property_tag_ids = fields.Many2many("estate.property.tag")
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     sequence = fields.Integer('Sequence', help="Used to order stages. Lower is better.")
-
-
+    maintenance_ids = fields.One2many("estate.property.maintenance", "property_id")
     state = fields.Selection(
         [
             ('new', "New"),
@@ -93,6 +93,8 @@ class homePlan(models.Model):
         for record in self:
             if record.state == 'cancelled':
                 raise UserError(message="You can't sold once you have cancelled")
+            elif record.maintenance_ids.filtered(lambda r : r.status != 'Done'):
+                raise UserError("maintamce remain")   
             else:
                 record.state = 'sold'
         return True
@@ -105,3 +107,10 @@ class homePlan(models.Model):
                 record.state = 'cancelled'
 
         return True
+
+    @api.depends('maintenance_ids.cost')
+    def _compute_total_maintenance(self):
+        for record in self:
+            record.total_maintenance_cost = sum(record.maintenance_ids.mapped('cost'))
+
+            

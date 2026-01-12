@@ -6,7 +6,7 @@
         <field name="view_mode">list,form</field>
         <field name="context">
         {
-            'search_default_offerReceived':'1' 
+            'search_default_Active':1 
         }
         </field>
     </record>
@@ -15,12 +15,14 @@
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="bottom" open_form_view="True" decoration-success="state=='offer_received'" decoration-muted="state=='sold'" >
+            <list string="Channel" editable="bottom" open_form_view="True" decoration-success="state in ['offer_received','offer_accepted']" decoration-muted="state=='sold'" 
+            decoration-bf=" state == 'offer_accepted'">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name = "date_availability" optional="hide"/>
                 <field name= "property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name= "property_type_id"/>
+                <field name= "postcode"/>
                 <field name= "expected_price"/>
                 <field name= "bedrooms"/>
                 <field name= "state"/>
@@ -52,6 +54,7 @@
                             <field name="property_type_id" widget="selection"/>
                             <field name="postcode"/>
                             <field name ="date_availability"/>
+                            <field name="total_maintenance_cost"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -88,6 +91,16 @@
                                 </list>
                             </field>
                         </page>
+                        <page string = "Maintenance">
+                        <field name="maintenance_ids">
+                                <list editable="top">
+                                    <field name="title"/>
+                                    <field name="cost"/>
+                                    <field name ="status"/>
+                                    <button name="action_approved" title="approved" type="object" icon="fa-check" invisible="status=='done'"/>
+                                </list>
+                            </field>
+                        </page>
                         <page string="Other Info">
                             <group>
                                 <group>
@@ -108,10 +121,12 @@
         <field name="arch" type="xml">
             <search string="Home">
                 <field name = "bedrooms"  string ="bedrooms" filter_domain="[('bedrooms', '>=', self )]" />
+                <field name = "living_area" string="living area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name = "name"/>
                 <field name="expected_price"/>
                 <separator/>
                 <filter string="offer received" name="offerReceived" domain="[('state','in',('new', 'offer_received'))]"/>
+                <filter string="Active" name="Active" domain="[('active', '=', 'True')]"/>
                 <filter string="location" name="location" context="{'group_by': 'postcode'}"/>
                 <filter string="best_price" name="best_price" domain="[('best_price', '&lt;', 100)]"/>
                 <separator/>
