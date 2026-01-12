@@ -30,4 +30,9 @@
         id="estate_view_property_tag"
         parent="estate_menu_settings"
         action="estate_property_tag_action"/>
+    
+    <menuitem
+        id="estate_view_property_maintenance_requests"
+        parent="estate_menu_settings"
+        action="estate_property_maintenance_requests_action"/>
 </odoo>

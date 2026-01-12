@@ -54,6 +54,19 @@ class EstateProperty(models.Model):
     best_price = fields.Float(
         "Best offer", compute='_compute_best_price', store=True)
 
+    property_maintenance_requests = fields.One2many(
+        'estate.property.maintenance.requests', 'property_id')
+    total_maintenance_cost = fields.Float(
+        compute='_compute_total_maintenance_cost', string="Total Maintenance Cost")
+
+    @api.depends('property_maintenance_requests.cost')
+    def _compute_total_maintenance_cost(self):
+        for record in self:
+            record.total_maintenance_cost = (
+                sum(record.property_maintenance_requests.mapped('cost')
+                    ) if record.property_maintenance_requests else 0.0
+            )
+
     # SQL Constraint
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)', "The expected price must be strictly positive")
@@ -96,6 +109,11 @@ class EstateProperty(models.Model):
     def action_sold(self):
         if 'cancelled' in self.mapped('state'):
             raise UserError("Cancelled properties cannot be sold.")
+        else:
+            for record in self:
+                if record.property_maintenance_requests.status != 'done':
+                    raise UserError(
+                        "Property cannot be sold if there is any maintenance request not done.")
         return self.write({'state': 'sold'})
 
     def action_cancel(self):

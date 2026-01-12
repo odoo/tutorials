@@ -23,6 +23,9 @@
                                     <field name="name"/>
                                     <field name="expected_price"/>
                                     <field name="state"/>
+                                    <control>
+                                        <create string="Add a Properites"/>
+                                    </control>
                                 </list>
                             </field>
                         </page>
