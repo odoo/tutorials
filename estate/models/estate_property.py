@@ -55,6 +55,8 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offers")
     total_area = fields.Float(string="Total Area", compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
+    maintenance_ids = fields.One2many("estate.property.maintenance", "property_id")
+    total_cost = fields.Float(string="Total Cost", compute="_compute_total_cost")
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -84,6 +86,10 @@ class EstateProperty(models.Model):
                 raise UserError("Sold property cannot be cancelled")
             if not property.buyer_id:
                 raise UserError("Without accept any offer we can't sold it")
+            if property.maintenance_ids:
+                for maintenance in property.maintenance_ids:
+                    if maintenance.status in ('new', 'cancle'):
+                        raise UserError("Maintenance cost must be Approved or Done")
             property.state = 'sold'
         return True
 
@@ -114,3 +120,8 @@ class EstateProperty(models.Model):
 
             if float_compare(property.selling_price, minimum_price, precision_digits=2) < 0:
                 raise ValidationError("Selling price cannot be lower than 90% of the expected price.")
+
+    @api.depends('maintenance_ids.cost')
+    def _compute_total_cost(self):
+        for maintenance in self:
+            maintenance.total_cost = sum(maintenance.maintenance_ids.mapped('cost'))

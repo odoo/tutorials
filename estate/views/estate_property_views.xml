@@ -45,6 +45,7 @@
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
+                            <field name="total_cost"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
@@ -75,6 +76,11 @@
                             <group>
                                 <field name="seller_id"/>
                                 <field name="buyer_id"/>
+                            </group>
+                        </page>
+                        <page string="Maintenance">
+                            <group>
+                                <field name="maintenance_ids" nolabel="1"/>
                             </group>
                         </page>
                     </notebook>
