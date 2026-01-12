@@ -52,3 +52,11 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = False
             record.status = 'refused'
         return True
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            if self.env['estate.property'].browse(val['property_id']).offer_ids.filtered(lambda x: x.price > val['price']):
+                raise UserError("offer amount should be grater than current offer amount.")
+            self.env['estate.property'].browse(val['property_id']).state = 'offer_received'
+        return super().create(vals)

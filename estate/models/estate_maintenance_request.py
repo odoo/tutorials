@@ -15,9 +15,9 @@ class EstatePropertyMaintenanceRequest(models.Model):
     _chek_cost = models.Constraint(
         "CHECK(cost >= 0)", "cost of property should be positive"
     )
-    
-    @api.constrains('cost','status')
+
+    @api.constrains('cost', 'status')
     def _check_cost(self):
         for record in self:
-          if record.status=='approved' and not record.cost>0:
-            raise ValidationError("cost should be grater than 0.")
+            if record.status == 'approved' and not record.cost > 0:
+                raise ValidationError("cost should be grater than 0.")
