@@ -1,0 +1,146 @@
+<odoo>
+    <data>
+
+        <!-- Wizard form -->
+        <record id="view_market_view_report_wizard_form" model="ir.ui.view">
+            <field name="name">market.view.report.wizard.form</field>
+            <field name="model">market.view.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Market View Report">
+                    <group>
+                        <field name="preset"/>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                        <field name="include_opportunities" widget="boolean_toggle"/>
+                    </group>
+
+                    <footer>
+                        <button string="Open Report" type="object" name="action_open_report" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_market_view_report_wizard" model="ir.actions.act_window">
+            <field name="name">Market View Report</field>
+            <field name="res_model">market.view.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Run Lines: Search -->
+        <record id="view_market_view_report_run_line_search" model="ir.ui.view">
+            <field name="name">market.view.report.run.line.search</field>
+            <field name="model">market.view.report.run.line</field>
+            <field name="arch" type="xml">
+                <search string="Market View">
+                    <!-- searchable fields -->
+                    <field name="run_id"/>
+                    <field name="partner_id"/>
+                    <field name="partner_status_id"/>
+                    <field name="company_category_id"/>
+                    <field name="product_tmpl_id"/>
+                    <field name="sales_manager_id"/>
+                    <field name="period_day"/>
+
+                    <separator/>
+
+                    <!-- filters MUST have a name -->
+                    <filter name="filter_sales" string="Sales" domain="[('is_opportunity','=',False)]"/>
+                    <filter name="filter_opportunities" string="Opportunities" domain="[('is_opportunity','=',True)]"/>
+
+                    <separator/>
+
+                    <!-- group by -->
+                    <filter name="gb_partner" string="Company" context="{'group_by':'partner_id'}"/>
+                    <filter name="gb_business" string="Business" context="{'group_by':'company_category_id'}"/>
+                    <filter name="gb_manager" string="Sales Manager" context="{'group_by':'sales_manager_id'}"/>
+                    <filter name="gb_product" string="Product" context="{'group_by':'product_tmpl_id'}"/>
+
+                    <separator/>
+
+                    <!-- time group by -->
+                    <filter name="gb_day" string="Day" context="{'group_by':'period_day'}"/>
+                    <filter name="gb_month" string="Month" context="{'group_by':'period_month'}"/>
+                    <filter name="gb_week" string="Week" context="{'group_by':'period_week'}"/>
+                    <filter name="gb_year" string="Year" context="{'group_by':'period_year'}"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- Run Lines: List -->
+        <record id="view_market_view_report_run_line_list" model="ir.ui.view">
+            <field name="name">market.view.report.run.line.list</field>
+            <field name="model">market.view.report.run.line</field>
+            <field name="arch" type="xml">
+                <list string="Market View" create="0" edit="0" delete="0">
+                    <field name="period_day"/>
+                    <field name="partner_id"/>
+                    <field name="partner_status_id"/>
+                    <field name="company_category_id"/>
+                    <field name="product_tmpl_id"/>
+                    <field name="is_opportunity"/>
+                    <field name="sales_manager_id"/>
+                    <field name="capacity_tons"/>
+                    <field name="dosage_per_ton"/>
+                    <field name="potential_monthly_demand"/>
+                    <field name="monthly_result"/>
+                    <field name="difference_in_demand"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Run Lines: Pivot -->
+        <record id="view_market_view_report_run_line_pivot" model="ir.ui.view">
+            <field name="name">market.view.report.run.line.pivot</field>
+            <field name="model">market.view.report.run.line</field>
+            <field name="arch" type="xml">
+                <pivot string="Market View">
+                    <field name="partner_id" type="row"/>
+                    <field name="company_category_id" type="row"/>
+                    <field name="period_month" type="col"/>
+
+                    <field name="monthly_result" type="measure"/>
+                    <field name="potential_monthly_demand" type="measure"/>
+                    <field name="difference_in_demand" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <!-- Run Lines: Graph -->
+        <record id="view_market_view_report_run_line_graph" model="ir.ui.view">
+            <field name="name">market.view.report.run.line.graph</field>
+            <field name="model">market.view.report.run.line</field>
+            <field name="arch" type="xml">
+                <graph string="Market View" type="bar">
+                    <field name="period_month"/>
+                    <field name="monthly_result" type="measure"/>
+                    <field name="potential_monthly_demand" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!-- Action for run lines -->
+        <record id="action_market_view_report_run_lines" model="ir.actions.act_window">
+            <field name="name">Market View</field>
+            <field name="res_model">market.view.report.run.line</field>
+            <field name="views"
+                   eval="[
+                     (ref('contact_product_categories.view_market_view_report_run_line_list'), 'list'),
+                     (ref('contact_product_categories.view_market_view_report_run_line_pivot'), 'pivot'),
+                     (ref('contact_product_categories.view_market_view_report_run_line_graph'), 'graph')
+                   ]"/>
+            <field name="view_mode">list,pivot,graph</field>
+
+            <field name="search_view_id" ref="view_market_view_report_run_line_search"/>
+        </record>
+
+        <menuitem id="menu_market_view_report_wizard"
+                  name="Market View Report"
+                  parent="sale.menu_sale_report"
+                  action="action_market_view_report_wizard"
+                  sequence="70"/>
+
+    </data>
+</odoo>

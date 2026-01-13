@@ -11,8 +11,8 @@
         "views/res_partner_views.xml",
         "views/product_template_views.xml",
         "views/partner_status_views.xml",
-        "views/market_view_report_views.xml",
         "views/partner_products_view_views.xml",
+        "views/market_view_report_run_views.xml",
         "security/ir.model.access.csv"
     ],
     "assets": {

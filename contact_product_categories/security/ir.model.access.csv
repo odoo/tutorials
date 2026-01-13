@@ -1,5 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_res_partner_status_user,res.partner.status user,model_res_partner_status,base.group_user,1,1,1,1
 access_res_partner_convert_wizard_user,res.partner.convert.wizard user,model_res_partner_convert_wizard,base.group_user,1,1,1,1
-access_market_view_report_user,market.view.report user,model_market_view_report,base.group_user,1,0,0,0
 access_partner_products_view_user,partner.products.view user,model_partner_products_view,base.group_user,1,0,0,0
+access_market_view_report_run_user,market.view.report.run user,model_market_view_report_run,base.group_user,1,1,1,1
+access_market_view_report_run_line_user,market.view.report.run.line user,model_market_view_report_run_line,base.group_user,1,1,1,1
+access_market_view_report_wizard_user,market.view.report.wizard user,model_market_view_report_wizard,base.group_user,1,1,1,0
