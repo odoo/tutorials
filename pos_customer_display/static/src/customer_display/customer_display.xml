@@ -15,7 +15,8 @@
 				<div class="row fs-2 fw-bolder">
 					<t t-if="order.amountPerGuest">
 						<div class="message text-end">
-							<t t-esc="order.amountPerGuest.toFixed(2)" /> / Guest      
+   							<span t-esc="order.currency_symbol" style="margin-right:4px;"/>
+    						 <t t-esc="order.amountPerGuest.toFixed(2)" /> / Guest      
 						</div>
 					</t> 
 				</div>
