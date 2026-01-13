@@ -78,15 +78,18 @@
                     <field name="period_day"/>
                     <field name="partner_id"/>
                     <field name="partner_status_id"/>
-                    <field name="company_category_id"/>
-                    <field name="product_tmpl_id"/>
-                    <field name="is_opportunity"/>
                     <field name="sales_manager_id"/>
+                    <field name="city"/>
+                    <field name="phone"/>
+                    <field name="street"/>
+                    <field name="company_category_id"/>
                     <field name="capacity_tons"/>
+                    <field name="product_tmpl_id"/>
                     <field name="dosage_per_ton"/>
                     <field name="potential_monthly_demand"/>
                     <field name="monthly_result"/>
                     <field name="difference_in_demand"/>
+                    <field name="is_opportunity"/>
                 </list>
             </field>
         </record>

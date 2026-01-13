@@ -9,7 +9,7 @@ class MarketViewReportWizard(models.TransientModel):
 
     date_from = fields.Date(required=True)
     date_to = fields.Date(required=True)
-    include_opportunities = fields.Boolean(string="Include opportunities (zero sales in range)", default=False)
+    include_opportunities = fields.Boolean(string="Include not active products", default=False)
 
     preset = fields.Selection(
         [
