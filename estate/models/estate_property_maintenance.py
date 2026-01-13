@@ -2,6 +2,7 @@ from odoo import fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_is_zero
 
+
 class EstatePropertyMaintenance(models.Model):
     _name = 'estate.property.maintenance'
     _description = 'Estate Property maintenance'

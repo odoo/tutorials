@@ -4,13 +4,18 @@
         <field name="name">Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available_properties': 1}</field>
     </record>
 
     <record id="estate_property_view_list" model="ir.ui.view">
         <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list>
+            <list 
+                decoration-success="state in ('offer_received', 'offer_accepted')" 
+                decoration-bf="state == 'offer_accepted'"
+                decoration-muted="state == 'sold'"
+            >
                 <field name="name"/>
                 <field name="property_type_id"/>
                 <field name="postcode"/>
@@ -18,7 +23,7 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -33,16 +38,16 @@
                 </header>
                 <sheet>
                     <header>
-                        <button name="action_sold" type="object" string="Sold"/>
-                        <button name="action_cancel" type="object" string="Cancel"/>
+                        <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state in ('sold', 'cancelled')"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state in ('sold', 'cancelled')"/>
                     </header>
                     <h1>
                         <field name="name"/>
                     </h1>
-                    <field name="tag_ids" widget="many2many_tags" />
+                    <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': True}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                             <field name="total_cost"/>
@@ -62,14 +67,14 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="state"/>
                                 <field name="total_area" readonly="1"/>
                             </group>
                         </page>
                         <page string="Offers">
-                            <field name="offer_ids">
+                            <field name="offer_ids" readonly="state in ('offer_accepted', 'sold', 'cancelled')">
                             </field>
                         </page>
                         <page string="Other Info">
@@ -97,7 +102,7 @@
                 <field name="postcode"/>
                 <field name="date_availability"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="selling_price"/>
                 <filter string="Available Properties" name="available_properties" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <group>
