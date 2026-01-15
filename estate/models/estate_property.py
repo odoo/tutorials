@@ -48,10 +48,10 @@ class EstateProperty(models.Model):
     )
     active = fields.Boolean()
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    customer = fields.Many2one(
+    customer_id = fields.Many2one(
         "res.partner", string="Customer", copy=False, readonly=True
     )
-    salesperson = fields.Many2one(
+    salesperson_id = fields.Many2one(
         "res.users",
         string="Salesperson",
         readonly=True,
@@ -98,7 +98,7 @@ class EstateProperty(models.Model):
             raise UserError(
                 _("You cannot Sold the property offer that already Cancelled")
             )
-        if not self.customer:
+        if not self.customer_id:
             raise UserError(
                 _("You can not sold the property that has no customer")
             )
@@ -118,4 +118,16 @@ class EstateProperty(models.Model):
     def _check_offer_vaild(self):
         for record in self:
             if record.state == "sold":
-                UserError(_("already offer is accept"))
+                raise UserError(
+                    _("already offer is accept")
+                )
+        return True
+
+    @api.ondelete(at_uninstall=False)
+    def _check_property_deletion(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise UserError(
+                    _("You can only delete properties in new or cancelled state")
+                )
+        return True
