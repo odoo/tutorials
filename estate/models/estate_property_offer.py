@@ -7,9 +7,6 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
-    _check_offer_price = models.Constraint(
-        "CHECK(price>=0)", "Offer Price must be strictly positive"
-    )
     _order = "price desc"
 
     price = fields.Float()
@@ -26,6 +23,12 @@ class EstatePropertyOffer(models.Model):
         inverse="_inverse_date_deadline",
     )
     disable_buttons = fields.Boolean(compute="_disable_offer_buttons", default=False)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id", string="Property Type", store=True
+    )
+    _check_offer_price = models.Constraint(
+        "CHECK(price>=0)", "Offer Price must be strictly positive"
+    )
 
     @api.depends("validity", "date_deadline")
     def _compute_date_deadline(self):
@@ -52,17 +55,17 @@ class EstatePropertyOffer(models.Model):
             date_diff = record.date_deadline - creation_date
             record.validity = date_diff.days
 
-    def refuse_offer_action_icon(self):
+    def action_refuse_offer(self):
         for record in self:
             if record.status == "accepted":
-                raise UserError("You cant refuse an already accepted offer")
+                raise UserError(_("You cant refuse an already accepted offer"))
             record.status = "refused"
         return True
 
-    def accept_offer_action_icon(self):
+    def action_accept_offer(self):
         for record in self:
             if "accepted" in record.property_id.offer_ids.mapped("status"):
-                raise UserError("An Offer has already been accepted for this offer")
+                raise UserError(_("An Offer has already been accepted for this offer"))
 
             record.status = "accepted"
             record.property_id.selling_price = record.price

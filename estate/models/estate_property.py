@@ -8,14 +8,6 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class Property(models.Model):
     _name = "estate.property"
     _description = "estate property details"
-    _check_expected_price = models.Constraint(
-        "CHECK(expected_price >= 0)",
-        "The expected price should be strictly positive",
-    )
-    _check_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)",
-        "The selling price should be strictly positive",
-    )
     _order = "id desc"
 
     name = fields.Char(required=True)
@@ -53,11 +45,6 @@ class Property(models.Model):
         copy=False,
         required=True,
     )
-    status = fields.Selection(
-        selection=[("new", "New"), ("sold", "Sold"), ("cancelled", "Cancelled")],
-        default="new",
-        copy=False,
-    )
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     salesperson_id = fields.Many2one(
@@ -69,6 +56,14 @@ class Property(models.Model):
     total_area = fields.Float(string="Total Area(sqm)", compute="_compute_total_area")
     best_price = fields.Float(
         string="Best Offer", compute="_compute_best_offer", readonly=True, copy=False
+    )
+    _check_expected_price = models.Constraint(
+        "CHECK(expected_price >= 0)",
+        "The expected price should be strictly positive",
+    )
+    _check_selling_price = models.Constraint(
+        "CHECK(selling_price >= 0)",
+        "The selling price should be strictly positive",
     )
 
     @api.depends("living_area", "garden_area")
@@ -113,15 +108,13 @@ class Property(models.Model):
 
     def sold_button_action(self):
         for record in self:
-            if record.status == "cancelled":
-                raise UserError("Cancelled Property cannot be sold.")
+            if self.filtered(lambda x: x.state == "cancelled"):
+                raise UserError(_("Cancelled Property cannot be sold."))
             else:
                 record.state = "sold"
-                record.status = "sold"
 
     def cancelled_button_action(self):
         for record in self:
-            if record.status == "sold":
-                raise UserError("Sold Property cannot be Cancelled.")
+            if record.state == "sold":
+                raise UserError(_("Sold Property cannot be Cancelled."))
             record.state = "cancelled"
-            record.status = "cancelled"
