@@ -2,7 +2,6 @@
     <record id="estate_property_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="context">{'search_default_active': 1}</field>
     </record>
 
     <!-- listview -->
@@ -46,7 +45,7 @@
                     <group>
                         <group>
                             <field name="state" string="Status"/>
-                            <field name="property_type_id" options="{'no_create': True, 'no_edit': True}"/>
+                            <field name="property_type_id" options="{'no_create_edit': True}"/>
                             <field name="date_availability"/>
                             <field name="postcode"/>
                         </group>
@@ -65,8 +64,8 @@
                                     <field name="description"/>
                                     <field name="bedrooms"/>
                                     <field name="living_area"/>
-                                    <field name="facades"/>
-                                    <field name="garage"/>
+                                    <field name="facades" decoration-success="garden == True"/>
+                                    <field name="garage" />
                                     <field name="garden"/>
                                     <field name="garden_area" invisible="not garden"/>
                                     <field name="garden_orientation" invisible="not garden"/>
@@ -78,7 +77,7 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offers_id" nolabel="1" readonly="state in ['sold','cancelled','offer_accepted']"/>
+                                <field name="offer_ids" nolabel="1" readonly="state in ['sold','cancelled','offer_accepted']"/>
                             </group>
                         </page>
                         <page string="More Info">
@@ -117,10 +116,10 @@
                 <field name="last_seen"/>
                 <field name="garden"/>
                 <field name="garage"/>
-                <field name="living_area" string="Living Area" filter_domain="[('living_area', '>=', self)]"/>
-                <filter string="Archived" name="unactive" domain="[('active', '=', False)]"/>
+                <!-- <field name="living_area" string="Living Area" domain="[('living_area', '>=', self)]"/> -->
+                <filter string="Archived" name="a" domain="[('active', '=', False)]"/>
                 <filter string="Active" name="active" domain="[('active', '=', True)]"/>
-                <filter string="Best Price" name="hei" domain="[('best_price', '>' , 1000)]"/>
+                <filter string="Best Price" name="b" domain="[('best_price', '>' , 10)]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>

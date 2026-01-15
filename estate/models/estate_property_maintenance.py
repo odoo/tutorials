@@ -9,7 +9,7 @@ class EstatePropertyMaintenance(models.Model):
     name = fields.Char("Title")
     cost = fields.Integer()
     property_id = fields.Many2one(
-        'estate.property', 'maintenance_id', required=True
+        'estate.property', required=True
     )
     status = fields.Selection(
         default='new',

@@ -1,15 +1,15 @@
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate Property"
-
     _order = "id desc"
+
     name = fields.Char(default="Unknown", required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -26,11 +26,12 @@ class EstateProperty(models.Model):
     last_seen = fields.Datetime(default=fields.Datetime.now)
     garden_area = fields.Integer("Garden Area (sqm)")
     active = fields.Boolean(default=True)
-    partner_id = fields.Many2one('res.users', string="Salesperson")
+    partner_id = fields.Many2one(
+        'res.users', string="Salesperson", default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner')
     property_type_id = fields.Many2one('estate.property.type')
     property_tag_ids = fields.Many2many('estate.property.tags')
-    offers_id = fields.One2many('estate.property.offer', 'property_id')
+    offer_ids = fields.One2many('estate.property.offer', 'property_id')
     color = fields.Integer('Color Index')
     maintenance_id = fields.One2many(
         'estate.property.maintenance', 'property_id')
@@ -52,8 +53,8 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
+        help="This field tells us the state of the property.",
 
-        help="This field tells us the state of the property."
     )
     total_area = fields.Integer(compute='_compute_total_area')
     total_cost = fields.Integer(compute='_compute_total_cost')
@@ -61,7 +62,7 @@ class EstateProperty(models.Model):
 
     # SQL CONSTRAINT
     _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)', "Expected Price must be positiv"
+        'CHECK(expected_price > 0)', "Expected Price must be positive"
     )
     _check_selling_price = models.Constraint(
         'CHECK(selling_price >= 0)', "Selling Price must be positive"
@@ -72,12 +73,12 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         self.total_area = (self.living_area or 0) + (self.garden_area or 0)
 
-    @api.depends('offers_id.price')
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
             record.best_price = (
-                max(record.offers_id.mapped('price')
-                    ) if record.offers_id else 0.0
+                max(record.offer_ids.mapped('price')
+                    ) if record.offer_ids else 0.0
             )
 
     @api.depends('maintenance_id.cost')
@@ -103,7 +104,7 @@ class EstateProperty(models.Model):
     def _constrain_selling_price(self):
         if self.selling_price < self.expected_price * 0.90 and self.buyer_id:
             raise UserError(
-                "Selling price cannot be lower then the 90% percent of the expected price"
+                _("Selling price cannot be lower then the 90% percent of the expected price")
             )
 
     # BUTTON ACTION - SOLD/CANCEL

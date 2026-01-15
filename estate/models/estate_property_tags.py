@@ -6,8 +6,8 @@ from odoo import fields, models
 class EstatePropertyTags(models.Model):
     _name = 'estate.property.tags'
     _description = "Estate Property Tags"
-
     _order = "name"
+
     name = fields.Char("Property Tags", required=True)
     color = fields.Integer(
         'Color Index', default=lambda self: random.randint(1, 11)

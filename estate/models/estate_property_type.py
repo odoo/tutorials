@@ -9,7 +9,7 @@ class EstatePropertyType(models.Model):
     sequence = fields.Integer('Sequence', default=1,
                               help="Used to order Property Type")
     name = fields.Char("Property Type", required=True)
-    ofr_ids = fields.One2many('estate.property.offer', 'property_type_id')
+    offer_ids = fields.One2many('estate.property.offer', 'property_type_id')
     offer_count = fields.Integer(compute='_compute_offer')
     property_ids = fields.One2many(
         'estate.property', "property_type_id", required=True
@@ -21,7 +21,7 @@ class EstatePropertyType(models.Model):
     )
 
     # DEPEND DECORATOR
-    @api.depends('ofr_ids')
+    @api.depends('offer_ids')
     def _compute_offer(self):
         for record in self:
-            record.offer_count = len(record.ofr_ids)
+            record.offer_count = len(record.offer_ids)
