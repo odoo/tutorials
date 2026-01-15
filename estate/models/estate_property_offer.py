@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 
 
+
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "this is defind the offer of properties"
@@ -55,3 +56,18 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = "refused"
         return True
+
+    @api.model
+    def create(self,vals):
+      for val in vals:
+         x=self.env['estate.property'].browse(val['property_id'])
+         if x.offer_property_ids.filtered(lambda r : r.price > val['price']):
+            raise UserError("This offer's price is less than existing offer's price")
+         x.state='offer_received'
+
+      return  super().create(vals)
+
+
+
+# vals[0].get('xyz')
+# vals[0]['xyz']

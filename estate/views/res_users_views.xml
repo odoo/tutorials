@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_property_view_form1" model="ir.ui.view">
+        <field name="name">view.users.form</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="(//field[@name='state'])[2]" position="after">
+                <field name="name" position="move"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

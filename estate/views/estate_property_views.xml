@@ -16,7 +16,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties" editable="bottom" open_form_view="True" decoration-info="state in ['offer_received','offer_accepted']" decoration-bf="state =='offer_accepted'"
+            <list string="Properties" editable="bottom" open_form_view="True" decoration-success="state in ['offer_received','offer_accepted']" decoration-bf="state =='offer_accepted'"
             decoration-muted="state =='sold'">
                 <field name="name" width="100px"/>
                 <field name="description"/>

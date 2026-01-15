@@ -15,6 +15,12 @@
         <field name="arch" type="xml">
 
             <form>
+                <header>
+                    <button class="oe_stat_button" type="action" icon="fa-money" name="%(estate_property_offer_action)d">
+                        <field name="offer_count"/>
+               offers
+                    </button>
+                </header>
                 <sheet>
                     <group>
                         <h1>
@@ -37,7 +43,7 @@
         </field>
     </record>
 
-    <record id="estate_property_typr_list_view" model="ir.ui.view">
+    <record id="estate_property_type_list_view" model="ir.ui.view">
         <field name="name">estate.property.type.list.view</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
