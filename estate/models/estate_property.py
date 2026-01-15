@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, exceptions, fields, models
+from odoo import _, api, exceptions, fields, models
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
@@ -77,17 +77,15 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     def action_sold(self):
-        for record in self:
-            if record.state == 'cancelled':
-                raise exceptions.UserError("Cancelled properties cannot be sold.")
-            record.state = 'sold'
+        if self.filtered(lambda r: r.state == 'cancelled'):
+            raise exceptions.UserError(_("Cancelled properties cannot be sold."))
+        self.write({'state': 'sold'})
         return True
 
     def action_cancel(self):
-        for record in self:
-            if record.state == 'sold':
-                raise exceptions.UserError("Sold properties cannot be cancelled.")
-            record.state = 'cancelled'
+        if self.filtered(lambda x: x.state == 'sold'):
+            raise exceptions.UserError(_("Sold properties cannot be cancelled."))
+        self.write({'state': 'cancelled'})
         return True
 
     @api.constrains("selling_price", "expected_price", "buyer_id")
@@ -95,7 +93,7 @@ class EstateProperty(models.Model):
         for record in self:
             if float_is_zero(record.selling_price, precision_digits=2):
                 if record.buyer_id:
-                    raise exceptions.ValidationError("The selling price must be positive.")
+                    raise exceptions.ValidationError("The selling price must be greater than 0.")
                 continue
             if float_compare(record.selling_price, 0.0, precision_digits=2) <= 0:
                 raise exceptions.ValidationError("The selling price must be positive.")
@@ -104,3 +102,9 @@ class EstateProperty(models.Model):
                 raise exceptions.ValidationError(
                     f"Minimum selling price: {min_selling_price:.2f}"
                 )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_new_or_cancelled(self):
+        forbidden = self.filtered(lambda r: r.state not in ("new", "cancelled"))
+        if forbidden:
+            raise exceptions.UserError(_("Only properties in 'New' or 'Cancelled' state can be deleted."))

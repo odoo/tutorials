@@ -16,6 +16,11 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type Form">
+                <header>
+                    <button type="action" name="%(estate_property_offer_action)d" class="oe_stat_button" domain="[('property_type_id', '=', active_id)]">
+                        <field name="offer_count" widget="statinfo" string="Offers"/>
+                    </button>
+                </header>
                 <sheet>
                     <group>
                         <field name="name" />
