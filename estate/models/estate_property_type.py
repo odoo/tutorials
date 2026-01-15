@@ -12,7 +12,7 @@ class PropertyType(models.Model):
     offer_ids = fields.One2many('estate.property.offer', 'property_type_id')
     offer_count = fields.Integer(compute='_compute_offer_count')
 
-    _name_unique = models.Constraint(
+    _check_name_unique = models.Constraint(
         'unique(name)',
         'The Property type must be unique.',
     )

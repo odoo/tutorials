@@ -37,6 +37,23 @@ class EstatePropertyOffer(models.Model):
         'Offer price must be positive',
     )
 
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            property_id = val.get('property_id')
+            price = val.get('price')
+            if property_id and price:
+                property_rec = self.env['estate.property'].browse(property_id)
+                if property_rec.offer_ids:
+                    if price < property_rec.best_price:
+                        raise UserError(
+                            "The offer must be higher than existing offers."
+                        )
+        offer = super().create(vals)
+        if offer.property_id and offer.property_id.state == 'new':
+            offer.property_id.state = 'offer_received'
+        return offer
+
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for record in self:
@@ -44,6 +61,12 @@ class EstatePropertyOffer(models.Model):
                 record.date_deadline = record.create_date.date() + relativedelta(days=record.validity)
             else:
                 record.date_deadline = fields.Date.today() + relativedelta(days=record.validity)
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_delete_offer(self):
+        for record in self:
+            if record.status == "accepted":
+                raise UserError("You can not delete a property with accepted offer")
 
     def _inverse_date_deadline(self):
         for record in self:
@@ -55,14 +78,14 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.selling_price or record.status == "accepted":
                 raise UserError("Offer is already accepted")
             record.status = "accepted"
-            rejected_offers = record.search([
-                ('property_id', '=', record.property_id.id),
-                ('id', '!=', record.id),
-            ])
+            rejected_offers = record.property_id.offer_ids.filtered(
+                lambda offer: offer.id != record.id
+            )
             for ro in rejected_offers:
                 ro.status = "rejected"
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
+            record.property_id.state = "offer_accepted"
 
     def action_rejected(self):
         if self.status == "accepted":

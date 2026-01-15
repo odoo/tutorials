@@ -112,15 +112,21 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = False
 
-    @api.depends("offer_ids.price")
+    @api.depends("offer_ids")
     def _compute_offer_counts(self):
         for record in self:
-            offers = record.offer_ids.mapped("price")
-            record.offer_counts = len(offers)
+            record.offer_counts = len(record.offer_ids)
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_delete_property(self):
+        for record in self:
+            if record.state in ('offer_received', 'offer_accepted', 'sold'):
+                raise UserError('you can not delete a property!')
 
     def action_cancelled(self):
         for record in self:
-            if record.state == "sold":
+            sold_properties = record.filtered(lambda r: r.state == "sold")
+            if sold_properties:
                 raise RedirectWarning("A sold property cannot be cancelled",
                                       self.env.ref('estate.estate_property_offer_action').id,
                                       "go to offer page!")
@@ -128,25 +134,10 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            if record.state == "cancelled":
+            cancel_properties = record.filtered(lambda r: r.state == "cancelled")
+            if cancel_properties:
                 raise UserError("A cancelled property cannot be sold")
             accepted_offer = record.offer_ids.filtered(lambda offer: offer.status == "accepted")
             if not accepted_offer:
                 raise UserError("Property can not be sold without an accepted offer")
             record.state = "sold"
-
-    def action_best_offer(self):
-        for record in self:
-            if record.best_price:
-                best_offer = record.offer_ids.filtered(lambda offer: offer.price == record.best_price)[:1]
-                if not best_offer:
-                    raise UserError("No valid best offer found.")
-                best_offer.status = "accepted"
-                record.state = "sold"
-                record.selling_price = best_offer.price
-                record.buyer_id = best_offer.partner_id
-                rejected_offers = record.offer_ids.filtered(lambda offer: offer.status != "accepted")
-                for ro in rejected_offers:
-                    ro.status = "rejected"
-            else:
-                raise UserError("No best offer found.")
