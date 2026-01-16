@@ -14,7 +14,7 @@ class PropertyMantainance(models.Model):
     property_id = fields.Many2one('estate.property')
 
     @api.onchange('status')
-    def _onchenge_status(self):
+    def _onchange_status(self):
         for record in self:
             if record.status == 'approved' and float_is_zero(record.cost, precision_rounding=0.01):
                 raise UserError("Cost must be greater than zero.")

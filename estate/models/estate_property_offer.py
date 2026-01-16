@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class PropertyOffer(models.Model):
@@ -22,8 +23,8 @@ class PropertyOffer(models.Model):
         compute='_compute_date_deadline', inverse='_inverse_date_deadline'
     )
     property_type_id = fields.Many2one(
-        "estate.property.type",
-        related="property_id.property_type_id",
+        'estate.property.type',
+        related='property_id.property_type_id',
         store=True
     )
 
@@ -36,7 +37,8 @@ class PropertyOffer(models.Model):
     def _compute_date_deadline(self):
         for record in self:
             if record.create_date:
-                record.date_deadline = record.create_date + timedelta(days=record.validity)
+                record.date_deadline = record.create_date + \
+                    timedelta(days=record.validity)
             else:
                 record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
 
@@ -70,11 +72,22 @@ class PropertyOffer(models.Model):
     def _ondelete_offer(self):
         for records in self:
             if records.status == 'accepted':
-                raise ValidationError('Accepted offer cannot be deleted.')
+                raise ValidationError("Accepted offer cannot be deleted.")
 
+    @api.model
     def create(self, vals):
-        offer = super().create(vals)
-        if offer.property_id and offer.property_id.state == 'new':
-            offer.property_id.state = 'offer_received'
+        for val in vals:
+            price = val.get('price')
+            property_id = val.get('property_id')
+            property = self.env['estate.property'].browse(property_id)
+            if property.state == "new":
+                property.best_price = price
+            elif float_compare(price, property.best_price, precision_rounding=0.01) < 0:
+                raise UserError(
+                    f"Price should be greater than {property.best_price}")
+            else:
+                property.best_price = price
+            if property and property.state == 'new':
+                property.state = 'offer_received'
 
-        return offer
+        return super().create(vals)

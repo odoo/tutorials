@@ -121,3 +121,8 @@ class Property(models.Model):
                     record.property_maintainance_ids.mapped('cost'))
             else:
                 record.total_maintenance_cost = 0.00
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        if self.state not in ['new', 'cancelled']:
+            raise UserError("Only new and cancelled property can be deleted.")

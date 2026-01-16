@@ -8,7 +8,7 @@
             <list string="Channel" expand="1" decoration-success="state in ('offer_received', 'offer_accepted')" decoration-bf="state == 'offer_accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="property_type_id"/>
-                <field name="tag_ids" optional="show"/>
+                <field name="tag_ids" optional="show" widget="many2many_tags"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
