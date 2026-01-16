@@ -1,7 +1,7 @@
 import { registry } from "@web/core/registry";
 import { Interaction } from "@web/public/interaction";
 
-class ImageComparison extends Interaction {
+export class ImageComparison extends Interaction {
     static selector = ".s_image_comparison";
 
     dynamicContent = {
@@ -31,6 +31,3 @@ class ImageComparison extends Interaction {
 }
 
 registry.category("public.interactions").add("awesome_website.image_comparison", ImageComparison);
-registry.category("public.interactions.edit").add("awesome_website.image_comparison", {
-    Interaction: ImageComparison,
-});
