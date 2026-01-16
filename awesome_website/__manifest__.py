@@ -30,6 +30,7 @@
     'assets': {
         'web.assets_frontend': [
             'awesome_website/static/src/interactions/**/*',
+            'awesome_website/static/src/snippets/**/*.js',
         ],
     },
     'license': 'AGPL-3'
