@@ -1,0 +1,33 @@
+<odoo>
+
+    <record id="res_user_view_form" model="ir.ui.view">
+        <field name="name">res.users.view.form.inherit.real.estate</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Properties">
+                    <group>
+                        <field name="property_ids">
+                            <list>
+                                <field name="name"/>
+                                <field name="property_type_id"/>
+                                <field name="postcode"/>
+                                <field name="tag_ids" widget="many2many_tags"/>
+                                <field name="bedrooms"/>
+                                <field name="living_area"/>
+                                <field name="expected_price"/>
+                                <field name="selling_price"/>
+                            </list>
+                        </field>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    <!--expr="//page[@name='usage']"-->
+    <!--expr="//field[@name='account_id']"-->
+    <!--<attribute name="readonly">1</attribute>-->
+    <!-- <attribute name="invisible">state != 'offer_received'</attribute>-->
+    <!--<attribute name="string">Sell Property</attribute>-->
+</odoo>

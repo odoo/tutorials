@@ -1,7 +1,9 @@
 from datetime import timedelta
+# from collections import defaultdict
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class real_estate_property_offer(models.Model):
@@ -32,22 +34,67 @@ class real_estate_property_offer(models.Model):
         'The offer price must be strictly positive.',
     )
 
+    # @api.model
+    # def create(self, vals):
+    #     grouped = defaultdict(list)
+    #     for val in vals:
+    #         property_id = val.get('property_id')
+    #         price = val.get('price')
+    #         if property_id and price:
+    #             grouped[property_id].append(price)
+    #
+    #     for property_id, new_prices in grouped.items():
+    #         property_rec = self.env['real.estate'].browse(property_id)
+    #         existing_prices =  property_rec.best_price
+    #         new_max = max(new_prices)
+    #         max_price = max(existing_prices, new_max)
+    #         for price in new_prices:
+    #             if price < max_price:
+    #                 raise UserError(
+    #                     "Only the highest offer is allowed"
+    #                 )
+    #     offers = super().create(vals)
+    #     for offer in offers:
+    #         if offer.property_id and offer.property_id.stage == 'new':
+    #             offer.property_id.stage = 'offer_received'
+    #     return offers
+
     @api.model
     def create(self, vals):
-        # property_id = vals.get('property_id')
-        # price = vals.get('price')
-        # if property_id and price:
-        #     property_rec = self.env['estate.property'].browse(property_id)
-        #     if property_rec.offer_ids:
-        #         max_offer = max(property_rec.offer_ids.mapped('price'))
-        #         if price < max_offer:
-        #             raise UserError(
-        #                 "The offer must be higher than existing offers."
-        #             )
-        offer = super().create(vals)
-        if offer.property_id and offer.property_id.stage == 'new':
-            offer.property_id.stage = 'offer_received'
-        return offer
+        for val in vals:
+            price = val.get('price')
+            property_id = val.get('property_id')
+            property = self.env['real.estate'].browse(property_id)
+            if property.stage == "new":
+                property.best_price = price
+            elif float_compare(price, property.best_price, precision_rounding=0.01) < 0:
+                raise UserError(
+                    f"Price should be greater than {property.best_price}")
+            else:
+                property.best_price = price
+            if property and property.stage == 'new':
+                property.stage = 'offer_received'
+
+        return super().create(vals)
+
+    # @api.model
+    # def create(self, vals):
+    #     for property_id, n
+    #     for val in vals:
+    #         property_id = val.get('property_id')
+    #         price = val.get('price')
+    #         if property_id and price:
+    #             property_rec = self.env['real.estate'].browse(property_id)
+    #             if property_rec.offer_ids:
+    #                 # max_offer = max(property_rec.offer_ids.mapped('price'))
+    #                 if price < property_rec.best_price:
+    #                     raise UserError(
+    #                         "The offer must be higher than existing offers."
+    #                     )
+    #     offer = super().create(vals)
+    #     if offer.property_id and offer.property_id.stage == 'new':
+    #         offer.property_id.stage = 'offer_received'
+    #     return offer
 
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
@@ -88,7 +135,7 @@ class real_estate_property_offer(models.Model):
         self.status = 'accepted'
         self.property_id.write({
             'selling_price': self.price,
-            'stage': 'sold',
+            'stage': 'offer_accepted',
             'buyer_id': self.partner_id.id,
         })
         refused_offer = self.property_id.offer_ids.filtered_domain([

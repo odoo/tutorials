@@ -59,7 +59,11 @@ class real_estate(models.Model):
     selling_price = fields.Float()
     maintenance_request_ids = fields.One2many(
         "real.estate.property.maintenance.request", "property_id", string="Maintenance Requests")
-    total_maintenance_cost = fields.Float(compute="_compute_total_maintenance_cost", store=True)
+    total_maintenance_cost = fields.Float(compute="_compute_total_maintenance_cost", store=True, string="Total Cost")
+    salesperson_id = fields.Many2one(
+        'res.users',
+        string='Salesperson'
+    )
     _check_expected_price_positive = models.Constraint(
         'CHECK(expected_price > 0)',
         'The expected price must be strictly positive.',
@@ -75,13 +79,14 @@ class real_estate(models.Model):
                     rec.expected_price * 0.9,
                     precision_rounding=0.01) < 0:
                 raise ValidationError(
-                    'The selling price cannot be lower than 90% of the expected price.'
-                )
+                    'The selling price cannot be lower than 90% of the expected price.')
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            prices = record.offer_ids.mapped('price')
+            prices = []
+            for offer in record.offer_ids:
+                prices.append(offer.price)
             record.best_price = max(prices) if prices else 0.0
 
     @api.depends('maintenance_request_ids.cost')
@@ -135,3 +140,11 @@ class real_estate(models.Model):
         if maintenace_request:
             raise UserError("CProperty cannot be sold , there is any maintenance request not done")
         self.stage = 'sold'
+
+    @api.constrains('expected_price')
+    def _check_expected_price(self):
+        for rec in self:
+            if rec.expected_price < 0:
+                raise ValidationError(
+                    'The selling price cannot be lower than 90% of the expected price.'
+                )
