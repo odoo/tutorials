@@ -1,0 +1,27 @@
+<templates>
+    <t t-name="awesome_website.ImageComparisonOption">
+        <BuilderRow label.translate="Slider Direction">
+            <BuilderButtonGroup>
+                <BuilderButton
+                    action="'setCompareSliderDirection'"
+                    actionParam="'horizontal'"
+                    icon="'fa-arrows-h'"
+                    title.translate="Horizontal slider"/>
+                <BuilderButton
+                    action="'setCompareSliderDirection'"
+                    actionParam="'vertical'"
+                    icon="'fa-arrows-v'"
+                    title.translate="Vertical slider"
+                    />
+            </BuilderButtonGroup>
+        </BuilderRow>
+    </t>
+
+    <t t-inherit="website.BuilderOptions" t-inherit-mode="extension">
+        <xpath expr="//t[@id='snippet_specific_options']" position="after">
+            <image_comparison_option
+                template="awesome_website.ImageComparisonOption"
+                selector=".s_image_comparison"/>
+        </xpath>
+    </t>
+</templates>

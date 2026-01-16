@@ -1,39 +1,72 @@
 .o_image_comparison_container {
     --slider-position: 50%;
 
+    .o_image_comparison_horizontal & {
+        --handle-left: var(--slider-position);
+        --handle-top: 50%;
+        --slider-img-left: var(--slider-position);
+        --slider-img-right: 100%;
+        --slider-img-top: 0;
+        --slider-cursor: ew-resize;
+        --slider-height: 100vh;
+        --slider-width: 4px;
+        --slider-margin-inline: -2px;
+        --slider-margin-block: 0;
+        --slider-writing-mode: horizontal-tb;
+        --slider-transform: unset;
+
+        .o_rtl & {
+            --slider-img-left: 0;
+            --slider-img-right: calc(100% - var(--slider-position));
+        }
+    }
+    .o_image_comparison_vertical & {
+        --handle-left: 50%;
+        --handle-top: var(--slider-position);
+        --slider-img-top: var(--slider-position);
+        --slider-img-left: 0;
+        --slider-img-right: 100%;
+        --slider-cursor: ns-resize;
+        --slider-height: 4px;
+        --slider-width: 100vw;
+        --slider-margin-inline: 0;
+        --slider-margin-block: -2px;
+        --slider-writing-mode: vertical-rl;
+        --slider-transform: scaleY(-1);
+    }
+
     img {
         grid-area: 1 / 1;
         width: 100%;
         height: 100%;
 
         &.o_image_after {
-            clip-path: rect(0 100% 100% var(--slider-position));
-
-            .o_rtl & {
-                clip-path: rect(0 calc(100% - var(--slider-position)) 100% 0);
-            }
+            clip-path: rect(var(--slider-img-top) var(--slider-img-right) 100% var(--slider-img-left));
         }
     }
 
     .o_image_comparison_slider {
         inset: 0;
-        margin-inline: -2px;
+        margin-inline: var(--slider-margin-inline);
+        margin-block: var(--slider-margin-block);
         appearance: none;
+        writing-mode: var(--slider-writing-mode);
         background-color: transparent;
-        cursor: ew-resize;
+        cursor: var(--slider-cursor);
         z-index: 1;
+        transform: var(--slider-transform);
 
         &::-webkit-slider-thumb {
             appearance: none;
-            height: 100vh;
-            width: 4px;
+            height: var(--slider-height);
+            width: var(--slider-width);
             border: 0;
             background-color: #fff;
         }
         &::-moz-range-thumb {
             appearance: none;
-            height: 100vh;
-            width: 4px;
+            height: var(--slider-height);
+            width: var(--slider-width);
             border: 0;
             background-color: #fff;
         }
@@ -44,7 +77,8 @@
     }
 
     .o_image_comparison_handle {
-        left: var(--slider-position);
+        left: var(--handle-left);
+        top: var(--handle-top);
         width: 2rem;
         aspect-ratio: 1;
         background-color: #fff;

@@ -1,9 +1,22 @@
 .o_image_comparison_container {
-    .o_image_comparison_slider {
-        clip-path: rect(0 calc(var(--slider-position) + 1%) 100% var(--slider-position));
+    .o_image_comparison_horizontal & {
+        --slider-left: var(--slider-img-left);
+        --slider-right: calc(var(--slider-left) + 1%);
+        --slider-top: 0;
+        --slider-bottom: 100%;
 
         .o_rtl & {
-            clip-path: rect(0 calc(100% - var(--slider-position)) 100% calc(100% - var(--slider-position) - 1%));
+            --slider-right: var(--slider-img-right);
+            --slider-left: calc(var(--slider-right) - 1%);
         }
+    }
+    .o_image_comparison_vertical & {
+        --slider-top: var(--slider-img-top);
+        --slider-bottom: calc(var(--slider-top) + 1%);
+        --slider-left: var(--slider-img-left);
+        --slider-right: var(--slider-img-right);
+    }
+    .o_image_comparison_slider {
+        clip-path: rect(var(--slider-top) var(--slider-right) var(--slider-bottom) var(--slider-left));
     }
 }

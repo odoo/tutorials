@@ -26,7 +26,11 @@ export class ImageComparison extends Interaction {
     }
 
     onSliderInput(ev) {
-        this.sliderPosition = `${ev.currentTarget.value}%`;
+        let value = ev.currentTarget.value;
+        if (this.el.classList.contains("o_image_comparison_vertical")) {
+            value = 100 - value;
+        }
+        this.sliderPosition = `${value}%`;
     }
 }
 
