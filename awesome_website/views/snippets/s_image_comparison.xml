@@ -3,6 +3,21 @@
 
 <template id="s_image_comparison" name="Image Comparison">
     <!-- Your snippet here -->
+    <section class="s_image_comparison pb64 pt64">
+        <div class="o_container_small">
+            <div class="o_image_comparison_container position-relative d-grid overflow-hidden">
+                <img src="/web/image/awesome_website.s_image_comparison_01" class="o_image_before img img-fluid object-fit-cover" alt="" loading="lazy" data-mimetype="image/webp"/>
+                <img src="/web/image/awesome_website.s_image_comparison_02" class="o_image_after img img-fluid object-fit-cover" alt="" loading="lazy" data-mimetype="image/webp"/>
+                <input type="range" min="0" max="100" class="o_image_comparison_slider position-absolute"/>
+                <div class="o_image_comparison_handle position-absolute top-50 translate-middle rounded-circle pe-none"/>
+            </div>
+        </div>
+    </section>
 </template>
+
+<asset id="awesome_website.s_image_comparison_000_scss" name="Image Comparison 000 SCSS">
+    <bundle>web.assets_frontend</bundle>
+    <path>awesome_website/static/src/snippets/s_image_comparison/000.scss</path>
+</asset>
 
 </odoo>

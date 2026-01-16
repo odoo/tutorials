@@ -24,6 +24,8 @@
     'installable': True,
     'data': [
         'data/images.xml',
+        'views/snippets/snippets.xml',
+        'views/snippets/s_image_comparison.xml',
     ],
     'assets': {
         'web.assets_frontend': [

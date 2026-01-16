@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+<template id="snippets" inherit_id="website.snippets">
+   <xpath expr="//t[@t-snippet='website.s_picture']" position="before">
+       <t t-snippet="awesome_website.s_image_comparison" string="Image Comparison" group="images">
+           <keywords>image comparison, before, after, compare, side-by-side, photo, picture, contrast, split, match, slider</keywords>
+       </t>
+   </xpath>
+</template>
+
+</odoo>
