@@ -1,5 +1,6 @@
 from dateutil.relativedelta import relativedelta
-from odoo import fields, models, api
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -53,7 +54,7 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offers")
-    total_area = fields.Float(string="Total Area", compute="_compute_total_area")
+    total_area = fields.Float(string="Total Area", compute="_compute_total_area", store=True)
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
     maintenance_ids = fields.One2many("estate.property.maintenance", "property_id")
     total_cost = fields.Float(string="Total Cost", compute="_compute_total_cost")
@@ -125,3 +126,9 @@ class EstateProperty(models.Model):
     def _compute_total_cost(self):
         for maintenance in self:
             maintenance.total_cost = sum(maintenance.maintenance_ids.mapped('cost'))
+
+    @api.ondelete(at_uninstall=False)
+    def _check_property_deletion(self):
+        for property in self:
+            if property.state not in ('new', 'cancelled'):
+                raise UserError("You can only delete properties in New or Cancelled state")

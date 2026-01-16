@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
+
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
-from odoo import fields, models, api
 
 
 class EstatePropertyOffer(models.Model):
@@ -57,6 +58,8 @@ class EstatePropertyOffer(models.Model):
             offer.status = "accepted"
             offer.property_id.buyer_id = offer.partner_id
             offer.property_id.selling_price = offer.price
+            offer.property_id.state = "sold"
+            offer.property_id.active = False
         return True
 
     def action_refuse(self):
@@ -74,3 +77,20 @@ class EstatePropertyOffer(models.Model):
         for offer in self:
             if offer.property_id.state in ('sold', 'cancelled'):
                 raise ValidationError("You cannot add an offer on a Sold or Cancelled property")
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            property_id = vals.get("property_id")
+            price = vals.get("price")
+            property_rec = self.env["estate.property"].browse(property_id)
+
+            # Prevent lower offer
+            existing_prices = property_rec.offer_ids.mapped("price")
+            if existing_prices and price < max(existing_prices):
+                raise UserError("You cannot create an offer lower than an existing offer")
+
+            # Set property state
+            property_rec.state = "offer_received"
+
+        return super().create(vals_list)

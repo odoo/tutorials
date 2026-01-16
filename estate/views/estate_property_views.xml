@@ -34,13 +34,11 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
+                    <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state in ('sold', 'cancelled')"/>
                 </header>
                 <sheet>
-                    <header>
-                        <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state in ('sold', 'cancelled')"/>
-                        <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state in ('sold', 'cancelled')"/>
-                    </header>
                     <h1>
                         <field name="name"/>
                     </h1>
@@ -69,8 +67,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area" invisible="not garden"/>
                                 <field name="garden_orientation" invisible="not garden"/>
-                                <field name="state"/>
-                                <field name="total_area" readonly="1"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -104,7 +101,9 @@
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="selling_price"/>
+                <field name="expected_price"/>
                 <filter string="Available Properties" name="available_properties" domain="[('state', 'in', ('new', 'offer_received'))]"/>
+                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>
