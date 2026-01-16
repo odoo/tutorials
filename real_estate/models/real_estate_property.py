@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -8,6 +8,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property"
+    _order = "id desc"
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -85,24 +86,24 @@ class EstateProperty(models.Model):
 
     def action_sold(self):
         for record in self:
-            if record.state == 'cancelled':
-                raise UserError("Cancelled Properties Can Not be sold")
+            if record.filtered(lambda r: r.state == 'cancelled'):
+                raise UserError(_("Cancelled Properties Can Not be sold"))
             if not record.buyer_id:
-                raise UserError("Can not sold property who has no buyer")
+                raise UserError(_("Can not sold property who has no buyer"))
             record.state = 'sold'
         return True
 
     def action_cancelled(self):
         for record in self:
-            if record.state == 'sold':
-                raise UserError("Sold Properties can not be cancel")
+            if record.filtered(lambda r: r.state == 'sold'):
+                raise UserError(_("Sold Properties can not be cancel"))
             record.state = 'cancelled'
         return True
 
     def action_approve(self):
         for record in self:
-            if record.state == 'sold':
-                raise UserError("Sold properties cannot accept other Offers.")
+            if record.filtered(lambda r: r.state == 'sold'):
+                raise UserError(_("Sold properties cannot accept other Offers."))
             target_offer = record.offer_ids.filtered(lambda r: r.price == record.best_price)
             if target_offer:
                 target_offer = target_offer[0]
@@ -116,9 +117,9 @@ class EstateProperty(models.Model):
     def _check_price(self):
         for record in self:
             if record.expected_price <= 0:
-                raise ValidationError("Expected Price Must be Positive")
+                raise ValidationError(_("Expected Price Must be Positive"))
             if record.selling_price < 0:
-                raise ValidationError("Selling price Must be Positive")
+                raise ValidationError(_("Selling price Must be Positive"))
 
     @api.constrains('selling_price', 'expected_price')
     def _check_expected_selling_price(self):
@@ -128,4 +129,4 @@ class EstateProperty(models.Model):
 
             expected_selling_price = record.expected_price * 0.9
             if float_compare(record.selling_price, expected_selling_price, precision_digits=2) < 0:
-                raise ValidationError("Selling price Must be 90% of the expected price")
+                raise ValidationError(_("Selling price Must be 90% of the expected price"))

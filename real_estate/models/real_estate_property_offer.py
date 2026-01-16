@@ -1,12 +1,13 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Offers on Buy or Sell for properties"
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(
@@ -35,7 +36,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         for record in self:
             if record.property_id.buyer_id:
-                raise UserError("You can accept offer only once per property")
+                raise UserError(_("You can accept offer only once per property"))
         record.status = 'accepted'
         record.property_id.buyer_id = record.partner_id
         record.property_id.selling_price = record.price
@@ -52,6 +53,6 @@ class EstatePropertyOffer(models.Model):
     def _check_offer_price(self):
         for record in self:
             if record.price <= 0:
-                raise ValidationError("Offer Price Must be Positive")
+                raise ValidationError(_("Offer Price Must be Positive"))
 
-    _check_partner = models.Constraint('UNIQUE(partner_id, property_id)', "User have already made a offer on this property")
+    _check_partner_partner_id = models.Constraint('UNIQUE(partner_id, property_id)', "This User have already made an offer on this property")
