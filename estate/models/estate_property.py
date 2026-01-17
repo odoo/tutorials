@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -13,10 +13,12 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
+
     date_availability = fields.Date(
         copy=False,
         default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
+
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -65,21 +67,30 @@ class EstateProperty(models.Model):
         "property_id",
         string="Offers",
     )
+    salesperson_id = fields.Many2one(
+        "res.users", string="Salesperson", default=lambda self: self.env.user
+    )
     total_area = fields.Float(
         compute="_compute_total_area", string="Total Area", readonly=False
     )
     best_price = fields.Float(
         compute="_compute_best_price", string="Best Offer", store=True
     )
-
     _check_expected_price = models.Constraint(
         "CHECK(expected_price > 0)",
         "The expected price must be strictly positive",
     )
-
     _check_selling_price = models.Constraint(
         "CHECK(selling_price >= 0)", "The selling price must be positive"
     )
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_allowed(self):
+        for record in self:
+            if record.state not in ("new", "cancelled"):
+                raise ValidationError(
+                    _("You can only delete properties that are New or Cancelled.")
+                )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -102,47 +113,33 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
-        for record in self:
-            if record.state == "cancelled":
-                raise UserError("A cancelled Property cannot be sold.")
-            record.state = "sold"
-        return True
+        if self.filtered(lambda x: x.state == "cancelled"):
+            raise UserError(_("A cancelled Property cannot be sold."))
+        self.write({"state": "sold"})
 
     def action_cancel(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError("A sold Property cannot be cancelled.")
-            record.state = "cancelled"
-        return True
+        if self.filtered(lambda x: x.state == "sold"):
+            raise UserError(_("A sold Property cannot be cancelled."))
+        self.write({"state": "cancelled"})
 
     @api.constrains("expected_price", "selling_price")
     def _check_selling_price(self):
         for record in self:
             if float_is_zero(record.selling_price, precision_rounding=0.01):
                 continue
-
             min_price = record.expected_price * 0.9
-
-            if (
-                float_compare(record.selling_price, min_price, precision_rounding=0.01)
-                < 0
-            ):
-                raise ValidationError(
-                    "The selling price cannot be lower than 90% of the expected price."
-                )
+            if float_compare(record.selling_price, min_price, precision_rounding=0.01) < 0:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
     def accept_best_price(self):
         for record in self:
             if not record.offer_ids:
                 raise UserError("There are no offers to accept.")
 
-            best_offer = max(record.offer_ids, key=lambda o: o.price)
-
+            best_offer = max(record.offer_ids, key=lambda t: t.price)
             record.offer_ids.write({"status": "refused"})
             best_offer.write({"status": "accepted"})
 
-            if record.offer_ids.filtered(lambda o: o.status == "accepted"):
-                record.selling_price = record.best_price
-                record.buyer_id = best_offer.partner_id
-
+            record.selling_price = record.best_price
+            record.buyer_id = best_offer.partner_id
         return True

@@ -30,12 +30,12 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
             <form string="Estate_Property">
-
+            
             <header>
-                <button name="action_sold" type="object" string="Sold"  title="Accept Property" class="btn-primary" />
-                <button name="action_cancel" type="object" string="Cancel" title="Cancel Property" class="btn-secondary" />
-                <!-- <button name="accept_best_price" type="object" string="Best Offer" title="Best Offer"/> -->
-                <field name="state" widget="statusbar" status_visible="new,offer_received,offer_accepted,sold,cancelled"/>   
+                <button name="action_sold" type="object" string="Sold"  title="Accept Property" class="btn-primary" invisible="state == 'sold'"/>
+                <button name="action_cancel" type="object" string="Cancel" title="Cancel Property" class="btn-secondary" invisible="state == 'cancelled'"/>
+                <button name="accept_best_price" type="object" string="Best Offer" title="Best Offer"/>
+                <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>   
             </header> 
                     <sheet>
                         <div>
