@@ -1,6 +1,5 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, _
 from odoo.exceptions import UserError
-
 
 
 class EstatePropertyOffer(models.Model):
@@ -38,6 +37,18 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
 
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            x = self.env["estate.property"].browse(val["property_id"])
+            if x.offer_property_ids.filtered(lambda r: r.price > val["price"]):
+                raise UserError(
+                    _("This offers price is less than existing offers price.")
+                )
+            x.state = "offer_received"
+
+        return super().create(vals)
+
     def action_accept_offer(self):
         for record in self:
             if record.property_id.state == "offer_accepted":
@@ -57,17 +68,3 @@ class EstatePropertyOffer(models.Model):
             record.status = "refused"
         return True
 
-    @api.model
-    def create(self,vals):
-      for val in vals:
-         x=self.env['estate.property'].browse(val['property_id'])
-         if x.offer_property_ids.filtered(lambda r : r.price > val['price']):
-            raise UserError("This offer's price is less than existing offer's price")
-         x.state='offer_received'
-
-      return  super().create(vals)
-
-
-
-# vals[0].get('xyz')
-# vals[0]['xyz']

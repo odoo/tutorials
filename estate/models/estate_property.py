@@ -64,15 +64,6 @@ class EstateProperty(models.Model):
     def _compute_best_price(self):
         self.best_price = max(self.offer_property_ids.mapped("price"), default=0.0)
 
-    @api.onchange("garden")
-    def _onchange_gaden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
-
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
         if (
@@ -84,20 +75,34 @@ class EstateProperty(models.Model):
                 "The selling price is must greater than 90% of expected price"
             )
 
+    @api.onchange("garden")
+    def _onchange_gaden(self):
+        if self.garden:
+            self.garden_area = 10
+            self.garden_orientation = "north"
+        else:
+            self.garden_area = 0
+            self.garden_orientation = False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_cancel(self):
+        invalid_records = self.filtered(lambda r: r.state not in ["new", "cancelled"])
+        if invalid_records:
+            raise UserError(
+                "You can not delete a property that is not in 'New' or 'Cancelled' state."
+            )
+
     def action_set_sold(self):
+        self.ensure_one()
         if self.state == "cancelled":
             raise UserError(message="The cancelled property cant be sold")
         self.state = "sold"
         return True
 
     def action_set_cancelled(self):
+        self.ensure_one()
         if self.state == "sold":
             raise UserError(message="Sold property can not be cancelled")
         self.state = "cancelled"
         return True
 
-    @api.ondelete(at_uninstall=False)
-    def _unlink_except_new_cancel(self):
-      invalid_records = self.filtered(lambda r: r.state not in ['new', 'cancelled'])
-      if invalid_records:
-        raise UserError("You can not delete a property that is not in 'New' or 'Cancelled' state.")
