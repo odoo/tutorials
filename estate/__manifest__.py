@@ -7,4 +7,5 @@
         'base_setup',       
     ],
     'application': True, 
+    'license': 'LGPL-3',
 }
