@@ -14,7 +14,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        copy=False, default=lambda self: fields.Date.today() + relativedelta(month=3)
+        copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -46,7 +46,7 @@ class EstateProperty(models.Model):
             ("cancelled", "Cancelled"),
         ],
     )
-    active = fields.Boolean()
+    active = fields.Boolean(default=True)
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     customer_id = fields.Many2one(
         "res.partner", string="Customer", copy=False, readonly=True
@@ -87,10 +87,37 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    def action_cancel(self):
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
         for record in self:
-            if record.state == 'sold':
-                raise UserError(_("You cannot cannoy cancel the property that already cancelled"))
+            if float_is_zero(record.selling_price, precision_digits=2):
+                continue
+            min_price = record.expected_price * 0.9
+            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
+                raise ValidationError(
+                    _(
+                        "The Selling price cannot be lower than 90% of the expected price."
+                    )
+                )
+
+    @api.constrains("offer_ids")
+    def _check_offer_vaild(self):
+        if self.filtered(lambda record: record.state == "sold"):
+            raise UserError(_("Already offer is accept"))
+        return True
+
+    @api.ondelete(at_uninstall=False)
+    def _check_if_property_state(self):
+        if self.filtered(lambda record: record.state not in ("new", "cancelled")):
+            raise UserError(
+                _("You can only delete properties in new or cancelled state")
+            )
+        return True
+
+    def action_cancel(self):
+        self.ensure_one()
+        if self.filtered(lambda record: record.state == "sold"):
+            raise UserError(_("You cannot cancel the property that already cancelled"))
         self.write({"state": "cancelled"})
 
     def action_sold(self):
@@ -99,35 +126,21 @@ class EstateProperty(models.Model):
                 _("You cannot Sold the property offer that already Cancelled")
             )
         if not self.customer_id:
-            raise UserError(
-                _("You can not sold the property that has no customer")
-            )
+            raise UserError(_("You cannot sold the property that has no customer"))
         self.write({"state": "sold"})
 
-    @api.constrains("selling_price", "expected_price")
-    def _check_selling_price(self):
+    def action_best_offer(self):
+        self.ensure_one()
         for record in self:
-            if float_is_zero(record.selling_price, precision_digits=2):
-                continue
-
-            min_price = record.expected_price * 0.9
-            if float_compare(record.selling_price, min_price, precision_digits=2) < 0:
-                raise ValidationError(_("The Selling price cannot be lower than 90% of the expected price."))
-
-    @api.constrains("offer_ids")
-    def _check_offer_vaild(self):
-        for record in self:
-            if record.state == "sold":
-                raise UserError(
-                    _("already offer is accept")
-                )
-        return True
-
-    @api.ondelete(at_uninstall=False)
-    def _check_property_deletion(self):
-        for record in self:
-            if record.state not in ("new", "cancelled"):
-                raise UserError(
-                    _("You can only delete properties in new or cancelled state")
-                )
-        return True
+            best_offer = self.env["estate.property.offer"].search(
+                [("property_id", "=", record.id)], order="price desc", limit=1
+            )
+            if not best_offer:
+                raise UserError(_("Property offer not found first add the offers"))
+            best_offer.status = "accepted"
+            record.state = "sold"
+            record.selling_price = best_offer.price
+            other_offer = self.env["estate.property.offer"].search(
+                [("property_id", "=", record.id), ("id", "!=", best_offer.id)]
+            )
+            other_offer.status = "refused"

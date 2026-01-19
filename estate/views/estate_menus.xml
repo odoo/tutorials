@@ -2,7 +2,8 @@
     <data>
         <menuitem
             id="estate_property_menu"
-            name="Estate Property"/>
+            name="Estate Property"
+            web_icon="estate,static/description/icon.png"/>
         <menuitem
             id="estate_property_menu_advertisements"
             name="Advertisements"
