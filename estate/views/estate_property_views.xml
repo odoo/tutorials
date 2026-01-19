@@ -46,7 +46,7 @@
                         <group>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                             <field name="state"/>
-                            <field name="property_type" options="{'no_create_edit': true}"/>
+                            <field name="property_type" options="{'no_edit': true, 'no_create': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -104,12 +104,13 @@
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area','>=',self)]"/>
                 <field name="facades"/>
-                <field name="total_area" filter_domain="[('total_area','>=',self)]"/>
+                <field name="total_area"/>
                 <field name="property_type"/>
                 <field name="state"/>
                 <separator/>
                 <filter string="property type" name="property_type" domain="[('property_type', '=', 'house')]"/>
                 <filter string="Available" name="active" domain="[('state', 'in', ['new', 'offer_accepted'])]"/>
+                <filter string="Archive" name="archive" domain="[('active', '=', 'False')]"/>
                 <filter string="postcode" name="postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>

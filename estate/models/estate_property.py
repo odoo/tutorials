@@ -53,7 +53,7 @@ class EstateProperty(models.Model):
     maintenance_request_ids = fields.One2many(
         'estate.property.maintenance.request', 'property_id'
     )
-    total_area = fields.Float(compute='_compute_total_area', store=True)
+    total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(compute='_compute_best_price')
     total_maintenance_cost = fields.Float(compute='_compute_total_maintenance_cost')
     _chek_expected_price = models.Constraint(
@@ -71,7 +71,11 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
+            max_val=0
+            for v in record.offer_ids:
+                if(v.price>max_val):
+                    max_val=v.price
+            record.best_price=max_val
 
     @api.onchange('garden')
     def _onchnage_garden(self):
@@ -133,5 +137,5 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_cancelled(self):
-        if any(record.state not in ['new','cancelled'] for record in self):
-            raise UserError("Only new and cancelled property can be deleted.")
+        if any(record.state not in ['new', 'cancelled'] for record in self):
+            raise ValidationError("Only new and cancelled property can be deleted.")
