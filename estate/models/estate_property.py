@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import _, api, exceptions, fields, models
+from odoo import api, exceptions, fields, models, _
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
