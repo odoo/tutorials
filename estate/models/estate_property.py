@@ -107,14 +107,20 @@ class Property(models.Model):
                 )
 
     def sold_button_action(self):
-        for record in self:
-            if self.filtered(lambda x: x.state == "cancelled"):
-                raise UserError(_("Cancelled Property cannot be sold."))
-            else:
-                record.state = "sold"
+        if self.filtered(lambda x: x.state == "cancelled"):
+            raise UserError(_("Cancelled Property cannot be sold."))
+        else:
+            self.state = "sold"
 
     def cancelled_button_action(self):
+        if self.filtered(lambda x: x.state == "sold"):
+            raise UserError(_("Sold Property cannot be Cancelled."))
+        self.state = "cancelled"
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_deletion(self):
         for record in self:
-            if record.state == "sold":
-                raise UserError(_("Sold Property cannot be Cancelled."))
-            record.state = "cancelled"
+            if record.state not in ["new", "cancelled"]:
+                raise UserError(
+                    _("You can only delete properties that are 'New' or 'Cancelled'.")
+                )

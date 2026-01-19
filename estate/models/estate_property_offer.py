@@ -72,3 +72,12 @@ class EstatePropertyOffer(models.Model):
             record.property_id.state = "offer_accepted"
             record.property_id.buyer_id = record.partner_id
         return True
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            linked_property = self.env["estate.property"].browse(val["property_id"])
+            if val["price"] < linked_property.best_price:
+                raise UserError("An offer with higher price already exists")
+            linked_property.state = "offer_received"
+        return super().create(vals)
