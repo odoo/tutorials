@@ -28,6 +28,11 @@ class EstatePropertyOffer(models.Model):
     )
     property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", store=True, readonly=True)
 
+    _check_offer_price_positive = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer price must be positive.',
+    )
+
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
         for offer in self:
@@ -47,37 +52,6 @@ class EstatePropertyOffer(models.Model):
                     - offer.create_date.date()
                 ).days
 
-    def action_accept(self):
-        for offer in self:
-            if offer.property_id.buyer_id:
-                raise UserError("Property already accepted")
-
-            other_offer = offer.property_id.offer_ids - offer
-            other_offer.write({'status': 'refused'})
-
-            offer.status = "accepted"
-            offer.property_id.buyer_id = offer.partner_id
-            offer.property_id.selling_price = offer.price
-            offer.property_id.state = "sold"
-            offer.property_id.active = False
-        return True
-
-    def action_refuse(self):
-        for offer in self:
-            offer.status = "refused"
-        return True
-
-    _check_offer_price_positive = models.Constraint(
-        'CHECK(price > 0)',
-        'Offer price must be positive.',
-    )
-
-    @api.constrains('property_id')
-    def _check_property_state(self):
-        for offer in self:
-            if offer.property_id.state in ('sold', 'cancelled'):
-                raise ValidationError("You cannot add an offer on a Sold or Cancelled property")
-
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
@@ -94,3 +68,33 @@ class EstatePropertyOffer(models.Model):
             property_rec.state = "offer_received"
 
         return super().create(vals_list)
+
+    @api.constrains('property_id')
+    def _check_property_state(self):
+        for offer in self:
+            if offer.property_id.state in ('sold', 'cancelled'):
+                raise ValidationError("You cannot add an offer on a Sold or Cancelled property")
+
+    def action_accept(self):
+        for offer in self:
+            property_rec = offer.property_id
+
+            if property_rec.buyer_id:
+                raise UserError("Property already accepted")
+
+            other_offer = property_rec.offer_ids - offer
+            other_offer.write({'status': 'refused'})
+
+            offer.status = "accepted"
+            property_rec.write({
+                'buyer_id': offer.partner_id.id,
+                'selling_price': offer.price,
+                'state': 'sold',
+                'active': False,
+            })
+        return True
+
+    def action_refuse(self):
+        for offer in self:
+            offer.status = "refused"
+        return True

@@ -103,7 +103,7 @@
                 <field name="selling_price"/>
                 <field name="expected_price"/>
                 <filter string="Available Properties" name="available_properties" domain="[('state', 'in', ('new', 'offer_received'))]"/>
-                <filter name="archived" string="Archived" domain="[('active', '=', False)]"/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>
