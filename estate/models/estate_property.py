@@ -81,6 +81,9 @@ class EstateProperty(models.Model):
                     ) if record.offer_ids else 0.0
             )
 
+        best = [offer.price for offer in self.offer_ids]
+        record.best_price = max(best) if best else 0.0
+
     @api.depends('maintenance_id.cost')
     def _compute_total_cost(self):
         for record in self:
@@ -112,9 +115,10 @@ class EstateProperty(models.Model):
         if self.state == 'cancelled':
             raise UserError("There is not any maintenance !")
         else:
-            for record in self:
-                if record.maintenance_id.status != 'done':
+            for record in self.maintenance_id:
+                if record.status != 'done':
                     raise UserError("property is not under maintenance")
+            self.state = 'sold'
 
     def action_cancel(self):
         if self.state == 'sold':

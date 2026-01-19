@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
 
@@ -46,7 +46,7 @@ class EstatePropertyOffer(models.Model):
     def action_accept(self):
         if self.property_id.state == 'offer_accepted':
             raise UserError(
-                "An offer has already been accepted for this property."
+                _("An offer has already been accepted for this property.")
             )
         self.write({'status': 'accepted'})
         for offer in self:
@@ -65,9 +65,23 @@ class EstatePropertyOffer(models.Model):
                 'selling_price': None,
             })
 
-    def create(self, vals):
-        offer = super().create(vals)
-        if offer.property_id and offer.property_id.state == 'new':
-            offer.property_id.state = 'offer_received'
+    @api.model_create_multi
+    def create(self, vals_list):
+        if not vals_list:
+            return super().create(vals_list)
+        property_id = vals_list[0].get('property_id')
+        new_prices = [vals.get('price', 0) for vals in vals_list]
+        max_new_price = max(new_prices)
+        existing_offers = self.env['estate.property.offer'].search([
+            ('property_id', '=', property_id)
+        ])
+        max_db_price = max(existing_offers.mapped(
+            'price')) if existing_offers else 0
+        if max_new_price <= max_db_price:
+            raise UserError(
+                "Offer price should be higher then the Existing One!"
+            )
+        self.env['estate.property'].browse(
+            property_id).state = 'offer_received'
 
-        return offer
+        return super().create(vals_list)
