@@ -8,6 +8,7 @@
             <notebook>
                 <page name="Properties">
                     <field name="property_ids"/>
+                     <field name="sales_fee" string="Salesperson Fee"/>
                 </page>
             </notebook>
         </field>
