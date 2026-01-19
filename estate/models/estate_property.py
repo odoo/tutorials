@@ -24,13 +24,22 @@ class EstateProperty(models.Model):
     facades = fields.Integer()
     garage = fields.Boolean()
     garden = fields.Boolean()
-    garden_area = fields.Integer(string="Garden Area (sqft)")
-    garden_orientation = fields.Selection([
+    garden_area = fields.Integer(
+    string="Garden Area (sqft)",
+    compute="_compute_garden",
+    store=True,
+    )
+
+    garden_orientation = fields.Selection(
+    [
         ("north", "North"),
         ("south", "South"),
         ("east", "East"),
         ("west", "West"),
-    ])
+    ],
+    compute="_compute_garden",
+    store=True,
+    )
     state = fields.Selection(
         selection=[
             ("new", "New"),
@@ -74,14 +83,15 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = max(record.mapped("offer_ids.price"))
 
-    @api.onchange("garden")
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = "north"
-        else:
-            self.garden_area = 0
-            self.garden_orientation = None
+    @api.depends("garden")
+    def _compute_garden(self):
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = "north"
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
 
     def action_sold_property(self):
         if self.filtered(lambda x: x.state == "cancelled"):
@@ -101,5 +111,5 @@ class EstateProperty(models.Model):
                 pass
             else:
                 raise ValidationError(
-                    "The selling price cannot be lower then 90% of the expected price."
+                    _("The selling price cannot be lower then 90% of the expected price.")
                 )

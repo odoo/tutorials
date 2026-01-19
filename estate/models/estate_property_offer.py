@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import models, api, fields
+from odoo import models, api, fields, _
 from odoo.exceptions import UserError
 
 
@@ -53,15 +53,17 @@ class EstatePropertyOffer(models.Model):
             record.property_id.selling_price = 0.00
             record.property_id.customer = None
 
-    @api.model
-    def create(self, vals):
-        if len(vals) > 0:
-            property = self.env["estate.property"].browse(vals[0]["property_id"])
-        for record in vals:
-            if property.state == "new":
-                property.state = "offer_received"
-            if record["price"] < property.best_price:
+    @api.model_create_multi
+    def create(self, vals_list):
+        prop = self.env['estate.property'].browse(vals_list[0]['property_id'])
+
+        for vals in vals_list:
+            if vals['price'] < prop.best_price:
                 raise UserError(
-                    "Offer with an amount lower than an existing offer cannot be created."
+                    _('An offer with a lower price than an existing one cannot be created.')
                 )
-        return super().create(vals)
+
+        if prop.state == 'new':
+            prop.state = 'offer_received'
+
+        return super().create(vals_list)
