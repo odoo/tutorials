@@ -55,15 +55,15 @@ class EstatePropertyOffer(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        prop = self.env['estate.property'].browse(vals_list[0]['property_id'])
+        if len(vals_list) > 0:
+            prop = self.env['estate.property'].browse(vals_list[0]['property_id'])
 
-        for vals in vals_list:
-            if vals['price'] < prop.best_price:
-                raise UserError(
-                    _('An offer with a lower price than an existing one cannot be created.')
-                )
-
-        if prop.state == 'new':
-            prop.state = 'offer_received'
+            for vals in vals_list:
+                if vals['price'] < prop.best_price:
+                    raise UserError(
+                        _('An offer with a lower price than an existing one cannot be created.')
+                    )
+            if prop.state == 'new':
+                prop.state = 'offer_received'
 
         return super().create(vals_list)
