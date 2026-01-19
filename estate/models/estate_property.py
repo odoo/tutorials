@@ -1,11 +1,11 @@
 from datetime import timedelta
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
 
-class Property(models.Model):
+class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'estate property details'
     _order = 'id desc'
@@ -85,7 +85,7 @@ class Property(models.Model):
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = 10
-            self.garden_orientation = "north"
+            self.garden_orientation = 'north'
         else:
             self.garden_area = None
             self.garden_orientation = None
@@ -105,13 +105,13 @@ class Property(models.Model):
             for record in self.property_maintainance_ids:
                 if record.status != 'done':
                     raise UserError("Maintenance Request are still pending.")
-            self.state = "sold"
+            self.state = 'sold'
 
     def action_property_cancel(self):
         if self.state == 'sold':
             raise UserError("Sold property cannot be Cancelled.")
         else:
-            self.state = "cancelled"
+            self.state = 'cancelled'
 
     @api.depends('property_maintainance_ids.cost')
     def _compute_total_maintenance_cost(self):

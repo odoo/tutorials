@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import models, fields, api
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -36,27 +36,22 @@ class PropertyOffer(models.Model):
     @api.depends('validity')
     def _compute_date_deadline(self):
         for record in self:
-            if record.create_date:
-                record.date_deadline = record.create_date + \
-                    timedelta(days=record.validity)
-            else:
-                record.date_deadline = fields.Date.today() + timedelta(days=record.validity)
+            record.date_deadline = (record.create_date or fields.Date.today()) + \
+                timedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
-            if record.date_deadline:
-                record.validity = (
-                    record.date_deadline - record.create_date.date()
-                ).days
-            else:
-                record.validity = (record.date_deadline - fields.Date.today())
+            record.validity = (
+                record.date_deadline -
+                (record.create_date.date() or fields.Date.today())
+            ).days
 
     def action_accepted(self):
         accepect_records = self.property_id.offer_ids.filtered(
             lambda o: o.status == 'accepted')
         if accepect_records:
             raise UserError("Only one offer can be accepted.")
-        self.status = "accepted"
+        self.status = 'accepted'
         self.property_id.partner_id = self.partner_id
         self.property_id.selling_price = self.price
         self.property_id.state = 'offer_accepted'
@@ -66,7 +61,7 @@ class PropertyOffer(models.Model):
             self.property_id.partner_id = None
             self.property_id.selling_price = None
             self.property_id.state = 'offer_received'
-        self.status = "refused"
+        self.status = 'refused'
 
     @api.ondelete(at_uninstall=False)
     def _ondelete_offer(self):
@@ -80,7 +75,7 @@ class PropertyOffer(models.Model):
             price = val.get('price')
             property_id = val.get('property_id')
             property = self.env['estate.property'].browse(property_id)
-            if property.state == "new":
+            if property.state == 'new':
                 property.best_price = price
             elif float_compare(price, property.best_price, precision_rounding=0.01) < 0:
                 raise UserError(
