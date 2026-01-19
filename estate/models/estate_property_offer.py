@@ -7,7 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property offer'
-    _order = 'price desc'
+    # _order = 'price desc'
 
     price = fields.Float("Price")
     status = fields.Selection(
@@ -41,6 +41,20 @@ class EstatePropertyOffer(models.Model):
                 record.create_date.date() if record.create_date else fields.Date.today()
             )
             record.validity = (record.date_deadline - start_date).days
+
+    # Model Decorator
+    @api.model
+    def create(self, vals):
+        for vals in vals:
+            property_record = self.env['estate.property'].browse(
+                vals.get('property_id'))
+            if property_record.offer_ids:
+                max_offer = max(property_record.offer_ids.mapped('price'))
+                if vals.get('price') < max_offer:
+                    raise UserError(
+                        "The offer must be higher than existing offers.")
+            property_record.state = 'offer_received'
+        return super().create(vals)
 
     # Action Funcitons
     def action_accept(self):

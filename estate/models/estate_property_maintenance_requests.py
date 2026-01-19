@@ -15,6 +15,7 @@ class EstatePropertyMaintenanceRequests(models.Model):
     )
     property_id = fields.Many2one('estate.property', required=True)
 
+    # Constraint Decorator
     @api.constrains('status', 'cost')
     def _check_cost(self):
         if self.status == 'approved' and self.cost <= 0:

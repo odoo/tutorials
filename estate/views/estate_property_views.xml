@@ -31,7 +31,7 @@
                 <header>
                     <button string="Sold" name="action_sold" type="object"/>
                     <button string="Cancel" name="action_cancel" type="object"/>
-                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" decoration-success="state == 'offer_received'"/>
                     <!-- <button type="action" name="%(estate.estate_property_type_action)d" string="Property Types" icon="fa-magic"/> -->
                 </header>
                 <sheet>
@@ -41,8 +41,7 @@
                     <group>
                         <group>
                             <field name="tags_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name='state'/>
-                            <field name="property_type_id"></field>
+                            <field name="property_type_id" options="{'no_create_edit':true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -63,7 +62,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area" invisible="not garden"/>
                                 <field name="garden_orientation" invisible="not garden"/>
-                                <field name="total_area"/>
+                                <field name="total_area" decoration-success="total_area == 100"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -73,7 +72,7 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="seller_ids"/>
+                                <field name="seller_id"/>
                                 <field name="buyer_ids"/>
                             </group>
                         </page>
@@ -110,8 +109,10 @@
                 <field name="living_area" string="living_area" filter_domain="[('living_area', '&gt;=', self)]"/>
                 <field name="facades"/>
                 <separator/>
-                <filter string="New / Offer Received" name="state" domain="['|',('state', '=', 'new'), ('state', '=', 'offer received')]"/>
+                <filter string="New / Offer Received" name="state" domain="[('state', 'in', ['new', 'offer received'])]"/>
+                <separator/>
                 <filter string="Best 50" name='best_price' domain="[('best_price', '&gt;', 50)]"/>
+                <filter name='archive' domain="[('active', '=', 'False')]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>

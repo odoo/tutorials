@@ -1,3 +1,5 @@
+from dateutil.relativedelta import relativedelta
+
 from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 
@@ -11,7 +13,7 @@ class EstateProperty(models.Model):
     description = fields.Text()
     postcode = fields.Float()
     date_availability = fields.Date(
-        "Available From", copy=False, default=fields.Datetime.now
+        "Available From", copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
     )
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
@@ -44,7 +46,7 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one(
         'estate.property.type', string="Property Type")
-    seller_ids = fields.Many2one(
+    seller_id = fields.Many2one(
         'res.users', string="Salesman", default=lambda self: self.env.user
     )
     buyer_ids = fields.Many2one('res.partner', string="Buyer", copy=False)
@@ -58,14 +60,6 @@ class EstateProperty(models.Model):
         'estate.property.maintenance.requests', 'property_id')
     total_maintenance_cost = fields.Float(
         compute='_compute_total_maintenance_cost', string="Total Maintenance Cost")
-
-    @api.depends('property_maintenance_requests.cost')
-    def _compute_total_maintenance_cost(self):
-        for record in self:
-            record.total_maintenance_cost = (
-                sum(record.property_maintenance_requests.mapped('cost')
-                    ) if record.property_maintenance_requests else 0.0
-            )
 
     # SQL Constraint
     _check_expected_price = models.Constraint(
@@ -95,6 +89,14 @@ class EstateProperty(models.Model):
                     ) if record.offer_ids else 0.0
             )
 
+    @api.depends('property_maintenance_requests.cost')
+    def _compute_total_maintenance_cost(self):
+        for record in self:
+            record.total_maintenance_cost = (
+                sum(record.property_maintenance_requests.mapped('cost')
+                    ) if record.property_maintenance_requests else 0.0
+            )
+
     # Onchange Decorator
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -120,3 +122,11 @@ class EstateProperty(models.Model):
         if 'sold' in self.mapped('state'):
             raise UserError("Sold properties cannot be cancelled.")
         return self.write({'state': 'cancelled'})
+
+    # Ondelete Decorator
+    @api.ondelete(at_uninstall=False)
+    def _check_state(self):
+        for record in self:
+            if record.state in ('offer_received', 'offer_accepted'):
+                raise UserError(
+                    "Only new and canceled properties can be deleted.")
