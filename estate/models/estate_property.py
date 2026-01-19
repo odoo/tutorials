@@ -1,6 +1,6 @@
 from dateutil.relativedelta import relativedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError, RedirectWarning
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -9,22 +9,20 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real state Property"
     _order = "id desc"
+    _inherits = {"estate.property.address": "address_id"}
 
+    address_id = fields.Many2one(
+        "estate.property.address", required=True, ondelete="cascade"
+    )
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Integer()
     date_availability = fields.Date(
-        default=lambda self: fields.Date.today() + relativedelta(months=3),
-        copy=False
+        default=lambda self: fields.Date.today() + relativedelta(months=3), copy=False
     )
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(
-        readonly=True,
-        copy=False
-    )
-    bedrooms = fields.Integer(
-        default=2
-    )
+    selling_price = fields.Float(readonly=True, copy=False)
+    bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
     facades = fields.Integer()
     garage = fields.Boolean()
@@ -52,24 +50,16 @@ class EstateProperty(models.Model):
         copy=False,
         default="new",
     )
-    property_type_id = fields.Many2one(
-        "estate.property.type",
-        string="Property Type"
-    )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one(
         "res.partner",
         string="Buyer",
         copy=False,
     )
     seller_id = fields.Many2one(
-        "res.users",
-        string="Seller",
-        default=lambda self: self.env.user
+        "res.users", string="Seller", default=lambda self: self.env.user
     )
-    tag_ids = fields.Many2many(
-        "estate.property.tag",
-        string="Tags"
-    )
+    tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many(
         "estate.property.offer",
         "property_id",
@@ -80,8 +70,8 @@ class EstateProperty(models.Model):
     offer_counts = fields.Integer(compute="_compute_offer_counts", store=True)
 
     _check_expected_price = models.Constraint(
-        'CHECK(expected_price > 0)',
-        'Expected price must be positive!',
+        "CHECK(expected_price > 0)",
+        "Expected price must be positive!",
     )
 
     @api.constrains("selling_price", "expected_price")
@@ -90,8 +80,15 @@ class EstateProperty(models.Model):
             if float_is_zero(record.selling_price, precision_digits=2):
                 continue
             min_selling_price = record.expected_price * 0.9
-            if float_compare(record.selling_price, min_selling_price, precision_digits=2) < 0:
-                raise ValidationError("The selling price must be at least 90% of the expected price.")
+            if (
+                float_compare(
+                    record.selling_price, min_selling_price, precision_digits=2
+                )
+                < 0
+            ):
+                raise ValidationError(
+                    _("The selling price must be at least 90% of the expected price.")
+                )
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -120,24 +117,28 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_if_delete_property(self):
         for record in self:
-            if record.state in ('offer_received', 'offer_accepted', 'sold'):
-                raise UserError('you can not delete a property!')
+            if record.state in ("offer_received", "offer_accepted", "sold"):
+                raise UserError(_("you can not delete a property!"))
 
     def action_cancelled(self):
-        for record in self:
-            sold_properties = record.filtered(lambda r: r.state == "sold")
-            if sold_properties:
-                raise RedirectWarning("A sold property cannot be cancelled",
-                                      self.env.ref('estate.estate_property_offer_action').id,
-                                      "go to offer page!")
-            record.state = "cancelled"
+        sold_properties = self.filtered(lambda r: r.state == "sold")
+        if sold_properties:
+            raise RedirectWarning(
+                _(
+                    "A sold property cannot be cancelled",
+                    self.env.ref("estate.estate_property_offer_action").id,
+                    "go to offer page!",
+                )
+            )
+            self.state = "cancelled"
 
     def action_sold(self):
-        for record in self:
-            cancel_properties = record.filtered(lambda r: r.state == "cancelled")
-            if cancel_properties:
-                raise UserError("A cancelled property cannot be sold")
-            accepted_offer = record.offer_ids.filtered(lambda offer: offer.status == "accepted")
-            if not accepted_offer:
-                raise UserError("Property can not be sold without an accepted offer")
-            record.state = "sold"
+        cancel_properties = self.filtered(lambda r: r.state == "cancelled")
+        if cancel_properties:
+            raise UserError(_("A cancelled property cannot be sold"))
+        accepted_offer = self.offer_ids.filtered(
+            lambda offer: offer.status == "accepted"
+        )
+        if not accepted_offer:
+            raise UserError(_("Property can not be sold without an accepted offer"))
+        self.state = "sold"

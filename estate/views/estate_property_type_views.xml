@@ -11,8 +11,8 @@
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Properties_type">
-                <field name="sequence" widget="handle"/>
-                <field name="name"/>
+                <field name="sequence" widget="handle" />
+                <field name="name" />
             </list>
         </field>
     </record>
@@ -25,22 +25,22 @@
                 <sheet>
                     <header>
                         <button class="oe_stat_button"
-                                icon="fa-gavel"
-                                type="action"
-                                name="%(estate_property_offer_action_by_type)d">
-                            <field name="offer_count" widget="statinfo"/>
+                            icon="fa-gavel"
+                            type="action"
+                            name="%(estate_property_offer_action_by_type)d">
+                            <field name="offer_count" widget="statinfo" />
                         </button>
                     </header>
                     <h1>
-                        <field name="name"/>
+                        <field name="name" />
                     </h1>
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">
                                 <list>
-                                    <field name="name"/>
-                                    <field name="expected_price"/>
-                                    <field name="state"/>
+                                    <field name="name" />
+                                    <field name="expected_price" />
+                                    <field name="state" />
                                 </list>
                             </field>
                         </page>

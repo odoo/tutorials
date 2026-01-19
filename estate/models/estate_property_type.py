@@ -9,15 +9,15 @@ class PropertyType(models.Model):
     name = fields.Char(required=True)
     sequence = fields.Integer()
     property_ids = fields.One2many("estate.property", "property_type_id")
-    offer_ids = fields.One2many('estate.property.offer', 'property_type_id')
-    offer_count = fields.Integer(compute='_compute_offer_count')
+    offer_ids = fields.One2many("estate.property.offer", "property_type_id")
+    offer_count = fields.Integer(compute="_compute_offer_count")
 
     _check_name_unique = models.Constraint(
-        'unique(name)',
-        'The Property type must be unique.',
+        "unique(name)",
+        "The Property type must be unique.",
     )
 
-    @api.depends('offer_ids')
+    @api.depends("offer_ids")
     def _compute_offer_count(self):
         for record in self:
             record.offer_count = len(record.offer_ids)
