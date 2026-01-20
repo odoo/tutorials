@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="template" xml:space="preserve">
+    <t t-inherit="point_of_sale.CustomerDisplay" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('o_customer_display_main')]//div[@t-if='order.change']" position="after">
+            <div class="d-flex flex-column justify-content-center gap-1 w-100 w-sm-50 ms-auto">
+                <t t-if="order.customerName">
+                    <div class="row fs-3 fw-bolder">
+                        <div class="col text-end">Customer: </div>
+                        <div class="col text-end">
+                            <t t-esc="order.customerName"/>
+                        </div>
+                    </div>
+                </t>
+                <div class="row fs-3">
+                    <t t-if="order.amountPerGuest">
+                        <div class="message text-center fs-4">
+                            <t t-esc="order.amountPerGuest.toFixed(2)" /> / Guest
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('o_customer_display_main')]/OrderWidget" position="replace">
+            <OrderWidget t-if="!order.finalized" lines="order.orderLines"/>
+            <t t-if="order.refundOrderLines and !order.finalized">
+                <div class="mt-3 p-2 fw-bold">Refund</div>
+                <OrderWidget lines="order.refundOrderLines"/>
+            </t>
+        </xpath>
+    </t>
+</templates>
