@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Root Level -->
+    <menuitem id="estate_menu_root" name="Estate">
+
+        <!-- (Ads) -->
+        <menuitem id="estate_advertisements_menu" name="Ads">
+            <menuitem id="estate_property_menu" action="estate_property_action"/>
+        </menuitem>
+
+        <!-- (Settings) -->
+        <menuitem id="estate_settings_menu" name="Settings">
+            <menuitem id="estate_property_types_menu" action="estate_property_type_action"/> <!-- Property Types -->
+            <menuitem id="estate_property_tags_menu" action="estate_property_tag_action"/>   <!-- Property Tags -->
+        </menuitem>
+    </menuitem>
+</odoo>

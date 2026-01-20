@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<odoo>
+    <!-- Action Handler -->
+    <record id="estate_property_tag_action" model="ir.actions.act_window">
+        <field name="name">Property Tags</field>
+        <field name="res_model">estate.property.tag</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- List -->
+    <record id="estate_property_tag_list" model="ir.ui.view">
+        <field name="name">estate.property.tag.list</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <list string="list" editable="bottom" open_form_view="True">
+                <field name="name"/>
+                <field name="color" widget="color"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="estate_property_tag_form" model="ir.ui.view">
+        <field name="name">estate.property.tag.form</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <form string="Tag">
+                <sheet>
+                    <h1> <field name="name"/> </h1> <!-- Title -->
+                    <group> <!-- NoteBook -->
+                        <field name="color" widget="color"></field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record id="estate_property_tag_search" model="ir.ui.view">
+        <field name="name">estate.property.tag.search</field>
+        <field name="model">estate.property.tag</field>
+        <field name="arch" type="xml">
+            <search string="Search Properties">
+                <!-- Search fields -->
+                <field name="name"/>
+            </search>
+        </field>
+    </record>
+</odoo>
