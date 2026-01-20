@@ -1,10 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
+	<t t-name="awesome_owl.playground">
+		<style>
+			.card {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				width: 50%;
+				border-style: none;
+				border-thickness: 2px;
+				border-color: black;
+				border-radius: 25px; 
+				margin: 1em auto;
+				padding: 2em;
+				transition: background-color ease-in-out 1s;
+			}
+			.card:hover {
+				background-color: #f2f2f2;
+			}
+			.todolist {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				padding: 2em;
+			}
+			.completed {
+				background-color: lightgreen;
+			}
+
+			.notcompleted {
+				background-color: tomato;
+			}
+		</style>
+		<div class="p-3">
+			<Card title="'Really cool title.'">
+				<p>I told you it was really cool!</p>
+			</Card>
+			<Card />
+			<Card title="'Card with cards inside!!!'">
+				<Card title="'Card with counters'">
+					<Counter onChange.bind="updateTotal"/>
+					<Counter onChange.bind="updateTotal"/>
+					<p>Total : <t t-esc="counter.value"/></p>
+				</Card>
+				<Card title="'Card with more counters'">
+					<Counter onChange.bind="updateTotal"/>
+					<Counter onChange.bind="updateTotal"/>
+				</Card>
+			</Card>
+			<TodoList />
+		</div>
+	</t>
 
 </templates>
