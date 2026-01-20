@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <!-- Inheriting OrderReceipt -->
+    <t t-inherit="point_of_sale.OrderReceipt" t-inherit-mode="extension">
+
+        <!-- Replace the original order lines section -->
+        <xpath expr="//OrderWidget" position="replace">
+
+            <!-- Default Format -->
+                <t t-if="state.disp_layout =='default'">
+                    <t t-foreach="props.data.orderlines" t-as="line" t-key="line_index">
+                                <Orderline line="line"/>     
+                    </t>
+                    <br/>
+                    <br/>
+                 </t>
+            <!-- Boxed format-->
+             <t t-if="state.disp_layout =='boxed'">
+                <table class="boxed-order-table">
+                    <thead>
+                        <tr class="boxed-header">
+                            <th class="boxed-col-no">No</th>
+                            <th class="boxed-col-product">Item</th>
+                            <th class="boxed-col-price">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="props.data.orderlines" t-as="line" t-key="line_index">
+                            <Orderline line="line" isTableFormat="false" isBoxedFormat="true" lineIndex="line_index"/>     
+                        </t>
+                    </tbody>
+                </table>
+             </t>
+
+            <!-- Table format order receipt -->
+            <t t-if="state.disp_layout =='lined'">
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid black;">
+                            <th style="text-align: left; padding: 5px; font-weight: bold;">No</th>
+                            <th style="text-align: left; padding: 5px; font-weight: bold;">Product</th>
+                            <th style="text-align: center; padding: 5px; font-weight: bold;">Quantity</th>
+                            <th style="text-align: center; padding: 5px; font-weight: bold;">Price</th>
+                            <th style="text-align: center; padding: 5px; font-weight: bold;">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="props.data.orderlines" t-as="line" t-key="line_index">
+                            <Orderline line="line" isTableFormat="true" lineIndex="line_index"/>
+                        </t>
+                    </tbody>
+                </table>          
+            </t>
+        </xpath>
+
+        <xpath expr="//div[hasclass('pos-receipt-taxes')]" position="before">
+        <t t-if="state.disp_layout =='lined'">
+                    <p style="text-align: right; margin-left: auto; width: 50%;">----------------------------------------------</p>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                            <tr>
+                                <td style="text-align: left; padding: 5px;">
+                                    <strong>Total Quantity:</strong>
+                                    <span t-esc="receipt.totalQty"/>
+                                </td>
+                                <td style="text-align: right; padding: 5px;">
+                                    <strong>Sub-Total:</strong>
+                                    <span t-esc="props.formatCurrency(taxTotals.order_total)"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align: right; padding: 5px;">
+                                    <div t-foreach="props.data.paymentlines" t-as="line" t-key="line_index">
+                                        <span t-esc="line.name"/>
+                                        <span t-esc="props.formatCurrency(line.amount)"/>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                    <br/>
+                    <br/>          
+        </t>
+        <t t-if="state.disp_layout =='boxed'">    
+           <table style="width: 100%; border-collapse: collapse; font-size: 14px; border: 1px solid black;">
+                <tr style="border-top: 1px solid black; border-bottom: 1px solid black;">
+                    <td style="text-align: left; padding: 5px; font-weight: bold;">
+                        Total Qty <t t-esc="receipt.totalQty"/>
+                    </td>
+                    <td style="text-align: right; padding: 5px; font-weight: bold;">
+                        Sub Total <t t-esc="props.formatCurrency(taxTotals.order_total)"/>
+                    </td>
+                </tr>
+                <t t-if="props.data.paymentlines">
+                    <tr style="border-bottom: 1px solid black;">
+                        <td style="border: none;"></td> 
+                        <td style="text-align: right; padding: 5px; font-weight: bold;">
+                            <t t-foreach="props.data.paymentlines" t-as="line" t-key="line_index">
+                                <span t-esc="line.name"/> <t t-esc="props.formatCurrency(line.amount)"/>
+                            </t>
+                        </td>
+                    </tr>
+                </t>
+            </table>
+                    <br/>
+                    <br/>
+               
+        </t> 
+         </xpath>
+
+         <xpath expr="//div[hasclass('pos-receipt-taxes')]" position="replace">
+            <table class="order-lines-table">
+                <thead>
+                    <tr>
+                        <th>Tax</th>
+                        <th>Amount</th>
+                        <th>Base</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="taxTotals.subtotals" t-as="subtotal" t-key="subtotal.name">
+                        <t t-foreach="subtotal.tax_groups" t-as="tax_group" t-key="tax_group.id">
+                            <tr>
+                                <td>
+                                    <span t-esc="tax_group.group_name"/> 2.5%
+                                </td>
+                                <td>
+                                    <span t-esc="props.formatCurrency(tax_group.tax_amount)" class="ms-auto"/>
+                                </td>
+                                <td>
+                                    <span t-esc="props.formatCurrency(tax_group.display_base_amount)" class="ms-auto"/>
+                                </td>
+                                <td>
+                                    <span t-esc="props.formatCurrency(tax_group.display_base_amount+(2*tax_group.tax_amount))" class="ms-auto"/>
+                                </td>
+                            </tr>
+                        </t>
+                    </t>
+                </tbody>
+            </table>
+        </xpath>
+
+        <xpath expr="//div[hasclass('receipt-total')]" position="replace"/>
+        <xpath expr="//div[@class='paymentlines text-start']" position="replace"/>
+
+    </t>
+</templates>
