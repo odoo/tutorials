@@ -1,14 +1,15 @@
 import datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models
+from odoo import api, fields, models
+
 
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real estate property model"
 
     name = fields.Char(required=True, string="Title")
-    description= fields.Text()
+    description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(copy=False, default=datetime.date.today() + relativedelta(months=3), string="Available From")
     expected_price = fields.Float(required=True)
@@ -28,13 +29,13 @@ class EstateProperty(models.Model):
         ]
     )
     active = fields.Boolean(default=True)
-    state = fields.Selection(required=True, default='new', copy=False,
+    state = fields.Selection(required=True, default="new", copy=False,
         selection=[
-            ("new", "New"),
-            ("offer_received", "Offer Received"),
-            ("offer_accepted", "Offer Accepted"),
-            ("sold", "Sold"),
-            ("cancelled", "Cancelled")
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
         ],
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property type")
@@ -42,3 +43,20 @@ class EstateProperty(models.Model):
     salesman_id = fields.Many2one("res.users", string="Salesman", default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    total_area = fields.Float(compute="_compute_total_area")
+    best_price = fields.Float(compute="_compute_best_price", string="Best Offer")
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+    
+    @api.depends('offer_ids')
+    def _compute_best_price(self):
+        for record in self:
+            record.best_price = max(record.offer_ids.mapped("price")) if record.offer_ids else 0
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        self.garden_area = 10 if self.garden else 0
+        self.garden_orientation = 'north' if self.garden else None
