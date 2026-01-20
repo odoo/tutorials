@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.DashboardConfigurationDialog">
+        <Dialog title="'Dashboard Items Configuration'">
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <div>
+                    <input
+                        type="checkbox"
+                        t-att-checked="item.enabled"
+                        t-att-id="item.id"
+                        t-on-change="() => toggleItem(item.id)"
+                    />
+                    <label
+                        t-att-for="item.id"
+                        t-att-class="item.enabled ? false : 'text-muted'"
+                    >
+                        <t t-esc="item.description"/>
+                    </label>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">Apply</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
+

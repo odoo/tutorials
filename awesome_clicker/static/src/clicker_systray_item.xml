@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    
+    <t t-name="awesome_clicker.ClickerSystrayItem">
+        <div class="o_nav_entry">
+            <Dropdown>
+                <div>
+                    <t t-esc="formattedClicks()"/><i class="fa fa-mouse-pointer fa-fw"/>
+                    , <t t-esc="this.clicker.treeCount()"/><i class="fa fa-tree fa-fw"/>
+                    , <t t-esc="this.clicker.fruitCount()"/><i class="fa fa-apple fa-fw"/>
+                </div>
+                <t t-set-slot="content">
+                    <DropdownItem>
+                        <button class="btn btn-secondary" t-on-click="openClientAction">
+                            Open the clicker game
+                        </button>
+                    </DropdownItem>
+                    <t t-foreach="this.clicker.bots" t-as="bot" t-key="bot.name">
+                        <DropdownItem t-if="this.clicker.checkBuyBot(bot)">
+                            <button class="btn btn-secondary" t-on-click="() => this.clicker.buyBot(bot)">
+                                Buy a <t t-esc="bot.name"/>
+                            </button>
+                        </DropdownItem>
+                    </t>
+                    <t t-foreach="this.clicker.trees" t-as="tree" t-key="tree.name">
+                        <DropdownItem t-if="tree.count">
+                            <t t-esc="tree.count"/>x <t t-esc="tree.name"/>
+                        </DropdownItem>
+                    </t>
+                    <t t-foreach="this.clicker.trees" t-as="tree" t-key="tree.name">
+                        <DropdownItem t-if="tree.fruitCount">
+                            <t t-esc="tree.fruitCount"/>x <t t-esc="tree.fruitsName"/>
+                        </DropdownItem>
+                    </t>
+                </t>
+            </Dropdown>
+        </div>
+    </t>
+
+</templates>

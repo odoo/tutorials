@@ -4,7 +4,15 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <Counter onChange.bind="incrementTotal"/>
+            <Counter onChange.bind="incrementTotal"/>
         </div>
+        <p>Total counter: <t t-esc="state.total"/></p>
+        <Card title="'Some Title'">
+            My Content
+            <Counter/>
+        </Card>
+        <TodoList/>
     </t>
 
 </templates>
