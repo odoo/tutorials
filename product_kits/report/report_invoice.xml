@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_invoice_document_view_kits" inherit_id="account.report_invoice_document">
+        <xpath expr="//tbody[@class='invoice_tbody']/t/tr" position="attributes">
+            <attribute name="t-if">
+                (not any(line.sale_line_ids.mapped('parent_kit_line_id'))) or any(
+                    line.sale_line_ids.mapped('order_id.print_in_report'))
+            </attribute>
+        </xpath>
+    </template>
+</odoo>
