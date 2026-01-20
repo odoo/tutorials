@@ -1,0 +1,28 @@
+{
+    'name': 'Estate',
+    'version': '1.0',
+    'license': 'LGPL-3',
+    'summary': 'Real estate management module',
+    'description': 'Manage properties, owners, and sales in your real estate agency',
+    'category': 'Real Estate',
+    'author': 'ksoz',
+    'depends': ['base'],
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'data/estate.property.type.csv',
+        'views/estate_property_offer_views.xml',
+        'views/estate_property_types_views.xml',
+        'views/estate_property_views.xml',
+        'views/estate_property_tags_views.xml',
+        "views/estate_res_users_views.xml",
+        'views/estate_menus.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_report.xml',
+    ],
+    'demo': [
+        'demo/property_demo_data.xml',
+    ],
+    'installable': True,
+    'application': True,
+}

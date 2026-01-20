@@ -1,0 +1,56 @@
+<odoo>
+    <record id="property_type_residential" model="estate.property.type">
+        <field name="name">Residential</field>
+    </record>
+    <record id="estate_property_demo_villa" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="description">A nice and big villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability" eval="(DateTime.today() + relativedelta(months=3)).strftime('%Y-%m-%d')"/>
+        <field name="expected_price">1600000.0</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="facades">4</field>
+        <field name="garage" eval="True"/>
+        <field name="garden" eval="True"/>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+    </record>
+    <record id="estate_property_demo_trailer" model="estate.property">
+        <field name="name">Trailer home</field>
+        <field name="state">cancelled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability" eval="(DateTime.today() - relativedelta(days=30)).strftime('%Y-%m-%d')"/>
+        <field name="expected_price">100000.0</field>
+        <field name="selling_price">99000.0</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="facades">4</field>
+        <field name="garage" eval="False"/>
+        <field name="garden" eval="False"/>
+        <field name="property_type_id" ref="property_type_residential"/>
+    </record>
+    <record id="estate_property_demo_inline_offers" model="estate.property">
+        <field name="name">Apartment with Inline Offers</field>
+        <field name="expected_price">250000.0</field>
+        <field name="property_type_id" ref="property_type_residential"/>
+        <field name="offer_ids" eval="[ Command.create({'partner_id': ref('base.res_partner_2'), 'price': 260001}), Command.create({'partner_id': ref('base.res_partner_12'), 'price': 260000}) ]"/>
+    </record>
+    <record id="offer_1_for_villa" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_demo_villa"/>
+        <field name="price">1500000</field>
+    </record>
+    <record id="offer_2_for_villa" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="estate_property_demo_villa"/>
+        <field name="price">1500001</field>
+    </record>
+    <record id="offer_3_for_villa" model="estate.property.offer">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="property_id" ref="estate_property_demo_villa"/>
+        <field name="price">1500002</field>
+    </record>
+</odoo>

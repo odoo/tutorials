@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
-        <div class="p-3">
+        <div class="d-flex align-items-center gap-2 mt-5">
             hello world
+            <div class="d-flex align-items-center gap-2">
+                <Counter onChange="incrementSum" />
+                <Counter onChange="incrementSum" />
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <Card title="'Card Title'">
+                <p>This is plain text inside a card.</p>
+            </Card>
+
+            <Card>
+                <button class="btn btn-sm btn-link" t-on-click="toggle">
+                    <i t-att-class="state.isOpen ? 'fa fa-eye-slash' : 'fa fa-eye'"/>
+                </button>
+                <t t-if="state.isOpen">
+                    <Counter />
+                </t>
+            </Card>
+        </div>
+        <h2>Sum: <t t-esc="state.sum"/>
+        </h2>
+
+        <div>
+            <h2>Todo App</h2>
+            <TodoList/>
         </div>
     </t>
-
-</templates>
+</templates>    
