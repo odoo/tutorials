@@ -131,16 +131,16 @@ class EstateProperty(models.Model):
 
     def action_best_offer(self):
         self.ensure_one()
-        for record in self:
-            best_offer = self.env["estate.property.offer"].search(
-                [("property_id", "=", record.id)], order="price desc", limit=1
-            )
-            if not best_offer:
-                raise UserError(_("Property offer not found first add the offers"))
-            best_offer.status = "accepted"
-            record.state = "sold"
-            record.selling_price = best_offer.price
-            other_offer = self.env["estate.property.offer"].search(
-                [("property_id", "=", record.id), ("id", "!=", best_offer.id)]
-            )
-            other_offer.status = "refused"
+        best_offer = self.env["estate.property.offer"].search(
+            [("property_id", "=", self.id)], order="price desc", limit=1
+        )
+        if not best_offer:
+            raise UserError(_("Property offer not found first add the offers"))
+        best_offer.status = "accepted"
+        self.state = "sold"
+        self.selling_price = best_offer.price
+        other_offer = self.env["estate.property.offer"].search(
+            [("property_id", "=", self.id), ("id", "!=", best_offer.id)]
+        )
+        other_offer.status = "refused"
+        self.customer_id = best_offer.partner_id

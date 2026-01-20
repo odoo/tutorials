@@ -126,13 +126,24 @@
         <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban default_group_by="state">
-                <field name="state"/>
+            <kanban default_group_by="property_type_id" records_draggable="false">
                 <templates>
+                    <t t-name="menu">
+                        <t t-if="widget.editable"><a role="menuitem" type="open" class="dropdown-item">Edit</a></t>
+                        <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                    </t>
                     <t t-name="card">
+                        <field name="name" class="fw-bold fs-4"/>
                         <div>
-                            <field name="name"/>
+                            Expected Price: <field name="expected_price"/>
                         </div>
+                        <div invisible="state != 'offer received'">
+                            Best Price: <field name="best_price"/>
+                        </div>
+                        <div invisible="state not in ('offer accepted','sold')">
+                            Selling Price: <field name="selling_price"/>
+                        </div>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </t>
                 </templates>
             </kanban>
