@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//t[@t-foreach='lines_to_report']/tr" position="attributes">
+            <attribute name="t-if">(not line.is_sub_product_ol or (doc.print_in_report and line.is_sub_product_ol))</attribute>
+        </xpath>
+    </template>
+    <template id="sale_order_portal_content" inherit_id="sale.sale_order_portal_content">
+        <xpath expr="//t[@t-foreach='lines_to_report']/tr" position="attributes">
+            <attribute name="t-if">(not line.is_sub_product_ol or (doc.print_in_report and line.is_sub_product_ol))</attribute>
+        </xpath>
+    </template>
+</odoo>
