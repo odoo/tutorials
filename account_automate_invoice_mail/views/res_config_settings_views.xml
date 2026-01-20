@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_automate_mail" model="ir.ui.view">
+            <field name="name">res.config.settings.view.inherit.invoice_automate_mail</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//setting[@id='display_invoice_tax_company_currency']" position="after">
+                    <setting help="Duration in days after the date of invoice">
+                        <field name="send_email_invoice_days"/>
+                    </setting>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
