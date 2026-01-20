@@ -1,0 +1,7 @@
+id,name,sequence
+garbage,Garbage,1
+residential,Residential,2
+commercial,Commercial,3
+industrial,Industrial,4
+land,Land,5
+

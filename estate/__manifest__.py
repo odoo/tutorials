@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*-
+{
+    'name': "Really real Estate",
+    'summary': "Some estate that really is real as f*",
+    'description': "Some estate that really is real as f*",
+    'installable': True,
+    'application': True,
+    'depends': ['base'],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+        'views/estate_property_offer_views.xml',
+        'views/estate_property_type_views.xml',
+        'views/estate_property_tag_views.xml',
+        'views/estate_menus.xml',
+        'views/res_users_views.xml',
+        #'data/master_data.xml',
+        'data/estate.property.type.csv',
+    ],
+    'demo' : [
+        'demo/demo_data.xml',
+    ],
+    'license': 'AGPL-3',
+}

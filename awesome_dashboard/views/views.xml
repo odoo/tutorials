@@ -1,7 +1,6 @@
 <odoo>
   <data>
     <record model="ir.actions.client" id="dashboard">
-      <field name="name">Dashboard</field>
       <field name="tag">awesome_dashboard.dashboard</field>
     </record>
 

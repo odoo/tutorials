@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.AwesomeDashboard">
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">  
+            <t t-set-slot="control-panel-create-button">
+                <button type="button" class="btn btn-primary" t-on-click="customerButtonClick">Customer</button>
+                <button type="button" class="btn btn-primary" t-on-click="leadsButtonClick">Leads</button>
+                <button type="button" t-on-click="configuration" class="btn p-0 ms-1 border-0"><i class="fa fa-cog"></i></button>
+
+            </t>
+            <div class="d-flex flex-wrap" t-if="statistics.isReady">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <DashboardItem size="item.size || 1" t-if="!state.uncheckedItems.includes(item.id)">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
+                    </DashboardItem>
+                </t>
+            </div>
+        </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.DashboardConfigs">
+        <Dialog title = "'Items Configuration'">
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <CheckBox value="item.checked" onChange="(checked) => this.toggle(checked,item)">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">
+                    Apply
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>
