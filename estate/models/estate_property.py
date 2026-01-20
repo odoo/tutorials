@@ -16,6 +16,8 @@ class EstateProperty(models.Model):
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
     bedrooms = fields.Integer("Bedrooms", default=2)
+    living_area = fields.Integer("Living Area (sqm)")
+    facades = fields.Integer("Facades")
     garage = fields.Boolean("Garage")
     garden = fields.Boolean("Garden")
     garden_area = fields.Integer("Garden Area")
@@ -40,7 +42,7 @@ class EstateProperty(models.Model):
         ],
         default="new",
         required=True,
-        copy=False
+        copy=False,
     )
     _sql_constraints = [
         ("value", "CHECK(value >= 0)", "The value be negative."),
