@@ -93,6 +93,7 @@ class EstatePropertyOffer(models.Model):
             record.property_id.state = "offer_accepted"
 
     def action_rejected(self):
+        self.ensure_one()
         if self.status == "accepted":
             self.property_id.selling_price = False
         self.status = "rejected"

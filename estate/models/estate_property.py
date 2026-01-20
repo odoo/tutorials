@@ -120,7 +120,18 @@ class EstateProperty(models.Model):
             if record.state in ("offer_received", "offer_accepted", "sold"):
                 raise UserError(_("you can not delete a property!"))
 
+    @api.model
+    def write(self, vals):
+        state_value = vals.get("state")
+        if state_value:
+            if self.state == "cancelled" and state_value == "sold":
+                raise UserError("cancelled property can not be sold!")
+            elif self.state == "sold" and state_value == "cancelled":
+                raise UserError("sold property can not be cancelled!")
+        return super().write(vals)
+
     def action_cancelled(self):
+        self.ensure_one()
         sold_properties = self.filtered(lambda r: r.state == "sold")
         if sold_properties:
             raise RedirectWarning(
@@ -130,9 +141,10 @@ class EstateProperty(models.Model):
                     "go to offer page!",
                 )
             )
-            self.state = "cancelled"
+        self.state = "cancelled"
 
     def action_sold(self):
+        self.ensure_one()
         cancel_properties = self.filtered(lambda r: r.state == "cancelled")
         if cancel_properties:
             raise UserError(_("A cancelled property cannot be sold"))

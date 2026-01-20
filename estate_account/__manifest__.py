@@ -6,4 +6,7 @@
     "license": "LGPL-3",
     "application": True,
     "depends": ["estate", "account"],
+    "data": [
+        "views/account_move_views.xml",
+    ],
 }
