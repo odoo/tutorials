@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="warranty_product_1" model="product.template">
+        <field name="name">Extended Warranty 1 year</field>
+        <field name="type">service</field>
+    </record>
+    <record id="warranty_product_2" model="product.template">
+        <field name="name">Extended Warranty 2 year</field>
+        <field name="type">service</field>
+    </record>
+    <record id="warranty_product_3" model="product.template">
+        <field name="name">Extended Warranty 3 year</field>
+        <field name="type">service</field>
+    </record>
+
+    <record id="product_has_warranty_1" model="product.product">
+        <field name="name">Product Warranty - Table</field>
+        <field name="type">consu</field>
+        <field name="is_warranty">1</field>
+    </record>
+    <record id="product_has_warranty_2" model="product.product">
+        <field name="name">Product Warranty - Chair</field>
+        <field name="type">consu</field>
+        <field name="is_warranty">1</field>
+    </record>
+    <record id="product_has_warranty_3" model="product.product">
+        <field name="name">Product Warranty - Desk</field>
+        <field name="type">consu</field>
+        <field name="is_warranty">1</field>
+    </record>  
+
+</odoo>
