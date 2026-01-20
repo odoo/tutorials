@@ -21,6 +21,12 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_deadline")
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", store=True)
+
+    _offer_partner_uniq = models.Constraint(
+        'UNIQUE(partner_id, property_id)',
+        "You have already made an offer on this property",
+        )
 
     @api.depends('validity', 'create_date')
     def _compute_deadline(self):
@@ -32,6 +38,27 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             start_date = record.create_date or fields.Date.today()
             record.validity = (record.date_deadline - fields.Date.to_date(start_date)).days
+
+    @api.constrains('price')
+    def _check_offer_price(self):
+        for record in self:
+            if record.price <= 0:
+                raise ValidationError(_("Offer Price Must be Positive"))
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals.get('property_id'):
+                property_record = self.env['estate.property'].browse(vals['property_id'])
+                if property_record.offer_ids:
+                    max_offer = max(property_record.offer_ids.mapped('price'))
+                    if vals['price'] < max_offer:
+                        raise UserError(_(
+                            "You have to make offer higher then %(amount).2f",
+                            amount=max_offer
+                            ))
+                property_record.state = 'offer_received'
+        return super().create(vals_list)
 
     def action_accept(self):
         for record in self:
@@ -48,11 +75,3 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
-
-    @api.constrains('price')
-    def _check_offer_price(self):
-        for record in self:
-            if record.price <= 0:
-                raise ValidationError(_("Offer Price Must be Positive"))
-
-    _check_partner_partner_id = models.Constraint('UNIQUE(partner_id, property_id)', "This User have already made an offer on this property")

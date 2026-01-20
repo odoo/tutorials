@@ -84,35 +84,6 @@ class EstateProperty(models.Model):
                 record.garden_area = 0
                 record.garden_orientation = False
 
-    def action_sold(self):
-        for record in self:
-            if record.filtered(lambda r: r.state == 'cancelled'):
-                raise UserError(_("Cancelled Properties Can Not be sold"))
-            if not record.buyer_id:
-                raise UserError(_("Can not sold property who has no buyer"))
-            record.state = 'sold'
-        return True
-
-    def action_cancelled(self):
-        for record in self:
-            if record.filtered(lambda r: r.state == 'sold'):
-                raise UserError(_("Sold Properties can not be cancel"))
-            record.state = 'cancelled'
-        return True
-
-    def action_approve(self):
-        for record in self:
-            if record.filtered(lambda r: r.state == 'sold'):
-                raise UserError(_("Sold properties cannot accept other Offers."))
-            target_offer = record.offer_ids.filtered(lambda r: r.price == record.best_price)
-            if target_offer:
-                target_offer = target_offer[0]
-                target_offer.status = 'accepted'
-            (record.offer_ids - target_offer).status = 'refused'
-            record.selling_price = target_offer.price
-            record.buyer_id = target_offer.partner_id
-            record.state = 'offer_accepted'
-
     @api.constrains('expected_price', 'selling_price')
     def _check_price(self):
         for record in self:
@@ -130,3 +101,44 @@ class EstateProperty(models.Model):
             expected_selling_price = record.expected_price * 0.9
             if float_compare(record.selling_price, expected_selling_price, precision_digits=2) < 0:
                 raise ValidationError(_("Selling price Must be 90% of the expected price"))
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                raise UserError(_("Can not delete this property as it's state is neither New nor cancelled"))
+
+    def action_sold(self):
+        self.ensure_one()
+        if self.filtered(lambda r: r.state == 'cancelled'):
+            raise UserError(_("Cancelled Properties Can Not be sold"))
+        if not self.buyer_id:
+            raise UserError(_("Cannot sell a property with no buyer"))
+        self.state = 'sold'
+        return {
+            'effect': {
+                'fadeout': 'slow',
+                'message': 'Congratulation This property mark as sold',
+                'type': 'rainbow_man',
+            }
+        }
+
+    def action_cancelled(self):
+        self.ensure_one()
+        if self.filtered(lambda r: r.state == 'sold'):
+            raise UserError(_("Sold Properties can not be cancel"))
+        self.state = 'cancelled'
+        return True
+
+    def action_approve(self):
+        for record in self:
+            if record.filtered(lambda r: r.state == 'sold'):
+                raise UserError(_("Sold properties cannot accept other Offers."))
+            target_offer = record.offer_ids.filtered(lambda r: r.price == record.best_price)
+            if target_offer:
+                target_offer = target_offer[0]
+                target_offer.status = 'accepted'
+            (record.offer_ids - target_offer).status = 'refused'
+            record.selling_price = target_offer.price
+            record.buyer_id = target_offer.partner_id
+            record.state = 'offer_accepted'

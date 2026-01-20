@@ -36,6 +36,7 @@
                             statusbar_visible="new,offer_received,offer_accepted,sold" />
                     </header>
                     <sheet>
+                        <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
                         <group>
                             <h1>
                                 <field name="name" placeholder="e.g Beach View House" />
@@ -78,7 +79,7 @@
                                             invisible="not garden" />
                                         <field name="garden_orientation" invisible="not garden" />
                                         <field name="total_area" />
-                                        <field name="state" invisible="1" />
+                                        <field name="state"/>
                                         <field name="active" />
                                     </group>
                                 </group>
@@ -120,7 +121,7 @@
             <field name="name">estate_property_search</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
-                <search string="Properties">
+                    <search string="Properties">
                     <field name="name" string="Title" />
                     <field name="postcode" />
                     <field name="expected_price" />

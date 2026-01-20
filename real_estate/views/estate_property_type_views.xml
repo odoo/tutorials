@@ -5,7 +5,7 @@
             <field name="name">estate.property.type.view.list</field>
             <field name="model">estate.property.type</field>
             <field name="arch" type="xml">
-                <list string="Property Types" editable="bottom">
+                <list string="Property Types">
                     <field name="sequence" widget="handle" />
                     <field name="name" string="Property Type" />
                 </list>
@@ -18,6 +18,14 @@
             <field name="arch" type="xml">
                 <form>
                     <sheet>
+                        <div class="oe_button_box" name="offers">
+                            <button name="%(estate_property_offer_action)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-money">
+                                <field name="offer_count" widget="statinfo" string="offers" />
+                            </button>
+                        </div>
                         <div class="oe_title">
                             <h1>
                                 <field name="name" placeholder="e.g. House, Apartment" />
