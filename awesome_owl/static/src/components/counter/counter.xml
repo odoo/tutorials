@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="awsome_owl.Counter">
+        <div id="this.props.id" class="m-2 p-2 border d-inline-block">
+            <p>Counter: <t t-out="state.count"/></p>
+            <button type="button" class="btn btn-primary " t-on-click="increment">Increment</button>
+        </div>
+    </t>
+</templates>
