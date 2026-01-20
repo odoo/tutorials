@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Awesome Clicker",
+    'name': 'Awesome Clicker',
 
     'summary': """
         Starting module for "Master the Odoo web framework, chapter 1: Build a Clicker game"
@@ -10,7 +10,7 @@
         Starting module for "Master the Odoo web framework, chapter 1: Build a Clicker game"
     """,
 
-    'author': "Odoo",
+    'author': 'Odoo',
     'website': "https://www.odoo.com/",
     'category': 'Tutorials',
     'version': '0.1',
