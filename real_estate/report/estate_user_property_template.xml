@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="estate_user_property">
+        <t t-foreach="docs" t-as="user">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-set="properties" t-value="user.property_ids"/>
+                    <t t-set="company" t-value="user.company_id"/>
+                    <header class="text-center">
+                        <div class="company">
+                            <!-- Company Info -->
+                            <t t-if="company.logo">
+                                <img
+                                    t-att-src="'/web/image?model=res.company&amp;id=%s&amp;field=logo' % company.id"
+                                    style="max-height: 50px;" alt="Company Logo"/>
+                            </t>
+                            <div>
+                                <strong>
+                                    <t t-esc="company.name"/>
+                                </strong>
+                            </div>
+                            <div>
+                                <strong>
+                                    <t t-esc="company.email"/>
+                                </strong>
+                            </div>
+                            <div>
+                                <strong>
+                                    <t t-esc="company.phone"/>
+                                </strong>
+                            </div>
+
+                        </div>
+                        <hr class="mb-3"/>
+                    </header>
+                    <div class="page">
+
+                        <!-- Property Details Section -->
+                        <h1 class="text-center text-primary">
+                            <span t-field="user.name"/>
+                        </h1>
+                        <hr class="mb-3"/>
+
+                        <t t-if="not properties">
+                            <h3 class="text-center">
+                                <strong>No Properties yet!</strong>
+                            </h3>
+                        </t>
+                        <t t-else="">
+                            <h3 class="mt-4 text-center">Properties</h3>
+                            <table class="table table-hover table-bordered mt-2">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th style="font-weight:bold " class="text-center">Name</th>
+                                        <th style="font-weight:bold " class="text-center">Exp. Price</th>
+                                        <th style="font-weight:bold " class="text-center">Property
+                                            TYpe</th>
+                                        <th style="font-weight:bold " class="text-center">Status</th>
+                                        <th style="font-weight:bold " class="text-center">Tot. Area</th>
+                                        <th style="font-weight:bold " class="text-center">Available
+                                            From</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr t-foreach="properties" t-as="property">
+                                        <td class="text-center">
+                                            <span t-field="property.name"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="property.expected_price"
+                                           />
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="property.property_type_id.name"
+                                           />
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="property.state"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="property.total_area"/>
+                                        </td>
+                                        <td class="text-center">
+                                            <span t-field="property.date_availability"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </t>
+                        <t t-foreach="properties" t-as="property">
+                            <t t-call="real_estate.estate_offer_table"/>
+                        </t>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

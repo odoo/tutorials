@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">account.move.view.form.inherit.import.export</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Bill of Entry" type="object" name="open_bill_of_entry" invisible="state!='posted' or l10n_in_gst_treatment not in ['overseas','deemed_export','special_economic_zone'] or not import_export_duty"/>
+                <button type="action" name="%(import_export.action_boe_line_pivot)d" string="Import Export Duty"/>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_account_invoice_filter" model="ir.ui.view">
+        <field name="name">account.invoice.select.inherit.import.export</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <field name="l10n_in_shipping_bill_number"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

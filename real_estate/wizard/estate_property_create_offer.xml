@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="estate_create_offer_form" model="ir.ui.view">
+        <field name="name">Make Offer Form</field>
+        <field name="model">estate.create.offer</field>
+        <field name="arch" type="xml">
+            <form string="Make Offer">
+                <group class="oe_title">
+                    <field name="price"/>
+                    <field name="partner_id"/>
+                </group>
+                <footer>
+                    <button name="action_create_offer" string="Make an Offer" type="object"
+                        class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+
+    <record id="estate_create_offer_action" model="ir.actions.act_window">
+        <field name="name">Make offer Wizard</field>
+        <field name="res_model">estate.create.offer</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>
