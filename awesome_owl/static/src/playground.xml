@@ -4,7 +4,18 @@
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <Counter onchange="addCount"/>
+            <Counter onchange="addCount"/>
+            <p>Sum : <t t-esc="sum.value"/></p>
+            <Card title="'card 1'">
+                <p>This is new title prop</p>
+            </Card>
+            <Card title="'card 2'">
+                <Counter/>
+            </Card>
+            <div>
+                <TodoList/>
+            </div>
         </div>
     </t>
-
 </templates>
