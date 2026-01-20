@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="view_sale_order_line_share_wizard" model="ir.ui.view">
+        <field name="name">sale.order.line.share.wizard.form</field>
+        <field name="model">sale.order.line.share.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Distribute Sale Order Line Price">
+                <group>
+                    <field name="sale_order_line_id" readonly="1" />
+                    <field name="total_amount" string="Amount to Distribute" readonly="1" />
+                    <field name="left_amount" readonly="1"
+                        options="{'class': {'text-danger': 'is_left_amount_negative'}}" />
+                </group>
+                <group>
+                    <field name="line_ids" nolabel="1">
+                        <list editable="bottom" create="0">
+                            <field name="is_selected" />
+                            <field name="sale_order_line_id" readonly="1" force_save="True" />
+                            <field name="amount" readonly="not is_selected" force_save="True" />
+                        </list>
+                    </field>
+                </group>
+                <footer>
+                    <button name="action_update_prices" type="object" string="Update Prices"
+                        class="btn-primary" />
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

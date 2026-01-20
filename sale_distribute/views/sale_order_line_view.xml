@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='order_line']/list/field[@name='product_uom_qty']"
+                position="before">
+                <button name="open_share_wizard"
+                    type="object"
+                    icon="fa-share-alt"
+                    string="Share"
+                    invisible="not show_share_icon" />
+            </xpath>
+
+            <xpath expr="//field[@name='order_line']/list/field[@name='tax_id']" position="after">
+                <field name="division_amount_ids" widget="many2many_tags" readonly="1" />
+            </xpath>
+        </field>
+    </record>
+</odoo>
