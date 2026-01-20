@@ -1,0 +1,28 @@
+<odoo>
+	<record id="sale_order_form_view_inherit" model="ir.ui.view">
+		<field name="name">sale.order.form.inherit.revised.date</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_order_form" />
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='payment_term_id']" position="after">
+				<field name="original_promise_date" string="Original Promise Date"	/>
+				<field name="revised_promise_date" string="Revised Promise Date" invisible="state != 'sale'" />
+			</xpath>
+			<xpath expr="//field[@name='commitment_date']" position="attributes">
+				<attribute name="readonly">True</attribute>
+			</xpath>
+			<xpath expr="//page" position="after">
+				<page string="Promise Date History" name="promise_date_history">
+					<field name="promise_date_history_ids" nolabel="1">
+						<list>
+							<field name="changed_on"/>
+							<field name="changed_by"/>
+							<field name="from_date"/>
+							<field name="to_date"/>
+						</list>
+					</field>
+				</page>
+			</xpath>
+		</field>
+	</record>
+</odoo>

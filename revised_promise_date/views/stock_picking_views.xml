@@ -1,0 +1,16 @@
+<odoo>
+<record id="stock_picking_form_view" model='ir.ui.view'>
+    <field name='name'>stock.picking.form.view.inherit.revised.date</field>
+    <field name='model'>stock.picking</field>
+    <field name='inherit_id' ref='stock.view_picking_form'/>
+    <field name='arch' type='xml'>
+        <xpath expr="//field[@name='date_deadline']" position='before'>
+        <field name="original_promise_date" readonly='1'/>
+        </xpath>
+        <xpath expr="//field[@name='date_deadline']" position="attributes">
+            <attribute name="string">Revised Promise Date</attribute>
+            <attribute name="decoration-danger">sale_order_date_only != original_promise_date</attribute>
+        </xpath>
+    </field>
+</record>
+</odoo>
