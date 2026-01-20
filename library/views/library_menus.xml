@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <menuitem id="library_menu_root" name="Library">
+        <menuitem id="library_book_menu_action" name="Books" action="library_book_action"/>
+        <menuitem id="library_book_settings" name="Settings">
+            <menuitem id="library_book_tag_menu_action" action="library_book_tag_action"/>
+            <menuitem id="library_book_rent_menu_action" action="library_book_rent_action"/>
+            <menuitem id="library_book_member_menu_action" action="library_book_member_action"/>
+        </menuitem>
+    </menuitem>
+
+</odoo>
