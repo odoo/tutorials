@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="product_view_kanban_catalog_surplus_qty" model="ir.ui.view">
+        <field name="name">product.view.kanban.catalog.inherit.surplus.qty</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog" />
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='o_kanban_qty_available']/field[@name='uom_id']"
+                position="after">
+                <span> (</span>
+                <t t-if="record.surplus_qty.raw_value &gt; 0">
+                    <span class="text-success">+<field name="surplus_qty" /></span>
+                </t>
+                <t t-elif="record.surplus_qty.raw_value &lt; 0">
+                    <span class="text-danger">
+                        <field name="surplus_qty" />
+                    </span>
+                </t>
+                <t t-else="">
+                    <span class="text-muted">0.00</span>
+                </t>
+                <span>)</span>
+                <div>
+                    Last invoice date :<field name="invoice_date" widget="remaining_days"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>
