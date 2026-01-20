@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<odoo>
+
+    <record id="wizard_product_kit_view_form" model="ir.ui.view">
+        <field name="name">Product Kit Wizard</field>
+        <field name="model">wizard.product.kit</field>
+        <field name="arch" type="xml">
+            <form string="Add Kit">
+                <sheet>
+                    <field name="product_ids">
+                        <list create="False" editable="bottom" delete="False" open_form_view="False">
+                            <field name="product_id" readonly="True" />
+                            <field name="quantity" />
+                            <field name="price" />
+                        </list>
+                    </field>
+                </sheet>  
+                <footer>
+                    <button string="Confirm" type="object" name="add_product_kits" class="btn-primary" />
+                    <button string="Cancel" special="cancel" />
+                </footer>           
+            </form>
+        </field>
+    </record>
+
+</odoo>
