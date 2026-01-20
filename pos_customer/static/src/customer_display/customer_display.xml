@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_customer.CustomerDisplay" t-inherit="point_of_sale.CustomerDisplay" t-inherit-mode="extension">
+        <xpath expr="//div[@t-if='order.amount and !order.finalized']" position="inside">
+            <div class="row fw-bolder">
+                <div class="col text-end">Customer</div>
+                <div class="col text-end" t-esc="order.partnerName"/>
+            </div>
+            <div class="row fw-bolder">
+                <div class="col text-end">Amount</div>
+                <div class="col text-end" t-esc="this.order.amount_per_guest?.toFixed(2)"/>/ Guest
+            </div>
+        </xpath>
+        <xpath expr="//div[hasclass('o_customer_display_main')]/OrderWidget" position="replace">
+            <OrderWidget t-if="!order.finalized" lines="order.lines"/>
+            <div>Refund</div>
+            <OrderWidget t-if="!order.finalized" lines="order.refundLines"/>
+        </xpath>
+    </t>
+</templates>
