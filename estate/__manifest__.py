@@ -1,5 +1,5 @@
 {
-    'name': 'Estate',
+    'name': 'Real Estate',
     'category': 'Sales',
     'description': 'Advertise your real estate',
     'author': '[THDES] Thomas des Touches',
@@ -10,5 +10,7 @@
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
+        'views/estate_property_views.xml',
+        'views/estate_menu_views.xml',
     ],
 }
