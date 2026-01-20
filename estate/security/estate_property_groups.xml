@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="module_category_real_estate" model="ir.module.category">
+        <field name="name">Real Estate</field>
+        <field name="description">Category for Real Estate management Role</field>
+        <field name="sequence">20</field>
+    </record>
+
+    <!-- Property Manager Group (created for separate task) -->
+    <record id="estate_group_property_manager" model="res.groups">
+        <field name="name">Property Manager</field>
+        <field name="category_id" ref="module_category_real_estate" />
+    </record>
+
+    <!-- Agent Group -->
+    <record id="estate_group_user" model="res.groups">
+        <field name="name">Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+    </record>
+
+    <!-- Manager Group (inherits Agent Group) -->
+    <record id="estate_group_manager" model="res.groups">
+        <field name="name">Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage" />
+        <field name="implied_ids" eval="[(4, ref('estate_group_user'))]" />
+    </record>
+</odoo>

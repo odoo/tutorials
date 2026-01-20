@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="properties_list_page" name="Estate Properties List">
+        <t t-call="website.layout">
+            <div class="container">
+                <h2 class="mt-3 mb-3">Real Estate Properties</h2>
+                <form action="/properties" method="GET"
+                    class="bg-light p-4 rounded-3 shadow-sm mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="search" name="search"
+                                    placeholder="Search by name" t-att-value="search_query or ''" />
+                                <label for="search">Search by name</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="min_price"
+                                    name="min_price" placeholder="Min Price"
+                                    t-att-value="min_price or ''" />
+                                <label for="min_price">Min Price</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="max_price"
+                                    name="max_price" placeholder="Max Price"
+                                    t-att-value="max_price or ''" />
+                                <label for="max_price">Max Price</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating">
+                                <select class="form-select" id="sort_by" name="sort_by">
+                                    <option value="create_date desc"
+                                        t-att-selected="sort_by == 'create_date desc'">Newest First</option>
+                                    <option value="expected_price asc"
+                                        t-att-selected="sort_by == 'expected_price asc'">Price Low
+                                        to
+                                        High</option>
+                                    <option value="expected_price desc"
+                                        t-att-selected="sort_by == 'expected_price desc'">Price High
+                                        to Low</option>
+                                </select>
+                                <label for="sort_by">Sort By</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100 h-100">Apply Filters</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <t t-foreach="properties" t-as="property">
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="ratio ratio-4x3">
+                                    <t t-if="property.image">
+                                        <img t-att-src="image_data_uri(property.image)"
+                                            class="card-img-top object-fit-cover"
+                                            alt="Property Image" />
+                                    </t>
+                                    <t t-else="">
+                                        <img src="/estate/static/src/img/default_house.png"
+                                            class="card-img-top" alt="Property Image" />
+                                    </t>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <t t-esc="property.name" />
+                                    </h5>
+                                    <p class="card-text">
+                                        <strong>Price : </strong> ₹ <t
+                                            t-esc="property.expected_price" />
+                                    </p>
+                                    <a t-att-href="'/property/%s' % property.id"
+                                        class="btn btn-outline-primary">
+                                        <i class="fa fa-info-circle"></i> View Details </a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+                <div class="d-flex justify-content-center my-3">
+                    <t t-call="website.pager" />
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="property_detail_page" name="Customer Property View">
+        <t t-call="website.layout">
+            <div class="container my-5">
+                <!-- Property Title and Price -->
+                <div class="row mb-4">
+                    <div class="col-lg-8">
+                        <h1 class="display-4 text-primary mb-0">
+                            <t t-esc="property.name" />
+                        </h1>
+                        <p class="text-muted"> Postcode : <t t-esc="property.postcode" />
+                        </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end">
+                        <h2 class="display-5 text-success mb-0">₹ <t t-esc="property.expected_price" /></h2>
+                        <p class="text-muted">Expected Price</p>
+                    </div>
+                </div>
+
+                <!-- Property Image -->
+                <div class="mb-5 text-center">
+                    <t t-if="property.image">
+                        <img t-att-src="image_data_uri(property.image)"
+                            class="img-fluid rounded-3 shadow-lg w-25" style="object-fit: cover;"
+                            alt="Property Image" />
+                    </t>
+                </div>
+
+                <!-- Property Overview -->
+                <div class="row mb-5">
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fa fa-bed fa-2x text-primary mb-3"></i>
+                                <h5 class="card-title">Bedrooms</h5>
+                                <p class="card-text display-6">
+                                    <t t-esc="property.bedrooms" />
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fa fa-square fa-2x text-primary mb-3"></i>
+                                <h5 class="card-title">Living Area</h5>
+                                <p class="card-text display-6"><t t-esc="property.living_area" /> m²</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div t-if="property.garden" class="col-md-6 col-lg-3 mb-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fa fa-tree fa-2x text-primary mb-3"></i>
+                                <h5 class="card-title">Garden Area</h5>
+                                <p class="card-text display-6"><t t-esc="property.garden_area" /> m²</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card h-100 border-0 shadow-sm">
+                            <div class="card-body text-center">
+                                <i class="fa fa-clone fa-2x text-primary mb-3"></i>
+                                <h5 class="card-title">Total Area</h5>
+                                <p class="card-text display-6"><t t-esc="property.total_area" /> m²</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Information -->
+                <div class="row">
+                    <div class="col-lg-12 mb-4">
+                        <h3 class="mb-4 border-bottom pb-2">Property Details</h3>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fa fa-calendar text-primary me-2"></i>
+                                <strong>Available From:</strong>
+                                <t t-esc="property.date_availability" />
+                            </li>
+                            <li t-if="property.garden" class="mb-3">
+                                <i class="fa fa-compass text-primary me-2"></i>
+                                <strong>Garden Orientation:</strong>
+                                <t t-esc="property.garden_orientation" />
+                            </li>
+                            <li class="mb-3">
+                                <i class="fa fa-car text-primary me-2"></i>
+                                <strong>Garage:</strong>
+                                <span t-if="property.garage" class="text-success">Yes</span>
+                                <span t-if="not property.garage" class="text-danger">No</span>
+                            </li>
+                            <li class="mb-3">
+                                <i class="fa fa-tree text-primary me-2"></i>
+                                <strong>Garden:</strong>
+                                <span t-if="property.garden" class="text-success">Yes</span>
+                                <span t-if="not property.garden" class="text-danger">No</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
