@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="email_template_offer_accepted" model="mail.template">
+            <field name="name">Offer Accepted Notification</field>
+            <field name="model_id" ref="estate.model_estate_property_offer"/>
+            <field name="subject">Congratulations! Your Offer for {{ object.property_id.name }} is Accepted</field>
+            <field name="email_from">{{ object.property_id.company_id.email}}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <p>Dear <t t-out="object.partner_id.name" />,</p>
+                <p>We are pleased to inform you that your offer for <strong t-out="object.name"/> has been accepted!</p>
+                <p>We will contact you soon with the next steps.</p>
+            </field>
+        </record>
+
+        <record id="email_template_offer_rejected" model="mail.template">
+            <field name="name">Offer Rejected Notification</field>
+            <field name="model_id" ref="estate.model_estate_property_offer"/>
+            <field name="subject">Update: Your Offer for {{ object.property_id.name }} is Rejected</field>
+            <field name="email_from">{{ object.property_id.company_id.email}}</field>
+            <field name="email_to">{{ object.partner_id.email }}</field>
+            <field name="body_html" type="html">
+                <p>Dear <t t-out="object.partner_id.name" />,</p>
+                <p>We regret to inform you that your offer for <strong t-out="object.name"/> has been rejected.</p>
+                <p>If you would like to make another offer or have any questions, please feel free to contact us.</p>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_auction_form_view" model="ir.ui.view">
+        <field name="name">estate.property.form</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_sold_button']" position="before">
+                <button name="action_auction_start_button" string="Auction Start" type="object"
+                        invisible="sale_type == 'regular' or timer_running or state in ['offer_accepted', 'sold', 'cancelled']"/>
+            </xpath>
+
+            <xpath expr="//field[@name='property_image']" position="before">
+                <field name="auction_state" widget="auction_state_selection" invisible="sale_type == 'regular'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='property_tag_ids']" position="before">
+                <field name="sale_type" widget="radio" options="{'horizontal': true}"
+                        readonly="timer_running or state in ['offer_accepted', 'sold', 'cancelled']"/>
+                <br />
+            </xpath>
+            <xpath expr="//notebook//page//group" position="inside">
+                <group string="Auction Details" invisible="sale_type == 'regular'">
+                    <field name="auction_endtime" readonly="state in ['offer_accepted', 'sold', 'cancelled']"/>
+                    <field name="highest_offer"/>
+                    <field name="highest_bidder"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_auction_kanban_view" model="ir.ui.view">
+        <field name="name">estate.property.auction.kanban</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='property_tag_ids']" position="after">
+                <field name="auction_state" widget="auction_state_selection" invisible="sale_type == 'regular'"
+                        readonly="state in ['sold', 'cancelled']"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

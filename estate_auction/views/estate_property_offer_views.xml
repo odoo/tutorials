@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_offer_auction_list_view" model="ir.ui.view">
+        <field name="name">estate.property.offer.list</field>
+        <field name="model">estate.property.offer</field>
+        <field name="inherit_id" ref="estate.estate_property_offer_list_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_offer_accept_button']" position="attributes">
+                <attribute name="invisible">(status or property_sale_type == 'auction')</attribute>
+            </xpath>
+
+            <xpath expr="//button[@name='action_offer_refuse_button']" position="attributes">
+                <attribute name="invisible">(status or property_sale_type == 'auction')</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
