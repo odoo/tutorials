@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Root menu (App switcher) -->
+    <menuitem id="estate_menu_root" name="Real Estate"/>
+
+    <!-- First level menu (top bar) -->
+    <menuitem id="estate_menu_first_level"
+              name="Advertisements"
+              parent="estate_menu_root"/>
+
+    <!-- Action menu (opens the list/form view) -->
+    <menuitem id="estate_menu_properties"
+              parent="estate_menu_first_level"
+              action="estate_property_action"/>
+</odoo>
