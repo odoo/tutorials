@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="price_distribution_wizard_form_view" model="ir.ui.view">
+            <field name="name">price.distribution.wizard.form</field>
+            <field name="model">price.distribution.wizard</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="order_id" invisible="True"/>
+                            <field name="line_ids" string="">
+                                <list editable="top">
+                                    <field name="product" readonly="True" force_save="1"/>
+                                    <field name="distributed_price" readonly="False"/>
+                                    <field name="include_for_division" readonly="False" />
+                                </list>
+                            </field>
+                        </group>
+                        <footer>
+                            <button name="action_confirm_distribution" type="object" string="Divide" class="btn-primary"/>
+                            <button string="Cancel" class="btn-secondary" special="cancel"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="action_price_distribution_wizard" model="ir.actions.act_window">
+            <field name="name">Price Distribution</field>
+            <field name="res_model">price.distribution.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>
