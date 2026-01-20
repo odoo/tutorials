@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<odoo>
+    <data noupdate="1">
+        <record id="supplier_portal_menu" model="website.menu">
+            <field name="name">Supplier Portal</field>
+            <field name="url">/supplier/portal</field>
+            <field name="parent_id" ref="website.main_menu"></field>
+            <field name="group_ids" eval="[(6, 0, [ref('base.group_portal')])]"></field>
+        </record>
+    </data>
+</odoo>
