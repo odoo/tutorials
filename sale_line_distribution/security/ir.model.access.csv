@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+"access_distributed_cost_tag","distributed_cost_tag","model_distributed_cost_tag",base.group_user,1,1,1,1
+"access_sale_order_line_distribution_wizard","sale_order_line_distribution_wizard","model_sale_order_line_distribution_wizard",base.group_user,1,1,1,1
+"access_sale_order_line_distribution_wizard_line","sale_order_line_distribution_wizard_line","model_sale_order_line_distribution_wizard_line",base.group_user,1,1,1,1

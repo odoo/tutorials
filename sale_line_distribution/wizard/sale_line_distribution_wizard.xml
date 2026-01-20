@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_line_distribution_wizard_action" model="ir.actions.act_window">
+        <field name="name">Sale Order Line Distribution Wizard</field>
+        <field name="res_model">sale.order.line.distribution.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="sale_order_line_distribution_wizard_form" model="ir.ui.view">
+        <field name="name">sale.order.line.distribution.wizard.form</field>
+        <field name="model">sale.order.line.distribution.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Sale Order Line Distribution" nolabel="1">
+                <sheet>
+                    <group>
+                        <field name="distribution_line_ids" optional="hide" nolabel="1">
+                            <list editable="bottom" delete="0" create="0">
+                                <field name="sale_order_line"/>
+                                <field name="distributed_amount"/>
+                            </list>
+                        </field>
+                    </group>
+                    <footer>
+                        <button string="Apply Distribution" name="action_apply_distribution" type="object"
+                            class="btn-primary" />
+                        <button string="Cancel" class="btn-secondary" special="cancel" />
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>
