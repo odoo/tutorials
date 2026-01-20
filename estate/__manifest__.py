@@ -1,8 +1,8 @@
 {
-    'name': 'estate',
-    'depends': [
-        'base'
+    "name": "estate",
+    "depends": [
+        "base",
     ],
-    'application': True,
-    'installable': True
+    "application": True,
+    "installable": True,
 }
