@@ -1,0 +1,480 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_bulk_return
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-04-01 05:43+0000\n"
+"PO-Revision-Date: 2025-04-01 05:43+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: stock_bulk_return
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "<span>Scan barcode to input:</span>"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,help:stock_bulk_return.field_stock_picking__bulk_return_ids
+msgid "All the return move's pickings"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return___barcode_scanned
+msgid "Barcode Scanned"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.actions.act_window,name:stock_bulk_return.action_stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__bulk_return_id
+#: model:ir.ui.menu,name:stock_bulk_return.menu_stock_bulk_return
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Bulk Return"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid "Bulk Return Picking"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Cancel"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/models/stock_picking.py:0
+msgid "Check credit note"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.constraint,message:stock_bulk_return.constraint_stock_bulk_return_line_move_lot_uniq
+msgid "Combination of stock move and stock lot must be unique."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Create Return"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__create_uid
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__create_uid
+msgid "Created by"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__create_date
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__create_date
+msgid "Created on"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/models/stock_picking.py:0
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_picking__credit_note_id
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.view_picking_form
+msgid "Credit Note"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Customer"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__partner_id
+msgid "Customer/Vendor"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,help:stock_bulk_return.field_stock_bulk_return_line__uom_id
+msgid "Default unit of measure used for all stock operations."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_sale_order__all_picking_ids
+msgid "Deliveries & Returns"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Delivery"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid "Delivery date is before the selected date."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__picking_id
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Delivery/Receipt"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__location_dest_id
+msgid "Destination Location"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__display_name
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__display_name
+msgid "Display Name"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid ""
+"Either picking not Done or partner not same or product not delivered "
+"to/received from this partner or dates don't match."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid ""
+"Either the picking hasn't been done yet or no product from this lot was sold"
+" to/purchased from selected partner."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/models/stock_picking.py:0
+msgid ""
+"Following orders contained lines whose invoiced quantity was less than the "
+"returned quantity. %s, "
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__id
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__id
+msgid "ID"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_picking__is_bulk_return
+msgid "Is Bulk Return"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__write_uid
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__write_uid
+msgid "Last Updated by"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__write_date
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__write_date
+msgid "Last Updated on"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__lot_id
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Lot/Serial No."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "Lot/Serial No. must be in the selected move."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "Lot/Serial No. must belong to the selected product."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__max_return_qty
+msgid "Max Return Quantity"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,help:stock_bulk_return.field_stock_bulk_return_line__max_return_qty
+msgid "Maximum quantity that can be returned"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid ""
+"No operation, delivery, receipt, lot, serial, product found corresponding to"
+" barcode %s"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid "No returns added."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/models/stock_picking.py:0
+msgid "Only account manager can create credit note."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__picking_type_id
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Operation Type"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid "Order date is before the selected date."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__date_order_after
+msgid "Orders After"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_move__origin_returned_picking_id
+msgid "Origin Returned Picking"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid "Partner in this picking does not match the selected partner."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model,name:stock_bulk_return.model_stock_picking_type
+msgid "Picking Type"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "Picking is already a return."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "Picking must be of opposite type as the bulk return."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "Picking must be of type Delivery or Receipt."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "Picking must belong to the same partner as the bulk return."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid ""
+"Picking operation type cannot be internal or same as selected operation "
+"type."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__date_picking_after
+msgid "Pickings After"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid "Please select a partner first."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_picking__group_ids
+msgid "Procurement Groups"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__product_id
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Product"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "Product must be moved in the selected picking."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "Product must have a line in selected purchase order."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "Product must have a line in selected sale order."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__purchase_order_id
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_move__purchase_order_id
+msgid "Purchase Order"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model,name:stock_bulk_return.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/models/stock_picking.py:0
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_picking__purchase_order_ids
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.view_picking_form
+msgid "Purchase Orders"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Receipt"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.view_picking_form
+msgid "Return Info"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__bulk_return_line_ids
+msgid "Return Lines"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__return_qty
+msgid "Return Quantity"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid "Return can only be created of Done pickings."
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return.py:0
+msgid "Return of %s"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_picking__bulk_return_ids
+msgid "Return of pickings"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.constraint,message:stock_bulk_return.constraint_stock_bulk_return_line_check_return_qty
+msgid ""
+"Return quantity must be positive and less than or equal to maximum return "
+"quantity."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__sale_order_id
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_move__sale_order_id
+msgid "Sale Order"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/models/stock_picking.py:0
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_picking__sale_order_ids
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.view_picking_form
+msgid "Sale Orders"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model,name:stock_bulk_return.model_sale_order
+msgid "Sales Order"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__location_src_id
+msgid "Source Location"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/models/stock_picking.py:0
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.view_picking_form
+msgid "Source Pickings"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model,name:stock_bulk_return.model_stock_bulk_return
+msgid "Stock Bulk Return"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model,name:stock_bulk_return.model_stock_bulk_return_line
+msgid "Stock Bulk Return Line"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model,name:stock_bulk_return.model_stock_move
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__move_id
+msgid "Stock Move"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.constraint,message:stock_bulk_return.constraint_stock_bulk_return_line_check_max_return_qty
+msgid "There is no quantity to return."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model,name:stock_bulk_return.model_stock_picking
+msgid "Transfer"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return__picking_type_code
+msgid "Type of Operation"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,field_description:stock_bulk_return.field_stock_bulk_return_line__uom_id
+msgid "Unit of Measure"
+msgstr ""
+
+#. module: stock_bulk_return
+#: model:ir.model.fields,help:stock_bulk_return.field_stock_bulk_return___barcode_scanned
+msgid "Value of the last barcode scanned."
+msgstr ""
+
+#. module: stock_bulk_return
+#: model_terms:ir.ui.view,arch_db:stock_bulk_return.stock_bulk_return_view_form
+msgid "Vendor"
+msgstr ""
+
+#. module: stock_bulk_return
+#. odoo-python
+#: code:addons/stock_bulk_return/wizard/stock_bulk_return_line.py:0
+msgid "You may only return Done pickings."
+msgstr ""

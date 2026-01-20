@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_picking_form" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.stock.bulk.return</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button type="object" name="action_view_source_pickings" string="Source Pickings" invisible="not is_bulk_return or not bulk_return_ids" class="oe_stat_button" icon="fa-truck"/>
+                <button type="object" name="action_view_sale_orders" string="Sale Orders" invisible="not is_bulk_return or not sale_order_ids" class="oe_stat_button" icon="fa-pencil-square-o"/>
+                <button type="object" name="action_view_purchase_orders" string="Purchase Orders" invisible="not is_bulk_return or not purchase_order_ids" class="oe_stat_button" icon="fa-credit-card"/>
+                <button type="object" name="action_view_credit_note" string="Credit Note" invisible="not is_bulk_return or not credit_note_id" class="oe_stat_button" icon="fa-dollar" groups="account.group_account_manager"/>
+            </xpath>
+            <xpath expr="//header" position="inside">
+                <button type="object" name="action_create_credit_note" string="Credit Note" invisible="not is_bulk_return or credit_note_id" groups="account.group_account_manager"/>
+            </xpath>
+            <xpath expr="//field[@name='lot_ids']" position="after">
+                <field name="origin_returned_picking_id" column_invisible="not parent.is_bulk_return"/>
+                <field name="sale_order_id" column_invisible="not parent.is_bulk_return or not parent.sale_order_ids"/>
+                <field name="purchase_order_id" column_invisible="not parent.is_bulk_return or not parent.purchase_order_ids"/>
+            </xpath>
+            <xpath expr="//page[@name='extra']/group" position="inside">
+                <group string="Return Info" name="returns" invisible="not is_bulk_return">
+                    <field name="bulk_return_ids" widget="many2many_tags"/>
+                    <field name="sale_order_ids" widget="many2many_tags" invisible="not sale_order_ids"/>
+                    <field name="purchase_order_ids" widget="many2many_tags" invisible="not purchase_order_ids"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

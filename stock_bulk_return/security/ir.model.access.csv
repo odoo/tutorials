@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_stock_bulk_return,access.stock.bulk.return,model_stock_bulk_return,base.group_user,1,1,1,1
+access_stock_bulk_return_line,access.stock.bulk.return.line,model_stock_bulk_return_line,base.group_user,1,1,1,1

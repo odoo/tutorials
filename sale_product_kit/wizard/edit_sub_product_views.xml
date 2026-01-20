@@ -1,0 +1,24 @@
+<odoo>
+    <record id="edit_sub_product_view_form" model="ir.ui.view">
+        <field name="name">edit.sub.product.form</field>
+        <field name="model">edit.sub.product</field>
+        <field name="arch" type="xml">
+            <form string="Edit sub-products">
+                <sheet>
+                    <label for="line_ids" class="fs-2 mb-2"></label>
+                    <field name="line_ids">
+                        <list create="0" delete="0" editable="bottom">
+                            <field name="product_id" readonly="1" force_save="1"/>
+                            <field name="quantity"/>
+                            <field name="price_unit"/>
+                        </list>
+                    </field>
+                </sheet>
+                <footer>
+                    <button string="Confirm" type="object" name="action_confirm" class="oe_highlight"/>
+                    <button string="Cancel" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
