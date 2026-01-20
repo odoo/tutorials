@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_referrals.ReferredBy">
+        <div class="referred-by p-1 text-wrap text-truncate w-auto" >
+            <t t-if="props.referredby !== 'No Referrer'">
+                <div class="text-muted small">Referred by:</div>
+                <div class="fw-bold text-primary text-truncate" t-att-title="props.referredby">
+                    <t t-esc="props.referredby"/>
+                </div>
+            </t>
+            <t t-else="">
+                <div class="fw-bold text-primary text-uppercase text-center p-1">
+                    Welcome to <t t-out="props.company_name"/>
+                </div>
+            </t>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="loyalty_card_view_form_referral" model="ir.ui.view">
+            <field name="name">loyalty.card.view.form.referral</field>
+            <field name="model">loyalty.card</field>
+            <field name="inherit_id" ref="loyalty.loyalty_card_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="referrer_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="loyalty_card_view_tree_referral" model="ir.ui.view">
+            <field name="name">loyalty.card.view.list.referral</field>
+            <field name="model">loyalty.card</field>
+            <field name="inherit_id" ref="loyalty.loyalty_card_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="referrer_id"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

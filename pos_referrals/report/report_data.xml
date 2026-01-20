@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="custom_report_gift_card" model="ir.actions.report">
+            <field name="name">Referral Gift Card</field>
+            <field name="model">loyalty.card</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">pos_referrals.custom_gift_card_report_i18n</field>
+            <field name="report_file">pos_referrals.custom_gift_card_report_i18n</field>
+            <field name="binding_model_id" ref="model_loyalty_card"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
