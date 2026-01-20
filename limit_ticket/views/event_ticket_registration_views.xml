@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="event_ticket_registration" inherit_id="website_event.modal_ticket_registration">
+        <xpath expr="//div[@id='o_wevent_tickets_collapse']//t[@t-set='seats_max']" position="attributes">
+            <attribute name="t-value">min(seats_max_ticket, seats_max_event, ticket.max_per_reg+1)</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_wevent_registration_single_select')]//t[@t-set='seats_max']" position="attributes">
+            <attribute name="t-value">min(seats_max_ticket, seats_max_event, tickets.max_per_reg+1) if tickets else seats_max_event</attribute>
+        </xpath>
+    </template>
+</odoo>
