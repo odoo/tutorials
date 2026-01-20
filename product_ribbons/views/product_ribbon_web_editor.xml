@@ -1,0 +1,11 @@
+<odoo>
+    <template id="inherit_snippet_options"
+              inherit_id="website.snippet_options">
+        <xpath expr="//div[@data-name='ribbon_customize_opt']/we-colorpicker[1]" position="before">
+            <we-select string="Style" class="o_we_sublevel_1">
+                <we-button data-set-ribbon-style="badge">Badge</we-button>
+                <we-button data-set-ribbon-style="ribbon">Ribbon</we-button>
+            </we-select>
+        </xpath>
+    </template>
+</odoo>
