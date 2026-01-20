@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.todo_item">
+        <div class="d-flex align-items-center">
+            <input type="checkbox" t-on-click="change"/>
+            <p 
+                class="mb-0 ms-2 me-2"
+                t-att-class="{'text-muted text-decoration-line-through': props.todo.isCompleted}"
+            >
+                <t t-esc="props.todo.id"/>. <t t-esc="props.todo.description"/>
+            </p>
+            <span
+                class="fa fa-remove"
+                style="
+                    color: #d32f2f;
+                    cursor: pointer;
+                    transition: color 0.15s, transform 0.1s;
+                "
+                t-on-click="remove"
+                onmouseover="this.style.color='#b71c1c';"
+                onmouseout="this.style.color='#d32f2f'; this.style.transform='scale(1)';"
+                onmousedown="this.style.transform='scale(0.85)';"
+                onmouseup="this.style.transform='scale(1)';"
+            />
+        </div>
+    </t>
+
+</templates>

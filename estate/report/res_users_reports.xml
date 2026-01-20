@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="report_res_users" model="ir.actions.report">
+        <field name="name">Real Estate Properties</field>
+        <field name="model">res.users</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">estate.res_users_report_template</field>
+        <field name="report_file">estate.res_users_report_template</field>
+        <field name="print_report_name">'Real Estate Properties - %s' % (object.partner_id.name or 'Users').replace('/','')</field>
+        <field name="binding_model_id" ref="base.model_res_users"/>
+    </record>
+</odoo>

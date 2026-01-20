@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.dialog">
+        <Dialog title="'Dashboard Items configuration'" fullscreen="false" footer="true">
+            <t t-set-slot="header">
+                <h4 class="modal-title text-break" t-out="'Dashboard Item configuration'"/>
+                <button type="button" class="btn-close" aria-label="Close" tabindex="-1" t-on-click="props.close"/>
+            </t>
+
+            <div>
+                <h5>Which cards do you wish to see?</h5>
+                <div class="d-flex flex-column">
+                    <t t-foreach="items" t-as="item" t-key="item.id">
+                        <CheckBox
+                            onChange="() => this.toggleActiveItem(item.id)"
+                            name="item.id"
+                            value="activeDashboardItem[item.id]"
+                        >
+                            <t t-esc="item.description"/>
+                        </CheckBox>
+                    </t>
+                </div>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="props.close">Done</button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

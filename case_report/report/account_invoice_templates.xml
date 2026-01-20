@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="report_invoice_document_inherit_account" inherit_id="account.report_invoice_document">
+        <xpath expr="//div[@name='delivery_date']" position="after">
+            <div class="col" t-if="o.invoice_user_id" name="salesperson">
+                <strong>Salesperson</strong>
+                <div t-field="o.invoice_user_id"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="document_tax_totals_template_inherit_account" inherit_id="account.document_tax_totals_template">
+        <xpath expr="//tr[@class='o_total']" position="after">
+            <tr>
+                <td/>
+                <td class="text-end"><t t-out="o.currency_id.amount_to_text(tax_totals['total_amount_currency'])"/></td>
+            </tr>
+            <tr class="pt16">
+                <td><strong>Sign here,</strong></td>
+                <td/>
+            </tr>
+            <tr>
+                <td>
+                    <div class="pt96 pb16">
+                        <t t-out="o.partner_id.name"/>
+                    </div>
+                </td>
+            </tr>
+        </xpath>
+    </template>
+</odoo>

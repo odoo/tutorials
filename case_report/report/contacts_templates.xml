@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<odoo>
+    <template id="contacts_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <h2>
+                        <strong>Contacts</strong>
+                    </h2>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th><strong>Name</strong></th>
+                                <th><strong>Email</strong></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr t-foreach="docs" t-as="contact">
+                                <td>
+                                    <span t-field="contact.name"/>
+                                </td>
+                                <td>
+                                    <span t-field="contact.email"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>                    
+                </div>
+            </t>
+        </t>        
+    </template>
+</odoo>

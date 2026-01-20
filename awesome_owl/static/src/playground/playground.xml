@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.playground">
+        <div 
+            class="p-4"
+            style="
+                border: 1.5px solid #bbb;
+                border-radius: 10px;
+                background: #fff;
+                min-width: 260px;
+                max-width: 350px;
+            "
+        >
+            <div style="margin-bottom: 1rem; text-align: center;">
+                hello world
+            </div>
+
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <div style="margin-bottom: 1rem; text-align: center;">
+                The sum is: <t t-esc="state.sum"/>
+            </div>
+
+            <TodoList/>
+
+            <Card title="title1">
+                <Counter/>
+            </Card>
+            <Card title="title2">
+                <div class='text-primary'>some other content</div>
+            </Card>
+        </div>
+    </t>
+
+</templates>
