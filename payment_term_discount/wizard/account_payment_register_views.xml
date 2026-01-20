@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_payment_register_form" model="ir.ui.view">
+        <field name="name">account.payment.register.form.inherit</field>
+        <field name="model">account.payment.register</field>
+        <field name="inherit_id" ref="account.view_account_payment_register_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('alert-info')]" position="after">
+                <div role="alert" class="alert alert-info" invisible="not hide_early_payment_discount_on_partial_payment">
+                    <p class="m-0"><b>Early Payment Discount of <field name="early_payment_discount_on_partial_payment"/> has been applied.</b></p>
+                </div>
+            </xpath>
+            <xpath expr="//group[@name='group2']" position="inside">
+                <field name="apply_epd_on_partial_payment" invisible="not show_apply_epd_on_partial_payment"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

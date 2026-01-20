@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_payment_term_discount" model="ir.actions.act_window">
+        <field name="name">Early Payment Discounts</field>
+        <field name="res_model">account.payment.term.discount</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="view_payment_term_discount_list" model="ir.ui.view">
+        <field name="name">account.payment.term.dicount.list</field>
+        <field name="model">account.payment.term.discount</field>
+        <field name="arch" type="xml">
+            <list string="Early Payment Discounts">
+                <field name="discount_percentage"/>
+                <field name="discount_days"/>
+                <field name="early_pay_discount_computation"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_payment_term_discount_form" model="ir.ui.view">
+        <field name="name">account.payment.term.discount.form</field>
+        <field name="model">account.payment.term.discount</field>
+        <field name="arch" type="xml">
+            <form string="Early Payment Discount">
+                <group>
+                    <div class="o_field_highlight">
+                        <field name="discount_percentage"
+                                class="text-end o_field_highlight o_input oe_inline"/>
+                        <span> % if paid before </span>
+                        <field name="discount_days"
+                                class="text-end o_field_highlight o_input oe_inline"/>
+                        <span> days</span>
+                        <div>
+                            <span> Reduced tax:
+                                <field name="early_pay_discount_computation" class="w-auto"/>
+                            </span>
+                        </div>
+                    </div>
+                </group>
+            </form>
+        </field>
+    </record>
+</odoo>
