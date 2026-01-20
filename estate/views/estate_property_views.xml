@@ -7,7 +7,11 @@
             <form string="Property">
                 <sheet>
                     <group>
+                        <field name="tag_ids" widget="many2many_tags"/>
+                    </group>
+                    <group>
                         <group>
+                            <field name="property_type_id"/>
                             <field name="name"/>
                             <field name="date_availability"/>
                         </group>
@@ -29,6 +33,17 @@
                                 <field name="garden_orientation"/>
                             </group>
                         </page>
+                        <page string="Offers">
+                            <group>
+                                <field name="offer_ids" string=""/>
+                            </group>
+                        </page>
+                        <page string="Other">
+                            <group>
+                                <field name="buyer_id"/>
+                                <field name="salesperson_id"/>
+                            </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
@@ -41,6 +56,7 @@
         <field name="arch" type="xml">
             <list string="Properties">
                 <field name="name" width="400px"/>
+                <field name="property_type_id" width="400px"/>
                 <field name="postcode" width="50px"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
@@ -62,6 +78,9 @@
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="facades"/>
+                <field name="property_type_id"/>
+                <field name="buyer_id"/>
+                <field name="salesperson_id"/>
                 <filter string="Available" name="available" domain="[('date_availability', '&lt;=', 'today')]"/>
                 <filter string="Postcode" name="postcode-group" context="{'group_by': 'postcode'}"/> <!-- Odoo 19 already allows grouping by properties, this is for the purpose of the exercise -->
             </search>
