@@ -1,11 +1,11 @@
 {
     'name': 'Estate',
-    'category': 'Sales/CRM',
+    'category': 'Sales',
     'description': 'Advertise your real estate',
     'author': '[THDES] Thomas des Touches',
     'depends': [
-        'base_setup',       
+        'base_setup',
     ],
-    'application': True, 
+    'application': True,
     'license': 'LGPL-3',
 }
