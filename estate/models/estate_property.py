@@ -1,9 +1,10 @@
 from odoo import fields, models
 
+
 class EstateProperty(models.Model):
     _name = 'estate_property'
     _description = 'Estate Property'
-    
+
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Post Code')
