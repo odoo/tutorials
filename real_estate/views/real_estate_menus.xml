@@ -29,4 +29,9 @@
               parent="real_estate_menu_configuration"
               action="real_estate_property_maintenance_request_action_view"/>
 
+    <menuitem id="real_estate_menu_property_investor"
+              name="Property Investor"
+              parent="real_estate_menu_configuration"
+              action="real_estate_property_investor_action_view"/>
+
 </odoo>

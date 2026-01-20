@@ -5,7 +5,7 @@
     'author': "Ruchita Gothi (Rugot)",
     'category': 'Real Estate',
     'version': '0.1',
-    'depends': ['base', 'web'],
+    'depends': ['base', 'web', 'mail'],
     'data': [
         'security/ir.model.access.csv',
         'views/real_estate_property_offer_views.xml',
@@ -14,6 +14,7 @@
         'views/real_estate_tag_views.xml',
         'views/real_estate_property_maintenance_request_views.xml',
         'views/res_users_views.xml',
+        'views/real_estate_property_investor_views.xml',
         'views/real_estate_menus.xml',
     ],
     'application': True,

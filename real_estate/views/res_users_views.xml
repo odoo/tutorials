@@ -23,6 +23,9 @@
                     </group>
                 </page>
             </xpath>
+        <xpath expr="//field[@name='role']" position="after">
+            <field name="total_unsold"/>
+        </xpath>
         </field>
     </record>
     <!--expr="//page[@name='usage']"-->

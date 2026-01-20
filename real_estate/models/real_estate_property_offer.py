@@ -1,12 +1,11 @@
 from datetime import timedelta
-# from collections import defaultdict
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError
 from odoo.tools import float_compare
 
 
-class real_estate_property_offer(models.Model):
+class RealEstatePropertyOffer(models.Model):
     _name = 'real.estate.property.offer'
     _description = 'Real Estate Property Offer'
     _order = "price desc"
@@ -34,31 +33,6 @@ class real_estate_property_offer(models.Model):
         'The offer price must be strictly positive.',
     )
 
-    # @api.model
-    # def create(self, vals):
-    #     grouped = defaultdict(list)
-    #     for val in vals:
-    #         property_id = val.get('property_id')
-    #         price = val.get('price')
-    #         if property_id and price:
-    #             grouped[property_id].append(price)
-    #
-    #     for property_id, new_prices in grouped.items():
-    #         property_rec = self.env['real.estate'].browse(property_id)
-    #         existing_prices =  property_rec.best_price
-    #         new_max = max(new_prices)
-    #         max_price = max(existing_prices, new_max)
-    #         for price in new_prices:
-    #             if price < max_price:
-    #                 raise UserError(
-    #                     "Only the highest offer is allowed"
-    #                 )
-    #     offers = super().create(vals)
-    #     for offer in offers:
-    #         if offer.property_id and offer.property_id.stage == 'new':
-    #             offer.property_id.stage = 'offer_received'
-    #     return offers
-
     @api.model
     def create(self, vals):
         for val in vals:
@@ -77,32 +51,10 @@ class real_estate_property_offer(models.Model):
 
         return super().create(vals)
 
-    # @api.model
-    # def create(self, vals):
-    #     for property_id, n
-    #     for val in vals:
-    #         property_id = val.get('property_id')
-    #         price = val.get('price')
-    #         if property_id and price:
-    #             property_rec = self.env['real.estate'].browse(property_id)
-    #             if property_rec.offer_ids:
-    #                 # max_offer = max(property_rec.offer_ids.mapped('price'))
-    #                 if price < property_rec.best_price:
-    #                     raise UserError(
-    #                         "The offer must be higher than existing offers."
-    #                     )
-    #     offer = super().create(vals)
-    #     if offer.property_id and offer.property_id.stage == 'new':
-    #         offer.property_id.stage = 'offer_received'
-    #     return offer
-
     @api.depends('create_date', 'validity')
     def _compute_date_deadline(self):
         for offer in self:
-            if offer.create_date:
-                offer.date_deadline = offer.create_date.date() + timedelta(days=offer.validity)
-            else:
-                offer.date_deadline = fields.Date.today() + timedelta(days=offer.validity)
+            offer.date_deadline = (offer.create_date or fields.Date.today()) + timedelta(days=offer.validity)
 
     def _inverse_date_deadline(self):
         for offer in self:

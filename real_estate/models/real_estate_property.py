@@ -1,22 +1,28 @@
-from datetime import timedelta
+from random import randint
 
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
-from odoo.tools import float_is_zero, float_compare
+from odoo.tools import float_is_zero, float_compare, _
 
 
-class real_estate(models.Model):
+class RealEstate(models.Model):
     _name = 'real.estate'
     _description = 'Real Estate Property'
     _order = "id desc"
+    _inherit = ['mail.thread', 'mail.activity.mixin']
 
-    name = fields.Char(required=True)
+    def _get_default_color(self):
+        return randint(1, 11)
+
+    name = fields.Char(required=True, tracking=True)
     property_type_id = fields.Many2one(
         "real.estate.property.type", string="Property Type")
+    color = fields.Integer(default=_get_default_color)
     street_address = fields.Char()
     description = fields.Text()
     postcode = fields.Integer()
-    date_availability = fields.Datetime(default=lambda self: fields.Datetime.now() + timedelta(days=90))
+    date_availability = fields.Datetime(default=lambda self: fields.Date.add(fields.Date.today(), months=3))
+    # default=date.today() + timedelta(days=90)
     expected_price = fields.Float()
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -35,12 +41,12 @@ class real_estate(models.Model):
     tag_ids = fields.Many2many(
         "real.estate.tag", string="Tags", ondelete='cascade')
     offer_ids = fields.One2many(
-        "real.estate.property.offer", "property_id", string="Offers")
+        "real.estate.property.offer", "property_id", string="Offers", tracking=True)
     total_area = fields.Float(compute="_compute_total", store=True)
     best_price = fields.Float(
         string="Best Offer",
         compute="_compute_best_price",
-        store=True)
+        store=True, tracking=True)
     # ist_time = fields.Char(
     #     string="Created On (IST)",
     #     compute="_compute_create_date_ist",
@@ -51,11 +57,11 @@ class real_estate(models.Model):
         ('offer_accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancelled', 'Cancelled'),
-    ], default='new')
+    ], default='new', tracking=True)
     buyer_id = fields.Many2one(
         'res.partner',
         string='Buyer',
-        copy=False)
+        copy=False, tracking=True)
     selling_price = fields.Float()
     maintenance_request_ids = fields.One2many(
         "real.estate.property.maintenance.request", "property_id", string="Maintenance Requests")
@@ -78,16 +84,23 @@ class real_estate(models.Model):
                     rec.selling_price,
                     rec.expected_price * 0.9,
                     precision_rounding=0.01) < 0:
-                raise ValidationError(
-                    'The selling price cannot be lower than 90% of the expected price.')
+                raise ValidationError(_(
+                    'The selling price cannot be lower than 90% of the expected price.'))
+
+    # @api.depends("offer_ids.price")
+    # def _compute_best_price(self):
+    #     for record in self:
+    #         record.best_price = max(record.offer_ids.mapped("price"), default=0.0)
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
+        dataa = dict(self.env['real.estate.property.offer']._read_group(
+            domain=[('property_id', 'in', self.ids)],
+            groupby=['property_id'],
+            aggregates=['price:max'],
+        ))
         for record in self:
-            prices = []
-            for offer in record.offer_ids:
-                prices.append(offer.price)
-            record.best_price = max(prices) if prices else 0.0
+            record.best_price = dataa.get(record, 0.0)
 
     @api.depends('maintenance_request_ids.cost')
     def _compute_total_maintenance_cost(self):
@@ -97,8 +110,8 @@ class real_estate(models.Model):
 
     @api.depends('living_area', 'garden_area')
     def _compute_total(self):
-        for record in self:
-            record.total_area = (record.living_area or 0) + (record.garden_area or 0)
+        for rec in self:
+            rec.total_area = (rec.living_area or 0) + (rec.garden_area or 0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -136,15 +149,7 @@ class real_estate(models.Model):
     def action_sold(self):
         if self.stage == 'cancelled':
             raise UserError("A cancelled property cannot be sold.")
-        maintenace_request = self.maintenance_request_ids.filtered_domain([('status', '!=', 'done')])
-        if maintenace_request:
-            raise UserError("CProperty cannot be sold , there is any maintenance request not done")
+        maintenance_request = self.maintenance_request_ids.filtered_domain([('status', '!=', 'done')])
+        if maintenance_request:
+            raise UserError("Property cannot be sold , there is any maintenance request not done")
         self.stage = 'sold'
-
-    @api.constrains('expected_price')
-    def _check_expected_price(self):
-        for rec in self:
-            if rec.expected_price < 0:
-                raise ValidationError(
-                    'The selling price cannot be lower than 90% of the expected price.'
-                )

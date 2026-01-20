@@ -3,7 +3,7 @@ from odoo.exceptions import UserError
 from odoo import fields, models, api
 
 
-class real_estate_properties_maintenance_request(models.Model):
+class RealEstatePropertiesMaintenanceRequest(models.Model):
     _name = 'real.estate.property.maintenance.request'
     _description = 'Real Estate Property Maintenance Request'
 
