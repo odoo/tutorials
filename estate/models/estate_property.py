@@ -23,5 +23,5 @@ class EstateProperty(models.Model):
             ("south", "South"),
             ("east", "East"),
             ("west", "West"),
-        ]
+        ],
     )
