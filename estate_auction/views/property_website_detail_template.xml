@@ -1,0 +1,26 @@
+<odoo>
+    <template id="property_info_template_inherit" inherit_id="estate.property_info_template">
+         <xpath expr="//div[@class='mt-4']" position="inside">
+            <t t-if="property.sale_type == 'auction'">
+                <div class="d-flex align-items-center justify-content-between gap-3 p-3 rounded shadow-sm auction-container">
+                    <t t-if="property.is_auction_started == False">
+                        <p class="fs-3">Auction is not yet started</p>
+                    </t>
+                    <t t-else="">
+                        <div class="auction_countdown d-flex align-items-center justify-content-center p-3  fs-3" 
+                            t-att-data-auction-end="property.auction_end_datetime">
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </xpath>
+
+        <xpath expr="//div[@class='mt-4']" position="after">
+            <div class="mt-3">
+                <a t-attf-href="/property/{{property.id}}/offer" class="btn btn-primary">
+                    Create Offer
+                </a>
+            </div>
+        </xpath>
+    </template>
+</odoo>

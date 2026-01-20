@@ -1,0 +1,11 @@
+<odoo>
+    <template id="property_list_template_inherit" inherit_id="estate.property_list_template">
+        <xpath expr="//input[@name='listed_after']" position="after">
+            <select name="sale_type" class="form-control w-auto mx-2">
+                <option value="">All</option>
+                <option value="regular" t-att-selected="sale_type == 'regular'">Regular</option>
+                <option value="auction" t-att-selected="sale_type == 'auction'">Auction</option>
+            </select>
+        </xpath>
+    </template>
+</odoo>
