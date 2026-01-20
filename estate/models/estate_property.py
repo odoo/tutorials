@@ -1,5 +1,6 @@
 from odoo import models, fields
 
+
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property Information'
@@ -7,11 +8,11 @@ class EstateProperty(models.Model):
     name = fields.Char(string='Property Name', required=True)
     description = fields.Text(string='Description')
     postcode = fields.Char(string='Postcode')
-    date_availability = fields.Date(string='Available Date', copy=False, default=(fields.Date.add(fields.Date.today(), months=3)))
+    date_availability = fields.Date(string='Available From', copy=False, default=(fields.Date.add(fields.Date.today(), months=3)))
     expected_price = fields.Float(string='Expected Price', required=True)
     selling_price = fields.Float(string='Selling Price', readonly=True, copy=False)
-    bedrooms = fields.Integer(string='Number of Bedrooms', default=2)
-    living_area = fields.Integer(string='Living Area')
+    bedrooms = fields.Integer(string='Bedrooms', default=2)
+    living_area = fields.Integer(string='Living Area (sqm)')
     facades = fields.Integer(string='Number of Facades')
     garage = fields.Boolean(string='Garage')
     garden = fields.Boolean(string='Garden')
