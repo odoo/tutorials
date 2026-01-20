@@ -3,5 +3,6 @@
     'name': "Real estate",
     'depends': ['base'],
     'category': 'Tutorials',
-    'application': True
+    'application': True,
+    'data': ['security/ir.model.access.csv']
 }
