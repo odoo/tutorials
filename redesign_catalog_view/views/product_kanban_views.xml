@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_product_kanban_custom" model="ir.ui.view">
+        <field name="name">product.custom.catalog</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_view_kanban_catalog"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='image_128']" position="attributes">
+                <attribute name="class">ms-auto o_product_image_custom</attribute>
+                <attribute name="widget">image_custom</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>
