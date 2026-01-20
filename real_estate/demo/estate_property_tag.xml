@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<record id="property_tag_1" model="estate.property.tag">
+        <field name="name">Luxury</field>
+        <field name="color">1</field>
+    </record>
+    <record id="property_tag_2" model="estate.property.tag">
+        <field name="name">New</field>
+        <field name="color">2</field>
+    </record>
+    <record id="property_tag_3" model="estate.property.tag">
+        <field name="name">Sea View</field>
+        <field name="color">3</field>
+    </record>
+    <record id="property_tag_4" model="estate.property.tag">
+        <field name="name">Garden</field>
+        <field name="color">4</field>
+    </record>
+    <record id="property_tag_5" model="estate.property.tag">
+        <field name="name">City Center</field>
+        <field name="color">5</field>
+    </record>
+</odoo>
