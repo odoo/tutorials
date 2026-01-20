@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="product_ribbon_view_form_inherit" model="ir.ui.view">
+        <field name="name">product.ribbon.view.form.inherit</field>
+        <field name="model">product.ribbon</field>
+        <field name="inherit_id" ref="website_sale.product_ribbon_form_view"/>
+        <field name="arch" type="xml">
+            <field name="position" position="after">
+                <field name="style" widget="radio" options="{'horizontal': true}"/>
+                <field name="assign"/>
+                <div invisible="assign != 'new'">
+                    <label for="new_until"/>
+                    <field name="new_until" class="text-center" style="width: 3rem;" string="For"/>
+                    <div class="d-inline-block">days after publication</div>
+                </div>
+            </field>
+        </field>
+    </record>
+
+    <record id="product_ribbon_view_list_inherit" model="ir.ui.view">
+        <field name="name">product.ribbon.view.list.inherit</field>
+        <field name="model">product.ribbon</field>
+        <field name="inherit_id" ref="website_sale.product_ribbon_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="before">
+                <field name="sequence" widget="handle"/>
+            </field>
+            <field name="name" position="after">
+                <field name="style"/>
+                <field name="assign"/>
+            </field>
+        </field>
+    </record>
+</odoo>

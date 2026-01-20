@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="products_item_inherit" inherit_id="website_sale.products_item">
+        <xpath expr="//a[hasclass('oe_product_image_link')]/span[2]" position="replace"/>
+        <xpath expr="//div[hasclass('oe_product_image')]" position="before">
+            <t t-set="bg_color" t-value="td_product['ribbon'].bg_color"/>
+            <t t-set="text_color" t-value="td_product['ribbon'].text_color"/>
+            <t t-set="bg_class" t-value="td_product['ribbon']._get_position_class()"/>
+            <span
+                    t-attf-class="o_ribbon z-1 o_not_editable #{bg_class}"
+                    t-attf-style="#{text_color and ('color: %s;' % text_color)} #{bg_color and 'background-color:' + bg_color}"
+                    t-out="td_product['ribbon'].name or ''"
+            />
+        </xpath>
+    </template>
+    <template id="products_inherit" inherit_id="website_sale.products">
+        <xpath expr="//section[@id='o_wsale_products_grid']/t/t/t/div/div" position="attributes">
+            <attribute name="style">overflow: hidden</attribute>
+        </xpath>
+    </template>
+</odoo>
