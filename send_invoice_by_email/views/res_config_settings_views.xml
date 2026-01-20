@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_add_days" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.add.days</field>
+        <field name="model">res.config.settings</field>
+        <field name="priority" eval="40"/>
+        <field name="inherit_id" ref="account.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='invoicing_settings']" position="inside">
+                <setting id="get_days_to_send_invoice_email" help="Duration in days after the date of invoice">
+                    <field name="send_email_days"/>
+                    <span> Days</span>
+                </setting>
+            </xpath>
+        </field>
+    </record>
+</odoo>
