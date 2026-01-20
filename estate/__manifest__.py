@@ -8,4 +8,7 @@
     "installable": True,
     "author": "moali",
     "license": "LGPL-3",
+    "data": [
+        "security/ir.model.access.csv",
+    ],
 }
