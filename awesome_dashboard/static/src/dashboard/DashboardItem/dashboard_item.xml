@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<template>
+    <t t-name="awesome_dashboard.dashboard_item">
+        <div class="card m-2" t-attf-style="width: {{18 * (props.size or 1) }}rem;">
+            <div class="card-body">
+                <t t-slot="default"></t>
+            </div>
+        </div>
+    </t>
+</template>
