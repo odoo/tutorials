@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Record Rule: Restrict Property Manager -->
+    <record id="estate_property_record_rule_property_manager" model="ir.rule">
+        <field name="name">Property Manager: All Rights</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('estate_property_group_real_estate_manager'))]"/>
+    </record>
+    
+    <!-- Record Rule: Restrict Property Agent -->
+    <record id="estate_property_record_rule_property_agent" model="ir.rule">
+        <field name="name">Property Agent: Can only see own and un assigned properties</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="domain_force">['|', ('salesman_id', '=', False), ('salesman_id', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate_property_group_real_estate_agent'))]"/>
+    </record>
+
+    <!-- Record Rule: Shareable Records - Multi Company -->
+    <record model="ir.rule" id="estate_property_record_rule_multi-company">
+        <field name="name">Shared Record: multi-company</field>
+        <field name="model_id" ref="model_estate_property"/>
+        <field name="global" eval="True"/>
+        <field name="domain_force">
+            ['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]
+        </field>
+    </record>
+</odoo>

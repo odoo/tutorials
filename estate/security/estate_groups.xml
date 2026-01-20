@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Module Category for Real Estate -->
+    <record id="base.module_category_real_estate_brokerage" model="ir.module.category">
+        <field name="name">Real Estate</field>
+        <field name="description">Access rights for the Real Estate module</field>
+    </record>
+
+    <!-- User Group: Property Agent -->
+    <record id="estate_property_group_real_estate_agent" model="res.groups">
+        <field name="name">Property Agent</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+    </record>
+
+    <!-- User Group: Property Manager -->
+    <record id="estate_property_group_real_estate_manager" model="res.groups">
+        <field name="name">Property Manager</field>
+        <field name="category_id" ref="base.module_category_real_estate_brokerage"/>
+        <field name="implied_ids" eval="[(4, ref('estate_property_group_real_estate_agent'))]"/>
+    </record>
+</odoo>

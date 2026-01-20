@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template
+        id="website_property_listing_template_inherit_estate_auction_automation"
+        inherit_id="estate.website_property_listing_template">
+        <xpath expr="//form" position="replace">
+            <form method="get" action="/properties" class="row mb-4">
+                <t t-set="query_params" t-value="request.httprequest.args"/>
+                <div class="w-full d-flex justify-content-between gap-3">
+                    <div class="w-100">
+                        <label>Min Price:</label>
+                        <input type="number" name="min_price" class="form-control" t-att-value="query_params.get('min_price')"/>
+                    </div>
+                    <div class="w-100">
+                        <label>Max Price:</label>
+                        <input type="number" name="max_price" class="form-control" t-att-value="query_params.get('max_price')"/>
+                    </div>
+                    <div class="w-100">
+                        <label>Property Type:</label>
+                        <select name="property_type" class="form-control">
+                            <option value="">All</option>
+                            <t t-foreach="request.env['estate.property.type'].sudo().search([])" t-as="ptype">
+                                <option t-att-value="ptype.name" t-att-selected="ptype.name == query_params.get('property_type')"><t t-esc="ptype.name"/></option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="w-100">
+                        <label>Sell Type:</label>
+                        <select name="property_sell_type" class="form-control">
+                            <option value="">All</option>
+                            <option
+                                value="auction"
+                                t-att-selected="request.httprequest.args.get('property_sell_type') == 'auction'">
+                                    Auction
+                            </option>
+                            <option
+                                value="regular"
+                                t-att-selected="request.httprequest.args.get('property_sell_type') == 'regular'">
+                                    Regular
+                            </option>
+                        </select>
+                    </div>
+                    <div class="w-100 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                    </div>
+                </div>
+            </form>
+        </xpath>
+    </template>
+
+    <template
+        id="website_property_details_template_inherit_estate_auction_automation"
+        inherit_id="estate.wesite_property_details_template">
+        <xpath expr="//div[hasclass('card', 'w-100', 'my-2')]" position="replace">
+            <div class="d-flex flex-row justify-content-center align-items-center gap-3 card w-100 my-2">
+                <div class="mt-3 w-100 min-vh-25">
+                    <t t-if="property.property_image">
+                        <img t-att-src="image_data_uri(property.property_image)" 
+                            class="img-fluid card-img-top" alt="Property Image"/>
+                    </t>
+                    <t t-else="">
+                        <img t-att-src="'/estate/static/img/no_image.jpg'" 
+                            class="img-fluid card-img-top" alt="No Image Available"/>
+                    </t>
+                </div>
+                <div class="w-100 h-100 mt-3 d-flex flex-column justify-content-center align-items-center">
+                    <t t-if="property.auction_end_time and property.state == '02_auction'">
+                        <div class="alert alert-info text-center" role="alert">
+                            <strong>Auction Ends In: </strong>
+                            <span id="auction_timer" t-att-data-end-time="property.auction_end_time">
+                                Loading...
+                            </span>
+                        </div>
+                    </t>
+                    <h4 class="my-4 text-center">Property Details:</h4>
+                    <div>
+                        <p class="card-text">
+                            Description: <t t-esc="property.description"/> 
+                            <t t-if="property.tag_ids">
+                                (
+                                    <t t-foreach="property.tag_ids" t-as="tag">
+                                        <t t-esc="tag.name"/>,  
+                                    </t>
+                                )
+                            </t>
+                        </p>
+                    </div>
+                    <ul class="d-flex justify-content-center flex-row gap-2 list-group list-group-light list-group-small my-2">
+                        <div>
+                            <li class="list-group-item px-4">
+                                Expected price: <t t-esc="property.expected_price"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Property type: <t t-esc="property.property_type_id.name"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Postcode: <t t-esc="property.postcode"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Available from: <t t-esc="property.date_availability"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Bedrooms: <t t-esc="property.bedrooms"/>
+                            </li>
+                        </div>
+                        <div>
+                            <li class="list-group-item px-4">
+                                Salesman: <t t-esc="property.salesman_id.name"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Living Area: <t t-esc="property.living_area"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Garden Area: <t t-esc="property.garden_area"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Total Area: <t t-esc="property.total_area"/>
+                            </li>
+                            <li class="list-group-item px-4">
+                                Garage: <t t-esc="property.garage"/>
+                            </li>
+                        </div>
+                    </ul>
+                    <t t-if="property.auction_end_time and property.state == '02_auction'">
+                        <div class="w-100 d-flex justify-content-center mt-2">
+                            <a id="create_offer_button" t-att-href="'/make-offer/' + str(property.id)" class="text-light rounded btn bg-primary">
+                                Create Offer
+                            </a>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="website_make_offer_template">
+        <t t-call="website.layout">
+            <div class="w-100 h-100 d-flex justify-content-center align-items-center mt-4">
+                <div class="w-50 card text-center">
+                    <div class="card-header">
+                        Add Offer for <t t-esc="property.name"/>
+                    </div>
+                    <form action="/submit-offer" method="POST">
+                        <div class="card-body text-start">
+                            <input type="hidden" name="property_id" t-att-value="property.id"/>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" t-att-value="user_name" id="name" readonly="true"/>
+                            </div>
+                            <div class="mb-3">
+                                <label for="amount" class="form-label">Amount</label>
+                                <input type="number" class="form-control" name="offer_price" id="amount" placeholder="Enter amount to bid"/>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center gap-2 card-footer text-muted">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <div type="cancel">
+                                <a t-att-href="'/property-details/' + str(property.id)"
+                                    class="text-light btn btn-primary">
+                                        Cancel
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="website_generic_message_template">
+        <t t-call="website.layout">
+            <div class="container mt-5 text-center">
+                <h2 t-if="message_type == 'success'">Congratulations!</h2>
+                <h2 t-elif="message_type == 'error'">Oops!</h2>
+
+                <div t-att-class="'w-auto alert text-center text-black ' + 
+                    ('alert-success'if message_type == 'success' else 'alert-danger')" role="alert">
+                        <p t-if="message" t-esc="message"/>
+                        <p t-else="">Something went wrong. Please try again.</p>
+                </div>
+
+                <div class="mt-3">
+                    <a href="/properties" class="btn btn-primary">
+                        <i class="fa fa-home"></i> Go Home
+                    </a>
+                    <button type="button" class="btn btn-secondary" onclick="history.back()">
+                        <i class="fa fa-arrow-left"></i> Go Back
+                    </button>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>
