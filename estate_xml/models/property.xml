@@ -1,0 +1,227 @@
+<odoo>
+    <record id="estate_xml_property_model" model="ir.model">
+        <field name="name">Real Estate Property</field>
+        <field name="model">x_estate_xml.property</field>
+    </record>
+
+    <record id="estate_xml_property_name_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_name</field>
+        <field name="field_description">Name</field>
+        <field name="ttype">char</field>
+        <field name="required">True</field>
+    </record>
+
+    <record id="estate_xml_property_selling_price_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_selling_price</field>
+        <field name="field_description">Selling Price</field>
+        <field name="ttype">float</field>
+        <field name="required">True</field>
+    </record>
+
+    <record id="estate_xml_property_description_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_description</field>
+        <field name="field_description">Description</field>
+        <field name="ttype">html</field>
+    </record>
+
+    <record id="estate_xml_property_postcode_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_postcode</field>
+        <field name="field_description">Postcode</field>
+        <field name="ttype">char</field>
+    </record>
+
+    <record id="estate_xml_property_availability_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_availability_date</field>
+        <field name="field_description">Availability</field>
+        <field name="ttype">date</field>
+    </record>
+
+    <record id="estate_xml_property_expected_price_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_expected_price</field>
+        <field name="field_description">Expected price</field>
+        <field name="ttype">float</field>
+    </record>
+
+    <record id="estate_xml_property_bedrooms_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_bedrooms</field>
+        <field name="field_description">Bedrooms</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="estate_xml_property_living_area_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_living_area</field>
+        <field name="field_description">Living area</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="estate_xml_property_facades_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_facades</field>
+        <field name="field_description">Facades</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="estate_xml_property_garage_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_garage</field>
+        <field name="field_description">Garage</field>
+        <field name="ttype">boolean</field>
+    </record>
+
+    <record id="estate_xml_property_api_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_api_published</field>
+        <field name="field_description">API published</field>
+        <field name="ttype">boolean</field>
+    </record>
+
+    <record id="estate_xml_property_garden_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_garden</field>
+        <field name="field_description">Garden</field>
+        <field name="ttype">boolean</field>
+    </record>
+
+    <record id="estate_xml_property_garden_area_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_garden_area</field>
+        <field name="field_description">Garden area</field>
+        <field name="ttype">integer</field>
+    </record>
+
+    <record id="estate_xml_property_partner_id_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_partner_id</field>
+        <field name="field_description">Customer</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.partner</field>
+    </record>
+
+    <record id="estate_xml_property_user_id_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_user_id</field>
+        <field name="field_description">Salesman</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.users</field>
+    </record>
+
+    <record id="estate_xml_property_tags_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_tags_ids</field>
+        <field name="field_description">Characteristics</field>
+        <field name="ttype">many2many</field>
+        <field name="relation">x_estate_xml.property.tags</field>
+    </record>
+
+    <record id="estate_xml_property_property_type_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_property_type_id</field>
+        <field name="field_description">Property type</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">x_estate_xml.property.type</field>
+    </record>
+
+    <record id="estate_xml_property_offer_property_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_offer_model"/>
+        <field name="name">x_property_id</field>
+        <field name="field_description">Property</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">x_estate_xml.property</field>
+    </record>
+
+    <record id="estate_xml_property_property_offer_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_offer_ids</field>
+        <field name="field_description">Offers</field>
+        <field name="ttype">one2many</field>
+        <field name="relation">x_estate_xml.property.offer</field>
+        <field name="relation_field">x_property_id</field>
+    </record>
+
+    <record id="estate_xml_property_garden_orientation_field" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_garden_orientation</field>
+        <field name="field_description">Garden orientation</field>
+        <field name="ttype">selection</field>
+    </record>
+
+    <record id="estate_xml_property_garden_area_north" model="ir.model.fields.selection">
+        <field name="field_id" ref="estate_xml_property_garden_orientation_field"/>
+        <field name="name">North</field>
+        <field name="value">north</field>
+    </record>
+
+    <record id="estate_xml_property_garden_area_south" model="ir.model.fields.selection">
+        <field name="field_id" ref="estate_xml_property_garden_orientation_field"/>
+        <field name="name">South</field>
+        <field name="value">south</field>
+    </record>
+
+    <record id="estate_xml_property_garden_area_west" model="ir.model.fields.selection">
+        <field name="field_id" ref="estate_xml_property_garden_orientation_field"/>
+        <field name="name">West</field>
+        <field name="value">west</field>
+    </record>
+
+    <record id="estate_xml_property_garden_area_east" model="ir.model.fields.selection">
+        <field name="field_id" ref="estate_xml_property_garden_orientation_field"/>
+        <field name="name">East</field>
+        <field name="value">east</field>
+    </record>
+
+    <record id="estate_xml_property_area_compute" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_area_compute</field>
+        <field name="field_description">Total area</field>
+        <field name="ttype">float</field>
+        <field name="depends">x_living_area,x_garden_area</field>
+        <field name="compute"><![CDATA[
+for property in self:
+    property["x_area_compute"] = property.x_living_area + property.x_garden_area
+        ]]>
+        </field>
+    </record>
+
+    <record id="estate_xml_property_country_id" model="ir.model.fields">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">x_country</field>
+        <field name="field_description">Country</field>
+        <field name="ttype">many2one</field>
+        <field name="relation">res.country</field>
+        <field name="related">x_partner_id.country_id</field>
+    </record>
+
+    <record id="estate_xml_property_refuse_offer_action" model="ir.actions.server">
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="name">Refuse all offer</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+for property in records:
+    property.x_offer_ids.write({'x_state': 'x_declined'})
+]]>
+        </field>
+    </record>
+
+    <record id="server_action_estate_list" model="ir.actions.server">
+        <field name="name">Estate List Controller</field>
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="website_published">True</field>
+        <field name="website_path">estate</field>
+        <field name="state">code</field>
+        <field name="code"><![CDATA[
+html = '<html><body><h1>Properties</h1><ul>'
+for property in request.env['x_estate_xml.property'].search([]):
+    html += f'<li>{property.x_name}</li>'
+html += '</ul></body></html>'
+response = request.make_response(html)
+        ]]></field>
+    </record>
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="record_rule_estate_public_user" model="ir.rule">
+        <field name="name">You can't modify existing properties</field>
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="perm_read" eval="False"/>
+        <field name="groups" eval="[Command.link(ref('base.group_public'))]"/>
+        <field name="domain_force">[('id', '=', False)]</field>
+    </record>
+
+    <record id="record_rule_estate_public_user" model="ir.rule">
+        <field name="name">You can't modify existing properties</field>
+        <field name="model_id" ref="estate_xml_property_model"/>
+        <field name="groups" eval="[Command.link(ref('base.group_public'))]"/>
+        <field name="domain_force">[('x_api_published', '=', True)]</field>
+    </record>
+
+</odoo>
