@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates xml:space="preserve">
+    <t t-inherit="pos_self_order.ProductPage" t-inherit-mode="extension">
+        <xpath expr="//h1[@class='mb-0 text-nowrap']" position="replace">
+            <h1 class="mb-0 text-nowrap"><strong t-esc="product.name"/> <span t-if="product.isConfigurable()">options</span></h1>
+        </xpath>
+
+        <xpath expr="//div[@class='pos_self_order_product_page_content d-flex flex-column flex-grow-1 overflow-y-auto']" position="replace">
+            <div class="p-3 d-flex flex-column flex-grow-1 overflow-y-auto">
+                <div class="d-flex justify-content-center">
+                    <div style="max-width:auto;">
+                        <img
+                          class="o_self_order_item_card_image w-100 rounded"
+                          t-attf-src="/web/image/product.product/{{ props.product.id }}/image_512"
+                          alt="Product image"
+                          loading="lazy"
+                          onerror="this.remove()"                 
+                        />
+                    </div>
+                </div>
+                <div class="p-3 d-flex justify-content-between align-items-center bg-200 rounded-top">
+                    <h2 t-esc="product.name"/>
+                    <h1 t-esc="selfOrder.formatMonetary(selfOrder.getProductDisplayPrice(product))"/>
+                </div>
+                <t t-if="product.self_order_description">
+                    <div class="p-3 pt-0 bg-200 rounded-bottom text-600" t-out="product.self_order_description"/>
+                </t>
+            </div>
+        </xpath>
+        <xpath expr="//button[@class='btn btn-primary btn-lg']" position="before">
+            <button class="btn btn-secondary btn-lg px-3 text-nowrap" t-on-click="() => router.back()">
+                <span class="ms-2 d-md-inline">Cancel</span>
+             </button>
+        </xpath>
+    </t>
+</templates>

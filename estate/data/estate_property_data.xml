@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="estate_property_villa" model="estate.property">
+            <field name="name">Big Villa</field>
+            <field name="state">new</field>
+            <field name="description">A nice and big villa</field>
+            <field name="postcode">12345</field>
+            <field name="date_availability">2020-02-02</field>
+            <field name="expected_price" eval="1600000.0" />
+            <field name="property_type_id" ref="estate.estate_property_type_residential" />
+            <field name="selling_price" eval="0.0" />
+            <field name="bedrooms" eval="6" />
+            <field name="living_area" eval="100" />
+            <field name="facades" eval="4" />
+            <field name="garage" eval="True" />
+            <field name="garden" eval="True" />
+            <field name="garden_area" eval="100000" />
+            <field name="garden_orientation">south</field>
+        </record>
+
+        <record id="estate_property_home" model="estate.property">
+            <field name="name">Trailer home</field>
+            <field name="state">cancelled</field>
+            <field name="description">Home in trailer park</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">2001-01-01</field>
+            <field name="expected_price" eval="100000.0" />
+            <field name="selling_price" eval="120000.0" />
+            <field name="property_type_id" ref="estate.estate_property_type_residential" />
+            <field name="bedrooms" eval="1" />
+            <field name="living_area" eval="10" />
+            <field name="facades" eval="4" />
+            <field name="garage" eval="False" />
+            <field name="garden" eval="False" />
+            <field name="garden_area" eval="0" />
+            <field name="garden_orientation" eval="False" />
+        </record>
+
+        <record id="estate_property_hut" model="estate.property">
+            <field name="name">Cozy hut</field>
+            <field name="state">new</field>
+            <field name="description">Home in desert</field>
+            <field name="postcode">54321</field>
+            <field name="date_availability">2001-01-01</field>
+            <field name="expected_price" eval="100000.0" />
+            <field name="selling_price" eval="0.0" />
+            <field name="property_type_id" ref="estate.estate_property_type_residential" />
+            <field name="bedrooms" eval="1" />
+            <field name="living_area" eval="10" />
+            <field name="facades" eval="4" />
+            <field name="garage" eval="False" />
+            <field name="garden" eval="False" />
+            <field name="garden_area" eval="0" />
+            <field name="garden_orientation" eval="False" />
+            <field name="offer_ids"
+                eval="[
+                Command.create({
+                    'partner_id': ref('base.res_partner_2'),
+                    'price': 2000000,
+                    'validity': 21
+                }),
+                Command.create({
+                    'partner_id': ref('base.res_partner_1'),
+                    'price': 2150000,
+                    'validity': 14
+                }),
+                Command.create({
+                    'partner_id': ref('base.res_partner_2'),
+                    'price': 2300000,
+                    'validity': 14
+                })
+            ]" />
+        </record>
+    </data>
+</odoo>

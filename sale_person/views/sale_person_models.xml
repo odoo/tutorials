@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Model name should start with 'x_' in xml defenatinos -->
+    <!-- Sale Person Model -->
+    <record id="model_x_sale_person_sale_person" model="ir.model">
+        <field name="name">Sale person</field>
+        <field name="model">x_sale_person_sale_person</field>
+        <field name="state">manual</field>
+    </record>
+
+    <!-- Contact Model -->
+    <record id="model_x_sale_person_contact" model="ir.model">
+        <field name="name">Sale person contact</field>
+        <field name="model">x_sale_person_contact</field>
+        <field name="state">manual</field>
+    </record>
+</odoo>

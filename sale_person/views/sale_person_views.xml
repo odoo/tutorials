@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form and List view -->
+    <record id="view_x_sale_person_list" model="ir.ui.view">
+        <field name="name">x.sale.person.list</field>
+        <field name="model">x_sale_person_sale_person</field>
+        <field name="arch" type="xml">
+            <list string="Sale Person">
+                <field name="x_sale_person_id" />
+                <field name="x_check_in" />
+                <field name="x_check_out" />
+                <field name="x_customer" />
+                <field name="x_conversion_possibilities" />
+                <field name="x_worked_hours" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_x_sale_person_form" model="ir.ui.view">
+        <field name="name">x.sale.person.form</field>
+        <field name="model">x_sale_person_sale_person</field>
+        <field name="arch" type="xml">
+            <form string="Sales Person">
+                <header>
+                    <button name="%(action_set_checkout)d"
+                        string="Check Out"
+                        type="action"
+                        class="btn-primary"
+                        invisible="x_check_out != False"
+                    />
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <!-- Readonly fields not stored in DB by odoo so to make it stored add attr 'force_save="1"'  -->
+                            <field name="x_sale_person_id" readonly="1" />
+                            <field name="x_check_in" readonly="1" force_save="1" />
+                            <field name="x_check_out" readonly="1" force_save="1" />
+                            <field name="x_customer" options="{'no_create': true, 'no_open': true}" />
+                            <field name="x_customer_type" readonly="1" />
+                        </group>
+                        <group>
+                            <field name="x_city" readonly="1" />
+                            <field name="x_area" readonly="1" />
+                            <field name="x_pincode" readonly="1" />
+                            <field name="x_agenda" />
+                            <field name="x_description" />
+                            <field name="x_conversion_possibilities" />
+                            <field name="x_worked_hours" readonly="1" force_save="1" />
+                        </group>
+                    </group>
+                    <group>
+                        <field name="x_checkin_location" groups="base.group_system" readonly="1" force_save="1" />
+                        <field name="x_checkout_location" groups="base.group_system" readonly="1" force_save="1" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="sale_person_action" model="ir.actions.act_window">
+        <field name="name">Sale person</field>
+        <field name="res_model">x_sale_person_sale_person</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'default_x_sale_person_id': uid}</field> <!-- set default value of 'x_sale_person_id' to 'uid' (current logged in user) -->
+    </record>
+</odoo>

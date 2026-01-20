@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="sale_order_form_view_inherited" model="ir.ui.view">
+        <field name="name">sale.order.form.inherited</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//group[@name='order_details']" position="inside">
+                <field name="print_in_report" />
+            </xpath>
+
+            <xpath expr="//field[@name='product_template_id']" position="after">
+                <button type="object" name="open_sub_prod" string="Sub Products"
+                    invisible="not product_is_kit or state == 'sale'" />
+            </xpath>
+
+            <xpath expr="//list" position="attributes">
+                <attribute name="decoration-warning" add="parent_kit_id" separator=" or " />
+            </xpath>
+
+            <!-- Change readonly attribute of order_line for sub_products  -->
+
+            <xpath expr="//field[@name='product_template_id']" position="attributes">
+                <attribute name="readonly" add="parent_kit_id" separator=" or " />
+            </xpath>
+            <xpath expr="(//field[@name='product_id'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_kit_id" separator=" or " />
+            </xpath>
+            <xpath expr="(//field[@name='product_uom_qty'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_kit_id" separator=" or " />
+            </xpath>
+            <xpath expr="(//field[@name='customer_lead'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_kit_id" separator=" or " />
+            </xpath>
+            <xpath expr="(//field[@name='price_unit'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_kit_id" separator=" or " />
+            </xpath>
+            <xpath expr="(//field[@name='tax_id'])[2]" position="attributes">
+                <attribute name="readonly" add="parent_kit_id" separator=" or " />
+            </xpath>
+        </field>
+    </record>
+</odoo>

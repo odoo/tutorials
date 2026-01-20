@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.dashboard_item">
+        <div t-att-style="`width:${18*props.size}rem`" class="bg-light p-3 rounded">
+             <p t-out="props.title" class="db-item-title"/>
+             <h1 t-out="props.value" class="text-success"/>
+        </div>
+    </t>
+
+</templates>

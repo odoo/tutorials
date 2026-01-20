@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="sale_person_root" name="Sale Person">
+        <menuitem id="sale_person_first_level_menu"
+            name="Sale Person"
+            action="sale_person_action"
+         />
+    
+        <menuitem id="contact_first_level_menu"
+            name="Contacts"
+            action="contact_action"
+         />
+    </menuitem>
+</odoo>

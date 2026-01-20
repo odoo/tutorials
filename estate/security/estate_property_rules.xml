@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="estate_property_rule_agent_own" model="ir.rule">
+        <field name="name">Agent: own or unassigned properties</field>
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="domain_force">['|', ('salesman', '=', False), ('salesman', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+
+    <record id="estate_property_rule_company" model="ir.rule">
+        <field name="name">Estate Agent: Company Access Restriction</field>
+        <field name="model_id" ref="estate.model_estate_property" />
+        <field name="domain_force">[('company_id', '=', user.company_id.id)]</field>
+        <field name="groups" eval="[(4, ref('estate.estate_group_user'))]" />
+        <field name="perm_read" eval="True" />
+        <field name="perm_write" eval="True" />
+        <field name="perm_create" eval="True" />
+        <field name="perm_unlink" eval="False" />
+    </record>
+</odoo>
