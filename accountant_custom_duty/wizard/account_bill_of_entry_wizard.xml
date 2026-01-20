@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_custom_wizard_form" model="ir.ui.view">
+        <field name="name">account.bill.of.entry.wizard.form</field>
+        <field name="model">account.bill.of.entry.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Bill of Entry Wizard">
+                <sheet>
+                <group name="Bill of Entry Wizard">
+                    <group>
+                        <field name="l10n_in_journal_entry_number"/>
+                        <field name="l10n_in_journal_entry_date"/>
+                        <field name="l10n_in_custom_duty_import_journal_id"/>
+                        <field name="l10n_in_custom_currency_rate"/>
+                        <field name="l10n_in_company_currency_id" invisible="1"/>
+                    </group>
+                    <group>
+                        <field name="l10n_in_reference"/>
+                        <field name="l10n_in_shipping_bill_number"/>
+                        <field name="l10n_in_shipping_bill_date"/>
+                        <field name="l10n_in_shipping_port_code_id"/>
+                    </group>
+                </group>
+                    <notebook>
+                        <page string="Bill of Entry Details">
+                             <field name="l10n_in_move_line_ids" widget="one2many_list">
+                                <list editable="bottom">
+                                    <field name="l10n_in_company_currency_id" column_invisible="1"/>
+                                    <field name="product_id"/>
+                                    <field name="l10n_in_assessable_value"/>
+                                    <field name="quantity" column_invisible="1"/>
+                                    <field name="price_unit" column_invisible="1"/>
+                                    <field name="account_id"/>
+                                    <field name="l10n_in_custom_duty_additional"/>
+                                    <field name="l10n_in_taxable_amount"/>
+                                    <field name="tax_ids" widget="many2many_tags" domain="[('type_tax_use', '=', 'purchase')]"/>
+                                    <field name="l10n_in_tax_amount"/>
+                                </list>
+                            </field>
+                            <group col="12" class="oe_invoice_lines_tab">
+                                <group colspan="8">
+                                </group>
+                                <group colspan="4" class="oe_subtotal_footer">
+                                    <span class="oe_subtotal_footer_separator"/>
+                                    <field name="l10n_in_total_custom_duty"/>
+                                    <field name="l10n_in_total_l10n_in_tax_amount"/>
+                                    <field name="l10n_in_total_amount_payable"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button name="action_confirm" string="Confirm" type="object" class="oe_highlight"/>
+                        <button string="Cancel" special="cancel"/>
+                    </footer>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_custom_wizard" model="ir.actions.act_window">
+        <field name="name">Custom Wizard</field>
+        <field name="res_model">account.bill.of.entry.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+    
+</odoo>
