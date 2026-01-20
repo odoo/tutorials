@@ -12,6 +12,6 @@
         'views/estate_property_views.xml',
         'views/estate_menu.xml'
         ],
-    'installable' : True,
-    'application' : True
+    'installable': True,
+    'application': True
 }
