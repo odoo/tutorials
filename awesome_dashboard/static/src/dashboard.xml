@@ -1,8 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
+    
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        
+        <Layout
+            className="'o_dashboard h-100'"
+            display="{controlPanel: {} }"
+            class="'o_dashboard h-100'"
+        >
+            <t t-set-slot="layout-buttons">
+                <button t-on-click="openCustomersDashboard">
+                    Customers
+                </button>
+                <button t-on-click="openLeadsDashboard">
+                    Leads
+                </button>
+            </t>
+
+            <DashboardCard  value="stats.average_quantity">
+                <t t-set-slot="content">Average amount of t-shirt by order this month</t>
+            </DashboardCard>
+
+            <DashboardCard  size="2" value="stats.average_time">
+                <t t-set-slot="content">
+                    Average time for an order to go from 'new' to 'sent' or 'cancelled'
+                </t>
+            </DashboardCard>
+
+            <DashboardCard  value="stats.nb_new_orders">
+                <t t-set-slot="content">Number of new orders this month</t>
+            </DashboardCard>
+
+            <DashboardCard  value="stats.nb_cancelled_orders">
+                <t t-set-slot="content">Number of cancelled orders this month</t>
+            </DashboardCard>
+
+            <DashboardCard  value="stats.total_amount">
+                <t t-set-slot="content">Total amount of new orders this month</t>
+            </DashboardCard>
+
+            <DashboardCard>
+                <t t-set-slot="content">Shirt order by size 
+                    <PieChart data="stats.orders_by_size"/>
+                </t>
+            </DashboardCard>
+
+
+        </Layout>
+      
+
     </t>
 
 </templates>

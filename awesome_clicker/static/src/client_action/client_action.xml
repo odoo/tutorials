@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_clicker.ClickerClientAction">
+        <ClickerValue/>
+
+        <button class="btn btn-secondary" t-on-click="() => this.clicker.increment(9)">
+            <i class="fa fa-lg fa-plus"></i>
+        </button>
+
+        <div t-if="clicker.clickBotsVisible" style='margin: 10px'> 
+            <div style="background: lightgray;">
+                <span> 1x ClickBots (10 clicks/ 10 seconds) <i class="fa fa-android"/> </span>
+            </div>
+            <div>
+                <button class="btn btn-primary" t-att-disabled="!clicker.canBuyBot" t-on-click="() => clicker.buyClickBot()"> Buy (1000 clicks) </button>
+            </div>
+        </div>
+    </t>
+</templates>
