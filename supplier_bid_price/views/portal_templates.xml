@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="purchase_order_portal_content_inherit" inherit_id="purchase.purchase_order_portal_content">
+        <xpath expr="//thead[hasclass('bg-100')]/tr/th[contains(text(), 'Products')]" position="inside">
+            <th class="text-end">Bid Quantity</th>
+            <th class="text-end">Bid Price</th>
+        </xpath>
+
+        <xpath expr="//td[@id='product_name']" position="after">
+            <td class="text-end">
+                <t t-if="not order.mail_reception_confirmed and not order.mail_reception_declined and request.env.user.partner_id == order.partner_id">
+                    <input type="number" class="form-control bid-qty" t-att-data-order-id="order.id" t-att-data-line-id="line.id" t-att-value="line.bid_qty or ''"/>
+                </t>
+                <t t-else="">
+                    <span t-field="line.bid_qty"/>
+                </t>
+            </td>
+
+            <td class="text-end">
+                <t t-if="not order.mail_reception_confirmed and not order.mail_reception_declined and request.env.user.partner_id == order.partner_id">
+                    <input type="number" class="form-control bid-price" t-att-data-order-id="order.id" t-att-data-line-id="line.id" t-att-value="line.bid_price or ''"/>
+                </t>
+                <t t-else="">
+                    <span t-field="line.bid_price"/>
+                </t>
+            </td>
+        </xpath>
+
+        <xpath expr="//div[hasclass('col-lg-6')]" position="after">
+            <t t-if="not order.mail_reception_confirmed and not order.mail_reception_declined and request.env.user.partner_id == order.partner_id">
+                <button type="button" class="btn btn-primary col-lg-4 mt-auto" id="update_all_bids">
+                    Update Bid Quantity and Price
+                </button>
+            </t>
+        </xpath>
+    </template>
+</odoo>
