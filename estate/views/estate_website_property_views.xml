@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="template_property_list_website_view" name="Property List">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <div class="container">
+                    <br />
+                    <h3>Property List</h3>
+                    <br />
+                    <div class="row">
+                        <t t-foreach="records" t-as="property">
+                            <div class="col-md-4">
+                                <div class="card mb-4 shadow-sm">
+                                    <t t-if="property.image">
+                                        <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" class="card-img-top" alt="Property Image"/>
+                                    </t>
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span t-esc="property.name" />
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>Rs. <span t-esc="property.expected_price" />
+                                            </strong>
+                                            <div>Salesman: <t t-out="property.property_seller_id.name"/>
+                                            </div>
+                                        </p>
+                                        <div class="d-flex justify-content-between">
+                                            <a t-att-href="'/property/' + str(property.id)" class="btn btn-primary">View Details</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="template_property_detail_website_view" name="Property Details">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <t t-if="property">
+                    <div class="container">
+                        <br />
+                        <h3>Property Details</h3>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <t t-if="property.image">
+                                        <img t-att-src="'/web/image/estate.property/' + str(property.id) + '/image'" class="card-img-top" alt="Property Image"/>
+                                    </t>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-4 shadow-sm">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <span t-esc="property.name" id="estate_property_name"/>
+                                        </h5>
+                                        <p class="card-text">
+                                            <strong>Rs. <span t-esc="property.expected_price" />
+                                            </strong>
+                                            <br />
+                                            <strong>Best Offer: Rs. <span t-esc="property.best_price" />
+                                            </strong>
+                                        </p>
+                                        <p class="card-text">
+                                            <strong>Description: </strong>
+                                            <br />
+                                            <span t-esc="property.description" />
+                                        </p>
+                                        <p class="card-text">
+                                            <strong>Bedrooms: </strong>
+                                            <span t-esc="property.bedrooms" />
+                                            <br />
+                                            <strong>Living Area: </strong>
+                                            <span t-esc="property.living_area" />
+ sqm<br />
+                                        <strong>Fascades: </strong>
+                                        <span t-esc="property.fascades" />
+                                        <br />
+                                        <strong>Garage: </strong>
+                                        <t t-if="property.garage">Yes</t>
+                                        <t t-if="not property.garage">No</t>
+                                        <br />
+                                        <strong>Garden: </strong>
+                                        <t t-if="property.garden">Yes</t>
+                                        <t t-if="not property.garden">No</t>
+                                        <br />
+                                        <strong>Garden Area: </strong>
+                                        <span t-esc="property.garden_area" />
+ sqm<br />
+                                    <strong>Garden Orientation: </strong>
+                                    <span t-esc="property.garden_orientation" />
+                                    <br />
+                                </p>
+                                <p class="card-text">
+                                    <strong>State: </strong>
+                                    <span t-esc="property.state" />
+                                    <br />
+                                    <strong>Available From: </strong>
+                                    <span t-esc="property.date_availability" />
+                                </p>
+                                <p class="card-text">
+                                    <strong>Salesman: </strong>
+                                    <span t-esc="property.property_seller_id.name" />
+                                    <br />
+                                    <strong>Postcode: </strong>
+                                    <span t-esc="property.postcode" />
+                                </p>
+                                <div id="back_button" class="d-flex justify-content-between">
+                                    <a href="/property" class="btn btn-primary">Back to List</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+        <t t-else="">
+                No Product Found with Given ID :(
+        </t>
+    </div>
+</t>
+</template>
+</odoo>

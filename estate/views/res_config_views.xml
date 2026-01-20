@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form" model="ir.ui.view">
+        <field name="name">
+       res.config.settings.view.form.inherit.automate_auction
+        </field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app data-string="Real Estate" string="Real Estate" name="automate_auction" logo="/estate/static/description/estate_icon.png">
+                    <block title="Real Estate Settings" name="real_estate">
+                        <setting string="Automate Auction" id="automate_auction_setting">
+                            <field name="module_estate_auction"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+</odoo>
