@@ -8,7 +8,9 @@
     "author": "Your Name",
     "category": "Tutorial",
     "depends": ["base"],
-    "data": [],
+    "data": [
+        'security/ir.model.access.csv'
+        ],
     "installable": True,
     "application": True,
 }
