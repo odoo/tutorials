@@ -1,0 +1,76 @@
+<odoo>
+    <record id="demo_property_1" model="estate.property">
+        <field name="name">Big Villa</field>
+        <field name="state">new</field>
+        <field name="description">A nice and big Villa</field>
+        <field name="postcode">12345</field>
+        <field name="date_availability" eval="datetime(2025, 1, 1)"/>
+        <field name="expected_price">1000000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">100</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">100000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.estate_property_type_residential"/>
+    </record>
+
+    <record id="demo_property_2" model="estate.property">
+        <field name="name">Trailer Home</field>
+        <field name="state">canceled</field>
+        <field name="description">Home in a trailer park</field>
+        <field name="postcode">54321</field>
+        <field name="date_availability" eval="datetime(2024, 1, 1)"/>
+        <field name="expected_price">20000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="estate.estate_property_type_residential"/>
+    </record>
+
+    <record id="demo_property_3" model="estate.property">
+        <field name="name">Luxurious Penthouse</field>
+        <field name="state">offer_received</field>
+        <field name="description">A luxurious penthouse in the city center</field>
+        <field name="postcode">67890</field>
+        <field name="date_availability" eval="datetime(2023, 1, 1)"/>
+        <field name="expected_price">100000</field>
+        <field name="bedrooms">6</field>
+        <field name="living_area">3000</field>
+        <field name="garage">True</field>
+        <field name="garden">True</field>
+        <field name="garden_area">1000</field>
+        <field name="garden_orientation">south</field>
+        <field name="property_type_id" ref="estate.estate_property_type_residential"/>
+        <field name="offer_ids" eval="[
+            Command.create({
+                'partner_id': ref('base.res_partner_2'),
+                'offer_price': 110000,
+                'validity': 14
+            }),
+            Command.create({
+                'partner_id': ref('base.res_partner_12'),
+                'offer_price': 120000,
+                'validity': 14
+            }),
+            Command.create({
+                'partner_id': ref('base.res_partner_2'),
+                'offer_price': 130000,
+                'validity': 15
+            })
+        ]"/>
+    </record>
+
+    <record id="demo_property_4" model="estate.property">
+        <field name="name">Forest Cabin</field>
+        <field name="state">new</field>
+        <field name="description">A cabin in the woods</field>
+        <field name="postcode">524321</field>
+        <field name="date_availability" eval="datetime(2022, 1, 1)"/>
+        <field name="expected_price">50000</field>
+        <field name="bedrooms">1</field>
+        <field name="living_area">10</field>
+        <field name="garage">False</field>
+        <field name="property_type_id" ref="estate.estate_property_type_residential"/>
+    </record>
+</odoo>

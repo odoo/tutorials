@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="warranty_service_basic" model="product.product">
+            <field name="name">Basic Warranty Service</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="purchase_ok">False</field>
+            <field name="sale_ok">True</field>
+        </record>
+
+        <record id="warranty_service_standard" model="product.product">
+            <field name="name">Standard Warranty Service</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="purchase_ok">False</field>
+            <field name="sale_ok">True</field>
+        </record>
+
+        <record id="warranty_service_extended" model="product.product">
+            <field name="name">Extended Warranty Service</field>
+            <field name="type">service</field>
+            <field name="list_price">0.0</field>
+            <field name="purchase_ok">False</field>
+            <field name="sale_ok">True</field>
+        </record>
+
+        <!-- Product Warranties -->
+        <record id="warranty_electronics_1_year_basic" model="product.warranty">
+            <field name="name">1 Year Basic Warranty</field>
+            <field name="product_id" ref="warranty_service_basic"/>
+            <field name="percentage">10.0</field>
+            <field name="year">1</field>
+        </record>
+
+        <record id="warranty_electronics_2_year_standard" model="product.warranty">
+            <field name="name">2 Year Standard Warranty</field>
+            <field name="product_id" ref="warranty_service_standard"/>
+            <field name="percentage">20.0</field>
+            <field name="year">2</field>
+        </record>
+
+        <record id="warranty_electronics_3_year_extended" model="product.warranty">
+            <field name="name">3 Year Extended Warranty</field>
+            <field name="product_id" ref="warranty_service_extended"/>
+            <field name="percentage">20.0</field>
+            <field name="year">3</field>
+        </record>
+    </data>
+</odoo>
