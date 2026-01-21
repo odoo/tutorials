@@ -21,6 +21,7 @@
                             <field name="selling_price"/>
                         </list>
                     </field>
+                    <field name="total_expected"/>
                 </page>
             </xpath>
         </field>
