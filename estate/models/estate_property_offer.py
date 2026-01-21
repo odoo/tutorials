@@ -6,6 +6,7 @@ import datetime
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate property offer"
+    _order = "price desc"
 
     _check_price = models.Constraint('CHECK(price > 0)', 'The price should always be positive')
 
@@ -15,6 +16,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one("estate.property", required=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_validity", readonly=False)
+    property_type_id = fields.Many2one(related="property_id.property_type_id")
 
 
     @api.depends("validity", "create_date")

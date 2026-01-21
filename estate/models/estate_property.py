@@ -6,6 +6,7 @@ from odoo.tools.float_utils import float_compare, float_is_zero
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Real estate property"
+    _order = "id desc"
 
     _check_expected_price = models.Constraint('CHECK(expected_price > 0)', 'The expected price should always be positive')
     _check_selling_price = models.Constraint('CHECK(selling_price >= 0)', 'The selling price should always be positive')
@@ -34,7 +35,6 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
-    state = fields.Selection(default="new", readonly=True, selection=[('new', 'New'), ('sold', 'Sold'), ('cancel', 'Cancelled')])
     
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
@@ -62,7 +62,7 @@ class EstateProperty(models.Model):
         for r in self:
             if(self.state == 'sold'):
                 continue
-            elif(self.state == 'cancel'):
+            elif(self.state == 'cancelled'):
                 raise exceptions.UserError('Cannot sell a cancelled property')
             else:
                 r.state = 'sold'
@@ -70,12 +70,12 @@ class EstateProperty(models.Model):
 
     def cancel_property(self):
         for r in self:
-            if(self.state == 'cancel'):
+            if(self.state == 'cancelled'):
                 continue
             elif(self.state == 'sold'):
                 raise exceptions.UserError('Cannot cancel a sold property')
             else:
-                r.state = 'cancel'
+                r.state = 'cancelled'
             return True
 
 

@@ -6,18 +6,18 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
-                    <button name="sell_property" type="object" string="Sell"/>
-                    <button name="cancel_property" type="object" string="Cancel"/>
+                    <button name="sell_property" type="object" string="Sell" invisible="state == 'cancelled' or state == 'sold'"/>
+                    <button name="cancel_property" type="object" string="Cancel" invisible="state == 'cancelled' or state == 'sold'"/>
+                    <field name="state" widget="statusbar" statusbar_visible="new,offer-received,offer-accepted,sold"/>
                 </header>
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="tag_ids" widget="many2many_tags"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     </group>
                     <group>
                         <group>
-                            <field name="state"/>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" options="{'no_create': true 'no_create_edit': true}"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -36,14 +36,14 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="not garden"/>
+                                <field name="garden_orientation" invisible="not garden"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" string=""/>
+                                <field name="offer_ids" string="" readonly="state == 'offer-accepted' or state == 'sold' or state == 'cancelled'"/>
                             </group>
                         </page>
                         <page string="Other">
@@ -62,7 +62,7 @@
         <field name="name">estate.property.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <list string="Properties">
+            <list string="Properties" decoration-muted="state == 'sold'" decoration-bf="state == 'offer-accepted'" decoration-success="state == 'offer-accepted' or state == 'offer-received'">
                 <field name="name" width="400px"/>
                 <field name="property_type_id" width="400px"/>
                 <field name="postcode" width="50px"/>
@@ -70,7 +70,7 @@
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
-                <field name="date_availability"/>
+                <field name="date_availability" optional="hide"/>
             </list>
         </field>
     </record>
@@ -84,13 +84,13 @@
                 <field name="postcode"/>
                 <field name="expected_price"/>
                 <field name="bedrooms"/>
-                <field name="living_area"/>
+                <field name="living_area" filter_domain="[('living_area', '>=', self)]"/>
                 <field name="facades"/>
                 <field name="property_type_id"/>
                 <field name="buyer_id"/>
                 <field name="salesperson_id"/>
-                <filter string="Available" name="available" domain="[('date_availability', '&lt;=', 'today')]"/>
-                <filter string="Postcode" name="postcode-group" context="{'group_by': 'postcode'}"/> <!-- Odoo 19 already allows grouping by properties, this is for the purpose of the exercise -->
+                <filter string="Available" name="available" domain="['|', ('state', '=', 'new'), ('state', '=', 'offer-received')]"/>
+                <filter string="Postcode" name="postcode_group" context="{'group_by': 'postcode'}"/> <!-- Odoo 19 already allows grouping by properties, this is for the purpose of the exercise -->
             </search>
         </field>
     </record>
@@ -99,5 +99,6 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_available': True}</field><!--Does not work. I have absolutely no idea why-->
     </record>
 </odoo>
