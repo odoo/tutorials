@@ -9,8 +9,16 @@
             </p>
             <p>Sum: <t t-esc="state.sum"/></p>
         </div>
-        <Card title="'Card 1'" content="value1"/>
-        <Card title="'Card 2'" content="value2"/>
-        <TodoList/>
+
+        <Card title="'Card 1'">
+            <t t-set-slot="default">
+                <Counter onChange.bind="incrementSum"/>
+            </t>
+        </Card>
+        <Card title="'Card 2'">
+            <t t-set-slot="default">
+                <TodoList/>
+            </t>
+        </Card>
     </t>
 </templates>

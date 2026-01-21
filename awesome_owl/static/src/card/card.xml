@@ -2,9 +2,10 @@
 <templates xml:space="preserve">
     <t t-name="my_module.Card">
         <div class="card d-inline-block m-2" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title"><t t-esc="props.title"/></h5>
-                <p class="card-text"><t t-out="props.content"/></p>
+            <button class="btn btn-primary" t-on-click="toggleCardBody">Open/Close</button>
+            <h5 class="card-title"><t t-esc="props.title"/></h5>
+            <div class="card-body" t-if="this.state.isOpen">
+                <p class="card-text"><t t-slot="default"/></p>
             </div>
         </div>
     </t>
