@@ -35,6 +35,8 @@
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
                 </header>
                 <sheet>
+                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success"
+                        invisible="state != 'sold'" />
                     <h1>
                         <field name="name" />
                     </h1>

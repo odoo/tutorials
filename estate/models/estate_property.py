@@ -111,6 +111,13 @@ class Property(models.Model):
             raise UserError(_("Cancelled Property cannot be sold."))
         else:
             self.state = "sold"
+            return {
+                "effect": {
+                    "fadeout": "no",
+                    "message": "helloo",
+                    "type": "rainbow_man",
+                }
+            }
 
     def cancelled_button_action(self):
         if self.filtered(lambda x: x.state == "sold"):
