@@ -129,6 +129,6 @@
         <field name="name">Estate Property</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">kanban,list,form</field>
-        <field name="context">{'search_default_available': True}</field><!--Does not work. I have absolutely no idea why-->
+        <field name="context">{'search_default_available': True}</field>
     </record>
 </odoo>

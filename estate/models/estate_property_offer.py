@@ -33,37 +33,37 @@ class EstatePropertyOffer(models.Model):
 
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
-        for r in self:
-            create = r.create_date.date() if isinstance(r.create_date, datetime.datetime) else fields.Date.today() 
-            r.date_deadline = create + relativedelta(days=r.validity)
+        for offer in self:
+            create = offer.create_date.date() if isinstance(offer.create_date, datetime.datetime) else fields.Date.today() 
+            offer.date_deadline = create + relativedelta(days=offer.validity)
 
     
     def _inverse_validity(self):
-        for r in self:
-            create = r.create_date.date() if isinstance(r.create_date, datetime.datetime) else fields.Date.today()
-            r.validity = (r.date_deadline - create).days
+        for offer in self:
+            create = offer.create_date.date() if isinstance(offer.create_date, datetime.datetime) else fields.Date.today()
+            offer.validity = (offer.date_deadline - create).days
 
 
     def accept_offer(self):
-        for r in self:
-            if(r.status == 'accepted'):
+        for offer in self:
+            if(offer.status == 'accepted'):
                 continue
 
-            for other in r.property_id.offer_ids:
+            for other in offer.property_id.offer_ids:
                 if(other.status == 'accepted'):
                     raise exceptions.UserError("Cannot accept multiple offers for a single property")
 
-            r.status = 'accepted'
-            r.property_id.buyer_id = r.partner_id
-            r.property_id.selling_price = r.price
-            r.property_id.state = "offer-accepted"
+            offer.status = 'accepted'
+            offer.property_id.buyer_id = offer.partner_id
+            offer.property_id.selling_price = offer.price
+            offer.property_id.state = "offer-accepted"
         return True
 
 
     def refuse_offer(self):
-        for r in self:
-            if(r.status == 'accepted'):
-                r.property_id.buyer_id = None
-                r.property_id.selling_price = None
-            r.status = 'refused'
+        for offer in self:
+            if(offer.status == 'accepted'):
+                offer.property_id.buyer_id = None
+                offer.property_id.selling_price = None
+            offer.status = 'refused'
         return True
