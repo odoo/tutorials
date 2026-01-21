@@ -7,6 +7,8 @@ class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate property offer"
 
+    _check_price = models.Constraint('CHECK(price > 0)', 'The price should always be positive')
+
     price = fields.Float()
     status = fields.Selection(readonly=True, selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
     partner_id = fields.Many2one("res.partner", required=True)
