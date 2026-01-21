@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -64,6 +65,16 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
 
+    _positive_selling_price = models.Constraint(
+        "CHECK (selling_price > 0)",
+        "Selling price must be positive",
+    )
+
+    _positive_expected_price = models.Constraint(
+        "CHECK (expected_price > 0)",
+        "Expected price must be positive",
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -72,7 +83,9 @@ class EstateProperty(models.Model):
     @api.depends("offer_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            record.best_offer = max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
+            record.best_offer = (
+                max(record.offer_ids.mapped("price")) if record.offer_ids else 0.0
+            )
 
     @api.onchange("garden")
     def _onchange_garden(self):
@@ -82,6 +95,13 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 10
             self.garden_orientation = "north"
+
+    @api.constrains("selling_price")
+    def _constrains_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                    raise UserError("Selling price must be at least 90% of the expected price")
 
     def action_cancel(self):
         for record in self:
