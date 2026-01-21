@@ -30,8 +30,11 @@
         <field name='arch' type='xml'>
             <form string='Property'>
                 <header>
-                    <button name='action_sold' type='object' string='Sold' class='oe_highlight'/>
-                    <button name='action_cancel' type='object' string='Cancel' class='oe_highlight'/>
+                    <button name='action_set_new' type='object' string='Set New' invisible="state == 'new'"/>
+                    <button name='action_set_offer_received' type='object' string='Set Offer Received' invisible="state == 'offer_received'"/>
+                    <button name='action_set_offer_accepted' type='object' string='Set Offer Accepted' invisible="state == 'offer_accepted'"/>
+                    <button name='action_sold' type='object' string='Sold' class='oe_highlight' invisible="state in ('sold', 'canceled')"/>
+                    <button name='action_cancel' type='object' string='Cancel' invisible="state in ('sold', 'canceled')"/>
                     <field name='state' widget='statusbar' statusbar_visible='new,offer_received,offer_accepted,sold,canceled'/>
                 </header>
                 <sheet>

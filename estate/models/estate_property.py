@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo.exceptions import UserError
 
 
 class EstateProperty(models.Model):
@@ -85,5 +86,26 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'sold':
                 raise UserError('A sold property cannot be canceled.')
-            record.state = 'canceled'
+            record.state = 'new'
+        return True
+    
+    def action_set_new(self):
+        for record in self:
+            if record.state in ('sold', 'canceled'):
+                raise UserError('You cannot move a sold/canceled property back to New.')
+            record.state = 'new'
+        return True
+
+    def action_set_offer_received(self):
+        for record in self:
+            if record.state in ('sold', 'canceled'):
+                raise UserError('You cannot change the state of a sold/canceled property.')
+            record.state = 'offer_received'
+        return True
+
+    def action_set_offer_accepted(self):
+        for record in self:
+            if record.state in ('sold', 'canceled'):
+                raise UserError('You cannot change the state of a sold/canceled property.')
+            record.state = 'offer_accepted'
         return True
