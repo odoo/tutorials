@@ -7,20 +7,15 @@ class ResUsers(models.Model):
     property_ids = fields.One2many(
         'estate.property',
         'seller_id',
-        string="Assigned Properties",
     )
-
-    total_expected = fields.Float(string="Total Expected Price", compute="_compute_total_expected")
+    total_expected = fields.Float(compute="_compute_total_expected")
 
     @api.depends('property_ids.expected_price', 'property_ids.state')
     def _compute_total_expected(self):
+        sum_expected = dict(self.env['estate.property']._read_group(
+            domain=[('state', '!=', 'sold'), ('seller_id', 'in', self.ids)],
+            aggregates=['expected_price:sum'],
+            groupby=['seller_id']
+        ))
         for record in self:
-            result = record.property_ids._read_group(
-                domain=[
-                    ('seller_id', '=', record.id),
-                    ('state', '!=', 'sold'),
-                ],
-                aggregates=['expected_price:sum'],
-                groupby=[]
-            )
-            record.total_expected = result[0][0] if result else 0.0
+            record.total_expected = sum_expected.get(record, 0.0)
