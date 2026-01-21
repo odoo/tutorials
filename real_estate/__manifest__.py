@@ -1,0 +1,30 @@
+{
+    'name': 'estate',
+    'version': '1.0.0',
+    'author': 'rodh',
+    'summary': 'Manage real estate properties and transactions',
+    'depends': [
+        'base',
+    ],
+    'application': True,
+    'installable': True,
+    'license': 'LGPL-3',
+    'category': 'Real Estate/Brokerage',
+    'data': [
+        'security/security.xml',
+        'security/ir.model.access.csv',
+        'security/record_rules.xml',
+        'view/estate_property_views.xml',
+        'view/estate_property_offer_views.xml',
+        'view/estate_property_type_views.xml',
+        'view/estate_property_tag_views.xml',
+        'view/estate_res_users_view.xml',
+        'data/estate.property.type.csv',
+        'view/estate_menu.xml',
+        'report/estate_property_templates.xml',
+        'report/estate_property_reports.xml',
+    ],
+    'demo': [
+        'demo/demo_data.xml',
+    ],
+}
