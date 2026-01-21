@@ -10,4 +10,6 @@
         'views/estate_menus.xml',
     ],
     'application': True,
+    'author': 'Dilya Anvarbekova',
+    'license': 'LGPL-3',
 }
