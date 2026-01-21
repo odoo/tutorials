@@ -134,20 +134,40 @@
         <field name="name">estate.property.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <kanban>
+            <kanban default_group_by="property_type_id" groups_draggable="False" records_draggable="False">
+                <field name="state"/>
                 <template>
                     <t t-name="card">
                         <div>
-                            <field name="display_name"/>
-                            <field name="expected_price"/>
-                            <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
+                            <div>
+                                <h3>
+                                    <strong>
+                                        <field name="display_name"/>
+                                    </strong>
+                                </h3>
+                            </div>
+                            <div>
+                                <div class="text-muted">Expected Price :
+                                    <field name="expected_price"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_received'" class="text-muted"> 
+                                Best Price :
+                                    <field name="best_price"/>
+                                </div>
+                                <div t-if="record.state.raw_value == 'offer_accepted'" class="text-muted"> 
+                                Selling Price :
+                                    <field name="selling_price"/>
+                                </div>
+                                <div>
+                                    <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
+                                </div>
+
+                            </div>
                         </div>
                     </t>
                 </template>
-
             </kanban>
         </field>
     </record>
-
 
 </odoo>

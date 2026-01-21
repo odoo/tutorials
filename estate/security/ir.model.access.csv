@@ -4,3 +4,4 @@ access_estate_property_type,access_estate_property_type,model_estate_property_ty
 access_estate_property_tag,access_estate_property_tag,model_estate_property_tag,base.group_user,1,1,1,1
 access_estate_property_offer,access_estate_property_offer,model_estate_property_offer,base.group_user,1,1,1,1
 access_res_users,access_estate_res_users,model_res_users,base.group_user,1,1,1,1
+access_crm_lead,access_crm_lead,model_crm_lead,base.group_user,1,1,1,1

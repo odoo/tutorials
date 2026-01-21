@@ -39,6 +39,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
+        breakpoint()
         for val in vals:
             x = self.env["estate.property"].browse(val["property_id"])
             if x.offer_property_ids.filtered(lambda r: r.price > val["price"]):
@@ -58,13 +59,19 @@ class EstatePropertyOffer(models.Model):
                 record.property_id.selling_price = record.price
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.state = "offer_accepted"
-                for offer in record.property_id.offer_property_ids:
-                    if record.id != offer.id:
-                        offer.status = "refused"
+                offers = record.property_id.offer_property_ids.filtered(
+                    lambda r: r.id != record.id
+                )
+                offers.write({"status": "refused"})
         return True
 
     def action_refused_offer(self):
         for record in self:
+            if record.property_id.state == "offer_accepted":
+                record.property_id.state = "offer_received"
+                offers = record.property_id.offer_property_ids.filtered(
+                    lambda r: r.id != record.id
+                )
+                offers.write({"status": False})
             record.status = "refused"
         return True
-

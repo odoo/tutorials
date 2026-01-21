@@ -105,4 +105,3 @@ class EstateProperty(models.Model):
             raise UserError(message="Sold property can not be cancelled")
         self.state = "cancelled"
         return True
-
