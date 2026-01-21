@@ -1,8 +1,8 @@
 {
-    'name' : 'Real Estate',
-    'author' : 'zavan',
-    'depends' : ['base'],
-    'application' : True,
+    'name': 'Real Estate',
+    'author': 'zavan',
+    'depends': ['base'],
+    'application': True,
     'license': 'LGPL-3',
     'data': [
         'security/ir.model.access.csv',
