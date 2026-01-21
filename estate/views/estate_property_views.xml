@@ -7,7 +7,7 @@
             <form string="Property">
                 <header>
                     <button name="sell_property" type="object" string="Sell"/>
-                    <button name="cancel_sold_property" type="object" string="Cancel"/>
+                    <button name="cancel_property" type="object" string="Cancel"/>
                 </header>
                 <sheet>
                     <group>
@@ -16,6 +16,7 @@
                     </group>
                     <group>
                         <group>
+                            <field name="state"/>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
