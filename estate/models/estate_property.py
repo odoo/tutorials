@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     name = fields.Char('Name', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Post Code')
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
 
     date_availability = fields.Date('Availability Date', copy=False,
         default=fields.Date.add(fields.Date.today(), months=3))
