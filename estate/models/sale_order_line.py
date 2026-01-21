@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 
+
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
@@ -10,6 +11,7 @@ class SaleOrderLine(models.Model):
         store=True,
         digits=(16, 2)
     )
+
     @api.depends(
         'product_uom_qty',
         'qty_delivered',
