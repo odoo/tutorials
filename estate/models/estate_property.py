@@ -36,12 +36,13 @@ class EstateProperty(models.Model):
         ]
     )
 
-    total_area = fields.Float('Total Area', compute='_compute_total_area')
+    total_area = fields.Float(string='Total Area', compute='_compute_total_area')
 
     user_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.uid)
     partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
 
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    best_offer = fields.Float(string='Best Offer', compute='_compute_best_offer')
 
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -60,3 +61,8 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for record in self:
             record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped('price'), default=0)
