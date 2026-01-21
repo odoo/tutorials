@@ -29,6 +29,9 @@ class EstateProperty(models.Model):
             ('east', 'East'), ('west', 'West')
         ])
 
+    user_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.uid)
+    partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[

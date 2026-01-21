@@ -61,6 +61,12 @@
                                     <field name="garden_orientation"/>
                                 </group>
                         </page>
+                        <page string="Other Info">
+                                <group>
+                                    <field name="user_id"/>
+                                    <field name="partner_id"/>
+                                </group>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
