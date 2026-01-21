@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
     )
     expected_price = fields.Float(string="Expected Selling Price", required=True)
     selling_price = fields.Float(
-        string="Actual Selling Price", readonly=True, copy=False
+        string="Actual Selling Price", readonly=True, copy=False,
     )
     bedrooms = fields.Integer(string="Number of Bedrooms", default=2)
     living_area = fields.Float(string="Living Area (sqm)")
@@ -45,3 +45,8 @@ class EstateProperty(models.Model):
         default="new",
         copy=False,
     )
+    property_type_id = fields.Many2one("estate.property.type", string="Property Type")
+    user_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
+    partner_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    property_tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
+    property_offers_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")

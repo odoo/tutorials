@@ -8,11 +8,34 @@
             <list string="property">
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="property_type_id"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
                 <field name="selling_price"/>
                 <field name="date_availability"/>
+            </list>
+        </field>
+    </record>
+
+   <record id="estate_property_type_list" model="ir.ui.view">
+        <field name="name">Property Type List</field>
+        <field name="model">estate.property.type</field>
+        <field name="arch" type="xml">
+            <list string="property_type">
+                <field name="name"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="estate_property_offer_list" model="ir.ui.view">
+        <field name="name">Property Offer List</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="property_offer">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="status"/>
             </list>
         </field>
     </record>

@@ -63,7 +63,7 @@
                 "s_airproof_key_benefits_h2",
                 "s_call_to_action",
                 "s_airproof_carousel",
-            ]
-        }
+            ],
+        },
     },
 }
