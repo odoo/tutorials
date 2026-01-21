@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -15,7 +15,6 @@ class EstateProperty(models.Model):
 
     expected_price = fields.Float(string="Expected Price", required=True)
     selling_price = fields.Float(string="Selling Price", readonly=True)
-    best_offer = fields.Float(string="Best Offer")
 
     description = fields.Text(string="Description")
     bedrooms = fields.Integer(string="Bedrooms", default=2)
@@ -33,7 +32,11 @@ class EstateProperty(models.Model):
         ],
         string="Garden Orientation",
     )
-    total_area = fields.Integer(string="Total Area (sqm)")
+    total_area = fields.Integer(
+        string="Total Area (sqm)",
+        compute="_compute_total_area",
+        readonly=True,
+    )
     active = fields.Boolean(string="Active", default=True)
     state = fields.Selection(
         [
@@ -58,3 +61,23 @@ class EstateProperty(models.Model):
     buyer_id = fields.Many2one("res.partner", string="Buyer", index=True)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
+    best_offer = fields.Float(string="Best Offer", compute="_compute_best_offer")
+
+    @api.depends("living_area", "garden_area")
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends("offer_ids.price")
+    def _compute_best_offer(self):
+        for record in self:
+            record.best_offer = max(record.offer_ids.mapped("price"), default=0)
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if not self.garden:
+            self.garden_area = 0
+            self.garden_orientation = ""
+        else:
+            self.garden_area = 10
+            self.garden_orientation = "north"

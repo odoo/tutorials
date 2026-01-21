@@ -45,6 +45,7 @@
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_offer"/>
                             <field name="selling_price"/>
                         </group>
                     </group>
