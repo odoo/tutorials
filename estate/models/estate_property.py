@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class EstateProperty(models.Model):
@@ -36,6 +36,8 @@ class EstateProperty(models.Model):
         ]
     )
 
+    total_area = fields.Float('Total Area', compute='_compute_total_area')
+
     user_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.uid)
     partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
 
@@ -53,3 +55,8 @@ class EstateProperty(models.Model):
         default='new',
         required=True
     )
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
