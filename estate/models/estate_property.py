@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     description = fields.Text('Description')
     postcode = fields.Char('Post Code')
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
+    property_tag_ids = fields.Many2many('estate.property.tag', string='Tags')
 
     date_availability = fields.Date(
         'Availability Date',
