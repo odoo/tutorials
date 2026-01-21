@@ -10,7 +10,11 @@
         'base_setup',
         'base'
     ],
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'installable': True,
     'application': True,
     'author': 'ibrha',
+    'license': 'LGPL-3',
 }

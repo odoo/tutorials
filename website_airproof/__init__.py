@@ -1,1 +1,0 @@
-#   first technical commit - ibrha
