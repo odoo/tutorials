@@ -44,6 +44,7 @@ class EstatePropertyOffer(models.Model):
             if 'accepted' in record.property_id.offer_ids.mapped("status"):
                 raise UserError("Another offer has already been accepted for this property")
             record.status = 'accepted'
+            record.property_id.state = 'offer_accepted'
             record.property_id.buyer_id = record.partner_id
             record.property_id.selling_price = record.price
 
