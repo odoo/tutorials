@@ -1,9 +1,11 @@
 <?xml version="1.0"?>
 <odoo>
+    <!-- Root menu -->
     <menuitem
         id="estate_menu_root"
         name="Real Estate"/>
 
+    <!-- Advertisements menu -->
     <menuitem
         id="estate_menu_advertisements"
         name="Advertisements"
@@ -15,4 +17,18 @@
         action="estate_properties"
         parent="estate_menu_advertisements"
         sequence="1"/>
+
+    <!-- Settings menu -->
+    <menuitem
+        id="estate_menu_settings"
+        name="Settings"
+        parent="estate_menu_root"
+        sequence="2"/>
+
+    <menuitem
+        id="estate_menu_settings_action"
+        action="estate_property_types"
+        parent="estate_menu_settings"
+        sequence="1"/>
+
 </odoo>
