@@ -1,19 +1,20 @@
-from odoo import fields, models, exceptions, Command
+from odoo import models, Command
+
 
 class EstateProperty(models.Model):
     _inherit = ["estate.property"]
 
     def sell_property(self):
-        for r in self :
+        for prop in self :
             vals = {
-                'partner_id': r.buyer_id.id, 
-                'move_type': 'out_invoice', 
+                'partner_id': prop.buyer_id.id,
+                'move_type': 'out_invoice',
                 'journal_id': 1,
                 'invoice_line_ids': [
                     Command.create({
                         'name': '6 percent of selling price',
                         'quantity': 1,
-                        'price_unit': (r.selling_price * 6 / 100)
+                        'price_unit': (prop.selling_price * 6 / 100)
                     }),
                     Command.create({
                         'name': 'Administrative fees',
@@ -22,5 +23,5 @@ class EstateProperty(models.Model):
                     })
                 ]
             }
-            move = self.env['account.move'].create(vals)
+            self.env['account.move'].create(vals)
         return super().sell_property()

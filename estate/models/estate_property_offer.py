@@ -18,39 +18,35 @@ class EstatePropertyOffer(models.Model):
     date_deadline = fields.Date(compute="_compute_deadline", inverse="_inverse_validity", readonly=False)
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
-
     @api.model
     def create(self, vals_list):
         prop = self.env['estate.property'].browse(vals_list[0]['property_id'])
 
-        if(any(o.price > vals_list[0]['price'] for o in prop.offer_ids)):
+        if (any(o.price > vals_list[0]['price'] for o in prop.offer_ids)):
             raise exceptions.UserError("Cannot add an offer with a lower amount than an existing one")
 
         prop.state = "offer-received"
 
         return super().create(vals_list)
 
-
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for offer in self:
-            create = offer.create_date.date() if isinstance(offer.create_date, datetime.datetime) else fields.Date.today() 
+            create = offer.create_date.date() if isinstance(offer.create_date, datetime.datetime) else fields.Date.today()
             offer.date_deadline = create + relativedelta(days=offer.validity)
 
-    
     def _inverse_validity(self):
         for offer in self:
             create = offer.create_date.date() if isinstance(offer.create_date, datetime.datetime) else fields.Date.today()
             offer.validity = (offer.date_deadline - create).days
 
-
     def accept_offer(self):
         for offer in self:
-            if(offer.status == 'accepted'):
+            if (offer.status == 'accepted'):
                 continue
 
             for other in offer.property_id.offer_ids:
-                if(other.status == 'accepted'):
+                if (other.status == 'accepted'):
                     raise exceptions.UserError("Cannot accept multiple offers for a single property")
 
             offer.status = 'accepted'
@@ -58,7 +54,6 @@ class EstatePropertyOffer(models.Model):
             offer.property_id.selling_price = offer.price
             offer.property_id.state = "offer-accepted"
         return True
-
 
     def refuse_offer(self):
         for offer in self:

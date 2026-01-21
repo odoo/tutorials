@@ -29,7 +29,9 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[('new', 'New'), ('offer-received', 'Offer Received'), ('offer-accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
-        copy=False, default="new", required=True)
+        copy=False, default="new", 
+        required=True
+    )
     property_type_id = fields.Many2one("estate.property.type", string="Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False, readonly=True)
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
@@ -43,30 +45,27 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.garden_area + record.living_area
 
-    
     @api.depends("offer_ids")
     def _compute_best_price(self):
         for prop in self:
             prop.best_price = max((offer.price for offer in prop.offer_ids), default=0)
 
-    
     @api.onchange("garden")
     def _onchange_garden(self):
-        if(self.garden):
+        if (self.garden):
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
             self.garden_area = 0
             self.garden_orientation = False
 
-        
     def sell_property(self):
         for prop in self:
-            if(prop.state == 'sold'):
+            if (prop.state == 'sold'):
                 continue
-            elif(prop.state == 'cancelled'):
+            elif (prop.state == 'cancelled'):
                 raise exceptions.UserError('Cannot sell a cancelled property')
-            elif(prop.state != 'offer-accepted'):
+            elif (prop.state != 'offer-accepted'):
                 raise exceptions.UserError('Cannot sell a property with no accepted offer')
             else:
                 prop.state = 'sold'
@@ -82,17 +81,14 @@ class EstateProperty(models.Model):
                 prop.state = 'cancelled'
             return True
 
-
     @api.constrains("selling_price", "expected_price")
     def _check_price(self):
         for prop in self:
-            if(not(prop.selling_price is None or float_is_zero(prop.selling_price, precision_digits=2)) and \
+            if (not (prop.selling_price is None or float_is_zero(prop.selling_price, precision_digits=2)) and
                 float_compare(prop.selling_price, prop.expected_price * 9 / 10, precision_digits=2) < 0):
                 raise exceptions.ValidationError("The selling price cannot be below 90 percent of the expected price")
 
-    
     @api.ondelete(at_uninstall=False)
-    def _unlink_if_new_or_cancelled_(self):
-        if any(prop.state != 'new' and prop.state != 'cancelled' for r in self):
+    def _unlink_if_new_or_cancelled(self):
+        if any(prop.state != 'new' and prop.state != 'cancelled' for prop in self):
             raise exceptions.UserError("Can only delete new or cancelled properties")
-
