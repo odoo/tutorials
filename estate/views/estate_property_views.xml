@@ -6,61 +6,78 @@
         <field name='view_mode'>list,form</field>
     </record>
 
-    <record id="estate_property_view_list" model="ir.ui.view">
-        <field name="name">estate.property.view.list</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <list string="Properties">
-                <field name="name"/>
-                <field name="state"/>
-                <field name="postcode"/>
-                <field name="expected_price" string="Expected Price"/>
-                <field name="selling_price" string="Selling Price"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="date_availability"/>
+    <record id='estate_property_view_list' model='ir.ui.view'>
+        <field name='name'>estate.property.view.list</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <list string='Properties'>
+                <field name='name'/>
+                <field name='state'/>
+                <field name='postcode'/>
+                <field name='expected_price' string='Expected Price'/>
+                <field name='selling_price' string='Selling Price'/>
+                <field name='bedrooms'/>
+                <field name='living_area'/>
+                <field name='date_availability'/>
             </list>
         </field>
     </record>
 
-    <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.view.form</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <form string="Property">
+    <record id='estate_property_view_form' model='ir.ui.view'>
+        <field name='name'>estate.property.view.form</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <form string='Property'>
                 <sheet>
-                    <div class="oe_title">
+                    <div class='oe_title'>
                         <h1>
-                            <field name="name" placeholder="e.g. My new house"/>
+                            <field name='name' placeholder='e.g. My new house'/>
                         </h1>
+                    </div>
+
+                    <div>
+                        <field name="tag_ids" widget="many2many_tags"/>
                     </div>
 
                     <group>
                         <group>
-                            <field name="postcode"/>
-                            <field name="date_availability" string="Available From"/>
+                            <field name='postcode'/>
+                            <field name='date_availability' string='Available From'/>
                         </group>
                         <group>
-                            <field name="expected_price" string="Expected Price"/>
-                            <field name="selling_price" string="Selling Price"/>
+                            <field name='expected_price' string='Expected Price'/>
+                            <field name='selling_price' string='Selling Price'/>
                         </group>
                     </group>
 
                     <notebook>
-                        <page string="Description">
+                        <page string='Description'>
                             <group>
-                                <field name="description"/>
+                                <field name='description'/>
                             </group>
 
                             <group>
                                 <group>
-                                    <field name="bedrooms"/>
-                                    <field name="living_area" string="Living Area (sqm)"/>
-                                    <field name="facades"/>
-                                    <field name="garage"/>
-                                    <field name="garden"/>
-                                    <field name="garden_area" string="Garden Area (sqm)"/>
-                                    <field name="garden_orientation"/>
+                                    <field name='bedrooms'/>
+                                    <field name='living_area' string='Living Area (sqm)'/>
+                                    <field name='facades'/>
+                                    <field name='garage'/>
+                                    <field name='garden'/>
+                                    <field name='garden_area' string='Garden Area (sqm)'/>
+                                    <field name='garden_orientation'/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string='Offers'>
+                            <field name='offer_ids'/>
+                        </page>
+
+                        <page string='Other info'>
+                            <group>
+                                <group>
+                                    <field name='salesperson_id' string='Salesman'/>
+                                    <field name='buyer_id' string='Buyer'/>
                                 </group>
                             </group>
                         </page>
@@ -70,24 +87,26 @@
         </field>
     </record>
 
-    <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.view.search</field>
-        <field name="model">estate.property</field>
-        <field name="arch" type="xml">
-            <search string="Properties">
-                <field name="name" string="Estate name"/>
-                <field name="postcode"/>
-                <field name="expected_price"/>
-                <field name="bedrooms"/>
-                <field name="living_area"/>
-                <field name="facades"/>
+    <record id='estate_property_view_search' model='ir.ui.view'>
+        <field name='name'>estate.property.view.search</field>
+        <field name='model'>estate.property</field>
+        <field name='arch' type='xml'>
+            <search string='Properties'>
+                <field name='name' string='Estate name'/>
+                <field name='postcode'/>
+                <field name='expected_price'/>
+                <field name='bedrooms'/>
+                <field name='living_area'/>
+                <field name='facades'/>
 
-                <filter string="Available" name="available" domain="[('state', 'in', ('new', 'offer_received'))]"/>
+                <filter string='Available' name='available' domain="[('state', 'in', ('new', 'offer_received'))]"/>
 
                 <group>
-                    <filter string="Postcode" name="group_by_postcode" context="{'group_by': 'postcode'}"/>
+                    <filter string='Postcode' name='group_by_postcode' context="{'group_by': 'postcode'}"/>
                 </group>
             </search>
         </field>
     </record>
+
+    
 </odoo>

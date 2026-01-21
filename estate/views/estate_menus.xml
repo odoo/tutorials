@@ -4,12 +4,24 @@
     <menuitem id='estate_menu_root' name='Real Estate'/>
 
     <!-- First level menu (top bar) -->
-    <menuitem id='estate_menu_first_level'
+    <menuitem id='estate_menu_adv'
               name='Advertisements'
+              parent='estate_menu_root'/>
+    
+    <menuitem id='estate_menu_settings'
+              name='Settings'
               parent='estate_menu_root'/>
 
     <!-- Action menu (opens the list/form view) -->
     <menuitem id='estate_menu_properties'
-              parent='estate_menu_first_level'
+              parent='estate_menu_adv'
               action='estate_property_action'/>
+
+    <menuitem id='estate_menu_property_type_properties'
+              parent='estate_menu_settings'
+              action='estate_property_type_action'/>
+    
+    <menuitem id='estate_menu_property_tag_properties'
+              parent='estate_menu_settings'
+              action='estate_property_tag_action'/>
 </odoo>
