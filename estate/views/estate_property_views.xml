@@ -63,9 +63,10 @@
                             </group>
                         </page>
                         <page string="Other Info">
-                            <!-- <group>
-                                <field name="property_type_id"/> To add salesman and buyer
-                            </group> -->
+                            <group>
+                                <field name="salesperson"/>
+                                <field name="buyer"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
