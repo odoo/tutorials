@@ -4,3 +4,4 @@ from . import estate_property_tag
 from . import estate_property_offer
 from . import estate_maintenance_request
 from . import res_users
+from . import investor

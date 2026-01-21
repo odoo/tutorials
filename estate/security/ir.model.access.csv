@@ -5,3 +5,4 @@ access_estate_property_tag,access_estate_property_tag,model_estate_property_tag,
 access_estate_property_offer,access_estate_property_offer,model_estate_property_offer,base.group_user,1,1,1,1
 access_estate_property_maintenance_request,access_estate_property_maintenance_request,model_estate_property_maintenance_request,base.group_user,1,1,1,1
 access_res_users,access_res_users,model_res_users,base.group_user,1,1,1,1
+access_investor,access_investor,model_investor,base.group_user,1,1,1,1

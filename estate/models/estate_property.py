@@ -22,6 +22,7 @@ class EstateProperty(models.Model):
     garage = fields.Boolean()
     garden = fields.Boolean()
     garden_area = fields.Integer()
+    seq = fields.Integer()
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
@@ -57,10 +58,10 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute='_compute_best_price')
     total_maintenance_cost = fields.Float(compute='_compute_total_maintenance_cost')
     _chek_expected_price = models.Constraint(
-        "CHECK(expected_price > 0)", "Expected price of property should be positive"
+        'CHECK(expected_price > 0)', "Expected price of property should be positive"
     )
     _chek_selling_price = models.Constraint(
-        "CHECK(selling_price >= 0)", "selling price of property should be positive"
+        'CHECK(selling_price >= 0)', "selling price of property should be positive"
     )
 
     @api.depends('living_area', 'garden_area')
@@ -71,11 +72,7 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            max_val=0
-            for v in record.offer_ids:
-                if(v.price>max_val):
-                    max_val=v.price
-            record.best_price=max_val
+            record.best_price = max(record.offer_ids.mapped('price'))
 
     @api.onchange('garden')
     def _onchnage_garden(self):
@@ -110,7 +107,7 @@ class EstateProperty(models.Model):
                 and float_compare(
                     record.selling_price,
                     record.expected_price * 0.9,
-                    precision_digits=2,
+                    precision_digits = 2,
                 )
                 == -1
             ):
@@ -129,7 +126,7 @@ class EstateProperty(models.Model):
     def _check_state(self):
         for record in self:
             if record.state == 'sold' and record.maintenance_request_ids.filtered(
-                lambda r: r.status != 'done'
+                lambda x: x.status != 'done'
             ):
                 raise ValidationError(
                     "All maintenance request should be done before property marked as sold"
@@ -137,5 +134,5 @@ class EstateProperty(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_cancelled(self):
-        if any(record.state not in ['new', 'cancelled'] for record in self):
+        if any(record.state not in ['new', 'cancelled', 'sold'] for record in self):
             raise ValidationError("Only new and cancelled property can be deleted.")

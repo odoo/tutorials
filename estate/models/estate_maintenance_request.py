@@ -7,7 +7,7 @@ class EstatePropertyMaintenanceRequest(models.Model):
     _description = "estate property maintenance"
 
     cost = fields.Float()
-    tital = fields.Char()
+    title = fields.Char()
     status = fields.Selection(
         [('new', "New"), ('approved', "Approved"), ('done', "Done")], copy=False
     )

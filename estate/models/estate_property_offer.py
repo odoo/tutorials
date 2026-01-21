@@ -21,7 +21,7 @@ class EstatePropertyOffer(models.Model):
         compute='_compute_date_deadline', inverse='_inverse_date_deadline'
     )
     _chek_offer_price = models.Constraint(
-        "CHECK(price > 0)", "offer price of property should be positive"
+        'CHECK(price > 0)', 'offer price of property should be positive'
     )
 
     @api.depends('validity')
@@ -43,11 +43,10 @@ class EstatePropertyOffer(models.Model):
                 record.status = 'accepted'
                 record.property_id.buyer_id = record.partner_id
                 record.property_id.selling_price = record.price
-                record.property_id.state = 'sold'
-                record.property_id.active = False
+                record.property_id.state = 'offer_accepted'
                 for id in record.property_id.offer_ids:
-                    if not id.status=='accepted':
-                        id.status='refused'               
+                    if id.status != 'accepted':
+                        id.status = 'refused'
         return True
 
     def action_refuse(self):
@@ -60,7 +59,15 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         for val in vals:
-            if self.env['estate.property'].browse(val['property_id']).offer_ids.filtered(lambda x: x.price > val['price']):
-                raise UserError("offer amount should be grater than current offer amount.")
-            self.env['estate.property'].browse(val['property_id']).state = 'offer_received'
+            if (
+                self.env["estate.property"]
+                .browse(val["property_id"])
+                .offer_ids.filtered(lambda x: x.price > val["price"])
+            ):
+                raise UserError(
+                    "offer amount should be grater than current offer amount."
+                )
+            self.env['estate.property'].browse(
+                val['property_id']
+            ).state = 'offer_received'
         return super().create(vals)

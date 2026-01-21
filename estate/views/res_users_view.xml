@@ -5,6 +5,9 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
+            <field name="role" position="after">
+                <field name="total_unsold_value" string="Total Unsold Value"/>  
+            </field>
             <page name="preferences" position="after">
                 <page name="Estate Property">
                     <field name="property_ids"/>

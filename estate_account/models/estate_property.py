@@ -1,4 +1,4 @@
-from odoo import api, models
+from odoo import models
 from odoo.orm.commands import Command
 
 

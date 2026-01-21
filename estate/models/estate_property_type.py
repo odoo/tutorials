@@ -5,6 +5,8 @@ class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = "estate property types"
     _order = 'name'
+    _rec_name = 'id'
+    _rec_names_search = ['sequence']
 
     name = fields.Char(required=True)
     property_ids = fields.One2many('estate.property', 'property_type')
