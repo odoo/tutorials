@@ -59,7 +59,7 @@ class EstateProperty(models.Model):
         'estate.property.maintenance', 'property_id')
     total_maintenance_cost = fields.Float(
         compute='_compute_total_maintenance_cost')
-
+    investor = fields.Many2one('estate.investor')
     _check_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
         "The Expected price cannot be negative or zero."
@@ -71,15 +71,15 @@ class EstateProperty(models.Model):
 
     @api.depends('garden_area', 'living_area')
     def _compute_total_area(self):
-        self.total_area = self.living_area + self.garden_area
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
+        best_price = dict(self.env['estate.property.offer']._read_group(domain=[
+                          ('property_id', 'in', self.ids)], aggregates=['price:max'], groupby=['property_id']))
         for record in self:
-            if record.offer_ids.mapped('price'):
-                record.best_price = max(record.offer_ids.mapped('price'))
-            else:
-                record.best_price = None
+            record.best_price = best_price.get(record, 0.0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -115,12 +115,10 @@ class EstateProperty(models.Model):
 
     @api.depends('property_maintainance_ids.cost')
     def _compute_total_maintenance_cost(self):
+        maintenace_cost = dict(self.env['estate.property.maintenance']._read_group(domain=[(
+            'property_id', 'in', self.ids)], aggregates=['cost:sum'], groupby=['property_id']))
         for record in self:
-            if record.property_maintainance_ids:
-                record.total_maintenance_cost = sum(
-                    record.property_maintainance_ids.mapped('cost'))
-            else:
-                record.total_maintenance_cost = 0.00
+            record.total_maintenance_cost = maintenace_cost.get(record, 0.0)
 
     @api.ondelete(at_uninstall=False)
     def _unlink_property(self):

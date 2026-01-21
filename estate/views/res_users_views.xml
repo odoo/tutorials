@@ -4,9 +4,12 @@
         <field name="model">res.users</field>
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='role']" position="after">
+                <field name="unsold_value"/>
+            </xpath>
             <xpath expr="//notebook" position="inside">
                 <page string="Real Estate Properties">
-                    <field name="property_ids">
+                    <field name="property_ids" readonly="1">
                         <list>
                             <field name="name" string="Title"/>
                             <field name="property_type_id"/>
@@ -18,6 +21,9 @@
                             <field name="selling_price"/>
                         </list>
                     </field>
+                    <group>
+                        <field name="unsold_value" string="Unsold Values"/>
+                    </group>
                 </page>
             </xpath>
         </field>

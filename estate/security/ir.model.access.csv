@@ -4,3 +4,4 @@ model_estate_type,model_estate_type,model_estate_property_type,base.group_user,1
 model_estate_tag,model_estate_tag,model_estate_property_tag,base.group_user,1,1,1,1
 model_estate_offer,model_estate_offer,model_estate_property_offer,base.group_user,1,1,1,1
 model_estate_maintenance,model_estate_maintenance,model_estate_property_maintenance,base.group_user,1,1,1,1
+estate.access_estate_investor,access_estate_investor,estate.model_estate_investor,base.group_user,1,1,1,1
