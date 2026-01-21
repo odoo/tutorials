@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="estate_property_view_form_inherit" model="ir.ui.view">
+        <field name="name">estate.property.form.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//button[@name='action_sold']" position="before" >
+                <button name="start_auction" type="object" string="Start Auction" class="oe_highlight"
+                        invisible="(auction_state in ['auction', 'done']) or (selling_type == 'regular') or (state not in ['new', 'offer_received'])" />
+            </xpath>
+            <xpath expr="//group[@name='property_name']" position="before">
+                <group>
+                    <field name="auction_state" nolabel="1" widget="auction_state_selection" class="d-inline-block w-auto float-end oe_stat_button"
+                            invisible="selling_type == 'regular'" />
+                </group>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="after">
+                <group>
+                    <field name="selling_type" widget="radio" options="{'horizontal': True}" nolabel="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//group[@name='description']" position='after'>
+                <group invisible="selling_type == 'regular'">
+                    <separator string="Auction Information"/> 
+                    <field name="auction_end_date" />
+                    <field name="auction_highest_offer" readonly="1"/>
+                    <field name="auction_highest_bidder" readonly="1"/>
+                </group>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box" invisible="state != 'sold'">
+                    <button name="action_view_invoice" type="object" icon="fa-file"
+                        class="oe_button_box ">
+                        <span class="o_stat_text p-1">Invoice</span>
+                    </button>
+                </div>            
+            </xpath>
+        </field>
+    </record>
+
+    <record id="estate_property_view_kanban_inherit" model="ir.ui.view">
+        <field name="name">estate.property.kanban.inherit</field>
+        <field name="model">estate.property</field>
+        <field name="inherit_id" ref="estate.estate_property_view_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="replace">
+                <div class="d-flex justify-content-between align-items-center">
+                    <field name="name" class="fw-bold fs-5 h3" />
+                    <field name="auction_state" widget="auction_state_selection" invisible="selling_type == 'regular'"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>
