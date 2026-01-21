@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+    <record id="res_users_form_inherit" model="ir.ui.view">
+        <field name="name">User Inheritance</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <notebook>
+                <page name="Properties">
+                    <field name="property_ids"/>
+                     <field name="sales_fee" string="Salesperson Fee"/>
+                </page>
+            </notebook>
+        </field>
+    </record>
+</odoo>

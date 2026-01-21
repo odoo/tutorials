@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.card">
+        <div class="card m-2" style="width: 14rem;">
+            <div class="card-body">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h5 class="card-title" style="margin: 0;">
+                        <t t-esc="props.title"/>
+                    </h5>
+                    <button
+                        class="btn btn-sm btn-outline-secondary"
+                        t-on-click="toggle"
+                    >
+                        Toggle
+                    </button>
+                </div>
+                <t t-if="state.open">
+                    <div class="card-text mt-2">
+                        <t t-slot="default"/>
+                    </div>
+                </t>
+            </div>
+        </div>
+    </t>
+</templates>
