@@ -1,5 +1,7 @@
 {
-    'name': "Real estate",
+    'name': 'Real estate',
+    'author': 'anden',
+    'license': 'LGPL-3',
     'depends': ['base'],
     'category': 'Real Estate/Brokerage',
     'application': True,
