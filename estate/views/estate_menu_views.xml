@@ -26,9 +26,15 @@
         sequence="2"/>
 
     <menuitem
-        id="estate_menu_settings_action"
+        id="estate_menu_settings_types"
         action="estate_property_types"
         parent="estate_menu_settings"
         sequence="1"/>
+
+    <menuitem
+        id="estate_menu_settings_tags"
+        action="estate_property_tags"
+        parent="estate_menu_settings"
+        sequence="2"/>
 
 </odoo>
