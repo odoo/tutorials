@@ -6,6 +6,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="property">
+                <header>
+                    <button name="sell_apartment" type="object" string="Sold"/>
+                    <button name="cancel_apartment" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -13,6 +17,7 @@
                     <group>
                         <field name="property_tag_ids" widget="many2many_tags"/>
                         <group>
+                            <field name="status"/>
                             <field name="property_type_id" string="Property Type"/>
                             <field name="postcode" string="Postcode"/>
                             <field name="date_availability"/>
