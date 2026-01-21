@@ -77,7 +77,8 @@ class EstatePropertyOffer(models.Model):
 
         offers = super().create(vals_list)
         for i in offers:
-            i.property_id.state = "offer_received"
+            if i.property_id.state == "new":
+                i.property_id.state = "offer_received"
 
         return offers
 
@@ -86,6 +87,7 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
                 raise UserError("Only one offer can be accepted")
             record.status = "accepted"
+
             record.property_id.write(
                 {
                     "buyer_id": record.partner_id,
@@ -97,6 +99,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         self.write({"status": "refused"})
+
         return True
 
     _check_price = models.Constraint(
