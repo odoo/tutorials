@@ -19,6 +19,18 @@ class EstatePropertyOffer(models.Model):
     property_type_id = fields.Many2one(related="property_id.property_type_id")
 
 
+    @api.model
+    def create(self, vals_list):
+        prop = self.env['estate.property'].browse(vals_list[0]['property_id'])
+
+        if(any(o.price > vals_list[0]['price'] for o in prop.offer_ids)):
+            raise exceptions.UserError("Cannot add an offer with a lower amount than an existing one")
+
+        prop.state = "offer-received"
+
+        return super().create(vals_list)
+
+
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for r in self:
