@@ -56,6 +56,7 @@ class EstatePropertyOffer(models.Model):
             r.status = 'accepted'
             r.property_id.buyer_id = r.partner_id
             r.property_id.selling_price = r.price
+            r.property_id.state = "offer-accepted"
         return True
 
 

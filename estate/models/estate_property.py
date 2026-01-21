@@ -64,6 +64,8 @@ class EstateProperty(models.Model):
                 continue
             elif(self.state == 'cancelled'):
                 raise exceptions.UserError('Cannot sell a cancelled property')
+            elif(self.state != 'offer-accepted'):
+                raise exceptions.UserError('Cannot sell a property with no accepted offer')
             else:
                 r.state = 'sold'
             return True
