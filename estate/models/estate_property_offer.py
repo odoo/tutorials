@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+import datetime
 
 
 class EstatePropertyOffer(models.Model):
@@ -17,13 +18,11 @@ class EstatePropertyOffer(models.Model):
     @api.depends("validity", "create_date")
     def _compute_deadline(self):
         for r in self:
-            if r.create_date is not None:
-                r.date_deadline = r.create_date.date() + relativedelta(days=r.validity)
+            create = r.create_date.date() if isinstance(r.create_date, datetime.datetime) else fields.Date.today() 
+            r.date_deadline = create + relativedelta(days=r.validity)
 
     
     def _inverse_validity(self):
         for r in self:
-            if r.create_date is not None:
-                r.validity = (r.date_deadline - r.create_date.date()).days
-
-
+            create = r.create_date.date() if isinstance(r.create_date, datetime.datetime) else fields.Date.today()
+            r.validity = (r.date_deadline - create).days

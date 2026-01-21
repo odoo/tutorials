@@ -5,6 +5,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
+                <header>
+                    <button name="sell_property" type="object" string="Sell"/>
+                    <button name="cancel_sold_property" type="object" string="Cancel"/>
+                </header>
                 <sheet>
                     <group>
                         <field name="name"/>
