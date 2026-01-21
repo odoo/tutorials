@@ -7,6 +7,7 @@
             <list string="Estate Properties">
                 <field name="name"/>
                 <field name="postcode"/>
+                <field name="property_type_id"/>
                 <field name="bedrooms"/>
                 <field name="living_area"/>
                 <field name="expected_price"/>
