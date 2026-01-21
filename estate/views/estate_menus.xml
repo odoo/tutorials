@@ -4,7 +4,7 @@
 
     <menuitem id="estate_menu_root" name="Estate">
         <menuitem id="estate_properties" name="Properties">
-            <menuitem id="estate_property_model_menu_action" action="estate_model_action"/>
+            <menuitem id="estate_property_model_menu_action" action="load_properties_action"/>
         </menuitem>
     </menuitem>
 
