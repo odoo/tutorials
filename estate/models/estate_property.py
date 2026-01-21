@@ -10,8 +10,11 @@ class EstateProperty(models.Model):
     postcode = fields.Char('Post Code')
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
 
-    date_availability = fields.Date('Availability Date', copy=False,
-        default=fields.Date.add(fields.Date.today(), months=3))
+    date_availability = fields.Date(
+        'Availability Date',
+        copy=False,
+        default=fields.Date.add(fields.Date.today(), months=3)
+    )
     expected_price = fields.Float('Expected Price', required=True)
     selling_price = fields.Float('Selling Price', readonly=True, copy=False)
 
@@ -25,9 +28,12 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string='Garden Orientation',
         selection=[
-            ('north', 'North'), ('south', 'South'),
-            ('east', 'East'), ('west', 'West')
-        ])
+            ('north', 'North'),
+            ('south', 'South'),
+            ('east', 'East'),
+            ('west', 'West')
+        ]
+    )
 
     user_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.uid)
     partner_id = fields.Many2one('res.partner', string='Buyer', copy=False)
@@ -35,9 +41,12 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
-            ('new', 'New'), ('offer_received', 'Offer Received'),
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
             ('offer_accepted', 'Offer Accepted'),
-            ('sold', 'Sold'), ('cancelled', 'Cancelled')],
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
+        ],
         default='new',
         required=True
     )
