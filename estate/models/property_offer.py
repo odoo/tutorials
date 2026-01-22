@@ -29,7 +29,7 @@ class EstatePropertyOffer(models.Model):
 
     def action_status_accepted(self):
 
-        if 1 < len(self): 
+        if len(self) > 1:
             raise exceptions.UserError('Only one offer can be accepted')
 
         if self.status != 'accepted' and 'accepted' in self.mapped('property_id.property_offer_id.status'):
