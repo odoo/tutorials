@@ -34,6 +34,11 @@ class PropertyOffer(models.Model):
         inverse='_inverse_date_deadline',
         string='Deadline')
 
+    _check_price = models.Constraint(
+        'CHECK(price > 0)',
+        'The price must be strictly positive!',
+    )
+
     # === COMPUTE METHODS ===#
 
     @api.depends('validity', 'create_date')

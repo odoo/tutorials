@@ -2,6 +2,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.float_utils import float_compare
 
 GARDEN_ORIENTATIONS = [
     ('north', 'North'),
@@ -79,6 +80,16 @@ class Property(models.Model):
         compute='_compute_best_price',
         string='Best Offer')
 
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive!',
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive!',
+    )
+
     # === COMPUTE METHODS ===#
 
     # Default method to set date_availability to three months from today
@@ -124,3 +135,18 @@ class Property(models.Model):
                 raise UserError(error_message)
             record.state = 'cancelled'
         return True
+
+    # === CONSTRAINT METHODS ===#
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if record.selling_price and record.expected_price:
+                if float_compare(record.selling_price,
+                                 record.expected_price * 0.9,
+                                 precision_rounding=0.01) < 0:
+                    error_message = (
+                        "The selling price must be at least 90% "
+                        "of the expected price."
+                    )
+                    raise UserError(error_message)

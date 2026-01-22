@@ -9,3 +9,8 @@ class PropertyType(models.Model):
 
     name = fields.Char(
         required=True)
+
+    _check_name = models.Constraint(
+        'unique(name)',
+        'The property type name must be unique!',
+    )

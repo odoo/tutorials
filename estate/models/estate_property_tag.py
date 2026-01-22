@@ -9,3 +9,8 @@ class PropertyTag(models.Model):
 
     name = fields.Char(
         required=True)
+
+    _check_name = models.Constraint(
+        'unique(name)',
+        'The tag name must be unique!',
+    )
