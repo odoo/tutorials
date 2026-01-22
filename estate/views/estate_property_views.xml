@@ -38,12 +38,12 @@
                         <h1>
                             <field name="name" placeholder="New property"/>
                         </h1>
-                        <field name="property_tag_ids" widget="many2many_tags" class="mb16"/>
+                        <field name="property_tag_ids" widget="many2many_tags" class="mb16" options="{'color_field': 'color'}"/>
                     </div>
 
                     <group>
                         <group>
-                            <field name="property_type_id"/>
+                            <field name="property_type_id" widget="no_create"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
