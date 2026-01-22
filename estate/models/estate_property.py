@@ -75,7 +75,7 @@ class EstateProperty(models.Model):
             if record.state == 'offer_accepted' and self._offer_too_low():
                 raise ValidationError('The selling price must be at least 90% of the selling price')
 
-    def _offer_to_low(self):
+    def _offer_too_low(self):
         self.ensure_one()
         return float_compare(
             record.selling_price,
