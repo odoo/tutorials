@@ -8,22 +8,14 @@
                 <button class="btn btn-primary" t-on-click="openCrmLeads">Leads</button>
             </t>
 
-            <t t-foreach="this.stats" t-as="stat" t-key="stat.id">
+            <t t-foreach="items" t-as="item" t-key="item.id">
                 <div class="d-inline-block">
-                    <DashboardItem size="stat.size">
-                        <t t-set-slot="default">
-                            <t t-esc="stat.description"/><br/>
-                            <b style="color: green;"><t t-esc="stat.value"/></b>
-                        </t>
+                    <DashboardItem size="item.size || 1">
+                        <t t-set="itemProp" t-value="item.props ? item.props(statistics) : {'data': statistics}"/>
+                        <t t-component="item.Component" t-props="itemProp" />
                     </DashboardItem>
                 </div>
             </t>
-
-            <DashboardItem t-if="this.raw_stats.isReady">
-                <t t-set-slot="default">
-                    <PieChart chart_data="this.raw_stats.orders_by_size"/>
-                </t>
-            </DashboardItem>
         </Layout>
     </t>
 

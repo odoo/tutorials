@@ -27,12 +27,7 @@ export class PieChart extends Component {
                 type: "pie", 
                 data: {
                     labels: Object.keys(this.props.chart_data),
-                    datasets: [
-                        {
-                            label: "orders_by_size",
-                            data: Object.values(this.props.chart_data),
-                        },
-                    ],
+                    datasets: [{ data: Object.values(this.props.chart_data) }],
                 },
             },
         );
