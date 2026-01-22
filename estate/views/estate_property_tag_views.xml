@@ -15,6 +15,7 @@
                 <sheet>
                     <group>
                         <field name="name" placeholder="Property Tag"/>
+                        <field name="color" widget="color_picker"/>
                     </group>
                 </sheet>
             </form>
