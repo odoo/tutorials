@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': 'Estate',
+    'name': 'Real Estate',
     'version': '1.9',
     'category': 'Real Estates',
     'summary': 'Manage real estate operations',
@@ -16,7 +16,5 @@
         'security/ir.model.access.csv',
         'views/estate_property_views.xml',
         'views/estate_menus.xml',
-        'views/estate_property_form_views.xml',
-        'views/estate_property_search_views.xml',
     ],
 }

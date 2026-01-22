@@ -35,3 +35,13 @@ class EstateProperty(models.Model):
         copy=False,
         default='new',
     )
+
+    # res.users: the users of the system. Users can be 'internal', i.e. they have access to the Odoo backend. Or they can be
+    # 'portal', i.e. they cannot access the backend, only the frontend (e.g. to access their previous orders in eCommerce).
+    sales_person_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
+    # res.partner: a partner is a physical or legal entity. It can be a company, an individual or even a contact address.
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+
+    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
+
+    offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
