@@ -32,7 +32,6 @@ class PropertyOffer(models.Model):
     date_deadline = fields.Date(
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
-        store=True,
         string='Deadline')
 
     # === COMPUTE METHODS ===#
@@ -43,9 +42,26 @@ class PropertyOffer(models.Model):
             if record.create_date:
                 record.date_deadline = record.create_date.date() + \
                     relativedelta(days=record.validity)
+            else:
+                record.date_deadline = fields.Datetime.today() + \
+                    relativedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
             if record.create_date and record.date_deadline:
                 delta = record.date_deadline - record.create_date.date()
                 record.validity = delta.days
+
+    # === ACTION METHODS ===#
+
+    def action_accept_offer(self):
+        for record in self:
+            record.status = 'accepted'
+            record.property_id.selling_price = record.price
+            record.property_id.buyer_id = record.partner_id
+        return True
+
+    def action_reject_offer(self):
+        for record in self:
+            record.status = 'refused'
+        return True
