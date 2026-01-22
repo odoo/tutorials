@@ -76,6 +76,13 @@ class EstateProperty(models.Model):
         "Expected price must be positive",
     )
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_state_is_new_or_canceled(self):
+        if any(state not in ("new", "canceled") for state in self.mapped("state")):
+            raise UserError(
+                "Only properties in 'New' or 'Canceled' state can be deleted.",
+            )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:

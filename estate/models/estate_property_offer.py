@@ -1,5 +1,6 @@
 from odoo import api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools import float_compare
 
 
 class EstatePropertyOffer(models.Model):
@@ -11,7 +12,11 @@ class EstatePropertyOffer(models.Model):
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_id = fields.Many2one("estate.property", string="Property", required=True)
     validity = fields.Integer(string="Validity (days)", default=7)
-    property_type_id = fields.Many2one(related="property_id.property_type_id", string="Property Type", store=True)
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        string="Property Type",
+        store=True,
+    )
     date_deadline = fields.Date(
         string="Deadline",
         compute="_compute_date_deadline",
@@ -31,6 +36,15 @@ class EstatePropertyOffer(models.Model):
         "CHECK (price > 0)",
         "Price must be positive",
     )
+
+    @api.model
+    def create(self, vals):
+        for record in vals:
+            this_property = self.env["estate.property"].browse(record["property_id"])
+            if float_compare(this_property.best_offer, record["price"], precision_digits=2) > 0:
+                raise UserError("Can't create offer with less price than best price.")
+            this_property.state = "offer_received"
+        return super().create(vals)
 
     @api.depends("create_date", "validity")
     def _compute_date_deadline(self):
