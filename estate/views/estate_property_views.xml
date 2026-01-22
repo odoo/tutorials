@@ -31,8 +31,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_property_sold" type="object" string="SOLD"/>
-                    <button name="action_property_cancel" type="object" string="CANCEL"/>
+                    <button name="action_property_sold" type="object" string="SOLD" invisible="state=='cancelled' or state=='sold'"/>
+                    <button name="action_property_cancel" type="object" string="CANCEL" invisible="state=='cancelled' or state=='sold'"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer received,offer accepted, sold"/>
                 </header>
                 <sheet>
@@ -68,14 +68,14 @@
                                 <field name="facades"/>
                                 <field name="garage"/>
                                 <field name="garden"/>
-                                <field name="garden_area"/>
-                                <field name="garden_orientation"/>
+                                <field name="garden_area" invisible="garden==False"/>
+                                <field name="garden_orientation" invisible="garden==False"/>
                                 <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="property_offer_id" nolabel="1"/>
+                                <field name="property_offer_id" nolabel="1" readonly="state=='offer accepted' or state=='sold' or state=='cancelled'"/>
                             </group>
                         </page>
                         <page string="Other Info">
