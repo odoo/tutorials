@@ -29,7 +29,7 @@ class EstatePropertyOffer(models.Model):
                     raise UserError("The new offer price cannot be lower than existing offers.")
             prop.state = 'offer_received'
         return super().create(vals_list)
-                
+
     @api.depends('validity')
     def _compute_deadline(self):
         for record in self:
