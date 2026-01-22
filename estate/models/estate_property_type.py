@@ -5,9 +5,10 @@ class EstatePropertyType(models.Model):
     _name = 'estate.property.type'
     _description = 'Estate Property Type'
     _order = 'name'
+    # _rec_name = 'id'
 
     name = fields.Char(required=True)
-    sequence = fields.Integer()
+    sequence = fields.Integer(default=10)
     offer_ids = fields.One2many('estate.property.offer', 'property_type_id')
     offer_count = fields.Integer(compute='_compute_offer_count')
 

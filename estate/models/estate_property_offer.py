@@ -46,14 +46,19 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         for vals in vals:
-            property_record = self.env['estate.property'].browse(
-                vals.get('property_id'))
-            if property_record.offer_ids:
-                max_offer = max(property_record.offer_ids.mapped('price'))
-                if vals.get('price') < max_offer:
+            property_id = vals.get('property_id')
+            if property_id:
+                result = self.env['estate.property.offer']._read_group(
+                    [('property_id', '=', property_id)],
+                    [],
+                    ['price:max']
+                )
+                max_offer = result[0][0] if result else 0.0
+                if vals.get('price', 0.0) <= max_offer:
                     raise UserError(
                         "The offer must be higher than existing offers.")
-            property_record.state = 'offer_received'
+                self.env['estate.property'].browse(
+                    property_id).state == 'offer_received'
         return super().create(vals)
 
     # Action Funcitons

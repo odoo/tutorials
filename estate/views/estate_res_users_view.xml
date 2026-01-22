@@ -7,9 +7,14 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='page_security']" position="after">
                 <page string="Real Estate Properties">
-                    <field name="property_ids"/>
-                    <field name="name"/>
+                    <group>
+                        <field name="property_ids"/>
+                        <field name="total_unsold_value"/>
+                    </group>
                 </page>
+            </xpath>
+            <xpath expr="//field[@name='role']" position="after">
+                <field name="total_unsold_value"/>
             </xpath>
         </field>
     </record>

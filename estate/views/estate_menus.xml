@@ -15,6 +15,11 @@
         parent="estate_menu_advertisements"
         action="estate_model_action"/>
 
+    <menuitem
+        id="estate_investor"
+        parent="estate_menu_advertisements"
+        action="estate_property_investor_action"/>
+
     <!-- Settings -->
     <menuitem
         id="estate_menu_settings"

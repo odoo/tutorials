@@ -49,17 +49,18 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one(
         'res.users', string="Salesman", default=lambda self: self.env.user
     )
-    buyer_ids = fields.Many2one('res.partner', string="Buyer", copy=False)
+    buyer_ids = fields.Many2one(
+        'res.partner', string="Partner/Buyer", copy=False)
     tags_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     total_area = fields.Float(compute='_compute_total_area')
     best_price = fields.Float(
         "Best offer", compute='_compute_best_price', store=True)
-
     property_maintenance_requests = fields.One2many(
         'estate.property.maintenance.requests', 'property_id')
     total_maintenance_cost = fields.Float(
         compute='_compute_total_maintenance_cost', string="Total Maintenance Cost")
+    is_favorite = fields.Boolean(string="Favorite")
 
     # SQL Constraint
     _check_expected_price = models.Constraint(
@@ -81,28 +82,32 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends('offer_ids')
+    @api.depends('offer_ids.price')
     def _compute_best_price(self):
+        result = dict(self.env['estate.property.offer']._read_group(
+            [('property_id', 'in', self.ids)],
+            ['property_id'],
+            ['price:max']
+        ))
         for record in self:
-            record.best_price = (
-                max(record.offer_ids.mapped('price')
-                    ) if record.offer_ids else 0.0
-            )
+            record.best_price = result.get(record, 0)
 
     @api.depends('property_maintenance_requests.cost')
     def _compute_total_maintenance_cost(self):
+        result = dict(self.env['estate.property.maintenance.requests']._read_group(
+            [('property_id', 'in', self.ids)],
+            ['property_id'],
+            ['cost:sum']
+        ))
         for record in self:
-            record.total_maintenance_cost = (
-                sum(record.property_maintenance_requests.mapped('cost')
-                    ) if record.property_maintenance_requests else 0.0
-            )
+            record.total_maintenance_cost = result.get(record, 0)
 
     # Onchange Decorator
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
-            self.garden_area = "10"
-            self.garden_orientation = "north"
+            self.garden_area = 10
+            self.garden_orientation = 'north'
         else:
             self.garden_area = None
             self.garden_orientation = None

@@ -10,7 +10,7 @@ class EstatePropertyTag(models.Model):
     color = fields.Integer("Color Index")
 
     # SQL Constraint
-    _check_name = models.Constraint('unique(name)', "The name must be unique")
+    _check_name = models.Constraint('UNIQUE(name)', "The name must be unique")
 
     local_datetime = fields.Char(
         compute='_compute_local_datetime', store=True)
