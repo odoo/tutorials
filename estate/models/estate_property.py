@@ -15,7 +15,7 @@ class EstateProperty(models.Model):
     property_tag_ids = fields.Many2many('estate.property.tag', string='Tags')
 
     date_availability = fields.Date(
-        'Availability Date',
+        'Available From',
         copy=False,
         default=fields.Date.add(fields.Date.today(), months=3)
     )
