@@ -37,8 +37,8 @@
                 <field name="partner_id"/>
                 <field name="validity"/>
                 <field name="date_deadline"/>
-                <button name="action_confirm" type="object" icon="fa-check" help="Accept"/>
-                <button name="action_cancel" type="object" icon="fa-times" help="Refuse"/>
+                <button name="action_confirm" type="object" icon="fa-check" help="Accept" title="confirmation_button"/>
+                <button name="action_cancel" type="object" icon="fa-times" help="Refuse" title="cancellation_button"/>
                 <field name="status"/>
             </list>
         </field>

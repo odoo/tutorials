@@ -44,3 +44,9 @@ class PropertyOffer (models.Model):
             if not record.status:
                 record.status = "refused"
         return True
+
+    @api.constrains("price")
+    def _check_price(self):
+        for record in self:
+            if record.price < 0:
+                raise exceptions.ValidationError("Enter a valid offer")
