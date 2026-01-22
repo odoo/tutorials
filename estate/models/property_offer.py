@@ -4,6 +4,7 @@ from odoo import api, fields, models, exceptions
 class EstatePropertyOffer(models.Model):
     _name = 'estate_property_offer'
     _description = 'estate property offer'
+    _order = "price desc"
 
     price = fields.Float()
     status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False, readonly=True)

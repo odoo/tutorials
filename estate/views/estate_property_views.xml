@@ -33,6 +33,7 @@
                 <header>
                     <button name="action_property_sold" type="object" string="SOLD"/>
                     <button name="action_property_cancel" type="object" string="CANCEL"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <group>
