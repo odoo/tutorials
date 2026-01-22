@@ -5,7 +5,7 @@ class EstateProperty(models.Model):
     _inherit = ["estate.property"]
 
     def sell_property(self):
-        for prop in self :
+        for prop in self:
             vals = {
                 'partner_id': prop.buyer_id.id,
                 'move_type': 'out_invoice',

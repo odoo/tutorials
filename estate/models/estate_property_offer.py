@@ -57,7 +57,7 @@ class EstatePropertyOffer(models.Model):
 
     def refuse_offer(self):
         for offer in self:
-            if(offer.status == 'accepted'):
+            if (offer.status == 'accepted'):
                 offer.property_id.buyer_id = None
                 offer.property_id.selling_price = None
             offer.status = 'refused'

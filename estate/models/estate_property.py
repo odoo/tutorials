@@ -8,10 +8,8 @@ class EstateProperty(models.Model):
     _description = "Real estate property"
     _order = "id desc"
 
-    _sql_constraints = [
-        ("check_expected_price", "CHECK(expected_price > 0)", "The expected price must be strictly positive"),
-        ("check_selling_price", "CHECK(selling_price >= 0)", "The offer price must be positive"),
-    ]
+    _check_expected_price = models.Constraint('CHECK(expected_price > 0)', 'The expected price should always be positive')
+    _check_selling_price = models.Constraint('CHECK(selling_price >= 0)', 'The selling price should always be positive')
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -29,7 +27,7 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[('new', 'New'), ('offer-received', 'Offer Received'), ('offer-accepted', 'Offer Accepted'), ('sold', 'Sold'), ('cancelled', 'Cancelled')],
-        copy=False, default="new", 
+        copy=False, default="new",
         required=True
     )
     property_type_id = fields.Many2one("estate.property.type", string="Type")
@@ -39,7 +37,7 @@ class EstateProperty(models.Model):
     offer_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Integer(compute="_compute_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
-    
+
     @api.depends("garden_area", "living_area")
     def _compute_total_area(self):
         for record in self:
@@ -73,9 +71,9 @@ class EstateProperty(models.Model):
 
     def cancel_property(self):
         for prop in self:
-            if(prop.state == 'cancelled'):
+            if (prop.state == 'cancelled'):
                 continue
-            elif(prop.state == 'sold'):
+            elif (prop.state == 'sold'):
                 raise exceptions.UserError('Cannot cancel a sold property')
             else:
                 prop.state = 'cancelled'
