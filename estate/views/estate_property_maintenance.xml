@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
     <record id="estate_property_maintenance_action" model="ir.actions.act_window">
         <field name="name">Maintenance</field>
         <field name="res_model">estate.property.maintenance</field>
     </record>
 
+    <!-- formview -->
     <record id="estate_property_maintenance_view_form" model="ir.ui.view">
-        <field name="name">Maintenance Request</field>
+        <field name="name">estate.property.maintenance.view.form</field>
         <field name="model">estate.property.maintenance</field>
         <field name="arch" type="xml">
-            <form string="">
+            <form>
                 <sheet>
                     <group>
                         <field name="name"/>
@@ -35,6 +35,4 @@
             </list>
         </field>
     </record>
-
-
 </odoo>

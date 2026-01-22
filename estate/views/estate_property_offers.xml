@@ -10,7 +10,7 @@
         <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <list string="Channel" editable="bottom" decoration-success="status == 'accepted'"
+            <list editable="bottom" decoration-success="status == 'accepted'"
             decoration-danger="status == 'refused'">
                 <field name="price"/>
                 <field name="partner_id"/>

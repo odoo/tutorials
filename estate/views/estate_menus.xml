@@ -36,4 +36,16 @@
         name="Property Maintenance"
         parent="estate_menu_setting"
         action="estate_property_maintenance_action"/>
+
+     <!-- INVESTMENT -->
+    <menuitem
+        id="estate_prop_investment"
+        name="Investment"
+        parent="estate_menu_root"
+        action="estate_property_investor_action"/>
+    <menuitem
+        id="estate_prop_investor"
+        name="Investor"
+        parent="estate_prop_investment"
+        action="estate_property_investor_action"/>
 </odoo>

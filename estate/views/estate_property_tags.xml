@@ -3,7 +3,6 @@
         <field name="name">Property Tags</field>
         <field name="res_model">estate.property.tags</field>
          <field name="context">{'search_default_group_by_name': 1}</field>
-
     </record>
 
     <!-- listview -->

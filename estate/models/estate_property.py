@@ -1,4 +1,3 @@
-from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models, _
@@ -8,14 +7,17 @@ from odoo.exceptions import UserError
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = "Estate Property"
-    _order = "id desc"
+    _order = "sequence"
 
     name = fields.Char(default="Unknown", required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
-        default=date.today() + relativedelta(months=3), copy=False
+        default=lambda self: fields.Date.today() + relativedelta(months=3),
+        copy=False
     )
+    sequence = fields.Integer('Sequence', default=1,
+                              help="Used to order Property Type")
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True)
     bedrooms = fields.Integer(default=2)
@@ -26,10 +28,19 @@ class EstateProperty(models.Model):
     last_seen = fields.Datetime(default=fields.Datetime.now)
     garden_area = fields.Integer("Garden Area (sqm)")
     active = fields.Boolean(default=True)
+    priority = fields.Selection([
+        ('0', 'Low priority'),
+        ('1', 'Medium priority'),
+        ('2', 'High priority'),
+        ('3', 'Urgent'),
+        ('4', 'Very Urgent'),
+    ], default='0')
     partner_id = fields.Many2one(
         'res.users', string="Salesperson", default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner')
     property_type_id = fields.Many2one('estate.property.type')
+    pop_id = fields.Integer('estate.property.type',
+                            related='property_type_id.id')
     property_tag_ids = fields.Many2many('estate.property.tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
     color = fields.Integer('Color Index')
@@ -53,8 +64,8 @@ class EstateProperty(models.Model):
             ('sold', "Sold"),
             ('cancelled', "Cancelled"),
         ],
+        required=True,
         help="This field tells us the state of the property.",
-
     )
     total_area = fields.Integer(compute='_compute_total_area')
     total_cost = fields.Integer(compute='_compute_total_cost')
@@ -75,22 +86,23 @@ class EstateProperty(models.Model):
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
+        result = dict(self.env['estate.property.offer']._read_group(
+            [('property_id', 'in', self.ids)],
+            ['property_id'],
+            ['price:max']
+        ))
         for record in self:
-            record.best_price = (
-                max(record.offer_ids.mapped('price')
-                    ) if record.offer_ids else 0.0
-            )
-
-        best = [offer.price for offer in self.offer_ids]
-        record.best_price = max(best) if best else 0.0
+            record.best_price = result.get(record, 0)
 
     @api.depends('maintenance_id.cost')
     def _compute_total_cost(self):
+        result = dict(self.env['estate.property.maintenance']._read_group(
+            [('property_id', 'in', self.ids)],
+            ['property_id'],
+            ['cost:sum']
+        ))
         for record in self:
-            record.total_cost = (
-                sum(record.maintenance_id.mapped('cost')
-                    ) if record.maintenance_id else 0.0
-            )
+            record.total_cost = result.get(record, 0)
 
     # ONCHANGE DECORATOR
     @api.onchange('garden')
@@ -113,15 +125,17 @@ class EstateProperty(models.Model):
     # BUTTON ACTION - SOLD/CANCEL
     def action_sold(self):
         if self.state == 'cancelled':
-            raise UserError("There is not any maintenance !")
+            raise UserError("The property is cancelled!")
+        if not self.offer_ids:
+            raise UserError("You cannot sold property without any offers!")
         else:
             for record in self.maintenance_id:
                 if record.status != 'done':
-                    raise UserError("property is not under maintenance")
+                    raise UserError("Property is not under maintenance!")
             self.state = 'sold'
 
     def action_cancel(self):
         if self.state == 'sold':
-            raise UserError("Sold Property can not be cancel !")
+            raise UserError("Sold Property can not be cancel!")
         else:
             self.state = 'cancelled'

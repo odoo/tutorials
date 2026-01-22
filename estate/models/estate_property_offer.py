@@ -29,18 +29,13 @@ class EstatePropertyOffer(models.Model):
     @api.depends('validity', 'create_date')
     def _compute_date_deadline(self):
         for record in self:
-            start_date = (
-                record.create_date.date() if record.create_date else fields.Date.today()
-            )
-            record.date_deadline = start_date + \
-                relativedelta(days=record.validity)
+            record.date_deadline = (record.create_date or fields.Datetime.today(
+            )) + relativedelta(days=record.validity)
 
     def _inverse_date_deadline(self):
         for record in self:
-            start_date = (
-                record.create_date.date() if record.create_date else fields.Date.today()
-            )
-            record.validity = (record.date_deadline - start_date).days
+            record.validity = (record.date_deadline -
+                               record.create_date.date()).days
 
     # BUTTON ACTION - OFFER
     def action_accept(self):
@@ -65,23 +60,28 @@ class EstatePropertyOffer(models.Model):
                 'selling_price': None,
             })
 
+    # MODEL_CREATE_MULTI DECORATOR
     @api.model_create_multi
     def create(self, vals_list):
         if not vals_list:
             return super().create(vals_list)
         property_id = vals_list[0].get('property_id')
-        new_prices = [vals.get('price', 0) for vals in vals_list]
-        max_new_price = max(new_prices)
-        existing_offers = self.env['estate.property.offer'].search([
-            ('property_id', '=', property_id)
-        ])
-        max_db_price = max(existing_offers.mapped(
-            'price')) if existing_offers else 0
+        if not property_id:
+            return super().create(vals_list)
+        max_new_price = max(vals.get('price', 0) for vals in vals_list)
+        result = self.env['estate.property.offer']._read_group(
+            [('property_id', '=', property_id)],
+            [],
+            ['price:max']
+        )
+        # result = [(max_price_from_db),]
+        # result[0] = (max_price_form_db,)
+        # result[0][0] = max_price_from_db
+        max_db_price = result[0][0] if result else 0.0
         if max_new_price <= max_db_price:
             raise UserError(
-                "Offer price should be higher then the Existing One!"
+                "Offer price should be higher than the existing one!"
             )
         self.env['estate.property'].browse(
             property_id).state = 'offer_received'
-
         return super().create(vals_list)
