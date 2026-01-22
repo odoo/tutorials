@@ -6,7 +6,7 @@ class EstatePropertyOffer(models.Model):
     _description = 'Estate Property Offer'
 
     price = fields.Float('Price')
-    status = fields.Selection(
+    state = fields.Selection(
         string='Status',
         copy=False,
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')]
@@ -32,3 +32,15 @@ class EstatePropertyOffer(models.Model):
         for record in self:
             creation_date = record.create_date or fields.Date.today()
             record.validity = (record.date_deadline - creation_date.date()).days
+
+    def action_accept(self):
+        for record in self:
+            record.state = 'accepted'
+
+        return True
+
+    def action_refuse(self):
+        for record in self:
+            record.state = 'refused'
+
+        return True
