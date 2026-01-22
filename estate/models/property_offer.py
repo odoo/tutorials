@@ -6,7 +6,7 @@ class EstatePropertyOffer(models.Model):
     _description = 'estate property offer'
 
     price = fields.Float()
-    status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False)
+    status = fields.Selection(selection=[('accepted', 'Accepted'), ('refused', 'Refused')], copy=False, readonly=True)
     partner_id = fields.Many2one('res.partner', required=True, string='Partner')
     property_id = fields.Many2one('estate_property', required=True)
     validity = fields.Integer(string='Validity (days)', default=7)
@@ -30,8 +30,12 @@ class EstatePropertyOffer(models.Model):
     def action_status_accepted(self):
         if 'accepted' not in self.mapped('property_id.property_offer_id.status'):
             self.status = 'accepted'
+            self.property_id.selling_price = self.price
+            self.property_id.buyer = self.partner_id
         elif self.status != 'accepted':
             raise exceptions.UserError('Another offer is already accepted')
 
     def action_status_refused(self):
+        if self.status == 'accepted':
+            self.property_id.selling_price = False
         self.status = 'refused'

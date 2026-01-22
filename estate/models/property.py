@@ -10,7 +10,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(string='Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(required=True)
-    selling_price = fields.Float(readonly=True, copy=False, compute='_compute_selling_price')
+    selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string='Living Area (sqm)')
     facades = fields.Integer()
@@ -48,9 +48,8 @@ class EstateProperty(models.Model):
 
     @api.depends('property_offer_id.price')
     def _compute_best_price(self):
-        best_price_compute = max(self.mapped('property_offer_id.price'), default=0)
         for record in self:
-            record.best_price = best_price_compute
+            record.best_price = max(record.property_offer_id.mapped('price'), default=0)
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -67,15 +66,8 @@ class EstateProperty(models.Model):
         else:
             self.state = 'sold'
 
-
     def action_property_cancel(self):
         if self.state == 'sold':
             raise exceptions.UserError('Sold properties cannot be cancelled')
         else:
             self.state = 'cancelled'
-
-    @api.depends('property_offer_id.status')
-    def _compute_selling_price(self):
-        accepted_property_offers = self.property_offer_id.search([('status', '=', 'accepted')])
-        # Selling price as the max of accepted offers (the problem of multiple accepted offers will be solved with constraints in the next chapter)
-        self.selling_price = max(accepted_property_offers.mapped('price'), default=0.0)
