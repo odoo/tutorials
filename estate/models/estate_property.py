@@ -7,7 +7,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Estate Property'
 
-    name = fields.Char('Name', required=True)
+    name = fields.Char('Title', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Post Code')
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
@@ -48,6 +48,7 @@ class EstateProperty(models.Model):
 
     active = fields.Boolean(default=True)
     state = fields.Selection(
+        string = "Status",
         selection=[
             ('new', 'New'),
             ('offer_received', 'Offer Received'),
