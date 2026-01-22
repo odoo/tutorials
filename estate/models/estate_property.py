@@ -1,5 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero, float_compare
 
 
 class EstateProperty(models.Model):
@@ -95,3 +96,29 @@ class EstateProperty(models.Model):
             if record.state == "sold":
                 raise UserError("You cannot cancel a sold property")
             record.state = "canceled"
+
+    _check_expected_price = models.Constraint(
+        "CHECK (expected_price > 0)",
+        "A property expected price must be strictly positive",
+    )
+
+    _check_selling_price = models.Constraint(
+        "CHECK (selling_price > 0)",
+        "A property selling price must be strictly positive",
+    )
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2):
+                if (
+                    float_compare(
+                        record.selling_price,
+                        record.expected_price * 0.9,
+                        precision_digits=2,
+                    )
+                    < 0
+                ):
+                    raise ValidationError(
+                        "The selling price cannot be lower than 90% of the expected price!"
+                    )
