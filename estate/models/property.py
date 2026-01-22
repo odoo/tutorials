@@ -1,4 +1,5 @@
 from odoo import api, fields, models, exceptions
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstateProperty(models.Model):
@@ -49,16 +50,17 @@ class EstateProperty(models.Model):
     @api.depends('property_offer_id.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.property_offer_id.mapped('price'), default=0)
+            record.best_price = max(record.property_offer_id.mapped('price'), default=False)
 
     @api.onchange('garden')
     def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = 10
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = False
+        for record in self:
+            if record.garden:
+                record.garden_area = 10
+                record.garden_orientation = 'north'
+            else:
+                record.garden_area = 0
+                record.garden_orientation = False
 
     def action_property_sold(self):
         if self.state == 'cancelled':
@@ -71,3 +73,18 @@ class EstateProperty(models.Model):
             raise exceptions.UserError('Sold properties cannot be cancelled')
         else:
             self.state = 'cancelled'
+
+    _check_expected_price = models.Constraint(
+    'CHECK(0 < expected_price)',
+    'A property expected price must be strictly positive')
+
+    _check_selling_price = models.Constraint(
+    'CHECK(0 <= selling_price)',
+    'A property selling price must be positive')
+
+    @api.constrains('selling_price','expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 2):
+                if float_compare(record.selling_price, 0.9*record.expected_price, 2) == -1:
+                    raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")

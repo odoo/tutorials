@@ -28,14 +28,24 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - fields.Date.today()).days  # If no create_date we take the date of today
 
     def action_status_accepted(self):
-        if 'accepted' not in self.mapped('property_id.property_offer_id.status'):
-            self.status = 'accepted'
-            self.property_id.selling_price = self.price
-            self.property_id.buyer = self.partner_id
-        elif self.status != 'accepted':
+
+        if 1 < len(self): 
+            raise exceptions.UserError('Only one offer can be accepted')
+
+        if self.status != 'accepted' and 'accepted' in self.mapped('property_id.property_offer_id.status'):
             raise exceptions.UserError('Another offer is already accepted')
 
+        self.status = 'accepted'
+        self.property_id.selling_price = self.price
+        self.property_id.buyer = self.partner_id
+
     def action_status_refused(self):
-        if self.status == 'accepted':
-            self.property_id.selling_price = False
-        self.status = 'refused'
+        for record in self:
+            if record.status == 'accepted':
+                record.property_id.selling_price = False
+                record.property_id.buyer = False
+            record.status = 'refused'
+
+    _check_offer_price = models.Constraint(
+    'CHECK(0 < price)',
+    'An offer price must be strictly positive')
