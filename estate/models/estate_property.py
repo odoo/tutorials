@@ -78,10 +78,10 @@ class EstateProperty(models.Model):
     def _offer_too_low(self):
         self.ensure_one()
         return float_compare(
-            record.selling_price,
-            record.expected_price * 0.9,
+            self.selling_price,
+            self.expected_price * 0.9,
             precision_digits=2
-        ) == 1
+        ) == -1
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
