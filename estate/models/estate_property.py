@@ -1,12 +1,13 @@
 from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
-from odoo.tools.float_utils import float_compare, float_is_zero, float_round
+from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo.exceptions import UserError, ValidationError
 
 
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _order = 'id desc'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -86,7 +87,7 @@ class EstateProperty(models.Model):
         for record in self:
             prices = record.offer_ids.mapped('price')
             record.best_price = max(prices, default=0.0)
-    
+
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -107,26 +108,5 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'sold':
                 raise UserError('A sold property cannot be canceled.')
-            record.state = 'new'
-        return True
-    
-    def action_set_new(self):
-        for record in self:
-            if record.state in ('sold', 'canceled'):
-                raise UserError('You cannot move a sold/canceled property back to New.')
-            record.state = 'new'
-        return True
-
-    def action_set_offer_received(self):
-        for record in self:
-            if record.state in ('sold', 'canceled'):
-                raise UserError('You cannot change the state of a sold/canceled property.')
-            record.state = 'offer_received'
-        return True
-
-    def action_set_offer_accepted(self):
-        for record in self:
-            if record.state in ('sold', 'canceled'):
-                raise UserError('You cannot change the state of a sold/canceled property.')
-            record.state = 'offer_accepted'
+            record.state = 'canceled'
         return True

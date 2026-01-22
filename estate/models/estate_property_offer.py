@@ -2,9 +2,11 @@ from odoo import api, fields, models
 from datetime import timedelta
 from odoo.exceptions import UserError
 
+
 class EstatePropertyOffer(models.Model):
     _name = 'estate.property.offer'
     _description = 'Estate Property Offer'
+    _order = 'price desc'
 
     partner_id = fields.Many2one('res.partner', string='Partner', required=True)
     property_id = fields.Many2one('estate.property', string='Estate Property', required=True)
@@ -16,7 +18,7 @@ class EstatePropertyOffer(models.Model):
             ('refused', 'Refused'),
         ]
     )
-
+    property_type_id = fields.Many2one('estate.property.type', related='property_id.property_type_id', store=True, readonly=True)
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(compute='_compute_date_deadline', inverse='_inverse_date_deadline', store=True)
 
@@ -31,13 +33,12 @@ class EstatePropertyOffer(models.Model):
             create_dt = offer.create_date if offer.create_date else fields.Datetime.now()
             offer.date_deadline = (create_dt + timedelta(days=offer.validity)).date()
 
-
     def _inverse_date_deadline(self):
         for offer in self:
             if offer.date_deadline:
                 create_date = offer.create_date.date() if offer.create_date else fields.Datetime.now()
                 offer.validity = (offer.date_deadline - create_date).days
-    
+
     def action_confirm(self):
         for offer in self:
             if offer.property_id.state in ('offer_accepted', 'sold', 'canceled'):
