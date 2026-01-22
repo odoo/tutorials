@@ -1,4 +1,6 @@
 from odoo import api, exceptions, fields, models
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare
 
 
 class EstateProperty(models.Model):
@@ -67,6 +69,20 @@ class EstateProperty(models.Model):
         'The selling price of a property should be positive'
     )
 
+    @api.constrains('state', 'expected_price', 'selling_price')
+    def _check_prices(self):
+        for record in self:
+            if record.state == 'offer_accepted' and self._offer_too_low():
+                raise ValidationError('The selling price must be at least 90% of the selling price')
+
+    def _offer_to_low(self):
+        self.ensure_one()
+        return float_compare(
+            record.selling_price,
+            record.expected_price * 0.9,
+            precision_digits=2
+        ) == 1
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -95,7 +111,7 @@ class EstateProperty(models.Model):
     def action_sell(self):
         for record in self:
             if record.state == 'canceled':
-                raise exceptions.UserError('Canceled properties cannot be sold')
+                raise UserError('Canceled properties cannot be sold')
 
             record.state = 'sold'
 
@@ -104,7 +120,7 @@ class EstateProperty(models.Model):
     def action_cancel(self):
         for record in self:
             if record.state == 'sold':
-                raise exceptions.UserError('Sold properties cannot be canceled')
+                raise UserError('Sold properties cannot be canceled')
 
             record.state = 'canceled'
 
