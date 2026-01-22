@@ -14,6 +14,7 @@
         "views/estate_search_view.xml",
         "views/estate_type_view.xml",
         "views/estate_tag_view.xml",
+        "views/res_users_view.xml",
         "views/estate_menu.xml",
     ],
     "installable": True,

@@ -24,10 +24,6 @@
                         </h1>
                     </div>
 
-                    <group>
-                        <field name="name"/>
-                    </group>
-
                     <notebook>
                         <page string="Properties">
                             <field name="property_ids">

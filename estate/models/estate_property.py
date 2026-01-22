@@ -12,9 +12,7 @@ class EstateProperty(models.Model):
     description = fields.Text("Description")
     postcode = fields.Char("Postcode")
     date_availability = fields.Date(
-        "Date Availability",
-        copy=False,
-        default=lambda self: fields.Date.add(fields.Date.today(), months=3),
+        "Date Availability", copy=False, default=lambda self: fields.Date.add(fields.Date.today(), months=3)
     )
     expected_price = fields.Float("Expected Price", required=True)
     selling_price = fields.Float("Selling Price", readonly=True, copy=False)
@@ -25,13 +23,7 @@ class EstateProperty(models.Model):
     garden = fields.Boolean("Garden")
     garden_area = fields.Integer("Garden Area")
     garden_orientation = fields.Selection(
-        string="Type",
-        selection=[
-            ("north", "North"),
-            ("south", "South"),
-            ("east", "East"),
-            ("west", "West"),
-        ],
+        string="Type", selection=[("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
     active = fields.Boolean("Active", default=True)
     state = fields.Selection(
@@ -48,33 +40,19 @@ class EstateProperty(models.Model):
         copy=False,
     )
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one(
-        "res.partner",
-        string="Buyer",
-        copy=False,
-    )
-    salesperson_id = fields.Many2one(
-        "res.users",
-        string="Salesperson",
-        default=lambda self: self.env.user,
-    )
+    buyer_id = fields.Many2one("res.partner", string="Buyer", copy=False)
+    salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Tags")
-    offer_ids = fields.One2many(
-        "estate.property.offer",
-        "property_id",
-        string="Offers",
-    )
+    offer_ids = fields.One2many("estate.property.offer", "property_id", string="Offers")
     total_area = fields.Integer("Total Area (sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Offer", compute="_compute_best_price")
 
     _check_expected_price = models.Constraint(
-        "CHECK (expected_price > 0)",
-        "A property expected price must be strictly positive",
+        "CHECK (expected_price > 0)", "A property expected price must be strictly positive"
     )
 
     _check_selling_price = models.Constraint(
-        "CHECK (selling_price > 0)",
-        "A property selling price must be strictly positive",
+        "CHECK (selling_price > 0)", "A property selling price must be strictly positive"
     )
 
     @api.depends("living_area", "garden_area")
@@ -113,3 +91,9 @@ class EstateProperty(models.Model):
         for record in self:
             if float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
                 raise ValidationError("The selling price cannot be lower than 90% of the expected price!")
+
+    @api.ondelete(at_uninstall=False)
+    def _check_state_before_deletion(self):
+        for record in self:
+            if record.state not in ["new", "canceled"]:
+                raise UserError("You cannot delete a property that is not 'New' or 'Canceled'!")
