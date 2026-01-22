@@ -33,7 +33,6 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default='new',
-        readonly=True
     )
     property_type_id = fields.Many2one('estate_property_type', string='Property Type')
     salesperson = fields.Many2one('res.users', string='Salesman', default=lambda self: self.env.user)
@@ -89,3 +88,12 @@ class EstateProperty(models.Model):
             if not float_is_zero(record.selling_price, 2):
                 if float_compare(record.selling_price, 0.9 * record.expected_price, 2) == -1:
                     raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
+    @api.onchange('property_offer_id')
+    def _onchange_property_offer_id(self):
+        for record in self:
+            if len(record.property_offer_id) > 0:
+                if record.state == 'new':
+                    record.state = 'offer received'
+            elif record.state != 'cancelled':
+                record.state = 'new'

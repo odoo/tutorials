@@ -39,12 +39,14 @@ class EstatePropertyOffer(models.Model):
         self.status = 'accepted'
         self.property_id.selling_price = self.price
         self.property_id.buyer = self.partner_id
+        self.property_id.state = 'offer accepted'
 
     def action_status_refused(self):
         for record in self:
             if record.status == 'accepted':
                 record.property_id.selling_price = False
                 record.property_id.buyer = False
+                record.property_id.state = 'offer received'
             record.status = 'refused'
 
     _check_offer_price = models.Constraint(
