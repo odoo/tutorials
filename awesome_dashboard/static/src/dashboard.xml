@@ -2,7 +2,23 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn btn-primary" t-on-click="openPartnerKanbanView">Customers</button>
+                <button class="btn btn-primary" t-on-click="openCrmLeads">Leads</button>
+            </t>
+
+            <t t-foreach="this.stats" t-as="stat" t-key="stat.id">
+                <div class="d-inline-block">
+                <DashboardItem size="stat.size">
+                    <t t-set-slot="default">
+                        <t t-esc="stat.description"/><br/>
+                        <b style="color: green;"><t t-esc="stat.value"/></b>
+                    </t>
+                </DashboardItem>
+                </div>
+            </t>
+        </Layout>
     </t>
 
 </templates>
