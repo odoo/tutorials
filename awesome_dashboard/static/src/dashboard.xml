@@ -2,7 +2,18 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
-        hello dashboard
+        <Layout display="{ controlPanel: {} }" className="'o_dashboard h-100'">
+            <t t-set-slot="control-panel-create-button">
+                <button t-on-click="openCustomers" class="btn btn-primary">Customer</button>
+                <button t-on-click="openLeads" class="btn btn-primary">Leads</button>
+            </t>
+            <DashboardItem size="1">
+                This is a smol item
+            </DashboardItem>
+            <DashboardItem size="3">
+                This is a BIG item
+            </DashboardItem>
+        </Layout>
     </t>
 
 </templates>
