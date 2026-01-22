@@ -10,14 +10,20 @@
 
             <t t-foreach="this.stats" t-as="stat" t-key="stat.id">
                 <div class="d-inline-block">
-                <DashboardItem size="stat.size">
-                    <t t-set-slot="default">
-                        <t t-esc="stat.description"/><br/>
-                        <b style="color: green;"><t t-esc="stat.value"/></b>
-                    </t>
-                </DashboardItem>
+                    <DashboardItem size="stat.size">
+                        <t t-set-slot="default">
+                            <t t-esc="stat.description"/><br/>
+                            <b style="color: green;"><t t-esc="stat.value"/></b>
+                        </t>
+                    </DashboardItem>
                 </div>
             </t>
+
+            <DashboardItem>
+                <t t-set-slot="default">
+                    <PieChart chart_data="this.size_pie_chart_data"/>
+                </t>
+            </DashboardItem>
         </Layout>
     </t>
 

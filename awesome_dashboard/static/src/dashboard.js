@@ -4,11 +4,12 @@ import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 
 import { DashboardItem } from "./dashboard_item/dashboard_item";
+import { PieChart } from "./pie_chart/pie_chart";
 
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { DashboardItem, Layout };
+    static components = { DashboardItem, Layout, PieChart };
 
     setup() {
         this.action_service = useService("action");
@@ -16,6 +17,7 @@ class AwesomeDashboard extends Component {
 
         onWillStart(async () => {
             const raw_stats = await this.statistics_service.loadStatistics();
+            this.size_pie_chart_data = raw_stats.orders_by_size;
             this.stats = [
                 { id: 0, description: "Number of new orders this month", value: raw_stats.nb_new_orders },
                 { id: 1, description: "Total amount of new orders this month", value: raw_stats.total_amount },
