@@ -1,6 +1,7 @@
 from dateutil.relativedelta import relativedelta
 from odoo import models, fields
 
+
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property app like immoweb"
@@ -19,21 +20,22 @@ class Property(models.Model):
     garden_area = fields.Integer(string="Garden Area")
     active = fields.Boolean(string="Active", default=True)
     garden_orientation = fields.Selection(
-        string='Garden Orientation',
+        string="Garden Orientation",
         selection=[
-            ('north', 'North'), 
-            ('south', 'South'),
-            ('east', 'East'),
-            ('west', 'West')
+            ("north", "North"), 
+            ("south", "South"),
+            ("east", "East"),
+            ("west", "West")
         ]
     )
     state = fields.Selection(
-        string='Status',
+        string="Status",
         selection=[
-            ('new', 'New'), 
-            ('offer_received', 'Offer Received'),
-            ('offer_accepted', 'Offer Accepted'),
-            ('sold', 'Sold'), 
-            ('cancelled', 'Cancelled')
-        ]
+            ("new", "New"), 
+            ("offer_received", "Offer Received"),
+            ("offer_accepted", "Offer Accepted"),
+            ("sold", "Sold"), 
+            ("cancelled", "Cancelled")
+        ],
+        default="new"
     )
