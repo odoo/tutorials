@@ -1,0 +1,11 @@
+<templates>
+    <t t-name="redesign_catalog_view.ShowImage"
+       t-inherit="web.ImageField"
+       t-inherit-mode="primary">
+
+       <xpath expr="//img[@loading='lazy']" position="attributes">
+            <attribute name="t-on-click">openImage</attribute>
+       </xpath>
+    
+    </t>
+</templates>
