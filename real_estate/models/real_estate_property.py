@@ -132,6 +132,8 @@ class EstateProperty(models.Model):
 
     def action_approve(self):
         for record in self:
+            if 'accepted' in record.offer_ids.mapped('status'):
+                continue
             if record.filtered(lambda r: r.state == 'sold'):
                 raise UserError(_("Sold properties cannot accept other Offers."))
             target_offer = record.offer_ids.filtered(lambda r: r.price == record.best_price)
