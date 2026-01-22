@@ -2,8 +2,9 @@ from datetime import date
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models
+from odoo import api, fields, models
 
+DEFAULT_GARDEN_AREA = 10
 
 class EstateProperty(models.Model):
     _name = "estate.property"
@@ -26,7 +27,6 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         string='Garden Orientation',
         selection=[('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
-        default='north',
     )
     state = fields.Selection(
         string='State',
@@ -35,13 +35,34 @@ class EstateProperty(models.Model):
         copy=False,
         default='new',
     )
+    total_area = fields.Integer(compute='_compute_total_area', string='Total Area (sqm)')
+    best_price = fields.Float(compute='_compute_best_price', string='Best Price')
 
-    # res.users: the users of the system. Users can be 'internal', i.e. they have access to the Odoo backend. Or they can be
-    # 'portal', i.e. they cannot access the backend, only the frontend (e.g. to access their previous orders in eCommerce).
     sales_person_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
-    # res.partner: a partner is a physical or legal entity. It can be a company, an individual or even a contact address.
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
 
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
 
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+
+    @api.depends('living_area', 'garden_area')
+    def _compute_total_area(self):
+        for record in self:
+            record.total_area = record.living_area + record.garden_area
+
+    @api.depends('offer_ids.price')
+    def _compute_best_price(self):
+        for record in self:
+            if record.offer_ids:
+                record.best_price = max(record.offer_ids.mapped('price'))
+            else:
+                record.best_price = 0.0
+
+    @api.onchange("garden")
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = DEFAULT_GARDEN_AREA
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
