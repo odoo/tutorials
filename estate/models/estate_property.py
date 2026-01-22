@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, exceptions, fields, models
 
 
 class EstateProperty(models.Model):
@@ -75,3 +75,21 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = None
             self.garden_orientation = None
+
+    def action_sell(self):
+        for record in self:
+            if record.state == 'canceled':
+                raise exceptions.UserError('Canceled properties cannot be sold')
+
+            record.state = 'sold'
+
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise exceptions.UserError('Sold properties cannot be canceled')
+
+            record.state = 'canceled'
+
+        return True

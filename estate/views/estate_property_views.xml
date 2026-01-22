@@ -28,6 +28,8 @@
         <field name="arch" type="xml">
             <form string="Property">
                 <header>
+                    <button name="action_sell" type="object" string="Sold" class="oe_highlight"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
                     <!-- Canceled state should be visible only when it is the current state -->
                     <field name="state" widget="statusbar"/>
                 </header>
