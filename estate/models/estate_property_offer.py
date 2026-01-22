@@ -42,6 +42,9 @@ class EstatePropertyOffer(models.Model):
         property.selling_price = self.price
         property.partner_id = self.partner_id
 
+        if property.state == 'offer_received':
+            property.state = 'offer_accepted'
+
         for offer in property.offer_ids:
             if offer.id != self.id:
                 offer.state = 'refused'
@@ -51,5 +54,10 @@ class EstatePropertyOffer(models.Model):
     def action_refuse(self):
         for record in self:
             record.state = 'refused'
+
+        property = self.property_id
+
+        if not 'accepted' in property.offer_ids.mapped('state'):
+            property.state = 'offer_received'
 
         return True
