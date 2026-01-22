@@ -74,16 +74,9 @@ class EstateProperty(models.Model):
     @api.constrains('state', 'expected_price', 'selling_price')
     def _check_prices(self):
         for record in self:
-            if record.state == 'offer_accepted' and self._offer_too_low():
+            if record.state == 'offer_accepted' \
+            and float_compare(self.selling_price, self.expected_price * 0.9, precision_digits=2) == -1:
                 raise ValidationError('The selling price must be at least 90% of the selling price')
-
-    def _offer_too_low(self):
-        self.ensure_one()
-        return float_compare(
-            self.selling_price,
-            self.expected_price * 0.9,
-            precision_digits=2
-        ) == -1
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
