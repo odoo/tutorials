@@ -124,3 +124,4 @@ class EstateProperty(models.Model):
                 message = "Canceled properties cannot be sold"
                 raise UserError(message)
             record.state = "sold"
+        return True
