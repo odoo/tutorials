@@ -15,6 +15,7 @@
                 <field name='name'/>
                 <field name='state'/>
                 <field name='postcode'/>
+                <field name='tag_ids' widget='many2many_tags'/>
                 <field name='expected_price' string='Expected Price'/>
                 <field name='selling_price' string='Selling Price'/>
                 <field name='bedrooms'/>

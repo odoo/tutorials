@@ -73,3 +73,11 @@ class EstatePropertyOffer(models.Model):
                 })
 
         return True
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        for vals in vals_list:
+            if vals['property_id'] and vals['price'] is not None:
+                if vals['price'] < self.env['estate.property'].browse(vals['property_id']).best_price:
+                    raise UserError('The offer must be higher than the existing offers.')
+        return super().create(vals_list)
