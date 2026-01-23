@@ -125,9 +125,9 @@ class EstateProperty(models.Model):
         state_value = vals.get("state")
         if state_value:
             if self.state == "cancelled" and state_value == "sold":
-                raise UserError("cancelled property can not be sold!")
+                raise UserError(_("cancelled property can not be sold!"))
             elif self.state == "sold" and state_value == "cancelled":
-                raise UserError("sold property can not be cancelled!")
+                raise UserError(_("sold property can not be cancelled!"))
         return super().write(vals)
 
     def action_cancelled(self):
@@ -154,3 +154,4 @@ class EstateProperty(models.Model):
         if not accepted_offer:
             raise UserError(_("Property can not be sold without an accepted offer"))
         self.state = "sold"
+        return True

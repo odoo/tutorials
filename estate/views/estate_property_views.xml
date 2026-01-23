@@ -60,12 +60,13 @@
                 decoration-success="state in ('offer_received')"
                 decoration-bf="state in ('offer_accepted')" decoration-muted="state in ('sold')">
                 <field name="name" />
-                <field name="postcode" />
+                <field name="postcode" optional="hide" />
                 <field name="bedrooms" />
                 <field name="living_area" />
                 <field name="expected_price" />
                 <field name="selling_price" />
-                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" />
+                <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"
+                    optional="hide" />
                 <field name="date_availability" optional="hide" />
             </list>
         </field>
