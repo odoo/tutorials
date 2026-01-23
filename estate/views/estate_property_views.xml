@@ -37,6 +37,7 @@
                         <group>
                             <field name="date_availability"/>
                             <field name="selling_price"/>
+                            <field name="best_price"/>
                         </group>
                     </group>
                     <notebook>
@@ -50,6 +51,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
                                 <field name="active"/>
                                 <field name="state"/>
                             </group>
@@ -61,6 +63,8 @@
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="status"/>
+                                    <field name="validity"/>
+                                    <field name="deadline_date"/>
                                 </list>
                             </field>
                         </page>
