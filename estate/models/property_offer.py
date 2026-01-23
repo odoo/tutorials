@@ -4,10 +4,12 @@ from odoo import api, exceptions, fields, models
 class PropertyOffer (models.Model):
     _name = "estate.property.offer"
     _description = "Property Purchase Offers"
+    _order = "price desc"
 
     price = fields.Float(string="Price")
     property_id = fields.Many2one("estate.property", string="Property Name", required=True)
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Property Type", store=True)
     status = fields.Selection(string="Status", selection=[("accepted", "Accepted"), ("refused", "Refused")], copy=False)
     validity = fields.Integer(string="Validity", default="7")
     date_deadline = fields.Date(string="Deadline", compute="_compute_validity", inverse="_inverse_date")
@@ -30,11 +32,13 @@ class PropertyOffer (models.Model):
     def action_confirm(self):
         for record in self:
             if not record.status:
-                if record.property_id.status in ("sold", "cancelled"):
+                if record.property_id.status in ("sold", "cancelled", "offer accepted"):
                     raise exceptions.UserError("This offer can not be accepted")
-                record.property_id.sell_apartment()
+                record.property_id.status = "offer accepted"
+                print("status changed")
                 record.status = "accepted"
                 record.property_id.selling_price = record.price
+                record.property_id.active = False
                 record.property_id.partner_id = record.partner_id
 
         return True

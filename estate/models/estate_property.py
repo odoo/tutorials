@@ -4,6 +4,7 @@ from odoo import api, exceptions, fields, models, tools
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Estate Property"
+    _order = "id desc"
 
     name = fields.Char(string="Property Name", required=True)
     description = fields.Char(string="Property Description")
@@ -62,8 +63,8 @@ class EstateProperty(models.Model):
     @api.depends("property_offers_ids.price")
     def _compute_best_offer(self):
         for record in self:
-            # for offer in record.property_offers_ids:
-            #     best_offer= max(offer.price, best_offer)
+            if record.property_offers_ids and record.status == 'new':
+                record.status = "offer received"
             record.best_offer = max(record.mapped("property_offers_ids.price"), default=0)
 
     @api.onchange("garden")
@@ -88,22 +89,22 @@ class EstateProperty(models.Model):
                 raise exceptions.UserError("Sold apartments can not be cancelled")
             record.status = "cancelled"
         return False
-    
+
     # @api.constrains("expected_price")
     # def _check_expected_price(self):
     #     for record in self:
     #         if record.expected_price < 0:
     #             raise exceptions.ValidationError("Enter a valid expected price")
-    
+
     _check_expected_price = models.Constraint(
         'CHECK(expected_price >= 0)',
         'The expected price of an should be greater than 0.',
     )
 
-    @api.constrains("expected_price","selling_price")
+    @api.constrains("expected_price", "selling_price")
     def _check_valid_transaction(self):
         for record in self:
             if record.property_offers_ids:
-                print(record.property_offers_ids)
-                if tools.float_compare(record.selling_price, 0.9*record.expected_price, 2) < 1:
+                if tools.float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 1:
                     raise exceptions.ValidationError("Selling price can not be less than 90% of your expected price. Lower your expected price to accept this transaction.")
+                # TODO check this

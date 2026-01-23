@@ -11,8 +11,8 @@
                 <field name="property_type_id" string="Property Type"/>
                 <field name="expected_price" string="Expected Price"/>
                 <field name="bedrooms" string="Bedrooms"/>
-                <field name="living_area"/>
                 <field name="facades" string="Facades"/>
+                <field name="living_area" filter_domain="['|',('living_area','&gt;',self),('living_area','=',self)]"/>
                 <filter string="Available" name='available' domain="['|',('status','=','new'),('status','=','offer received')]"/>
                 <filter string="Postcode" name="groupby_postcode" context="{'group_by':'postcode'}"/>
             </search>
@@ -20,5 +20,3 @@
     </record>
 
 </odoo>
-                <!-- <group string="postcode_group"> -->
-                <!-- </group> -->
