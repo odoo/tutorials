@@ -90,12 +90,6 @@ class EstateProperty(models.Model):
             record.status = "cancelled"
         return False
 
-    # @api.constrains("expected_price")
-    # def _check_expected_price(self):
-    #     for record in self:
-    #         if record.expected_price < 0:
-    #             raise exceptions.ValidationError("Enter a valid expected price")
-
     _check_expected_price = models.Constraint(
         'CHECK(expected_price >= 0)',
         'The expected price of an should be greater than 0.',

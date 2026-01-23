@@ -7,7 +7,7 @@ class PropertyOffer (models.Model):
     _order = "price desc"
 
     price = fields.Float(string="Price")
-    property_id = fields.Many2one("estate.property", string="Property Name", required=True)
+    property_id = fields.Many2one("estate.property", string="Property Name", required=True, ondelete="cascade")
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
     property_type_id = fields.Many2one("estate.property.type", related="property_id.property_type_id", string="Property Type", store=True)
     status = fields.Selection(string="Status", selection=[("accepted", "Accepted"), ("refused", "Refused")], copy=False)

@@ -5,7 +5,7 @@
         <field name="name">Property Search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <search string="property">
+            <search>
                 <field name="name" string="Title"/>
                 <field name="postcode" string="Postcode"/>
                 <field name="property_type_id" string="Property Type"/>

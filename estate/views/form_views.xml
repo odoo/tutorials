@@ -5,7 +5,7 @@
         <field name="name">Property Form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
-            <form string="property">
+            <form>
                 <header>
                     <button name="sell_apartment" type="object" string="Sold" invisible="status not in ('offer accepted')"/>
                     <button name="cancel_apartment" type="object" string="Cancel"/>
@@ -72,7 +72,7 @@
         <field name="name">Property Type Form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
-            <form string="property_type">
+            <form>
                 <sheet>
                     <div  class="oe_clear">
                         <div style="float:left;">
@@ -107,7 +107,7 @@
         <field name="name">Property Tag Form</field>
         <field name="model">estate.property.tag</field>
         <field name="arch" type="xml">
-            <form string="property_tag">
+            <form>
                 <sheet>
                     <h4>
                         Property Tag
@@ -126,7 +126,7 @@
         <field name="name">Property Offer Form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form string="property_offer">
+            <form>
                 <sheet>
                     <h3>
                         Property Offer
