@@ -4,6 +4,7 @@
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,search</field>
+        <field name="context">{'search_default_available': True}</field>
     </record>
 
     <record id="estate_properties_view_list" model="ir.ui.view">
@@ -97,7 +98,7 @@
                 <field name="living_area"/>
                 <field name="facades"/>
 
-                <filter string="Available" name="filter_available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
+                <filter string="Available" name="available" domain="[('state', 'in', ['new', 'offer_received'])]"/>
                 <filter string="Post Code" name="groupby_postcode" context="{'group_by': 'postcode'}"/>
             </search>
         </field>
