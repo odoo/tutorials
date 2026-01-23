@@ -1,4 +1,3 @@
-from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api
 
 
@@ -19,7 +18,6 @@ class PropertyOffer(models.Model):
     )
     property_id = fields.Many2one("estate.property", string="Property", required=True, ondelete="cascade")
     partner_id = fields.Many2one("res.partner", string="Partner", required=True)
-
 
     @api.depends("create_date", "validity")
     def _compute_deadline_date(self):
