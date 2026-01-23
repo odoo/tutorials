@@ -6,6 +6,7 @@ from odoo import api, fields, models
 
 DEFAULT_GARDEN_AREA = 10
 
+
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property."
