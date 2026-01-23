@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.ConfigDialog">
+        <Dialog title="'Dashboard items configuration'">
+            <b>Click on a card to toggle its visibility</b>
+            <t t-foreach="this.props.items" t-as="item" t-key="item.id">
+                <CheckBox value="item.visible" t-on-change="() => item.visible = !item.visible">
+                    <t t-esc="item.description"/>
+                </CheckBox>
+            </t>
+            <button class="btn btn-primary" t-on-click="this.applyConfig">Apply</button>
+        </Dialog>
+    </t>
+</templates>

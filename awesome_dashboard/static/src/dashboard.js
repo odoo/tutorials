@@ -1,10 +1,11 @@
 import { Component, useState } from "@odoo/owl";
+import { browser } from "@web/core/browser/browser";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 
 import { DashboardItem } from "./dashboard_item/dashboard_item";
-import { items } from "./dashboard_items";
+import { ConfigDialog } from "./config_dialog/config_dialog";
 
 
 class AwesomeDashboard extends Component {
@@ -14,7 +15,11 @@ class AwesomeDashboard extends Component {
     setup() {
         this.action_service = useService("action");
         this.statistics = useState(useService("awesome_dashboard.statistics"));
-        this.items = items;
+        this.dialog_service = useService("dialog");
+
+        this.items = useState(registry.category("awesome_dashboard").getAll());
+        let hidden_item_ids = browser.localStorage.getItem("hidden_item_ids").split(",");
+        this.items.forEach(item => Object.assign(item, { visible: !hidden_item_ids.includes(item.id) }));
     }
 
     openPartnerKanbanView() {
@@ -29,6 +34,10 @@ class AwesomeDashboard extends Component {
             res_model: 'crm.lead',
             views: [[false, 'list'], [false, 'form']],
         });
+    }
+
+    openDashboardSettings() {
+        this.dialog_service.add(ConfigDialog, { items: this.items });
     }
 }
 
