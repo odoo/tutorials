@@ -7,6 +7,9 @@
                 <button t-on-click="openCustomers" class="btn btn-primary">Customer</button>
                 <button t-on-click="openLeads" class="btn btn-primary">Leads</button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button class="btn" t-on-click="openItemsDialog"><i class="fa fa-gear"/></button>
+            </t>
             <t t-foreach="items" t-as="item" t-key="item.id">
                 <DashboardItem size="item.size || 1">
                     <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>

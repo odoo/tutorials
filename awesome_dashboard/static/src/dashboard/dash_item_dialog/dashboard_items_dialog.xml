@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_dashboard.dashboard_items_dialog">
+        <Dialog title="'Edit Dashboard Items'">
+            <t t-foreach="allItems" t-as="item" t-key="item.id">
+                <div>
+                    <input type="checkbox" t-att-checked="isSelected(item.id)" t-on-change="select(item.id)"/>
+                    <span><t t-esc="item.description"/></span>
+                </div>
+            </t>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="apply">
+                    Apply
+                </button>
+            </t>
+        </Dialog>
+    </t>
+
+</templates>

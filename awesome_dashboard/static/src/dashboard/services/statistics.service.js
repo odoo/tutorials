@@ -12,7 +12,7 @@ async function fetchStatistics(stats) {
     }
 }
 
-export const statisticsService = {
+const statisticsService = {
     start() {
         let stats = reactive({average_quantity: 0, average_time: 0, nb_cancelled_orders: 0, nb_new_orders: 0, total_amount: 0, orders_by_size: {}});
 

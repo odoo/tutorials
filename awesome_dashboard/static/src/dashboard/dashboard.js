@@ -3,7 +3,7 @@ import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item"
-import { items } from "./dashboard_items";
+import { DashboardItemDialog } from "./dash_item_dialog/dashboard_items_dialog";
 
 export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
@@ -14,11 +14,11 @@ export class AwesomeDashboard extends Component {
     }
 
     setup() {
-        this.items = registry.category("awesome_dashboard").get("items");
+        this.items = useState(useService("dashboard_items").getUsedItems());
         this.action = useService("action")
         this.stats = useState(useService("statistics").loadStatistics());
+        this.dialog = useService("dialog");
     }
-
 
     openCustomers() {
         this.action.doAction("base.action_partner_form")
@@ -30,6 +30,10 @@ export class AwesomeDashboard extends Component {
             res_model: 'crm.lead',
             views: [[false, 'list'], [false, 'form']]
         })
+    }
+
+    openItemsDialog() {
+        this.dialog.add(DashboardItemDialog)
     }
 }
 
