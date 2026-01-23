@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -47,10 +47,10 @@ class PropertyOffer(models.Model):
             ).days
 
     def action_accepted(self):
-        accepect_records = self.property_id.offer_ids.filtered(
-            lambda o: o.status == 'accepted')
-        if accepect_records:
-            raise UserError("Only one offer can be accepted.")
+        offers = self.property_id.offer_ids.filtered(
+            lambda a: a.id != self.id)
+        for offer in offers:
+            offer.status = 'refused'
         self.status = 'accepted'
         self.property_id.partner_id = self.partner_id
         self.property_id.selling_price = self.price
@@ -67,7 +67,7 @@ class PropertyOffer(models.Model):
     def _ondelete_offer(self):
         for records in self:
             if records.status == 'accepted':
-                raise ValidationError("Accepted offer cannot be deleted.")
+                raise ValidationError(_("Accepted offer cannot be deleted."))
 
     @api.model
     def create(self, vals):
@@ -79,7 +79,7 @@ class PropertyOffer(models.Model):
                 property.best_price = price
             elif float_compare(price, property.best_price, precision_rounding=0.01) < 0:
                 raise UserError(
-                    f"Price should be greater than {property.best_price}")
+                    _("Price should be greater than %s", property.best_price))
             else:
                 property.best_price = price
             if property and property.state == 'new':

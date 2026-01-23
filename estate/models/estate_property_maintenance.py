@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_is_zero
 
@@ -17,4 +17,4 @@ class PropertyMantainance(models.Model):
     def _onchange_status(self):
         for record in self:
             if record.status == 'approved' and float_is_zero(record.cost, precision_rounding=0.01):
-                raise UserError("Cost must be greater than zero.")
+                raise UserError(_("Cost must be greater than zero."))

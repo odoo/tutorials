@@ -4,7 +4,7 @@
         <field name='name'>estate.property.type.view.list</field>
         <field name='model'>estate.property.type</field>
         <field name="arch" type="xml">
-            <list string="Channel" expand="1">
+            <list string="Channel" expand="1" editable="bottom" open_form_view="True">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
             </list>

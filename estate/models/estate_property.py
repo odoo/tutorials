@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
 
@@ -9,6 +9,7 @@ class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'estate property details'
     _order = 'id desc'
+    _inherit = 'mail.thread'
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -47,7 +48,8 @@ class EstateProperty(models.Model):
     )
     property_type_id = fields.Many2one(
         'estate.property.type', string="Property Type")
-    user_id = fields.Many2one('res.users', string="Salesperson")
+    user_id = fields.Many2one(
+        'res.users', string="Salesperson", default=lambda self: self.env.user)
     partner_id = fields.Many2one('res.partner', string="Buyer", readonly=True)
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
     offer_ids = fields.One2many(
@@ -94,24 +96,25 @@ class EstateProperty(models.Model):
     def _constraint_selling_price(self):
         if float_is_zero(self.selling_price, precision_rounding=0.01):
             return
-        if float_compare(self.selling_price, self.expected_price * 0.9, precision_rounding=0.01) < 0:
-            raise ValidationError(
-                "Selling price cannot be lower than 90% of the expected price.")
+        elif float_compare(self.selling_price, self.expected_price * 0.9, precision_rounding=0.01) < 0:
+            raise ValidationError(_(
+                "Selling price cannot be lower than 90% of the expected price."))
 
     def action_property_sold(self):
-        if self.state == 'cancelled':
-            raise UserError("Cancelled property cannot be sold.")
-        else:
-            for record in self.property_maintainance_ids:
-                if record.status != 'done':
-                    raise UserError("Maintenance Request are still pending.")
-            self.state = 'sold'
+        if self.state != 'offer_accepted':
+            raise UserError(_("Atleast one offer should be accepted."))
+        for record in self.property_maintainance_ids:
+            if record.status != 'done':
+                raise UserError(_("Maintenance Request are still pending."))
+        self.state = 'sold'
 
     def action_property_cancel(self):
-        if self.state == 'sold':
-            raise UserError("Sold property cannot be Cancelled.")
-        else:
-            self.state = 'cancelled'
+        self.state = 'cancelled'
+
+    def action_accept_best_offer(self):
+        data = self.env['estate.property.offer'].search(
+            domain=[('property_id', 'in', self.ids), ('price', '=', self.best_price)], limit=1)
+        data.action_accepted()
 
     @api.depends('property_maintainance_ids.cost')
     def _compute_total_maintenance_cost(self):
@@ -123,4 +126,5 @@ class EstateProperty(models.Model):
     @api.ondelete(at_uninstall=False)
     def _unlink_property(self):
         if self.state not in ['new', 'cancelled']:
-            raise UserError("Only new and cancelled property can be deleted.")
+            raise UserError(
+                _("Only new and cancelled property can be deleted."))
