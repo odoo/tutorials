@@ -1,4 +1,4 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, exceptions, fields, models, _
 
 
 class PropertyOffer (models.Model):
@@ -35,7 +35,6 @@ class PropertyOffer (models.Model):
                 if record.property_id.status in ("sold", "cancelled", "offer accepted"):
                     raise exceptions.UserError("This offer can not be accepted")
                 record.property_id.status = "offer accepted"
-                print("status changed")
                 record.status = "accepted"
                 record.property_id.selling_price = record.price
                 record.property_id.active = False
@@ -54,3 +53,11 @@ class PropertyOffer (models.Model):
         for record in self:
             if record.price < 0:
                 raise exceptions.ValidationError("Enter a valid offer")
+            if record.price < record.property_id.best_offer:
+                raise exceptions.UserError(_(f"You can not enter an offer below {record.property_id.best_offer}"))
+            
+    @api.model
+    def create(self, vals_list):
+        offer = super().create(vals_list)
+        offer.property_id.status = 'offer received'
+        return offer
