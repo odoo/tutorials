@@ -7,12 +7,12 @@
                 <button t-on-click="openCustomers" class="btn btn-primary">Customer</button>
                 <button t-on-click="openLeads" class="btn btn-primary">Leads</button>
             </t>
-            <DashboardItem size="1">
-                This is a smol item
-            </DashboardItem>
-            <DashboardItem size="3">
-                This is a BIG item
-            </DashboardItem>
+            <t t-foreach="items" t-as="item" t-key="item.id">
+                <DashboardItem size="item.size || 1">
+                    <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
+                    <t t-component="item.Component" t-props="itemProp" />
+                </DashboardItem>
+            </t>
         </Layout>
     </t>
 

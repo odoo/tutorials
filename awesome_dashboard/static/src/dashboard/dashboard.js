@@ -1,10 +1,11 @@
-import { Component } from "@odoo/owl";
+import { Component, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { DashboardItem } from "./dashboard_item/dashboard_item"
+import { items } from "./dashboard_items";
 
-class AwesomeDashboard extends Component {
+export class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
 
     static components = {
@@ -13,7 +14,9 @@ class AwesomeDashboard extends Component {
     }
 
     setup() {
+        this.items = registry.category("awesome_dashboard").get("items");
         this.action = useService("action")
+        this.stats = useState(useService("statistics").loadStatistics());
     }
 
 
@@ -30,4 +33,4 @@ class AwesomeDashboard extends Component {
     }
 }
 
-registry.category("actions").add("awesome_dashboard.dashboard", AwesomeDashboard);
+registry.category("lazy_components").add("AwesomeDashboard", AwesomeDashboard);
