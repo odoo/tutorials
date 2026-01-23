@@ -9,30 +9,16 @@ class EstatePropertyOffer(models.Model):
     _order = "price desc"
 
     price = fields.Float("Price")
-    status = fields.Selection(
-        string="Status",
-        selection=[
-            ("accepted", "Accepted"),
-            ("refused", "Refused"),
-        ],
-    )
+    status = fields.Selection(string="Status", selection=[("accepted", "Accepted"), ("refused", "Refused")])
     partner_id = fields.Many2one("res.partner", string="Partner")
     property_id = fields.Many2one("estate.property", string="Property")
     validity = fields.Integer("Validity (days)", default=7)
-    date_deadline = fields.Date(
-        "Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline"
-    )
+    date_deadline = fields.Date("Deadline", compute="_compute_date_deadline", inverse="_inverse_date_deadline")
     property_type_id = fields.Many2one(
-        "estate.property.type",
-        related="property_id.property_type_id",
-        string="Property Type",
-        store=True,
+        "estate.property.type", related="property_id.property_type_id", string="Property Type", store=True
     )
 
-    _check_price = models.Constraint(
-        "CHECK (price > 0)",
-        "A property offer price must be strictly positive",
-    )
+    _check_price = models.Constraint("CHECK (price > 0)", "A property offer price must be strictly positive")
 
     @api.depends("validity", "create_date")
     def _compute_date_deadline(self):
@@ -62,8 +48,6 @@ class EstatePropertyOffer(models.Model):
         for vals in vals_list:
             property_record = self.env["estate.property"].browse(vals["property_id"])
             if vals.get("price") < property_record.best_price:
-                raise UserError(
-                    "The offer price cannot be lower than the best offer price!"
-                )
+                raise UserError("The offer price cannot be lower than the best offer price!")
             property_record.state = "offer_received"
         return super().create(vals_list)
