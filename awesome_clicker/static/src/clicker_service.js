@@ -1,12 +1,22 @@
 import { useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { ClickerModel } from "./clicker_model";
+
+import { ClickerModel, LEVEL_REQUIREMENTS } from "./clicker_model";
 
 
 const clickerService = {
-    start() {
-        return new ClickerModel();
+    dependencies: ["effect"],
+    start(env, services) {
+        let clicker_model = new ClickerModel();
+
+        LEVEL_REQUIREMENTS.forEach(milestone =>
+            clicker_model.bus.addEventListener(
+                milestone.event_name,
+                () => services.effect.add({ message: milestone.message }),
+            )
+        )
+        return clicker_model;
     }
 }
 

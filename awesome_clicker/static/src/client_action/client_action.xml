@@ -4,15 +4,24 @@
         <div class="p-3">
             <div class="d-inline-block">
                 <b>Clicks: <ClickValue/></b>
-                <button class="btn btn-secondary fa fa-plus ms-1" t-on-click="() => this.clicker.increment(9)"/>
+                <button class="btn btn-secondary fa fa-plus ms-1" t-on-click="() => this.clicker.increment(10000)"/>
             </div>
 
             <br/><h1>Bots</h1>
 
-            <div class="d-inline-block" t-if="this.clicker.level >= 1">
-                <a><t t-esc="this.clicker.clickBots"/>x Clickbots (10 clicks/10s)</a>
-                <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.purchaseClickBot()" t-att-disabled="this.clicker.clicks &lt; 1000">
-                    Buy ClickBot (1000)
+            <t t-foreach="this.clicker.bots" t-as="bot" t-key="bot.name">
+                <div class="m-2" t-if="this.clicker.level >= bot.level_required">
+                    <a><t t-esc="bot.quantity"/>x <t t-esc="bot.name"/> (<t t-esc="bot.yield"/> clicks/10s)</a>
+                    <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.purchaseBot(bot)" t-att-disabled="this.clicker.clicks &lt; bot.price">
+                        Buy <t t-esc="bot.name"/> (<t t-esc="bot.price"/>)
+                    </button>
+                </div>
+            </t>
+
+            <div class="m-2" t-if="this.clicker.level >= 3">
+                <a><t t-esc="this.clicker.power"/>x multiplier to all bot clicks</a>
+                <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.purchasePower()" t-att-disabled="this.clicker.clicks &lt; 50000">
+                    Buy power (50000)
                 </button>
             </div>
         </div>

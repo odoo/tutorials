@@ -1,5 +1,14 @@
+import { EventBus } from "@odoo/owl";
 import { Reactive } from "@web/core/utils/reactive";
 
+import { chooseReward } from "./utils";
+
+
+export const LEVEL_REQUIREMENTS = [
+    { level: 1, requirement: 1000, event_name: "MILESTONE_1k", message: "Level up! You have unlocked ClickBots." },
+    { level: 2, requirement: 5000, event_name: "MILESTONE_5k", message: "Level up! You have unlocked BigBots." },
+    { level: 3, requirement: 100000, event_name: "MILESTONE_100k", message: "Level up! You have unlocked Power." },
+];
 
 export class ClickerModel extends Reactive {
 
@@ -7,19 +16,54 @@ export class ClickerModel extends Reactive {
         super();
         
         this.clicks = 0;
-        this.level = 1;
-        this.clickBots = 0;
+        this.level = 0;
+        this.bots = [
+            {
+                name: "ClickBot",
+                quantity: 0,
+                price: 1000,
+                yield: 10,
+                level_required: 1,
+            },
+            {
+                name: "BigBot",
+                quantity: 0,
+                price: 5000,
+                yield: 100,
+                level_required: 2,
+            }
+        ];
+        this.power = 1;
 
+        this.bus = new EventBus();
         document.addEventListener("click", () => this.increment(1), { capture: true });
-        setInterval(() => this.clicks += this.clickBots * 10, 10 * 1000);
+        setInterval(() => {
+            this.bots.forEach(bot => this.clicks += bot.yield * this.power * bot.quantity);
+        }, 10 * 1000);
     }
 
     increment(inc) {
         this.clicks += inc;
+
+        LEVEL_REQUIREMENTS.forEach(milestone => {
+            if (this.clicks > milestone.requirement && this.level < milestone.level) {
+                this.level++;
+                this.bus.trigger(milestone.event_name);
+            }
+        })
     }
 
-    purchaseClickBot() {
-        this.clickBots++;
-        this.clicks -= 1000;
+    purchaseBot(bot) {
+        bot.quantity++;
+        this.clicks -= bot.price;
+    }
+
+    purchasePower() {
+        this.power++;
+        this.clicks -= 50000;
+    }
+
+    getReward() {
+        return chooseReward(this.level);
     }
 }
