@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="estate_property_type_action" model="ir.actions.act_window">
-        <field name="name">Property Types</field>
-        <field name="res_model">estate.property.type</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
     <record id="estate_property_type_form_view" model="ir.ui.view">
         <field name="name">estate.property.type.form.view</field>
         <field name="model">estate.property.type</field>
@@ -49,5 +43,11 @@
                 <field name="name"/>
             </list>
         </field>
+    </record>
+
+    <record id="estate_property_type_action" model="ir.actions.act_window">
+        <field name="name">Property Types</field>
+        <field name="res_model">estate.property.type</field>
+        <field name="view_mode">list,form</field>
     </record>
 </odoo>
