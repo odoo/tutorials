@@ -11,7 +11,7 @@
         <field name="name">estate_property_list</field>
         <field name="model">estate_property</field>
         <field name="arch" type="xml">
-            <list>
+            <list decoration-success="state in ('offer received', 'offer accepted')" decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="bedrooms"/>
