@@ -37,10 +37,11 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                     <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="offer_accepted" type="object" string="Offer Accept" class="btn-primary"/>
                 </header>
                 <sheet>
                     <h1>
-                        <field name="name"/>
+                        <field name="name" placeholder="Property Name"/>
                     </h1>
                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                     <group>

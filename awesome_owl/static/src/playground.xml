@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
-
     <t t-name="awesome_owl.playground">
         <div class="p-3">
             hello world
+            <Counter/>
+            <div class="d-flex flex-wrap">
+                <Card title="'Card 1'" content="htmlContent"/>
+                <Card title="'Card 2'" content="rawString"/>
+            </div>
         </div>
     </t>
-
 </templates>

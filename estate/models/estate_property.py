@@ -12,7 +12,7 @@ class EstateProperty(models.Model):
     _order = 'id desc'
 
     # Each field becomes a column in PostgreSQL table
-    name = fields.Char(required=True, default="Unknown")
+    name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
     date_availability = fields.Date(
@@ -132,4 +132,14 @@ class EstateProperty(models.Model):
             if property.state == 'sold':
                 raise UserError("Cancelled property cannot be sold")
             property.state = 'cancelled'
+        return True
+
+    def offer_accepted(self):
+        for record in self:
+            if not record.offer_ids:
+                raise UserError("There are no offers to accept")
+
+            best_offer = max(record.offer_ids, key=lambda p:p.price)
+            best_offer.action_accept()
+
         return True

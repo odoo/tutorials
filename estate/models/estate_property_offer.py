@@ -89,7 +89,7 @@ class EstatePropertyOffer(models.Model):
             property_rec.write({
                 'buyer_id': offer.partner_id.id,
                 'selling_price': offer.price,
-                'active': False,
+                'state': 'offer_accepted',
             })
         return True
 
