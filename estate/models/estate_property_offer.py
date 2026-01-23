@@ -1,4 +1,4 @@
-from odoo import models, fields, api
+from odoo import models, fields, api, exceptions
 
 
 class PropertyOffer(models.Model):
@@ -17,9 +17,9 @@ class PropertyOffer(models.Model):
         copy=False
     )
     property_id = fields.Many2one("estate.property", string="Property", required=True, ondelete="cascade")
-    partner_id = fields.Many2one("res.partner", string="Partner", required=True)
+    partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
 
-    @api.depends("create_date", "validity")
+    @api.depends("validity")
     def _compute_deadline_date(self):
         for record in self:
             record.deadline_date = fields.Date.add(record.create_date or fields.Date.today(), days=record.validity)
@@ -27,3 +27,28 @@ class PropertyOffer(models.Model):
     def _inverse_deadline_date(self):
         for record in self:
             record.validity = (record.deadline_date - fields.Date.today()).days
+
+    def accept_offer(self):
+        for offer in self:
+            if offer.property_id.state == "sold":
+                raise exceptions.UserError(f"Property {offer.property_id.name} is already sold")
+            elif offer.property_id.state == "offer_accepted":
+                raise exceptions.UserError(f"Property {offer.property_id.name} is already accepted")
+            elif offer.property_id.state == "cancelled":
+                raise exceptions.UserError(f"Property {offer.property_id.name} is cancelled")
+            else:
+                offer.property_id.buyer = offer.partner_id
+                offer.property_id.selling_price = offer.price
+                offer.property_id.state = "offer_accepted"
+                offer.status = "accepted"
+        return True
+
+    def refuse_offer(self):
+        for offer in self:
+            if offer.property_id.state == "sold":
+                raise exceptions.UserError(f"Property {offer.property_id.name} is already sold")
+            offer.property_id.buyer = None
+            offer.property_id.selling_price = 0
+            offer.property_id.state = "offer_received"
+            offer.status = "refused"
+        return True

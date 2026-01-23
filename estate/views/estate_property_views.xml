@@ -23,6 +23,10 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Estate Property">
+                <header>
+                    <button name="sell_property" type="object" string="SOLD"/>
+                    <button name="cancel_property" type="object" string="CANCEL"/>
+                </header>
                 <sheet>
                     <h1>
                         <field name="name"/>
@@ -31,13 +35,14 @@
                         <group>
                             <field name="property_type_id"/>
                             <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="state"/>
                             <field name="postcode"/>
-                            <field name="expected_price"/>
                         </group>
                         <group>
-                            <field name="date_availability"/>
+                            <field name="expected_price"/>
                             <field name="selling_price"/>
                             <field name="best_price"/>
+                            <field name="date_availability"/>
                         </group>
                     </group>
                     <notebook>
@@ -53,7 +58,6 @@
                                 <field name="garden_orientation"/>
                                 <field name="total_area"/>
                                 <field name="active"/>
-                                <field name="state"/>
                             </group>
                         </page>
 
@@ -62,9 +66,11 @@
                                 <list>
                                     <field name="price"/>
                                     <field name="partner_id"/>
-                                    <field name="status"/>
                                     <field name="validity"/>
                                     <field name="deadline_date"/>
+                                    <button name="accept_offer" string="Accept" type="object" icon="fa-check"/>
+                                    <button name="refuse_offer" string="Refuse" type="object" icon="fa-times"/>
+                                    <field name="status"/>
                                 </list>
                             </field>
                         </page>
