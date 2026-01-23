@@ -1,0 +1,7 @@
+<odoo>
+    <record id="module_category_real_estate" model="ir.module.category">
+        <field name="name">Real Estate</field>
+        <field name="description">Real Estate Management</field>
+        <field name="sequence">20</field>
+    </record>
+</odoo>

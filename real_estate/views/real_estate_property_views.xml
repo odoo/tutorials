@@ -5,14 +5,14 @@
         <field name="model">real.estate</field>
         <field name="arch" type="xml">
             <list
-                    decoration-success="stage in ('offer_received', 'offer_accepted')"
+                    decoration-success="stage == 'offer_accepted'"
                     decoration-bf="stage == 'offer_accepted'"
                     decoration-muted="stage == 'sold'">
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="date_availability" optional="hide"/>
                 <field name="expected_price"/>
-                <field name="selling_price"/>
+                <field name="selling_price" groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"/>
                 <field name="tag_ids" widget="many2many_tags" optional="show"/>
                 <field name="best_price"/>
                 <field name="total_area"/>
@@ -39,6 +39,13 @@
                             string="Cancel"
                             class="btn-secondary"
                             invisible="stage in ('sold', 'cancelled')"
+                    />
+                    <button
+                            name="action_best_offer"
+                            type="object"
+                            string="Best Offer"
+                            class="btn-primary"
+                            invisible="not stage == 'offer_received'"
                     />
                     <field name="stage" widget="statusbar"
                            options="{'clickable': False}"
@@ -86,7 +93,30 @@
                         </page>
                         <page string="Offers">
                             <group>
-                                <field name="offer_ids" readonly="stage in ('offer_accepted', 'sold', 'cancelled')"/>
+                                <field name="offer_ids" readonly="stage in ('offer_accepted', 'sold', 'cancelled')">
+                                    <list decoration-danger="status == 'refused'"
+                                          decoration-success="status == 'accepted'" editable="top">
+                                        <field name="price"/>
+                                        <field name="partner_id"/>
+                                        <button
+                                                name="action_accept"
+                                                type="object"
+                                                icon="fa-check"
+                                                title="accept"
+                                                invisible="status in ('accepted' ,'refused')"
+                                                groups="real_estate.group_real_estate_manager"
+                                        />
+                                        <button
+                                                name="action_refuse"
+                                                type="object"
+                                                icon="fa-times"
+                                                title="refused"
+                                                invisible="status in ('accepted' ,'refused')"
+                                                groups="real_estate.group_real_estate_manager"
+                                        />
+                                        <field name="status" readonly="1"/>
+                                    </list>
+                                </field>
                             </group>
                         </page>
                         <page string="Maintenance Requests">
@@ -94,17 +124,18 @@
                                 <field name="maintenance_request_ids">
                                     <list editable="bottom">
                                         <field name="name"/>
-                                        <field name="cost"/>
+                                        <field name="cost" groups="real_estate.group_maintenance_staff"/>
                                         <field name="status"/>
                                     </list>
                                 </field>
-                                <field name="total_maintenance_cost"/>
+                                <field name="total_maintenance_cost" groups="real_estate.group_maintenance_staff"/>
                             </group>
                         </page>
 
                         <page string="Other Info">
                             <group>
-                                <field name="selling_price" readonly="1"/>
+                                <field name="selling_price" readonly="1"
+                                       groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"/>
                                 <field name="buyer_id" readonly="1"/>
                             </group>
                         </page>
@@ -184,7 +215,7 @@
                         <div>
                             <t t-if="record.selling_price.raw_value != 'sold'">
                                 <span class="text-muted">Selling:</span>
-                                <field name="selling_price"/>
+                                <field name="selling_price" groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"/>
                             </t>
                         </div>
                         <footer>

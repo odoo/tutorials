@@ -68,7 +68,8 @@ class RealEstate(models.Model):
     total_maintenance_cost = fields.Float(compute="_compute_total_maintenance_cost", store=True, string="Total Cost")
     salesperson_id = fields.Many2one(
         'res.users',
-        string='Salesperson'
+        string='Salesperson',
+        default=lambda self: self.env.user
     )
     _check_expected_price_positive = models.Constraint(
         'CHECK(expected_price > 0)',
@@ -124,11 +125,11 @@ class RealEstate(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _check_property_delete(self):
-        for record in self:
-            if record.stage not in ('new', 'cancelled'):
-                raise UserError(
-                    "You can only delete properties in New or Cancelled state."
-                )
+        invalid = self.filtered_domain([('stage', 'not in', ('new', 'cancelled'))])
+        if invalid:
+            raise UserError(
+                "You can only delete properties in New or Cancelled state."
+            )
 
     # @api.depends('create_date')
     # def _compute_create_date_ist(self):
@@ -152,4 +153,11 @@ class RealEstate(models.Model):
         maintenance_request = self.maintenance_request_ids.filtered_domain([('status', '!=', 'done')])
         if maintenance_request:
             raise UserError("Property cannot be sold , there is any maintenance request not done")
+        if not self.selling_price or not self.buyer_id:
+            raise UserError("Cannot sell without a selling price and buyer.")
         self.stage = 'sold'
+
+    def action_best_offer(self):
+        for record in self.offer_ids:
+            if record.price == self.best_price:
+                record.action_accept()

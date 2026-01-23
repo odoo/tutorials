@@ -5,7 +5,7 @@
         <field name="model">real.estate.property.investor</field>
         <field name="arch" type="xml">
             <list editable="top">
-                <field name="name"/>
+                <field name="partner_id"/>
             </list>
         </field>
     </record>
@@ -17,7 +17,7 @@
             <form>
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="partner_id"/>
                     </group>
                 </sheet>
             </form>

@@ -15,7 +15,7 @@ class ResUsers(models.Model):
         store=True
     )
 
-    @api.depends('property_ids.stage', 'property_ids.expected_price')
+    @api.depends('property_ids.stage', 'property_ids.expected_price', 'property_ids.salesperson_id')
     def _compute_total_unsold_value(self):
         sum_unsold = dict(self.env['real.estate']._read_group(
             domain=[('salesperson_id', '=', self.ids),

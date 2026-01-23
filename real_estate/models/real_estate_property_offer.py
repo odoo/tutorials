@@ -91,7 +91,7 @@ class RealEstatePropertyOffer(models.Model):
             'buyer_id': self.partner_id.id,
         })
         refused_offer = self.property_id.offer_ids.filtered_domain([
-            ('id', '!=', 'self.id'),
+            ('id', '!=', self.id),
             ('status', '!=', 'accepted')
         ])
         for refuse in refused_offer:
@@ -99,3 +99,9 @@ class RealEstatePropertyOffer(models.Model):
 
     def action_refuse(self):
         self.status = 'refused'
+        if self.property_id.buyer_id == self.partner_id:
+            self.property_id.write({
+                'buyer_id': False,
+                'selling_price': 0.0,
+                'stage': 'new',
+            })

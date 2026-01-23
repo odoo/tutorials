@@ -7,6 +7,8 @@
     'version': '0.1',
     'depends': ['base', 'web', 'mail'],
     'data': [
+        'security/category.xml',
+        'security/real_estate_security.xml',
         'security/ir.model.access.csv',
         'views/real_estate_property_offer_views.xml',
         'views/real_estate_property_views.xml',
@@ -17,6 +19,12 @@
         'views/real_estate_property_investor_views.xml',
         'views/real_estate_menus.xml',
     ],
+    # "assets": {
+    #     "web.assets_backend": [
+    #         "awesome_owl/static/src/js/playground.js",
+    #         "awesome_owl/static/src/xml/playground.xml",
+    #     ],
+    # },
     'application': True,
     'installable': True,
     'license': 'LGPL-3',

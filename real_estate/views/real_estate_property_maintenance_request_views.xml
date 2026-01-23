@@ -6,8 +6,8 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="cost"/>
-                <field name="status"/>
+                <field name="cost" groups="real_estate.group_maintenance_staff"/>
+                <field name="status" />
                 <field name="property_id"/>
             </list>
         </field>
@@ -26,7 +26,7 @@
                 <sheet>
                     <group>
                         <field name="name"/>
-                        <field name="cost"/>
+                        <field name="cost" groups="real_estate.group_maintenance_staff"/>
                         <field name="property_id" required="1"/>
                     </group>
                 </sheet>

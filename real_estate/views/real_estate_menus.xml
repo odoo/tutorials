@@ -12,12 +12,14 @@
     <menuitem id="real_estate_menu_property_offer"
               name="Property Offers"
               parent="real_estate_menu_Advertisements"
-              action="real_estate_property_offer_action_view"/>
+              action="real_estate_property_offer_action_view"
+              groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"/>
 
     <menuitem id="rewal_estate_menu_tag"
               name="Property Tags"
               parent="real_estate_menu_configuration"
-              action="real_estate_tag_action_view"/>
+              action="real_estate_tag_action_view"
+    />
 
     <menuitem id="real_estate_menu_property_type"
               name="Property Type"
@@ -27,7 +29,8 @@
     <menuitem id="real_estate_menu_property_maintenance_request"
               name="Maintenance Request"
               parent="real_estate_menu_configuration"
-              action="real_estate_property_maintenance_request_action_view"/>
+              action="real_estate_property_maintenance_request_action_view"
+              groups="real_estate.group_real_estate_manager,real_estate.group_maintenance_staff"/>
 
     <menuitem id="real_estate_menu_property_investor"
               name="Property Investor"

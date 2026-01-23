@@ -1,10 +1,28 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
+  <t t-name="awesome_owl.Playground">
+<!--    <div class="o_playground">-->
+      <div class="o_playground p-3">
 
-    <t t-name="awesome_owl.playground">
-        <div class="p-3">
-            hello world
-        </div>
-    </t>
+    <div class="d-flex">
+      <Counter onChange.bind="onCounter1Change"/>
+        <Counter onChange.bind="onCounter2Change"/>
+    </div>
 
+          <p class="mt-2 fw-bold">
+      The sum is: <t t-esc="state.sum"/>
+    </p>
+
+
+          <Card title="'First Card'" content="safeHtml"/>
+          <Card title="'Second Card'" content="unsafeHtml"/>
+          <Card title="'Third card'" content="'Reusable components are powerful!'"/>
+
+          <!--      <h2>Counter Example</h2>-->
+          <!--      <p>Current value: <t t-esc="state.counter"/></p>-->
+          <!--      <button t-on-click="increment">Increment</button>-->
+
+           <TodoList/>
+    </div>
+  </t>
 </templates>

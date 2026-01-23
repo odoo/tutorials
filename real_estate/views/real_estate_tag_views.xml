@@ -4,7 +4,7 @@
         <field name="name">real.estate.tag.view.tree</field>
         <field name="model">real.estate.tag</field>
         <field name="arch" type="xml">
-            <list>
+            <list editable="bottom" open_form_view="True">
                 <field name="name"/>
                  <field name="color"/>
             </list>
