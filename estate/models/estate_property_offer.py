@@ -11,6 +11,7 @@ OFFER_STATUS = [
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "An estate property offer model"
+    _order = "price desc"
 
     # === FIELDS ===#
 
@@ -33,6 +34,10 @@ class PropertyOffer(models.Model):
         compute='_compute_date_deadline',
         inverse='_inverse_date_deadline',
         string='Deadline')
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        store=True,
+    )
 
     _check_price = models.Constraint(
         'CHECK(price > 0)',

@@ -23,6 +23,7 @@ PROPERTY_STATUS = [
 class Property(models.Model):
     _name = "estate.property"
     _description = "An estate property model"
+    _order = "id desc"
 
     # === FIELDS ===#
 
