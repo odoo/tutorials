@@ -1,4 +1,4 @@
-from odoo import api, exceptions, fields, models
+from odoo import api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -49,7 +49,7 @@ class EstateProperty(models.Model):
 
     active = fields.Boolean(default=True)
     state = fields.Selection(
-        string = "Status",
+        string="Status",
         selection=[
             ('new', 'New'),
             ('offer_received', 'Offer Received'),
@@ -75,7 +75,7 @@ class EstateProperty(models.Model):
     def _check_prices(self):
         for record in self:
             if record.state == 'offer_accepted' \
-            and float_compare(self.selling_price, self.expected_price * 0.9, precision_digits=2) == -1:
+            and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
                 raise ValidationError('The selling price must be at least 90% of the selling price')
 
     @api.depends('living_area', 'garden_area')
