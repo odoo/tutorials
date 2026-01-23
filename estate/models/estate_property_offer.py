@@ -2,7 +2,9 @@ from datetime import date
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import fields, models, api
+from odoo import api, fields, models
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 
 class EstateProperOffer(models.Model):
@@ -32,3 +34,15 @@ class EstateProperOffer(models.Model):
     def _inverse_deadline(self):
         for record in self:
             record.validity = (record.date_deadline - record.create_date.date()).days
+
+    def action_accept(self):
+        if self.status != 'accepted':
+            for offer in self.property_id.offer_ids:
+                if offer.status == 'accepted':
+                    raise UserError(_('Only one offer can be accepted.'))
+            self.status = 'accepted'
+        return True
+
+    def action_refuse(self):
+        self.status = 'refused'
+        return True

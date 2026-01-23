@@ -3,6 +3,8 @@ from datetime import date
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
+from odoo.tools.translate import _
 
 DEFAULT_GARDEN_AREA = 10
 
@@ -18,7 +20,7 @@ class EstateProperty(models.Model):
     postcode = fields.Char('Postcode')
     date_availability = fields.Date('Availability Date', copy=False, default=date.today() + relativedelta(months=+3))
     expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False, compute='_compute_selling_price')
     bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer('Facades')
@@ -40,7 +42,7 @@ class EstateProperty(models.Model):
     best_price = fields.Float(compute='_compute_best_price', string='Best Price')
 
     sales_person_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
-    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
+    buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False, readonly=True, compute='_compute_buyer')
 
     tag_ids = fields.Many2many('estate.property.tag', string="Tags")
 
@@ -59,7 +61,7 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
-    @api.onchange("garden")
+    @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
             self.garden_area = DEFAULT_GARDEN_AREA
@@ -67,3 +69,33 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    @api.depends('offer_ids.status')
+    def _compute_buyer(self):
+        for record in self:
+            for offer in record.offer_ids:
+                if offer.status == 'accepted':
+                    record.buyer_id = offer.partner_id
+                    return
+            record.buyer_id = None
+
+    @api.depends('offer_ids.status')
+    def _compute_selling_price(self):
+        for record in self:
+            for offer in record.offer_ids:
+                if offer.status == 'accepted':
+                    record.selling_price = offer.price
+                    return
+            record.selling_price = None
+
+    def action_cancel_property(self):
+        if self.state == 'sold':
+            raise UserError(_('Sold properties cannot be canceled.'))
+        self.state = 'cancelled'
+        return True
+
+    def action_sold_property(self):
+        if self.state == 'cancelled':
+            raise UserError(_('Cancelled properties cannot be sold.'))
+        self.state = 'sold'
+        return True
