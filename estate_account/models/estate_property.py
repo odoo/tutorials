@@ -4,7 +4,7 @@ from odoo import Command, models
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
-    def sold_button_action(self):
+    def action_sold_button(self):
         self.env["account.move"].create(
             {
                 "partner_id": self.buyer_id.id,
@@ -28,4 +28,4 @@ class EstateProperty(models.Model):
             }
         )
 
-        return super().sold_button_action()
+        return super().action_sold_button()
