@@ -130,3 +130,10 @@ dmypy.json
 
 # Ruff linter
 ruff.toml
+
+# Pre-commit config files
+.pre-commit-config.yaml
+.pre-commit-hooks.yaml
+
+# Checkstyle file
+check-style

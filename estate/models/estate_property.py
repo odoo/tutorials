@@ -1,9 +1,8 @@
-from datetime import date
-
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 from odoo.tools.translate import _
 
 DEFAULT_GARDEN_AREA = 10
@@ -18,9 +17,9 @@ class EstateProperty(models.Model):
     name = fields.Char('Real Estate Name', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
-    date_availability = fields.Date('Availability Date', copy=False, default=date.today() + relativedelta(months=+3))
+    date_availability = fields.Date('Availability Date', copy=False, default=fields.Datetime.today() + relativedelta(months=+3))
     expected_price = fields.Float('Expected Price', required=True)
-    selling_price = fields.Float('Selling Price', readonly=True, copy=False, compute='_compute_selling_price')
+    selling_price = fields.Float('Selling Price', readonly=True, copy=False)
     bedrooms = fields.Integer('Bedrooms', default=2)
     living_area = fields.Integer('Living Area (sqm)')
     facades = fields.Integer('Facades')
@@ -48,6 +47,27 @@ class EstateProperty(models.Model):
 
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
 
+    ## CONSTRATINS ##
+    _check_expected_price = models.Constraint(
+        'CHECK(expected_price > 0)',
+        'The expected price must be strictly positive.',
+    )
+
+    _check_selling_price = models.Constraint(
+        'CHECK(selling_price >= 0)',
+        'The selling price must be positive.',
+    )
+
+    @api.constrains('expected_price', 'selling_price')
+    def _check_expected_vs_selling_price_ratio(self):
+        for property in self:
+            if any(offer.status == 'accepted' for offer in property.offer_ids):
+                if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0:
+                    raise ValidationError(_('The selling price cannot be lower than 90 precent of the expected price: \n Selling Price: %s, Expected Price: %s') % (property.selling_price, property.expected_price))
+
+    # or not float_is_zero(abs(property.expected_price * 0.9 - property.selling_price)):
+    ## COMPUTE FUNCTIONS ##
+
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -61,15 +81,6 @@ class EstateProperty(models.Model):
             else:
                 record.best_price = 0.0
 
-    @api.onchange('garden')
-    def _onchange_garden(self):
-        if self.garden:
-            self.garden_area = DEFAULT_GARDEN_AREA
-            self.garden_orientation = 'north'
-        else:
-            self.garden_area = 0
-            self.garden_orientation = None
-
     @api.depends('offer_ids.status')
     def _compute_buyer(self):
         for record in self:
@@ -79,14 +90,18 @@ class EstateProperty(models.Model):
                     return
             record.buyer_id = None
 
-    @api.depends('offer_ids.status')
-    def _compute_selling_price(self):
-        for record in self:
-            for offer in record.offer_ids:
-                if offer.status == 'accepted':
-                    record.selling_price = offer.price
-                    return
-            record.selling_price = None
+    ## ONCHAGE FUNCTIONS ##
+
+    @api.onchange('garden')
+    def _onchange_garden(self):
+        if self.garden:
+            self.garden_area = DEFAULT_GARDEN_AREA
+            self.garden_orientation = 'north'
+        else:
+            self.garden_area = 0
+            self.garden_orientation = None
+
+    ## ACTIONS ##
 
     def action_cancel_property(self):
         if self.state == 'sold':
