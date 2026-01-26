@@ -2,28 +2,49 @@
 <templates xml:space="preserve">
     <t t-name="awesome_clicker.ClientAction">
         <div class="p-3">
-            <div class="d-inline-block">
+            <div class="m-2 d-inline-block">
                 <b>Clicks: <ClickValue/></b>
-                <button class="btn btn-secondary fa fa-plus ms-1" t-on-click="() => this.clicker.increment(1)"/>
+                <button class="btn btn-secondary fa fa-plus ms-1" t-on-click="() => this.clicker.increment(9)"/>
             </div>
 
-            <br/><h1>Bots</h1>
+            <Notebook>
+                <t t-set-slot="page_bots" title="'Clicks'" isVisible="this.clicker.level >= 1">
+                    <h1>Bots</h1>
+                    <t t-foreach="Object.values(this.clicker.bots)" t-as="bot" t-key="bot.name">
+                        <div class="m-2" t-if="this.clicker.level >= bot.level_required">
+                            <a><t t-esc="bot.quantity"/>x <t t-esc="bot.name"/> (<t t-esc="bot.yield"/> clicks/10s)</a>
+                            <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.purchaseBot(bot.name)" t-att-disabled="this.clicker.clicks &lt; bot.price">
+                                Buy <t t-esc="bot.name"/> (<t t-esc="bot.price"/>)
+                            </button>
+                        </div>
+                    </t>
 
-            <t t-foreach="Object.values(this.clicker.bots)" t-as="bot" t-key="bot.name">
-                <div class="m-2" t-if="this.clicker.level >= bot.level_required">
-                    <a><t t-esc="bot.quantity"/>x <t t-esc="bot.name"/> (<t t-esc="bot.yield"/> clicks/10s)</a>
-                    <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.purchaseBot(bot.name)" t-att-disabled="this.clicker.clicks &lt; bot.price">
-                        Buy <t t-esc="bot.name"/> (<t t-esc="bot.price"/>)
-                    </button>
-                </div>
-            </t>
+                    <div class="m-2" t-if="this.clicker.level >= 3">
+                        <a><t t-esc="this.clicker.power"/>x multiplier to all bot clicks</a>
+                        <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.purchasePower()" t-att-disabled="this.clicker.clicks &lt; 50000">
+                            Buy power (50000)
+                        </button>
+                    </div>
+                </t>
 
-            <div class="m-2" t-if="this.clicker.level >= 3">
-                <a><t t-esc="this.clicker.power"/>x multiplier to all bot clicks</a>
-                <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.purchasePower()" t-att-disabled="this.clicker.clicks &lt; 50000">
-                    Buy power (50000)
-                </button>
-            </div>
+                <t t-set-slot="page_trees" title="'Trees'" isVisible="this.clicker.level >= 4">
+                    <h1>Fruits</h1>
+                    <t t-foreach="Object.values(this.clicker.trees)" t-as="tree" t-key="tree.name">
+                        <b class="ms-2" t-if="this.clicker.level >= tree.level_required">
+                            <t t-esc="tree.fruits"/>x <t t-esc="tree.fruit_name"/>
+                        </b>
+                    </t>
+                    <h1>Trees</h1>
+                    <t t-foreach="Object.values(this.clicker.trees)" t-as="tree" t-key="tree.name">
+                        <div class="m-2" t-if="this.clicker.level >= tree.level_required">
+                            <a><t t-esc="tree.quantity"/>x <t t-esc="tree.name"/> (1 <t t-esc="tree.fruit_name"/>/30s)</a>
+                            <button class="btn btn-primary ms-1" t-on-click="() => this.clicker.purchaseTree(tree.name)" t-att-disabled="this.clicker.clicks &lt; tree.price">
+                                Buy <t t-esc="tree.name"/> (<t t-esc="tree.price"/>)
+                            </button>
+                        </div>
+                    </t>
+                </t>
+            </Notebook>
         </div>
     </t>
 </templates>

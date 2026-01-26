@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_clicker.ClickerSystrayItem">
-        <div class="d-inline-block">
-            <b>Clicks: <ClickValue/></b>
-            <button class="btn btn-secondary ms-1" t-on-click="openClickerWindow">Open</button>
-        </div>
+        <Dropdown class="d-inline-block">
+            <button>
+                <b><ClickValue/><div class="ms-1 fa fa-mouse-pointer"/></b>
+                <div t-if="this.clicker.level >= 4">
+                    <b>, <t t-esc="this.clicker.getTotalTreeCount()"/> <div class="ms-1 fa fa-tree"/></b>
+                    <b>, <t t-esc="this.clicker.getTotalFruitCount()"/> <div class="ms-1 fa fa-apple"/></b>
+                </div>
+            </button>
+
+            <t t-set-slot="content">
+                <DropdownItem>
+                    <button class="btn btn-primary" t-on-click="this.openClickerWindow">Open Clicker Game</button>
+                </DropdownItem>
+                <DropdownItem>
+                    <button class="btn btn-primary" t-on-click="() => this.clicker.purchaseBot('ClickBot')">Buy ClickBot</button>
+                </DropdownItem>
+
+                <t t-foreach="Object.values(this.clicker.trees)" t-as="tree" t-key="tree.name">
+                    <DropdownItem t-if="this.clicker.level >= tree.level_required">
+                        <t t-esc="tree.quantity"/>x <t t-esc="tree.name"/>
+                        (<t t-esc="tree.fruits"/> <t t-esc="tree.fruit_name"/>)
+                    </DropdownItem>
+                </t>
+            </t>
+        </Dropdown>
     </t>
 </templates>
