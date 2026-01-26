@@ -3,7 +3,8 @@ import logging
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools import float_compare, float_is_zero
 
 logger = logging.getLogger(__name__)
 
@@ -74,6 +75,19 @@ class EstateProperty(models.Model):
     )
     best_offer = fields.Float(compute="_compute_best_offer")
 
+    _check_positive_expected_price = models.Constraint(
+        "CHECK(expected_price > 0)",
+        "Expected Price must be positive!",
+    )
+    _check_positive_selling_price = models.Constraint(
+        "CHECK(selling_price > 0)",
+        "Selling Price must be positive!",
+    )
+    _name_uniq = models.Constraint(
+        "UNIQUE(name)",
+        "A property with this name already exists!",
+    )
+
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
         for record in self:
@@ -106,3 +120,12 @@ class EstateProperty(models.Model):
             if record.state == "cancelled":
                 raise UserError("Cancelled properties cannot be sold")
             record.state = "sold"
+
+    @api.constrains("selling_price", "expected_price")
+    def _check_reasonable_selling_price(self):
+        for record in self:
+            if (
+                not float_is_zero(record.selling_price, precision_digits=2)
+                and float_compare(record.selling_price, 0.9 * record.expected_price, precision_digits=2) == -1
+            ):
+                raise ValidationError("Selling price cannot be lower than 90% of the expected price")
