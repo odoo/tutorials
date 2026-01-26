@@ -1,6 +1,8 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
+
 
 OFFER_STATUS = [
     ('accepted', 'Accepted'),
@@ -26,7 +28,8 @@ class PropertyOffer(models.Model):
     property_id = fields.Many2one(
         "estate.property",
         string='Property',
-        required=True)
+        required=True,
+        ondelete='cascade')
     validity = fields.Integer(
         default=7,
         string='Validity (days)')
@@ -75,3 +78,23 @@ class PropertyOffer(models.Model):
         for record in self:
             record.status = 'refused'
         return True
+
+    # === CONSTRAINT METHODS ===#
+
+    @api.constrains('price')
+    def _check_price(self):
+        for record in self:
+            existing_offers = record.property_id.offer_ids.filtered(lambda o: o != record)
+            if existing_offers:
+                min_price = min(existing_offers.mapped('price'))
+                if record.price < min_price:
+                    error_message = "The offer price can't be lower than existing offers!"
+                    raise UserError(error_message)
+
+    # === CRUD OVERRIDES ===#
+
+    @api.model
+    def create(self, vals):
+        offer = super().create(vals)
+        offer.property_id.state = 'offer received'
+        return offer

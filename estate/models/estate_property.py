@@ -151,3 +151,15 @@ class Property(models.Model):
                         "of the expected price."
                     )
                     raise UserError(error_message)
+
+    # === CRUD OVERRIDES ===#
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_property(self):
+        for record in self:
+            if record.state not in ['new', 'cancelled']:
+                error_message = (
+                    "Only properties in 'New' or 'Cancelled' state "
+                    "can be deleted."
+                )
+                raise UserError(error_message)
