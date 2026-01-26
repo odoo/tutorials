@@ -33,7 +33,8 @@ class PropertyOffer (models.Model):
         for record in self:
             if not record.status:
                 if record.property_id.status in ("sold", "cancelled", "offer accepted"):
-                    raise exceptions.UserError("This offer can not be accepted")
+                    err_msg = "This offer can not be accepted"
+                    raise exceptions.UserError(err_msg)
                 record.property_id.status = "offer accepted"
                 record.status = "accepted"
                 record.property_id.selling_price = record.price
@@ -52,9 +53,11 @@ class PropertyOffer (models.Model):
     def _check_price(self):
         for record in self:
             if record.price < 0:
-                raise exceptions.ValidationError("Enter a valid offer")
+                err_msg = "Enter a valid offer"
+                raise exceptions.ValidationError(err_msg)
             if record.price < record.property_id.best_offer:
-                raise exceptions.UserError(_("You can not enter an offer below %s" % record.property_id.best_offer))
+                err_msg = _("You can not enter an offer below %s") % record.property_id.best_offer
+                raise exceptions.UserError(err_msg)
 
     @api.model
     def create(self, vals_list):

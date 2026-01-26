@@ -71,20 +71,22 @@ class EstateProperty(models.Model):
             self.garden_area = 10
             self.garden_orientation = "north"
         else:
-            self.garden_area = None
+            self.garden_area = 0
             self.garden_orientation = None
 
     def sell_apartment(self):
         for record in self:
             if record.status == "cancelled":
-                raise exceptions.UserError("Cancelled apartments can not be sold")
+                err_msg = "Cancelled apartments can not be sold"
+                raise exceptions.UserError(err_msg)
             record.status = "sold"
         return True
 
     def cancel_apartment(self):
         for record in self:
             if record.status == "sold":
-                raise exceptions.UserError("Sold apartments can not be cancelled")
+                err_msg = "Sold apartments can not be cancelled"
+                raise exceptions.UserError(err_msg)
             record.status = "cancelled"
         return False
 
@@ -98,11 +100,13 @@ class EstateProperty(models.Model):
         for record in self:
             if record.property_offers_ids:
                 if tools.float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 1:
-                    raise exceptions.ValidationError("Selling price can not be less than 90% of your expected price. Lower your expected price to accept this transaction.")
+                    err_msg = "Selling price can not be less than 90% of your expected price. Lower your expected price to accept this transaction."
+                    raise exceptions.ValidationError(err_msg)
                 # TODO check this
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         for record in self:
             if record.status not in ("new", "cancelled"):
-                raise exceptions.UserError("Can not delete estate properties that have offers")
+                err_msg = "Can not delete estate properties that have offers"
+                raise exceptions.UserError(err_msg)

@@ -10,11 +10,12 @@
     "license": "LGPL-3",
     "data": [
         "security/ir.model.access.csv",
-        "views/estate_property_views.xml",
         "views/menus.xml",
-        "views/list_views.xml",
-        "views/form_views.xml",
-        "views/search_views.xml",
-        "views/kanban_views.xml",
+        "views/estate_property_menus.xml",
+        "views/estate_property_views.xml",
+        "views/estate_property_tags_views.xml",
+        "views/estate_property_types_views.xml",
+        "views/estate_property_offers_views.xml",
+        "views/estate_res_users_views.xml",
     ],
 }
