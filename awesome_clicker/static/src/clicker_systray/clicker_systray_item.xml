@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.ClickerSystrayItem">
+        <div class="clicker-systray-item">
+            <ClickerValue value="clicker.clicks"/>
+            <button id="clicker-big-increment-button" class="btn btn-light" t-on-click="bigIncrement">
+                <i class="fa fa-plus"/>
+            </button>
+            <button class="btn btn-light" t-on-click="openClientAction">Open</button>
+        </div>
+    </t>
+
+</templates>

@@ -1,0 +1,9 @@
+.clicker-systray-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.clicker-systray-item > * {
+    margin: 0 0.2rem;
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_clicker.ClientAction">
+        <div>
+            Clicker Client Action
+            <div>
+                <ClickerValue value="clicker.clicks"/>
+                <button id="clicker-big-increment-button" class="btn btn-primary" t-on-click="bigIncrement">Increment</button>
+            </div>
+
+            <h2>Bots</h2>
+            <p>
+                <t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/second)
+            </p>
+            <button class="btn btn-primary" t-on-click="buyClickBot" t-att-disabled="clicker.clicks &lt; 1000">Buy ClickBot (1000 clicks)</button>
+            <p>
+                <t t-esc="clicker.bigClickBots"/>x BigClickBots (100 clicks/second)
+            </p>
+            <button class="btn btn-primary" t-on-click="buyBigClickBot" t-att-disabled="clicker.clicks &lt; 5000">Buy BigClickBot (5000 clicks)</button>
+            
+            <h2>Power</h2>
+            <p>
+                <t t-esc="clicker.power"/>Power
+            </p>
+            <button class="btn btn-primary" t-on-click="buyPower" t-att-disabled="clicker.clicks &lt; 100000">Buy Power (100 000 clicks)</button>
+        </div>
+    </t>
+</templates>
