@@ -1,4 +1,5 @@
 import { EventBus } from "@odoo/owl";
+import { browser } from "@web/core/browser/browser";
 import { Reactive } from "@web/core/utils/reactive";
 
 import { chooseReward } from "./utils";
@@ -16,6 +17,7 @@ export class ClickerModel extends Reactive {
     constructor() {
         super();
         
+        this.version = "1.1";
         this.clicks = 0;
         this.level = 0;
         this.power = 1;
@@ -51,6 +53,14 @@ export class ClickerModel extends Reactive {
                 price: 1000000,
                 fruits: 0,
                 level_required: 4,
+            },
+            peach: {
+                name: "Peach Tree",
+                fruit_name: "Peach",
+                quantity: 0,
+                price: 1000000,
+                fruits: 0,
+                level_required: 4,
             }
         }
 
@@ -58,6 +68,7 @@ export class ClickerModel extends Reactive {
         document.addEventListener("click", () => this.increment(1), { capture: true });
         setInterval(() => {
             Object.values(this.bots).forEach(bot => this.clicks += bot.yield * this.power * bot.quantity);
+            browser.localStorage.setItem("clicker_state", JSON.stringify(this));
         }, 10 * 1000);
         setInterval(() => {
             Object.values(this.trees).forEach(tree => tree.fruits += tree.quantity);
@@ -97,10 +108,10 @@ export class ClickerModel extends Reactive {
     }
 
     getTotalTreeCount() {
-        return Object.values(this.trees).map(tree => tree.quantity).reduce((sum, qty) => sum + qty);
+        return Object.values(this.trees).map(tree => tree.quantity).reduce((sum, qty) => { sum + qty }, 0);
     }
 
     getTotalFruitCount() {
-        return Object.values(this.trees).map(tree => tree.fruits).reduce((sum, qty) => sum + qty);
+        return Object.values(this.trees).map(tree => tree.fruits).reduce((sum, qty) => { sum + qty }, 0);
     }
 }
