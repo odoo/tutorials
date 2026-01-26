@@ -56,8 +56,8 @@ class PropertyOffer (models.Model):
                 err_msg = "Enter a valid offer"
                 raise exceptions.ValidationError(err_msg)
             if record.price < record.property_id.best_offer:
-                err_msg = _("You can not enter an offer below %s") % record.property_id.best_offer
-                raise exceptions.UserError(err_msg)
+                # err_msg =
+                raise exceptions.UserError(_("You can not enter an offer below %(amount)s"), amount=record.property_id.best_offer)
 
     @api.model
     def create(self, vals_list):
