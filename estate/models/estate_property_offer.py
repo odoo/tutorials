@@ -60,7 +60,7 @@ class EstatePropertyOffer(models.Model):
 
         property = self.property_id
 
-        if not 'accepted' in property.offer_ids.mapped('state'):
+        if 'accepted' not in property.offer_ids.mapped('state'):
             property.state = 'offer_received'
 
         property.selling_price = None

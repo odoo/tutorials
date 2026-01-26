@@ -76,7 +76,7 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'offer_accepted' \
             and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
-                raise ValidationError('The selling price must be at least 90% of the selling price')
+                raise ValidationError('The selling price must be at least 90% of the expected price')
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
