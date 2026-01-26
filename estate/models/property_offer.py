@@ -56,7 +56,7 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
-        
+
         for vals in vals_list:
             max_existing_price = max((offer.price for offer in self.env['estate_property'].browse(vals_list[0]['property_id']).property_offer_id), default=0)
             if vals['price'] < max_existing_price:
