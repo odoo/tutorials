@@ -5,6 +5,12 @@ class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
 
+    # constraints
+    _positive_price = models.Constraint(
+        'CHECK(price > 0)',
+        'Offer price should be (strictly) positive'
+    )
+
     price = fields.Float(string="Price", required=True)
     validity = fields.Integer(string="Validity", default=7)
     deadline_date = fields.Date(string="Deadline", compute="_compute_deadline_date", inverse="_inverse_deadline_date")
