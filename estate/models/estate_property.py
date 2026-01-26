@@ -1,5 +1,5 @@
-from odoo import api, fields, models
 from dateutil.relativedelta import relativedelta
+from odoo import api, fields, models
 from odoo.tools.float_utils import float_is_zero
 from odoo.exceptions import UserError, ValidationError
 
@@ -36,25 +36,14 @@ class EstateProperty(models.Model):
             ('offer_accepted', 'Offer Accepted'),
             ('sold', 'Sold'),
             ('canceled', 'Cancelled'),
-        ],
-        required=True,
-        copy=False,
-        default='new',
-    )
+        ], required=True, copy=False, default='new')
     active = fields.Boolean(default=True)
-
     property_type_id = fields.Many2one('estate.property.type', string='Property Type')
-
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False)
-
     salesperson_id = fields.Many2one('res.users', string='Salesperson', default=lambda self: self.env.user)
-
     tag_ids = fields.Many2many('estate.property.tag', string='Property Tag')
-
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
-
     total_area = fields.Integer(compute='_compute_total_area')
-
     best_price = fields.Float(compute='_compute_best_price')
 
     _check_expected_price = models.Constraint(
