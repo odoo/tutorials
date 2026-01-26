@@ -12,6 +12,7 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one('estate_property', required=True)
     validity = fields.Integer(string='Validity (days)', default=7)
     date_deadline = fields.Date(string='Deadline', compute='_compute_deadline', inverse='_inverse_deadline')
+    property_type_id = fields.Many2one("estate_property_type", related="property_id.property_type_id", store=True, string="Property Type")
 
     @api.depends('create_date', 'validity')
     def _compute_deadline(self):

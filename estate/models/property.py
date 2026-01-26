@@ -12,7 +12,24 @@ class EstateProperty(models.Model):
     postcode = fields.Char()
     date_availability = fields.Date(string='Available From', copy=False, default=fields.Date.add(fields.Date.today(), months=3))
     expected_price = fields.Float(required=True)
+
+    _check_expected_price = models.Constraint(
+    'CHECK(0 < expected_price)',
+    'A property expected price must be strictly positive')
+
     selling_price = fields.Float(readonly=True, copy=False)
+
+    _check_selling_price = models.Constraint(
+    'CHECK(0 <= selling_price)',
+    'A property selling price must be positive')
+
+    @api.constrains('selling_price', 'expected_price')
+    def _check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, 2):
+                if float_compare(record.selling_price, 0.9 * record.expected_price, 2) == -1:
+                    raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
+
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer(string='Living Area (sqm)')
     facades = fields.Integer()
@@ -73,21 +90,6 @@ class EstateProperty(models.Model):
             raise exceptions.UserError('Sold properties cannot be cancelled')
         else:
             self.state = 'cancelled'
-
-    _check_expected_price = models.Constraint(
-    'CHECK(0 < expected_price)',
-    'A property expected price must be strictly positive')
-
-    _check_selling_price = models.Constraint(
-    'CHECK(0 <= selling_price)',
-    'A property selling price must be positive')
-
-    @api.constrains('selling_price', 'expected_price')
-    def _check_selling_price(self):
-        for record in self:
-            if not float_is_zero(record.selling_price, 2):
-                if float_compare(record.selling_price, 0.9 * record.expected_price, 2) == -1:
-                    raise exceptions.ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
     @api.onchange('property_offer_id')
     def _onchange_property_offer_id(self):
