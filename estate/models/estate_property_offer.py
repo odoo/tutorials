@@ -80,4 +80,5 @@ class EstatePropertyOffer(models.Model):
             if vals['property_id'] and vals['price'] is not None:
                 if vals['price'] < self.env['estate.property'].browse(vals['property_id']).best_price:
                     raise UserError('The offer must be higher than the existing offers.')
+            self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
         return super().create(vals_list)

@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Odoo",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/odoo/odoo-src/odoo/odoo-bin",
+            "console": "integratedTerminal",
+            "args": [
+                "--addons-path=../odoo/addons/,../enterprise, ../tutorials",
+                //"--addons-path=odoo/addons/",
+                //"-u",
+                //"pos_loyalty",
+                //"-i",
+                //"point_of_sale",
+                "-d",
+                "rd-demo3",
+                "--dev=all",
+                "-u", "estate",
+                //"--test-tags",
+                //".test_10_refund_with_reference",
+                "--without-demo=False",
+                "--limit-time-cpu=99999",
+                "--limit-time-real=99999",
+                "--limit-request=10000"
+            ],
+            "variablePresentation": {}
+        }
+    ]
+}
