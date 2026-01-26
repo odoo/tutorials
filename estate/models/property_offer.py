@@ -53,3 +53,13 @@ class EstatePropertyOffer(models.Model):
     _check_offer_price = models.Constraint(
     'CHECK(0 < price)',
     'An offer price must be strictly positive')
+
+    @api.model
+    def create(self, vals_list):
+        
+        for vals in vals_list:
+            max_existing_price = max((offer.price for offer in self.env['estate_property'].browse(vals_list[0]['property_id']).property_offer_id), default=0)
+            if vals['price'] < max_existing_price:
+                raise exceptions.UserError('The offer must be higher than ' + str(max_existing_price))
+
+        return super().create(vals_list)

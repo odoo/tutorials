@@ -99,3 +99,8 @@ class EstateProperty(models.Model):
                     record.state = 'offer received'
             elif record.state != 'cancelled':
                 record.state = 'new'
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_for_specific_state(self):
+        if any(record.state not in ('new', 'cancelled') for record in self):
+            raise exceptions.UserError('Can\'t delete a property if its state is not \'New\' or \'Cancelled\'')
