@@ -1,7 +1,7 @@
 <t t-name="awesome_dashboard.PieChart">
     <div class="chart-container" style="position: relative; height:100%; width:100%">
         <div class="fw-bold text-uppercase text-muted small mb-2">
-            <t t-out="props.title"/>
+            <t t-out="props.title" />
         </div>
         <canvas t-ref="canvas"></canvas>
     </div>

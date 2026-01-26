@@ -21,9 +21,9 @@ export class ConfigurationDialog extends Component {
         const removedIds = this.state.items
             .filter((i) => !i.isEnabled)
             .map((i) => i.id);
-        
+
         browser.localStorage.setItem("dashboard_removed_items", JSON.stringify(removedIds));
-        
+
         this.props.onApply(removedIds);
         this.props.close();
     }

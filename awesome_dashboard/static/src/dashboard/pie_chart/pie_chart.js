@@ -17,11 +17,11 @@ export class PieChart extends Component {
 
     renderChart() {
 
-        if(this.chart) {
+        if (this.chart) {
             this.chart.destroy();
         }
 
-        if(!this.props.data) {
+        if (!this.props.data) {
             return;
         }
 
