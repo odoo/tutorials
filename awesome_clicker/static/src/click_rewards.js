@@ -1,15 +1,15 @@
 export const rewards = [
     {
-        description: "Get 1 click bot",
+        description: "Get 1 ClickBot",
         apply(clicker) {
-                clicker.increment(1);
+            clicker.bots.clickbot.quantity++;
         },
         maxLevel: 3,
     },
     {
-        description: "Get 10 click bot",
+        description: "Get 1 BigBot",
         apply(clicker) {
-                clicker.increment(10);
+            clicker.bots.bigbot.quantity++;
         },
         minLevel: 3,
         maxLevel: 4,
@@ -17,7 +17,7 @@ export const rewards = [
     {
         description: "Increase bot power!",
         apply(clicker) {
-                clicker.multipler += 1;
+            clicker.power++;
         },
         minLevel: 3,
     },

@@ -17,28 +17,28 @@ export class ClickerModel extends Reactive {
         
         this.clicks = 0;
         this.level = 0;
-        this.bots = [
-            {
+        this.bots = {
+            clickbot: {
                 name: "ClickBot",
                 quantity: 0,
                 price: 1000,
                 yield: 10,
                 level_required: 1,
             },
-            {
+            bigbot: {
                 name: "BigBot",
                 quantity: 0,
                 price: 5000,
                 yield: 100,
                 level_required: 2,
             }
-        ];
+        };
         this.power = 1;
 
         this.bus = new EventBus();
         document.addEventListener("click", () => this.increment(1), { capture: true });
         setInterval(() => {
-            this.bots.forEach(bot => this.clicks += bot.yield * this.power * bot.quantity);
+            Object.values(this.bots).forEach(bot => this.clicks += bot.yield * this.power * bot.quantity);
         }, 10 * 1000);
     }
 
@@ -53,9 +53,10 @@ export class ClickerModel extends Reactive {
         })
     }
 
-    purchaseBot(bot) {
-        bot.quantity++;
-        this.clicks -= bot.price;
+    purchaseBot(bot_name) {
+        let purchased_bot = Object.values(this.bots).find(bot => bot.name === bot_name);
+        purchased_bot.quantity++;
+        this.clicks -= purchased_bot.price;
     }
 
     purchasePower() {
@@ -64,6 +65,6 @@ export class ClickerModel extends Reactive {
     }
 
     getReward() {
-        return chooseReward(this.level);
+        this.bus.trigger("RANDOM_REWARD", chooseReward(this.level));
     }
 }
