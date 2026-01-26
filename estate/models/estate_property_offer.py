@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -71,5 +72,11 @@ class EstatePropertyOffer(models.Model):
     @api.model
     def create(self, vals):
         for record in vals:
-            self.env['estate.property'].browse(record['property_id']).set_offer_received()
+            property = self.env['estate.property'].browse(record['property_id'])
+
+            if record['price'] < property.best_offer:
+                raise UserError(f'The offer must be above {property.best_offer}')
+
+            property.set_offer_received()
+
         return super().create(vals)
