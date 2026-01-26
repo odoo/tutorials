@@ -67,3 +67,9 @@ class EstatePropertyOffer(models.Model):
         property.partner_id = None
 
         return True
+
+    @api.model
+    def create(self, vals):
+        for record in vals:
+            self.env['estate.property'].browse(record['property_id']).set_offer_received()
+        return super().create(vals)

@@ -97,12 +97,6 @@ class EstateProperty(models.Model):
             self.garden_area = None
             self.garden_orientation = None
 
-    @api.onchange('offer_ids')
-    def _onchange_offer_ids(self):
-        for record in self:
-            if record.state == 'new' and len(record.offer_ids) > 0:
-                record.state = 'offer_received'
-
     def action_sell(self):
         for record in self:
             if record.state == 'canceled':
@@ -126,3 +120,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state not in ('new', 'canceled'):
                 raise UserError('Only new and canceled properties can be deleted')
+
+    def set_offer_received(self):
+        for record in self:
+            if record.state == 'new':
+                record.state = 'offer_received'
