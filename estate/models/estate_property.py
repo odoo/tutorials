@@ -3,6 +3,7 @@ import logging
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +41,7 @@ class EstateProperty(models.Model):
         ],
     )
     total_area = fields.Integer(
-        compute="_compute_total_area", string="Total Area (sqm)"
+        compute="_compute_total_area", string="Total Area (sqm)",
     )
     state = fields.Selection(
         selection=[
@@ -93,3 +94,15 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = None
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == 'sold':
+                raise UserError("Sold properties cannot be cancelled.")
+            record.state = "cancelled"
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled properties cannot be sold")
+            record.state = "sold"

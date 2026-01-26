@@ -1,6 +1,7 @@
 from datetime import timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 
 
 class EstatePropertyOffer(models.Model):
@@ -42,3 +43,18 @@ class EstatePropertyOffer(models.Model):
             record.validity = (
                 record.date_deadline - fields.Date.to_date(record.create_date)
             ).days
+
+    def action_refuse(self):
+        for record in self:
+            record.status = "refused"
+
+    def action_accept(self):
+        for record in self:
+            # TODO: property state should be readonly and just check on state == 'offer_accepted'
+            if any(offer.status == 'accepted' for offer in record.property_id.offer_ids):
+                raise UserError("Property already has another accepted offer.")
+            # TODO: consider checking other property states
+            record.status = "accepted"
+            record.property_id.buyer = record.partner_id
+            record.property_id.selling_price = record.price
+            record.property_id.state = 'offer_accepted'
