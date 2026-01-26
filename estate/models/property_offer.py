@@ -1,4 +1,4 @@
-from odoo import api, exceptions, fields, models, _
+from odoo import _, api, exceptions, fields, models
 
 
 class PropertyOffer (models.Model):
@@ -55,7 +55,7 @@ class PropertyOffer (models.Model):
                 raise exceptions.ValidationError("Enter a valid offer")
             if record.price < record.property_id.best_offer:
                 raise exceptions.UserError(_(f"You can not enter an offer below {record.property_id.best_offer}"))
-            
+
     @api.model
     def create(self, vals_list):
         offer = super().create(vals_list)

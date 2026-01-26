@@ -100,9 +100,9 @@ class EstateProperty(models.Model):
                 if tools.float_compare(record.selling_price, 0.9 * record.expected_price, 2) < 1:
                     raise exceptions.ValidationError("Selling price can not be less than 90% of your expected price. Lower your expected price to accept this transaction.")
                 # TODO check this
-    
+
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_or_cancelled(self):
         for record in self:
-            if record.status not in ("new","cancelled"):
+            if record.status not in ("new", "cancelled"):
                 raise exceptions.UserError("Can not delete estate properties that have offers")
