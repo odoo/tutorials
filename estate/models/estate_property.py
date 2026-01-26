@@ -2,9 +2,11 @@ from dateutil.relativedelta import relativedelta
 from odoo import models, fields, api, exceptions
 from odoo.tools.float_utils import float_compare
 
+
 class Property(models.Model):
     _name = "estate.property"
     _description = "Estate Property app like immoweb"
+    _order = "id desc"
 
     # computed fields
     total_area = fields.Float(string="Total Area", compute="_compute_total_area")
@@ -85,6 +87,7 @@ class Property(models.Model):
                 raise exceptions.UserError("You cannot sell a cancelled property")
             else:
                 record.state = "sold"
+                record.active = False
         return True
 
     def cancel_property(self):
@@ -93,10 +96,12 @@ class Property(models.Model):
                 raise exceptions.UserError("You cannot cancel a sold property")
             else:
                 record.state = "cancelled"
+                record.active = False
         return True
 
     @api.constrains("state", "offer_ids")
     def _check_selling_price(self):
         for record in self:
-            if float_compare(record.selling_price, 0.9 * record.expected_price, 2) == -1:
-                raise exceptions.UserError("Selling price should be at least 90 percent of the expected price")
+            for offer in record.offer_ids:
+                if offer.status == "accepted" and float_compare(offer.price, 0.9 * record.expected_price, 2) == -1:
+                    raise exceptions.UserError("Selling price should be at least 90 percent of the expected price")

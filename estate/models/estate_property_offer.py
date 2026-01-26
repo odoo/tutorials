@@ -4,6 +4,7 @@ from odoo import models, fields, api, exceptions
 class PropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
+    _order = "price desc"
 
     # constraints
     _positive_price = models.Constraint(
@@ -24,6 +25,7 @@ class PropertyOffer(models.Model):
     )
     property_id = fields.Many2one("estate.property", string="Property", required=True, ondelete="cascade")
     partner_id = fields.Many2one("res.partner", string="Buyer", required=True)
+    property_type_id = fields.Many2one(related="property_id.property_type_id", store=True)
 
     @api.depends("validity")
     def _compute_deadline_date(self):
@@ -53,8 +55,5 @@ class PropertyOffer(models.Model):
         for offer in self:
             if offer.property_id.state == "sold":
                 raise exceptions.UserError(f"Property {offer.property_id.name} is already sold")
-            offer.property_id.buyer = None
-            offer.property_id.selling_price = 0
-            offer.property_id.state = "offer_received"
             offer.status = "refused"
         return True
