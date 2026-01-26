@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_owl.counter">
+        <div class="counter-card">
+            <div class="counter-value"><t t-esc="props.count !== undefined ? props.count : state.count"/></div>
+            <button class="btn btn-premium" t-on-click="increment">Increment</button>
+        </div>
+    </t>
+</templates>
