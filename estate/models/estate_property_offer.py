@@ -50,16 +50,16 @@ class EstatePropertyOffer(models.Model):
             ).days
 
     def action_refuse(self):
-        for record in self:
-            record.status = "refused"
+        self.ensure_one()
+        self.status = "refused"
 
     def action_accept(self):
-        for record in self:
-            # TODO: property state should be readonly and just check on state == 'offer_accepted'
-            if any(offer.status == 'accepted' for offer in record.property_id.offer_ids):
-                raise UserError("Property already has another accepted offer.")
-            # TODO: consider checking other property states
-            record.status = "accepted"
-            record.property_id.buyer = record.partner_id
-            record.property_id.selling_price = record.price
-            record.property_id.state = 'offer_accepted'
+        self.ensure_one()
+        # TODO: property state should be readonly and just check on state == 'offer_accepted'
+        if any(offer.status == 'accepted' for offer in self.property_id.offer_ids):
+            raise UserError("Property already has another accepted offer.")
+        # TODO: consider checking other property states
+        self.status = "accepted"
+        self.property_id.buyer = self.partner_id
+        self.property_id.selling_price = self.price
+        self.property_id.state = 'offer_accepted'
