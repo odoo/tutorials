@@ -1,17 +1,16 @@
-from odoo import fields, models, exceptions, Command
+from odoo import models, exceptions, Command
 
 
 class EstateProperty(models.Model):
-    _name = 'estate_property' 
+    _name = 'estate_property'
     _inherit = ['estate_property']
 
     def action_property_sold(self):
 
         if self.state != 'offer accepted':
             raise exceptions.UserError('An offer should be accepted')
-        
 
-        moves = self.env['account.move'].create({
+        self.env['account.move'].create({
             'move_type': 'out_invoice',
             'partner_id': self.buyer.id,
             'invoice_line_ids': [
