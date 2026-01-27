@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="offer_wizard_estate_property" model="ir.actions.act_window">
+        <field name="name">Accept Offer</field>
+        <field name="res_model">estate.offer.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="offer_wizard_estate_property_form" model="ir.ui.view">
+        <field name="name">offer.wizard.estate.property</field>
+        <field name="model">estate.offer.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <p>
+                    <h2>
+                        There is higher offer available for this property
+                    </h2>
+                </p>
+                <footer>
+                    <button name="action_wizard_accept_offer"
+                            type="object"
+                            string="Accept lower offer"/>
+                    <button string="Cancel"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

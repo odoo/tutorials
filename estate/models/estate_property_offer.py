@@ -55,20 +55,33 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept_offer(self):
         self.ensure_one()
-        for offer in self:
-            if offer.property_id.customer_id:
-                raise UserError(_("Only one offer can be accepted."))
-            offer.property_id.customer_id = offer.partner_id
-            offer.property_id.selling_price = offer.price
-            offer.status = "accepted"
-            offer.property_id.state = "offer accepted"
-        other_offer = offer.property_id.offer_ids.filtered(
-            lambda s: s.status != offer.status
+        better_offer = self.property_id.offer_ids.filtered(
+            lambda s: s.price > self.price
+        )
+        if better_offer:
+            return {
+                "type": "ir.actions.act_window",
+                "res_model": "estate.offer.wizard",
+                "view_mode": "form",
+                "target": "new",
+                "context": {"default_offer_id": self.id},
+            }
+        return self.accept_offer()
+
+    def accept_offer(self):
+        self.ensure_one()
+        if self.property_id.customer_id:
+            raise UserError(_("Only one offer can be accepted."))
+        self.property_id.customer_id = self.partner_id
+        self.property_id.selling_price = self.price
+        self.status = "accepted"
+        self.property_id.state = "offer accepted"
+        other_offer = self.property_id.offer_ids.filtered(
+            lambda s: s.status != self.status
         )
         other_offer.status = "refused"
 
     def action_refuse_offer(self):
         self.ensure_one()
-        for offer in self:
-            offer.status = "refused"
+        self.status = "refused"
         return True
