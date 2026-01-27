@@ -8,6 +8,14 @@
                 <Card title="'Card 1'" content="htmlContent"/>
                 <Card title="'Card 2'" content="rawString"/>
             </div>
+            <hr/>
+            <div class="d-flex gap-2">
+                <Counter onChange="incrementSum.bind(this)"/>
+                <Counter onChange="incrementSum.bind(this)"/>
+            </div>
+            <div class="mt-3 fw-bold">
+                The sum is: <t t-esc="state.sum"/>
+            </div>
         </div>
     </t>
 </templates>

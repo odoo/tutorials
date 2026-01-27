@@ -139,7 +139,7 @@ class EstateProperty(models.Model):
             if not record.offer_ids:
                 raise UserError("There are no offers to accept")
 
-            best_offer = max(record.offer_ids, key=lambda p:p.price)
+            best_offer = max(record.offer_ids, key=lambda p: p.price)
             best_offer.action_accept()
 
         return True
