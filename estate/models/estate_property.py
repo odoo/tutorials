@@ -105,3 +105,9 @@ class Property(models.Model):
             for offer in record.offer_ids:
                 if offer.status == "accepted" and float_compare(offer.price, 0.9 * record.expected_price, 2) == -1:
                     raise exceptions.UserError("Selling price should be at least 90 percent of the expected price")
+
+    @api.ondelete(at_uninstall=False)
+    def unlink_property(self):
+        for property in self:
+            if property.state in ("sold", "cancelled"):
+                raise exceptions.UserError("You cannot delete a property that has existing offers")

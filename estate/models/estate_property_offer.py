@@ -57,3 +57,14 @@ class PropertyOffer(models.Model):
                 raise exceptions.UserError(f"Property {offer.property_id.name} is already sold")
             offer.status = "refused"
         return True
+
+    @api.model
+    def create(self, vals):
+        for val in vals:
+            property_id = self.env['estate.property'].browse(val.get('property_id'))
+            if property_id.offer_ids:
+                max_price = max(property_id.offer_ids.mapped('price'))
+                if val.get('price') < max_price:
+                    raise exceptions.UserError(f"Offer price should be at least {max_price}")
+            property_id.state = "offer_received"
+        return super().create(vals)

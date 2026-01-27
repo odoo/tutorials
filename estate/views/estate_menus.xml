@@ -7,6 +7,7 @@
             <menuitem id="estate_property_type_menu" name="Property Types" action="estate_property_type_action"/>
             <menuitem id="estate_property_tag_menu" name="Property Tags" action="estate_property_tag_action"/>
             <menuitem id="estate_property_offer_menu" name="Property Offers" action="property_offer_view"/>
+            <menuitem id="users_and_companies" action="user_and_companies_view"/>
         </menuitem>
     </menuitem>
 </odoo>
