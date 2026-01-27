@@ -57,3 +57,9 @@ class EstateProperOffer(models.Model):
             self.property_id.selling_price = None
             self.property_id.state = 'offer_received'
         return True
+
+    @api.model
+    def create(self, vals_list):
+        for vals in vals_list:
+            self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+        return super().create(vals_list)

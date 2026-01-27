@@ -19,7 +19,8 @@
                 <field name="date_deadline"/>
                 <field name="property_type_id" string="Property Type"/>
                 <button name="action_accept" title="Accept offer." type="object" icon="fa-check" invisible="status in ('accepted', 'refused')"/>
-                <button name="action_refuse" title="Refuse offer." type="object" icon="fa-times" invisible="status in ('accepted', 'refused')"/>            </list>
+                <button name="action_refuse" title="Refuse offer." type="object" icon="fa-times" invisible="status in ('accepted', 'refused')"/>            
+            </list>
         </field>
     </record>
 

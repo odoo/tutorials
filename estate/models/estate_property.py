@@ -56,7 +56,7 @@ class EstateProperty(models.Model):
         'The selling price must be positive.',
     )
 
-    @api.constrains('offer_ids.price')
+    @api.constrains('expected_price', 'selling_price')
     def _check_expected_vs_selling_price_ratio(self):
         for property in self:
             if any(offer.status == 'accepted' for offer in property.offer_ids):
@@ -112,3 +112,9 @@ class EstateProperty(models.Model):
             raise UserError(_('Cancelled properties cannot be sold.'))
         self.state = 'sold'
         return True
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_new_or_cancelled(self):
+        for record in self:
+            if record.state not in ('new', 'cancelled'):
+                raise UserError(_('You cannot delete a property unless its state is `New` or `Cancelled`.'))

@@ -137,3 +137,6 @@ ruff.toml
 
 # Checkstyle file
 check-style
+
+# VS Code Config
+.vscode/
