@@ -1,9 +1,8 @@
 from odoo import models
-from odoo.exceptions import UserError
 from odoo.orm.commands import Command
 
 class EstateProperty(models.Model):
-    _inherit = 'estate.property'
+    _inherit = ['estate.property']
 
     def action_sell(self):
 

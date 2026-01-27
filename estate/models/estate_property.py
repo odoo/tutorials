@@ -71,13 +71,6 @@ class EstateProperty(models.Model):
         'The selling price of a property should be positive'
     )
 
-    @api.constrains('state', 'expected_price', 'selling_price')
-    def _check_prices(self):
-        for record in self:
-            if record.state == 'offer_accepted' \
-            and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
-                raise ValidationError('The selling price must be at least 90% of the expected price')
-
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
         for record in self:
@@ -87,6 +80,13 @@ class EstateProperty(models.Model):
     def _compute_best_offer(self):
         for record in self:
             record.best_offer = max(record.offer_ids.mapped('price'), default=0)
+
+    @api.constrains('state', 'expected_price', 'selling_price')
+    def _check_prices(self):
+        for record in self:
+            if record.state == 'offer_accepted' \
+            and float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) == -1:
+                raise ValidationError('The selling price must be at least 90% of the expected price')
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -121,7 +121,7 @@ class EstateProperty(models.Model):
             if record.state not in ('new', 'canceled'):
                 raise UserError('Only new and canceled properties can be deleted')
 
-    def set_offer_received(self):
+    def _set_offer_received(self):
         for record in self:
             if record.state == 'new':
                 record.state = 'offer_received'

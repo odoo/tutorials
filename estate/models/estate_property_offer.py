@@ -37,6 +37,18 @@ class EstatePropertyOffer(models.Model):
             creation_date = record.create_date or fields.Date.today()
             record.validity = (record.date_deadline - creation_date.date()).days
 
+    @api.model
+    def create(self, vals):
+        for record in vals:
+            property = self.env['estate.property'].browse(record['property_id'])
+
+            if record['price'] < property.best_offer:
+                raise UserError(f'The offer must be above {property.best_offer}')
+
+            property._set_offer_received()
+
+        return super().create(vals)
+
     def action_accept(self):
         self.ensure_one()
 
@@ -68,15 +80,3 @@ class EstatePropertyOffer(models.Model):
         property.partner_id = None
 
         return True
-
-    @api.model
-    def create(self, vals):
-        for record in vals:
-            property = self.env['estate.property'].browse(record['property_id'])
-
-            if record['price'] < property.best_offer:
-                raise UserError(f'The offer must be above {property.best_offer}')
-
-            property.set_offer_received()
-
-        return super().create(vals)
