@@ -31,7 +31,7 @@
                             invisible="state in ('sold', 'cancelled')" />
                         <button name="action_cancelled" type="object" string="cancel"
                             invisible="state in ('sold', 'cancelled')" />
-                        <button name="action_approve" type="object" string="Approve" invisible="state in ('offer_accepted', 'sold')"/>
+                        <button name="action_approve_best_offer" type="object" string="Approve" invisible="state in ('offer_accepted', 'sold')"/>
                         <field name="state" widget="statusbar"
                             statusbar_visible="new,offer_received,offer_accepted,sold" />
                     </header>
@@ -39,23 +39,23 @@
                         <widget name="web_ribbon" title="Sold" bg_color="text-bg-success" invisible="state != 'sold'"/>
                         <group>
                             <h1>
-                                <field name="name" placeholder="e.g Beach View House" readonly="state == 'sold'"/>
+                                <field name="name" placeholder="e.g Beach View House" readonly="state !='new'"/>
                             </h1>
                         </group>
                         <group>
                             <field name="tag_ids" widget="many2many_tags"
-                                options="{'color_field': 'color'}" />
+                                options="{'color_field': 'color'}"/>
                         </group>
                         <group>
                             <group>
                                 <field name="property_type_id"
-                                    options="{'no_create': True, 'no_edit': True}" />
-                                <field name="postcode" placeholder="e.g 123456" />
+                                    options="{'no_create': True, 'no_edit': True}" readonly="state !='new'"/>
+                                <field name="postcode" placeholder="e.g 123456" readonly="state !='new'"/>
                                 <field name="date_availability" string="Available from"
-                                    optional="hide" />
+                                    optional="hide" readonly="state !='new'"/>
                             </group>
                             <group>
-                                <field name="expected_price" />
+                                <field name="expected_price" readonly="state !='new'"/>
                                 <field name="best_price" />
                                 <field name="selling_price" />
                             </group>
@@ -67,19 +67,18 @@
                                     <group>
                                         <field name="description" string="Description"
                                             placeholder="e.g Almost having all facilities" />
-                                        <field name="bedrooms" />
-                                        <field name="living_area" />
+                                        <field name="bedrooms" readonly="state != 'new'"/>
+                                        <field name="living_area"  readonly="state != 'new'"/>
                                         <field name="facades"
-                                            help="Number of external walls (0-4). e.g A detached house has 4." />
+                                            help="Number of external walls (0-4). e.g A detached house has 4."  readonly="state != 'new'"/>
                                     </group>
                                     <group>
-                                        <field name="garage" />
-                                        <field name="garden" />
+                                        <field name="garage"  readonly="state != 'new'"/>
+                                        <field name="garden"  readonly="state != 'new'"/>
                                         <field name="garden_area" help="e.g 100(sqm)"
-                                            invisible="not garden" />
-                                        <field name="garden_orientation" invisible="not garden" />
+                                            invisible="not garden" readonly="state != 'new'"/>
+                                        <field name="garden_orientation" invisible="not garden"  readonly="state != 'new'"/>
                                         <field name="total_area" />
-                                        <field name="state"/>
                                         <field name="active" />
                                     </group>
                                 </group>
@@ -90,25 +89,25 @@
                                     readonly="state in('offer_accepted', 'sold')">
                                     <list editable="bottom" decoration-danger="status == 'refused'"
                                         decoration-success="status == 'accepted'">
-                                        <field name="price" />
-                                        <field name="partner_id" />
+                                        <field name="price" readonly="status in ('refused')"/>
+                                        <field name="partner_id" readonly="status in ('refused')"/>
                                         <button name="action_accept" type="object" icon="fa-check"
                                             title="Accept"
-                                            invisible="status in ('refused', 'accepted')" />
+                                            invisible="status == 'refused' or parent.state == 'sold'" />
                                         <button name="action_refuse" type="object" icon="fa-times"
                                             title="Refuse"
-                                            invisible="status in ('refused', 'accepted')" />
-                                        <field name="status" />
-                                        <field name="validity" />
-                                        <field name="date_deadline" />
+                                            invisible="status == 'refused' or parent.state == 'sold'" />
+                                        <field name="status"  readonly="True"/>
+                                        <field name="validity"  readonly="status in ('refused', 'accepted')"/>
+                                        <field name="date_deadline"  readonly="status in ('refused', 'accepted')"/>
                                     </list>
                                 </field>
                             </page>
 
                             <page string="Other Info">
                                 <group>
-                                    <field name="salesperson_id" string=" Sales Man" />
-                                    <field name="buyer_id" string="Buyer" />
+                                    <field name="salesperson_id" string=" Sales Man"  readonly="state in ('offer_accepted', 'sold')"/>
+                                    <field name="buyer_id" string="Buyer"  readonly="state in ('offer_accepted', 'sold')"/>
                                 </group>
                             </page>
                         </notebook>
@@ -156,7 +155,7 @@
                     <field name="state" />
                     <field name="selling_price" />
                     <field name="best_price" />
-                    <progressbar field="state" colors='{"success": "sold", "warning": "offer_received", "danger": "offer_accepted"}' sum_field="expected_price"/>
+                    <progressbar field="state" colors='{"new": "info", "sold": "success", "offer_received": "warning", "offer_accepted": "danger"}' sum_field="expected_price"/>
                     <templates>
                         <t t-name="card">
                             <div class="fw-bold fs-5 mb-1">

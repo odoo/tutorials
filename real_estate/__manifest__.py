@@ -8,10 +8,10 @@ Buying & selling Properties
 ===========================
 This Module provide functionalities from where you manage the real estate properties from finding buyer to get best price.
     """,
-    'category': 'sales',
+    'category': 'Real Estate/Brokerage',
     'website': 'https://www.ishw.tech',
     'depends': [
-        'base'
+        'base', 'account'
     ],
     'data': [
         'security/ir.model.access.csv',
@@ -20,6 +20,7 @@ This Module provide functionalities from where you manage the real estate proper
         'views/estate_property_type_views.xml',
         'views/estate_property_tag_views.xml',
         'views/res_users_views.xml',
+        'views/account_move.xml',
         'views/estate_menus.xml',
     ],
     'installable': True,

@@ -7,5 +7,5 @@ class ResUsers(models.Model):
     property_ids = fields.One2many(
         "estate.property",
         "salesperson_id",
-        domain=['|', ("state", "=", "new"), ("state", "=", "offer_received")],
+        domain=["|", ("state", "=", "new"), ("state", "=", "offer_received")],
     )
