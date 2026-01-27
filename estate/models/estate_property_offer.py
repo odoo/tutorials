@@ -10,6 +10,7 @@ from odoo.tools.translate import _
 class EstateProperOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Property Offer."
+    _order = "price desc"
 
     price = fields.Float('Price')
     status = fields.Selection(
@@ -17,21 +18,19 @@ class EstateProperOffer(models.Model):
         selection=[('accepted', 'Accepted'), ('refused', 'Refused')],
         copy=False,
     )
-    partner_id = fields.Many2one('res.partner', required=True)
-    property_id = fields.Many2one('estate.property', required=True)
-
     validity = fields.Integer('Validity (days)', default=7)
     date_deadline = fields.Date(compute='_compute_deadline', inverse='_inverse_deadline', string='Deadline')
+    partner_id = fields.Many2one('res.partner', required=True)
+    property_id = fields.Many2one('estate.property', required=True)
+    property_type_id = fields.Many2one(related='property_id.type_id')
 
     ## CONSTRAINTS ##
-
     _check_offer_price = models.Constraint(
         'CHECK(price > 0)',
         'The offer price must be strictly positive.',
     )
 
     ## COMPUTE FUNCTIONS ##
-
     @api.depends('create_date', 'validity')
     def _compute_deadline(self):
         for record in self:
@@ -45,7 +44,6 @@ class EstateProperOffer(models.Model):
             record.validity = (record.date_deadline - record.create_date.date()).days
 
     ## ACTIONS ##
-
     def action_accept(self):
         if self.status != 'accepted':
             for offer in self.property_id.offer_ids:
@@ -53,10 +51,12 @@ class EstateProperOffer(models.Model):
                     raise UserError(_('Only one offer can be accepted.'))
             self.status = 'accepted'
             self.property_id.selling_price = self.price
+            self.property_id.state = 'offer_accepted'
         return True
 
     def action_refuse(self):
-        if self.status == 'accepted':
-            self.status = 'refused'
+        self.status = 'refused'
+        if self.property_id.state != 'offer_accepted':
             self.property_id.selling_price = None
+            self.property_id.state = 'offer_received'
         return True

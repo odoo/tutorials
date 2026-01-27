@@ -11,9 +11,9 @@ DEFAULT_GARDEN_AREA = 10
 class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Real Estate Property."
+    _order = "id desc"
 
     active = fields.Boolean('Active', default=True)
-
     name = fields.Char('Real Estate Name', required=True)
     description = fields.Text('Description')
     postcode = fields.Char('Postcode')
@@ -39,13 +39,11 @@ class EstateProperty(models.Model):
     )
     total_area = fields.Integer(compute='_compute_total_area', string='Total Area (sqm)')
     best_price = fields.Float(compute='_compute_best_price', string='Best Price')
-
     sales_person_id = fields.Many2one('res.users', string='Salesman', index=True, default=lambda self: self.env.user)
     buyer_id = fields.Many2one('res.partner', string='Buyer', copy=False, readonly=True, compute='_compute_buyer')
-
-    tag_ids = fields.Many2many('estate.property.tag', string="Tags")
-
+    tag_ids = fields.Many2many('estate.property.tag', string='Tags')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', string='Offers')
+    type_id = fields.Many2one('estate.property.type', string='Type', required=True)
 
     ## CONSTRATINS ##
     _check_expected_price = models.Constraint(
@@ -58,15 +56,18 @@ class EstateProperty(models.Model):
         'The selling price must be positive.',
     )
 
-    @api.constrains('expected_price', 'selling_price')
+    @api.constrains('offer_ids.price')
     def _check_expected_vs_selling_price_ratio(self):
         for property in self:
             if any(offer.status == 'accepted' for offer in property.offer_ids):
                 if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0:
                     raise ValidationError(_('The selling price cannot be lower than 90 precent of the expected price: \n Selling Price: %s, Expected Price: %s') % (property.selling_price, property.expected_price))
 
-    # or not float_is_zero(abs(property.expected_price * 0.9 - property.selling_price)):
     ## COMPUTE FUNCTIONS ##
+    @api.depends('offer_ids.price')
+    def _compute_selling_price(self):
+        for property in self:
+            property.selling_price = self.offer_ids.price
 
     @api.depends('living_area', 'garden_area')
     def _compute_total_area(self):
@@ -91,7 +92,6 @@ class EstateProperty(models.Model):
             record.buyer_id = None
 
     ## ONCHAGE FUNCTIONS ##
-
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -102,11 +102,12 @@ class EstateProperty(models.Model):
             self.garden_orientation = None
 
     ## ACTIONS ##
-
     def action_cancel_property(self):
         if self.state == 'sold':
             raise UserError(_('Sold properties cannot be canceled.'))
         self.state = 'cancelled'
+        for offer in self.offer_ids:
+            offer.status = None
         return True
 
     def action_sold_property(self):
