@@ -1,13 +1,13 @@
 from odoo import Command, models
 
 
-class Property(models.Model):
-    _inherit = ["estate.property"]
+class EstateProperty(models.Model):
+    _inherit = "estate.property"
 
     # === ACTION METHODS === #
 
     def action_set_sold(self):
-        move = self.env['account.move'].create({
+        self.env['account.move'].create({
             'partner_id': self.buyer_id.id,
             'move_type': 'out_invoice',
             'invoice_line_ids': [
@@ -18,7 +18,7 @@ class Property(models.Model):
                 Command.create({
                 'name': 'Adminstration Fee',
                 'quantity': 1,
-                'price_unit': 100,}),
+                'price_unit': 100}),
             ],
         })
         return super().action_set_sold()
