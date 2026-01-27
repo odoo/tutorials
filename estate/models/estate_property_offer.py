@@ -60,9 +60,7 @@ class EstatePropertyOffer(models.Model):
                 raise UserError('You cannot refuse an accepted offer.')
 
             offer.status = 'refused'
-
             property_record = offer.property_id
-
             active_offers = property_record.offer_ids.filtered(lambda o: o.status in ('pending', 'accepted'))
 
             if not active_offers:

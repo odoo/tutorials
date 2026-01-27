@@ -5,7 +5,6 @@ class EstateAccount(models.Model):
     _inherit = 'estate.property'
 
     def action_sold(self):
-        pippo = super().action_sold()
         journal = self.env['account.journal'].search([('type', '=', 'sale')], limit=1)
         if not journal:
             raise UserError(
@@ -28,4 +27,4 @@ class EstateAccount(models.Model):
                             })
                         ]}
             self.env['account.move'].create(invoice)
-        return pippo
+        return super().action_sold()
