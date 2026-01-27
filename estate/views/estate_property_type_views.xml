@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <odoo>
-    <record id="estate_property_types" model="ir.actions.act_window">
+    <record id="estate_property_type_action_view_list" model="ir.actions.act_window">
         <field name="name">Property Types</field>
         <field name="res_model">estate.property.type</field>
         <field name="view_mode">list,form,search</field>
     </record>
 
-    <record id="estate_property_types_view_list" model="ir.ui.view">
-        <field name="name">estate.property.type.list</field>
+    <record id="estate_property_type_view_list" model="ir.ui.view">
+        <field name="name">estate.property.type.view.list</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <list string="Property Types">
@@ -17,14 +17,14 @@
         </field>
     </record>
 
-    <record id="estate_property_types_view_form" model="ir.ui.view">
-        <field name="name">estate.property.type.form</field>
+    <record id="estate_property_type_view_form" model="ir.ui.view">
+        <field name="name">estate.property.type.view.form</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <form string="Property Type">
                 <sheet>
                 <div class="oe_button_box" name="button_box">
-                    <button name="%(estate_property_offer)d"
+                    <button name="%(estate_property_offer_action_view_list)d"
                         type="action"
                         class="oe_stat_button"
                         icon="fa-bars"
@@ -57,8 +57,8 @@
         </field>
     </record>
 
-    <record id="estate_property_types_view_search" model="ir.ui.view">
-        <field name="name">estate.property.type.search</field>
+    <record id="estate_property_type_view_search" model="ir.ui.view">
+        <field name="name">estate.property.type.view.search</field>
         <field name="model">estate.property.type</field>
         <field name="arch" type="xml">
             <search string="Search Property Types">
