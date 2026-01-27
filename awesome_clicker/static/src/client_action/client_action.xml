@@ -3,27 +3,42 @@
 
     <t t-name="awesome_clicker.ClientAction">
         <div>
-            Clicker Client Action
-            <div>
-                <ClickerValue value="clicker.clicks"/>
-                <button id="clicker-big-increment-button" class="btn btn-primary" t-on-click="bigIncrement">Increment</button>
-            </div>
-
-            <h2>Bots</h2>
-            <p>
-                <t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/second)
-            </p>
-            <button class="btn btn-primary" t-on-click="buyClickBot" t-att-disabled="clicker.clicks &lt; 1000">Buy ClickBot (1000 clicks)</button>
-            <p>
-                <t t-esc="clicker.bigClickBots"/>x BigClickBots (100 clicks/second)
-            </p>
-            <button class="btn btn-primary" t-on-click="buyBigClickBot" t-att-disabled="clicker.clicks &lt; 5000">Buy BigClickBot (5000 clicks)</button>
-            
-            <h2>Power</h2>
-            <p>
-                <t t-esc="clicker.power"/>Power
-            </p>
-            <button class="btn btn-primary" t-on-click="buyPower" t-att-disabled="clicker.clicks &lt; 100000">Buy Power (100 000 clicks)</button>
+            <ClickerValue name="'Clicks : '" value="clicker.clicks"/>
+            <button id="clicker-big-increment-button" class="btn btn-primary" t-on-click="bigIncrement">Increment</button>
         </div>
+        <Notebook>
+            <t t-set-slot="page_1" title="'Clicks'" isVisible="true">
+                <h2>Bots</h2>
+                <p>
+                    <t t-esc="clicker.clickBots"/>x ClickBots (10 clicks/second)
+                </p>
+                <button class="btn btn-primary" t-on-click="buyClickBot" t-att-disabled="clicker.clicks &lt; 1000">Buy ClickBot (1000 clicks)</button>
+                <p>
+                    <t t-esc="clicker.bigClickBots"/>x BigClickBots (100 clicks/second)
+                </p>
+                <button class="btn btn-primary" t-on-click="buyBigClickBot" t-att-disabled="clicker.clicks &lt; 5000">Buy BigClickBot (5000 clicks)</button>
+                
+                <h2>Power</h2>
+                <p>
+                    <t t-esc="clicker.power"/>Power
+                </p>
+                <button class="btn btn-primary" t-on-click="buyPower" t-att-disabled="clicker.clicks &lt; 100000">Buy Power (100 000 clicks)</button>
+            </t>
+
+            <t t-set-slot="page_2" title="'Trees and Fruits'" isVisible="true">
+                <h2>Trees</h2>
+                <div t-foreach="getTreeTypes()" t-as="t" t-key="t">
+                    <p>
+                        <t t-esc="clicker.getTreeCount(t)"/><t t-esc="t + ' tree'"/>
+                    </p>
+                    <button class="btn btn-primary" t-on-click="() => this.buyTree(t)" t-att-disabled="clicker.clicks &lt; 1000000">Buy Tree (1 000 000 clicks)</button>
+                </div>
+
+                <h2>Fruits</h2>
+                <p t-foreach="getTreeTypes()" t-as="t" t-key="t">
+                    <t t-esc="clicker.getFruitCount(t)"/><span>x </span><t t-esc="t"/>
+                </p>
+            </t>
+        </Notebook>
     </t>
 </templates>

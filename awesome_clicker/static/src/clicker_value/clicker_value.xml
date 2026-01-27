@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_clicker.ClientValue">
-        <span t-att-data-tooltip="props.value">Clicks : <t t-esc="getValue()"/></span>
+        <span t-att-data-tooltip="props.value"><t t-esc="props.name"/><t t-esc="getValue()"/></span>
     </t>
 </templates>

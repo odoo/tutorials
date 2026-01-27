@@ -3,12 +3,17 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { useClicker } from "../utility";
 import { ClickerValue } from "../clicker_value/clicker_value";
+import { DropdownItem } from "@web/core/dropdown/dropdown_item";
+import { Dropdown } from "@web/core/dropdown/dropdown"
+import { treeTypes } from "../models/clicker_model";
 
 export class ClickerSystrayItem extends Component {
     static template = "awesome_clicker.ClickerSystrayItem";
 
     static components = {
-        ClickerValue
+        ClickerValue,
+        Dropdown,
+        DropdownItem
     }
 
     setup() {
@@ -35,6 +40,10 @@ export class ClickerSystrayItem extends Component {
             target: 'new',
             name: 'Clicker'
         })
+    }
+
+    getTreeTypes() {
+        return treeTypes;
     }
 }
 

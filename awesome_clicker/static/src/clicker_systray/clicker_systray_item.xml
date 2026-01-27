@@ -2,13 +2,33 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_clicker.ClickerSystrayItem">
-        <div class="clicker-systray-item">
-            <ClickerValue value="clicker.clicks"/>
-            <button id="clicker-big-increment-button" class="btn btn-light" t-on-click="bigIncrement">
-                <i class="fa fa-plus"/>
-            </button>
-            <button class="btn btn-light" t-on-click="openClientAction">Open</button>
-        </div>
+        <Dropdown>
+            <p>
+                <ClickerValue name='' value="clicker.clicks"/>
+                <i class="fa fa-arrow-up"></i>
+                <span class="clicker-systray-separator">,</span>
+                <ClickerValue name='' value="clicker.getAllTreesCount()"/>
+                <i class="fa fa-tree"/>
+                <span class="clicker-systray-separator">,</span>
+                <ClickerValue name='' value="clicker.getAllFruitsCount()"/>
+                <i class="fa fa-apple"/>
+            </p>
+
+            <t t-set-slot="content">
+                <DropdownItem onSelected="() => this.openClientAction()">
+                    Open the clicker game
+                </DropdownItem>
+                <DropdownItem onSelected="() => this.clicker.buyClickBot()">
+                    Buy a Clickbot
+                </DropdownItem>
+                <p t-foreach="getTreeTypes()" t-as="t" t-key="t">
+                    <t t-esc="clicker.getTreeCount(t) + 'x ' + t + ' tree'"/>
+                </p>
+                <p t-foreach="getTreeTypes()" t-as="t" t-key="t">
+                    <t t-esc="clicker.getFruitCount(t) + 'x ' + t"/>
+                </p>
+            </t>
+        </Dropdown>
     </t>
 
 </templates>

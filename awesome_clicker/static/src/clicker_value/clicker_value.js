@@ -5,6 +5,7 @@ export class ClickerValue extends Component {
     static template = "awesome_clicker.ClientValue";
 
     static props = {
+        name: String,
         value: Number
     }
 
