@@ -30,6 +30,8 @@
                     <button
                         name="action_cancel_button" type="object" string="Cancel"
                         invisible="state in ('sold','cancelled')" />
+                    <button name="%(estate.action_report_property)d" type="action"
+                        string="Print Report" class="oe_highlight" />
                     <field
                         name="state" widget="statusbar"
                         statusbar_visible="new,offer_received,offer_accepted,sold" />
