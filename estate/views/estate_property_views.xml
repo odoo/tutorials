@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="estate_property_view_kanban" model="ir.ui.view">
-        <field name="name">estate.property.kanban</field>
+        <field name="name">estate.property.view.kanban</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <kanban default_group_by="property_type_id" records_draggable="False" class="o_kanban_small_column">
@@ -29,7 +29,7 @@
     </record>
 
     <record id="estate_property_view_search" model="ir.ui.view">
-        <field name="name">estate.property.search</field>
+        <field name="name">estate.property.view.search</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search string="Search Properties">
@@ -50,7 +50,7 @@
     </record>
 
     <record id="estate_property_view_form" model="ir.ui.view">
-        <field name="name">estate.property.form</field>
+        <field name="name">estate.property.view.form</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <form string="Property">
@@ -108,8 +108,8 @@
         </field>
     </record>
 
-    <record id="estate_property_view_tree" model="ir.ui.view">
-        <field name="name">estate.property.list</field>
+    <record id="estate_property_view_list" model="ir.ui.view">
+        <field name="name">estate.property.view.list</field>
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <list string="Channel" decoration-success="state == 'offer received' or state == 'offer accepted'" decoration-bf="state == 'offer accepted'" decoration-muted="state == 'sold'">
