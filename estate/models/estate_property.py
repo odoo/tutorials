@@ -63,7 +63,6 @@ class EstateProperty(models.Model):
                 if float_compare(property.selling_price, property.expected_price * 0.9, precision_digits=2) < 0:
                     raise ValidationError(_('The selling price cannot be lower than 90 precent of the expected price: \n Selling Price: %s, Expected Price: %s') % (property.selling_price, property.expected_price))
 
-    ## COMPUTE FUNCTIONS ##
     @api.depends('offer_ids.price')
     def _compute_selling_price(self):
         for property in self:
@@ -91,7 +90,6 @@ class EstateProperty(models.Model):
                     return
             record.buyer_id = None
 
-    ## ONCHAGE FUNCTIONS ##
     @api.onchange('garden')
     def _onchange_garden(self):
         if self.garden:
@@ -101,7 +99,6 @@ class EstateProperty(models.Model):
             self.garden_area = 0
             self.garden_orientation = None
 
-    ## ACTIONS ##
     def action_cancel_property(self):
         if self.state == 'sold':
             raise UserError(_('Sold properties cannot be canceled.'))
