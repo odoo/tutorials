@@ -12,4 +12,12 @@ export class Playground extends Component {
     html = exampleHtml;
     markupHtml = markup(exampleHtml);
 
+    setup() {
+        this.state = useState({ sum: 0 });
+    }
+
+    onChange(){
+        this.state.sum ++;
+    }
+
 }
