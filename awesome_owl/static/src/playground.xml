@@ -17,6 +17,9 @@
             <p>The sum is: <t t-esc="state.sum"/></p>
         </div>
 
+        <!-- <TodoList todos="[{ id: 2, description: 'write tutorial', isCompleted: true }, { id: 3, description: 'buy milk', isCompleted: false }]"/> -->
+        <TodoList/>
+
     </t>
 
 </templates>
