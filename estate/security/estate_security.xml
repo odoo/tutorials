@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_groups_privilege_estate" model="res.groups.privilege">
+            <field name="name">Brokerage</field>
+            <field name="sequence">10</field>
+            <field name="category_id" ref="base.module_category_real_estate"/>
+        </record>
+
+        <record id="estate_group_user" model="res.groups">
+            <field name="name">Agent</field>
+            <field name="privilege_id" ref="res_groups_privilege_estate"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <record id="estate_group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="privilege_id" ref="res_groups_privilege_estate"/>
+            <field name="implied_ids" eval="[(4, ref('estate.estate_group_user'))]"/>
+        </record>
+
+        <record id="estate_property_rule_agent" model="ir.rule">
+            <field name="name">Agent: Personal Properties Only</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+            <field name="domain_force">['|', ('salesman_id', '=', user.id), ('salesman_id', '=', False)]</field>
+        </record>
+        
+        <record id="estate_property_rule_manager" model="ir.rule">
+            <field name="name">Manager: See All Properties</field>
+            <field name="model_id" ref="model_estate_property"/>
+            <field name="groups" eval="[(4, ref('estate_group_manager'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="estate_property_offer_rule_agent" model="ir.rule">
+            <field name="name">Personal Offers Only</field>
+            <field name="model_id" ref="model_estate_property_offer"/>
+            <field name="groups" eval="[(4, ref('estate_group_user'))]"/>
+            <field name="domain_force">[('property_id.salesman_id', '=', user.id)]</field>
+        </record>
+
+    </data>
+</odoo>
