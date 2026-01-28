@@ -1,3 +1,4 @@
+import random
 from odoo import models, fields
 
 
@@ -13,4 +14,4 @@ class PropertyTag(models.Model):
     )
 
     name = fields.Char(string="Name", required=True)
-    color = fields.Integer('Color Index', default=0)
+    color = fields.Integer('Color Index', default=lambda self: random.randint(1, 11))

@@ -40,6 +40,7 @@ class Property(models.Model):
     garden = fields.Boolean(string="Garden")
     garden_area = fields.Integer(string="Garden Area")
     active = fields.Boolean(string="Active", default=True)
+    color = fields.Integer('Color Index', compute="_compute_color")
     garden_orientation = fields.Selection(
         string="Garden Orientation",
         selection=[
@@ -61,6 +62,20 @@ class Property(models.Model):
         readonly=True,
         default="new"
     )
+
+    @api.depends("state")
+    def _compute_color(self):
+        for record in self:
+            if record.state == "sold":
+                record.color = 10  # Green
+            elif record.state == "cancelled":
+                record.color = 1   # Red
+            elif record.state == "offer_received":
+                record.color = 4   # Blue
+            elif record.state == "offer_accepted":
+                record.color = 3   # Light Green/Yellowish
+            else:
+                record.color = 0
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -87,7 +102,6 @@ class Property(models.Model):
                 raise exceptions.UserError("You cannot sell a cancelled property")
             else:
                 record.state = "sold"
-                record.active = False
         return True
 
     def cancel_property(self):
@@ -96,7 +110,6 @@ class Property(models.Model):
                 raise exceptions.UserError("You cannot cancel a sold property")
             else:
                 record.state = "cancelled"
-                record.active = False
         return True
 
     @api.constrains("state", "offer_ids")

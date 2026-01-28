@@ -1,5 +1,6 @@
 from odoo import models, Command
 
+
 class EstateProperty(models.Model):
     _inherit = "estate.property"
 
@@ -22,4 +23,4 @@ class EstateProperty(models.Model):
                 })
             ]
         })
-        return super().sell_property()    
+        return super().sell_property()
