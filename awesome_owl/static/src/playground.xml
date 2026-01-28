@@ -12,8 +12,15 @@
         </div>
 
         <p>
-            <Card title="'card 1'" content="this.html"/>
-            <Card title="'card 2'" content="'content of card 2'"/>
+            <Card title="'card 1'">
+                <t t-out="this.html"/>
+            </Card>
+            <Card title="'card 2'">
+                content of card 2
+            </Card>
+            <Card title="'card 3'">
+                <Counter/>
+            </Card>
         </p>
 
         <TodoList/>
