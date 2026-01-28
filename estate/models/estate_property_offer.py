@@ -22,6 +22,9 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals_list):
         prop = self.env['estate.property'].browse(vals_list[0]['property_id'])
 
+        if (prop.state != 'new' and prop.state != 'offer-received'):
+            raise exceptions.UserError("Cannot add an offer to a property not accepting offers")
+
         if (any(o.price > vals_list[0]['price'] for o in prop.offer_ids)):
             raise exceptions.UserError("Cannot add an offer with a lower amount than an existing one")
 
