@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <odoo>
 
-    <record id="load_properties_action" model="ir.actions.act_window">
-        <field name="name">Properties</field>
+    <record id="estate_property_action" model="ir.actions.act_window">
+        <field name="name">estate.property.action</field>
         <field name="res_model">estate.property</field>
         <field name="view_mode">list,form,kanban</field>
         <field name="context">{'search_default_available': True}</field>
