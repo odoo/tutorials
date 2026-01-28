@@ -9,19 +9,22 @@ class AwesomeDashboard extends Component {
     // static props = ["action", "actionId", "updateActionState", "className"];
 
     setup() {
-        this.action =  useService("action");
+        this.action = useService("action");
     }
 
     openCustomers() {
-        this.action.doAction("base.action_partner_form")
+        this.action.doAction("base.action_partner_form");
     }
 
     async openLeads() {
         this.action.doAction({
-            type: 'ir.actions.act_window',
-            name: 'All Leads',
-            res_model: 'crm.lead',
-            views: [[false, 'list'], [false, 'form']],
+            type: "ir.actions.act_window",
+            name: "All Leads",
+            res_model: "crm.lead",
+            views: [
+                [false, "list"],
+                [false, "form"],
+            ],
         });
     }
 }
