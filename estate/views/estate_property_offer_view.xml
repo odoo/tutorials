@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<odoo>    
+    <record id="property_offer_view" model="ir.actions.act_window">
+        <field name="name">Property Offer</field>
+        <field name="res_model">estate.property.offer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <record id="property_offer_list_view" model="ir.ui.view">
+        <field name="name">property.offer.list.view</field>
+        <field name="model">estate.property.offer</field>
+        <field name="arch" type="xml">
+            <list string="Property Offers">
+                <field name="price"/>
+                <field name="partner_id"/>
+                <field name="validity"/>
+                <field name="deadline_date"/>
+            </list>
+        </field>
+    </record>
+</odoo>

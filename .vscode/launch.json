@@ -1,0 +1,26 @@
+{ // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "master",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "/home/odoo/codebase/odoo/odoo-bin",
+            "args": [
+                "--addons-path=/home/odoo/codebase/odoo/addons,/home/odoo/codebase/enterprise, /home/odoo/codebase/tutorials",
+                "--limit-time-cpu=0",
+                "--limit-time-real=0",
+                "--limit-request=0",
+                "--database=rd-demo",
+                "--dev=xml,qweb",
+                "--with-demo",
+                //"-i", "accountant",
+            ],
+            "console": "integratedTerminal",
+            "variablePresentation": {},
+            "justMyCode": false
+        },
+    ]
+}
