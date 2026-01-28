@@ -30,7 +30,6 @@ class EstatePropertyOffer(models.Model):
                 record.validity = (record.date_deadline - fields.Date.today()).days  # If no create_date we take the date of today
 
     def action_status_accepted(self):
-
         if len(self) > 1:
             raise exceptions.UserError('Only one offer can be accepted')
 
@@ -56,7 +55,6 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
-
         for vals in vals_list:
             max_existing_price = max((offer.price for offer in self.env['estate_property'].browse(vals_list[0]['property_id']).property_offer_id), default=0)
             if vals['price'] < max_existing_price:

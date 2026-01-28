@@ -5,6 +5,7 @@
         <div class="p-3">
             <div class="mb-2">
                 <input
+                    t-ref="todoInput"
                     type="text"
                     class="form-control"
                     placeholder="Add a todo"
@@ -12,7 +13,7 @@
                 />
             </div>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo"/>
+                <TodoItem todo="todo" toggleState.bind="toggleState"/>
             </t>
         </div>
     </t>
