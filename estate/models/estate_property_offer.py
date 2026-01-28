@@ -39,14 +39,12 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals):
-        breakpoint()
         for val in vals:
-            x = self.env["estate.property"].browse(val["property_id"])
-            if x.offer_property_ids.filtered(lambda r: r.price > val["price"]):
-                raise UserError(
-                    _("This offers price is less than existing offers price.")
-                )
-            x.state = "offer_received"
+            property = self.env["estate.property"].browse(val["property_id"])
+            if property.offer_property_ids.filtered(lambda r: r.price > val["price"]):
+                raise UserError("This offers price is less than existing offers price.")
+
+            property.state = "offer_received"
 
         return super().create(vals)
 

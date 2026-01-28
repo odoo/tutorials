@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<template>
+    <t t-name="awesome_owl.Card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <button class="d-block " t-on-click="toggleState">Change Colur</button>
+            <div class="card-body" t-att-class="{'bg-danger':state.value , 'bg-primary':!state.value}">
+                <h5 class="card-title">
+                    <t t-out="props.name"/>
+                </h5>
+                <p class="card-text">
+                    <t t-slot="default"/>
+                </p>
+            </div>
+        </div>
+    </t>
+</template>

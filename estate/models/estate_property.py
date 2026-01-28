@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
+from odoo.tools import is_html_empty
 
 
 class EstateProperty(models.Model):
@@ -27,7 +28,6 @@ class EstateProperty(models.Model):
     garden_orientation = fields.Selection(
         [("north", "North"), ("south", "South"), ("east", "East"), ("west", "West")]
     )
-
     property_type_id = fields.Many2one("estate.property.type")
     property_tag_ids = fields.Many2many("estate.property.tag")
     salesman_id = fields.Many2one("res.users", default=lambda self: self.env.user)
@@ -35,7 +35,6 @@ class EstateProperty(models.Model):
     offer_property_ids = fields.One2many("estate.property.offer", "property_id")
     total_area = fields.Float("Total Area(sqm)", compute="_compute_total_area")
     best_price = fields.Float("Best Price", compute="_compute_best_price")
-
     active = fields.Boolean(default=True)
     state = fields.Selection(
         [
@@ -105,3 +104,13 @@ class EstateProperty(models.Model):
             raise UserError(message="Sold property can not be cancelled")
         self.state = "cancelled"
         return True
+
+    @api.model
+    def get_empty_list_help(self, help_message):
+        if not is_html_empty(help_message):
+            return help_message
+
+        help_title = "Create properties for getting amazing offers. "
+        return super().get_empty_list_help(
+            f'<p class="o_view_nocontent_smiling_face">{help_title}</p>'
+        )

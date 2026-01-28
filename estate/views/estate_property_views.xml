@@ -51,7 +51,6 @@
                         <group>
                             <field name="property_tag_ids" widget="many2many_tags" options="{'color_field': 'color'} "/>
                             <field name="property_type_id" options="{'no_create_edit': true}"/>
-                            <field name="state" />
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -65,13 +64,11 @@
                         <page string="Description">
                             <group>
                                 <group>
-                                    <field name="display_name"/>
                                     <field name="description"/>
                                     <field name="bedrooms"/>
                                     <field name="facades"/>
                                     <field name="active"/>
                                     <field name="living_area"/>
-
                                 </group>
                                 <group>
                                     <field name="garden"/>
@@ -161,7 +158,6 @@
                                 <div>
                                     <field name="property_tag_ids" widget="many2many_tags" options="{'color_field':'color'}" />
                                 </div>
-
                             </div>
                         </div>
                     </t>
