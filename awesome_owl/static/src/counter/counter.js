@@ -5,7 +5,7 @@ export class Counter extends Component {
     static props = ["onChange?"]
 
     setup() {
-        this.state = useState({ value: 1});
+        this.state = useState({ value: 0});
     }
 
     increment() {
