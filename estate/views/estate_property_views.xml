@@ -80,7 +80,7 @@
                             <page string="Offers">
                                 <field name="offer_ids">
                                     <list decoration-success="status == 'accepted'"
-                                        decoration-danger="status == 'refused'">
+                                        decoration-danger="status == 'refused'" editable="bottom">
                                         <field name="price" />
                                         <field name="partner_id" />
                                         <field name="validity" />

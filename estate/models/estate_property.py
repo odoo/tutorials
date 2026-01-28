@@ -13,12 +13,10 @@ class EstateProperty(models.Model):
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
-
     date_availability = fields.Date(
         copy=False,
         default=lambda self: fields.Date.today() + relativedelta(months=3),
     )
-
     expected_price = fields.Float(required=True)
     selling_price = fields.Float(readonly=True, copy=False)
     bedrooms = fields.Integer(default=2)
@@ -113,11 +111,13 @@ class EstateProperty(models.Model):
             self.garden_orientation = False
 
     def action_sold(self):
+        self.ensure_one()
         if self.filtered(lambda x: x.state == "cancelled"):
             raise UserError(_("A cancelled Property cannot be sold."))
         self.write({"state": "sold"})
 
     def action_cancel(self):
+        self.ensure_one()
         if self.filtered(lambda x: x.state == "sold"):
             raise UserError(_("A sold Property cannot be cancelled."))
         self.write({"state": "cancelled"})

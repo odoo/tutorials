@@ -27,7 +27,7 @@
         <field name="name">estate.property.offer.form</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
-            <form string="Create Offers" >
+            <form string="Create Offers">
                 <sheet>
                     <group>
                         <field name="price"/>

@@ -2,14 +2,15 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_compare, float_is_zero
 
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "Estate Property Offer"
     _order = "price desc"
-
     price = fields.Float(string="Price")
+    expected_price = fields.Float(related="property_id.expected_price", store=True)
     status = fields.Selection(
         [
             ("accepted", "Accepted"),
@@ -65,6 +66,7 @@ class EstatePropertyOffer(models.Model):
             price = vals.get("price", 0.0)
             property_id = vals.get("property_id")
             property_rec = self.env["estate.property"].browse(property_id)
+
             if not property_rec.exists():
                 raise ValidationError(_("Invalid Property."))
 
@@ -76,9 +78,10 @@ class EstatePropertyOffer(models.Model):
                     )
 
         offers = super().create(vals_list)
-        for i in offers:
-            if i.property_id.state == "new":
-                i.property_id.state = "offer_received"
+
+        for offer in offers:
+            if offer.property_id.state == "new":
+                offer.property_id.state = "offer_received"
 
         return offers
 
@@ -87,6 +90,10 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.offer_ids.filtered(lambda o: o.status == "accepted"):
                 raise UserError("Only one offer can be accepted")
             record.status = "accepted"
+
+            offers = record.property_id.offer_ids.filtered(lambda t: t.id != record.id)
+
+            offers.write({"status": "refused"})
 
             record.property_id.write(
                 {
@@ -97,11 +104,29 @@ class EstatePropertyOffer(models.Model):
             )
             return True
 
+    def write(self, vals):
+        if vals.get("status") == "accepted":
+            for offer in self:
+                if offer.property_id.offer_ids.filtered(
+                    lambda o: o.status == "accepted" and o.id != offer.id
+                ):
+                    raise UserError(_("Only one offer can be accepted per property."))
+        return super().write(vals)
+
     def action_refuse(self):
         self.write({"status": "refused"})
 
         return True
 
-    _check_price = models.Constraint(
+    _check_offer_price = models.Constraint(
         "CHECK(price > 0)", "The Offer price must be strictly positive"
     )
+
+    @api.constrains("price", "expected_price")
+    def _check__price(self):
+        for record in self:
+            if float_is_zero(record.price, precision_rounding=0.01):
+                continue
+            min_price = record.expected_price * 0.9
+            if float_compare(record.price, min_price, precision_rounding=0.01) < 0:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")

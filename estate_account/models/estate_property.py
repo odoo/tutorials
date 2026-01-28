@@ -11,8 +11,6 @@ class EstateProperty(models.Model):
             if record.buyer_id:
                 invoice_vals = {
                     "partner_id": record.buyer_id.id,
-                    "estate_property_id": record.id,
-                    "estate_property_tag_id": record.id,
                     "move_type": "out_invoice",
                     "invoice_line_ids": [
                         Command.create(
