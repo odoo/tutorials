@@ -14,6 +14,7 @@ export class TodoItem extends Component {
         },
         },
         toggleState: {type: Function},
+        removeTodo: {type: Function},
     };
 
 }
