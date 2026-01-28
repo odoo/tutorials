@@ -1,15 +1,20 @@
-import { Component } from "@odoo/owl";
+import { Component, onWillStart } from "@odoo/owl";
 import { registry } from "@web/core/registry";
+import { rpc } from "@web/core/network/rpc";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
+import { DashboardItem } from "./dashboard_item/dashboard_item";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout };
+    static components = { Layout, DashboardItem };
     // static props = ["action", "actionId", "updateActionState", "className"];
 
     setup() {
         this.action = useService("action");
+        onWillStart(async () => {
+            this.stats = await rpc("/awesome_dashboard/statistics");
+        });
     }
 
     openCustomers() {
