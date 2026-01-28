@@ -7,6 +7,7 @@ from odoo.exceptions import UserError
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
     _description = "an amount a potential buyer offers to the seller"
+    _order = "price DESC"
 
     price = fields.Float()
     status = fields.Selection(
@@ -23,6 +24,10 @@ class EstatePropertyOffer(models.Model):
     property_id = fields.Many2one(
         comodel_name="estate.property",
         required=True,
+    )
+    property_type_id = fields.Many2one(
+        related="property_id.property_type_id",
+        store=True,
     )
     validity = fields.Integer(default=7)
     date_deadline = fields.Date(
