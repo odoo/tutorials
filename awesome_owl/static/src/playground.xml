@@ -3,7 +3,20 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+            Testing multiple counters:
+            <Counter onChange.bind="incrementSum"/>
+            <Counter onChange.bind="incrementSum"/>
+            <div>Total Sum: <t t-esc="state.sum"/></div>
+        </div>
+        <div class="p-3">
+            Testing multiple cards:
+            <Card title="'First Card - Normal Text'">This is the first card.</Card>
+            <Card title="'Second Card - HTML'"><t t-out="htmlContent1"/></Card>
+            <Card title="'Third Card - Marked Up HTML'"><t t-out="htmlContent2"/></Card>
+            <Card title="'Fourth Card - Counter'"><Counter/></Card>
+        </div>
+        <div>
+            <TodoList/>
         </div>
     </t>
 
