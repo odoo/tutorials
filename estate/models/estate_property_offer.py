@@ -61,5 +61,12 @@ class EstateProperOffer(models.Model):
     @api.model
     def create(self, vals_list):
         for vals in vals_list:
-            self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+            property_id = self.env['estate.property'].browse(vals['property_id'])
+            max_offer = 0
+            if property_id.offer_ids:
+                max_offer = max(offer for offer in property_id.offer_ids).price
+            if vals['price'] > max_offer:
+                self.env['estate.property'].browse(vals['property_id']).state = 'offer_received'
+            else:
+                raise UserError(_("You cannot add an offer with a price lower than the maximum existing price."))
         return super().create(vals_list)
