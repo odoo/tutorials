@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="awesome_dashboard.ConfigDialog">
+        <Dialog title="'Dashboard Items Configuration'">
+            <div>Which cards fo you wish to see?</div>
+            <div class="list-group">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <label class="list-group-item d-flex align-items-center">
+                        <input type="checkbox" 
+                            class="form-check-input me-3" 
+                            t-att-checked="!state.hiddenIds.includes(item.id)"
+                            t-on-change="() => this.toggleItem(item.id)"/>
+                        <t t-esc="item.description"/>
+                    </label>
+                </t>
+            </div>
+            <t t-set-slot="footer">
+                <button class="btn btn-primary" t-on-click="onApply">Apply</button>
+                <button class="btn btn-secondary" t-on-click="props.close">Cancel</button>
+            </t>
+        </Dialog>
+    </t>
+</templates>
