@@ -20,7 +20,7 @@ class EstateProperty(models.Model):
                     "name": "Administrative fees",
                     "price_unit": 100.0,
                     "quantity": 1,
-                })
-            ]
+                }),
+            ],
         })
         return super().sell_property()

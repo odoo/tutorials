@@ -9,7 +9,7 @@ class PropertyType(models.Model):
     # constraints
     _unique_type = models.Constraint(
         'UNIQUE(name)',
-        'Type name should be unique'
+        'Type name should be unique',
     )
 
     name = fields.Char(string="Name", required=True)

@@ -10,5 +10,7 @@
     'data': [],
     'installable': True,
     'application': False,
+    'author': 'ibrha',
+    'website': 'https://www.odoo.com/app/real_estate',
     'license': 'LGPL-3',
 }

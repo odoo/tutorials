@@ -8,7 +8,7 @@
     'website': 'https://www.odoo.com/app/real_estate',
     'depends': [
         'base_setup',
-        'base'
+        'base',
     ],
     'data': [
         'security/ir.model.access.csv',

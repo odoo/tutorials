@@ -15,11 +15,11 @@ class Property(models.Model):
     # constraints
     _positive_expected_price = models.Constraint(
         'CHECK(expected_price > 0)',
-        'Expected price should be (strictly) positive'
+        'Expected price should be (strictly) positive',
     )
     _positive_selling_price = models.Constraint(
         'CHECK(selling_price >= 0)',
-        'Selling price should be positive'
+        'Selling price should be positive',
     )
 
     name = fields.Char(string="Title", required=True)
@@ -47,8 +47,8 @@ class Property(models.Model):
             ("north", "North"),
             ("south", "South"),
             ("east", "East"),
-            ("west", "West")
-        ]
+            ("west", "West"),
+        ],
     )
     state = fields.Selection(
         string="Status",
@@ -57,10 +57,10 @@ class Property(models.Model):
             ("offer_received", "Offer Received"),
             ("offer_accepted", "Offer Accepted"),
             ("sold", "Sold"),
-            ("cancelled", "Cancelled")
+            ("cancelled", "Cancelled"),
         ],
         readonly=True,
-        default="new"
+        default="new",
     )
 
     @api.depends("state")
@@ -100,16 +100,14 @@ class Property(models.Model):
         for record in self:
             if record.state == "cancelled":
                 raise exceptions.UserError("You cannot sell a cancelled property")
-            else:
-                record.state = "sold"
+            record.state = "sold"
         return True
 
     def cancel_property(self):
         for record in self:
             if record.state == "sold":
                 raise exceptions.UserError("You cannot cancel a sold property")
-            else:
-                record.state = "cancelled"
+            record.state = "cancelled"
         return True
 
     @api.constrains("state", "offer_ids")

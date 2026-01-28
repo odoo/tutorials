@@ -10,7 +10,7 @@ class PropertyTag(models.Model):
     # constraints
     _unique_tag = models.Constraint(
         'UNIQUE(name)',
-        'Tag name should be unique'
+        'Tag name should be unique',
     )
 
     name = fields.Char(string="Name", required=True)
