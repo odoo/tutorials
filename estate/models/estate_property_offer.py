@@ -43,6 +43,8 @@ class EstatePropertyOffer(models.Model):
             this_property = self.env["estate.property"].browse(record["property_id"])
             if float_compare(this_property.best_offer, record["price"], precision_digits=2) > 0:
                 raise UserError("Can't create offer with less price than best price.")
+            if this_property.state in ["sold", "canceled", "offer_accepted"]:
+                raise UserError("Can't create offer for sold, accepted or canceled property.")
             this_property.state = "offer_received"
         return super().create(vals)
 
@@ -62,12 +64,8 @@ class EstatePropertyOffer(models.Model):
 
     def action_accept(self):
         for record in self:
-            if record.property_id.state == "offer_accepted":
-                message = "Another offer already accepted"
-                raise UserError(message)
-            if record.property_id.state == "sold":
-                message = "Property is already sold"
-                raise UserError(message)
+            if record.property_id.state in ["offer_accepted", "sold", "canceled"]:
+                raise UserError("Can't accept offer for sold, accepted or canceled property.")
             record.status = "accepted"
             record.property_id.selling_price = record.price
             record.property_id.buyer_id = record.partner_id
