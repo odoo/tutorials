@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_kanban.CustomerList">
+        <div>
+            <h2>Customer List</h2>
+            <t t-set="customers" t-value="getFilteredCustomers()"/>
+            <Pager offset="page.current" limit="5" total="customers.length" onUpdate.bind="updatePage"/>
+            <label>
+                <input type="checkbox" t-model="filters.active"/>
+                Active Customers
+            </label>
+            <input type="text" t-model="filters.search"/>
+            <p t-foreach="getCustomersOfPage(customers)" t-as="c" t-key="c.name" t-on-click="() => this.props?.selectCustomer(c)">
+                <t t-esc="c.name"/>
+            </p>
+        </div>
+    </t>
+</templates>
