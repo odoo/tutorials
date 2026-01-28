@@ -35,6 +35,7 @@
                 <header>
                     <button name='action_property_sold' type="object" string='sold' invisible="state=='sold' or state=='cancelled'"/>
                     <button name='action_property_cancel' type='object' string='cancel' invisible="state in ['sold', 'cancelled']"/>
+                    <button name='action_property_sold_best' type='object' string='sold AS best'/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>

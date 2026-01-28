@@ -11,6 +11,7 @@
             <page name="preferences" position="after">
                 <page name="Estate Property">
                     <field name="property_ids"/>
+                    <field name="total_unsold_value"></field>
                 </page>
             </page>
         </field>

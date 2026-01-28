@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare
 
@@ -44,7 +44,7 @@ class EstateProperty(models.Model):
             ('west', "West"),
         ],
     )
-    property_type = fields.Many2one('estate.property.type', string="property type")
+    property_type = fields.Many2one('estate.property.type', string="Property Type")
     salesman_id = fields.Many2one(
         'res.users', string="Salesman", default=lambda self: self.env.user
     )
@@ -72,7 +72,7 @@ class EstateProperty(models.Model):
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
         for record in self:
-            record.best_price = max(record.offer_ids.mapped('price'))
+            record.best_price = max(record.offer_ids.mapped('price'), default=0.0)
 
     @api.onchange('garden')
     def _onchnage_garden(self):
@@ -99,6 +99,13 @@ class EstateProperty(models.Model):
                 record.state = 'cancelled'
         return True
 
+    def action_property_sold_best(self):
+        for record in self:
+            record.offer_ids.filtered(
+                lambda x: x.price == record.best_price
+            ).action_accept()
+        return True
+
     @api.constrains('selling_price')
     def _check_selling_price(self):
         for record in self:
@@ -107,13 +114,13 @@ class EstateProperty(models.Model):
                 and float_compare(
                     record.selling_price,
                     record.expected_price * 0.9,
-                    precision_digits = 2,
+                    precision_digits=2,
                 )
                 == -1
             ):
-                raise ValidationError(
+                raise ValidationError(_(
                     "Selling price should not be less than 90% of expected price"
-                )
+                ))
 
     @api.depends('maintenance_request_ids.cost')
     def _compute_total_maintenance_cost(self):
@@ -131,8 +138,12 @@ class EstateProperty(models.Model):
                 raise ValidationError(
                     "All maintenance request should be done before property marked as sold"
                 )
+            elif record.state == 'sold' and not record.offer_ids:
+                raise ValidationError(
+                    "There must be offer available for set state as sold"
+                )
 
     @api.ondelete(at_uninstall=False)
     def _unlink_if_new_cancelled(self):
         if any(record.state not in ['new', 'cancelled', 'sold'] for record in self):
-            raise ValidationError("Only new and cancelled property can be deleted.")
+            raise ValidationError(_("Only new and cancelled property can be deleted."))
