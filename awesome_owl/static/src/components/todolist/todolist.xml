@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="my_module.Todolist">
+        <div class="p-3">
+            <input t-on-keydown="addTodo" placeholder="Add new todo" t-ref="todoInput"/>
+            <ul>
+                <t t-foreach="todos.items" t-as="item" t-key="item_index">
+                    <li>
+                        <!-- <Todoitem id="item.id" description="item.description" isCompleted="item.isCompleted" onChange.bind="updateTodoStatus"/> -->
+                        <Todoitem id="item.id" description="item.description" isCompleted="item.isCompleted" toggleState.bind="toggleState" removeTodo.bind="onRemove"/>
+                    </li>
+                </t>
+            </ul>
+
+        </div>
+    </t>
+
+</templates>
