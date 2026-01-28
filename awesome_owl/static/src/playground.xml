@@ -1,13 +1,15 @@
 <templates xml:space="preserve">
 
     <t t-name="awesome_owl.playground">
-        <p>
-            <div>hello world!</div>
-            <div>
-                <Counter/>
-                <Counter/>
+            <div class="counters">
+                <div style="display: flex;">
+                    <Counter/>
+                    <Counter/>
+                </div>
+                <div class="sum">
+                    Sum: <t t-esc="this.sum"/>
+                </div>
             </div>
-        </p>
 
         <p>
             <Card title="'card 1'" content="this.html"/>

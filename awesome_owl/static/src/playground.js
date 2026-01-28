@@ -8,6 +8,7 @@ export class Playground extends Component {
     static props = []
 
     setup() {
-        this.html = markup("<i>some content</i>")
+        this.html = markup("<i>some content</i>");
+        this.sum = 2;
     }
 }
