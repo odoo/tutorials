@@ -8,8 +8,8 @@
         <field name="domain">[('property_type_id', '=', active_id)]</field>
     </record>
 
-    <record id="estate_offer_model_view_list" model="ir.ui.view">
-        <field name="name">estate.offer.property.list</field>
+    <record id="estate_property_offer_view_list" model="ir.ui.view">
+        <field name="name">estate.property.offer.view.list</field>
         <field name="model">estate.property.offer</field>
         <field name="arch" type="xml">
             <list string="Channel" default_order="id desc" editable="bottom" decoration-danger="status == 'refused'" decoration-success="status == 'accepted'">
