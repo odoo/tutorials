@@ -127,3 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Ruff linter
+ruff.toml
+
+# Pre-commit config files
+.pre-commit-config.yaml
+.pre-commit-hooks.yaml
+
+# Checkstyle file
+check-style
+
+# VS Code Config
+.vscode/
