@@ -9,7 +9,6 @@ class EstateProperty(models.Model):
             vals = {
                 'partner_id': prop.buyer_id.id,
                 'move_type': 'out_invoice',
-                'journal_id': 1,
                 'invoice_line_ids': [
                     Command.create({
                         'name': '6 percent of selling price',
