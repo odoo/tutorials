@@ -7,8 +7,11 @@
                 <button class="btn btn-primary" t-on-click="openCustomerView">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfiguration" class="fa fa-cog"></button>
+            </t>
             <t t-foreach="this.items" t-as="item" t-key="item.id">
-                <DashboardItem size="item.size || 1">
+                <DashboardItem t-if="!state.disabledItems.includes(item.id)" size="item.size || 1">
                     <t t-set="itemProp" t-value="item.props ? item.props(this.stats) : {'data': this.stats}"/>
                     <t t-component="item.Component" t-props="itemProp" />
                 </DashboardItem>
