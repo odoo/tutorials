@@ -5,7 +5,7 @@
     'author': 'Radhey Detroja(RADET)',
     'license': 'LGPL-3',
     'summary': 'Manage real estate properties',
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'application': True,
     'data': [
         'security/ir.model.access.csv',
