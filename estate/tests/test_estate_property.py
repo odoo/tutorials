@@ -1,12 +1,12 @@
 from odoo.tests.common import TransactionCase
-from odoo.exceptions import UserError
-from odoo.tests import Form
+#from odoo.tests import Form
+
 
 class EstatePropertyTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EstatePropertyTestCase, cls).setUpClass()
+        super().setUpClass()
 
         cls.properties = cls.env['estate.property'].create([
             {
@@ -19,7 +19,7 @@ class EstatePropertyTestCase(TransactionCase):
             }
         ])
 
-    #Should work but does not
+    ##Should work but does not
     #def test_garden_reset(self):
     #    with Form(self.properties[0]) as form:
     #        form.garden = False

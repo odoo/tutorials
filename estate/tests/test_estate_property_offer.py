@@ -1,21 +1,22 @@
 from odoo.tests.common import TransactionCase
 from odoo.exceptions import UserError
 
+
 class EstatePropertyOfferTestCase(TransactionCase):
 
     @classmethod
     def setUpClass(cls):
-        super(EstatePropertyOfferTestCase, cls).setUpClass()
+        super().setUpClass()
 
         cls.properties = cls.env['estate.property'].create([
             {
                 'name': 'Sold Property',
                 'expected_price': 1_000,
                 'state': 'sold'
-            },{
-                'name' : 'No Offer Property',
+            }, {
+                'name': 'No Offer Property',
                 'expected_price': 1_000,
-            },{
+            }, {
                 'name': 'Property To Sell',
                 'expected_price': 1_000
             }
@@ -47,4 +48,3 @@ class EstatePropertyOfferTestCase(TransactionCase):
         self.assertEqual(self.properties[2].state, "offer-accepted")
         self.properties[2].sell_property()
         self.assertEqual(self.properties[2].state, "sold")
-
