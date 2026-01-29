@@ -13,7 +13,9 @@
         'views/estate_menus.xml',
         'views/res_users_views.xml',
         'report/estate_property_templates.xml',
-        'report/estate_property_reports.xml'
+        'report/estate_property_reports.xml',
+        'report/res_users_templates.xml',
+        'report/res_users_reports.xml'
     ],
     'demo': [
         'demo/estate.property.type.csv',
