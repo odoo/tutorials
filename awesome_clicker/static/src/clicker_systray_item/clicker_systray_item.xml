@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
     <t t-name="awesome_clicker.ClickerSystrayItem">
-        <Dropdown class="d-inline-block">
+        <Dropdown>
             <button>
                 <b><ClickValue/><div class="ms-1 fa fa-mouse-pointer"/></b>
                 <div t-if="this.clicker.level >= 4">
