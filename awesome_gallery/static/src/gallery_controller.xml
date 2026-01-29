@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_gallery.GalleryView">
+        <Layout display="{ controlPanel: {} }" className="'h-100'">
+            <t t-foreach="data.records" t-as="i" t-key="i.id">
+                <ImageBox image_id="i.id"/>
+            </t>
+        </Layout>
+    </t>
+</templates>

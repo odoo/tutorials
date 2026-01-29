@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_gallery.ImageBox">
+        <div class="ag-image-box">
+            <img src="props.image_id" alt="image"/>
+        </div>
+    </t>
+</templates>

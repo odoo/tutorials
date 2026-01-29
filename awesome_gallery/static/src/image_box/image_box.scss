@@ -1,0 +1,12 @@
+.ag-image-box {
+    width: 100px;
+    height: 100px;
+    padding: 1rem;
+    border: solid 1px black;
+    border-radius: 5px;
+}
+
+.ag-image-box > img {
+    max-width: 100%;
+    max-height: 100%;
+}
