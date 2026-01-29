@@ -1,7 +1,8 @@
+import { registry } from "@web/core/registry";
 import { NumberCard } from "./number_card/number_card";
 import { PieChartCard } from "./pie_chart_card/pie_chart_card";
 
-export const items = [
+const items = [
     {
         id: "nb_new_orders",
         description: "Number of new orders",
@@ -58,3 +59,7 @@ export const items = [
         }),
     },
 ];
+
+items.forEach((item) => {
+    registry.category("awesome_dashboard").add(item.id, item);
+});

@@ -4,7 +4,6 @@ import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
 import { NumberCard } from "./number_card/number_card";
-import { items } from "./dashboard_items";
 import { PieChartCard } from "./pie_chart_card/pie_chart_card";
 
 class AwesomeDashboard extends Component {
@@ -12,7 +11,7 @@ class AwesomeDashboard extends Component {
     static components = { Layout, DashboardItem, PieChartCard, NumberCard };
 
     setup() {
-        this.items = items;
+        this.items = registry.category("awesome_dashboard").getAll();
         this.action = useService("action");
         this.stats = useState(useService("awesome_dashboard.statistics"));
     }
