@@ -3,7 +3,7 @@
 
     <t t-name="awesome_owl.counter">
         <div class="p-3">
-            <span class="ml-3">Counter: <t t-esc="state.counter"/></span>
+            <span class="ms-3">Counter: <t t-esc="state.counter"/></span>
             <button t-on-click="increment" class="btn btn-primary">Increment</button>
         </div>
     </t>

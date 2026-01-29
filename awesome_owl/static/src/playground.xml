@@ -8,7 +8,7 @@
         <div>
             <Counter onChange.bind="incrementSum"/>
             <Counter onChange.bind="incrementSum"/>
-            <span class="ml-3">The sum is: <t t-esc="state.sum"/> </span>
+            <span class="ms-3">The sum is: <t t-esc="state.sum"/> </span>
         </div>
         <div>
             <Card title="'Card Title 1'">
