@@ -20,6 +20,9 @@ class EstatePropertyOffer(models.Model):
 
     @api.model
     def create(self, vals_list):
+        if(len(vals_list) == 0):
+            return super().create(vals_list)
+
         prop = self.env['estate.property'].browse(vals_list[0]['property_id'])
 
         if (prop.state != 'new' and prop.state != 'offer-received'):
