@@ -3,6 +3,7 @@ from datetime import timedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools.sql import SQL
 
 
 class EstateProperty(models.Model):
@@ -56,7 +57,8 @@ class EstateProperty(models.Model):
         'estate.property.offer', 'property_id')
     total_area = fields.Integer(
         compute='_compute_total_area', string="Total Area(sqm)")
-    best_price = fields.Float(compute='_compute_best_price', store=True)
+    best_price = fields.Float(
+        compute='_compute_best_price', search='_search_best_price')
     property_maintainance_ids = fields.One2many(
         'estate.property.maintenance', 'property_id')
     total_maintenance_cost = fields.Float(
@@ -76,12 +78,21 @@ class EstateProperty(models.Model):
         for record in self:
             record.total_area = record.living_area + record.garden_area
 
-    @api.depends('offer_ids.price')
+    @api.depends('offer_ids.price', 'offer_ids.property_id')
     def _compute_best_price(self):
         best_price = dict(self.env['estate.property.offer']._read_group(domain=[
                           ('property_id', 'in', self.ids)], aggregates=['price:max'], groupby=['property_id']))
         for record in self:
             record.best_price = best_price.get(record, 0.0)
+
+    def _search_best_price(self, operator, value):
+        if operator in ('in', 'not in'):
+            value = tuple(value)
+        sql = SQL("""
+        SELECT property_id FROM estate_property_offer GROUP BY property_id HAVING MAX(price) %s %s
+        """, SQL(operator), value)
+        f = self.env.execute_query(sql)
+        return [('id', 'in', f)]
 
     @api.onchange('garden')
     def _onchange_garden(self):
@@ -116,7 +127,7 @@ class EstateProperty(models.Model):
             domain=[('property_id', 'in', self.ids), ('price', '=', self.best_price)], limit=1)
         data.action_accepted()
 
-    @api.depends('property_maintainance_ids.cost')
+    @api.depends('property_maintainance_ids.cost', 'property_maintainance_ids.property_id')
     def _compute_total_maintenance_cost(self):
         maintenace_cost = dict(self.env['estate.property.maintenance']._read_group(domain=[(
             'property_id', 'in', self.ids)], aggregates=['cost:sum'], groupby=['property_id']))

@@ -26,22 +26,18 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button name="action_property_sold" type="object" string="SOLD" invisible="state in ('sold', 'cancelled')"/>
+                    <button name="action_property_sold" class="btn btn-primary" type="object" string="SOLD" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_property_cancel" type="object" string="CANCEL" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_accept_best_offer" type="object" string="Accept Best Offer" invisible="state not in ('offer_received')"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold"/>
                 </header>
                 <sheet>
-                    <group>
-                        <group>
-                            <h1>
-                                <field name="name"/>
-                            </h1>
-                        </group>
-                    </group>
+                    <h1>
+                        <field name="name" class='w-50'/>
+                    </h1>
                     <h3>
-                        <label string="Tags" for="tag_ids"/>
-                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" class="oe_inline"/>
+                        <label string="Tags" for="tag_ids" class="mr16"/>
+                        <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" class="w-30"/>
                     </h3>
                     <group>
                         <group>
@@ -72,9 +68,7 @@
                             </group>
                         </page>
                         <page string="Offers">
-                            <group>
-                                <field name="offer_ids" nolabel="1" readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
-                            </group>
+                            <field name="offer_ids" nolabel="1" readonly="state in ('offer_accepted', 'sold', 'cancelled')"/>
                         </page>
                         <page string="Other Info">
                             <group>
@@ -92,9 +86,7 @@
                                     </list>
                                 </field>
                             </group>
-                            <group>
-                                <field name='total_maintenance_cost' string="Total Cost"/>
-                            </group>
+                            <field name='total_maintenance_cost' string="Total Cost"/>
                         </page>
                     </notebook>
                 </sheet>
@@ -112,12 +104,13 @@
                 <field name="property_type_id"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
+                <field name="best_price"/>
                 <field name="bedrooms"/>
                 <field name="living_area" filter_domain="[('living_area', '>', self)]"/>
                 <field name="facades"/>
                 <separator/>
                 <filter string="Available" name="state" domain="[('state', 'in', ('offer_received', 'new'))]"/>
-                <filter string="Best Price" name="best_price" domain="[('best_price', '>', 100)]"/>
+                <filter string="Best Price" name="filter_best_price" domain="[('best_price', '>', 100)]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
                 </group>
@@ -168,7 +161,7 @@
         <field name='name'>Properties</field>
         <field name='res_model'>estate.property</field>
         <field name='view_mode'>list,form,kanban</field>
-        <field name="context">{'search_default_best_price': 0}</field>
+        <field name="context">{'search_default_filter_best_price': 1}</field>
     </record>
 
 </odoo>

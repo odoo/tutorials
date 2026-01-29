@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError, ValidationError
+from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_compare
 
 
@@ -65,9 +65,9 @@ class PropertyOffer(models.Model):
 
     @api.ondelete(at_uninstall=False)
     def _ondelete_offer(self):
-        for records in self:
-            if records.status == 'accepted':
-                raise ValidationError(_("Accepted offer cannot be deleted."))
+        accepted_records = self.filtered(lambda a: a.status == 'accepted')
+        if accepted_records:
+            raise UserError(_("Accepted offer cannot be deleted."))
 
     @api.model
     def create(self, vals):
