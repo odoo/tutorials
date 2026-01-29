@@ -3,14 +3,16 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { DashboardItem } from "./dashboard_item/dashboard_item";
-import { PieChart } from "./pie_chart/pie_chart";
+import { NumberCard } from "./number_card/number_card";
+import { items } from "./dashboard_items";
+import { PieChartCard } from "./pie_chart_card/pie_chart_card";
 
 class AwesomeDashboard extends Component {
     static template = "awesome_dashboard.AwesomeDashboard";
-    static components = { Layout, DashboardItem, PieChart };
-    // static props = ["action", "actionId", "updateActionState", "className"];
+    static components = { Layout, DashboardItem, PieChartCard, NumberCard };
 
     setup() {
+        this.items = items;
         this.action = useService("action");
         this.stats = useState(useService("awesome_dashboard.statistics"));
     }

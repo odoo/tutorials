@@ -1,5 +1,4 @@
 import { Component } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
 
 export class DashboardItem extends Component {
     static template = "awesome_dashboard.DashboardItem";
