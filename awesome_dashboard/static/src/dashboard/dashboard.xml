@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8" ?>
 <templates xml:space="preserve">
 
     <t t-name="awesome_dashboard.AwesomeDashboard">
@@ -7,15 +6,35 @@
                 <button class="btn btn-primary" t-on-click="openCustomers">Customers</button>
                 <button class="btn btn-primary" t-on-click="openLeads">Leads</button>
             </t>
+            <t t-set-slot="control-panel-additional-actions">
+                <button t-on-click="openConfig" class="btn p-0 ms-1 border-0">
+                    <i class="fa fa-cog"/>
+                </button>
+            </t>
             <t t-if="stats.isReady">
                 <t t-foreach="items" t-as="item" t-key="item.id">
-                    <DashboardItem size="item.size">
+                    <DashboardItem size="item.size" t-if="!hiddenItemIds.includes(item.id)">
                         <t t-set="itemProp" t-value="item.props ? item.props(stats) : {'data': stats}"/>
                         <t t-component="item.Component" t-props="itemProp"/>
                     </DashboardItem>
                 </t>
             </t>
         </Layout>
+    </t>
+
+    <t t-name="awesome_dashboard.ConfigDialog">
+        <Dialog title="'Dashboard items configuration'">
+                <t t-foreach="items" t-as="item" t-key="item.id">
+                    <CheckBox value="item.displayed" onChange.bind="(ev) => this.onChange(ev, item)">
+                        <t t-esc="item.description"/>
+                    </CheckBox>
+                </t>
+                <t t-set-slot="footer">
+                    <button class="btn btn-primary" t-on-click="done">
+                        Done
+                    </button>
+                </t>
+        </Dialog>
     </t>
 
 </templates>
