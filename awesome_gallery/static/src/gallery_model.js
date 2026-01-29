@@ -4,9 +4,10 @@ export class GalleryModel {
         this.resModel = resModel;
         this.records = [];
 
-        const { imageField, limit } = archInfo;
+        const { imageField, limit, tooltipField } = archInfo;
         this.imageField = imageField;
         this.limit = limit;
+        this.tooltipField = tooltipField;
     }
 
     async load(domain) {
@@ -17,6 +18,7 @@ export class GalleryModel {
                 limit: this.limit,
                 specification: {
                     [this.imageField]: {},
+                    ["name"]: {},
                 },
                 context: {
                     bin_size: true,

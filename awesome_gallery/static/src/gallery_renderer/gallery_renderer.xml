@@ -3,10 +3,9 @@
 
     <t t-name="awesome_gallery.GalleryRenderer">
         <t t-foreach="props.model.records" t-as="record" t-key="record.id">
-            <p>
-                id: <t t-esc="record.id"/>
-                bin_size: <t t-esc="record[props.model.imageField]"/>
-            </p>
+            <div class="card m-2" style="width:100px;height:100px;">
+                <img t-att-src="getImageUrl(record.id)" t-on-click="() => this.openFormView(record.id)" t-att-data-tooltip="record[props.model.tooltipField]"/>
+            </div>
         </t>
     </t>
 

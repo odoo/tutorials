@@ -1,7 +1,9 @@
 import { registry } from "@web/core/registry";
 
-import { GalleryController } from "./gallery_controller/gallery_controller";
 import { GalleryArchParser } from "./gallery_arch_parser/gallery_arch_parser";
+import { GalleryController } from "./gallery_controller/gallery_controller";
+import { GalleryModel  } from "./gallery_model";
+import { GalleryRenderer } from "./gallery_renderer/gallery_renderer";
 
 
 export const galleryView = {
@@ -9,7 +11,9 @@ export const galleryView = {
     display_name: "Gallery",
     icon: "fa fa-picture-o",
     multiRecord: true,
+    Model: GalleryModel,
     Controller: GalleryController,
+    Renderer: GalleryRenderer,
     ArchParser: GalleryArchParser,
 
     props(genericProps, view) {
@@ -19,6 +23,8 @@ export const galleryView = {
 
         return {
             ...genericProps,
+            Model: view.Model,
+            Renderer: view.Renderer,
             archInfo,
         };
     },
