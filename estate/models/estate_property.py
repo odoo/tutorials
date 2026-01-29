@@ -101,7 +101,6 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'canceled':
                 raise UserError('Canceled properties cannot be sold')
-
             record.state = 'sold'
 
         return True
@@ -110,7 +109,6 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == 'sold':
                 raise UserError('Sold properties cannot be canceled')
-
             record.state = 'canceled'
 
         return True

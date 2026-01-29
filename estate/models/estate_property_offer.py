@@ -41,17 +41,14 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         for record in vals:
             property = self.env['estate.property'].browse(record['property_id'])
-
             if record['price'] < property.best_offer:
                 raise UserError(f'The offer must be above {property.best_offer}')
-
             property._set_offer_received()
 
         return super().create(vals)
 
     def action_accept(self):
         self.ensure_one()
-
         self.state = 'accepted'
 
         property = self.property_id
