@@ -3,6 +3,7 @@ from dateutil.relativedelta import relativedelta
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError, ValidationError, RedirectWarning
 from odoo.tools.float_utils import float_compare, float_is_zero
+from odoo.tools import is_html_empty
 
 
 class EstateProperty(models.Model):
@@ -73,6 +74,16 @@ class EstateProperty(models.Model):
         "CHECK(expected_price > 0)",
         "Expected price must be positive!",
     )
+
+    @api.model
+    def get_empty_list_help(self, help_message):
+        if not is_html_empty(help_message):
+            return help_message
+
+        help_title = "Create a new property"
+        sub_title = "click on new button to create a new property"
+        return super().get_empty_list_help(
+            f'<p class="o_view_nocontent_smiling_face">{help_title}</p><p class="oe_view_nocontent_alias">{sub_title}</p>')
 
     @api.constrains("selling_price", "expected_price")
     def _check_selling_price(self):
