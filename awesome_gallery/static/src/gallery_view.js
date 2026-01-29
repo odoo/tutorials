@@ -1,6 +1,7 @@
 import { registry } from "@web/core/registry";
-import { GalleryController } from "./gallery_controller";
-import { GalleryArchParser } from "./gallery_arch_parser";
+
+import { GalleryController } from "./gallery_controller/gallery_controller";
+import { GalleryArchParser } from "./gallery_arch_parser/gallery_arch_parser";
 
 
 export const galleryView = {
