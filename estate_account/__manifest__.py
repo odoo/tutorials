@@ -4,6 +4,6 @@
     'depends': ['estate', 'account'],
     'license': 'LGPL-3',
     'data': [
-        #'report/estate_account_property_templates.xml'
+        'report/estate_account_property_templates.xml'
     ]
 }

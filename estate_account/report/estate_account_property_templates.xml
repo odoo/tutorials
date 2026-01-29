@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
     <template id="report_estate_account_property" inherit_id="estate.report_estate_property">
-        <xpath expr="//div[@id='status-info']" position="after">
-            <t t-if="property.status == 'sold'">
+        <xpath expr="//div[@id='statusInfo']" position="after">
+            <t t-if="property.state == 'sold'">
                 <p>Invoice Created !</p>
             </t>
         </xpath>

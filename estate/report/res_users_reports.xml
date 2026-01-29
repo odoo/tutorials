@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="report_estate_property_action" model="ir.actions.report">
+    <record id="report_res_user_estate_action" model="ir.actions.report">
         <field name="name">User Properties</field>
         <field name="model">res.users</field>
         <field name="report_type">qweb-pdf</field>
