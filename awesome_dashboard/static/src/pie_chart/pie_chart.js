@@ -6,7 +6,7 @@ export class PieChart extends Component {
     static template = "awesome_owl.pie_chart";
 
     static props = {
-        orders_by_size: {type: Object, shape: {m: Number, s:Number, xl:Number}},
+        orders_by_size: {type: Object, shape: {m:Number, s:Number, xl:Number}},
     };
 
     setup() {
