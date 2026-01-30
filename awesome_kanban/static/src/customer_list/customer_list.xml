@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_kanban.CustomerList">
+        <div class="o_customer_list p-1">
+            <h1 class="w-100 mt-1">Customers</h1>
+            <t t-foreach="customers" t-as="customer" t-key="customer.id">
+                <button class="btn btn-secondary w-100 mb-1" t-on-click="() => props.selectCustomer(customer.id, customer.display_name)">
+                    <t t-esc="customer.display_name"/>
+                </button>
+            </t>
+        </div>
+    </t>
+
+</templates>

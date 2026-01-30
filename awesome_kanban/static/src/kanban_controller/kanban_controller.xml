@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="awesome_kanban.AwesomeKanbanController" t-inherit="web.KanbanView">
+        <xpath expr="//t[@t-component='props.Renderer']" position="before">
+            <CustomerList selectCustomer.bind="onCustomerSelected"/>
+        </xpath>
+    </t>
+
+</templates>
