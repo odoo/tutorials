@@ -37,7 +37,7 @@
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" options="{'clickable': '1'}"/>
                     <button name="action_sold" type="object" string="Sold" class="btn-primary" invisible="state in ('sold', 'cancelled')"/>
                     <button name="action_cancel" type="object" string="Cancel" class="btn-secondary" invisible="state in ('sold', 'cancelled')"/>
-                    <button name="offer_accepted" type="object" string="Offer Accept" class="btn-primary"/>
+                    <button name="action_best_offer" type="object" string="Best Offer" class="btn-primary" invisible="not offer_ids"/>
                 </header>
                 <sheet>
                     <h1>
@@ -105,6 +105,7 @@
                 <field name="expected_price"/>
                 <filter string="Available Properties" name="available_properties" domain="[('state', 'in', ('new', 'offer_received'))]"/>
                 <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <filter string="Total Area > 500" name="total_area_gt_500" domain="[('total_area', '>', 500)]"/>
                 <group>
                     <filter string="Postcode" name="postcode" context="{'group_by': 'postcode'}"/>
                 </group>

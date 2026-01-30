@@ -8,13 +8,13 @@ class EstatePropertyMaintenance(models.Model):
     _description = 'Estate Property maintenance'
 
     title = fields.Char(required=True)
-    cost = fields.Float(string="Cost")
+    cost = fields.Float()
     status = fields.Selection(
         [
             ('new', "New"),
             ('approved', "Approved"),
             ('done', "Done"),
-            ('cancle', "Cancle")
+            ('cancel', "Cancel")
         ],
         required=True,
         default="new",
@@ -22,7 +22,7 @@ class EstatePropertyMaintenance(models.Model):
 
     property_id = fields.Many2one('estate.property', required=True)
 
-    def maintenance_accept(self):
+    def action_accept_maintenance(self):
         for maintenance in self:
             if float_is_zero(maintenance.cost, precision_digits=2):
                 raise UserError("Maintenance cost must be greater than zero")
@@ -30,7 +30,7 @@ class EstatePropertyMaintenance(models.Model):
             maintenance.status = "approved"
         return True
 
-    def maintenance_refuse(self):
+    def action_refuse_maintenance(self):
         for maintenance in self:
-            maintenance.status = "cancle"
+            maintenance.status = "cancel"
         return True

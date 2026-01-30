@@ -55,7 +55,7 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one("res.users", string="Seller", default=lambda self: self.env.user)
     tag_ids = fields.Many2many("estate.property.tag", string="Property Tags")
     offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offers")
-    total_area = fields.Float(string="Total Area", compute="_compute_total_area", store=True)
+    total_area = fields.Float(string="Total Area", compute="_compute_total_area", search="_search_total_area")
     best_price = fields.Float(string="Best Offer", compute="_compute_best_price")
     maintenance_ids = fields.One2many("estate.property.maintenance", "property_id")
     total_cost = fields.Float(string="Total Cost", compute="_compute_total_cost")
@@ -74,6 +74,19 @@ class EstateProperty(models.Model):
     def _compute_total_area(self):
         for property in self:
             property.total_area = property.living_area + property.garden_area
+
+    def _search_total_area(self, operator, value):
+        if operator == '>' and value == 500:
+            records = self.search([])
+            ids = []
+
+            for rec in records:
+                if (rec.living_area) + (rec.garden_area) > 500:
+                    ids.append(rec.id)
+
+            return [('id', 'in', ids)]
+
+        return []
 
     @api.depends('offer_ids.price')
     def _compute_best_price(self):
@@ -122,7 +135,7 @@ class EstateProperty(models.Model):
                 raise UserError(_("Without accept any offer we can't sold it"))
             if property.maintenance_ids:
                 for maintenance in property.maintenance_ids:
-                    if maintenance.status in ('new', 'cancle'):
+                    if maintenance.status in ('new', 'cancel'):
                         raise UserError(_("Maintenance cost must be Approved or Done"))
             property.state = 'sold'
         return True
@@ -133,12 +146,14 @@ class EstateProperty(models.Model):
                 raise UserError("Cancelled property cannot be sold")
             property.state = 'cancelled'
         return True
+        # if self.filtered(lambda p: p.state == 'sold'):
+        #     raise UserError("Cancelled property cannot be sold")
 
-    def offer_accepted(self):
+        # self.write({'state': 'cancelled'})
+        # return True
+
+    def action_best_offer(self):
         for record in self:
-            if not record.offer_ids:
-                raise UserError("There are no offers to accept")
-
             best_offer = max(record.offer_ids, key=lambda p: p.price)
             best_offer.action_accept()
 

@@ -13,8 +13,8 @@
             <list>
                 <field name="title"/>
                 <field name="cost"/>
-                <button name="maintenance_accept" type="object" string="Confirm" icon="fa-check"/>
-                <button name="maintenance_refuse" type="object" string="Refused" icon="fa-close"/>
+                <button name="action_accept_maintenance" type="object" string="Confirm" icon="fa-check"/>
+                <button name="action_refuse_maintenance" type="object" string="Refused" icon="fa-close"/>
                 <field name="status"/>
             </list>
         </field>

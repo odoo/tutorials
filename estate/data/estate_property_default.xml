@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="default_property_type" model="estate.property.type">
+        <field name="name">House</field>
+    </record>
+
+    <record id="default_property_type2" model="estate.property.type">
+        <field name="name">Flat</field>
+    </record>
+
+    <record id="default_property_tag" model="estate.property.tag">
+        <field name="name">Cozy</field>
+    </record>
+
+    <record id="default_property_tag2" model="estate.property.tag">
+        <field name="name">Good</field>
+    </record>
+
+    <record id="default_property" model="estate.property">
+        <field name="name">Demo Property</field>
+        <field name="tag_ids" eval="[(6, 0, [ref('default_property_tag')])]"/>
+        <field name="property_type_id" ref="default_property_type"/>
+        <field name="postcode">360311</field>
+        <field name="expected_price">100</field>
+        <field name="description">This is a good house</field>
+        <field name="living_area">100</field>
+    </record>
+
+    <record id="default_buyer" model="res.partner">
+        <field name="name">Mitchell</field>
+    </record>
+
+    <record id="default_offer" model="estate.property.offer">
+        <field name="price">91</field>
+        <field name="partner_id" ref="default_buyer"/>
+        <field name="property_id" ref="default_property"/>
+    </record>
+
+</odoo>

@@ -19,5 +19,8 @@
         "views/estate_property_investor_views.xml",
         'views/res_users_views.xml',
         "views/estate_menus.xml",
-    ]
+    ],
+    'demo': [
+        "data/estate_property_default.xml",
+    ],
 }
