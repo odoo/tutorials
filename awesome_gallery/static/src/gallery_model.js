@@ -8,14 +8,17 @@ export class GalleryModel {
         this.imageField = imageField;
         this.limit = limit;
         this.tooltipField = tooltipField;
+
+        this.pager = { offset: 0, limit: limit };
     }
 
     async load(domain) {
-        const { records } = await this.orm.webSearchRead(
+        const { length, records } = await this.orm.webSearchRead(
             this.resModel,
             domain,
             {
-                limit: this.limit,
+                limit: this.pager.limit,
+                offset: this.pager.offset,
                 specification: {
                     [this.imageField]: {},
                     ["name"]: {},
@@ -26,5 +29,6 @@ export class GalleryModel {
             }
         );
         this.records = records;
+        this.recordsLength = length;
     }
 }

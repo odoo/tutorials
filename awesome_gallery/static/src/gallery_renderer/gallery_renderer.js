@@ -1,6 +1,6 @@
+import { useService } from "@web/core/utils/hooks";
 import { url } from "@web/core/utils/urls";
 import { Component } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
 
 import { GalleryModel } from "../gallery_model";
 
