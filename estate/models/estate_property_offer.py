@@ -37,6 +37,8 @@ class EstatePropertyOffer(models.Model):
     def create(self, vals):
         for record in vals:
             property = self.env["estate.property"].browse(record["property_id"])
+            if property.state == "sold":
+                raise UserError("A sold property cannot receive offers")
             if record["price"] < property.best_offer:
                 raise UserError(f"The offer must be above {property.best_offer}")
             property._set_offer_received()

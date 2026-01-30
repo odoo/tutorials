@@ -103,6 +103,8 @@ class EstateProperty(models.Model):
         for record in self:
             if record.state == "canceled":
                 raise UserError("Canceled properties cannot be sold")
+            if not record.offer_ids:
+                raise UserError("Properties without offers cannot be sold")
             record.state = "sold"
 
         return True
