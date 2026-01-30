@@ -18,13 +18,8 @@
         'views/res_users_views.xml',
         'views/real_estate_property_investor_views.xml',
         'views/real_estate_menus.xml',
+        'data/real_estate_demo_data.xml'
     ],
-    # "assets": {
-    #     "web.assets_backend": [
-    #         "awesome_owl/static/src/js/playground.js",
-    #         "awesome_owl/static/src/xml/playground.xml",
-    #     ],
-    # },
     'application': True,
     'installable': True,
     'license': 'LGPL-3',

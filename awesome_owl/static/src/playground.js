@@ -26,13 +26,5 @@ export class Playground extends Component {
         this.state.sum = this.c1 + this.c2;
     }
 
-//    setup() {
-//        this.state = useState({ counter: 0 });
-//    }
-//
-//    increment() {
-//        this.state.counter += 1;
-//    }
-
 }
 //Playground.template = "awesome_owl.Playground";

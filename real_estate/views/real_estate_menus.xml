@@ -13,7 +13,8 @@
               name="Property Offers"
               parent="real_estate_menu_Advertisements"
               action="real_estate_property_offer_action_view"
-              groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"/>
+             />
+<!--     groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
 
     <menuitem id="rewal_estate_menu_tag"
               name="Property Tags"
@@ -30,7 +31,8 @@
               name="Maintenance Request"
               parent="real_estate_menu_configuration"
               action="real_estate_property_maintenance_request_action_view"
-              groups="real_estate.group_real_estate_manager,real_estate.group_maintenance_staff"/>
+              />
+<!--    groups="real_estate.group_real_estate_manager,real_estate.group_maintenance_staff"-->
 
     <menuitem id="real_estate_menu_property_investor"
               name="Property Investor"

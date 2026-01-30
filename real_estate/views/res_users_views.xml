@@ -17,7 +17,8 @@
                                 <field name="bedrooms"/>
                                 <field name="living_area"/>
                                 <field name="expected_price"/>
-                                <field name="selling_price" groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"/>
+                                <field name="selling_price"/>
+<!--                                groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
                             </list>
                         </field>
                     </group>

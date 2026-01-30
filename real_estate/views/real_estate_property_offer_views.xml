@@ -15,18 +15,18 @@
                         name="action_accept"
                         type="object"
                         icon="fa-check"
-                        groups="real_estate.group_real_estate_manager"
                         title="accept"
                         invisible="status in ('accepted' ,'refused')"
                 />
+<!--                groups="real_estate.group_real_estate_manager"-->
                 <button
                         name="action_refuse"
                         type="object"
                         icon="fa-times"
-                        groups="real_estate.group_real_estate_manager"
                         title="refused"
                         invisible="status in ('accepted' ,'refused')"
                 />
+<!--                 groups="real_estate.group_real_estate_manager"-->
                 <field name="status" readonly="1"/>
             </list>
         </field>

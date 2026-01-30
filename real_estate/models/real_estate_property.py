@@ -46,7 +46,7 @@ class RealEstate(models.Model):
     best_price = fields.Float(
         string="Best Offer",
         compute="_compute_best_price",
-        store=True, tracking=True)
+        search="_search_best_price", tracking=True)
     # ist_time = fields.Char(
     #     string="Created On (IST)",
     #     compute="_compute_create_date_ist",
@@ -102,6 +102,23 @@ class RealEstate(models.Model):
         ))
         for record in self:
             record.best_price = dataa.get(record, 0.0)
+
+    def _search_best_price(self, operator, value):
+        records = self.search([])
+        domain = [('best_price', operator, value)]
+        filtered = records.filtered_domain(domain)
+        return [('id', 'in', filtered.ids)]
+
+    # def _search_best_price(self, operator, value):
+    #     if operator not in ('=', '!=', '<', '<=', '>', '>='):
+    #         return NotImplemented
+    #     groups = self.env['real.estate.property.offer']._read_group(
+    #         [],
+    #         ['property_id'],
+    #         having=[(f'price:max', operator, value)]
+    #     )
+    #     property_ids = [g[0].id for g in groups if g and g[0]]
+    #     return [('id', 'in', property_ids)]
 
     @api.depends('maintenance_request_ids.cost')
     def _compute_total_maintenance_cost(self):

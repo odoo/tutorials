@@ -12,7 +12,9 @@
                 <field name="postcode"/>
                 <field name="date_availability" optional="hide"/>
                 <field name="expected_price"/>
-                <field name="selling_price" groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"/>
+                <field name="selling_price"
+                       />
+<!--                groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
                 <field name="tag_ids" widget="many2many_tags" optional="show"/>
                 <field name="best_price"/>
                 <field name="total_area"/>
@@ -104,16 +106,17 @@
                                                 icon="fa-check"
                                                 title="accept"
                                                 invisible="status in ('accepted' ,'refused')"
-                                                groups="real_estate.group_real_estate_manager"
                                         />
+<!--                                                groups="real_estate.group_real_estate_manager"-->
+
                                         <button
                                                 name="action_refuse"
                                                 type="object"
                                                 icon="fa-times"
                                                 title="refused"
                                                 invisible="status in ('accepted' ,'refused')"
-                                                groups="real_estate.group_real_estate_manager"
                                         />
+<!--                                                groups="real_estate.group_real_estate_manager"-->
                                         <field name="status" readonly="1"/>
                                     </list>
                                 </field>
@@ -124,18 +127,21 @@
                                 <field name="maintenance_request_ids">
                                     <list editable="bottom">
                                         <field name="name"/>
-                                        <field name="cost" groups="real_estate.group_maintenance_staff"/>
+                                        <field name="cost"/>
+<!--                                         groups="real_estate.group_maintenance_staff"-->
                                         <field name="status"/>
                                     </list>
                                 </field>
-                                <field name="total_maintenance_cost" groups="real_estate.group_maintenance_staff"/>
+                                <field name="total_maintenance_cost"/>
+<!--                                 groups="real_estate.group_maintenance_staff"-->
                             </group>
                         </page>
 
                         <page string="Other Info">
                             <group>
                                 <field name="selling_price" readonly="1"
-                                       groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"/>
+                                       />
+<!--                                groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
                                 <field name="buyer_id" readonly="1"/>
                             </group>
                         </page>
@@ -174,10 +180,13 @@
                         domain="['|',('garden_orientation', '=' , 'north'),
                                 ('garden_orientation', '=' , 'south')]"
                 />
+                <filter
+                        name="Best_Price"
+                        domain="[('best_price', '>', 100)]"/>
                 <group>
                     <filter
                             string="Orientation"
-                            name="garden_orientation"
+                            name="group_by_garden_orientation"
                             context="{'group_by': 'garden_orientation'}"
                     />
                 </group>
@@ -215,7 +224,9 @@
                         <div>
                             <t t-if="record.selling_price.raw_value != 'sold'">
                                 <span class="text-muted">Selling:</span>
-                                <field name="selling_price" groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"/>
+                                <field name="selling_price"
+                                      />
+<!--                                 groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
                             </t>
                         </div>
                         <footer>
@@ -231,7 +242,6 @@
             </kanban>
         </field>
     </record>
-
 
     <record id="real_estate_action_view" model="ir.actions.act_window">
         <field name="name">Real Estate</field>
