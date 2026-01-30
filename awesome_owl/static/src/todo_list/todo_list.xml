@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="my_module.TodoList">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <input placeholder="Enter a new task" t-on-keyup="addTodo" t-ref="todo_list_input"/>
+            <p t-foreach="this.state.todos" t-as="todo" t-key="todo.id">
+                <TodoItem todo="todo" toggleState.bind="toggleTaskCompletion" removeTodo.bind="removeTask"/>
+            </p>
+        </div>
+    </t>
+</templates>

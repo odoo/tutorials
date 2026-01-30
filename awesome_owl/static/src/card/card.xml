@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates xml:space="preserve">
+    <t t-name="my_module.Card">
+        <div class="card d-inline-block m-2" style="width: 18rem;">
+            <button class="btn btn-primary" t-on-click="toggleCardBody">Open/Close</button>
+            <h5 class="card-title"><t t-esc="props.title"/></h5>
+            <div class="card-body" t-if="this.state.isOpen">
+                <p class="card-text"><t t-slot="default"/></p>
+            </div>
+        </div>
+    </t>
+</templates>
