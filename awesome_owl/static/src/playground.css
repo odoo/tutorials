@@ -1,0 +1,12 @@
+.counters {
+    margin: 1rem;
+    border: 1px solid black;
+    padding: 1rem 0;
+    width: fit-content;
+}
+
+.sum {
+    margin-top: 1rem;
+    margin-left: 1rem;
+    width: fit-content;
+}
