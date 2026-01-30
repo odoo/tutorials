@@ -5,6 +5,11 @@
         <t t-foreach="props.model.records" t-as="record" t-key="record.id">
             <div class="card m-2" style="width:100px;height:100px;">
                 <img t-att-src="getImageUrl(record.id)" t-on-click="() => this.openFormView(record.id)" t-att-data-tooltip="record[props.model.tooltipField]"/>
+                <FileUploader onUploaded.bind="onFileUploaded.bind(this, record.id)">
+                    <t t-set-slot="toggler">
+                        <button class="btn btn-secondary">Upload image</button>
+                    </t>
+                </FileUploader>
             </div>
         </t>
     </t>

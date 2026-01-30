@@ -22,6 +22,7 @@ export class GalleryModel {
                 specification: {
                     [this.imageField]: {},
                     ["name"]: {},
+                    write_date: {}
                 },
                 context: {
                     bin_size: true,
