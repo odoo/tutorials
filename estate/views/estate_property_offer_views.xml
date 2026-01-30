@@ -1,5 +1,5 @@
-<?xml version="1.0"?>
 <odoo>
+
     <record id="estate_property_offer_action_view_list" model="ir.actions.act_window">
         <field name="name">Property Offers</field>
         <field name="res_model">estate.property.offer</field>
