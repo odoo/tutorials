@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <template id="playground_page" name="Playground Page">
-        <t t-call="web.layout">
-            <div class="container mt-4">
-                <h2>Awesome Owl Playground</h2>
-                <div id="playground"></div>
-            </div>
-            <t t-call-assets="awesome_owl.assets_playground"/>
+    <templates xml:space="preserve">
+        <t t-name="awesome_owl.Playground">
+            <t t-call="web.layout">
+                <t t-set="head">
+                    <t t-call-assets="awesome_owl.assets_playground"/>
+                </t>
+                <div class="container mt-4">
+                    <h2>Awesome Owl Playground</h2>
+                    <div id="playground"></div>
+                </div>
+            </t>
         </t>
-    </template>
+    </templates>
 </odoo>
