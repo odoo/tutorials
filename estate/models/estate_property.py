@@ -103,7 +103,7 @@ class EstateProperty(models.Model):
     @api.constrains("offer_ids")
     def _check_offer_vaild(self):
         if self.filtered(lambda record: record.state == "sold"):
-            raise UserError(_("Already offer is accept"))
+            raise ValidationError(_("Already offer is accept"))
         return True
 
     @api.ondelete(at_uninstall=False)

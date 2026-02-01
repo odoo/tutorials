@@ -1,0 +1,27 @@
+<odoo>
+        <record id="estate_category_module" model="ir.module.category">
+            <field name="name">Estate Property</field>
+        </record>
+
+        <record model="res.groups.privilege" id="res_groups_privilege_estate">
+            <field name="name">Estate Property</field>
+            <field name="category_id" ref="estate_category_module"/>
+        </record>
+
+        <record id="estate_group_user" model="res.groups">
+            <field name="name">Agent</field>
+            <field name="privilege_id" ref="res_groups_privilege_estate"/>
+        </record>
+
+        <record id="estate_group_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="privilege_id" ref="res_groups_privilege_estate"/>
+            <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+        </record>
+
+        <record id="estate_group_test" model="res.groups">
+            <field name="name">Test</field>
+            <field name="privilege_id" ref="res_groups_privilege_estate"/>
+            <field name="implied_ids" eval="[(4, ref('estate_group_user'))]"/>
+        </record>
+</odoo>

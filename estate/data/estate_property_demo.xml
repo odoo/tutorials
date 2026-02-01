@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_estate_property" model="estate.property">
+        <field name="name">Tesing the demo data</field>
+        <field name="expected_price">900</field>
+        <field name="state">new</field>
+        <field name="description">Testing the demo data</field>
+        <field name="postcode">305010</field>
+        <field name="bedrooms">5</field>
+        <field name="living_area">450</field>
+    </record>
+</odoo>

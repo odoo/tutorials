@@ -1,7 +1,7 @@
 from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 
 
 class EstatePropertyOffer(models.Model):
@@ -49,7 +49,9 @@ class EstatePropertyOffer(models.Model):
             if property_id:
                 property_record = self.env["estate.property"].browse(property_id)
                 if offer_price < property_record.best_price:
-                    raise UserError(_("Offer price must be greater than best offer."))
+                    raise ValidationError(
+                        _("Offer price must be greater than best offer.")
+                    )
                 property_record.state = "offer received"
         return super().create(vals)
 
