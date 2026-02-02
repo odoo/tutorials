@@ -8,6 +8,7 @@ class EstateProperty(models.Model):
     _name = "estate.property"
     _description = "Storing Properties of Real Estate"
     _order = "id desc"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -96,6 +97,28 @@ class EstateProperty(models.Model):
         if self.state == "cancelled":
             raise UserError(message="The cancelled property cant be sold")
         self.state = "sold"
+
+        salesman = self.salesman_id
+        if not salesman or not salesman.email:
+            return True
+
+        mail_values = {
+            "email_to": salesman.email,
+            "email_from": self.env.user.email or "user@odoo.com",
+            "subject": "Property sold",
+            "body_html": "<p>your property is sold</p>",
+        }
+        mail = self.env["mail.mail"].create(mail_values)
+        mail.send()
+
+        self.message_post(
+            subject="Property Sold",
+            body="Mail sent of sold property",
+            partner_ids=[self.salesman_id.partner_id.id],
+            message_type="comment",
+            subtype_xmlid="mail.mt_comment",
+        )
+
         return True
 
     def action_set_cancelled(self):
