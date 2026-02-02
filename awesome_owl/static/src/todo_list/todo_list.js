@@ -15,7 +15,7 @@ export class TodoList extends Component {
     }
 
     addTodo(e){
-        if (e.keyCode === 13 && e.target.value) {
+        if (e.keyCode === 13 && e.target.value.trim()) {
             this.todos.push({
                 id: this.id++,
                 description: e.target.value,

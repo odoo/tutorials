@@ -8,7 +8,6 @@
     'depends': [
         'estate',
         'account',
-        'accountant',
     ],
     'installable': True,
     'application': True,
