@@ -11,7 +11,7 @@ This Module provide functionalities from where you manage the real estate proper
     'category': 'Real Estate/Brokerage',
     'website': 'https://www.ishw.tech',
     'depends': [
-        'base', 'account'
+        'base', 'account', 'mail',
     ],
     'data': [
         'security/ir.model.access.csv',

@@ -71,22 +71,22 @@ class EstatePropertyOffer(models.Model):
         return super().create(vals_list)
 
     def action_accept(self):
-        for record in self:
-            if record.status == "accepted":
-                continue
-            if record.property_id.buyer_id:
-                raise UserError(_("You can accept offer only once per property"))
-        record.status = "accepted"
-        record.property_id.buyer_id = record.partner_id
-        record.property_id.selling_price = record.price
-        (record.property_id.offer_ids - record).status = "refused"
-        record.property_id.state = "offer_accepted"
+        self.ensure_one()
+        if self.status == "accepted":
+            pass
+        if self.property_id.buyer_id:
+            raise UserError(_("You can accept offer only once per property"))
+        self.status = "accepted"
+        self.property_id.buyer_id = self.partner_id
+        self.property_id.selling_price = self.price
+        (self.property_id.offer_ids - self).status = "refused"
+        self.property_id.state = "offer_accepted"
         return True
 
     def action_refuse(self):
-        for record in self:
-            record.status = "refused"
-            record.property_id.state = "offer_received"
-            record.property_id.buyer_id = False
-            record.property_id.selling_price = 0.00
+        self.ensure_one()
+        self.status = "refused"
+        self.property_id.state = "offer_received"
+        self.property_id.buyer_id = False
+        self.property_id.selling_price = 0.00
         return True

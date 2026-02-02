@@ -3,7 +3,13 @@
 
     <t t-name="awesome_owl.playground">
         <div class="p-3">
-            hello world
+           <h1>Playground</h1>
+            <div class="alert alert-info">
+                total sum:<t t-esc="state.sum" />
+            </div>
+            <Counter onChange="incrementSum"/>
+            <Counter onChange="incrementSum"/>
+            <TodoList/>
         </div>
     </t>
 

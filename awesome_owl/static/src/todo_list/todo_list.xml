@@ -1,0 +1,14 @@
+<templates xml:space="preserve">
+    <t t-name="awesome_owl.TodoList">
+        <div class="card m-3" style="width: 400px;">
+            <div class="card-header active">
+                <h4>Todo List</h4>
+            </div>
+            <div class="card-body p-0">
+                    <t t-foreach="state.todos" t-as="todo" t-key="todo.id">
+                        <TodoItem todo="todo"/>
+                    </t>
+            </div>
+        </div>
+    </t>
+</templates>

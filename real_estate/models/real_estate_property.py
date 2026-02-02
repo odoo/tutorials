@@ -10,6 +10,11 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
     _order = "id desc"
 
+    _inherit = [
+        'mail.thread',
+        'mail.activity.mixin',
+    ]
+
     name = fields.Char(required=True)
     description = fields.Text()
     postcode = fields.Char()
@@ -20,6 +25,7 @@ class EstateProperty(models.Model):
     selling_price = fields.Float(
         readonly=True,
         copy=False,
+        tracking=True,
     )
     bedrooms = fields.Integer(default=2)
     living_area = fields.Integer()
@@ -55,7 +61,7 @@ class EstateProperty(models.Model):
         default="new",
     )
     property_type_id = fields.Many2one("estate.property.type")
-    buyer_id = fields.Many2one("res.partner", copy=False)
+    buyer_id = fields.Many2one("res.partner", copy=False, tracking=True)
     salesperson_id = fields.Many2one(
         "res.users", string="Sales Person", default=lambda self: self.env.user
     )
