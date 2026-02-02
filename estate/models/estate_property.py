@@ -9,6 +9,7 @@ from odoo import _
 class EstateProperty(models.Model):
     _name = 'estate.property'
     _description = 'Real Estate Property'
+    _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'id desc'
 
     # Each field becomes a column in PostgreSQL table
@@ -138,7 +139,18 @@ class EstateProperty(models.Model):
                     if maintenance.status in ('new', 'cancel'):
                         raise UserError(_("Maintenance cost must be Approved or Done"))
             property.state = 'sold'
-        return True
+
+        action = {
+            'name': _('Send'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+        }
+
+        return action
 
     def action_cancel(self):
         for property in self:

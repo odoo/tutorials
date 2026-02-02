@@ -4,7 +4,7 @@
     'category': "Real Estate",
     'summary': "Manage real estate properties",
     'description': "This module allows managing properties",
-    'depends': ['base'],
+    'depends': ['base', 'mail'],
     'author': "jakan",
     'license': "LGPL-3",
     'application': True,

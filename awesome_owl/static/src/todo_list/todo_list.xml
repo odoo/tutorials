@@ -5,13 +5,14 @@
             <div class="mb-3">
                 <input
                     type="text"
+                    t-ref="inputRef"
                     class="form-control"
                     placeholder="Add a todo"
                     t-on-keyup="addTodo"
                 />
             </div>
             <t t-foreach="todos" t-as="todo" t-key="todo.id">
-                <TodoItem todo="todo"/>
+                <TodoItem todo="todo" toggleState.bind="toggleTodo" removeTodo.bind="removeTodo"/>
             </t>
         </div>
     </t>
