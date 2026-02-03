@@ -118,6 +118,27 @@ class EstateProperty(models.Model):
             if record.status != 'done':
                 raise UserError(_("Maintenance Request are still pending."))
         self.state = 'sold'
+        self.active = False
+
+        template = self.env.ref(
+            'estate.mail_template_property', raise_if_not_found=False)
+        ctx = {
+            'default_model': 'estate.property',
+            'default_res_ids': self.ids,
+            'default_composition_mode': 'comment',
+            'default_template_id': template.id,
+        }
+        action = {
+            'name': _('Send'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
+        }
+        return action
 
     def action_property_cancel(self):
         self.state = 'cancelled'

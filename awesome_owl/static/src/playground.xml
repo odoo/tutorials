@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
     <t t-name="awesome_owl.playground">
-        <Counter/>
-        <Card title="'First Card'" content="value1"/>
-        <Card title="'Second Card'" content="'This is the second card content'"/>
-        <Card title="'Third Card'" content="'Reusable components are powerful!'"/>
+        <div class="p-3">
+            <div class="oe_inline">
+                <p>Counter: <t t-esc="state.v_sum"/>
+                </p>
+            </div>
+            <Card title="'First Card'">
+                <Counter onChange='incrementSum'/>
+            </Card>
+            <Card title="'Second Card'">
+                <Counter onChange='incrementSum'/>
+            </Card>
+            <TodoList/>
+        </div>
     </t>
 </templates>

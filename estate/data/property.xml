@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="demo_tag1" model="estate.property.tag">
+        <field name="name">New</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="demo_tag2" model="estate.property.tag">
+        <field name="name">Sea View</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="demo_type1" model="estate.property.type">
+        <field name="name">House</field>
+    </record>
+
+    <record id="demo_type2" model="estate.property.type">
+        <field name="name">Apartment</field>
+    </record>
+
+    <record id="demo_property1" model="estate.property">
+        <field name="name">Sea View House(PUNE)</field>
+        <field name="expected_price">30000000</field>
+        <field name="bedrooms">4</field>
+        <field name="postcode">411023</field>
+        <field name="living_area">2500</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="tag_ids" eval="[(4,ref('demo_tag2'))]"/>
+        <field name="property_type_id" ref="demo_type1"/>
+        <field name="user_id" ref="base.demo_user0"/>
+    </record>
+
+    <record id="demo_property2" model="estate.property">
+        <field name="name">Samarpan Co.op.Society(102)</field>
+        <field name="expected_price">25000000</field>
+        <field name="bedrooms">3</field>
+        <field name="postcode">411070</field>
+        <field name="living_area">2300</field>
+        <field name="garage">False</field>
+        <field name="garden">False</field>
+        <field name="tag_ids" eval="[(4,ref('demo_tag1'))]"/>
+        <field name="property_type_id" ref="demo_type2"/>
+        <field name="user_id" ref="base.user_demo"/>
+    </record>
+
+    <record id="demo_offer1" model="estate.property.offer">
+        <field name="price">29000000</field>
+        <field name="partner_id" ref="base.res_partner_12"/>
+        <field name="property_id" ref="demo_property1"/>
+    </record>
+
+</odoo>
