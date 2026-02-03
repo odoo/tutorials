@@ -1,0 +1,10 @@
+<odoo>
+    <record id="real_estate_report_action_property_sale" model="ir.actions.report">
+        <field name="name">Property Sale PDF</field>
+        <field name="model">real.estate</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">real_estate.report_property_sale</field>
+        <field name="report_file">real_estate.report_property_sale</field>
+        <field name="print_report_name">'Property Sale - %s' % (object.name)</field>
+    </record>
+</odoo>

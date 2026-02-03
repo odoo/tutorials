@@ -13,8 +13,8 @@
                 <field name="date_availability" optional="hide"/>
                 <field name="expected_price"/>
                 <field name="selling_price"
-                       />
-<!--                groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
+                />
+                <!--                groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
                 <field name="tag_ids" widget="many2many_tags" optional="show"/>
                 <field name="best_price"/>
                 <field name="total_area"/>
@@ -49,6 +49,11 @@
                             class="btn-primary"
                             invisible="not stage == 'offer_received'"
                     />
+                    <button name="action_print_sale_doc"
+                            string="Print"
+                            type="object"
+                            class="btn-primary"
+                            invisible="not stage == 'sold'"/>
                     <field name="stage" widget="statusbar"
                            options="{'clickable': False}"
                            statusbar_visible="new,offer_received,offer_accepted,sold,cancelled"/>
@@ -107,7 +112,7 @@
                                                 title="accept"
                                                 invisible="status in ('accepted' ,'refused')"
                                         />
-<!--                                                groups="real_estate.group_real_estate_manager"-->
+                                        <!--                                                groups="real_estate.group_real_estate_manager"-->
 
                                         <button
                                                 name="action_refuse"
@@ -116,7 +121,7 @@
                                                 title="refused"
                                                 invisible="status in ('accepted' ,'refused')"
                                         />
-<!--                                                groups="real_estate.group_real_estate_manager"-->
+                                        <!--                                                groups="real_estate.group_real_estate_manager"-->
                                         <field name="status" readonly="1"/>
                                     </list>
                                 </field>
@@ -128,20 +133,20 @@
                                     <list editable="bottom">
                                         <field name="name"/>
                                         <field name="cost"/>
-<!--                                         groups="real_estate.group_maintenance_staff"-->
+                                        <!--                                         groups="real_estate.group_maintenance_staff"-->
                                         <field name="status"/>
                                     </list>
                                 </field>
                                 <field name="total_maintenance_cost"/>
-<!--                                 groups="real_estate.group_maintenance_staff"-->
+                                <!--                                 groups="real_estate.group_maintenance_staff"-->
                             </group>
                         </page>
 
                         <page string="Other Info">
                             <group>
                                 <field name="selling_price" readonly="1"
-                                       />
-<!--                                groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
+                                />
+                                <!--                                groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
                                 <field name="buyer_id" readonly="1"/>
                             </group>
                         </page>
@@ -225,8 +230,8 @@
                             <t t-if="record.selling_price.raw_value != 'sold'">
                                 <span class="text-muted">Selling:</span>
                                 <field name="selling_price"
-                                      />
-<!--                                 groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
+                                />
+                                <!--                                 groups="real_estate.group_real_estate_agent,real_estate.group_real_estate_manager"-->
                             </t>
                         </div>
                         <footer>

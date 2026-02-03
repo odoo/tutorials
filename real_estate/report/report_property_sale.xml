@@ -1,0 +1,50 @@
+<odoo>
+    <template id="report_property_sale">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <hr/>
+                        <h2 style="text-align:center;">Property Sale Confirmation</h2>
+                        <p>
+                            <strong>Property Name:</strong>
+                            <t t-esc="o.name"/>
+                        </p>
+                        <p>
+                            <strong>Buyer:</strong>
+                            <t t-esc="o.buyer_id.name"/>
+                        </p>
+                        <p>
+                            <strong>Seller:</strong>
+                            <t t-esc="o.salesperson_id.name"/>
+                        </p>
+                        <p>
+                            <strong>Sale Price:</strong>
+                            ₹
+                            <t t-esc="o.selling_price"/>
+                        </p>
+                        <p>
+                            <strong>Sale Date:</strong>
+                            <t t-esc="o.write_date"/>
+                        </p>
+
+                        <table class="table table-sm mt32">
+                            <tr>
+                                <th>Type</th>
+                                <th>Area</th>
+                                <th>Bedrooms</th>
+                                <th>Bathrooms</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <t t-esc="o.property_type_id.name"/>
+                                </td>
+                            </tr>
+                        </table>
+                        <p class="mt32">This document confirms the successful sale of the above property.</p>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

@@ -172,9 +172,38 @@ class RealEstate(models.Model):
             raise UserError("Property cannot be sold , there is any maintenance request not done")
         if not self.selling_price or not self.buyer_id:
             raise UserError("Cannot sell without a selling price and buyer.")
+
+        ctx = {
+            'default_model': 'real.estate',
+            'default_res_ids': self.ids,
+            'default_partner_ids': [
+                self.buyer_id.id,
+                self.salesperson_id.partner_id.id
+            ],
+        }
+        mail_template = self.env.ref('real_estate.mail_template_data_real_estate')
+        if mail_template:
+            ctx.update({
+                'default_template_id': mail_template.id,
+
+            })
+        action = {
+            'name': _('Send'),
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'mail.compose.message',
+            'views': [(False, 'form')],
+            'view_id': False,
+            'target': 'new',
+            'context': ctx,
+        }
         self.stage = 'sold'
+        return action
 
     def action_best_offer(self):
         for record in self.offer_ids:
             if record.price == self.best_price:
                 record.action_accept()
+
+    def action_print_sale_doc(self):
+        return self.env.ref('real_estate.real_estate_report_action_property_sale').report_action(self)

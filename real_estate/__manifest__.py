@@ -18,7 +18,10 @@
         'views/res_users_views.xml',
         'views/real_estate_property_investor_views.xml',
         'views/real_estate_menus.xml',
-        'data/real_estate_demo_data.xml'
+        'data/real_estate_demo_data.xml',
+        'data/mail_template_data.xml',
+        'report/report_action.xml',
+        'report/report_property_sale.xml',
     ],
     'application': True,
     'installable': True,
