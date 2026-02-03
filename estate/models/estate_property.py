@@ -11,7 +11,7 @@ class EstateProperty(models.Model):
 
     name = fields.Char(required=True, default="Unknown")
     description = fields.Text()
-    postcode = fields.Float()
+    postcode = fields.Integer()
     date_availability = fields.Date(
         "Available From", copy=False, default=lambda self: fields.Date.today() + relativedelta(months=3)
     )
@@ -49,7 +49,7 @@ class EstateProperty(models.Model):
     seller_id = fields.Many2one(
         'res.users', string="Salesman", default=lambda self: self.env.user
     )
-    buyer_ids = fields.Many2one(
+    buyer_id = fields.Many2one(
         'res.partner', string="Partner/Buyer", copy=False)
     tags_ids = fields.Many2many('estate.property.tag')
     offer_ids = fields.One2many('estate.property.offer', 'property_id')
@@ -61,6 +61,7 @@ class EstateProperty(models.Model):
     total_maintenance_cost = fields.Float(
         compute='_compute_total_maintenance_cost', string="Total Maintenance Cost")
     is_favorite = fields.Boolean(string="Favorite")
+    # priority = fields.Integer(string='Sequence', default=16, required=True)
 
     # SQL Constraint
     _check_expected_price = models.Constraint(
@@ -71,7 +72,7 @@ class EstateProperty(models.Model):
     # Python Constriant
     @api.constrains('selling_price', 'expected_price')
     def _check_price(self):
-        if self.buyer_ids and self.selling_price < (self.expected_price * 0.9):
+        if self.buyer_id and self.selling_price < (self.expected_price * 0.9):
             raise ValidationError(
                 "The selling price must be at least 90% of the expected price! You must reduce the expected price if you want to accept this offer.")
 
@@ -121,17 +122,31 @@ class EstateProperty(models.Model):
                 if record.property_maintenance_requests.status != 'done':
                     raise UserError(
                         "Property cannot be sold if there is any maintenance request not done.")
-        return self.write({'state': 'sold'})
+                if not record.offer_ids:
+                    raise UserError(
+                        "Property cannot be sold without any offer.")
+        self.state = 'sold'
 
     def action_cancel(self):
         if 'sold' in self.mapped('state'):
             raise UserError("Sold properties cannot be cancelled.")
         return self.write({'state': 'cancelled'})
 
+    def accept_offer(self):
+        for rec in self:
+            best_offer = self.env['estate.property.offer'].search([
+                ('property_id', '=', rec.id),
+                ('price', '=', rec.best_price)
+            ])
+            best_offer.status = 'accepted'
+            best_offer.action_accept()
+
     # Ondelete Decorator
     @api.ondelete(at_uninstall=False)
     def _check_state(self):
-        for record in self:
-            if record.state in ('offer_received', 'offer_accepted'):
-                raise UserError(
-                    "Only new and canceled properties can be deleted.")
+        count = self.search_count([
+            ('id', 'in', self.ids),
+            ('state', 'in', ('offer_received', 'offer_accepted'))
+        ])
+        if count:
+            raise UserError("Only new and canceled properties can be deleted.")

@@ -31,8 +31,8 @@
                 <header>
                     <button string="Sold" name="action_sold" type="object"/>
                     <button string="Cancel" name="action_cancel" type="object"/>
+                    <button string="Accept Offer" name="accept_offer" type="object"/>
                     <field name="state" widget="statusbar" statusbar_visible="new,offer_received,offer_accepted,sold" decoration-success="state == 'offer_received'"/>
-                    <!-- <button type="action" name="%(estate.estate_property_type_action)d" string="Property Types" icon="fa-magic"/> -->
                 </header>
                 <sheet>
                     <h1>
@@ -74,7 +74,7 @@
                         <page string="Other Info">
                             <group>
                                 <field name="seller_id"/>
-                                <field name="buyer_ids"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                         <page string="Maintenance Requests">
@@ -93,6 +93,7 @@
                         </page>
                     </notebook>
                 </sheet>
+                <chatter/>
             </form>
         </field>
     </record>
@@ -103,6 +104,7 @@
         <field name="model">estate.property</field>
         <field name="arch" type="xml">
             <search>
+                <field name="best_price"/>
                 <field name="name"/>
                 <field name="postcode"/>
                 <field name="expected_price"/>
@@ -112,10 +114,10 @@
                 <separator/>
                 <filter string="New / Offer Received" name="state" domain="[('state', 'in', ['new', 'offer received'])]"/>
                 <separator/>
-                <filter string="Best 50" name='best_price' domain="[('best_price', '&gt;', 50)]"/>
+                <filter string="Best 50" name='best_price' domain="[('best_price', '&lt;', 100)]"/>
                 <filter name='archive' domain="[('active', '=', 'False')]"/>
                 <group>
-                    <filter string="Postcode" name="postcode" context="{'group_by':'postcode'}"/>
+                    <filter string="Postcode" name="group_by_postcode" context="{'group_by':'postcode'}"/>
                 </group>
             </search>
         </field>
@@ -188,7 +190,8 @@
     <record id="estate_model_action" model="ir.actions.act_window">
         <field name="name">Properties</field>
         <field name="res_model">estate.property</field>
-        <field name="view_mode">kanban,list,form</field>
+        <field name="view_mode">list,kanban,form</field>
         <field name="context">{'search_default_best_price': 0, 'search_default_state': 0}</field>
     </record>
+
 </odoo>

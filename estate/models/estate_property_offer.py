@@ -67,8 +67,11 @@ class EstatePropertyOffer(models.Model):
             if record.property_id.state != 'offer_accepted':
                 record.status = 'accepted'
                 record.property_id.selling_price = record.price
-                record.property_id.buyer_ids = self.partner_id
+                record.property_id.buyer_id = self.partner_id
                 record.property_id.state = 'offer_accepted'
+
+                other_offer = record.property_id.offer_ids - self
+                other_offer.status = 'refused'
             else:
                 raise UserError('One offer has already been accepted')
 
@@ -77,4 +80,4 @@ class EstatePropertyOffer(models.Model):
             record.status = 'refused'
             record.property_id.state = 'new'
             record.property_id.selling_price = '0'
-            record.property_id.buyer_ids = None
+            record.property_id.buyer_id = None

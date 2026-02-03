@@ -6,7 +6,11 @@
     'description': """
         This module provides accounting functionality to manage real estate properties.
         """,
+    'data': [
+        'security/ir.model.access.csv',
+    ],
     'category': 'Tutorial',
     'license': 'LGPL-3',
     'application': True,
+    'auto_install': True
 }
